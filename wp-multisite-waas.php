@@ -43,7 +43,7 @@ if (!defined('WP_ULTIMO_PLUGIN_FILE')) {
 
 
 // Check if old name is installed and we should upgrade.
-if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
+if ( function_exists('is_plugin_active') && is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
 	deactivate_plugins( 'wp-ultimo/wp-ultimo.php', true, true);
 	add_action(
 		'admin_notices',
