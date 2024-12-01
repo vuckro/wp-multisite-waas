@@ -1,22 +1,22 @@
-=== WP Ultimo ===
+=== WP Multisite WaaS ===
 Requires at least: 5.3
 Requires PHP: 7.4.30
 Tested up to: 6.4.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Contributors: aanduque
+Contributors: aanduque, superdav42 
 
 The Complete Network Solution.
 
 == Description ==
 
-WP Ultimo
+WP Multisite WaaS
 
-The Complete Network Solution.
+The WordPress Multisite Website as a Service (Waas) plugin. Now community maintained.
 
 == Installation ==
 
-1. Upload 'wp-ultimo' to the '/wp-content/plugins/' directory
+1. Upload 'wp-multisite-waas' to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Follow the step by step Wizard to set the plugin up
 
@@ -25,6 +25,9 @@ The Complete Network Solution.
 We recommend running this in a staging environment before updating your production environment.
 
 == Changelog ==
+Version [2.3.3] - Not yet released 
+
+- Renamed to WP Multisite WaaS 
 
 Version [2.3.2] - Released on 2023-12-05
 
