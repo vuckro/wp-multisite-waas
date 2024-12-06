@@ -178,7 +178,7 @@ class Account_Summary_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Checkout',
 	 *  'Form',
 	 *  'Cart',
@@ -193,6 +193,7 @@ class Account_Summary_Element extends Base_Element {
 			'WP Ultimo',
 			'Account',
 			'Summary',
+			'WP Multisite WaaS',
 		);
 
 	} // end keywords;

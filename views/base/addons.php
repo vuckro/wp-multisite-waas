@@ -51,7 +51,7 @@ body .theme-browser .theme .theme-name {
      * Allow plugin developers to add additional buttons to list pages
      *
      * @since 1.8.2
-     * @param WU_Page WP Ultimo Page instance
+     * @param WU_Page WP Multisite WaaS Page instance
      */
     do_action('wu_page_addon_after_title', $page);
     ?>
@@ -250,7 +250,7 @@ body .theme-browser .theme .theme-name {
 
                   <?php echo wu_render_empty_state(array(
                     'message'      => __("Loading...", 'wp-ultimo'),
-                    'sub_message'  => __('We are fetching the list of WP Ultimo add-ons.', 'wp-ultimo'),
+                    'sub_message'  => __('We are fetching the list of WP Multisite WaaS add-ons.', 'wp-ultimo'),
                     'link_url'     => false,
                   )); ?>
 
@@ -365,7 +365,7 @@ body .theme-browser .theme .theme-name {
      * Allow plugin developers to add scripts to the bottom of the page
      *
      * @since 1.8.2
-     * @param WU_Page WP Ultimo Page instance
+     * @param WU_Page WP Multisite WaaS Page instance
      */
     do_action('wu_page_addon_footer', $page);
     ?>

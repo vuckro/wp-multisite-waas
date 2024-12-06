@@ -271,7 +271,7 @@ function wu_get_days_in_cycle($duration_unit, $duration) {
  * Register a new field type.
  *
  * Field types are types of field (duh!) that can be
- * added to the checkout flow and other forms inside WP Ultimo.
+ * added to the checkout flow and other forms inside WP Multisite WaaS.
  *
  * @see https://help.wpultimo.com/article/344-add-custom-field-types-to-wp-ultimo
  *
@@ -297,7 +297,7 @@ function wu_register_field_type($field_type_id, $field_type_class_name) {
  * Register a new field template for a field type.
  *
  * Field templates are different layouts that can be added to
- * WP Ultimo to be used as the final representation of a given
+ * WP Multisite WaaS to be used as the final representation of a given
  * checkout field.
  *
  * @see https://help.wpultimo.com/article/343-customize-your-checkout-flow-using-field-templates

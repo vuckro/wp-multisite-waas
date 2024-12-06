@@ -46,7 +46,7 @@
        * Allow plugin developers to add additional buttons to list pages
        *
        * @since 1.8.2
-       * @param WU_Page WP Ultimo Page instance
+       * @param WU_Page WP Multisite WaaS Page instance
        */
       do_action('wu_page_centered_after_title', $page);
       ?>
@@ -143,7 +143,7 @@
                    * Allow plugin developers to add additional buttons to list pages
                    *
                    * @since 1.8.2
-                   * @param WU_Page WP Ultimo Page instance
+                   * @param WU_Page WP Multisite WaaS Page instance
                    */
                   do_action('wu_centered_content', $page);
 
@@ -160,7 +160,7 @@
                    * Allow plugin developers to add additional buttons to list pages
                    *
                    * @since 1.8.2
-                   * @param WU_Page WP Ultimo Page instance
+                   * @param WU_Page WP Multisite WaaS Page instance
                    */
                   do_action('wu_centered_right', $page);
 
