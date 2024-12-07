@@ -194,7 +194,7 @@ class Maintenance_Mode {
 	} // end toggle_maintenance_mode;
 
 	/**
-	 * Filter the WP Ultimo settings to add Jumper options
+	 * Filter the WP Multisite WaaS settings to add Jumper options
 	 *
 	 * @since 2.0.0
 	 * @return void

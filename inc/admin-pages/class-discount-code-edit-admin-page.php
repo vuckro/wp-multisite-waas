@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Discount_Code Edit/Add New Admin Page.
+ * WP Multisite WaaS Discount_Code Edit/Add New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -16,7 +16,7 @@ use \WP_Ultimo\Models\Discount_Code;
 use \WP_Ultimo\Managers\Discount_Code_Manager;
 
 /**
- * WP Ultimo Discount_Code Edit/Add New Admin Page.
+ * WP Multisite WaaS Discount_Code Edit/Add New Admin Page.
  */
 class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 

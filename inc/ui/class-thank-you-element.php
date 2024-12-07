@@ -283,7 +283,7 @@ class Thank_You_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Billing Information',
 	 *  'Form',
 	 *  'Cart',
@@ -296,6 +296,7 @@ class Thank_You_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Thank You',
 			'Form',
 			'Cart',

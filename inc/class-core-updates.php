@@ -1,6 +1,6 @@
 <?php
 /**
- * Manages WP Ultimo Core Updates.
+ * Manages WP Multisite WaaS Core Updates.
  *
  * @package WP_Ultimo
  * @subpackage Core Updates
@@ -13,7 +13,7 @@ namespace WP_Ultimo;
 defined('ABSPATH') || exit;
 
 /**
- * Manages WP Ultimo Core Updates.
+ * Manages WP Multisite WaaS Core Updates.
  *
  * @since 2.0.0
  */
@@ -67,7 +67,7 @@ class Core_Updates {
 		$this->version = class_exists(\WP_Ultimo::class) ? \WP_Ultimo::VERSION : '';
 
 		/**
-		 * As WP Ultimo needs to load in wp-ultimo/ directory to work with Sunrise
+		 * As WP Multisite WaaS needs to load in wp-ultimo/ directory to work with Sunrise
 		 * we can assume the plugin as wp-ultimo/wp-ultimo.php. if it's a mu-plugin
 		 * we will assume as wp-ultimo.php.
 		 *
@@ -78,7 +78,7 @@ class Core_Updates {
 		$this->plugin_slug = 'wp-multisite-waas/wp-multisite-waas.php';
 
 		/**
-		 * Check for a WP Ultimo Core Updates.
+		 * Check for a WP Multisite WaaS Core Updates.
 		 */
 		add_action('upgrader_process_complete', array($this, 'maybe_add_core_update_hooks'), 10, 2);
 
@@ -92,7 +92,7 @@ class Core_Updates {
 	} // end init;
 
 	/**
-	 * Checks if a WP Ultimo core update is being performed and triggers an action if that's the case.
+	 * Checks if a WP Multisite WaaS core update is being performed and triggers an action if that's the case.
 	 *
 	 * @since 2.0.0
 	 *
@@ -120,7 +120,7 @@ class Core_Updates {
 
 		if ($is_a_wp_ultimo_update) {
 
-			function_exists('wu_log_add') && wu_log_add('wp-ultimo-core', __('Updating WP Ultimo Core...', 'wp-ultimo'));
+			function_exists('wu_log_add') && wu_log_add('wp-ultimo-core', __('Updating WP Multisite WaaS Core...', 'wp-ultimo'));
 
 			try {
 

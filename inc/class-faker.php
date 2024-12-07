@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo faker
+ * WP Multisite WaaS faker
  *
  * @package WP_Ultimo
  * @subpackage Helper
@@ -15,7 +15,7 @@ use Faker as Lib_Faker;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo faker
+ * WP Multisite WaaS faker
  *
  * @since 2.0.0
  */

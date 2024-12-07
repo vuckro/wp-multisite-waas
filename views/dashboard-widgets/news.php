@@ -45,7 +45,7 @@
       const query_params = <?php echo json_encode(array(
         'url'          => 'https://versions.nextpress.co/updates/news.php',
         'action'       => 'wu_fetch_rss',
-        'title'        => __('WP Ultimo Community', 'wp-ultimo'),
+        'title'        => __('WP Multisite WaaS Community', 'wp-ultimo'),
         'items'        => 3,
         'show_summary' => 1,
         'show_author'  => 0,

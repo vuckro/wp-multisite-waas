@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo 1.X to 2.X migrator.
+ * WP Multisite WaaS 1.X to 2.X migrator.
  *
  * @package WP_Ultimo
  * @subpackage Installers
@@ -24,7 +24,7 @@ use \WP_Ultimo\Managers\Limitation_Manager;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo 1.X to 2.X migrator.
+ * WP Multisite WaaS 1.X to 2.X migrator.
  *
  * @since 2.0.0
  */
@@ -595,7 +595,7 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.7
 	 *
 	 * @param \Throwable|null    $e The exception thrown.
-	 * @param \WP_Ultimo\Session $session THe WP Ultimo session object.
+	 * @param \WP_Ultimo\Session $session THe WP Multisite WaaS session object.
 	 * @param boolean            $dry_run If we are on a dry run or not.
 	 * @param string             $installer The name of the installer.
 	 * @return \WP_Error

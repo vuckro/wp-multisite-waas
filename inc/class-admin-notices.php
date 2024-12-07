@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles the Admin Notices added by WP Ultimo.
+ * Handles the Admin Notices added by WP Multisite WaaS.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Notices
@@ -22,7 +22,7 @@ class Admin_Notices {
 	use \WP_Ultimo\Traits\Singleton;
 
 	/**
-	 * Holds the notices added by WP Ultimo.
+	 * Holds the notices added by WP Multisite WaaS.
 	 *
 	 * @since 2.0.0
 	 * @var array
@@ -114,7 +114,7 @@ class Admin_Notices {
 		} // end if;
 
 		/**
-		 * Allow developers to filter admin notices added by WP Ultimo.
+		 * Allow developers to filter admin notices added by WP Multisite WaaS.
 		 *
 		 * @since 2.0.0
 		 *

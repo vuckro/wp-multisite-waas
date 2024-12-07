@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo settings helper class.
+ * WP Multisite WaaS settings helper class.
  *
  * @package WP_Ultimo
  * @subpackage Settings
@@ -16,7 +16,7 @@ use WP_Ultimo\UI\Field;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo settings helper class.
+ * WP Multisite WaaS settings helper class.
  *
  * @since 2.0.0
  */
@@ -55,10 +55,6 @@ class Settings {
 	 * @return void
 	 */
 	public function init() {
-
-		$this->get_all();
-
-		add_action('wp_ultimo_load', array($this, 'default_sections'), 1);
 
 		add_action('init', array($this, 'handle_legacy_filters'), 2);
 
@@ -149,7 +145,7 @@ class Settings {
 	} // end force_plugins_menu;
 
 	/**
-	 * Get all the settings from WP Ultimo
+	 * Get all the settings from WP Multisite WaaS
 	 *
 	 * @param bool $check_caps If we should remove the settings the user does not have rights to see.
 	 * @return array Array containing all the settings
@@ -231,7 +227,7 @@ class Settings {
 	} // end save_setting;
 
 	/**
-	 * Save WP Ultimo Settings
+	 * Save WP Multisite WaaS Settings
 	 *
 	 * This function loops through the settings sections and saves the settings
 	 * after validating them.
@@ -239,7 +235,7 @@ class Settings {
 	 * @since 2.0.0
 	 *
 	 * @param array   $settings_to_save Array containing the settings to save.
-	 * @param boolean $reset If true, WP Ultimo will override the saved settings with the default values.
+	 * @param boolean $reset If true, WP Multisite WaaS will override the saved settings with the default values.
 	 * @return array
 	 */
 	public function save_settings($settings_to_save = array(), $reset = false) {
@@ -288,7 +284,7 @@ class Settings {
 		} // end foreach;
 
 		/**
-		 * Allow developers to filter settings before save by WP Ultimo.
+		 * Allow developers to filter settings before save by WP Multisite WaaS.
 		 *
 		 * @since 2.0.18
 		 *
@@ -318,6 +314,10 @@ class Settings {
 	 */
 	public function get_sections() {
 
+		if ( $this->sections ) {
+			return $this->sections;
+		}
+		$this->default_sections();
 		$this->sections = apply_filters('wu_settings_get_sections', array(
 
 			/*
@@ -522,10 +522,11 @@ class Settings {
 
 		});
 
+		$settings = $this->get_all();
 		/*
 		 * Makes sure we install the default value if it is not set yet.
 		 */
-		if (isset($atts['default']) && $atts['default'] !== null && !isset($this->settings[$field_slug])) {
+		if (isset($atts['default']) && $atts['default'] !== null && !isset($settings[$field_slug])) {
 
 			$this->save_setting($field_slug, $atts['default']);
 
@@ -534,7 +535,7 @@ class Settings {
 	} // end add_field;
 
 	/**
-	 * Register the WP Ultimo default sections and fields.
+	 * Register the WP Multisite WaaS default sections and fields.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -542,7 +543,7 @@ class Settings {
 	public function default_sections() {
 		/*
 		 * General Settings
-		 * This section holds the General settings of the WP Ultimo Plugin.
+		 * This section holds the General settings of the WP Multisite WaaS Plugin.
 		 */
 
 		// Comma separated string of page ids that are already being used as default option
@@ -607,7 +608,7 @@ class Settings {
 
 		$this->add_field('general', 'currency_symbol', array(
 			'title'   => __('Currency', 'wp-ultimo'),
-			'desc'    => __('Select the currency to be used in WP Ultimo.', 'wp-ultimo'),
+			'desc'    => __('Select the currency to be used in WP Multisite WaaS.', 'wp-ultimo'),
 			'type'    => 'select',
 			'default' => 'USD',
 			'options' => 'wu_get_currencies',
@@ -652,7 +653,7 @@ class Settings {
 
 		/*
 		 * Login & Registration
-		 * This section holds the Login & Registration settings of the WP Ultimo Plugin.
+		 * This section holds the Login & Registration settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('login-and-registration', array(
@@ -774,7 +775,7 @@ class Settings {
 
 		$this->add_field('login-and-registration', 'main_site_default_role', array(
 			'title'   => __('Add to Main Site with Role...', 'wp-ultimo'),
-			'desc'    => __('Select the role WP Ultimo should use when adding the user to the main site of your network. Be careful.', 'wp-ultimo'),
+			'desc'    => __('Select the role WP Multisite WaaS should use when adding the user to the main site of your network. Be careful.', 'wp-ultimo'),
 			'type'    => 'select',
 			'default' => 'subscriber',
 			'options' => 'wu_get_roles_as_options',
@@ -787,7 +788,7 @@ class Settings {
 
 		/*
 		 * Memberships
-		 * This section holds the Membership  settings of the WP Ultimo Plugin.
+		 * This section holds the Membership  settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('memberships', array(
@@ -823,7 +824,7 @@ class Settings {
 
 		$this->add_field('memberships', 'block_frontend_grace_period', array(
 			'title'   => __('Frontend Block Grace Period', 'wp-ultimo'),
-			'desc'    => __('Select the number of days WP Ultimo should wait after the membership goes inactive before blocking the frontend access. Leave 0 to block immediately after the membership becomes inactive.', 'wp-ultimo'),
+			'desc'    => __('Select the number of days WP Multisite WaaS should wait after the membership goes inactive before blocking the frontend access. Leave 0 to block immediately after the membership becomes inactive.', 'wp-ultimo'),
 			'type'    => 'number',
 			'default' => 0,
 			'min'     => 0,
@@ -865,7 +866,7 @@ class Settings {
 
 		$this->add_field('memberships', 'block_sites_on_downgrade', array(
 			'title'   => __('Block Sites on Downgrade', 'wp-ultimo'),
-			'desc'    => __('Choose how WP Ultimo should handle client sites above their plan quota on downgrade.', 'wp-ultimo'),
+			'desc'    => __('Choose how WP Multisite WaaS should handle client sites above their plan quota on downgrade.', 'wp-ultimo'),
 			'type'    => 'select',
 			'default' => 'none',
 			'options' => array(
@@ -899,7 +900,7 @@ class Settings {
 
 		$this->add_field('memberships', 'emulated_post_types_explanation', array(
 			'type'            => 'note',
-			'desc'            => __('By default, WP Ultimo only allows super admins to limit post types that are registered on the main site. This makes sense from a technical stand-point but it also forces you to have plugins network-activated in order to be able to set limitations for their custom post types. Using this option, you can emulate the registering of a post type. This will register them on the main site and allow you to create limits for them on your products.', 'wp-ultimo'),
+			'desc'            => __('By default, WP Multisite WaaS only allows super admins to limit post types that are registered on the main site. This makes sense from a technical stand-point but it also forces you to have plugins network-activated in order to be able to set limitations for their custom post types. Using this option, you can emulate the registering of a post type. This will register them on the main site and allow you to create limits for them on your products.', 'wp-ultimo'),
 			'classes'         => '',
 			'wrapper_classes' => '',
 		));
@@ -977,7 +978,7 @@ class Settings {
 
 		/*
 		 * Site Templates
-		 * This section holds the Site Templates settings of the WP Ultimo Plugin.
+		 * This section holds the Site Templates settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('sites', array(
@@ -1018,7 +1019,7 @@ class Settings {
 
 		$this->add_field('sites', 'enable_screenshot_generator', array(
 			'title'   => __('Enable Screenshot Generator', 'wp-ultimo'),
-			'desc'    => __('With this option is enabled, WP Ultimo will take a screenshot for every newly created site on your network and set the resulting image as that site\'s featured image. This features requires a valid license key to work and it is not supported for local sites.', 'wp-ultimo'),
+			'desc'    => __('With this option is enabled, WP Multisite WaaS will take a screenshot for every newly created site on your network and set the resulting image as that site\'s featured image. This features requires a valid license key to work and it is not supported for local sites.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 1,
 		));
@@ -1086,7 +1087,7 @@ class Settings {
 
 		/*
 		 * Payment Gateways
-		 * This section holds the Payment Gateways settings of the WP Ultimo Plugin.
+		 * This section holds the Payment Gateways settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('payment-gateways', array(
@@ -1112,7 +1113,7 @@ class Settings {
 
 		$this->add_field('payment-gateways', 'allow_trial_without_payment_method', array(
 			'title'   => __('Allow Trials without Payment Method', 'wp-ultimo'),
-			'desc'    => __('By default, WP Ultimo asks customers to add a payment method on sign-up even if a trial period is present. Enable this option to only ask for a payment method when the trial period is over.', 'wp-ultimo'),
+			'desc'    => __('By default, WP Multisite WaaS asks customers to add a payment method on sign-up even if a trial period is present. Enable this option to only ask for a payment method when the trial period is over.', 'wp-ultimo'),
 			'tooltip' => '',
 			'type'    => 'toggle',
 			'default' => 0,
@@ -1128,7 +1129,7 @@ class Settings {
 
 		$this->add_field('payment-gateways', 'invoice_numbering_scheme', array(
 			'title'   => __('Invoice Numbering Scheme', 'wp-ultimo'),
-			'desc'    => __('What should WP Ultimo use as the invoice number?', 'wp-ultimo'),
+			'desc'    => __('What should WP Multisite WaaS use as the invoice number?', 'wp-ultimo'),
 			'type'    => 'select',
 			'default' => 'reference_code',
 			'tooltip' => '',
@@ -1172,7 +1173,7 @@ class Settings {
 
 		/*
 		 * Emails
-		 * This section holds the Email settings of the WP Ultimo Plugin.
+		 * This section holds the Email settings of the WP Multisite WaaS Plugin.
 		 */
 		$this->add_section('emails', array(
 			'title' => __('Emails', 'wp-ultimo'),
@@ -1184,7 +1185,7 @@ class Settings {
 
     /*
 		 * Domain Mapping
-		 * This section holds the Domain Mapping settings of the WP Ultimo Plugin.
+		 * This section holds the Domain Mapping settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('domain-mapping', array(
@@ -1210,7 +1211,7 @@ class Settings {
 
 		/*
 		 * Integrations
-		 * This section holds the Integrations settings of the WP Ultimo Plugin.
+		 * This section holds the Integrations settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('integrations', array(
@@ -1230,7 +1231,7 @@ class Settings {
 
 		/*
 		 * Other Options
-		 * This section holds the Other Options settings of the WP Ultimo Plugin.
+		 * This section holds the Other Options settings of the WP Multisite WaaS Plugin.
 		 */
 
 		$this->add_section('other', array(
@@ -1250,7 +1251,7 @@ class Settings {
 
 		$this->add_field('other', 'hide_tours', array(
 			'title'   => __('Hide UI Tours', 'wp-ultimo') . $preview_image,
-			'desc'    => __('The UI tours showed by WP Ultimo should permanently hide themselves after being seen but if they persist for whatever reason, toggle this option to force them into their viewed state - which will prevent them from showing up again.', 'wp-ultimo'),
+			'desc'    => __('The UI tours showed by WP Multisite WaaS should permanently hide themselves after being seen but if they persist for whatever reason, toggle this option to force them into their viewed state - which will prevent them from showing up again.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 		));
@@ -1259,14 +1260,14 @@ class Settings {
 
 		$this->add_field('other', 'disable_image_zoom', array(
 			'title'   => __('Disable "Hover to Zoom"', 'wp-ultimo') . $preview_image_2,
-			'desc'    => __('By default, WP Ultimo adds a "hover to zoom" feature, allowing network admins to see larger version of site screenshots and other images across the UI in full-size when hovering over them. You can disable that feature here. Preview tags like the above are not affected.', 'wp-ultimo'),
+			'desc'    => __('By default, WP Multisite WaaS adds a "hover to zoom" feature, allowing network admins to see larger version of site screenshots and other images across the UI in full-size when hovering over them. You can disable that feature here. Preview tags like the above are not affected.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 		));
 
 		$this->add_field('other', 'error_reporting_header', array(
 			'title' => __('Logging', 'wp-ultimo'),
-			'desc'  => __('Log WP Ultimo data. This is useful for debugging purposes.', 'wp-ultimo'),
+			'desc'  => __('Log WP Multisite WaaS data. This is useful for debugging purposes.', 'wp-ultimo'),
 			'type'  => 'header',
 		));
 
@@ -1284,8 +1285,8 @@ class Settings {
 		));
 
 		$this->add_field('other', 'enable_error_reporting', array(
-			'title'   => __('Send Error Data to WP Ultimo Developers', 'wp-ultimo'),
-			'desc'    => __('With this option enabled, every time your installation runs into an error related to WP Ultimo, that error data will be sent to us. No sensitive data gets collected, only environmental stuff (e.g. if this is this is a subdomain network, etc).', 'wp-ultimo'),
+			'title'   => __('Send Error Data to WP Multisite WaaS Developers', 'wp-ultimo'),
+			'desc'    => __('With this option enabled, every time your installation runs into an error related to WP Multisite WaaS, that error data will be sent to us. No sensitive data gets collected, only environmental stuff (e.g. if this is this is a subdomain network, etc).', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 1,
 		));
@@ -1332,7 +1333,7 @@ class Settings {
 			$this->add_field('other', 'security_mode', array(
 				'title'   => __('Security Mode', 'wp-ultimo'),
 				// Translators: Placeholder adds the security mode key and current site url with query string
-				'desc'    => sprintf(__('Only WP Ultimo and other must-use plugins will run on your WordPress install while this option is enabled.<div class="wu-mt-2"><b>Important:</b> Copy the following URL to disable security mode if something goes wrong and this page becomes unavailable:<code>%2$s</code></div>', 'wp-ultimo'), $security_mode_key, get_site_url() . $security_mode_key),
+				'desc'    => sprintf(__('Only WP Multisite WaaS and other must-use plugins will run on your WordPress install while this option is enabled.<div class="wu-mt-2"><b>Important:</b> Copy the following URL to disable security mode if something goes wrong and this page becomes unavailable:<code>%2$s</code></div>', 'wp-ultimo'), $security_mode_key, get_site_url() . $security_mode_key),
 				'type'    => 'toggle',
 				'default' => 0,
 			));
@@ -1341,7 +1342,7 @@ class Settings {
 
 		$this->add_field('other', 'uninstall_wipe_tables', array(
 			'title'   => __('Remove Data on Uninstall', 'wp-ultimo'),
-			'desc'    => __('Remove all saved data for WP Ultimo when the plugin is uninstalled.', 'wp-ultimo'),
+			'desc'    => __('Remove all saved data for WP Multisite WaaS when the plugin is uninstalled.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 		));

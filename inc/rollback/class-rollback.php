@@ -1,8 +1,8 @@
 <?php
 /**
- * WP Ultimo Rollback
+ * WP Multisite WaaS Rollback
  *
- * Allows users to rollback WP Ultimo to the previous stable version.
+ * Allows users to rollback WP Multisite WaaS to the previous stable version.
  *
  * @package WP_Ultimo
  * @subpackage Rollback
@@ -19,7 +19,7 @@ use \WP_Ultimo\Rollback\Rollback_Plugin_Upgrader;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Rollback.
+ * WP Multisite WaaS Rollback.
  *
  * @since 2.0.0
  */
@@ -134,7 +134,7 @@ class Rollback {
 	} // end handle_rollback_process;
 
 	/**
-	 * Adds the rollback link to the WP Ultimo plugin omn the Plugin list table.
+	 * Adds the rollback link to the WP Multisite WaaS plugin omn the Plugin list table.
 	 *
 	 * @since 2.0.0
 	 *
@@ -227,7 +227,7 @@ class Rollback {
 		} catch (\Throwable $e) {
 
 			// translators: %s is the error message captured.
-			$error = new \WP_Error('maybe-error', sprintf(__('Something might have gone wrong doing the rollback. Check to see if the WP Ultimo version was downgraded or not on the plugins page. Error captured: %s.', 'wp-ultimo'), $e->getMessage()));
+			$error = new \WP_Error('maybe-error', sprintf(__('Something might have gone wrong doing the rollback. Check to see if the WP Multisite WaaS version was downgraded or not on the plugins page. Error captured: %s.', 'wp-ultimo'), $e->getMessage()));
 
 			Logger::add('rollback-errors', $e->getMessage());
 

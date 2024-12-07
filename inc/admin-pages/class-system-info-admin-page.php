@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo System Info Admin Page.
+ * WP Multisite WaaS System Info Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ use WP_Ultimo\Logger;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo System Info Admin Page.
+ * WP Multisite WaaS System Info Admin Page.
  */
 class System_Info_Admin_Page extends Base_Admin_Page {
 
@@ -356,8 +356,8 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 		return apply_filters('wu_system_info_data', array(
 			'WordPress and System Settings' => array(
 				'wp-ultimo-version'      => array(
-					'tooltip' => 'WP Ultimo current version installed locally',
-					'title'   => 'WP Ultimo Version',
+					'tooltip' => 'WP Multisite WaaS current version installed locally',
+					'title'   => 'WP Multisite WaaS Version',
 					'value'   => wu_get_version(),
 				),
 				'wordpress-version'      => array(
@@ -578,9 +578,9 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 			'Active Plugins'                => $array_active_plugins,
 			'Active Plugins on Main Site'   => $array_active_plugins_main_site,
 
-			'WP Ultimo Database Status'     => $array_wu_tables,
+			'WP Multisite WaaS Database Status'     => $array_wu_tables,
 
-			'WP Ultimo Core Settings'       => array_merge(
+			'WP Multisite WaaS Core Settings'       => array_merge(
 				array(
 					'logs-directory' => array(
 						'tooltip' => '',
@@ -799,7 +799,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 	}  // end get_all_options;
 
 	/**
-	 * Return all the desired WP Ultimo Settings
+	 * Return all the desired WP Multisite WaaS Settings
 	 *
 	 * @since 1.1.5
 	 * @return array

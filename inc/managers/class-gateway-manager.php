@@ -80,6 +80,12 @@ class Gateway_Manager extends Base_Manager {
 		 * Adds our own default gateways.
 		 */
 		add_action('wu_register_gateways', array($this, 'add_default_gateways'), 5);
+		/*
+		 * Allow developers to add new gateways.
+		 */
+		add_action('init', function () {
+			do_action('wu_register_gateways');
+		});
 
 		/*
 		 * Adds the Gateway selection fields
@@ -102,11 +108,6 @@ class Gateway_Manager extends Base_Manager {
 		 * Waits for webhook signals and deal with them.
 		 */
 		add_action('admin_init', array($this, 'maybe_process_v1_webhooks'), 1);
-
-		/*
-		 * Allow developers to add new gateways.
-		 */
-		do_action('wu_register_gateways');
 
 	} // end on_load;
 

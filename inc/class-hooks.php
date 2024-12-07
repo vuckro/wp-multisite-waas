@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo activation and deactivation hooks
+ * WP Multisite WaaS activation and deactivation hooks
  *
  * @package WP_Ultimo
  * @subpackage Hooks
@@ -13,7 +13,7 @@ namespace WP_Ultimo;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo activation and deactivation hooks
+ * WP Multisite WaaS activation and deactivation hooks
  *
  * @since 2.0.0
  */
@@ -33,12 +33,12 @@ class Hooks {
 	public static function init() {
 
 		/**
-	 * Runs on WP Ultimo activation
+	 * Runs on WP Multisite WaaS activation
 	 */
 		register_activation_hook(WP_ULTIMO_PLUGIN_FILE, array('WP_Ultimo\Hooks', 'on_activation'));
 
 		/**
-		 * Runs on WP Ultimo deactivation
+		 * Runs on WP Multisite WaaS deactivation
 		 */
 		register_deactivation_hook(WP_ULTIMO_PLUGIN_FILE, array('WP_Ultimo\Hooks', 'on_deactivation'));
 
@@ -50,14 +50,14 @@ class Hooks {
 	} // end init;
 
 	/**
-	 *  Runs when WP Ultimo is activated
+	 *  Runs when WP Multisite WaaS is activated
 	 *
 	 * @since 1.9.6 It now uses hook-based approach, it is up to each sub-class to attach their own routines.
 	 * @since 1.2.0
 	 */
 	public static function on_activation() {
 
-		wu_log_add('wp-ultimo-core', __('Activating WP Ultimo...', 'wp-ultimo'));
+		wu_log_add('wp-ultimo-core', __('Activating WP Multisite WaaS...', 'wp-ultimo'));
 
 		/*
 		 * Set the activation flag
@@ -97,14 +97,14 @@ class Hooks {
 	} // end on_activation_do;
 
 	/**
-	 * Runs when WP Ultimo is deactivated
+	 * Runs when WP Multisite WaaS is deactivated
 	 *
 	 * @since 1.9.6 It now uses hook-based approach, it is up to each sub-class to attach their own routines.
 	 * @since 1.2.0
 	 */
 	public static function on_deactivation() {
 
-		wu_log_add('wp-ultimo-core', __('Deactivating WP Ultimo...', 'wp-ultimo'));
+		wu_log_add('wp-ultimo-core', __('Deactivating WP Multisite WaaS...', 'wp-ultimo'));
 
 		/*
 		 * Update the sunrise meta file.

@@ -4,7 +4,7 @@
  *
  * Abstract class that makes it easy to create new admin pages.
  *
- * Most of WP Ultimo pages are implemented using this class, which means that the filters and hooks
+ * Most of WP Multisite WaaS pages are implemented using this class, which means that the filters and hooks
  * listed below can be used to append content to all of our pages at once.
  *
  * @package WP_Ultimo

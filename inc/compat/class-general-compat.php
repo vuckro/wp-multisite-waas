@@ -227,7 +227,7 @@ class General_Compat {
 	 *
 	 * This plugin has a setting that replaces quotes on the content.
 	 * This breaks our moment configuration strings, and is generally
-	 * not compatible with WP Ultimo vue templates.
+	 * not compatible with WP Multisite WaaS vue templates.
 	 *
 	 * Here on this filter, we manually disable the smart quotes
 	 * settings to prevent that kind of processing, as well as add
@@ -255,7 +255,7 @@ class General_Compat {
 	 */
 	public function add_wp_typography_warning_message() {
 
-		WP_Ultimo()->notices->add(__('WP Typography "Smart Quotes" replacement is not compatible with WP Ultimo and will be automatically disabled.', 'wp-ultimo'), 'warning');
+		WP_Ultimo()->notices->add(__('WP Typography "Smart Quotes" replacement is not compatible with WP Multisite WaaS and will be automatically disabled.', 'wp-ultimo'), 'warning');
 
 	} // end add_wp_typography_warning_message;
 

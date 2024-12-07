@@ -24,7 +24,7 @@ class Default_Content_Installer extends Base_Installer {
 	use \WP_Ultimo\Traits\Singleton;
 
 	/**
-	 * Loads dependencies for when WP Ultimo is not yet loaded.
+	 * Loads dependencies for when WP Multisite WaaS is not yet loaded.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -192,7 +192,7 @@ class Default_Content_Installer extends Base_Installer {
 		$steps['create_emails'] = array(
 			'done'        => $this->done_creating_emails(),
 			'title'       => __('Create the System Emails', 'wp-ultimo'),
-			'description' => __('This action will create all emails sent by WP Ultimo.', 'wp-ultimo'),
+			'description' => __('This action will create all emails sent by WP Multisite WaaS.', 'wp-ultimo'),
 			'pending'     => __('Pending', 'wp-ultimo'),
 			'installing'  => __('Creating System Emails...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),

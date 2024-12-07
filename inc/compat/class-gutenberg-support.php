@@ -2,7 +2,7 @@
 /**
  * Gutenberg Support
  *
- * Allows WP Ultimo to filter Gutenberg thingys.
+ * Allows WP Multisite WaaS to filter Gutenberg thingys.
  *
  * @since       1.9.14
  * @author      Arindo Duque

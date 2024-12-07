@@ -24,7 +24,7 @@ class Debug {
 	use \WP_Ultimo\Traits\Singleton;
 
 	/**
-     * The registry of WP Ultimo admin pages.
+     * The registry of WP Multisite WaaS admin pages.
      *
      * @since 2.0.0
      * @var array
@@ -415,7 +415,7 @@ class Debug {
 		$fields = array(
 			'reset_only_fake_data' => array(
 				'title'     => __('Only reset generated data.', 'wp-ultimo'),
-				'desc'      => __('Toggle this option to only remove data that was added by the generator previously. Untoggling this option will reset ALL data in WP Ultimo tables.', 'wp-ultimo'),
+				'desc'      => __('Toggle this option to only remove data that was added by the generator previously. Untoggling this option will reset ALL data in WP Multisite WaaS tables.', 'wp-ultimo'),
 				'type'      => 'toggle',
 				'value'     => true,
 				'html_attr' => array(
@@ -502,7 +502,7 @@ class Debug {
 		$fields = array(
 			'reset_note'    => array(
 				'type' => 'note',
-				'desc' => __('This action will drop the WP Ultimo database tables and is irreversable.', 'wp-ultimo'),
+				'desc' => __('This action will drop the WP Multisite WaaS database tables and is irreversable.', 'wp-ultimo'),
 			),
 			'submit_button' => array(
 				'title'           => __('Drop Database Tables &rarr;', 'wp-ultimo'),
@@ -603,7 +603,7 @@ class Debug {
 	} // end load;
 
 	/**
-	 * Add a WP Ultimo page to the registry.
+	 * Add a WP Multisite WaaS page to the registry.
 	 *
 	 * @since 2.0.0
 	 *
@@ -1007,7 +1007,7 @@ class Debug {
 		$the_prefix = 'wp-ultimo_';
 
 		/*
-		 * List of WP Ultimo options.
+		 * List of WP Multisite WaaS options.
 		 * Format: $option_name => $should_use_prefix
 		 */
 		$options = array(

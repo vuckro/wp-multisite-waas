@@ -1,6 +1,6 @@
 <?php
 /**
- * Manages WP Ultimo v1 Unsupported notices and other checks.
+ * Manages WP Multisite WaaS v1 Unsupported notices and other checks.
  *
  * @package WP_Ultimo
  * @subpackage Unsupported
@@ -15,14 +15,14 @@ use WP_Ultimo\Installers\Migrator;
 defined('ABSPATH') || exit;
 
 /**
- * Manages WP Ultimo v1 Unsupported notices and other checks.
+ * Manages WP Multisite WaaS v1 Unsupported notices and other checks.
  *
  * @since 2.0.5
  */
 class Unsupported {
 
 	/**
-	 * Keeps track of add-ons that if left activated would cause WP Ultimo to crash.
+	 * Keeps track of add-ons that if left activated would cause WP Multisite WaaS to crash.
 	 *
 	 * @var array
 	 */
@@ -204,7 +204,7 @@ class Unsupported {
 	} // end force_updater;
 
 	/**
-	 * Maybe add necessary admin notices about installing WP Ultimo version 2.
+	 * Maybe add necessary admin notices about installing WP Multisite WaaS version 2.
 	 *
 	 * @since 2.0.5
 	 * @return void
@@ -228,7 +228,7 @@ class Unsupported {
 		 */
 		if (Migrator::is_migration_done() === false && Requirements::run_setup() === false) {
 
-			$message[] = '<p>' . __('It seems that you have not run the WP Ultimo upgrader yet. That is the first thing we need to do.', 'wp-ultimo') . '</p>';
+			$message[] = '<p>' . __('It seems that you have not run the WP Multisite WaaS upgrader yet. That is the first thing we need to do.', 'wp-ultimo') . '</p>';
 
 			$message[] = sprintf('<a class="button" href="%s">%s</a>', network_admin_url('admin.php?page=wp-ultimo-setup'), __('Visit the Installer to finish the upgrade &rarr;', 'wp-ultimo'));
 
@@ -296,7 +296,7 @@ class Unsupported {
 
 		} // end if;
 
-		$message = array_merge(array('<p>' . __('<strong>Thanks for updating to WP Ultimo version 2.0</strong>!', 'wp-ultimo') . '</p>'), $message);
+		$message = array_merge(array('<p>' . __('<strong>Thanks for updating to WP Multisite WaaS version 2.0</strong>!', 'wp-ultimo') . '</p>'), $message);
 
 		$message = implode('', $message);
 
@@ -313,7 +313,7 @@ class Unsupported {
 	} // end maybe_add_notices;
 
 	/**
-	 * A fallback way to display admin notices when WP Ultimo is not fully loaded yet.
+	 * A fallback way to display admin notices when WP Multisite WaaS is not fully loaded yet.
 	 *
 	 * @since 2.0.5
 	 *
@@ -344,7 +344,7 @@ class Unsupported {
 				'slug'        => 'wp-ultimo-woocommerce',
 				'version'     => '2.0.0',
 				// translators: %s is a link to the plugins page.
-				'desc'        => __('A new version with full support for WP Ultimo 2.0 is already out. An update will appear on your %s page.', 'wp-ultimo'),
+				'desc'        => __('A new version with full support for WP Multisite WaaS 2.0 is already out. An update will appear on your %s page.', 'wp-ultimo'),
 			),
 			'\WP_Ultimo_PTM'           => array(
 				'name'        => __('Plugin and Theme Manager', 'wp-ultimo'),
@@ -352,20 +352,20 @@ class Unsupported {
 				'slug'        => 'wp-ultimo-plugin-and-theme-manager',
 				'version'     => '2.0.0',
 				// translators: %s is a link to the plugins page.
-				'desc'        => __('Although still supported, a new version fully compatible with WP Ultimo 2.0 is available. An update will appear on your %s page.', 'wp-ultimo'),
+				'desc'        => __('Although still supported, a new version fully compatible with WP Multisite WaaS 2.0 is available. An update will appear on your %s page.', 'wp-ultimo'),
 			),
 			'\WU_Multiple_Logins'      => array(
 				'name'        => __('Multiple Accounts', 'wp-ultimo'),
 				'replacement' => 'core',
 				'version'     => '2.0.0',
-				'desc'        => __('Multiple Accounts is now part of WP Ultimo core. It needs to be activated on WP Ultimo → Settings → Login and Registration, though. You can safely remove this add-on after turning the new option on.', 'wp-ultimo'),
+				'desc'        => __('Multiple Accounts is now part of WP Multisite WaaS core. It needs to be activated on WP Multisite WaaS → Settings → Login and Registration, though. You can safely remove this add-on after turning the new option on.', 'wp-ultimo'),
 			),
 			'\WP_Ultimo_Blocks'        => array(
 				'name'        => __('Blocks', 'wp-ultimo'),
 				'replacement' => 'core',
 				'version'     => '2.0.0',
 				// translators: %s is a link to the plugins page.
-				'desc'        => __('Blocks are now part of WP Ultimo core, although with different blocks available. You can safely delete this add-on on your %s page.', 'wp-ultimo'),
+				'desc'        => __('Blocks are now part of WP Multisite WaaS core, although with different blocks available. You can safely delete this add-on on your %s page.', 'wp-ultimo'),
 			),
 			'\WU_Ultimo_Domain_Seller' => array(
 				'name'        => __('Domain Seller', 'wp-ultimo'),

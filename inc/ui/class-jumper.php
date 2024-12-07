@@ -211,11 +211,11 @@ class Jumper {
 	} // end add_user_custom_links;
 
 	/**
-	 * Add WP Ultimo settings links to the Jumper menu.
+	 * Add WP Multisite WaaS settings links to the Jumper menu.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $links WP Ultimo settings array.
+	 * @param array $links WP Multisite WaaS settings array.
 	 * @return array
 	 */
 	public function add_wp_ultimo_extra_links($links) {
@@ -516,7 +516,7 @@ class Jumper {
 	} // end get_link_list;
 
 	/**
-	 * Filter the WP Ultimo settings to add Jumper options
+	 * Filter the WP Multisite WaaS settings to add Jumper options
 	 *
 	 * @since 2.0.0
 	 *

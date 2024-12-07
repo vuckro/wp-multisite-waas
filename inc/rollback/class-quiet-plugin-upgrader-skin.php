@@ -1,8 +1,8 @@
 <?php
 /**
- * WP Ultimo Rollback
+ * WP Multisite WaaS Rollback
  *
- * Allows users to rollback WP Ultimo to the previous stable version.
+ * Allows users to rollback WP Multisite WaaS to the previous stable version.
  *
  * @package WP_Ultimo
  * @subpackage Rollback

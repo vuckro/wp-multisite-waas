@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles Domain Mapping in WP Ultimo.
+ * Handles Domain Mapping in WP Multisite WaaS.
  *
  * @package WP_Ultimo
  * @subpackage Domain_Mapping
@@ -15,7 +15,7 @@ use WP_Ultimo\Models\Domain;
 defined('ABSPATH') || exit;
 
 /**
- * Handles Domain Mapping in WP Ultimo.
+ * Handles Domain Mapping in WP Multisite WaaS.
  *
  * @since 2.0.0
  */
@@ -150,7 +150,7 @@ class Domain_Mapping {
 		// add_action('allowed_http_origin', array($this, 'add_mapped_domains_as_allowed_origins'));
 
 		/**
-		 * On WP Ultimo 1.X builds we used Mercator. The Mercator actions and filters are now deprecated.
+		 * On WP Multisite WaaS 1.X builds we used Mercator. The Mercator actions and filters are now deprecated.
 		 */
 		if (has_action('mercator_load')) {
 

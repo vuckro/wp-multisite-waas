@@ -71,7 +71,7 @@ class Event_Manager extends Base_Manager {
 
 		$this->enable_wp_cli();
 
-		add_action('plugins_loaded', array($this, 'register_all_events'));
+		add_action('init', array($this, 'register_all_events'));
 
 		add_action('wp_ajax_wu_get_event_payload_preview', array($this, 'event_payload_preview'));
 
@@ -476,7 +476,7 @@ class Event_Manager extends Base_Manager {
 		 */
 		wu_register_event_type('renewal_payment_created', array(
 			'name'            => __('New Renewal Payment Created', 'wp-ultimo'),
-			'desc'            => __('This event is fired every time a new renewal payment is created by WP Ultimo.', 'wp-ultimo'),
+			'desc'            => __('This event is fired every time a new renewal payment is created by WP Multisite WaaS.', 'wp-ultimo'),
 			'payload'         => fn() => array_merge(
 					array(
 						'default_payment_url' => 'https://linktopayment.com',
@@ -496,7 +496,7 @@ class Event_Manager extends Base_Manager {
 
 				wu_register_event_type($model . '_' . $type, array(
 					'name'            => sprintf(__('%1$s %2$s', 'wp-ultimo'), $params['label'], ucfirst($type)),
-					'desc'            => sprintf(__('This event is fired every time a %1$s is %2$s by WP Ultimo.', 'wp-ultimo'), $params['label'], $type),
+					'desc'            => sprintf(__('This event is fired every time a %1$s is %2$s by WP Multisite WaaS.', 'wp-ultimo'), $params['label'], $type),
 					'deprecated_args' => array(),
 					'payload'         => fn() => $this->get_model_payload($model),
 				));

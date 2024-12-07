@@ -62,7 +62,7 @@ class Inside_Events_List_Table extends Event_List_Table {
 
 		if ($object_initiator === 'system') {
 
-			$value = sprintf('<span class="dashicons-wu-wp-ultimo wu-align-middle wu-mr-1 wu-text-lg"></span><span class="wu-text-gray-600">%s</span>', __('Automatically processed by WP Ultimo', 'wp-ultimo'));
+			$value = sprintf('<span class="dashicons-wu-wp-ultimo wu-align-middle wu-mr-1 wu-text-lg"></span><span class="wu-text-gray-600">%s</span>', __('Automatically processed by WP Multisite WaaS', 'wp-ultimo'));
 
 		} elseif ($object_initiator === 'manual') {
 

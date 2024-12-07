@@ -140,7 +140,7 @@ class Stripe_Checkout_Gateway extends Base_Stripe_Gateway {
 			),
 		));
 
-		$webhook_message = sprintf('<span class="wu-p-2 wu-bg-blue-100 wu-text-blue-600 wu-rounded wu-mt-3 wu-mb-0 wu-block wu-text-xs">%s</span>', __('Whenever you change your Stripe settings, WP Ultimo will automatically check the webhook URLs on your Stripe account to make sure we get notified about changes in subscriptions and payments.', 'wp-ultimo'));
+		$webhook_message = sprintf('<span class="wu-p-2 wu-bg-blue-100 wu-text-blue-600 wu-rounded wu-mt-3 wu-mb-0 wu-block wu-text-xs">%s</span>', __('Whenever you change your Stripe settings, WP Multisite WaaS will automatically check the webhook URLs on your Stripe account to make sure we get notified about changes in subscriptions and payments.', 'wp-ultimo'));
 
 		wu_register_settings_field('payment-gateways', 'stripe_checkout_webhook_listener_explanation', array(
 			'title'           => __('Webhook Listener URL', 'wp-ultimo'),

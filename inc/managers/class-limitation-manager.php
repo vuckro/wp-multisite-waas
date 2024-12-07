@@ -835,7 +835,7 @@ class Limitation_Manager {
 	} // end get_theme_selection_list;
 
 	/**
-	 * Returns a list of all plugins available as options, excluding WP Ultimo.
+	 * Returns a list of all plugins available as options, excluding WP Multisite WaaS.
 	 *
 	 * We also exclude a couple more.
 	 *
@@ -885,7 +885,7 @@ class Limitation_Manager {
 	/**
 	 * Returns the exclusion list for plugins.
 	 *
-	 * We don't want people forcing WP Ultimo to be deactivated, do we?
+	 * We don't want people forcing WP Multisite WaaS to be deactivated, do we?
 	 *
 	 * @since 2.0.0
 	 * @return array

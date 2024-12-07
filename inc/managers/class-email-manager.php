@@ -65,7 +65,9 @@ class Email_Manager extends Base_Manager {
 
 		$this->enable_wp_cli();
 
-		$this->register_all_default_system_emails();
+		add_action('init', function () {
+			$this->register_all_default_system_emails();
+		});
 
 		/*
 		 * Adds the Email fields
@@ -226,7 +228,7 @@ class Email_Manager extends Base_Manager {
 
 		wu_register_settings_field('emails', 'from_name', array(
 			'title'       => __('"From" Name', 'wp-ultimo'),
-			'desc'        => __('How the sender name will appear in emails sent by WP Ultimo.', 'wp-ultimo'),
+			'desc'        => __('How the sender name will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
 			'type'        => 'text',
 			'placeholder' => get_network_option(null, 'site_name'),
 			'default'     => get_network_option(null, 'site_name'),
@@ -237,7 +239,7 @@ class Email_Manager extends Base_Manager {
 
 		wu_register_settings_field('emails', 'from_email', array(
 			'title'       => __('"From" E-mail', 'wp-ultimo'),
-			'desc'        => __('How the sender email will appear in emails sent by WP Ultimo.', 'wp-ultimo'),
+			'desc'        => __('How the sender email will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
 			'type'        => 'email',
 			'placeholder' => get_network_option(null, 'admin_email'),
 			'default'     => get_network_option(null, 'admin_email'),

@@ -1,7 +1,7 @@
 <?php
 // WP Ultimo Starts #
 /**
- * WP Ultimo Sunrise
+ * WP Multisite WaaS Sunrise
  * Plugin URI: https://wpultimo.com
  * Version: 2.0.0.6
  * Author: Arindo Duque
@@ -96,7 +96,7 @@ if (file_exists($wu_mercator)) {
 } // end if;
 
 /**
- * Adds a warning when WP Ultimo is not present but the sunrise file is.
+ * Adds a warning when WP Multisite WaaS is not present but the sunrise file is.
  *
  * @since 2.0.0
  * @return void
@@ -109,7 +109,7 @@ function wu_remove_sunrise_warning() {
 
 	<div class="notice notice-warning">
 		<p>
-			WP Ultimo is deactivated, yet its <strong>sunrise.php</strong> file is still being loaded. If you have no intentions of continuing to use WP Ultimo and this was not a temporary deactivation, we recommend removing the <code>define('SUNRISE', true);</code> line from your <strong>wp-config.php</strong> file. Keeping WP Ultimo <strong>sunrise.php</strong> file active without WP Ultimo can lead to unexpected behaviors and it is not advised.
+			WP Multisite WaaS is deactivated, yet its <strong>sunrise.php</strong> file is still being loaded. If you have no intentions of continuing to use WP Multisite WaaS and this was not a temporary deactivation, we recommend removing the <code>define('SUNRISE', true);</code> line from your <strong>wp-config.php</strong> file. Keeping WP Multisite WaaS <strong>sunrise.php</strong> file active without WP Multisite WaaS can lead to unexpected behaviors and it is not advised.
 		</p>
 	</div>
 

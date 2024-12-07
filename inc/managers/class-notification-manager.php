@@ -125,7 +125,7 @@ class Notification_Manager {
 	} // end clear_callback_list;
 
 	/**
-	 * Filter the WP Ultimo settings to add Notifications Options
+	 * Filter the WP Multisite WaaS settings to add Notifications Options
 	 *
 	 * @since 2.0.0
 	 *
@@ -135,7 +135,7 @@ class Notification_Manager {
 
 		wu_register_settings_field('sites', 'hide_notifications_subsites', array(
 			'title'   => __('Hide Admin Notices on Sites', 'wp-ultimo'),
-			'desc'    => __('Hide all admin notices on network sites, except for WP Ultimo broadcasts.', 'wp-ultimo'),
+			'desc'    => __('Hide all admin notices on network sites, except for WP Multisite WaaS broadcasts.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 			'order'   => 25,

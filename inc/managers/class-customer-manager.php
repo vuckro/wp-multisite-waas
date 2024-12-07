@@ -55,8 +55,11 @@ class Customer_Manager extends Base_Manager {
 
 		$this->enable_wp_cli();
 
-		Event_Manager::register_model_events('customer', __('Customer', 'wp-ultimo'), array('created', 'updated'));
-
+		add_action('init', function () {
+			Event_Manager::register_model_events( 'customer',
+				__( 'Customer', 'wp-ultimo' ),
+				array( 'created', 'updated' ) );
+		});
 		add_action('wp_login', array($this, 'log_ip_and_last_login'), 10, 2);
 
 		add_filter('heartbeat_send', array($this, 'on_heartbeat_send'));

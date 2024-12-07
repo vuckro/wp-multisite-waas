@@ -830,7 +830,7 @@ class Checkout_Form extends Base_Model {
 	} // end get_multi_step_template;
 
 	/**
-	 * Converts the steps from classic WP Ultimo 1.X to the 2.0 format.
+	 * Converts the steps from classic WP Multisite WaaS 1.X to the 2.0 format.
 	 *
 	 * @since 2.0.0
 	 *

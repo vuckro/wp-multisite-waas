@@ -79,7 +79,7 @@ class Legacy_Period_Selection_Field_Template extends Base_Field_Template {
 	 */
 	public function get_description() {
 
-		return __('Implementation of the layout that shipped with WP Ultimo < 1.10.X.', 'wp-ultimo');
+		return __('Implementation of the layout that shipped with WP Multisite WaaS < 1.10.X.', 'wp-ultimo');
 
 	} // end get_description;
 

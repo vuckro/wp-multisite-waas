@@ -10,7 +10,7 @@
 defined('ABSPATH') || exit;
 
 /**
- * Get all the currencies we use in WP Ultimo
+ * Get all the currencies we use in WP Multisite WaaS
  *
  * @return array Return the currencies array.
  */
@@ -270,7 +270,7 @@ function wu_format_currency($value, $currency = null, $format = null, $thousands
 } // end wu_format_currency;
 
 /**
- * Determines if WP Ultimo is using a zero-decimal currency.
+ * Determines if WP Multisite WaaS is using a zero-decimal currency.
  *
  * @param  string $currency The currency code to check.
  *

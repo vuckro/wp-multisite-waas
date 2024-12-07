@@ -244,7 +244,7 @@ class Whitelabel {
 
 		wu_register_settings_field('whitelabel', 'hide_sites_menu', array(
 			'title'   => __('Hide Sites Admin Menu', 'wp-ultimo'),
-			'desc'    => __('We recommend that you manage all of your sites using the WP Ultimo &rarr; Sites page. To avoid confusion, you can hide the default "Sites" item from the WordPress admin menu by toggling this option.', 'wp-ultimo'),
+			'desc'    => __('We recommend that you manage all of your sites using the WP Multisite WaaS &rarr; Sites page. To avoid confusion, you can hide the default "Sites" item from the WordPress admin menu by toggling this option.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 		));

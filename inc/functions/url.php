@@ -46,11 +46,11 @@ function wu_replace_scheme($url, $new_scheme = '') {
 } // end wu_replace_scheme;
 
 /**
- * Wrapper to the network_admin_url function for WP Ultimo admin urls.
+ * Wrapper to the network_admin_url function for WP Multisite WaaS admin urls.
  *
  * @since 2.0.0
  *
- * @param string $path WP Ultimo page.
+ * @param string $path WP Multisite WaaS page.
  * @param array  $query URL query parameters.
  * @return string
  */

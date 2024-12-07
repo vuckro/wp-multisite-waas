@@ -214,7 +214,7 @@ class Current_Membership_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Membership',
 	 *  'Form',
 	 *  'Cart',
@@ -227,6 +227,7 @@ class Current_Membership_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Membership',
 			'Form',
 			'Cart',

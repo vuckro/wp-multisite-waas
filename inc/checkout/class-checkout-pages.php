@@ -116,8 +116,8 @@ class Checkout_Pages {
 
     <div class="misc-pub-section misc-pub-section-last" style="margin-top: 12px; margin-bottom: 6px; display: flex; align-items: center;">
 				<label for="wu-compat-mode">
-						<span style="display: block; font-weight: 600; margin-bottom: 3px;"><?php _e('WP Ultimo Compatibility Mode', 'wp-ultimo'); ?></span>
-						<small style="display: block; line-height: 1.8em;"><?php _e('Toggle this option on if WP Ultimo elements are not loading correctly or at all.', 'wp-ultimo'); ?></small>
+						<span style="display: block; font-weight: 600; margin-bottom: 3px;"><?php _e('WP Multisite WaaS Compatibility Mode', 'wp-ultimo'); ?></span>
+						<small style="display: block; line-height: 1.8em;"><?php _e('Toggle this option on if WP Multisite WaaS elements are not loading correctly or at all.', 'wp-ultimo'); ?></small>
 				</label>
 				<div style="margin-left: 6px;">
 					<input id="wu-compat-mode" type="checkbox" value="1" <?php checked($value, true, true); ?> name="_wu_force_elements_loading" />
@@ -629,7 +629,7 @@ class Checkout_Pages {
 	} // end filter_login_url;
 
 	/**
-	 * Returns the ID of the pages being used for each WP Ultimo purpose.
+	 * Returns the ID of the pages being used for each WP Multisite WaaS purpose.
 	 *
 	 * @since 2.0.0
 	 * @return array
@@ -691,7 +691,7 @@ class Checkout_Pages {
 	} // end get_page_url;
 
 	/**
-	 * Tags the WP Ultimo pages on the main site.
+	 * Tags the WP Multisite WaaS pages on the main site.
 	 *
 	 * @since 2.0.0
 	 *
@@ -708,11 +708,11 @@ class Checkout_Pages {
 		} // end if;
 
 		$labels = array(
-			'register'       => __('WP Ultimo - Register Page', 'wp-ultimo'),
-			'login'          => __('WP Ultimo - Login Page', 'wp-ultimo'),
-			'block_frontend' => __('WP Ultimo - Site Blocked Page', 'wp-ultimo'),
-			'update'         => __('WP Ultimo - Membership Update Page', 'wp-ultimo'),
-			'new_site'       => __('WP Ultimo - New Site Page', 'wp-ultimo'),
+			'register'       => __('WP Multisite WaaS - Register Page', 'wp-ultimo'),
+			'login'          => __('WP Multisite WaaS - Login Page', 'wp-ultimo'),
+			'block_frontend' => __('WP Multisite WaaS - Site Blocked Page', 'wp-ultimo'),
+			'update'         => __('WP Multisite WaaS - Membership Update Page', 'wp-ultimo'),
+			'new_site'       => __('WP Multisite WaaS - New Site Page', 'wp-ultimo'),
 		);
 
 		$pages = array_map('absint', $this->get_signup_pages());

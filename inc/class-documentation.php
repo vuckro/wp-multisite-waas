@@ -47,7 +47,7 @@ class Documentation {
 
 		$links = array();
 
-		// WP Ultimo Dashboard
+		// WP Multisite WaaS Dashboard
 		$links['wp-ultimo'] = 'https://help.wpultimo.com/en/articles/4803213-understanding-the-wp-ultimo-dashboard';
 
 		// Settings Page

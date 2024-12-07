@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Admin_Pages;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  */
 class Addons_Admin_Page extends Wizard_Admin_Page {
 

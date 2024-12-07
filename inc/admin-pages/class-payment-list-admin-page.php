@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Payment Admin Page.
+ * WP Multisite WaaS Payment Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Database\Payments\Payment_Status;
 
 /**
- * WP Ultimo Payment Admin Page.
+ * WP Multisite WaaS Payment Admin Page.
  */
 class Payment_List_Admin_Page extends List_Admin_Page {
 

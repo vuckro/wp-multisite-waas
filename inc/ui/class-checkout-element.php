@@ -177,7 +177,7 @@ class Checkout_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Checkout',
 	 *  'Form',
 	 *  'Cart',
@@ -190,6 +190,7 @@ class Checkout_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Checkout',
 			'Form',
 			'Cart',

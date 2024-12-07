@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Checkout Form Admin Page.
+ * WP Multisite WaaS Checkout Form Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Models\Checkout_Form;
 
 /**
- * WP Ultimo Checkout Form Admin Page.
+ * WP Multisite WaaS Checkout Form Admin Page.
  */
 class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 

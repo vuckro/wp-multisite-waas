@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Debug Admin Page.
+ * WP Multisite WaaS Debug Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages\Debug
@@ -16,7 +16,7 @@ use WP_Ultimo\Admin_Pages\Base_Admin_Page;
 use WP_Ultimo\Debug\Debug;
 
 /**
- * WP Ultimo Debug Admin Page.
+ * WP Multisite WaaS Debug Admin Page.
  */
 class Debug_Admin_Page extends Base_Admin_Page {
 
@@ -93,7 +93,7 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	} // end register_widgets;
 
 	/**
-	 * Renders the list of WP Ultimo registered pages.
+	 * Renders the list of WP Multisite WaaS registered pages.
 	 *
 	 * @since 2.0.0
 	 * @return void

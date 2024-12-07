@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -19,7 +19,7 @@ use \WP_Ultimo\Installers\Default_Content_Installer;
 use \WP_Ultimo\Logger;
 
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  */
 class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
@@ -229,7 +229,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	} // end is_migration;
 
 	/**
-	 * Adds missing setup from settings when WP Ultimo is not fully loaded.
+	 * Adds missing setup from settings when WP Multisite WaaS is not fully loaded.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -342,7 +342,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return WP_Ultimo()->is_loaded() ? __('WP Ultimo Install', 'wp-ultimo') : __('WP Ultimo', 'wp-ultimo');
+		return WP_Ultimo()->is_loaded() ? __('WP Multisite WaaS Install', 'wp-ultimo') : __('WP Multisite WaaS', 'wp-ultimo');
 
 	} // end get_menu_title;
 
@@ -360,8 +360,8 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			'welcome'      => array(
 				'title'       => __('Welcome', 'wp-ultimo'),
 				'description' => implode('<br><br>', array(
-					__('...and thanks for choosing WP Ultimo!', 'wp-ultimo'),
-					__('This quick setup wizard will make sure your server is correctly setup, help you configure your new network, and migrate data from previous WP Ultimo versions if necessary.', 'wp-ultimo'),
+					__('...and thanks for choosing WP Multisite WaaS!', 'wp-ultimo'),
+					__('This quick setup wizard will make sure your server is correctly setup, help you configure your new network, and migrate data from previous WP Multisite WaaS versions if necessary.', 'wp-ultimo'),
 					__('You will also have the option of importing default content. It should take 10 minutes or less!', 'wp-ultimo')
 				)),
 				'next_label'  => __('Get Started &rarr;', 'wp-ultimo'),
@@ -369,7 +369,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			),
 			'checks'       => array(
 				'title'       => __('Pre-install Checks', 'wp-ultimo'),
-				'description' => __('Now it is time to see if this machine has what it takes to run WP Ultimo well!', 'wp-ultimo'),
+				'description' => __('Now it is time to see if this machine has what it takes to run WP Multisite WaaS well!', 'wp-ultimo'),
 				'next_label'  => \WP_Ultimo\Requirements::met() ? __('Go to the Next Step &rarr;', 'wp-ultimo') : __('Check Again', 'wp-ultimo'),
 				'handler'     => array($this, 'handle_checks'),
 				'back'        => false,
@@ -380,40 +380,9 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 					)
 				),
 			),
-			'activation'   => array(
-				'title'       => __('License Activation', 'wp-ultimo'),
-				'description' => __('Let\'s make sure you are able to keep your copy up-to-date with our latest updates via admin panel notifications and more.', 'wp-ultimo'),
-				'handler'     => array($this, 'handle_activation'),
-				'next_label'  => __('Agree & Activate &rarr;', 'wp-ultimo'),
-				'back'        => false,
-				'skip'        => $allowed,
-				'fields'      => array(
-					'terms'       => array(
-						'type' => 'note',
-						'desc' => array($this, '_terms_of_support'),
-					),
-					'license_key' => array(
-						'type'            => 'text',
-						'title'           => __('License Key', 'wp-ultimo'),
-						'placeholder'     => __('E.g. sk_***********', 'wp-ultimo'),
-						'tooltip'         => __('Your WP Ultimo License Key', 'wp-ultimo'),
-						'desc'            => array($this, '_desc_and_validation_error'),
-						'wrapper_classes' => $allowed ? 'wu-hidden' : '',
-						'html_attr'       => array(
-							$allowed ? 'disabled' : 'data-none' => 'disabled',
-						),
-					),
-					'license'     => array(
-						'wrapper_classes' => $allowed ? 'sm:wu-w-auto sm:wu-block' : 'sm:wu-w-auto wu-hidden',
-						'classes'         => 'sm:wu--mx-6 sm:wu--mt-4 sm:wu--mb-6',
-						'type'            => 'note',
-						'desc'            => array($this, '_current_license'),
-					),
-				),
-			),
 			'installation' => array(
 				'title'       => __('Installation', 'wp-ultimo'),
-				'description' => __('Now, let\'s update your database and install the Sunrise.php file, which are necessary for the correct functioning of WP Ultimo.', 'wp-ultimo'),
+				'description' => __('Now, let\'s update your database and install the Sunrise.php file, which are necessary for the correct functioning of WP Multisite WaaS.', 'wp-ultimo'),
 				'next_label'  => Core_Installer::get_instance()->all_done() ? __('Go to the Next Step &rarr;', 'wp-ultimo') : __('Install', 'wp-ultimo'),
 				'fields'      => array(
 					'terms' => array(
@@ -445,7 +414,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 				$next_label = __('Run Check', 'wp-ultimo');
 
-				$description = __('It seems that you were running WP Ultimo 1.X on this network. This migrator will convert the data from the old version to the new one.', 'wp-ultimo') . '<br><br>' . __('First, let\'s run a test migration to see if we can spot any potential errors.', 'wp-ultimo');
+				$description = __('It seems that you were running WP Multisite WaaS 1.X on this network. This migrator will convert the data from the old version to the new one.', 'wp-ultimo') . '<br><br>' . __('First, let\'s run a test migration to see if we can spot any potential errors.', 'wp-ultimo');
 
 			} // end if;
 
@@ -771,7 +740,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				'pass_requirements' => is_multisite(),
 			),
 			'wp-ultimo' => array(
-				'name'              => __('WP Ultimo', 'wp-ultimo'),
+				'name'              => __('WP Multisite WaaS', 'wp-ultimo'),
 				'help'              => wu_get_documentation_url('wp-ultimo-requirements'),
 				'condition'         => apply_filters('wp_ultimo_skip_network_active_check', false) ? __('Bypassed via filter', 'wp-ultimo') : __('Network Activated', 'wp-ultimo'),
 				'pass_requirements' => \WP_Ultimo\Requirements::is_network_active(),
@@ -918,43 +887,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	} // end handle_migration;
 
 	/**
-	 * Handles the activation of a given integration.
-	 *
-	 * @since 2.0.0
-	 * @return void|WP_Error
-	 */
-	public function handle_activation() {
-
-		$license = License::get_instance();
-
-		/*
-		 * Already activated.
-		 */
-		if ($license->allowed()) {
-
-			wp_redirect($this->get_next_section_link());
-
-			exit;
-
-		} // end if;
-
-		$activation_results = $license->activate(wu_request('license_key'));
-
-		if (is_wp_error($activation_results)) {
-
-			$_REQUEST['error'] = $activation_results->get_error_message();
-
-		} else {
-
-			wp_redirect($this->get_next_section_link());
-
-			exit;
-
-		} // end if;
-
-	} // end handle_activation;
-
-	/**
 	 * Handles the configuration of a given integration.
 	 *
 	 * @since 2.0.0
@@ -996,7 +928,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	} // end section_test;
 
 	/**
-	 * Adds the necessary missing scripts if WP Ultimo was not loaded.
+	 * Adds the necessary missing scripts if WP Multisite WaaS was not loaded.
 	 *
 	 * @since 2.0.0
 	 * @return void

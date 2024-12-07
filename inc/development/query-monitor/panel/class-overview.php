@@ -1,6 +1,6 @@
 <?php
 /**
- * The WP Ultimo Overview QM Panel
+ * The WP Multisite WaaS Overview QM Panel
  *
  * @package WP_Ultimo
  * @subpackage Development\Query_Monitor\Panel
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Development\Query_Monitor\Panel;
 defined('ABSPATH') || exit;
 
 /**
- * The WP Ultimo Overview QM Panel
+ * The WP Multisite WaaS Overview QM Panel
  *
  * @since 2.0.11
  */
@@ -44,7 +44,7 @@ class Overview extends \QM_Output_Html {
 	 */
 	public function name() {
 
-		return __('WP Ultimo', 'wp-ultimo');
+		return __('WP Multisite WaaS', 'wp-ultimo');
 
 	} // end name;
 
@@ -108,7 +108,7 @@ class Overview extends \QM_Output_Html {
 
 		$new_menu = array(
 			'wp-ultimo' => $this->menu(array(
-				'title' => esc_html__('WP Ultimo', 'wp-ultimo'),
+				'title' => esc_html__('WP Multisite WaaS', 'wp-ultimo'),
 				'id'    => 'wp-ultimo',
 			)),
 		);

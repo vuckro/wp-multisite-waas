@@ -435,7 +435,7 @@ class Site_Manager extends Base_Manager {
 	} // end get_site_screenshot;
 
 	/**
-	 * Add the additional sizes required by WP Ultimo.
+	 * Add the additional sizes required by WP Multisite WaaS.
 	 *
 	 * Add for the main site only.
 	 *
@@ -464,7 +464,7 @@ class Site_Manager extends Base_Manager {
 
 		if (wu_get_setting('stop_template_indexing', false)) {
 
-			add_meta_box('wu-warnings', __('WP Ultimo - Search Engines', 'wp-ultimo'), array($this, 'render_no_index_warning'), 'dashboard-network', 'normal', 'high');
+			add_meta_box('wu-warnings', __('WP Multisite WaaS - Search Engines', 'wp-ultimo'), array($this, 'render_no_index_warning'), 'dashboard-network', 'normal', 'high');
 
 		} // end if;
 
@@ -482,7 +482,7 @@ class Site_Manager extends Base_Manager {
 
 			<div class="wu-border-l-4 wu-border-yellow-500 wu-border-solid wu-border-0 wu-px-4 wu-py-2 wu--m-3">
 
-				<p><?php _e('Your WP Ultimo settings are configured to <strong>prevent search engines such as Google from indexing your template sites</strong>.', 'wp-ultimo'); ?></p>
+				<p><?php _e('Your WP Multisite WaaS settings are configured to <strong>prevent search engines such as Google from indexing your template sites</strong>.', 'wp-ultimo'); ?></p>
 
 				<p><?php printf(__('If you are experiencing negative SEO impacts on other sites in your network, consider disabling this setting <a href="%s">here</a>.', 'wp-ultimo'), wu_network_admin_url('wp-ultimo-settings', array('tab' => 'sites'))); ?></p>
 
@@ -596,18 +596,18 @@ class Site_Manager extends Base_Manager {
 	} // end login_header_text;
 
 	/**
-	 * Add notices to default site page, recommending the WP Ultimo option.
+	 * Add notices to default site page, recommending the WP Multisite WaaS option.
 	 *
 	 * @since 2.0.0
 	 * @return void
 	 */
 	public function add_notices_to_default_site_page() {
 
-		$notice = __('Hey there! We highly recommend managing your network sites using the WP Ultimo &rarr; Sites page. <br>If you want to avoid confusion, you can also hide this page from the admin panel completely on the WP Ultimo &rarr; Settings &rarr; Whitelabel options.', 'wp-ultimo');
+		$notice = __('Hey there! We highly recommend managing your network sites using the WP Multisite WaaS &rarr; Sites page. <br>If you want to avoid confusion, you can also hide this page from the admin panel completely on the WP Multisite WaaS &rarr; Settings &rarr; Whitelabel options.', 'wp-ultimo');
 
 		WP_Ultimo()->notices->add($notice, 'info', 'network-admin', 'wu-sites-use-wp-ultimo', array(
 			array(
-				'title' => __('Go to the WP Ultimo Sites page &rarr;', 'wp-ultimo'),
+				'title' => __('Go to the WP Multisite WaaS Sites page &rarr;', 'wp-ultimo'),
 				'url'   => wu_network_admin_url('wp-ultimo-sites'),
 			),
 			array(

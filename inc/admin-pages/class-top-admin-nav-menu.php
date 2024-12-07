@@ -4,7 +4,7 @@
  *
  * Adds the shortcuts menu to the admin bar.
  *
- * @category   WP Ultimo
+ * @category   WP Multisite WaaS
  * @package    WP_Ultimo
  * @author     Gustavo Modesto <gustavo@wpultimo.com>
  * @since      2.0.0
@@ -37,7 +37,7 @@ class Top_Admin_Nav_Menu {
 	} // end __construct;
 
 	/**
-	 * Adds the WP Ultimo top-bar shortcut menu
+	 * Adds the WP Multisite WaaS top-bar shortcut menu
 	 *
 	 * @since 1.1.0
 	 * @param \WP_Admin_Bar $wp_admin_bar The admin bar identifier.
@@ -55,7 +55,7 @@ class Top_Admin_Nav_Menu {
     // Add Parent element
 		$parent = array(
 			'id'    => 'wp-ultimo',
-			'title' => __('WP Ultimo', 'wp-ultimo'),
+			'title' => __('Multisite Waas', 'wp-ultimo'),
 			'href'  => current_user_can('wu_read_dashboard') ? network_admin_url('admin.php?page=wp-ultimo') : '#',
 			'meta'  => array(
 				'class' => 'wp-ultimo-top-menu',

@@ -169,7 +169,7 @@ class Simple_Text_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Billing_Address',
 	 *  'Form',
 	 *  'Cart',
@@ -182,6 +182,7 @@ class Simple_Text_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'text',
 			'simple text',
 			'shortcode',

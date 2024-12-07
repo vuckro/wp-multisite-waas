@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Customer Edit/Add New Admin Page.
+ * WP Multisite WaaS Customer Edit/Add New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Database\Memberships\Membership_Status;
 
 /**
- * WP Ultimo Customer Edit/Add New Admin Page.
+ * WP Multisite WaaS Customer Edit/Add New Admin Page.
  */
 class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
@@ -697,7 +697,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				),
 				'custom_meta'  => array(
 					'title'  => __('Custom Meta', 'wp-ultimo'),
-					'desc'   => __('Custom data collected via WP Ultimo forms.', 'wp-ultimo'),
+					'desc'   => __('Custom data collected via WP Multisite WaaS forms.', 'wp-ultimo'),
 					'icon'   => 'dashicons-wu-database wu-pt-px',
 					'fields' => $this->generate_customer_meta_fields(),
 					'state'  => array(

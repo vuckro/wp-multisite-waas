@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Payment Edit/Add New Admin Page.
+ * WP Multisite WaaS Payment Edit/Add New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -16,7 +16,7 @@ use \WP_Ultimo\Models\Payment;
 use \WP_Ultimo\Database\Payments\Payment_Status;
 
 /**
- * WP Ultimo Payment Edit/Add New Admin Page.
+ * WP Multisite WaaS Payment Edit/Add New Admin Page.
  */
 class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 
@@ -287,7 +287,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			),
 			'refund_not_immediate_note' => array(
 				'type'              => 'note',
-				'desc'              => __('Confirming the refund might not immediately change the status of the payment, as each gateway handles refunds differently and WP Ultimo relies on the gateway reporting a successful refund before changing the status.', 'wp-ultimo'),
+				'desc'              => __('Confirming the refund might not immediately change the status of the payment, as each gateway handles refunds differently and WP Multisite WaaS relies on the gateway reporting a successful refund before changing the status.', 'wp-ultimo'),
 				'classes'           => 'wu-p-2 wu-bg-yellow-200 wu-text-yellow-700 wu-rounded wu-w-full',
 				'wrapper_html_attr' => array(
 					'v-show'  => 'step === 2',

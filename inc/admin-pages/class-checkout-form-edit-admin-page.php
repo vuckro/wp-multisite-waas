@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Checkout_Form Edit/Add New Admin Page.
+ * WP Multisite WaaS Checkout_Form Edit/Add New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Managers\Signup_Fields_Manager;
 
 /**
- * WP Ultimo Checkout_Form Edit/Add New Admin Page.
+ * WP Multisite WaaS Checkout_Form Edit/Add New Admin Page.
  * Here we use the default WP Session to avoid errors with cookie size.
  */
 class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {

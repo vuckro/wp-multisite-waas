@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -17,7 +17,7 @@ use \WP_Ultimo\UI\Field;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  */
 class Settings_Admin_Page extends Wizard_Admin_Page {
 
@@ -203,15 +203,15 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 			<div class="wu-p-4">
 
 				<span class="wu-text-gray-700 wu-font-bold wu-uppercase wu-tracking-wide wu-text-xs">
-					<?php _e('WP Ultimo Add-ons', 'wp-ultimo'); ?>
+					<?php _e('WP Multisite WaaS Add-ons', 'wp-ultimo'); ?>
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('WP Ultimo Add-ons', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/add-ons.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('WP Multisite WaaS Add-ons', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/add-ons.png'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
-					<?php _e('You can extend WP Ultimo\'s functionality by installing one of our add-ons!', 'wp-ultimo'); ?>
+					<?php _e('You can extend WP Multisite WaaS\'s functionality by installing one of our add-ons!', 'wp-ultimo'); ?>
 				</p>
 
 			</div>
@@ -249,14 +249,14 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				<div class="wu-p-4">
 
 					<span class="wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-block">
-						<?php _e('Your copy of WP Ultimo is not currently active. That means you will not have access to plugin updates and add-ons.', 'wp-ultimo'); ?>
+						<?php _e('Your copy of WP Multisite WaaS is not currently active. That means you will not have access to plugin updates and add-ons.', 'wp-ultimo'); ?>
 					</span>
 
 				</div>
 
 				<div class="wu-p-4 wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-t wu-border-gray-300">
-					<a id="wu-activate-license-key-button" class="button wu-w-full wu-text-center wubox" title="<?php esc_attr_e('Activate WP Ultimo', 'wp-ultimo'); ?>" href="<?php echo wu_get_form_url('license_activation'); ?>">
-						<?php _e('Activate WP Ultimo &rarr;', 'wp-ultimo'); ?>
+					<a id="wu-activate-license-key-button" class="button wu-w-full wu-text-center wubox" title="<?php esc_attr_e('Activate WP Multisite WaaS', 'wp-ultimo'); ?>" href="<?php echo wu_get_form_url('license_activation'); ?>">
+						<?php _e('Activate WP Multisite WaaS &rarr;', 'wp-ultimo'); ?>
 					</a>
 				</div>
 
@@ -281,7 +281,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 						">
 							<?php echo substr_replace((string) $license->secret_key, str_repeat('*', 16), 4, 24); ?>
 							<a 
-								title="<?php esc_attr_e('Deactivate WP Ultimo License', 'wp-ultimo'); ?>"
+								title="<?php esc_attr_e('Deactivate WP Multisite WaaS License', 'wp-ultimo'); ?>"
 								class="dashicons dashicons-trash wu-text-red-600 wubox"
 								href="<?php echo wu_get_form_url('license_deactivation'); ?>"
 							></a>
@@ -535,7 +535,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
-					<?php _e('You can completely customize the contents of the emails sent out by WP Ultimo when particular events occur, such as Account Creation, Payment Failures, etc.', 'wp-ultimo'); ?>
+					<?php _e('You can completely customize the contents of the emails sent out by WP Multisite WaaS when particular events occur, such as Account Creation, Payment Failures, etc.', 'wp-ultimo'); ?>
 				</p>
 
 			</div>

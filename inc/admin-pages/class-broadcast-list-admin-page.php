@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Broadcast Admin Page.
+ * WP Multisite WaaS Broadcast Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Managers\Broadcast_Manager;
 
 /**
- * WP Ultimo Broadcast Admin Page.
+ * WP Multisite WaaS Broadcast Admin Page.
  */
 class Broadcast_List_Admin_Page extends List_Admin_Page {
 

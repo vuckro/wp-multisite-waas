@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Broadcast Admin Page.
+ * WP Multisite WaaS Broadcast Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Admin_Pages;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Broadcast Admin Page.
+ * WP Multisite WaaS Broadcast Admin Page.
  */
 class Email_List_Admin_Page extends List_Admin_Page {
 
@@ -378,7 +378,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		$fields['import_emails'] = array(
 			'type'      => 'toggle',
 			'title'     => __('Import System Emails', 'wp-ultimo'),
-			'desc'      => __('Add new system emails based on WP Ultimo presets.'),
+			'desc'      => __('Add new system emails based on WP Multisite WaaS presets.'),
 			'tooltip'   => '',
 			'value'     => 0,
 			'html_attr' => array(

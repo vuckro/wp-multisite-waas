@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo My Sites Admin Page.
+ * WP Multisite WaaS My Sites Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
 
 /**
- * WP Ultimo My Sites Admin Page.
+ * WP Multisite WaaS My Sites Admin Page.
  */
 class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 

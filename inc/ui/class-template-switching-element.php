@@ -191,6 +191,7 @@ class Template_Switching_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Template',
 			'Template Switching',
 		);

@@ -13,7 +13,7 @@ namespace WP_Ultimo;
 defined('ABSPATH') || exit;
 
 /**
- * Adds a lighter ajax option to WP Ultimo.
+ * Adds a lighter ajax option to WP Multisite WaaS.
  *
  * @since 1.9.14
  */
@@ -146,7 +146,7 @@ class API {
 	public function add_settings() {
     /*
 		 * API & Webhooks
-		 * This section holds the API settings of the WP Ultimo Plugin.
+		 * This section holds the API settings of the WP Multisite WaaS Plugin.
 		 */
 		wu_register_settings_section('api', array(
 			'title' => __('API & Webhooks', 'wp-ultimo'),
@@ -157,13 +157,13 @@ class API {
 
 		wu_register_settings_field('api', 'api_header', array(
 			'title' => __('API Settings', 'wp-ultimo'),
-			'desc'  => __('Options related to WP Ultimo API endpoints.', 'wp-ultimo'),
+			'desc'  => __('Options related to WP Multisite WaaS API endpoints.', 'wp-ultimo'),
 			'type'  => 'header',
 		));
 
 		wu_register_settings_field('api', 'enable_api', array(
 			'title'   => __('Enable API', 'wp-ultimo'),
-			'desc'    => __('Tick this box if you want WP Ultimo to add its own endpoints to the WordPress REST API. This is required for some integrations to work, most notabily, Zapier.', 'wp-ultimo'),
+			'desc'    => __('Tick this box if you want WP Multisite WaaS to add its own endpoints to the WordPress REST API. This is required for some integrations to work, most notabily, Zapier.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 1,
 		));
@@ -235,7 +235,7 @@ class API {
 
 		wu_register_settings_field('api', 'api_log_calls', array(
 			'title'   => __('Log API calls (Advanced)', 'wp-ultimo'),
-			'desc'    => __('Tick this box if you want to log all calls received via WP Ultimo API endpoints. You can access the logs on WP Ultimo &rarr; System Info &rarr; Logs.', 'wp-ultimo'),
+			'desc'    => __('Tick this box if you want to log all calls received via WP Multisite WaaS API endpoints. You can access the logs on WP Multisite WaaS &rarr; System Info &rarr; Logs.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 			'require' => array(
@@ -245,13 +245,13 @@ class API {
 
 		wu_register_settings_field('api', 'webhook_header', array(
 			'title' => __('Webhook Settings', 'wp-ultimo'),
-			'desc'  => __('Options related to WP Ultimo API webhooks.', 'wp-ultimo'),
+			'desc'  => __('Options related to WP Multisite WaaS API webhooks.', 'wp-ultimo'),
 			'type'  => 'header',
 		));
 
 		wu_register_settings_field('api', 'webhook_calls_blocking', array(
 			'title'   => __('Wait for Response (Advanced)', 'wp-ultimo'),
-			'desc'    => __('Tick this box if you want the WP Ultimo\'s webhook calls to wait for the remote server to respond. Keeping this option enabled can have huge effects on your network\'s performance, only enable it if you know what you are doing and need to debug webhook calls.', 'wp-ultimo'),
+			'desc'    => __('Tick this box if you want the WP Multisite WaaS\'s webhook calls to wait for the remote server to respond. Keeping this option enabled can have huge effects on your network\'s performance, only enable it if you know what you are doing and need to debug webhook calls.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 		));

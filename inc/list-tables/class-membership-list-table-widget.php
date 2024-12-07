@@ -288,7 +288,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 
 	} // end get_columns;
 	/**
-	 * Overrides the parent method to include the custom ajax functionality for WP Ultimo.
+	 * Overrides the parent method to include the custom ajax functionality for WP Multisite WaaS.
 	 *
 	 * @since 2.0.0
 	 * @return void

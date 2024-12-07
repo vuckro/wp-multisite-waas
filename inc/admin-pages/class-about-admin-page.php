@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo About Admin Page.
+ * WP Multisite WaaS About Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Admin_Pages;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo About Admin Page.
+ * WP Multisite WaaS About Admin Page.
  */
 class About_Admin_Page extends Base_Admin_Page {
 
@@ -98,7 +98,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return __('WP Ultimo', 'wp-ultimo');
+		return __('Multisite WaaS', 'wp-ultimo');
 
 	} // end get_menu_title;
 

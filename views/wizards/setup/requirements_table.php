@@ -8,7 +8,7 @@
 <div class="wu-block">
 
   <div class="wu-block wu-text-gray-700 wu-font-bold wu-uppercase wu-text-xs wu-py-2">
-    <?php echo __('WP Ultimo Requires:', 'wp-ultimo'); ?>
+    <?php echo __('WP Multisite WaaS Requires:', 'wp-ultimo'); ?>
   </div>
 
   <div class="wu-advanced-filters">
@@ -87,7 +87,7 @@
   <?php if (\WP_Ultimo\Requirements::met() === false) : ?>
 
     <div class="wu-mt-4 wu-p-4 wu-bg-red-100 wu-border wu-border-solid wu-border-red-200 wu-rounded-sm wu-text-red-500">
-      <?php _e('It looks like your hosting environment does not support the current version of WP Ultimo. Visit the <strong>Read More</strong> links on each item to see what steps you need to take to bring your environment up to the WP Ultimo current requirements.', 'wp-ultimo'); ?>
+      <?php _e('It looks like your hosting environment does not support the current version of WP Multisite WaaS. Visit the <strong>Read More</strong> links on each item to see what steps you need to take to bring your environment up to the WP Multisite WaaS current requirements.', 'wp-ultimo'); ?>
     </div>
 
   <?php endif; ?>

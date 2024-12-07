@@ -1196,7 +1196,7 @@ class Checkout {
 			 *
 			 * @since 2.0.0
 			 * @param array $meta_repository The list of meta fields, key => value structured.
-			 * @param Customer $customer The WP Ultimo customer object.
+			 * @param Customer $customer The WP Multisite WaaS customer object.
 			 * @param Checkout $this The checkout class.
 			 */
 			do_action('wu_handle_customer_meta_fields', $meta_repository, $customer, $this);
@@ -1230,7 +1230,7 @@ class Checkout {
 			 * @since 2.0.4
 			 * @param array $meta_repository The list of meta fields, key => value structured.
 			 * @param \WP_User $user The WordPress user object.
-			 * @param Customer $customer The WP Ultimo customer object.
+			 * @param Customer $customer The WP Multisite WaaS customer object.
 			 * @param Checkout $this The checkout class.
 			 */
 			do_action('wu_handle_user_meta_fields', $user_meta_repository, $user, $customer, $this);
@@ -2089,7 +2089,7 @@ class Checkout {
 		/*
 		 * Checks if we are in the last step.
 		 *
-		 * WP Ultimo supports multi-step checkout
+		 * WP Multisite WaaS supports multi-step checkout
 		 * flows. That means that we do different
 		 * things on the intermediary steps (mostly
 		 * add things to the session) and on the final,
@@ -2295,7 +2295,7 @@ class Checkout {
 			 *
 			 * The gateway takes in the info about the transaction
 			 * and perform the necessary steps to make sure the
-			 * data on the gateway correctly reflects the data on WP Ultimo.
+			 * data on the gateway correctly reflects the data on WP Multisite WaaS.
 			 */
 			$status = $gateway->process_checkout($payment, $membership, $customer, $this->order, $type);
 

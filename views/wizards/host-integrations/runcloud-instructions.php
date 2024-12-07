@@ -34,7 +34,7 @@
   <img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-2.png', 'img/hosts'); ?>">
 </div>
 <p class="wu-text-center"><i><?php _e('API Key page link', 'wp-ultimo'); ?></i></p>
-<p class="wu-text-sm"> <?php _e('Copy the', 'wp-ultimo'); ?> <b> <?php _e('API Key and Secret values', 'wp-ultimo'); ?> </b>, <?php _e('we will need them in the next steps', 'wp-ultimo'); ?>. <b> <?php _e('Make sure the RunCloud API toggle is turned ON', 'wp-ultimo'); ?>, </b> <?php _e('otherwise RunCloud won’t accept WP Ultimo API calls', 'wp-ultimo'); ?>.</p>
+<p class="wu-text-sm"> <?php _e('Copy the', 'wp-ultimo'); ?> <b> <?php _e('API Key and Secret values', 'wp-ultimo'); ?> </b>, <?php _e('we will need them in the next steps', 'wp-ultimo'); ?>. <b> <?php _e('Make sure the RunCloud API toggle is turned ON', 'wp-ultimo'); ?>, </b> <?php _e('otherwise RunCloud won’t accept WP Multisite WaaS API calls', 'wp-ultimo'); ?>.</p>
 <div class="">
   <img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-3.png', 'img/hosts'); ?>">
 </div>

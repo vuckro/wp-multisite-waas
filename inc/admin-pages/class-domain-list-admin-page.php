@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -16,7 +16,7 @@ use \WP_Ultimo\Models\Domain;
 use \WP_Ultimo\Database\Domains\Domain_Stage;
 
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  */
 class Domain_List_Admin_Page extends List_Admin_Page {
 
@@ -88,7 +88,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 		));
 
 		// translators: %s is the URL to the add-on.
-		$note_desc = sprintf(__('To activate this feature you need to install the <a href="%s" target="_blank" class="wu-no-underline">WP Ultimo: Domain Seller</a> add-on.', 'wp-ultimo'), $addon_url);
+		$note_desc = sprintf(__('To activate this feature you need to install the <a href="%s" target="_blank" class="wu-no-underline">WP Multisite WaaS: Domain Seller</a> add-on.', 'wp-ultimo'), $addon_url);
 
 		$fields = array(
 			'type'                   => array(
@@ -130,7 +130,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 				'type'        => 'select',
 				'title'       => __('Stage', 'wp-ultimo'),
 				'placeholder' => __('Select Stage', 'wp-ultimo'),
-				'desc'        => __('The stage in the domain check lifecycle. Leave "Checking DNS" to have the domain go through WP Ultimo\'s automated tests.', 'wp-ultimo'),
+				'desc'        => __('The stage in the domain check lifecycle. Leave "Checking DNS" to have the domain go through WP Multisite WaaS\'s automated tests.', 'wp-ultimo'),
 				'options'     => Domain_Stage::to_array(),
 				'value'       => Domain_Stage::CHECKING_DNS,
 			),

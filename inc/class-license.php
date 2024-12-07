@@ -2,7 +2,7 @@
 /**
  * License Handler
  *
- * Handles WP Ultimo activation.
+ * Handles WP Multisite WaaS activation.
  *
  * @package WP_Ultimo
  * @subpackage License
@@ -18,7 +18,7 @@ use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
 defined('ABSPATH') || exit;
 
 /**
- * Handles WP Ultimo activation.
+ * Handles WP Multisite WaaS activation.
  *
  * @since 2.0.0
  */
@@ -134,7 +134,7 @@ class License {
 
 		if (wu_request('wp-ultimo-activation') === 'success') {
 
-			WP_Ultimo()->notices->add(__('WP Ultimo successfully activated!', 'wp-ultimo'), 'success', 'network-admin', false, array());
+			WP_Ultimo()->notices->add(__('WP Multisite WaaS successfully activated!', 'wp-ultimo'), 'success', 'network-admin', false, array());
 
 		} // end if;
 

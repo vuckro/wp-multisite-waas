@@ -24,7 +24,7 @@
            *
            * @since 2.0.0
            *
-           * @param \WP_Ultimo\Admin_Pages\Base_Admin_Page $page WP Ultimo admin page instance.
+           * @param \WP_Ultimo\Admin_Pages\Base_Admin_Page $page WP Multisite WaaS admin page instance.
            */
           do_action('wu_header_left', $page);
 
@@ -49,7 +49,7 @@
        *
        * @since 2.0.0
        *
-       * @param \WP_Ultimo\Admin_Pages\Base_Admin_Page $page WP Ultimo admin page instance.
+       * @param \WP_Ultimo\Admin_Pages\Base_Admin_Page $page WP Multisite WaaS admin page instance.
        */
       do_action('wu_header_right', $page);
 

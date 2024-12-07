@@ -375,6 +375,7 @@ class Template_Previewer {
 
 		// Fix to issue on wp_get_attachment_url() inside core.
 		// @todo report it.
+		$initial_pagenow = $GLOBALS['pagenow'];
 		$GLOBALS['pagenow'] = '';
 
 		$default_settings = array(
@@ -407,6 +408,7 @@ class Template_Previewer {
 		$parsed_args['display_responsive_controls'] = wu_string_to_bool($parsed_args['display_responsive_controls']);
 		$parsed_args['use_custom_logo']             = wu_string_to_bool($parsed_args['use_custom_logo']);
 
+		$GLOBALS['pagenow'] = $initial_pagenow;
 		return $parsed_args;
 
 	} // end get_settings;

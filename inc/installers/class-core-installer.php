@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo 1.X to 2.X migrator.
+ * WP Multisite WaaS 1.X to 2.X migrator.
  *
  * @package WP_Ultimo
  * @subpackage Installers/Core_Installer
@@ -15,7 +15,7 @@ use \WP_Ultimo\Integrations\Host_Providers\Closte_Host_Provider;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo 1.X to 2.X migrator.
+ * WP Multisite WaaS 1.X to 2.X migrator.
  *
  * @since 2.0.0
  */
@@ -71,7 +71,7 @@ class Core_Installer extends Base_Installer {
 		$steps['database_tables'] = array(
 			'done'        => $has_tables_installed,
 			'title'       => __('Create Database Tables', 'wp-ultimo'),
-			'description' => __('WP Ultimo uses custom tables for performance reasons. We need to create those tables and make sure they are setup properly before we can activate the plugin.', 'wp-ultimo'),
+			'description' => __('WP Multisite WaaS uses custom tables for performance reasons. We need to create those tables and make sure they are setup properly before we can activate the plugin.', 'wp-ultimo'),
 			'pending'     => __('Pending', 'wp-ultimo'),
 			'installing'  => __('Creating default tables...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
@@ -152,7 +152,7 @@ class Core_Installer extends Base_Installer {
 		/**
 		 * Allow host providers to install the constant differently.
 		 *
-		 * Returning true will prevent WP Ultimo from trying to write to the wp-config file.
+		 * Returning true will prevent WP Multisite WaaS from trying to write to the wp-config file.
 		 *
 		 * @since 2.0.0
 		 * @param bool $short_circuit

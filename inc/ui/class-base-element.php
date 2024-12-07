@@ -167,7 +167,7 @@ abstract class Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Checkout',
 	 *  'Form',
 	 *  'Cart',
@@ -237,7 +237,9 @@ abstract class Base_Element {
 
 		add_action('wu_element_preview', array($this, 'setup_preview'));
 
-		do_action('wu_element_loaded', $this);
+		add_action('init', function () {
+			do_action('wu_element_loaded', $this);
+		} );
 
 		if ($this->public) {
 

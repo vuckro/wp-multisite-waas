@@ -310,7 +310,7 @@ class Webhook_Manager extends Base_Manager {
 
 		if (!$is_error) {
 
-			$message .= empty($response) ? sprintf('Got response: %s', $response) : 'To debug the remote server response, turn the "Wait for Response" option on the WP Ultimo Settings > API & Webhooks Tab';
+			$message .= empty($response) ? sprintf('Got response: %s', $response) : 'To debug the remote server response, turn the "Wait for Response" option on the WP Multisite WaaS Settings > API & Webhooks Tab';
 
 		} else {
 

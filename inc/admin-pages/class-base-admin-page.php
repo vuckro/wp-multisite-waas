@@ -4,7 +4,7 @@
  *
  * Abstract class that makes it easy to create new admin pages.
  *
- * Most of WP Ultimo pages are implemented using this class, which means that the filters and hooks
+ * Most of WP Multisite WaaS pages are implemented using this class, which means that the filters and hooks
  * listed below can be used to append content to all of our pages at once.
  *
  * @package WP_Ultimo
@@ -195,7 +195,7 @@ abstract class Base_Admin_Page {
 		 *
 		 * Unlike the wu_page_load, which only runs when a specific page
 		 * is being seen, this hook runs at registration for every admin page
-		 * being added using WP Ultimo code.
+		 * being added using WP Multisite WaaS code.
 		 *
 		 * @since 2.0.0
 		 * @param string $page_id The ID of this page.
@@ -494,7 +494,7 @@ abstract class Base_Admin_Page {
 	} // end add_submenu_page;
 
 	/**
-	 * Adds WP Ultimo branding to this page, if that's the case.
+	 * Adds WP Multisite WaaS branding to this page, if that's the case.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -532,7 +532,7 @@ abstract class Base_Admin_Page {
 	} // end add_container_toggle;
 
 	/**
-	 * Adds the WP Ultimo branding header.
+	 * Adds the WP Multisite WaaS branding header.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -546,7 +546,7 @@ abstract class Base_Admin_Page {
 	} // end brand_header;
 
 	/**
-	 * Adds the WP Ultimo branding footer.
+	 * Adds the WP Multisite WaaS branding footer.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -626,7 +626,7 @@ abstract class Base_Admin_Page {
 			add_action("load-$this->page_hook", array($this, 'add_admin_body_classes'), 20);
 
 			/*
-			 * Add the page to WP Ultimo branding (aka top-bar and footer)
+			 * Add the page to WP Multisite WaaS branding (aka top-bar and footer)
 			 */
 			if (is_network_admin()) {
 

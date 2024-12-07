@@ -46,7 +46,7 @@ class Event extends Base_Model {
 	/**
 	 * Initiator of this event.
 	 *
-	 * Events can be run by WP Ultimo, saved as 'system', or
+	 * Events can be run by WP Multisite WaaS, saved as 'system', or
 	 * by people (admins, customers), saved as 'manual'.
 	 *
 	 * @since 2.0.0

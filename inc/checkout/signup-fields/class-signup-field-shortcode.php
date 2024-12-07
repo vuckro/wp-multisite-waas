@@ -68,7 +68,7 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function get_description() {
 
-		return __('Displays the content of a given WordPress shortcode. Can be useful to inset content from other plugins inside a WP Ultimo checkout form.', 'wp-ultimo');
+		return __('Displays the content of a given WordPress shortcode. Can be useful to inset content from other plugins inside a WP Multisite WaaS checkout form.', 'wp-ultimo');
 
 	} // end get_description;
 
@@ -82,7 +82,7 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function get_tooltip() {
 
-		return __('Displays the content of a given WordPress shortcode. Can be useful to insert content from other plugins inside a WP Ultimo checkout form.', 'wp-ultimo');
+		return __('Displays the content of a given WordPress shortcode. Can be useful to insert content from other plugins inside a WP Multisite WaaS checkout form.', 'wp-ultimo');
 
 	} // end get_tooltip;
 	/**

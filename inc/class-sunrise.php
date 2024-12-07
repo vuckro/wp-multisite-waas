@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo activation and deactivation hooks
+ * WP Multisite WaaS activation and deactivation hooks
  *
  * @package WP_Ultimo
  * @subpackage Sunrise
@@ -15,7 +15,7 @@ use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo activation and deactivation hooks
+ * WP Multisite WaaS activation and deactivation hooks
  *
  * @since 2.0.0
  */
@@ -178,7 +178,7 @@ class Sunrise {
 			\WP_Ultimo\Sunrise::load_dependencies();
 
 			/*
-			 * Handles WP Ultimo core updates
+			 * Handles WP Multisite WaaS core updates
 			 */
 			\WP_Ultimo\Core_Updates::get_instance();
 
@@ -198,7 +198,7 @@ class Sunrise {
 			\WP_Ultimo\Limits\Theme_Limits::get_instance();
 
 			/**
-			 * Define the WP Ultimo main debug constant.
+			 * Define the WP Multisite WaaS main debug constant.
 			 */
 			!defined('WP_ULTIMO_DEBUG') && define('WP_ULTIMO_DEBUG', false);
 
@@ -215,7 +215,7 @@ class Sunrise {
 
 				} else {
 					/**
-					 *  Disable all plugins except WP Ultimo
+					 *  Disable all plugins except WP Multisite WaaS
 					 */
 					add_filter('option_active_plugins', fn() => array());
 
@@ -369,7 +369,7 @@ class Sunrise {
 	 * Method for imputing Sunrise data at wp-ultimo-system-info table.
 	 *
 	 * @since 2.0.11
-	 * @param array $sys_info Array containing WP Ultimo installation info.
+	 * @param array $sys_info Array containing WP Multisite WaaS installation info.
 	 * @return array Returns the array, modified with the sunrise data.
 	 */
 	public static function system_info($sys_info) {

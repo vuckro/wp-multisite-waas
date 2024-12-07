@@ -95,7 +95,7 @@ class Legacy_Checkout {
 		$this->session = wu_get_session('signup');
 
 		$this->templates = array(
-			'signup-main.php' => __('WP Ultimo Legacy Signup', 'wp-ultimo'),
+			'signup-main.php' => __('WP Multisite WaaS Legacy Signup', 'wp-ultimo'),
 		);
 
 		// add_filter('request', array($this, 'maybe_render_legacy_signup'));
@@ -1240,7 +1240,7 @@ class Legacy_Checkout {
 		 *
 		 * @since 1.7.2
 		 * @param string  Default domain being used right now, useful for manipulations
-		 * @param array   List of all the domain options entered in the WP Ultimo Settings -> Network Settings -> Domain Options
+		 * @param array   List of all the domain options entered in the WP Multisite WaaS Settings -> Network Settings -> Domain Options
 		 * @return string New domain to be used
 		 */
 		return apply_filters('get_site_url_for_previewer', $domain, $domain_options); // phpcs:ignore

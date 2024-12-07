@@ -13,7 +13,7 @@
       <?php _e('That\'s it! We are ready!', 'wp-ultimo'); ?>
     </h1>
     <p class="wu-text-lg wu-text-gray-600 wu-my-4">
-      <?php printf(__('The integration with %s was correctly setup and is now ready! Now, every time a new domain is added to your platform, WP Ultimo will sync that with your application automatically.', 'wp-ultimo'), $integration->get_title()); ?>
+      <?php printf(__('The integration with %s was correctly setup and is now ready! Now, every time a new domain is added to your platform, WP Multisite WaaS will sync that with your application automatically.', 'wp-ultimo'), $integration->get_title()); ?>
     </p>
   </div>
 

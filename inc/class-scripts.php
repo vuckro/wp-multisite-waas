@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo helper class to handle global registering of scripts and styles.
+ * WP Multisite WaaS helper class to handle global registering of scripts and styles.
  *
  * @package WP_Ultimo
  * @subpackage Scripts
@@ -13,7 +13,7 @@ namespace WP_Ultimo;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo helper class to handle global registering of scripts and styles.
+ * WP Multisite WaaS helper class to handle global registering of scripts and styles.
  *
  * @since 2.0.0
  */
@@ -76,7 +76,7 @@ class Scripts {
 	} // end register_style;
 
 	/**
-	 * Registers the default WP Ultimo scripts.
+	 * Registers the default WP Multisite WaaS scripts.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -234,7 +234,7 @@ class Scripts {
 		$long_date_formats = array_map('wu_convert_php_date_format_to_moment_js_format', array(
 			'LT'   => $time_format,
 			'LTS'  => str_replace(':i', ':i:s', (string) $time_format),
-			/* translators: the day/month/year date format used by WP Ultimo. You can changed it to localize this date format to your language. the default value is d/m/Y, which is the format 31/12/2021. */
+			/* translators: the day/month/year date format used by WP Multisite WaaS. You can changed it to localize this date format to your language. the default value is d/m/Y, which is the format 31/12/2021. */
 			'L'    => __('d/m/Y', 'wp-ultimo'),
 			'LL'   => $date_format,
 			'LLL'  => sprintf('%s %s', $date_format, $time_format),
@@ -272,7 +272,7 @@ class Scripts {
 	} // end localize_moment;
 
 	/**
-	 * Registers the default WP Ultimo styles.
+	 * Registers the default WP Multisite WaaS styles.
 	 *
 	 * @since 2.0.0
 	 * @return void

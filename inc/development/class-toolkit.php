@@ -374,7 +374,7 @@ class Toolkit {
 	} // end add_overview_panel;
 
 	/**
-	 * Manually enqueues query monitor and WP Ultimo styles.
+	 * Manually enqueues query monitor and WP Multisite WaaS styles.
 	 *
 	 * @since 2.0.11
 	 *

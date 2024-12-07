@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Async Calls implementation.
+ * WP Multisite WaaS Async Calls implementation.
  *
  * @package WP_Ultimo
  * @subpackage Async_Calls
@@ -22,7 +22,7 @@ use \WP_Ultimo\Dependencies\Amp\Http\Client\HttpClientBuilder;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Async Calls implementation.
+ * WP Multisite WaaS Async Calls implementation.
  *
  * @since 2.0.7
  */

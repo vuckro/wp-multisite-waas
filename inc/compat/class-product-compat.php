@@ -2,7 +2,7 @@
 /**
  * Products Compatibility Layer
  *
- * Handles product compatibility back-ports to WP Ultimo 1.X builds.
+ * Handles product compatibility back-ports to WP Multisite WaaS 1.X builds.
  *
  * @package WP_Ultimo
  * @subpackage Compat/Product_Compat
@@ -15,7 +15,7 @@ namespace WP_Ultimo\Compat;
 defined('ABSPATH') || exit;
 
 /**
- * Handles product compatibility back-ports to WP Ultimo 1.X builds.
+ * Handles product compatibility back-ports to WP Multisite WaaS 1.X builds.
  *
  * @since 2.0.0
  */

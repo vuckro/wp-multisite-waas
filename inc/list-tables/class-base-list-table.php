@@ -23,7 +23,7 @@ if (!class_exists('WP_List_Table')) {
 /**
  * Base List Table class. Extends WP_List_Table.
  *
- * All of WP Ultimo's list tables should extend this class.
+ * All of WP Multisite WaaS's list tables should extend this class.
  * It provides ajax-filtering and pagination out-of-the-box among other cool features.
  *
  * @since 2.0.0
@@ -1215,7 +1215,7 @@ class Base_List_Table extends \WP_List_Table {
 	} // end _get_js_var_name;
 
 	/**
-	 * Overrides the parent method to include the custom ajax functionality for WP Ultimo.
+	 * Overrides the parent method to include the custom ajax functionality for WP Multisite WaaS.
 	 *
 	 * @since 2.0.0
 	 * @return void

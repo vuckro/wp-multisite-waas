@@ -146,7 +146,7 @@ class Payment_Methods_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Payment Methods',
 	 *  'Form',
 	 *  'Cart',
@@ -159,6 +159,7 @@ class Payment_Methods_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Payment Methods',
 			'Form',
 			'Cart',

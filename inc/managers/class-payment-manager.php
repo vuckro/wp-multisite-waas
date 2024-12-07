@@ -59,8 +59,11 @@ class Payment_Manager extends Base_Manager {
 
 		$this->register_forms();
 
-		Event_Manager::register_model_events('payment', __('Payment', 'wp-ultimo'), array('created', 'updated'));
-
+		add_action('init', function () {
+			Event_Manager::register_model_events( 'payment',
+				__( 'Payment', 'wp-ultimo' ),
+				array( 'created', 'updated' ) );
+		});
 		add_action('wp_login', array($this, 'check_pending_payments'), 10);
 
 		add_action('wp_enqueue_scripts', array($this, 'show_pending_payments'), 10);

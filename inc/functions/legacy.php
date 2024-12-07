@@ -413,7 +413,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
 }  // end wu_print_signup_field;
 /**
- * Alias function to allow creation of users for WP Ultimo.
+ * Alias function to allow creation of users for WP Multisite WaaS.
  *
  * User Data should contain: user_login, user_email, user_pass;
  * Plan Data should contain: plan_id, plan_freq;
@@ -431,7 +431,7 @@ function wu_create_user(array $user_data, array $plan_data, array $user_meta = a
 } // end wu_create_user;
 
 /**
- * Alias function to allow creation of sites for WP Ultimo.
+ * Alias function to allow creation of sites for WP Multisite WaaS.
  *
  * Site Data should contain: blog_title, blogname, and role;
  * Site Meta is an associative array containing key => value pairs to be saved as meta fields on that site.

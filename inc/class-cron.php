@@ -70,7 +70,7 @@ class Cron {
 	} // end init;
 
 	/**
-	 * Creates the recurring schedules for WP Ultimo.
+	 * Creates the recurring schedules for WP Multisite WaaS.
 	 *
 	 * By default, we create a hourly, daily, and monthly schedules.
 	 *

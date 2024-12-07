@@ -55,7 +55,7 @@ class Block_Manager extends Base_Manager {
 		return array_merge($categories, array(
 			array(
 				'slug'  => 'wp-ultimo',
-				'title' => __('WP Ultimo', 'wp-ultimo'),
+				'title' => __('Multisite WaaS', 'wp-ultimo'),
 			),
 		));
 

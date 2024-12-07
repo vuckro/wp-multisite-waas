@@ -1,9 +1,9 @@
 <?php
 /**
- * WP Ultimo Rollback Plugin Upgrader
+ * WP Multisite WaaS Rollback Plugin Upgrader
  *
  * Class that extends the WP Core Plugin_Upgrader found in core to do rollbacks.
- * Modified to fit WP Ultimo needs.
+ * Modified to fit WP Multisite WaaS needs.
  *
  * @package WP_Ultimo
  * @subpackage Rollback
@@ -16,7 +16,7 @@ namespace WP_Ultimo\Rollback;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Rollback Plugin Upgrader
+ * WP Multisite WaaS Rollback Plugin Upgrader
  *
  * @since 2.0.0
  */

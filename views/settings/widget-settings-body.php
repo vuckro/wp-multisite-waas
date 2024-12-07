@@ -94,7 +94,7 @@
               </select>
 
               <p class="description" id="currency_symbol-desc">
-                Select the currency symbol to be used in WP Ultimo
+                Select the currency symbol to be used in WP Multisite WaaS
               </p>
 
             </td>
@@ -267,7 +267,7 @@
 
       <div id="error_reporting" data-type="heading">
         <h3>Error Reporting</h3>
-        <p>Help us make WP Ultimo better by automatically reporting fatal errors and warnings so we can fix them as soon
+        <p>Help us make WP Multisite WaaS better by automatically reporting fatal errors and warnings so we can fix them as soon
           as possible.</p>
       </div>
 
@@ -278,15 +278,15 @@
 
 
           <tr>
-            <th scope="row"><label for="enable_error_reporting">Send Error Data to WP Ultimo Developers</label> </th>
+            <th scope="row"><label for="enable_error_reporting">Send Error Data to WP Multisite WaaS Developers</label> </th>
             <td>
 
               <label for="enable_error_reporting">
                 <input name="enable_error_reporting" type="checkbox" id="enable_error_reporting" value="1">
-                Send Error Data to WP Ultimo Developers </label>
+                Send Error Data to WP Multisite WaaS Developers </label>
 
               <p class="description" id="enable_error_reporting-desc">
-                With this option enabled, every time your installation runs into an error related to WP Ultimo, that
+                With this option enabled, every time your installation runs into an error related to WP Multisite WaaS, that
                 error data will be sent to us. That way we can review, debug, and fix issues without you having to
                 manually report anything. No sensitive data gets collected, only environmental stuff (e.g. if this is
                 this is a subdomain network, etc).
@@ -320,7 +320,7 @@
                 Remove Data on Uninstall </label>
 
               <p class="description" id="uninstall_wipe_tables-desc">
-                Remove all saved data for WP Ultimo when the plugin is uninstalled.
+                Remove all saved data for WP Multisite WaaS when the plugin is uninstalled.
               </p>
 
             </td>

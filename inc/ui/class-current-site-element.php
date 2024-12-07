@@ -253,7 +253,7 @@ class Current_Site_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Site',
 	 *  'Form',
 	 *  'Cart',
@@ -266,6 +266,7 @@ class Current_Site_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Site',
 			'Form',
 			'Cart',

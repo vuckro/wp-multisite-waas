@@ -14,17 +14,17 @@
  * Requires at least: 5.3
  * Requires PHP: 7.4.30
  *
- * WP Ultimo is distributed under the terms of the GNU General Public License as published by
+ * WP Multisite WaaS is distributed under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * WP Ultimo is distributed in the hope that it will be useful,
+ * WP Multisite WaaS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with WP Ultimo. If not, see <http://www.gnu.org/licenses/>.
+ * along with WP Multisite WaaS. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author   Arindo Duque and NextPress
  * @category Core
@@ -49,7 +49,7 @@ if ( function_exists('is_plugin_active') && is_plugin_active( 'wp-ultimo/wp-ulti
 		'admin_notices',
 		function() {
 			echo '<div class="error"><p>';
-			echo esc_html__( 'The WP Ultimo plugin has been deactivated as it has been renamed WP Multisite WaaS', 'wp-ultimo' );
+			echo esc_html__( 'The WP Multisite WaaS plugin has been deactivated as it has been renamed WP Multisite WaaS', 'wp-ultimo' );
 			echo '</p></div>';
 		}
 	);

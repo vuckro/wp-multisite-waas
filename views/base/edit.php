@@ -47,7 +47,7 @@
      *
      * @since 1.8.2
      * @param object  Object holding the information
-     * @param WU_Page WP Ultimo Page instance
+     * @param WU_Page WP Multisite WaaS Page instance
      */
     do_action('wu_page_edit_after_title', $object, $page);
     ?>
@@ -113,7 +113,7 @@
                  *
                  * @since 1.8.2
                  * @param object  Object holding the information
-                 * @param WU_Page WP Ultimo Page instance
+                 * @param WU_Page WP Multisite WaaS Page instance
                  */
                 do_action('wu_edit_page_after_title_input', $object, $page);
                 ?>
@@ -241,7 +241,7 @@
    *
    * @since 1.8.2
    * @param object  Object holding the information
-   * @param WU_Page WP Ultimo Page instance
+   * @param WU_Page WP Multisite WaaS Page instance
    */
   do_action('wu_page_edit_footer', $object, $page);
   ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Site Edit New Admin Page.
+ * WP Multisite WaaS Site Edit New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -16,7 +16,7 @@ use \WP_Ultimo\Database\Sites\Site_Type;
 use \WP_Ultimo\Models\Site;
 
 /**
- * WP Ultimo Site Edit New Admin Page.
+ * WP Multisite WaaS Site Edit New Admin Page.
  */
 class Site_Edit_Admin_Page extends Edit_Admin_Page {
 
@@ -150,7 +150,7 @@ class Site_Edit_Admin_Page extends Edit_Admin_Page {
 					'id'       => 'new-site-template-warning',
 					'title'    => __('On adding a new Site Template...', 'wp-ultimo'),
 					'text'     => array(
-						__("You just successfully added a new site template to your WP Ultimo network and that's awesome!", 'wp-ultimo'),
+						__("You just successfully added a new site template to your WP Multisite WaaS network and that's awesome!", 'wp-ultimo'),
 						__('Keep in mind that newly created site templates do not appear automatically in your checkout forms.', 'wp-ultimo'),
 						__('To make a site template available on registration, you will need to manually add it to the template selection field of your checkout forms.', 'wp-ultimo'),
 					),
@@ -541,7 +541,7 @@ class Site_Edit_Admin_Page extends Edit_Admin_Page {
 				),
 				'scraper_message'   => array(
 					'type'            => 'note',
-					'desc'            => sprintf('<span class="wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-block">%s</span>', __('We detected that this network might be running locally. If that\'s the case, WP Ultimo will not be able to take a screenshot of the site. A site needs to be publicly available to the outside world in order for this feature to work.', 'wp-ultimo')),
+					'desc'            => sprintf('<span class="wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-block">%s</span>', __('We detected that this network might be running locally. If that\'s the case, WP Multisite WaaS will not be able to take a screenshot of the site. A site needs to be publicly available to the outside world in order for this feature to work.', 'wp-ultimo')),
 					'wrapper_classes' => \WP_Ultimo\Domain_Mapping\Helper::is_development_mode() ? '' : 'wu-hidden',
 				),
 				'scraper'           => array(

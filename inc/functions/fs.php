@@ -36,7 +36,7 @@ function wu_get_main_site_upload_dir() {
 } // end wu_get_main_site_upload_dir;
 
 /**
- * Creates a WP Ultimo folder inside the uploads folder - if needed - and return its path.
+ * Creates a WP Multisite WaaS folder inside the uploads folder - if needed - and return its path.
  *
  * @since 2.0.11
  *

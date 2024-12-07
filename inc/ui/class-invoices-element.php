@@ -162,7 +162,7 @@ class Invoices_Element extends Base_Element {
 	 *
 	 * e.g.:
 	 * return array(
-	 *  'WP Ultimo',
+	 *  'WP Multisite WaaS',
 	 *  'Invoices',
 	 *  'Form',
 	 *  'Cart',
@@ -175,6 +175,7 @@ class Invoices_Element extends Base_Element {
 
 		return array(
 			'WP Ultimo',
+			'WP Multisite WaaS',
 			'Invoices',
 			'Form',
 			'Cart',

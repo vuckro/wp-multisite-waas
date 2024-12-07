@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Membership Edit/Add New Admin Page.
+ * WP Multisite WaaS Membership Edit/Add New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Database\Memberships\Membership_Status;
 
 /**
- * WP Ultimo Membership Edit/Add New Admin Page.
+ * WP Multisite WaaS Membership Edit/Add New Admin Page.
  */
 class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 

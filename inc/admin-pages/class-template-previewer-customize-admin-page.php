@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Customize/Add New Template Previewer Page.
+ * WP Multisite WaaS Customize/Add New Template Previewer Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ use \WP_Ultimo\UI\Template_Previewer;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Template Previewer Customize/Add New Admin Page.
+ * WP Multisite WaaS Template Previewer Customize/Add New Admin Page.
  */
 class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 
@@ -94,7 +94,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 				'preview_url_parameter' => array(
 					'type'  => 'text',
 					'title' => __('URL Parameter', 'wp-ultimo'),
-					'desc'  => __('This is the URL parameter WP Ultimo will use to generate the template preview URLs.', 'wp-ultimo'),
+					'desc'  => __('This is the URL parameter WP Multisite WaaS will use to generate the template preview URLs.', 'wp-ultimo'),
 					'value' => Template_Previewer::get_instance()->get_setting('preview_url_parameter', 'template-preview'),
 				),
 				'enabled'               => array(

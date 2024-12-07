@@ -55,7 +55,9 @@ class Membership_Manager extends Base_Manager {
 
 		$this->enable_wp_cli();
 
-		Event_Manager::register_model_events('membership', __('Membership', 'wp-ultimo'), array('created', 'updated'));
+		add_action('init', function (){
+			Event_Manager::register_model_events('membership', __('Membership', 'wp-ultimo'), array('created', 'updated'));
+		});
 
 		add_action('wu_async_transfer_membership', array($this, 'async_transfer_membership'), 10, 2);
 

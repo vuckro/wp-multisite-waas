@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo uninstall script.
+ * WP Multisite WaaS uninstall script.
  *
  * @package WP_Ultimo
  * @since 2.0.0

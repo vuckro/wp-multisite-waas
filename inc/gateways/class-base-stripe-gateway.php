@@ -137,7 +137,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 		if (method_exists('Stripe', 'setAppInfo')) {
 
-			Stripe\Stripe::setAppInfo('WordPress WP Ultimo', wu_get_version(), esc_url(site_url()));
+			Stripe\Stripe::setAppInfo('WordPress WP Multisite WaaS', wu_get_version(), esc_url(site_url()));
 
 		} // end if;
 
@@ -595,7 +595,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	/**
 	 * Installs webhook urls onto Stripe.
 	 *
-	 * WP Ultimo will call this whenever settings for this api changes.
+	 * WP Multisite WaaS will call this whenever settings for this api changes.
 	 * That being said, it might be a good idea to check if the webhook already exists
 	 * before trying to re-create it.
 	 *
@@ -681,7 +681,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			Stripe\WebhookEndpoint::create(array(
 				'enabled_events' => array('*'),
 				'url'            => $webhook_url,
-				'description'    => 'Added by WP Ultimo. Required to correctly handle changes in subscription status.',
+				'description'    => 'Added by WP Multisite WaaS. Required to correctly handle changes in subscription status.',
 			));
 
 			return true;
@@ -910,7 +910,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
   *
   * @since 2.0.0
   *
-  * @param integer $customer_id WP Ultimo customer ID.
+  * @param integer $customer_id WP Multisite WaaS customer ID.
   * @param integer $user_id The WordPress user ID.
   * @param integer $stripe_customer_id The Stripe Customer ID.
   * @return \WP_Ultimo\Dependencies\Stripe\Customer|\WP_Error
@@ -923,7 +923,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		$customer_exists = false;
 
 		/*
-		 * Use the WP Ultimo customer ID to search on the
+		 * Use the WP Multisite WaaS customer ID to search on the
 		 * database for an existing Stripe customer id.
 		 */
 		if (empty($stripe_customer_id)) {
@@ -1030,7 +1030,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 *
 	 * @since 2.0.11
 	 *
-	 * @param \WP_Ultimo\Objects\Billing_Address $billing_address The WP Ultimo billing address.
+	 * @param \WP_Ultimo\Objects\Billing_Address $billing_address The WP Multisite WaaS billing address.
 	 * @return array
 	 */
 	public function convert_to_stripe_address($billing_address) {
@@ -1531,7 +1531,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	} // end build_non_recurring_cart;
 
 	/**
-	 * Converts the WP Ultimo cart into Stripe Sub arguments.
+	 * Converts the WP Multisite WaaS cart into Stripe Sub arguments.
 	 *
 	 * @since 2.0.0
 	 *
@@ -1644,7 +1644,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	} // end build_stripe_cart;
 
 	/**
-	 * Converts the Stripe invoice line items into WP Ultimo line items.
+	 * Converts the Stripe invoice line items into WP Multisite WaaS line items.
 	 *
 	 * @since 2.0.19
 	 *
@@ -1821,7 +1821,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 					$customer_id = (int) $subscription->metadata['customer_id'];
 
-					// Legacy WP Ultimo uses user_id
+					// Legacy WP Multisite WaaS uses user_id
 					$user_id = (int) $subscription->metadata['user_id'];
 
 					if ($customer_id === 0 && $user_id === 0) {
@@ -2316,7 +2316,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		} // end if;
 
 		/*
-		 * Set the WP Ultimo customer.
+		 * Set the WP Multisite WaaS customer.
 		 */
 		$customer = $membership->get_customer();
 

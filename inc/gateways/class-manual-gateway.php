@@ -6,7 +6,7 @@
  * It doesn't do anything with the payments,
  * as they need to be manually approved by the super admin
  * but it serves as a good example of how
- * to implement a custom gateway for WP Ultimo.
+ * to implement a custom gateway for WP Multisite WaaS.
  *
  * @package WP_Ultimo
  * @subpackage Gateways
@@ -214,7 +214,7 @@ class Manual_Gateway extends Base_Gateway {
 		 *
 		 * If you wish to stop the process at any point
 		 * due to some error, API failure or such,
-		 * simply throw a exception and WP Ultimo will
+		 * simply throw a exception and WP Multisite WaaS will
 		 * catch it and rollback any changes.
 		 */
 		if ($type === 'new') {
@@ -279,7 +279,7 @@ class Manual_Gateway extends Base_Gateway {
 		 * for a possible wp_error.
 		 *
 		 * If that happens, we need to throw an exception
-		 * WP Ultimo will capture that exception and
+		 * WP Multisite WaaS will capture that exception and
 		 * rollback database changes for us,
 		 * to avoid problems with data integrity.
 		 *
@@ -305,7 +305,7 @@ class Manual_Gateway extends Base_Gateway {
 		/*
 		 * You don't need to return anything,
 		 * but if you return false from this method,
-		 * WP Ultimo will assume that you want to handle redirection
+		 * WP Multisite WaaS will assume that you want to handle redirection
 		 * and such by yourself.
 		 *
 		 * This can be useful for some gateways that require

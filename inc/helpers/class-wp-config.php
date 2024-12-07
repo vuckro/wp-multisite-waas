@@ -45,7 +45,7 @@ class WP_Config {
 
 		$line = $this->find_injected_line($config, $constant);
 
-		$content = str_pad(sprintf("define( '%s', '%s' );", $constant, $value), 50) . '// Automatically injected by WP Ultimo;';
+		$content = str_pad(sprintf("define( '%s', '%s' );", $constant, $value), 50) . '// Automatically injected by WP Multisite WaaS;';
 
 		if ($line === false) {
 
@@ -54,7 +54,7 @@ class WP_Config {
 
 			if ($hook_line === false) {
 
-				return new \WP_Error('unknown-wpconfig', __("WP Ultimo can't recognize your wp-config.php, please revert it to original state for further process.", 'wp-ultimo'));
+				return new \WP_Error('unknown-wpconfig', __("WP Multisite WaaS can't recognize your wp-config.php, please revert it to original state for further process.", 'wp-ultimo'));
 
 			} // end if;
 

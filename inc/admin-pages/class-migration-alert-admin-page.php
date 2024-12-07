@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -19,7 +19,7 @@ use \WP_Ultimo\Installers\Default_Content_Installer;
 use \WP_Ultimo\Logger;
 
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  */
 class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 
@@ -124,7 +124,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return WP_Ultimo()->is_loaded() ? __('WP Ultimo Migration Alert', 'wp-ultimo') : __('WP Ultimo', 'wp-ultimo');
+		return WP_Ultimo()->is_loaded() ? __('WP Multisite WaaS Migration Alert', 'wp-ultimo') : __('WP Multisite WaaS', 'wp-ultimo');
 
 	} // end get_menu_title;
 

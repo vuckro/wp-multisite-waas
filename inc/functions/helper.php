@@ -13,7 +13,7 @@ use \WP_Ultimo\Exception\Runtime_Exception;
 use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
 
 /**
- * Returns the WP Ultimo version.
+ * Returns the WP Multisite WaaS version.
  *
  * @since 2.0.0
  * @return string
@@ -37,7 +37,7 @@ function wu_is_debug() {
 } // end wu_is_debug;
 
 /**
- * Checks if WP Ultimo is being loaded as a must-use plugin.
+ * Checks if WP Multisite WaaS is being loaded as a must-use plugin.
  *
  * @since 2.0.0
  * @return bool

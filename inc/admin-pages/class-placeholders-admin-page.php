@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo About Admin Page.
+ * WP Multisite WaaS About Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Admin_Pages;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo About Admin Page.
+ * WP Multisite WaaS About Admin Page.
  */
 class Placeholders_Admin_Page extends Base_Admin_Page {
 

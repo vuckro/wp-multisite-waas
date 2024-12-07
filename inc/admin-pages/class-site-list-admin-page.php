@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Sites Admin Page.
+ * WP Multisite WaaS Sites Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Admin_Pages;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Sites Admin Page.
+ * WP Multisite WaaS Sites Admin Page.
  */
 class Site_List_Admin_Page extends List_Admin_Page {
 

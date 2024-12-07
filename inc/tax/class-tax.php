@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Tax Class.
+ * WP Multisite WaaS Tax Class.
  *
  * @package WP_Ultimo
  * @subpackage Tax
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Tax;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Tax Class.
+ * WP Multisite WaaS Tax Class.
  *
  * @since 2.0.0
  */
@@ -117,7 +117,7 @@ class Tax {
 
 		wu_register_settings_field('taxes', 'inclusive_tax', array(
 			'title'   => __('Inclusive Tax', 'wp-ultimo'),
-			'desc'    => __('Enable this option if your prices include taxes. In that case, WP Ultimo will calculate the included tax instead of adding taxes to the price.', 'wp-ultimo'),
+			'desc'    => __('Enable this option if your prices include taxes. In that case, WP Multisite WaaS will calculate the included tax instead of adding taxes to the price.', 'wp-ultimo'),
 			'type'    => 'toggle',
 			'default' => 0,
 			'require' => array(

@@ -1091,7 +1091,7 @@ class Payment extends Base_Model {
 	 * An example of how that would work:
 	 * 1. Admin issues a refund on the admin panel;
 	 * 2. PayPal (for example), process the refund request
-	 *    and sends back a IPN (webhook call) telling WP Ultimo
+	 *    and sends back a IPN (webhook call) telling WP Multisite WaaS
 	 *    that the refund was issued successfully;
 	 * 3. The IPN handler listens for that event and calls this
 	 *    to reflect the refund in the original WU payment.

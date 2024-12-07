@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Logger
+ * WP Multisite WaaS Logger
  *
  * Log string messages to a file with a timestamp. Useful for debugging.
  *
@@ -18,7 +18,7 @@ use WP_Ultimo\Dependencies\Psr\Log\AbstractLogger;
 use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
 
 /**
- * WP Ultimo Logger
+ * WP Multisite WaaS Logger
  *
  * @since 2.0.0
  */

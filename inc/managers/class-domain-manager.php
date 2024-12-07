@@ -331,7 +331,7 @@ class Domain_Manager extends Base_Manager {
 
 		wu_register_settings_field('sso', 'sso_header', array(
 			'title' => __('Single Sign-On Settings', 'wp-ultimo'),
-			'desc'  => __('Settings to configure the Single Sign-On functionality of WP Ultimo, responsible for keeping customers and admins logged in across all network domains.', 'wp-ultimo'),
+			'desc'  => __('Settings to configure the Single Sign-On functionality of WP Multisite WaaS, responsible for keeping customers and admins logged in across all network domains.', 'wp-ultimo'),
 			'type'  => 'header',
 		));
 

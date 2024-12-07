@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Dashboard_Statistics;
 
 /**
- * WP Ultimo Dashboard Admin Page.
+ * WP Multisite WaaS Dashboard Admin Page.
  */
 class Dashboard_Admin_Page extends Base_Admin_Page {
 
@@ -219,7 +219,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 		 *
 		 * @param string $tab The current tab.
 		 * @param \WP_Screen $screen The screen object.
-		 * @param \WP_Ultimo\Admin_Pages\Dashboard_Admin_Page $page WP Ultimo admin page instance.
+		 * @param \WP_Ultimo\Admin_Pages\Dashboard_Admin_Page $page WP Multisite WaaS admin page instance.
 		 */
 		do_action("wu_dashboard_{$this->tab}_widgets", $this->tab, $screen, $this);
 
@@ -230,7 +230,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 		 *
 		 * @param string $tab The current tab.
 		 * @param \WP_Screen $screen The screen object.
-		 * @param \WP_Ultimo\Admin_Pages\Dashboard_Admin_Page $page WP Ultimo admin page instance.
+		 * @param \WP_Ultimo\Admin_Pages\Dashboard_Admin_Page $page WP Multisite WaaS admin page instance.
 		 */
 		do_action('wu_dashboard_widgets', $this->tab, $screen, $this);
 
@@ -241,14 +241,14 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 					'id'    => 'your-dashboard',
 					'title' => __('Our dashboard', 'wp-ultimo'),
 					'text'  => array(
-						__('This is the <strong>WP Ultimo Dashboard</strong>, where you will find most of the important information you will need regarding your business\' performance.', 'wp-ultimo'),
+						__('This is the <strong>WP Multisite WaaS Dashboard</strong>, where you will find most of the important information you will need regarding your business\' performance.', 'wp-ultimo'),
 					),
 				),
 				array(
 					'id'       => 'documentation',
 					'title'    => __('Learning more', 'wp-ultimo'),
 					'text'     => array(
-						__('Most of the WP Ultimo admin pages will contain a link like this one at the top. These will link directly to the relevant knowledge base page on the WP Ultimo site.', 'wp-ultimo'),
+						__('Most of the WP Multisite WaaS admin pages will contain a link like this one at the top. These will link directly to the relevant knowledge base page on the WP Multisite WaaS site.', 'wp-ultimo'),
 					),
 					'attachTo' => array(
 						'element' => '#wp-ultimo-wrap > h1 > a:last-child',
@@ -554,7 +554,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return __('WP Ultimo', 'wp-ultimo');
+		return __('Multisite WaaS', 'wp-ultimo');
 
 	} // end get_menu_title;
 

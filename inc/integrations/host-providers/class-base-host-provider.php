@@ -542,7 +542,7 @@ abstract class Base_Host_Provider {
 	/**
 	 * Generates a define string for manual insertion on-to wp-config.php.
 	 *
-	 * This is useful when the user is not willing to let WP Ultimo inject the code,
+	 * This is useful when the user is not willing to let WP Multisite WaaS inject the code,
 	 * Or when the wp-config.php is not writable.
 	 *
 	 * @since 2.0.0
@@ -555,7 +555,7 @@ abstract class Base_Host_Provider {
 		 * Initializes the array with an opening comment.
 		 */
 		$content = array(
-			sprintf('// WP Ultimo - Domain Mapping - %s', $this->get_title()),
+			sprintf('// WP Multisite WaaS - Domain Mapping - %s', $this->get_title()),
 		);
 
 		/*
@@ -577,7 +577,7 @@ abstract class Base_Host_Provider {
 		/*
 		 * Adds the final line.
 		 */
-		$content[] = sprintf('// WP Ultimo - Domain Mapping - %s - End', $this->get_title());
+		$content[] = sprintf('// WP Multisite WaaS - Domain Mapping - %s - End', $this->get_title());
 
 		return implode(PHP_EOL, $content);
 

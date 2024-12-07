@@ -198,7 +198,7 @@ class Block_Editor_Widget_Manager {
 	} // end consolidate_callables;
 
 	/**
-	 * Registers the block so WP Ultimo can add it on the JS side.
+	 * Registers the block so WP Multisite WaaS can add it on the JS side.
 	 *
 	 * @since 2.0.0
 	 *

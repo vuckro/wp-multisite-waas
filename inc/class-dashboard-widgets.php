@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Dashboard Widgets
+ * WP Multisite WaaS Dashboard Widgets
  *
  * Log string messages to a file with a timestamp. Useful for debugging.
  *
@@ -15,7 +15,7 @@ namespace WP_Ultimo;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Dashboard Widgets
+ * WP Multisite WaaS Dashboard Widgets
  *
  * @since 2.0.0
  */
@@ -91,13 +91,13 @@ class Dashboard_Widgets {
 	 */
 	public function register_network_widgets() {
 
-		add_meta_box('wp-ultimo-setup', __('WP Ultimo - First Steps', 'wp-ultimo'), array($this, 'output_widget_first_steps'), $this->screen_id, 'normal', 'high');
+		add_meta_box('wp-ultimo-setup', __('WP Multisite WaaS - First Steps', 'wp-ultimo'), array($this, 'output_widget_first_steps'), $this->screen_id, 'normal', 'high');
 
-		add_meta_box('wp-ultimo-news', __('WP Ultimo - News & Discussions', 'wp-ultimo'), array($this, 'output_widget_news'), $this->screen_id, 'side', 'low');
+		add_meta_box('wp-ultimo-news', __('WP Multisite WaaS - News & Discussions', 'wp-ultimo'), array($this, 'output_widget_news'), $this->screen_id, 'side', 'low');
 
-		add_meta_box('wp-ultimo-summary', __('WP Ultimo - Summary', 'wp-ultimo'), array($this, 'output_widget_summary'), $this->screen_id, 'normal', 'high');
+		add_meta_box('wp-ultimo-summary', __('WP Multisite WaaS - Summary', 'wp-ultimo'), array($this, 'output_widget_summary'), $this->screen_id, 'normal', 'high');
 
-		add_meta_box('wp-ultimo-activity-stream', __('WP Ultimo - Activity Stream', 'wp-ultimo'), array($this, 'output_widget_activity_stream'), $this->screen_id, 'normal', 'high');
+		add_meta_box('wp-ultimo-activity-stream', __('WP Multisite WaaS - Activity Stream', 'wp-ultimo'), array($this, 'output_widget_activity_stream'), $this->screen_id, 'normal', 'high');
 
 		\WP_Ultimo\UI\Tours::get_instance()->create_tour('dashboard', array(
 			array(
@@ -105,7 +105,7 @@ class Dashboard_Widgets {
 				'title' => __('Welcome!', 'wp-ultimo'),
 				'text'  => array(
 					__('Welcome to your new network dashboard!', 'wp-ultimo'),
-					__('You will notice that <strong>WP Ultimo</strong> adds a couple of useful widgets here so you can keep an eye on how your network is doing.', 'wp-ultimo'),
+					__('You will notice that <strong>WP Multisite WaaS</strong> adds a couple of useful widgets here so you can keep an eye on how your network is doing.', 'wp-ultimo'),
 				),
 			),
 			array(
@@ -123,7 +123,7 @@ class Dashboard_Widgets {
 				'id'       => 'wp-ultimo-menu',
 				'title'    => __('Our home', 'wp-ultimo'),
 				'text'     => array(
-					__('You can always find WP Ultimo settings and other pages under our menu item, here on the Network-level dashboard. 😃', 'wp-ultimo'),
+					__('You can always find WP Multisite WaaS settings and other pages under our menu item, here on the Network-level dashboard. 😃', 'wp-ultimo'),
 				),
 				'attachTo' => array(
 					'element' => '.toplevel_page_wp-ultimo',

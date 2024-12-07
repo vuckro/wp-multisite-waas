@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Rollback Admin Page.
+ * WP Multisite WaaS Rollback Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -13,7 +13,7 @@ namespace WP_Ultimo\Admin_Pages;
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo Rollback Admin Page.
+ * WP Multisite WaaS Rollback Admin Page.
  */
 class Rollback_Admin_Page extends Base_Admin_Page {
 

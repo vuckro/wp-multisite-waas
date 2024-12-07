@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Runtime Exception
+ * WP Multisite WaaS Runtime Exception
  *
  * @package WP_Ultimo\Exception
  * @since   2.0.11

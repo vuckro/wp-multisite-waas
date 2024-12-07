@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo Webhook Edit/Add New Admin Page.
+ * WP Multisite WaaS Webhook Edit/Add New Admin Page.
  *
  * @package WP_Ultimo
  * @subpackage Admin_Pages
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 use \WP_Ultimo\Models\Webhook;
 
 /**
- * WP Ultimo Webhook Edit/Add New Admin Page.
+ * WP Multisite WaaS Webhook Edit/Add New Admin Page.
  */
 class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
