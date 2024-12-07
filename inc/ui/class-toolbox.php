@@ -9,10 +9,6 @@
 
 namespace WP_Ultimo\UI;
 
-use WP_Ultimo\Logger;
-use WP_Ultimo\UI\Base_Element;
-use WP_Ultimo\License;
-
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
@@ -39,7 +35,6 @@ class Toolbox {
 	/**
 	 * Checks if we should add the toolbox or not.
 	 *
-	 * @todo fix the check for license activation.
 	 * @since 2.0.0
 	 * @return boolean
 	 */
@@ -55,7 +50,7 @@ class Toolbox {
 
 		} // end if;
 
-		return apply_filters('wu_is_toolbox_enabled', wu_get_setting('enable_jumper', true) && License::get_instance()->allowed() && $can_see_toolbox && !is_network_admin());
+		return apply_filters('wu_is_toolbox_enabled', wu_get_setting('enable_jumper', true) && $can_see_toolbox && !is_network_admin());
 
 	} // end is_toolbox_enabled;
 

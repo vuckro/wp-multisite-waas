@@ -12,7 +12,6 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\License;
 use \WP_Ultimo\Installers\Migrator;
 use \WP_Ultimo\Installers\Core_Installer;
 use \WP_Ultimo\Installers\Default_Content_Installer;
@@ -75,22 +74,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	protected $supported_panels = array(
 		'network_admin_menu' => 'manage_network',
 	);
-
-	/**
-	 * The customer license, if it exists.
-	 *
-	 * @since 2.0.0
-	 * @var object
-	 */
-	public $license;
-
-	/**
-	 * The customer object, if it exists.
-	 *
-	 * @since 2.0.0
-	 * @var object
-	 */
-	public $customer;
 
 	/**
      * Is this an old install migrating.
@@ -201,10 +184,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	public function page_loaded() {
 
 		parent::page_loaded();
-
-		$this->license = \WP_Ultimo\License::get_instance()->get_license();
-
-		$this->customer = \WP_Ultimo\License::get_instance()->get_customer();
 
 		$this->set_settings();
 
@@ -354,8 +333,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_sections() {
 
-		$allowed = \WP_Ultimo\License::get_instance()->allowed();
-
 		$sections = array(
 			'welcome'      => array(
 				'title'       => __('Welcome', 'wp-ultimo'),
@@ -434,7 +411,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				$message_lines = array(
 					'Hi there,',
 					sprintf('My name is %s.', $user->display_name),
-					sprintf('License Key: %s', License::get_instance()->get_license_key()),
 					'I tried to migrate my network from version 1 to version 2, but was not able to do it successfully...',
 					'Here are the error messages I got:',
 					sprintf('```%s%s%s```', PHP_EOL, implode(PHP_EOL, $errors), PHP_EOL),
@@ -602,64 +578,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		return apply_filters('wu_setup_get_payment_settings', $fields);
 
 	} // end get_payment_settings;
-
-	/**
-	 * Shows the description and possible error.
-	 *
-	 * @since 2.0.0
-	 * @return string
-	 */
-	public function _desc_and_validation_error() {
-
-		ob_start();
-
-		echo __('Your license key starts with "sk_".', 'wp-ultimo');
-
-		$error = wu_request('error', false);
-
-		if ($error) :
-
-		// phpcs:disable ?>
-
-			<span class="wu-text-red-500 wu-ml-1">
-
-				&mdash; <?php echo is_string($error) ? $error : __('Invalid License Key.', 'wp-ultimo'); ?>
-
-			</span>
-
-<?php
-
-		endif;
-
-		return ob_get_clean();
-
-	} // end _desc_and_validation_error;
-
-	/**
-	 * Displays the block about the current license.
-	 *
-	 * @since 2.0.0
-	 * @return string
-	 */
-	public function _current_license() {
-
-		ob_start();
-
-		if (\WP_Ultimo\License::get_instance()->allowed()) : // phpcs:ignore ?>
-
-			<span class="wu-py-4 wu-px-6 wu-bg-green-100 wu-block wu-text-green-500">
-			<?php printf(__('Your license key was already validated, %1$s. To change your license, go to our <a href="%2$s" class="wu-no-underline">Settings Page</a>.', 'wp-ultimo'), $this->customer->first, wu_network_admin_url('wp-ultimo-settings')); ?>
-			</span>
-
-			<?php
-
-		// phpcs:enable
-
-		endif;
-
-		return ob_get_clean();
-
-	} // end _current_license;
 
 	/**
 	 * Render the installation steps table.

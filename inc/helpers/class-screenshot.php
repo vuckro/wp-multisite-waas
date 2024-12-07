@@ -29,14 +29,8 @@ class Screenshot {
      * @param string $domain Original site domain.
      */
 	public static function api_url($domain): string {
-
-		$domain = esc_url($domain);
-
-		$url = wu_with_license_key(sprintf('https://api.wpultimo.com/screenshot?url=%s', $domain));
-
-		return $url . '&ext=.png';
-
-	} // end api_url;
+		return 'https://image.thum.io/get/' . $domain;
+	}
  /**
   * Takes in a URL and creates it as an attachment.
   *

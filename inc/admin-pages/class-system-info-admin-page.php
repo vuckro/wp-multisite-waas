@@ -327,32 +327,6 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 
 		} // end foreach;
 
-		$array_license_data = array();
-		$customer           = \WP_Ultimo\License::get_instance()->get_customer();
-		$license            = \WP_Ultimo\License::get_instance()->get_license();
-
-		if (!empty($customer) && !empty($license)) {
-
-			$array_license_data = array(
-				'username'    => array(
-					'tooltip' => '',
-					'title'   => 'Username',
-					'value'   => vsprintf('%s %s', array( $customer->first, $customer->last ) ),
-				),
-				'email'       => array(
-					'tooltip' => '',
-					'title'   => 'E-mail',
-					'value'   => $customer->email,
-				),
-				'license-key' => array(
-					'tooltip' => '',
-					'title'   => 'License Key',
-					'value'   => substr_replace((string) $license->secret_key, str_repeat('*', 16), 4, 24),
-				),
-			);
-
-		} // end if;
-
 		return apply_filters('wu_system_info_data', array(
 			'WordPress and System Settings' => array(
 				'wp-ultimo-version'      => array(
@@ -591,8 +565,6 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 				$wpultimo_settings
 			),
 			'Defined Constants'             => $array_constants,
-
-			'License'                       => $array_license_data
 		));
 
 	} // end get_data;

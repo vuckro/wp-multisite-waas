@@ -135,19 +135,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 
 		parent::register_widgets();
 
-		wu_register_settings_side_panel('general', array(
-			'title'  => __('Add-ons', 'wp-ultimo'),
-			'render' => array($this, 'render_addons_side_panel'),
-		));
-
 		wu_register_settings_side_panel('login-and-registration', array(
 			'title'  => __('Checkout Forms', 'wp-ultimo'),
 			'render' => array($this, 'render_checkout_forms_side_panel'),
-		));
-
-		wu_register_settings_side_panel('integrations', array(
-			'title'  => __('Add-ons', 'wp-ultimo'),
-			'render' => array($this, 'render_addons_side_panel'),
 		));
 
 		wu_register_settings_side_panel('sites', array(
@@ -165,11 +155,6 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 			'render' => array($this, 'render_invoice_side_panel'),
 		));
 
-		wu_register_settings_side_panel('payment-gateways', array(
-			'title'  => __('Additional Gateways', 'wp-ultimo'),
-			'render' => array($this, 'render_gateways_addons_side_panel'),
-		));
-
 		wu_register_settings_side_panel('emails', array(
 			'title'  => __('System Emails', 'wp-ultimo'),
 			'render' => array($this, 'render_system_emails_side_panel'),
@@ -180,171 +165,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 			'render' => array($this, 'render_email_template_side_panel'),
 		));
 
-		wu_register_settings_side_panel('all', array(
-			'title'  => __('Your License', 'wp-ultimo'),
-			'render' => array($this, 'render_account_side_panel'),
-			'show'   => array(\WP_Ultimo\License::get_instance(), 'is_not_whitelabel'),
-		));
-
 	} // end register_widgets;
-
-	// phpcs:disable
-
-	/**
-	 * Renders the addons side panel
-	 *
-	 * @since 2.0.0
-	 * @return void
-	 */
-	public function render_addons_side_panel() { ?>
-
-		<div class="wu-widget-inset">
-
-			<div class="wu-p-4">
-
-				<span class="wu-text-gray-700 wu-font-bold wu-uppercase wu-tracking-wide wu-text-xs">
-					<?php _e('WP Multisite WaaS Add-ons', 'wp-ultimo'); ?>
-				</span>
-
-				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('WP Multisite WaaS Add-ons', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/add-ons.png'); ?>">
-				</div>
-
-				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
-					<?php _e('You can extend WP Multisite WaaS\'s functionality by installing one of our add-ons!', 'wp-ultimo'); ?>
-				</p>
-
-			</div>
-
-			<div class="wu-p-4 wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-t wu-border-gray-300">
-				<a class="button wu-w-full wu-text-center" href="<?php echo wu_network_admin_url('wp-ultimo-addons'); ?>">
-					<?php _e('Check our Add-ons &rarr;', 'wp-ultimo'); ?>
-				</a>
-			</div>
-
-		</div>
-
-		<?php
-
-	} // end render_addons_side_panel;
-
-	/**
-	 * Renders the account side panel
-	 *
-	 * @since 2.0.0
-	 * @return void
-	 */
-	public function render_account_side_panel() {
-
-		$customer = \WP_Ultimo\License::get_instance()->get_customer();
-
-		$license = \WP_Ultimo\License::get_instance()->get_license();
-
-		?>
-
-		<div class="wu-widget-inset">
-
-			<?php if (empty($customer) || empty($license)) : ?>
-
-				<div class="wu-p-4">
-
-					<span class="wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-block">
-						<?php _e('Your copy of WP Multisite WaaS is not currently active. That means you will not have access to plugin updates and add-ons.', 'wp-ultimo'); ?>
-					</span>
-
-				</div>
-
-				<div class="wu-p-4 wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-t wu-border-gray-300">
-					<a id="wu-activate-license-key-button" class="button wu-w-full wu-text-center wubox" title="<?php esc_attr_e('Activate WP Multisite WaaS', 'wp-ultimo'); ?>" href="<?php echo wu_get_form_url('license_activation'); ?>">
-						<?php _e('Activate WP Multisite WaaS &rarr;', 'wp-ultimo'); ?>
-					</a>
-				</div>
-
-			<?php else : ?>
-
-				<div class="wu-p-4">
-
-					<span class="wu-text-gray-700 wu-font-bold wu-uppercase wu-tracking-wide wu-text-xs">
-						<?php _e('Registered to', 'wp-ultimo'); ?>
-					</span>
-
-					<p class="wu-text-gray-700 wu-p-0 wu-m-0 wu-mt-2">
-						<?php printf('%s %s', $customer->first, $customer->last); ?>
-						<span class="wu-text-xs wu-text-gray-600 wu-block"><?php echo $customer->email; ?></span>
-						<span class="
-							wu-flex wu-items-center wu-justify-between							
-							wu-border wu-border-solid wu-border-gray-300 wu-rounded
-							wu-bg-gray-100 wu-text-gray-600
-							wu-py-1 wu-px-2
-							wu-mt-3
-							wu-text-xs
-						">
-							<?php echo substr_replace((string) $license->secret_key, str_repeat('*', 16), 4, 24); ?>
-							<a 
-								title="<?php esc_attr_e('Deactivate WP Multisite WaaS License', 'wp-ultimo'); ?>"
-								class="dashicons dashicons-trash wu-text-red-600 wubox"
-								href="<?php echo wu_get_form_url('license_deactivation'); ?>"
-							></a>
-						</span>
-					</p>
-
-				</div>
-
-				<!-- <?php if (current_user_can('wu_license')) : ?>
-
-					<div class="wu-p-4 wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-t wu-border-gray-300">
-						<a id="wu-manage-account-button" class="button wu-w-full wu-text-center wubox" href="<?php echo wu_get_form_url('license_activation'); ?>">
-							<?php _e('Manage your Account &rarr;', 'wp-ultimo'); ?>
-						</a>
-					</div>
-
-				<?php endif; ?> -->
-
-			<?php endif; ?>
-
-		</div>
-
-		<?php
-
-	} // end render_account_side_panel;
-
-	/**
-	 * Renders the addons side panel
-	 *
-	 * @since 2.0.0
-	 * @return void
-	 */
-	public function render_gateways_addons_side_panel() { ?>
-
-		<div class="wu-widget-inset">
-
-			<div class="wu-p-4">
-
-				<span class="wu-text-gray-700 wu-font-bold wu-uppercase wu-tracking-wide wu-text-xs">
-					<?php _e('Accept Payments wherever you are', 'wp-ultimo'); ?>
-				</span>
-
-				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Accept payments wherever you are', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/gateway-add-ons.png'); ?>">
-				</div>
-
-				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
-					<?php _e('We are constantly adding support to new payment gateways that can be installed as add-ons.', 'wp-ultimo'); ?>
-				</p>
-
-			</div>
-
-			<div class="wu-p-4 wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-t wu-border-gray-300">
-				<a class="button wu-w-full wu-text-center" href="<?php echo wu_network_admin_url('wp-ultimo-addons', array('tab' => 'gateways')); ?>">
-					<?php _e('Check our supported Gateways &rarr;', 'wp-ultimo'); ?>
-				</a>
-			</div>
-
-		</div>
-
-		<?php
-
-	} // end render_gateways_addons_side_panel;
 
 	/**
 	 * Renders the addons side panel

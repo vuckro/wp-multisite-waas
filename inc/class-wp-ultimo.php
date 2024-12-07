@@ -116,18 +116,6 @@ final class WP_Ultimo {
 		 */
 		require_once wu_path('inc/deprecated/deprecated.php');
 
-		/**
-		 * Runs a number of checks and instructs users coming from the previous
-		 * version about what steps they need to take to finish the upgrade to version 2.
-		 *
-		 * - Links to the installer, if version 2 was not properly activated;
-		 * - Unloads incompatible add-ons, offering explanations when available;
-		 * - Re-adds the updater for add-ons that have new versions available.
-		 *
-		 * @since 2.0.5
-		 */
-		\WP_Ultimo\Unsupported::init();
-
 		/*
 		 * The only core components we need to load
 		 * before every other public api are the options
@@ -156,11 +144,6 @@ final class WP_Ultimo {
 		 * Loads the WP Multisite WaaS settings helper class.
 		 */
 		$this->settings = WP_Ultimo\Settings::get_instance();
-
-		/*
-		 * Rollbacks Support
-		 */
-		\WP_Ultimo\Rollback\Rollback::get_instance();
 
 		/*
 		 * Check if the WP Multisite WaaS requirements are present.
@@ -319,7 +302,6 @@ final class WP_Ultimo {
 		require_once wu_path('inc/functions/sort.php');
 		require_once wu_path('inc/functions/debug.php');
 		require_once wu_path('inc/functions/reflection.php');
-		require_once wu_path('inc/functions/licensing.php');
 		require_once wu_path('inc/functions/scheduler.php');
 		require_once wu_path('inc/functions/session.php');
 		require_once wu_path('inc/functions/documentation.php');
@@ -784,11 +766,6 @@ final class WP_Ultimo {
 		new WP_Ultimo\Admin_Pages\Webhook_Edit_Admin_Page();
 
 		/*
-		 * Moves the addon pages to the bottom
-		 */
-		new WP_Ultimo\Admin_Pages\Addons_Admin_Page();
-
-		/*
 		 * Loads the Jobs Pages
 		 */
 		new WP_Ultimo\Admin_Pages\Jobs_List_Admin_Page();
@@ -937,11 +914,6 @@ final class WP_Ultimo {
 		 * Loads the Cache manager.
 		 */
 		WP_Ultimo\Managers\Cache_Manager::get_instance();
-
-		/*
-		 * License handler
-		 */
-		WP_Ultimo\License::get_instance();
 
 		/**
 		 * Loads views overrides

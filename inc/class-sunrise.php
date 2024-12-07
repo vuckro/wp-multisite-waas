@@ -178,11 +178,6 @@ class Sunrise {
 			\WP_Ultimo\Sunrise::load_dependencies();
 
 			/*
-			 * Handles WP Multisite WaaS core updates
-			 */
-			\WP_Ultimo\Core_Updates::get_instance();
-
-			/*
 			 * Adds backwards compatibility code for the domain mapping.
 			 */
 			\WP_Ultimo\Compat\Domain_Mapping_Compat::get_instance();

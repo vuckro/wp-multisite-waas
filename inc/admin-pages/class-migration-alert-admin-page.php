@@ -12,12 +12,6 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\License;
-use \WP_Ultimo\Installers\Migrator;
-use \WP_Ultimo\Installers\Core_Installer;
-use \WP_Ultimo\Installers\Default_Content_Installer;
-use \WP_Ultimo\Logger;
-
 /**
  * WP Multisite WaaS Dashboard Admin Page.
  */

@@ -10,8 +10,6 @@
 namespace WP_Ultimo\UI;
 
 use WP_Ultimo\Logger;
-use WP_Ultimo\UI\Base_Element;
-use WP_Ultimo\License;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -62,7 +60,7 @@ class Jumper {
 	 */
 	protected function is_jumper_enabled() {
 
-		return apply_filters('wu_is_jumper_enabled', wu_get_setting('enable_jumper', true) && License::get_instance()->allowed() && current_user_can('manage_network'));
+		return apply_filters('wu_is_jumper_enabled', wu_get_setting('enable_jumper', true) && current_user_can('manage_network'));
 
 	} // end is_jumper_enabled;
 
