@@ -93,8 +93,6 @@ class Dashboard_Widgets {
 
 		add_meta_box('wp-ultimo-setup', __('WP Multisite WaaS - First Steps', 'wp-ultimo'), array($this, 'output_widget_first_steps'), $this->screen_id, 'normal', 'high');
 
-		add_meta_box('wp-ultimo-news', __('WP Multisite WaaS - News & Discussions', 'wp-ultimo'), array($this, 'output_widget_news'), $this->screen_id, 'side', 'low');
-
 		add_meta_box('wp-ultimo-summary', __('WP Multisite WaaS - Summary', 'wp-ultimo'), array($this, 'output_widget_summary'), $this->screen_id, 'normal', 'high');
 
 		add_meta_box('wp-ultimo-activity-stream', __('WP Multisite WaaS - Activity Stream', 'wp-ultimo'), array($this, 'output_widget_activity_stream'), $this->screen_id, 'normal', 'high');
@@ -230,19 +228,6 @@ class Dashboard_Widgets {
 		));
 
 	} // end output_widget_first_steps;
-
-	/**
-	 * Widget News Output.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return void
-	 */
-	public function output_widget_news() {
-
-		wu_get_template('dashboard-widgets/news');
-
-	} // end output_widget_news;
 
 	/**
 	 * Widget Activity Stream Output.

@@ -241,19 +241,6 @@ class Top_Admin_Nav_Menu {
 
 			$wp_admin_bar->add_node($settings_tab);
 
-			$addons_item = array(
-				'id'     => 'wp-ultimo-settings-addons',
-				'parent' => 'wp-ultimo-settings-group',
-				'title'  => __('Add-ons', 'wp-ultimo'),
-				'href'   => wu_network_admin_url('wp-ultimo-addons'),
-				'meta'   => array(
-					'class' => 'wp-ultimo-top-menu ab-sub-secondary',
-					'title' => __('Go to the add-ons page', 'wp-ultimo'),
-				),
-			);
-
-			$wp_admin_bar->add_node($addons_item);
-
 		} // end foreach;
 
 	} // end add_top_bar_menus;
