@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Ultimo main class.
+ * WP Multisite WaaS main class.
  *
  * @package WP_Ultimo
  * @since 2.0.0
@@ -10,7 +10,7 @@
 defined('ABSPATH') || exit;
 
 /**
- * WP Ultimo main class
+ * WP Multisite WaaS main class
  *
  * This class instantiates our dependencies and load the things
  * our plugin needs to run.
@@ -39,16 +39,16 @@ final class WP_Ultimo {
 	public $version = '2.3.2';
 
 	/**
-	 * Tables registered by WP Ultimo.
+	 * Tables registered by WP Multisite WaaS.
 	 *
 	 * @var array
 	 */
 	public $tables = array();
 
 	/**
-	 * Checks if WP Ultimo was loaded or not.
+	 * Checks if WP Multisite WaaS was loaded or not.
 	 *
-	 * This is set to true when all the WP Ultimo requirements are met.
+	 * This is set to true when all the WP Multisite WaaS requirements are met.
 	 *
 	 * @since 2.0.0
 	 * @var boolean
@@ -153,7 +153,7 @@ final class WP_Ultimo {
 		new WP_Ultimo\Admin_Pages\Setup_Wizard_Admin_Page();
 
 		/*
-		 * Loads the WP Ultimo settings helper class.
+		 * Loads the WP Multisite WaaS settings helper class.
 		 */
 		$this->settings = WP_Ultimo\Settings::get_instance();
 
@@ -163,7 +163,7 @@ final class WP_Ultimo {
 		\WP_Ultimo\Rollback\Rollback::get_instance();
 
 		/*
-		 * Check if the WP Ultimo requirements are present.
+		 * Check if the WP Multisite WaaS requirements are present.
 		 *
 		 * Everything we need to run our setup install needs top be loaded before this
 		 * and have no dependencies outside of the classes loaded so far.
@@ -182,12 +182,12 @@ final class WP_Ultimo {
 		$this->currents = WP_Ultimo\Current::get_instance();
 
 		/*
-		 * Loads the WP Ultimo admin notices helper class.
+		 * Loads the WP Multisite WaaS admin notices helper class.
 		 */
 		$this->notices = WP_Ultimo\Admin_Notices::get_instance();
 
 		/*
-		 * Loads the WP Ultimo scripts handler
+		 * Loads the WP Multisite WaaS scripts handler
 		 */
 		$this->scripts = WP_Ultimo\Scripts::get_instance();
 
@@ -219,13 +219,18 @@ final class WP_Ultimo {
 		 *
 		 * @since 2.0.0
 		 */
-		do_action('wp_ultimo_load');
+		add_action('init', function () {
+			do_action('wp_ultimo_load');
+		});
 
-		/*
-		 * Loads admin pages
-		 * @todo: move this to a manager in the future?
-		 */
-		$this->load_admin_pages();
+		if ( defined( 'WP_ADMIN' ) && WP_ADMIN ) {
+			/*
+			 * Loads admin pages
+			 * @todo: move this to a manager in the future?
+			 */
+			$this->load_admin_pages();
+		}
+
 
 	} // end init;
 
@@ -272,7 +277,7 @@ final class WP_Ultimo {
 	 * Loads public apis that should be on the global scope
 	 *
 	 * This method is responsible for loading and exposing public apis that
-	 * plugin developers will use when creating extensions for WP Ultimo.
+	 * plugin developers will use when creating extensions for WP Multisite WaaS.
 	 * Things like render functions, helper methods, etc.
 	 *
 	 * @since 2.0.0
@@ -382,7 +387,7 @@ final class WP_Ultimo {
 		 * Checkout and Registration.
 		 *
 		 * Loads functions that interact with the checkout
-		 * and the registration elements of WP Ultimo.
+		 * and the registration elements of WP Multisite WaaS.
 		 *
 		 * @see wu_is_registration_page()
 		 */
@@ -443,7 +448,7 @@ final class WP_Ultimo {
 	} // end load_public_apis;
 
 	/**
-	 * Load extra the WP Ultimo elements
+	 * Load extra the WP Multisite WaaS elements
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -577,7 +582,9 @@ final class WP_Ultimo {
 
 		\WP_Ultimo\Checkout\Checkout_Pages::get_instance();
 
-		\WP_Ultimo\Checkout\Legacy_Checkout::get_instance();
+		add_action('init', function() {
+			\WP_Ultimo\Checkout\Legacy_Checkout::get_instance();
+		});
 
 		/*
 		 * Dashboard Statistics
@@ -627,8 +634,8 @@ final class WP_Ultimo {
 		/*
 		 * Adds support to multiple accounts.
 		 *
-		 * This used to be an add-on on WP Ultimo 1.X
-		 * Now it is native, but needs to be activated on WP Ultimo settings.
+		 * This used to be an add-on on WP Multisite WaaS 1.X
+		 * Now it is native, but needs to be activated on WP Multisite WaaS settings.
 		 */
 		\WP_Ultimo\Compat\Multiple_Accounts_Compat::get_instance();
 
@@ -638,7 +645,7 @@ final class WP_Ultimo {
 		\WP_Ultimo\Dashboard_Widgets::get_instance();
 
 		/*
-		 *  Admin Themes Compatibility for WP Ultimo
+		 *  Admin Themes Compatibility for WP Multisite WaaS
 		 */
 		\WP_Ultimo\Admin_Themes_Compatibility::get_instance();
 
@@ -650,7 +657,7 @@ final class WP_Ultimo {
 	} // end load_extra_components;
 
 	/**
-	 * Load the WP Ultimo Admin Pages.
+	 * Load the WP Multisite WaaS Admin Pages.
 	 *
 	 * @since 2.0.0
 	 * @return void
@@ -820,7 +827,7 @@ final class WP_Ultimo {
 	} // end load_admin_pages;
 
 	/**
-	 * Load extra the WP Ultimo managers.
+	 * Load extra the WP Multisite WaaS managers.
 	 *
 	 * @since 2.0.0
 	 * @return void
