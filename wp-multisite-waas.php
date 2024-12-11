@@ -35,25 +35,27 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-if (!defined('WP_ULTIMO_PLUGIN_FILE')) {
-	define('WP_ULTIMO_PLUGIN_FILE', __FILE__);
-} elseif ( WP_ULTIMO_PLUGIN_FILE !== __FILE__) {
-	return; // Different plugin loaded.
+if ( defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING ) {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
+		// old plugin still installed and active with the old name and path
+		// and the user is trying to activate this plugin. We must return here, or we'll get name conflicts.
+		return;
+	}
+
 }
 
-
 // Check if old name is installed and we should upgrade.
-if ( function_exists('is_plugin_active') && is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
+if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
 	deactivate_plugins( 'wp-ultimo/wp-ultimo.php', true, true);
-	add_action(
-		'admin_notices',
-		function() {
-			echo '<div class="error"><p>';
-			echo esc_html__( 'The WP Multisite WaaS plugin has been deactivated as it has been renamed WP Multisite WaaS', 'wp-ultimo' );
-			echo '</p></div>';
-		}
-	);
-	if ( defined('SUNRISE' && SUNRISE) && file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
+
+	wp_admin_notice( __( 'The WP Ultimo plugin has been deactivated because it conflicts with WP Multisite WaaS', 'wp-ultimo' ),  array(
+		'id'                 => 'message',
+		'additional_classes' => array( 'updated' ),
+		'dismissible'        => true,
+	) );
+	if ( defined('SUNRISE') && SUNRISE && file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
 		$possible_sunrises = array(
 			WP_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
 			WPMU_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
@@ -70,13 +72,14 @@ if ( function_exists('is_plugin_active') && is_plugin_active( 'wp-ultimo/wp-ulti
 			if ( ! $copy_results ) {
 				continue;
 			}
-
-			wu_log_add( 'sunrise', __( 'Sunrise upgrade attempt succeeded.', 'wp-ultimo' ) );
-
 			break;
 		}
 		return;
 	}
+}
+
+if (!defined('WP_ULTIMO_PLUGIN_FILE')) {
+	define('WP_ULTIMO_PLUGIN_FILE', __FILE__);
 }
 
 /**
@@ -102,20 +105,21 @@ WP_Ultimo\Autoloader::init();
  */
 WP_Ultimo\Hooks::init();
 
-/**
- * Initializes the WP Ultimo class
- *
- * This function returns the WP_Ultimo class singleton, and
- * should be used to avoid declaring globals.
- *
- * @since 2.0.0
- * @return WP_Ultimo
- */
-function WP_Ultimo() { // phpcs:ignore
+if ( ! function_exists('WP_Ultimo')) {
+	/**
+	 * Initializes the WP Ultimo class
+	 *
+	 * This function returns the WP_Ultimo class singleton, and
+	 * should be used to avoid declaring globals.
+	 *
+	 * @return WP_Ultimo
+	 * @since 2.0.0
+	 */
+	function WP_Ultimo() { // phpcs:ignore
 
-	return WP_Ultimo::get_instance();
+		return WP_Ultimo::get_instance();
 
-} // end WP_Ultimo;
-
+	} // end WP_Ultimo;
+}
 // Initialize and set to global for back-compat
 $GLOBALS['WP_Ultimo'] = WP_Ultimo();
