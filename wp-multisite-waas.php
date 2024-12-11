@@ -55,7 +55,7 @@ if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
 		'additional_classes' => array( 'updated' ),
 		'dismissible'        => true,
 	) );
-	if ( defined('SUNRISE') && SUNRISE && file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
+	if ( file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
 		$possible_sunrises = array(
 			WP_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
 			WPMU_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
