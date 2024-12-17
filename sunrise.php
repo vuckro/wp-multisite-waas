@@ -3,7 +3,7 @@
 /**
  * WP Multisite WaaS Sunrise
  * Plugin URI: https://wpmultisitewaas.org
- * Version: 2.0.0.7
+ * Version: 2.0.0.8
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -25,7 +25,7 @@
 
 defined('ABSPATH') || exit;
 
-define('WP_ULTIMO_SUNRISE_VERSION', '2.0.0.7');
+define('WP_ULTIMO_SUNRISE_VERSION', '2.0.0.8');
 
 $wu_sunrise = defined('WP_PLUGIN_DIR')
 	? WP_PLUGIN_DIR . '/wp-multisite-waas/inc/class-sunrise.php'

@@ -26,7 +26,7 @@ class Sunrise {
 	 *
 	 * @var string
 	 */
-	static $version = '2.0.0.7';
+	static $version = '2.0.0.8';
 
 	/**
 	 * Keeps the sunrise meta cached after the first read.
