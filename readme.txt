@@ -1,7 +1,7 @@
 === WP Multisite WaaS ===
 Requires at least: 5.3
 Requires PHP: 7.4.30
-Tested up to: 6.4.1
+Tested up to: 6.7.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Contributors: aanduque, superdav42 
@@ -27,7 +27,9 @@ We recommend running this in a staging environment before updating your producti
 == Changelog ==
 Version [2.3.3] - Not yet released 
 
-- Renamed to WP Multisite WaaS 
+- Improved: Plugin renamed to WP Multisite WaaS
+- Removed: Enforcement of paid license
+- Fixed: Incompatibilities with WordPress 6.7 and i18n timing
 
 Version [2.3.2] - Released on 2023-12-05
 
