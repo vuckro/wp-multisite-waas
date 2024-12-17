@@ -18,6 +18,9 @@
     "GPL-3.0-or-later"
   ],
   "type": "wordpress-plugin",
+  "require": {
+    "php": ">=7.4.30"
+  },
   "require-dev": {
     "composer/installers": "1.9.0",
     "phpunit/phpunit": "^11.5.0",
@@ -34,6 +37,7 @@
   "archive": {
     "exclude": [
       "tests",
+      "bin",
       "phpunit.xml.dist",
       "composer.lock",
       ".phpcs.xml.dist",
