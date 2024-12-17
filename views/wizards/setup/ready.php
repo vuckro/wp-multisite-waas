@@ -16,20 +16,23 @@
     </h1>
 
     <p class="wu-text-lg wu-text-gray-600 wu-my-4">
-      <?php _e('We told you this was going to be a walk in the park!', 'wp-ultimo'); ?>
+      <?php _e('WP Multisite WaaS would not be possible without the work of <a href="https://wpultimo.com/" target="_blank">Arindo Duque</a> and <a href="https://nextpress.co" target="_blank">NextPress</a>.', 'wp-ultimo'); ?>
+    </p>
+
+    <p class="wu-text-lg wu-text-gray-600 wu-my-4">
+      <?php _e('WP Multisite WaaS is maintained by volunteer open source developers. Please consider sponsoring the project on <a href="https://github.com/superdav42/wp-multisite-waas" target="_blank">GitHub</a>', 'wp-ultimo');?>
+    </p>
+
+    <p class="wu-text-lg wu-text-gray-600 wu-my-4">
+      <?php _e('Paid support is available. Go to <a href="https://wpmultisitewaas.org/support" target="_blank">The Support Page</a> to find an expert who can assist in setting up WP Multisite WaaS or custom development.', 'wp-ultimo');?>
     </p>
 
     <p class="wu-text-lg wu-text-gray-600 wu-my-4">
       <?php _e('You now have everything you need in place to start building your Website as a Service business!', 'wp-ultimo'); ?>
     </p>
 
-    <p class="wu-text-lg wu-text-gray-600 wu-my-4">
-      <?php _e('Don\'t worry! We\'ll guide you through the first steps.', 'wp-ultimo'); ?>
-    </p>
-
     <p>
-      <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://wpultimo.com" data-text="<?php echo esc_attr('I just created my own premium WordPress site network with #wpultimo'); ?>" data-via="WPUltimo" data-size="large">Tell the World!</a>
-
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://wpmultisitewaas.org" data-text="<?php echo esc_attr('I just created my own premium WordPress site network with #wpmultisitewaas'); ?>" data-via="WPUltimo" data-size="large">Tell the World!</a>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </p>
 
@@ -42,8 +45,8 @@
 
   <span class="wu-float-right">
 
-    <a href="<?php echo esc_url(wu_network_admin_url('wp-ultimo-about')); ?>" class="button button-primary button-large">
-     <?php _e('Finish!', 'wp-ultimo'); ?>
+    <a href="<?php echo esc_url(network_admin_url('index.php')); ?>" class="button button-primary button-large">
+     <?php _e('Thanks!', 'wp-ultimo'); ?>
     </a>
 
   </span>
