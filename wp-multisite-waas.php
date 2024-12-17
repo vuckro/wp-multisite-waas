@@ -5,8 +5,8 @@
  * Plugin URI: https://wpmultisitewaas.org
  * Text Domain: wp-ultimo
  * Version: 2.3.3
- * Author: Arindo Duque & NextPress
- * Author URI: https://nextpress.co/
+ * Author: WP Multisite Community
+ * Author URI: https://github.com/superdav42/wp-multisite-waas
  * Network: true
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -39,40 +39,12 @@ if ( defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING ) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
 		// old plugin still installed and active with the old name and path
-		// and the user is trying to activate this plugin. We must return here, or we'll get name conflicts.
-		return;
-	}
+		// and the user is trying to activate this plugin. So deactivate and return.
+		deactivate_plugins( 'wp-ultimo/wp-ultimo.php', true, true);
 
-}
-
-// Check if old name is installed and we should upgrade.
-require_once ABSPATH . 'wp-admin/includes/plugin.php';
-if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
-	deactivate_plugins( 'wp-ultimo/wp-ultimo.php', true, true);
-
-	wp_admin_notice( __( 'The WP Ultimo plugin has been deactivated because it conflicts with WP Multisite WaaS', 'wp-ultimo' ),  array(
-		'id'                 => 'message',
-		'additional_classes' => array( 'updated' ),
-		'dismissible'        => true,
-	) );
-	if ( file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
-		$possible_sunrises = array(
-			WP_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
-			WPMU_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
-		);
-
-		foreach ( $possible_sunrises as $new_file ) {
-
-			if ( ! file_exists( $new_file ) ) {
-				continue;
-			}
-
-			$copy_results = @copy( $new_file, WP_CONTENT_DIR . '/sunrise.php' ); // phpcs:ignore
-
-			if ( ! $copy_results ) {
-				continue;
-			}
-			break;
+		if ( file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
+			// We must override the old sunrise file or more name conflicts will occur.
+			copy(__DIR__ . '/sunrise.php', WP_CONTENT_DIR . '/sunrise.php');
 		}
 		return;
 	}
