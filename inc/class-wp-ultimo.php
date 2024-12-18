@@ -206,13 +206,11 @@ final class WP_Ultimo {
 			do_action('wp_ultimo_load');
 		});
 
-		if ( defined( 'WP_ADMIN' ) && WP_ADMIN ) {
-			/*
-			 * Loads admin pages
-			 * @todo: move this to a manager in the future?
-			 */
-			$this->load_admin_pages();
-		}
+		/*
+		 * Loads admin pages
+		 * @todo: move this to a manager in the future?
+		 */
+		$this->load_admin_pages();
 
 
 	} // end init;
