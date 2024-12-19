@@ -40,8 +40,8 @@
 
 /* stylelint-disable */
 .dashicons-wu-wp-ultimo::before {
-  content: "\e900";
-  transform: scale(1.4);
+  font-family: "dashicons" !important; /* stylelint-disable-line */
+  content: "\f325";
 }
 
 .dashicons-wu-alert-circle::before {
@@ -1689,9 +1689,8 @@
 }
 
 li#wp-admin-bar-wp-ultimo > a.ab-item::before {
-  font-family: dashicons-wu, sans-serif;
-  content: "\e900";
-  transform: scale(1.2);
+  font-family: dashicons, sans-serif;
+    content: "\f325";
   top: 2px;
 }
 
