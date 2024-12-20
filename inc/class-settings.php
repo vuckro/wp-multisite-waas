@@ -49,6 +49,11 @@ class Settings {
 	private $sections = null;
 
 	/**
+	 * @var bool
+	 */
+	private bool $saving = false;
+
+	/**
 	 * Runs on singleton instantiation.
 	 *
 	 * @since 2.0.0
@@ -160,8 +165,12 @@ class Settings {
 		} // end if;
 
 		if ($this->settings === false || empty($this->settings)) {
-
-			$this->settings = $this->save_settings(array(), true);
+			if (! $this->saving) {
+				$this->saving   = true;
+				$this->settings = $this->save_settings( array(), true );
+			} else {
+				return array();
+			}
 
 		} // end if;
 
