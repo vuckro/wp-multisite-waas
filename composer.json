@@ -43,7 +43,9 @@
       ".phpcs.xml.dist",
       ".circleci",
       "vendor",
-      "addons"
+      "addons",
+      ".idea",
+      "node_modules"
     ]
   }
 }
