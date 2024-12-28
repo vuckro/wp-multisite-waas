@@ -237,9 +237,11 @@ abstract class Base_Element {
 
 		add_action('wu_element_preview', array($this, 'setup_preview'));
 
-		add_action('init', function () {
+		// Init should be the correct time to call this to avoid the deprecated notice from I18N.
+		// But it doesn't work for some reason, fix later.
+//		add_action('init', function () {
 			do_action('wu_element_loaded', $this);
-		} );
+//		} );
 
 		if ($this->public) {
 
