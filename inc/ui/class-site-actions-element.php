@@ -570,7 +570,7 @@ class Site_Actions_Element extends Base_Element {
 	 *
 	 * @since 2.0.21
 	 *
-	 * @return void|WP_Error Void or WP_Error.
+	 * @return void|\WP_Error Void or WP_Error.
 	 */
 	public function handle_delete_site() {
 

@@ -954,7 +954,7 @@ class Checkout {
 
 			wu_maybe_log_error($e);
 
-			return new WP_Error('exception', $e->getMessage(), $e->getTrace());
+			return new \WP_Error('exception', $e->getMessage(), $e->getTrace());
 
 		} // end try;
 

@@ -586,7 +586,7 @@ class Domain extends Base_Model {
 	 * @since 2.0.0
 	 *
 	 * @param int|stdClass $site Site ID, or site object from {@see get_blog_details}.
-	 * @return Domain|Domain[]|WP_Error|false Mapping on success, WP_Error if error occurred, or false if no mapping found.
+	 * @return Domain|Domain[]|\WP_Error|false Mapping on success, WP_Error if error occurred, or false if no mapping found.
 	 */
 	public static function get_by_site($site) {
 

@@ -2094,7 +2094,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 * @param Error\Base $e The stripe error object.
 	 *
 	 * @since 2.0.0
-	 * @return WP_Error
+	 * @return \WP_Error
 	 */
 	protected function get_stripe_error($e) {
 
@@ -2937,7 +2937,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 *                    }
 	 *
 	 * @since 2.0.0
-	 * @return string|WP_Error Plan ID on success or WP_Error on failure.
+	 * @return string|\WP_Error Plan ID on success or WP_Error on failure.
 	 */
 	public function maybe_create_plan($args) {
 
@@ -3066,7 +3066,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 *
 	 * @param string $name Product name.
 	 * @param string $id   Optional. Product ID. Automatically generated based on arguments.
-	 * @return string|WP_Error Product ID on success or WP_Error on failure.
+	 * @return string|\WP_Error Product ID on success or WP_Error on failure.
 	 */
 	private function maybe_create_product($name, $id = '') {
 
@@ -3166,7 +3166,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 * @param int    $duration      Duration.
 	 * @param string $duration_unit Duration unit.
 	 * @param string $tax_behavior  Tax behavior.
-	 * @return string|WP_Error Price ID on success or WP_Error on failure.
+	 * @return string|\WP_Error Price ID on success or WP_Error on failure.
 	 */
 	function maybe_create_price($title, $amount, $currency, $quantity = 1, $duration = false, $duration_unit = false, $tax_behavior = '') {
 

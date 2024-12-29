@@ -109,7 +109,7 @@ class Site_Duplicator {
 		if (is_wp_error($duplicate_site_id)) {
 
 			// translators: %s id the template site id and %s is the error message returned.
-			$message = sprintf(__('Attempt to override site %1$d with data from site %2$d failed: %3$s', 'wp-ultimo'), $from_site_id, $to_site_id, $duplicate_site->get_error_message());
+			$message = sprintf(__('Attempt to override site %1$d with data from site %2$d failed: %3$s', 'wp-ultimo'), $from_site_id, $to_site_id, $duplicate_site_id->get_error_message());
 
 			wu_log_add('site-duplication', $message, LogLevel::ERROR);
 
@@ -160,7 +160,7 @@ class Site_Duplicator {
 	 *                    - public       If the (new or not) site should be public. Defaults to true.
 	 *                    - domain       The domain of the new site.
 	 *                    - network_id   The network ID to allow for multi-network support.
-	 * @return int|WP_Error The Site ID.
+	 * @return int|\WP_Error The Site ID.
 	 */
 	protected static function process_duplication($args) {
 

@@ -278,7 +278,7 @@ class Template_Switching_Element extends Base_Element {
 	 *
 	 * @since 2.0.4
 	 *
-	 * @return json|WP_Error Switch template response.
+	 * @return json|\WP_Error Switch template response.
 	 */
 	public function switch_template() {
 

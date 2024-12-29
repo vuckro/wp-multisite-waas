@@ -146,7 +146,7 @@ class Validator {
 	 * Returns a WP_Error object containing all validation errors.
 	 *
 	 * @since 2.0.0
-	 * @return WP_Error
+	 * @return \WP_Error
 	 */
 	public function get_errors() {
 

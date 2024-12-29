@@ -553,7 +553,7 @@ class Email_Manager extends Base_Manager {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Error $error The error with the mailer.
+	 * @param \WP_Error $error The error with the mailer.
 	 * @return void.
 	 */
 	public function log_mailer_failure($error) {

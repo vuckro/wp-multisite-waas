@@ -87,8 +87,8 @@ class API {
 	 *
 	 * @since 2.1.2
 	 *
-	 * @param WP_Error|null|bool $result Error from another authentication handler, null if we should handle it, or another value if not.
-	 * @return WP_Error|null|bool The current filter value or true if we should handle it.
+	 * @param \WP_Error|null|bool $result Error from another authentication handler, null if we should handle it, or another value if not.
+	 * @return \WP_Error|null|bool The current filter value or true if we should handle it.
 	 */
 	public function maybe_bypass_wp_auth($result) {
 
