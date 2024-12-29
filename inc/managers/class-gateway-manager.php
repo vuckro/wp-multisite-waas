@@ -85,7 +85,7 @@ class Gateway_Manager extends Base_Manager {
 		 */
 		add_action('init', function () {
 			do_action('wu_register_gateways');
-		});
+		}, 22);
 
 		/*
 		 * Adds the Gateway selection fields
@@ -531,9 +531,9 @@ class Gateway_Manager extends Base_Manager {
 
 		add_action('wu_checkout_scripts', array($gateway, 'register_scripts'));
 
-		add_action('init', array($gateway, 'hooks'));
+        $gateway->hooks();
+		add_action('wu_settings_payment_gateways', array($gateway, 'settings'));
 
-		add_action('init', array($gateway, 'settings'));
 
 		add_action("wu_{$gateway_id}_process_webhooks", array($gateway, 'process_webhooks'));
 
