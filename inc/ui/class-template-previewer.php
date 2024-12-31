@@ -245,7 +245,7 @@ class Template_Previewer {
 		/**
 		 * Check if this is a site template
 		 */
-		if ($selected_template->get_type() !== Site_Type::SITE_TEMPLATE && !wu_request('customizer')) {
+		if (!$selected_template || ($selected_template->get_type() !== Site_Type::SITE_TEMPLATE && !wu_request('customizer'))) {
 
 			wp_die(__('This template is not available', 'wp-ultimo'));
 
