@@ -202,9 +202,7 @@ final class WP_Ultimo {
 		 *
 		 * @since 2.0.0
 		 */
-		add_action('init', function () {
-			do_action('wp_ultimo_load');
-		});
+		do_action('wp_ultimo_load');
 
 		/*
 		 * Loads admin pages
