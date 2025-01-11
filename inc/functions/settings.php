@@ -88,9 +88,9 @@ function wu_register_settings_section($section_slug, $atts) {
  * @param array  $atts Field attributes such as title, description, tooltip, default value, etc.
  * @return void
  */
-function wu_register_settings_field($section_slug, $field_slug, $atts) {
+function wu_register_settings_field($section_slug, $field_slug, $atts, $priority = 10) {
 
-	WP_Ultimo()->settings->add_field($section_slug, $field_slug, $atts);
+	WP_Ultimo()->settings->add_field($section_slug, $field_slug, $atts, $priority);
 
 } // end wu_register_settings_field;
 

@@ -412,7 +412,7 @@ class Settings {
 	 * @param array  $atts Field attributes such as title, description, tooltip, default value, etc.
 	 * @return void
 	 */
-	public function add_field($section_slug, $field_slug, $atts) {
+	public function add_field($section_slug, $field_slug, $atts, $priority = 10) {
 		/*
 		 * Adds the field to the desired fields array.
 		 */
@@ -529,7 +529,7 @@ class Settings {
 
 			return $fields;
 
-		});
+		}, $priority );
 
 		$settings = $this->get_all();
 		/*
@@ -567,28 +567,36 @@ class Settings {
 			'title' => __('Your Business', 'wp-ultimo'),
 			'desc'  => __('General information about your business..', 'wp-ultimo'),
 			'type'  => 'header',
-		));
+		),
+		10
+		);
 
 		$this->add_field('general', 'company_name', array(
 			'title'   => __('Company Name', 'wp-ultimo'),
 			'desc'    => __('This name is used when generating invoices, for example.', 'wp-ultimo'),
 			'type'    => 'text',
 			'default' => get_network_option(null, 'site_name'),
-		));
+		),
+		20
+		);
 
 		$this->add_field('general', 'company_logo', array(
 			'title'   => __('Upload Company Logo', 'wp-ultimo'),
 			'desc'    => __('Add your company logo to be used on the login page and other places.', 'wp-ultimo'),
 			'type'    => 'image',
 			'default' => '',
-		));
+		),
+		30
+		);
 
 		$this->add_field('general', 'company_email', array(
 			'title'   => __('Company Email Address', 'wp-ultimo'),
 			'desc'    => __('This email is used when generating invoices, for example.', 'wp-ultimo'),
 			'type'    => 'text',
 			'default' => get_network_option(null, 'admin_email'),
-		));
+		),
+			40
+		);
 
 		$this->add_field('general', 'company_address', array(
 			'title'       => __('Company Address', 'wp-ultimo'),
@@ -599,7 +607,8 @@ class Settings {
 			'html_attr'   => array(
 				'rows' => 5,
 			),
-		));
+		),
+		50);
 
 		$this->add_field('general', 'company_country', array(
 			'title'   => __('Company Country', 'wp-ultimo'),
@@ -607,13 +616,14 @@ class Settings {
 			'type'    => 'select',
 			'options' => 'wu_get_countries',
 			'default' => array($this, 'get_default_company_country'),
-		));
+		), 60);
 
 		$this->add_field('general', 'currency_header', array(
 			'title' => __('Currency Options', 'wp-ultimo'),
 			'desc'  => __('The following options affect how prices are displayed on the frontend, the backend and in reports.', 'wp-ultimo'),
 			'type'  => 'header',
-		));
+		), 70
+		);
 
 		$this->add_field('general', 'currency_symbol', array(
 			'title'   => __('Currency', 'wp-ultimo'),
@@ -621,7 +631,8 @@ class Settings {
 			'type'    => 'select',
 			'default' => 'USD',
 			'options' => 'wu_get_currencies',
-		));
+		), 80
+		);
 
 		$this->add_field('general', 'currency_position', array(
 			'title'   => __('Currency Position', 'wp-ultimo'),
@@ -635,14 +646,15 @@ class Settings {
 				'%s %v' => __('Left with space ($ 99.99)', 'wp-ultimo'),
 				'%v %s' => __('Right with space (99.99 $)', 'wp-ultimo'),
 			)
-		));
+		), 90
+		);
 
 		$this->add_field('general', 'decimal_separator', array(
 			'title'   => __('Decimal Separator', 'wp-ultimo'),
 			'desc'    => __('This setting affects all prices displayed across the plugin elements.', 'wp-ultimo'),
 			'type'    => 'text',
 			'default' => '.',
-		));
+		), 100);
 
 		$this->add_field('general', 'thousand_separator', array(
 			'title'   => __('Thousand Separator', 'wp-ultimo'),
@@ -650,7 +662,7 @@ class Settings {
 			'type'    => 'text',
 			'default' => ',',
 			'raw'     => true
-		));
+		),110);
 
 		$this->add_field('general', 'precision', array(
 			'title'   => __('Number of Decimals', 'wp-ultimo'),
@@ -658,7 +670,7 @@ class Settings {
 			'type'    => 'number',
 			'default' => '2',
 			'min'     => 0,
-		));
+		), 120);
 
 		/*
 		 * Login & Registration

@@ -145,6 +145,8 @@ final class WP_Ultimo {
 		 */
 		$this->settings = WP_Ultimo\Settings::get_instance();
 
+		WP_Ultimo\Newsletter::get_instance();
+
 		/*
 		 * Check if the WP Multisite WaaS requirements are present.
 		 *
