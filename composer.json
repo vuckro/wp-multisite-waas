@@ -44,7 +44,14 @@
       "vendor",
       "addons",
       ".idea",
-      "node_modules"
+      "node_modules",
+      ".gitignore",
+      ".phpcs.xml.dist",
+      ".phpunit.result.cache",
+      "build.sh",
+      "package.json",
+      "package-lock.json",
+      "setuptest.sh"
     ]
   }
 }

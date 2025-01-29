@@ -25,11 +25,12 @@ The WordPress Multisite Website as a Service (Waas) plugin. Now community mainta
 We recommend running this in a staging environment before updating your production environment.
 
 == Changelog ==
-Version [2.3.3] - Not yet released 
+Version [2.3.3] - Released on 2024-01-29
 
 - Improved: Plugin renamed to WP Multisite WaaS
 - Removed: Enforcement of paid license
 - Fixed: Incompatibilities with WordPress 6.7 and i18n timing
+- Improved: Reduced plugin size by removing many unnecessary files and shrinking images
 
 Version [2.3.2] - Released on 2023-12-05
 
