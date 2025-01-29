@@ -7,6 +7,7 @@
  * Version: 2.3.3
  * Author: WP Multisite Community
  * Author URI: https://github.com/superdav42/wp-multisite-waas
+ * GitHub Plugin URI: https://github.com/superdav42/wp-multisite-waas
  * Network: true
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
