@@ -86,8 +86,11 @@ class Unique extends Rule {
 			return true;
 
 		} // end if;
-
-		$id = method_exists($existing, 'get_id') ? $existing->get_id() : $existing->id;
+		if ( $existing instanceof \WP_User) {
+			$id = $existing->ID;
+		} else {
+			$id = method_exists( $existing, 'get_id' ) ? $existing->get_id() : $existing->id;
+		}
 
 		return absint($id) === absint($self_id);
 
