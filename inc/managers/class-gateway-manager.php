@@ -85,7 +85,7 @@ class Gateway_Manager extends Base_Manager {
 		 */
 		add_action('init', function () {
 			do_action('wu_register_gateways');
-		}, 22);
+		}, 19);
 
 		/*
 		 * Adds the Gateway selection fields
