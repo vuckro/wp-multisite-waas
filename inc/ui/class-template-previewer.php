@@ -375,7 +375,7 @@ class Template_Previewer {
 
 		// Fix to issue on wp_get_attachment_url() inside core.
 		// @todo report it.
-		$initial_pagenow = $GLOBALS['pagenow'];
+		$initial_pagenow = $GLOBALS['pagenow'] ?? '';
 		$GLOBALS['pagenow'] = '';
 
 		$default_settings = array(
