@@ -4,7 +4,7 @@
  * Description: The WordPress Multisite Website as a Service (WaaS) plugin.
  * Plugin URI: https://wpmultisitewaas.org
  * Text Domain: wp-ultimo
- * Version: 2.3.3
+ * Version: 2.3.4
  * Author: WP Multisite Community
  * Author URI: https://github.com/superdav42/wp-multisite-waas
  * GitHub Plugin URI: https://github.com/superdav42/wp-multisite-waas
@@ -30,7 +30,7 @@
  * @author   Arindo Duque and NextPress
  * @category Core
  * @package  WP_Ultimo
- * @version  2.3.3
+ * @version  2.3.4
  */
 
 // Exit if accessed directly

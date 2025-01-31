@@ -25,6 +25,10 @@ The WordPress Multisite Website as a Service (Waas) plugin. Now community mainta
 We recommend running this in a staging environment before updating your production environment.
 
 == Changelog ==
+Version [2.3.4] - Released on 2024-01-31
+- Fixed: Unable to checkout with any payment gateway
+- Fixed: Warning Undefined global variable $pagenow
+
 Version [2.3.3] - Released on 2024-01-29
 
 - Improved: Plugin renamed to WP Multisite WaaS
