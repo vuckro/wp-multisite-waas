@@ -36,7 +36,7 @@ final class WP_Ultimo {
 	 * @deprecated use the const version instead.
 	 * @var string
 	 */
-	public $version = '2.3.3';
+	public $version = '2.3.4';
 
 	/**
 	 * Tables registered by WP Multisite WaaS.
