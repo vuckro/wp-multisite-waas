@@ -26,7 +26,7 @@ job-references:
     command: |
       sudo apt-get update && sudo apt-get install subversion mariadb-client
       sudo -E install-php-extensions mysqli gd bcmath
-      sudo -E install-php-extensions @composer-2.8.5
+      sudo -E composer selfupdate
 
   php_job: &php_job
     environment:
