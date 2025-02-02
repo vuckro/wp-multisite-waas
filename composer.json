@@ -19,7 +19,7 @@
     ],
     "type": "wordpress-plugin",
     "require": {
-        "php": ">=7.4.30",
+        "php": ">=7.4.1",
         "automattic/jetpack-autoloader": "^5.0.0",
         "rpnzl/arrch": "dev-master#994258bbefb7722243211654c4f78813312cd5ed",
         "amphp/amp": "v2.6.2",
