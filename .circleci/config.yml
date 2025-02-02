@@ -23,6 +23,7 @@ job-references:
       sudo -E docker-php-ext-install mysqli
       sudo -E docker-php-ext-configure gd --with-freetype --with-jpeg
       sudo -E docker-php-ext-install gd
+      sudo -E docker-php-ext-install gmp
 
   php_job: &php_job
     environment:
