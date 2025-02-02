@@ -19,8 +19,9 @@ job-references:
   install_dependencies: &install_dependencies
     name: "Install Dependencies"
     command: |
-      sudo apt-get update && sudo apt-get install subversion mariadb-client
+      sudo apt-get update && sudo apt-get install subversion mariadb-client libfreetype-dev libjpeg62-turbo-dev libpng-dev
       sudo -E docker-php-ext-install mysqli
+      sudo -E docker-php-ext-configure gd --with-freetype --with-jpeg
       sudo -E docker-php-ext-install gd
 
   php_job: &php_job
