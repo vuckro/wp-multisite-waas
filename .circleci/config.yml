@@ -21,6 +21,7 @@ job-references:
     command: |
       sudo apt-get update && sudo apt-get install subversion mariadb-client
       sudo -E docker-php-ext-install mysqli
+      sudo -E docker-php-ext-install gd
 
   php_job: &php_job
     environment:
@@ -33,6 +34,7 @@ job-references:
       - run:
           name: "Run Tests"
           command: |
+            sudo composer selfupdate 
             composer install
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
@@ -42,5 +44,5 @@ jobs:
   php74-build:
     <<: *php_job
     docker:
-      - image: circleci/php:7.4
+      - image: circleci/php:8.0
       - image: *mysql_image
