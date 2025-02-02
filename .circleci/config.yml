@@ -23,7 +23,7 @@ job-references:
   install_dependencies: &install_dependencies
     name: "Install Dependencies"
     command: |
-      sudo apt-get update && sudo apt-get install subversion
+      sudo apt-get update && sudo apt-get install subversion mariadb-client
       sudo -E install-php-extensions mysqli gd bcmath
       sudo -E install-php-extensions @composer
 
