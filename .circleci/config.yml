@@ -3,6 +3,7 @@ workflows:
   main:
     jobs:
       - php74-build
+      - php80-build
       - php81-build
       - php82-build
       - php83-build
@@ -45,6 +46,11 @@ job-references:
 
 jobs:
   php74-build:
+    <<: *php_job
+    docker:
+      - image: cimg/php:7.4
+      - image: *mysql_image
+  php80-build:
     <<: *php_job
     docker:
       - image: cimg/php:8.0
