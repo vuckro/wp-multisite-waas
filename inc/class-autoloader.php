@@ -37,25 +37,11 @@ class Autoloader {
 	 * Initializes our custom autoloader
 	 *
 	 * @since 2.0.0
+	 * @deprecated 2.3.5
 	 * @return void
 	 */
 	public static function init() {
-
-		if (!static::$instance instanceof static) {
-
-			static::$instance = new WP_Namespace_Autoloader(array(
-				'directory'            => dirname(dirname(__FILE__)),
-				'namespace_prefix'     => 'WP_Ultimo',
-				'classes_dir'          => 'inc',
-				'lowercase'            => array('file', 'folders'),
-				'underscore_to_hyphen' => array('file', 'folders'),
-				'debug'                => Autoloader::is_debug(),
-			));
-
-			static::$instance->init();
-
-		} // end if;
-
+		// do nothing now. Composer autoloader does the work.
 	} // end init;
 
 	/**

@@ -17,13 +17,15 @@
     "license": [
         "GPL-3.0-or-later"
     ],
-    "type": "wordpress-plugin",
+  "autoload": {
+    "classmap": ["inc"]
+  },
+  "type": "wordpress-plugin",
     "require": {
         "php": ">=7.4.1",
         "automattic/jetpack-autoloader": "^5.0.0",
         "rpnzl/arrch": "dev-master#994258bbefb7722243211654c4f78813312cd5ed",
         "amphp/amp": "v2.6.2",
-        "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#069163f215743c83381613749ace0c5a642720b4",
         "psr/log": "2.0.0",
         "delight-im/cookie": "v3.4.0",
         "berlindb/core": "2.0.1",
@@ -41,7 +43,8 @@
         "nyholm/psr7": "1.8.0",
         "symfony/cache": "v5.4.29",
         "scssphp/scssphp": "v1.11.1",
-        "cweagans/composer-patches": "^1.7"
+        "cweagans/composer-patches": "^1.7",
+        "woocommerce/action-scheduler": "^3.9.1"
     },
     "require-dev": {
         "composer/installers": "1.9.0",
@@ -83,6 +86,9 @@
         ]
     },
     "extra": {
+        "installer-paths": {
+          "vendor/woocommerce/{$name}/": ["type:wordpress-plugin"]
+        },
         "patches": {
             "jasny/sso": [
                 "patches/jasny-sso-src-broker-cookies-php.patch"

@@ -62,18 +62,9 @@ require_once __DIR__ . '/constants.php';
 
 require_once __DIR__ . '/vendor/autoload_packages.php';
 
-require_once __DIR__ . '/autoload.php';
-
-require_once __DIR__ . '/inc/class-autoloader.php';
-
-require_once __DIR__ . '/dependencies/woocommerce/action-scheduler/action-scheduler.php';
+require_once __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
 
 require_once __DIR__ . '/inc/traits/trait-singleton.php';
-
-/**
- * Setup autoloader
- */
-WP_Ultimo\Autoloader::init();
 
 /**
  * Setup activation/deactivation hooks
