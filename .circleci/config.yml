@@ -23,7 +23,7 @@ job-references:
   install_dependencies: &install_dependencies
     name: "Install Dependencies"
     command: |
-      sudo -E install-php-extensions mysqli gd gmp
+      sudo -E install-php-extensions mysqli gd bcmath
       sudo -E install-php-extensions @composer
 
   php_job: &php_job
