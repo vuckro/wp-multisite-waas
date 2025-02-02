@@ -8,7 +8,7 @@ version: 2
 
 job-references:
   mysql_image: &mysql_image
-    circleci/mysql:5.7
+    cimg/mysql:5.7
 
   setup_environment: &setup_environment
     name: "Setup Environment Variables"
@@ -46,5 +46,5 @@ jobs:
   php74-build:
     <<: *php_job
     docker:
-      - image: circleci/php:8.0
+      - image: cimg/php:8.0
       - image: *mysql_image
