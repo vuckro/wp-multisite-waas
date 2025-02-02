@@ -3,6 +3,10 @@ workflows:
   main:
     jobs:
       - php74-build
+      - php81-build
+      - php82-build
+      - php83-build
+      - php84-build
 
 version: 2
 
@@ -19,11 +23,8 @@ job-references:
   install_dependencies: &install_dependencies
     name: "Install Dependencies"
     command: |
-      sudo apt-get update && sudo apt-get install subversion mariadb-client libfreetype-dev libjpeg62-turbo-dev libpng-dev libgmp-dev
-      sudo -E docker-php-ext-install mysqli
-      sudo -E docker-php-ext-configure gd --with-freetype --with-jpeg
-      sudo -E docker-php-ext-install gd
-      sudo -E docker-php-ext-install gmp
+      sudo -E install-php-extensions mysqli gd gmp
+      sudo -E install-php-extensions @composer
 
   php_job: &php_job
     environment:
@@ -36,7 +37,6 @@ job-references:
       - run:
           name: "Run Tests"
           command: |
-            sudo composer selfupdate 
             composer install
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
@@ -47,4 +47,24 @@ jobs:
     <<: *php_job
     docker:
       - image: cimg/php:8.0
+      - image: *mysql_image
+  php81-build:
+    <<: *php_job
+    docker:
+      - image: cimg/php:8.1
+      - image: *mysql_image
+  php82-build:
+    <<: *php_job
+    docker:
+      - image: cimg/php:8.2
+      - image: *mysql_image
+  php83-build:
+    <<: *php_job
+    docker:
+      - image: cimg/php:8.3
+      - image: *mysql_image
+  php84-build:
+    <<: *php_job
+    docker:
+      - image: cimg/php:8.4
       - image: *mysql_image
