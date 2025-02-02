@@ -12,7 +12,7 @@
 namespace WP_Ultimo;
 
 use \WP_Ultimo\Contracts\Session;
-use \WP_Ultimo\Dependencies\Delight\Cookie\Cookie;
+use \Delight\Cookie\Cookie;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

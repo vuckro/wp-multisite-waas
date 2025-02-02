@@ -10,7 +10,7 @@
 namespace WP_Ultimo\Models;
 
 use \WP_Ultimo\Models\Base_Model;
-use \WP_Ultimo\Dependencies\Arrch\Arrch as Array_Search;
+use \Arrch\Arrch as Array_Search;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

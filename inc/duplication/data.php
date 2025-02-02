@@ -1,6 +1,6 @@
 <?php
 
-use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use \Psr\Log\LogLevel;
 
 if( !class_exists( 'MUCD_Data' ) ) {
 

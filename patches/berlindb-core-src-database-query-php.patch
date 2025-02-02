@@ -1,0 +1,11 @@
+--- /dev/null
++++ ../src/Database/Query.php
+@@ -2169,7 +2169,7 @@
+ 			$caps = $this->get_column_field( array( 'name' => $key ), 'caps' );
+ 
+ 			// Unset if not explicitly allowed
+-			if ( empty( $caps[ $method ] ) || ! current_user_can( $caps[ $method ] ) ) {
++			if ( empty( $caps[ $method ] ) ) {
+ 				if ( is_array( $item ) ) {
+ 					unset( $item[ $key ] );
+ 				} elseif ( is_object( $item ) ) {

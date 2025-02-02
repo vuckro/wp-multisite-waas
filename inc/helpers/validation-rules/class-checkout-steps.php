@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Helpers\Validation_Rules;
 
-use WP_Ultimo\Dependencies\Rakit\Validation\Rule;
+use Rakit\Validation\Rule;
 use WP_Ultimo\Managers\Signup_Fields_Manager;
 
 // Exit if accessed directly
@@ -112,7 +112,7 @@ class Checkout_Steps extends Rule {
      */
     foreach ($value as $step) {
 
-      $found_submittable_field_types = \WP_Ultimo\Dependencies\Arrch\Arrch::find($step['fields'], array(
+      $found_submittable_field_types = \Arrch\Arrch::find($step['fields'], array(
         'where'    => array(
           array('type', $submittable_field_types),
         ),

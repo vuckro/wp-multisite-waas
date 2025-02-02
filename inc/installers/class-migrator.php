@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Installers;
 
-use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
-use \WP_Ultimo\Dependencies\Ifsnop\Mysqldump\Mysqldump as MySQLDump;
+use \Psr\Log\LogLevel;
+use \Ifsnop\Mysqldump\Mysqldump as MySQLDump;
 use \WP_Ultimo\UI\Template_Previewer;
 use \WP_Ultimo\Models\Checkout_Form;
 use \WP_Ultimo\Checkout\Legacy_Checkout;

@@ -14,7 +14,7 @@ namespace WP_Ultimo\Gateways;
 use \WP_Ultimo\Database\Payments\Payment_Status;
 use \WP_Ultimo\Database\Memberships\Membership_Status;
 use \WP_Ultimo\Gateways\Base_Stripe_Gateway;
-use \WP_Ultimo\Dependencies\Stripe;
+use \Stripe;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

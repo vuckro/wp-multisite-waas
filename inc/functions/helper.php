@@ -10,7 +10,7 @@
 defined('ABSPATH') || exit;
 
 use \WP_Ultimo\Exception\Runtime_Exception;
-use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use \Psr\Log\LogLevel;
 
 /**
  * Returns the WP Multisite WaaS version.

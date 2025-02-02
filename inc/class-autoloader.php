@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo;
 
-use WP_Ultimo\Dependencies\Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
+use Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

@@ -607,11 +607,11 @@ class Domain_Manager extends Base_Manager {
 
 		foreach ($record_types as $record_type) {
 
-			$chain = new \WP_Ultimo\Dependencies\RemotelyLiving\PHPDNS\Resolvers\Chain(
-				new \WP_Ultimo\Dependencies\RemotelyLiving\PHPDNS\Resolvers\CloudFlare(),
-				new \WP_Ultimo\Dependencies\RemotelyLiving\PHPDNS\Resolvers\GoogleDNS(),
-				new \WP_Ultimo\Dependencies\RemotelyLiving\PHPDNS\Resolvers\LocalSystem(),
-				new \WP_Ultimo\Dependencies\RemotelyLiving\PHPDNS\Resolvers\Dig(),
+			$chain = new \RemotelyLiving\PHPDNS\Resolvers\Chain(
+				new \RemotelyLiving\PHPDNS\Resolvers\CloudFlare(),
+				new \RemotelyLiving\PHPDNS\Resolvers\GoogleDNS(),
+				new \RemotelyLiving\PHPDNS\Resolvers\LocalSystem(),
+				new \RemotelyLiving\PHPDNS\Resolvers\Dig(),
 			);
 
 			$records = $chain->getRecords($domain, $record_type);

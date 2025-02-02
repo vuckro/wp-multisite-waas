@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo;
 
-use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use Psr\Log\LogLevel;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

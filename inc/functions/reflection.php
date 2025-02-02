@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Dependencies\phpDocumentor\Reflection\DocBlockFactory;
+use \phpDocumentor\Reflection\DocBlockFactory;
 
 /**
  * Creates the REST API schema blueprint for an object based on setters.

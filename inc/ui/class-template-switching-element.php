@@ -46,7 +46,7 @@ class Template_Switching_Element extends Base_Element {
 	 * The membership object.
 	 *
 	 * @since 2.2.0
-	 * @var \WP_Ultimo\Membership
+	 * @var \WP_Ultimo\Models\Membership
 	 */
 	protected $membership;
 

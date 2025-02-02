@@ -12,7 +12,7 @@ namespace WP_Ultimo\Checkout;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use \Psr\Log\LogLevel;
 use \WP_Ultimo\Database\Sites\Site_Type;
 use \WP_Ultimo\Database\Payments\Payment_Status;
 use \WP_Ultimo\Database\Memberships\Membership_Status;

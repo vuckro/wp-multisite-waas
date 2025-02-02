@@ -12,7 +12,7 @@ namespace WP_Ultimo\Helpers\Validation_Rules;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use WP_Ultimo\Dependencies\Rakit\Validation\Rule;
+use Rakit\Validation\Rule;
 
 /**
  * Validates template sites.

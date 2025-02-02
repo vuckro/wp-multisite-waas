@@ -12,7 +12,7 @@
 namespace WP_Ultimo\Gateways;
 
 use \WP_Ultimo\Gateways\Base_Stripe_Gateway;
-use \WP_Ultimo\Dependencies\Stripe;
+use \Stripe;
 use \WP_Ultimo\Checkout\Cart;
 
 // Exit if accessed directly

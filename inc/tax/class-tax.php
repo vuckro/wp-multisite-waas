@@ -74,7 +74,7 @@ class Tax {
 
 				if (!empty($s)) {
 
-					$filtered = \WP_Ultimo\Dependencies\Arrch\Arrch::find($results, array(
+					$filtered = \Arrch\Arrch::find($results, array(
 						'sort_key' => 'name',
 						'where'    => array(
 							array(array('slug', 'name'), '~', $s),

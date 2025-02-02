@@ -99,7 +99,7 @@ class Limit_Plugins extends Limit {
 
 		} // end if;
 
-		$results = \WP_Ultimo\Dependencies\Arrch\Arrch::find((array) $this->get_limit(), array(
+		$results = \Arrch\Arrch::find((array) $this->get_limit(), array(
 			'where' => $search_params,
 		));
 

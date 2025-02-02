@@ -11,7 +11,7 @@
 
 namespace WP_Ultimo\Managers;
 
-use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use Psr\Log\LogLevel;
 use \WP_Ultimo\Managers\Base_Manager;
 use \WP_Ultimo\Models\Email;
 use \WP_Ultimo\Helpers\Sender;

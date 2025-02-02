@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Models;
 
-use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use Psr\Log\LogLevel;
 use \WP_Ultimo\Models\Base_Model;
 use \WP_Ultimo\Objects\Limitations;
 use \WP_Ultimo\Database\Sites\Site_Type;

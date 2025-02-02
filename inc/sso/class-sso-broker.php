@@ -15,7 +15,7 @@ namespace WP_Ultimo\SSO;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Dependencies\Jasny\SSO\Broker\Broker;
+use \Jasny\SSO\Broker\Broker;
 
 /**
  * The SSO Broker implementation.

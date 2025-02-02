@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
  *
  * @since 1.0.0
  */
-abstract class Table extends \WP_Ultimo\Dependencies\BerlinDB\Database\Table {
+abstract class Table extends \BerlinDB\Database\Table {
 
 	/**
 	 * Table prefix.

@@ -14,7 +14,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Dependencies\Mexitek\PHPColors\Color;
+use \Mexitek\PHPColors\Color;
 
 /**
  * Returns a Color object.
@@ -22,7 +22,7 @@ use \WP_Ultimo\Dependencies\Mexitek\PHPColors\Color;
  * @since 2.0.0
  *
  * @param string $hex Hex code for the color. E.g. #000.
- * @return \WP_Ultimo\Dependencies\Mexitek\PHPColors\Color
+ * @return \Mexitek\PHPColors\Color
  */
 function wu_color($hex) {
 

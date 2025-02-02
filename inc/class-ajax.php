@@ -345,7 +345,7 @@ class Ajax {
 
 		} // end foreach;
 
-		$_settings = \WP_Ultimo\Dependencies\Arrch\Arrch::find($all_fields, array(
+		$_settings = \Arrch\Arrch::find($all_fields, array(
 			'sort_key' => 'title',
 			'where'    => array(
 				array('setting_id', '~', trim((string) $query['search'], '*')),

@@ -11,7 +11,7 @@ namespace WP_Ultimo\Checkout;
 
 use \WP_Ultimo\Checkout\Line_Item;
 use \WP_Ultimo\Database\Memberships\Membership_Status;
-use \WP_Ultimo\Dependencies\Arrch\Arrch as Array_Search;
+use \Arrch\Arrch as Array_Search;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

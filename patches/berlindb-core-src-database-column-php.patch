@@ -1,0 +1,26 @@
+--- /dev/null
++++ ../src/Database/Column.php
+@@ -506,10 +506,10 @@
+ 			'binary'        => 'wp_validate_boolean',
+ 			'allow_null'    => 'wp_validate_boolean',
+ 			'default'       => array( $this, 'sanitize_default' ),
+-			'extra'         => 'wp_kses_data',
+-			'encoding'      => 'wp_kses_data',
+-			'collation'     => 'wp_kses_data',
+-			'comment'       => 'wp_kses_data',
++			'extra'         => 'wu_kses_data',
++			'encoding'      => 'wu_kses_data',
++			'collation'     => 'wu_kses_data',
++			'comment'       => 'wu_kses_data',
+ 
+ 			'primary'       => 'wp_validate_boolean',
+ 			'created'       => 'wp_validate_boolean',
+@@ -675,7 +675,7 @@
+ 
+ 		// String
+ 		} elseif ( is_string( $default ) ) {
+-			return wp_kses_data( $default );
++			return wu_kses_data( $default );
+ 
+ 		// Integer
+ 		} elseif ( $this->is_numeric() ) {

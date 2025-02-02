@@ -10,7 +10,7 @@
 namespace WP_Ultimo\UI;
 
 use \WP_Ultimo\UI\Base_Element;
-use \WP_Ultimo\Dependencies\ScssPhp\ScssPhp\Compiler;
+use \ScssPhp\ScssPhp\Compiler;
 use \WP_Ultimo\Database\Memberships\Membership_Status;
 
 // Exit if accessed directly

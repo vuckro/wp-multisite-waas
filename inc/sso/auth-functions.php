@@ -16,7 +16,7 @@
  * @subpackage SSO
  */
 
-use \WP_Ultimo\Dependencies\Delight\Cookie\Cookie;
+use \Delight\Cookie\Cookie;
 
 // phpcs:disable
 

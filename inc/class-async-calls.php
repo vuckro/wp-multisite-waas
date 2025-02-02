@@ -9,14 +9,14 @@
 
 namespace WP_Ultimo;
 
-use \WP_Ultimo\Dependencies\Amp\Iterator;
-use \WP_Ultimo\Dependencies\Amp\Sync\LocalSemaphore;
-use \WP_Ultimo\Dependencies\Amp\Sync\ConcurrentIterator;
-use \WP_Ultimo\Dependencies\Amp\Http\Client\Request;
-use \WP_Ultimo\Dependencies\Amp\Http\Client\Connection\DefaultConnectionPool;
-use \WP_Ultimo\Dependencies\Amp\Socket\ClientTlsContext;
-use \WP_Ultimo\Dependencies\Amp\Socket\ConnectContext;
-use \WP_Ultimo\Dependencies\Amp\Http\Client\HttpClientBuilder;
+use \Amp\Iterator;
+use \Amp\Sync\LocalSemaphore;
+use \Amp\Sync\ConcurrentIterator;
+use \Amp\Http\Client\Request;
+use \Amp\Http\Client\Connection\DefaultConnectionPool;
+use \Amp\Socket\ClientTlsContext;
+use \Amp\Socket\ConnectContext;
+use \Amp\Http\Client\HttpClientBuilder;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -137,7 +137,7 @@ class Async_Calls {
 	 * Builds and returns the client that will handle the calls.
 	 *
 	 * @since 2.0.7
-	 * @return \WP_Ultimo\Dependencies\Amp\Http\Client\HttpClient;
+	 * @return \Amp\Http\Client\HttpClient;
 	 */
 	public static function get_client() {
 
@@ -173,7 +173,7 @@ class Async_Calls {
 
 		$urls = self::build_url_list($id, $total, $chunk_size, $args);
 
-		$coroutine = \WP_Ultimo\Dependencies\Amp\call(static function() use ($id, $total, $chunk_size, $parallel_threads, $client, $urls) {
+		$coroutine = \Amp\call(static function() use ($id, $total, $chunk_size, $parallel_threads, $client, $urls) {
 
 			$results = array();
 
@@ -211,7 +211,7 @@ class Async_Calls {
 
 		});
 
-		$responses = \WP_Ultimo\Dependencies\Amp\Promise\wait($coroutine);
+		$responses = \Amp\Promise\wait($coroutine);
 
 		return $responses;
 

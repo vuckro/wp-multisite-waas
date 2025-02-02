@@ -12,8 +12,8 @@ namespace WP_Ultimo\Invoices;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Dependencies\Mpdf\Mpdf;
-use \WP_Ultimo\Dependencies\Mpdf\Output\Destination;
+use \Mpdf\Mpdf;
+use \Mpdf\Output\Destination;
 
 /**
  * Handles the generation of PDF Invoices.

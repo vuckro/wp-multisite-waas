@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Integrations\Host_Providers;
 
-use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use Psr\Log\LogLevel;
 use WP_Ultimo\Integrations\Host_Providers\Base_Host_Provider;
 
 // Exit if accessed directly

@@ -215,7 +215,7 @@ class Dashboard_Widgets {
 			),
 		);
 
-		$done = \WP_Ultimo\Dependencies\Arrch\Arrch::find($steps, array(
+		$done = \Arrch\Arrch::find($steps, array(
 			'where' => array(
 				array('done', true),
 			),

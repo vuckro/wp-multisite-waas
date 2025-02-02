@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Helpers;
 
-use \WP_Ultimo\Dependencies\Rakit\Validation\Validator as Validator_Helper;
+use \Rakit\Validation\Validator as Validator_Helper;
 use \WP_Ultimo\Helpers\Validation_Rules\Unique;
 use \WP_Ultimo\Helpers\Validation_Rules\Unique_Site;
 use \WP_Ultimo\Helpers\Validation_Rules\Exists;

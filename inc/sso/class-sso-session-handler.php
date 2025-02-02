@@ -14,8 +14,8 @@
 
 namespace WP_Ultimo\SSO;
 
-use \WP_Ultimo\Dependencies\Jasny\SSO\Server\SessionInterface;
-use \WP_Ultimo\Dependencies\Jasny\SSO\ServerException;
+use \Jasny\SSO\Server\SessionInterface;
+use \Jasny\SSO\ServerException;
 use \WP_Ultimo\SSO\Exception\SSO_Session_Exception;
 
 // Exit if accessed directly

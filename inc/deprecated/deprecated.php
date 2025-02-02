@@ -655,7 +655,7 @@ class WU_Util {
 	 * @deprecated 2.0.0
 	 *
 	 * @param string $hex Hex code of the color.
-	 * @return \WP_Ultimo\Dependencies\Mexitek\PHPColors\Color
+	 * @return \Mexitek\PHPColors\Color
 	 */
 	public static function color($hex) {
 

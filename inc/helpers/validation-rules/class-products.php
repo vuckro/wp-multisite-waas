@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Helpers\Validation_Rules;
 
-use WP_Ultimo\Dependencies\Rakit\Validation\Rule;
+use Rakit\Validation\Rule;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

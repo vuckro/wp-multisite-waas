@@ -14,8 +14,8 @@ namespace WP_Ultimo;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use WP_Ultimo\Dependencies\Psr\Log\AbstractLogger;
-use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
 
 /**
  * WP Multisite WaaS Logger

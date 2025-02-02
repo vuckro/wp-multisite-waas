@@ -16,13 +16,13 @@
 namespace WP_Ultimo\SSO;
 
 use \WP_Ultimo\Helpers\Hash;
-use \WP_Ultimo\Dependencies\Jasny\SSO\Server\Server;
-use \WP_Ultimo\Dependencies\Jasny\SSO\Server\ServerException;
-use \WP_Ultimo\Dependencies\Jasny\SSO\Server\BrokerException;
-use \WP_Ultimo\Dependencies\Jasny\SSO\Broker\NotAttachedException;
-use \WP_Ultimo\Dependencies\Nyholm\Psr7\Factory\Psr17Factory;
-use \WP_Ultimo\Dependencies\Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use \WP_Ultimo\Dependencies\Symfony\Component\Cache\Psr16Cache;
+use \Jasny\SSO\Server\Server;
+use \Jasny\SSO\Server\ServerException;
+use \Jasny\SSO\Server\BrokerException;
+use \Jasny\SSO\Broker\NotAttachedException;
+use \Nyholm\Psr7\Factory\Psr17Factory;
+use \Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use \Symfony\Component\Cache\Psr16Cache;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -992,7 +992,7 @@ class SSO {
 	 * Returns a PSR16-compatible cache implementation.
 	 *
 	 * @since 2.0.11
-	 * @return WP_Ultimo\Dependencies\Psr\SimpleCache\CacheInterface
+	 * @return Psr\SimpleCache\CacheInterface
 	 */
 	public function cache() {
 

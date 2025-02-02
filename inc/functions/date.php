@@ -55,7 +55,7 @@ function wu_validate_date($date, $format = 'Y-m-d H:i:s') {
  * @see https://carbon.nesbot.com/docs/
  *
  * @param string|false $date Parsable date string.
- * @return \WP_Ultimo\Dependencies\Carbon\Carbon
+ * @return \Carbon\Carbon
  */
 function wu_date($date = false) {
 
@@ -65,7 +65,7 @@ function wu_date($date = false) {
 
 	} // end if;
 
-	return \WP_Ultimo\Dependencies\Carbon\Carbon::parse($date);
+	return \Carbon\Carbon::parse($date);
 
 } // end wu_date;
 

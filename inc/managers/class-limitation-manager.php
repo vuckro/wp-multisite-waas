@@ -14,7 +14,7 @@ namespace WP_Ultimo\Managers;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use \Psr\Log\LogLevel;
 use \WP_Ultimo\Objects\Limitations;
 use \WP_Ultimo\Database\Sites\Site_Type;
 

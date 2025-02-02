@@ -11,10 +11,10 @@
 
 namespace WP_Ultimo\Gateways;
 
-use \WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use \Psr\Log\LogLevel;
 use \WP_Ultimo\Gateways\Base_Gateway;
 use \WP_Ultimo\Gateways\Ignorable_Exception;
-use \WP_Ultimo\Dependencies\Stripe;
+use \Stripe;
 use \WP_Ultimo\Models\Membership;
 use \WP_Ultimo\Database\Payments\Payment_Status;
 use \WP_Ultimo\Checkout\Cart;
@@ -913,7 +913,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
   * @param integer $customer_id WP Multisite WaaS customer ID.
   * @param integer $user_id The WordPress user ID.
   * @param integer $stripe_customer_id The Stripe Customer ID.
-  * @return \WP_Ultimo\Dependencies\Stripe\Customer|\WP_Error
+  * @return \Stripe\Customer|\WP_Error
   */
  public function get_or_create_customer($customer_id = 0, $user_id = 0, $stripe_customer_id = 0) {
 		/*

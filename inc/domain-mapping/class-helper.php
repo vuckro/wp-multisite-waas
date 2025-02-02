@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Domain_Mapping;
 
-use WP_Ultimo\Dependencies\Spatie\SslCertificate\SslCertificate;
-use WP_Ultimo\Dependencies\Psr\Log\LogLevel;
+use Spatie\SslCertificate\SslCertificate;
+use Psr\Log\LogLevel;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

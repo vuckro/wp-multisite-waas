@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Helpers;
 
-use WP_Ultimo\Dependencies\Hashids\Hashids;
+use Hashids\Hashids;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;

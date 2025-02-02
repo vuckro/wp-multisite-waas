@@ -1118,7 +1118,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_required_list($field_slug, $field_types): array {
 
-		$fields = \WP_Ultimo\Dependencies\Arrch\Arrch::find($field_types, array(
+		$fields = \Arrch\Arrch::find($field_types, array(
 			'sort_key' => 'order',
 			'where'    => array(
 				array('default_fields', '~', $field_slug),

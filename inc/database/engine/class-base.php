@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
  *
  * @since 1.0.0
  */
-class Base extends \WP_Ultimo\Dependencies\BerlinDB\Database\Base {
+class Base extends \BerlinDB\Database\Base {
 
 	protected $prefix = 'wu';
 

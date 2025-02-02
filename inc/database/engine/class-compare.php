@@ -17,4 +17,4 @@ defined('ABSPATH') || exit;
  *
  * @since 1.0.0
  */
-class Compare extends \WP_Ultimo\Dependencies\BerlinDB\Database\Compare {} // end class Compare;
+class Compare extends \BerlinDB\Database\Compare {} // end class Compare;
