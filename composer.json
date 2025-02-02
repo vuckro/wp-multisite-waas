@@ -26,7 +26,7 @@
         "automattic/jetpack-autoloader": "^5.0.0",
         "rpnzl/arrch": "dev-master#994258bbefb7722243211654c4f78813312cd5ed",
         "amphp/amp": "v2.6.2",
-        "psr/log": "2.0.0",
+        "psr/log": "1.1.4",
         "delight-im/cookie": "v3.4.0",
         "berlindb/core": "2.0.1",
         "spatie/ssl-certificate": "1.22.1",
@@ -55,7 +55,7 @@
     },
     "config": {
       "platform": {
-        "php": "8.0.0"
+        "php": "7.4.1"
       },
         "allow-plugins": {
             "composer/installers": true,
