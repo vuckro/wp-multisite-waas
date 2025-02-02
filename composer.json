@@ -51,6 +51,9 @@
         "symplify/vendor-patches": "^11.3"
     },
     "config": {
+      "platform": {
+        "php": "8.0.0"
+      },
         "allow-plugins": {
             "composer/installers": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
