@@ -2477,7 +2477,7 @@ class Membership extends Base_Model {
 
 		} // end if;
 
-		return floor($today->diffInDays($expiration_date));
+		return floor($today->diff($expiration_date)->days);
 
 	} // end get_remaining_days_in_cycle;
 

@@ -40,7 +40,7 @@ class Core_Installer extends Base_Installer {
 				if (!(defined('SUNRISE') && SUNRISE)) {
 
 					// translators: %s is a URL to a documentation link.
-					$closte_message = sprintf(__('You are using Closte and they prevent the wp-config.php file from being written to. <a href="%s" target="_blank">Follow these instructions to do it manually</a>.'), wu_get_documentation_url('wp-ultimo-closte-config'));
+					$closte_message = sprintf(__('You are using Closte and they prevent the wp-config.php file from being written to. <a href="%s" target="_blank">Follow these instructions to do it manually</a>.', 'wp-ultimo' ), wu_get_documentation_url('wp-ultimo-closte-config'));
 
 					throw new \Exception($closte_message);
 

@@ -1851,7 +1851,7 @@ class Migrator extends Base_Installer {
 				 */
 				$subscription_creation_date = wu_date($subscription->created_at);
 
-				$trial_end_date = $subscription_creation_date->addDays($subscription->trial)->endOfDay();
+				$trial_end_date = $subscription_creation_date->add( new \DateInterval( 'P' . $subscription->trial . 'D' ) )->setTime( 23, 59, 59 );
 
 				$date_trial_end = $trial_end_date->format('Y-m-d 23:59:59');
 

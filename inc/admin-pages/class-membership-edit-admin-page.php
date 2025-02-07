@@ -128,7 +128,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			),
 		);
 
-		$date = wu_date($swap_order->scheduled_date);
+		$date = new \DateTime($swap_order->scheduled_date);
 
 		// translators: %s is the date, using the site format options
 		$message = sprintf(__('There is a change scheduled to take place on this membership in <strong>%s</strong>. You can preview the changes here. Scheduled changes are usually created by downgrades.', 'wp-ultimo'), $date->format(get_option('date_format')));
@@ -1078,7 +1078,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 				),
 			);
 
-			$date = wu_date($swap_order->scheduled_date);
+			$date = new \DateTime($swap_order->scheduled_date);
 
 			// translators: %s is the date, using the site format options
 			$message = sprintf(__('This is a <strong>preview</strong>. This page displays the final stage of the membership after the changes scheduled for <strong>%s</strong>. Saving here will persist these changes, so be careful.', 'wp-ultimo'), $date->format(get_option('date_format')));

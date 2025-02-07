@@ -1255,7 +1255,7 @@ class WU_Transactions {
 
 		_deprecated_function(__CLASS__, '2.0.0', 'wu_date()');
 
-		$date = wu_date();
+		$date = new \DateTime();
 
 		return $type === 'mysql' ? $date->format('Y-m-d H:i:s') : $date->format('U');
 

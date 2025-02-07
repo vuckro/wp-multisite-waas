@@ -55,17 +55,15 @@ function wu_validate_date($date, $format = 'Y-m-d H:i:s') {
  * @see https://carbon.nesbot.com/docs/
  *
  * @param string|false $date Parsable date string.
- * @return \Carbon\Carbon
+ * @return \DateTime
  */
 function wu_date($date = false) {
 
 	if (!wu_validate_date($date)) {
-
 		$date = date_i18n('Y-m-d H:i:s');
+	}
 
-	} // end if;
-
-	return \Carbon\Carbon::parse($date);
+	return \DateTime::createFromFormat('Y-m-d H:i:s', $date);
 
 } // end wu_date;
 
@@ -86,7 +84,9 @@ function wu_get_days_ago($date_1, $date_2 = false) {
 
 	$datetime_2 = wu_date($date_2);
 
-	return - $datetime_1->diffInDays($datetime_2, false);
+	$dateIntervar = $datetime_1->diff($datetime_2, false);
+
+	return - $dateIntervar->days;
 
 } // end wu_get_days_ago;
 

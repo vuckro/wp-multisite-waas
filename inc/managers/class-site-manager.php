@@ -321,9 +321,9 @@ class Site_Manager extends Base_Manager {
 			// If membership is cancelled we do not add the grace period
 			$grace_period = $status !== Membership_Status::CANCELLED ? (int) wu_get_setting('block_frontend_grace_period', 0) : 0;
 
-			$expiration_time = wu_date($membership->get_date_expiration())->timestamp + $grace_period * DAY_IN_SECONDS;
+			$expiration_time = wu_date($membership->get_date_expiration())->getTimestamp() + $grace_period * DAY_IN_SECONDS;
 
-			if ($expiration_time < wu_date()->timestamp) {
+			if ($expiration_time < wu_date()->getTimestamp()) {
 
 				$checkout_pages = \WP_Ultimo\Checkout\Checkout_Pages::get_instance();
 

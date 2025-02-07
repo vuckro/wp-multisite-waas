@@ -519,6 +519,8 @@ class Discount_Code extends Base_Model {
 
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
 
+				return new \WP_Error( 'discount_code', __( 'The coupon code is not valid yet.', 'wp-ultimo' ) );
+
 			} // end if;
 
 		} // end if;
@@ -527,7 +529,7 @@ class Discount_Code extends Base_Model {
 
 			$expiration_date_instance = wu_date($expiration_date);
 
-			if ($now > $expiration_date) {
+			if ($now > $expiration_date_instance) {
 
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
 

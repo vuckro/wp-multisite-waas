@@ -488,15 +488,11 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 
 		$month_list = array();
 
-		$start = date_i18n('Y-m-d 00:00:00', strtotime('first day of january this year'));
+		$current_year = date_i18n('Y');
 
-		for ($i = 0; $i < 12; $i++) {
-
-			$start_date = wu_date($start);
-
-			$month_list[] = date_i18n('M y', $start_date->addMonths($i)->format('U'));
-
-		} // end for;
+		for ($i = 1; $i <= 12; $i++) {
+			$month_list[] = date_i18n('M y', mktime(0, 0,0,$i,1, $current_year));
+		}
 
 		$statistics = new Dashboard_Statistics(array(
 			'start_date' => $this->start_date,
