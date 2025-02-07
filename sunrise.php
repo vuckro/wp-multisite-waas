@@ -69,7 +69,7 @@ foreach ($possible_sunrises as $sunrise) {
 
 		add_action('network_admin_notices', 'wu_remove_sunrise_warning', 0);
 
-		continue; // Exit the loop;
+		break; // Exit the loop.
 	
 	} // end if;
 
