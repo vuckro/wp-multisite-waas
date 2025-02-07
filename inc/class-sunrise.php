@@ -46,11 +46,6 @@ class Sunrise {
 		require_once __DIR__ . '/functions/sunrise.php';
 
 		/**
-		 * Load development tools as soon as possible.
-		 */
-		\WP_Ultimo\Sunrise::load_development_mode();
-
-		/**
 		 * Load the core apis we need from the start.
 		 */
 		require_once __DIR__ . '/functions/helper.php';
@@ -111,8 +106,6 @@ class Sunrise {
 	 */
 	public static function load_dependencies() {
 
-		require_once dirname(__DIR__) . '/autoload.php';
-
 		require_once __DIR__ . '/deprecated/early-deprecated.php';
 
 		require_once __DIR__ . '/deprecated/mercator.php';
@@ -129,10 +122,24 @@ class Sunrise {
 
 		require_once __DIR__ . '/functions/array-helpers.php';
 
-		/*
-		 * Setup autoloader
-		 */
-		\WP_Ultimo\Autoloader::init();
+		require_once __DIR__ . '/traits/trait-singleton.php';
+		require_once __DIR__ . '/objects/class-limitations.php';
+		require_once __DIR__ . '/models/traits/trait-limitable.php';
+		require_once __DIR__ . '/models/traits/trait-notable.php';
+		require_once __DIR__ . '/traits/trait-wp-ultimo-site-deprecated.php';
+		require_once __DIR__ . '/database/engine/class-enum.php';
+		require_once __DIR__ . '/database/sites/class-site-type.php';
+		require_once __DIR__ . '/models/class-base-model.php';
+		require_once __DIR__ . '/models/class-domain.php';
+		require_once __DIR__ . '/models/class-site.php';
+		require_once __DIR__ . '/domain-mapping/class-primary-domain.php';
+		require_once __DIR__ . '/compat/class-domain-mapping-compat.php';
+		require_once __DIR__ . '/class-domain-mapping.php';
+		require_once __DIR__ . '/traits/trait-wp-ultimo-settings-deprecated.php';
+		require_once __DIR__ . '/class-settings.php';
+		require_once __DIR__ . '/limits/class-plugin-limits.php';
+		require_once __DIR__ . '/limits/class-theme-limits.php';
+
 
 	} // end load_dependencies;
 
@@ -175,7 +182,7 @@ class Sunrise {
 			/**
 			 *  Load dependencies and get autoload running
 			 */
-			\WP_Ultimo\Sunrise::load_dependencies();
+			self::load_dependencies();
 
 			/*
 			 * Adds backwards compatibility code for the domain mapping.
@@ -509,18 +516,6 @@ class Sunrise {
 		return update_network_option(null, 'wu_sunrise_meta', $to_save);
 
 	} // end tap;
-
-	/**
-	 * Load development modes, if we need too.
-	 *
-	 * @since 2.0.11
-	 * @return void
-	 */
-	protected static function load_development_mode() {
-
-		$should_load_tools = wu_load_dev_tools();
-
-	} // end load_development_mode;
 
 	// phpcs:ignore
 	private function __construct() {} // end __construct;

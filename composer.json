@@ -29,9 +29,7 @@
         "psr/log": "1.1.4",
         "delight-im/cookie": "v3.4.0",
         "berlindb/core": "2.0.1",
-        "spatie/ssl-certificate": "1.22.1",
         "mexitek/phpcolors": "v1.0.4",
-        "nesbot/carbon": "2.71.0",
         "phpdocumentor/reflection-docblock": "5.3.0",
         "stripe/stripe-php": "v10.21.0",
         "hashids/hashids": "4.1.0",
@@ -51,7 +49,8 @@
         "phpunit/phpunit": "^9.6.22",
         "yoast/phpunit-polyfills": "^1.1.3",
         "woocommerce/woocommerce-sniffs": "^1.0.0",
-        "symplify/vendor-patches": "^11.3"
+        "symplify/vendor-patches": "^11.3",
+        "fakerphp/faker": "^1.24"
     },
     "config": {
       "platform": {
@@ -72,7 +71,6 @@
             "composer.lock",
             ".phpcs.xml.dist",
             ".circleci",
-            "vendor",
             "addons",
             ".idea",
             "node_modules",
@@ -98,5 +96,8 @@
                 "patches/berlindb-core-src-database-column-php.patch"
             ]
         }
-    }
+    },
+  "scripts": {
+    "post-update-cmd": "cd vendor/mpdf/mpdf/ttfonts && rm -f AboriginalSansREGULAR.ttf Aegean.otf Aegyptus.otf Akkadian.otf ayar.ttf damase_v.2.ttf DBSILBR.ttf DejaVuSerif.ttf Dhyana-Regular.ttf DejaVuSansMono-Oblique.ttf DejaVuSerif-BoldItalic.ttf DhyanaOFL.txt DejaVuSerifCondensed-BoldItalic.ttf DejaVuSansMono-Bold.ttf DejaVuSerif-Italic.ttf DejaVuSerifCondensed-Bold.ttf DejaVuSansMono.ttf DejaVuSansMono-BoldOblique.ttf DejaVuSerif-Bold.ttf Dhyana-Bold.ttf DejaVuSerifCondensed-Italic.ttf DejaVuSansCondensed-BoldOblique.ttf DejaVuSansCondensed-Oblique.ttf DejaVuSans-Oblique.ttf DejaVuSans-BoldOblique.ttf DejaVuSans-Bold.ttf DejaVuSans.ttf FreeMonoBoldOblique.ttf FreeMonoOblique.ttf FreeSans.ttf FreeSansBold.ttf FreeSansBoldOblique.ttf FreeSansOblique.ttf FreeSerifBoldItalic.ttf FreeSerifItalic.ttf Garuda.ttf Garuda-Bold.ttf Garuda-BoldOblique.ttf Garuda-Oblique.ttf GNUFreeFontinfo.txt Jomolhari.ttf Jomolhari-OFL.txt kaputaunicode.ttf KhmerOFL.txt KhmerOS.ttf lannaalif-v1-03.ttf 'Lateef font OFL.txt' LateefRegOT.ttf Lohit-Kannada.ttf LohitKannadaOFL.txt ocrb10.ttf ocrbinfo.txt Padauk-book.ttf Pothana2000.ttf Quivira.otf Sun-ExtA.ttf Sun-ExtB.ttf SundaneseUnicode-1.0.5.ttf SyrCOMEdessa.otf SyrCOMEdessa_license.txt TaameyDavidCLM-LICENSE.txt TaameyDavidCLM-Medium.ttf TaiHeritagePro.ttf Tharlon-Regular.ttf TharlonOFL.txt UnBatang_0613.ttf Uthman.otf 'XB Riyaz.ttf' 'XB RiyazBd.ttf' 'XB RiyazBdIt.ttf' 'XB RiyazIt.ttf' 'XW Zar Font Info.txt' ZawgyiOne.ttf"
+  }
 }

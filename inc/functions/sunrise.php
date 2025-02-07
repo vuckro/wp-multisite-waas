@@ -92,37 +92,6 @@ function wu_get_security_mode_key(): string {
 } // end wu_get_security_mode_key;
 
 /**
- * Load te dev tools, if they exist.
- *
- * @since 2.0.11
- *
- * @param boolean $load If we should load it or not.
- * @return string The path to the dev tools folder.
- */
-function wu_load_dev_tools($load = true) {
-
-	if (defined('WP_ULTIMO_SUNRISE_FILE')) {
-		/*
-		* If the vendor folder exists, we are
-		* for sure, inside a dev environment.
-		*/
-		$autoload_file = dirname((string) WP_ULTIMO_SUNRISE_FILE, 2) . '/vendor/autoload.php';
-
-		if (file_exists($autoload_file)) {
-
-			$load && require_once $autoload_file;
-
-			return $autoload_file;
-
-		} // end if;
-
-	} // end if;
-
-	return '';
-
-}  // end wu_load_dev_tools;
-
-/**
  * Early substitute for wp_kses_data before it exists.
  *
  * Sanitize content with allowed HTML KSES rules.
