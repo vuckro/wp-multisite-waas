@@ -32,7 +32,7 @@ class Top_Admin_Nav_Menu {
 	 */
 	public function __construct() {
 
-		add_action('admin_bar_menu', array($this, 'add_top_bar_menus'), 50);
+		add_action('admin_bar_menu', [$this, 'add_top_bar_menus'], 50);
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Top_Admin_Nav_Menu {
 	 * @param \WP_Admin_Bar $wp_admin_bar The admin bar identifier.
 	 * @return void
 	 */
-	public function add_top_bar_menus($wp_admin_bar) {
+	public function add_top_bar_menus($wp_admin_bar): void {
 
 		// Only for super admins
 		if ( ! current_user_can('manage_network')) {
@@ -50,111 +50,111 @@ class Top_Admin_Nav_Menu {
 		}
 
 		// Add Parent element
-		$parent = array(
+		$parent = [
 			'id'    => 'wp-ultimo',
 			'title' => __('Multisite Waas', 'wp-ultimo'),
 			'href'  => current_user_can('wu_read_dashboard') ? network_admin_url('admin.php?page=wp-ultimo') : '#',
-			'meta'  => array(
+			'meta'  => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the dashboard', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Site
-		$sites = array(
+		$sites = [
 			'id'     => 'wp-ultimo-sites',
 			'parent' => 'wp-ultimo',
 			'title'  => __('Manage Sites', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-sites'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the sites page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Memberships
-		$memberships = array(
+		$memberships = [
 			'id'     => 'wp-ultimo-memberships',
 			'parent' => 'wp-ultimo',
 			'title'  => __('Manage Memberships', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-memberships'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the memberships page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Customers
-		$customers = array(
+		$customers = [
 			'id'     => 'wp-ultimo-customers',
 			'parent' => 'wp-ultimo',
 			'title'  => __('Customers', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-customers'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the customers page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Products
-		$products = array(
+		$products = [
 			'id'     => 'wp-ultimo-products',
 			'parent' => 'wp-ultimo',
 			'title'  => __('Products', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-products'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the products page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Payments
-		$payments = array(
+		$payments = [
 			'id'     => 'wp-ultimo-payments',
 			'parent' => 'wp-ultimo',
 			'title'  => __('Payments', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-payments'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the payments page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Discount Codes
-		$discount_codes = array(
+		$discount_codes = [
 			'id'     => 'wp-ultimo-discount-codes',
 			'parent' => 'wp-ultimo',
 			'title'  => __('Discount Codes', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-discount-codes'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the discount codes page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
-		$container = array(
+		$container = [
 			'id'     => 'wp-ultimo-settings-group',
 			'parent' => 'wp-ultimo',
 			'group'  => true,
 			'title'  => __('Settings Container', 'wp-ultimo'),
 			'href'   => '#',
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu ab-sub-secondary',
 				'title' => __('Go to the settings page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		// Settings
-		$settings = array(
+		$settings = [
 			'id'     => 'wp-ultimo-settings',
 			'parent' => 'wp-ultimo-settings-group',
 			'title'  => __('Settings', 'wp-ultimo'),
 			'href'   => network_admin_url('admin.php?page=wp-ultimo-settings'),
-			'meta'   => array(
+			'meta'   => [
 				'class' => 'wp-ultimo-top-menu ab-sub-secondary',
 				'title' => __('Go to the settings page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		/**
 		 * Add items to the top bar.
@@ -208,16 +208,16 @@ class Top_Admin_Nav_Menu {
 				$parent = 'wp-ultimo-settings-addons';
 			}
 
-			$settings_tab = array(
+			$settings_tab = [
 				'id'     => 'wp-ultimo-settings-' . $tab,
 				'parent' => $parent,
 				'title'  => $tab_info['title'],
 				'href'   => network_admin_url('admin.php?page=wp-ultimo-settings&tab=') . $tab,
-				'meta'   => array(
+				'meta'   => [
 					'class' => 'wp-ultimo-top-menu',
 					'title' => __('Go to the settings page', 'wp-ultimo'),
-				),
-			);
+				],
+			];
 
 			$wp_admin_bar->add_node($settings_tab);
 		}

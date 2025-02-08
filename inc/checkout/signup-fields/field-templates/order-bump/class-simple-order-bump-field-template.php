@@ -88,7 +88,7 @@ class Simple_Order_Bump_Field_Template extends Base_Field_Template {
 	 */
 	public function get_preview(): string {
 
-		return wu_get_asset('checkout-forms/clean-template-selection.png');
+		return wu_get_asset('checkout-forms/clean-template-selection.webp');
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Simple_Order_Bump_Field_Template extends Base_Field_Template {
 	 * @param array $attributes The field template attributes.
 	 * @return void
 	 */
-	public function output($attributes) {
+	public function output($attributes): void {
 
 		/**
 	 * Loads the actual order-bump template

@@ -25,7 +25,7 @@ class Customer_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Customers\\Customer_Query';
+	protected $query_class = \WP_Ultimo\Database\Customers\Customer_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -33,24 +33,24 @@ class Customer_List_Table extends Base_List_Table {
 	 * @param array $args Table attributes.
 	 * @since 2.0.0
 	 */
-	public function __construct($args = array()) {
+	public function __construct($args = []) {
 
-		$this->modes = array(
+		$this->modes = [
 			'grid' => __('Grid View'),
 			'list' => __('List View'),
-		);
+		];
 
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'singular' => __('Customer', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Customers', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                         // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_get_form_url('add_new_customer'),
 					'classes' => 'wubox',
-				),
-			)
+				],
+			]
 		);
 
 		parent::__construct($args);
@@ -72,11 +72,11 @@ class Customer_List_Table extends Base_List_Table {
 
 			// Search relevant users
 			$user_ids = get_users(
-				array(
+				[
 					'number' => -1,
 					'search' => '*' . $search . '*',
 					'fields' => 'ids',
-				)
+				]
 			);
 
 			// No results, go back
@@ -95,9 +95,9 @@ class Customer_List_Table extends Base_List_Table {
 		if (wu_request('filter', 'all') === 'vip') {
 			$_filter_fields['vip'] = 1;
 		} elseif (wu_request('filter', 'all') === 'online') {
-			$_filter_fields['last_login_query'] = array(
+			$_filter_fields['last_login_query'] = [
 				'after' => '-3 minutes',
-			);
+			];
 		}
 
 		return $_filter_fields;
@@ -114,15 +114,15 @@ class Customer_List_Table extends Base_List_Table {
 		// Get user info
 		$user = get_user_by('id', $item->get_user_id());
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $item->get_id(),
-		);
+		];
 
 		// Check if user exists
 		if ( ! $user) {
-			$actions = array(
+			$actions = [
 				'delete' => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Delete', 'wp-ultimo'), wu_get_form_url('delete_modal', $url_atts), __('Delete', 'wp-ultimo')),
-			);
+			];
 
 			return sprintf('<strong>#%s</strong> - %s', $item->get_user_id(), __('User not found', 'wp-ultimo')) . $this->row_actions($actions);
 		}
@@ -133,9 +133,9 @@ class Customer_List_Table extends Base_List_Table {
 			'<a href="%s">%s</a>',
 			wu_network_admin_url(
 				'wp-ultimo-edit-customer',
-				array(
+				[
 					'id' => $item->get_id(),
-				)
+				]
 			),
 			$user->display_name
 		);
@@ -150,7 +150,7 @@ class Customer_List_Table extends Base_List_Table {
 
 		$url_switch_to = sprintf('<a title="%s" class="%s" href="%s">%s</a>', __('Switch To', 'wp-ultimo'), $is_modal_switch_to, \WP_Ultimo\User_Switching::get_instance()->render($item->get_user_id()), __('Switch To', 'wp-ultimo'));
 
-		$actions = array(
+		$actions = [
 			'edit'      => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-customer', $url_atts), __('Edit', 'wp-ultimo')),
 			'switch-to' => $item->get_user_id() !== get_current_user_id() ? $url_switch_to : false,
 			'delete'    => sprintf(
@@ -158,14 +158,14 @@ class Customer_List_Table extends Base_List_Table {
 				__('Delete', 'wp-ultimo'),
 				wu_get_form_url(
 					'delete_modal',
-					array(
+					[
 						'model' => 'customer',
 						'id'    => $item->get_id(),
-					)
+					]
 				),
 				__('Delete', 'wp-ultimo')
 			),
-		);
+		];
 
 		$actions = array_filter($actions);
 
@@ -193,9 +193,9 @@ class Customer_List_Table extends Base_List_Table {
 			36,
 			'identicon',
 			'',
-			array(
+			[
 				'force_display' => true,
-			)
+			]
 		);
 
 		$html .= '</div>';
@@ -214,13 +214,13 @@ class Customer_List_Table extends Base_List_Table {
 
 		$subscription_count = count($item->get_memberships());
 
-		$url_atts = array(
+		$url_atts = [
 			'customer_id' => $item->get_id(),
-		);
+		];
 
-		$actions = array(
+		$actions = [
 			'view' => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-memberships', $url_atts), __('View', 'wp-ultimo')),
-		);
+		];
 
 		return $subscription_count . $this->row_actions($actions);
 	}
@@ -233,7 +233,7 @@ class Customer_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'              => '<input type="checkbox" />',
 			'customer_status' => '',
 			'name'            => __('Name', 'wp-ultimo'),
@@ -241,7 +241,7 @@ class Customer_List_Table extends Base_List_Table {
 			'date_registered' => __('Customer Since', 'wp-ultimo'),
 			'memberships'     => __('Memberships', 'wp-ultimo'),
 			'id'              => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -254,14 +254,14 @@ class Customer_List_Table extends Base_List_Table {
 	 * @param WP_Ultimo\Models\Customer $item The line item being displayed.
 	 * @return void
 	 */
-	public function single_row_grid($item) {
+	public function single_row_grid($item): void {
 
 		wu_get_template(
 			'base/customers/grid-item',
-			array(
+			[
 				'item'  => $item,
 				'table' => $this,
-			)
+			]
 		);
 	}
 
@@ -273,10 +273,10 @@ class Customer_List_Table extends Base_List_Table {
 	public function get_filters(): array {
 
 		$filters = $this->get_schema_columns(
-			array(
+			[
 				'searchable' => true,
 				'date_query' => true,
-			),
+			],
 			'or'
 		);
 
@@ -294,18 +294,18 @@ class Customer_List_Table extends Base_List_Table {
 				if ($item->date_query === true) {
 					$filter_type = 'date';
 					$rule        = 'is_after';
-				} elseif (in_array(strtolower((string) $item->name), array('smallint'), true)) {
+				} elseif (in_array(strtolower((string) $item->name), ['smallint'], true)) {
 					$filter_type = 'bool';
 					$rule        = 'is_true';
 				}
 
-				return array(
+				return [
 					'field' => $item->name,
 					'label' => $label,
 					'type'  => $filter_type,
 					'rule'  => $rule,
 					'value' => wu_request($item->name, ''),
-				);
+				];
 			},
 			$filters
 		);
@@ -321,30 +321,30 @@ class Customer_List_Table extends Base_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all'    => array(
+		return [
+			'all'    => [
 				'field' => 'filter',
 				'url'   => add_query_arg(
-					array(
+					[
 						'filter' => 'all',
-					)
+					]
 				),
 				'label' => __('All Customers', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'vip'    => array(
+			],
+			'vip'    => [
 				'field' => 'filter',
 				'url'   => add_query_arg('filter', 'vip'),
 				'label' => __('VIP Customers', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'online' => array(
+			],
+			'online' => [
 				'field' => 'filter',
 				'url'   => add_query_arg('filter', 'online'),
 				'label' => __('Online Customers', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 
 	/**

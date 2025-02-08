@@ -36,7 +36,7 @@ class Email extends Post_Base_Model {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Emails\\Email_Query';
+	protected $query_class = \WP_Ultimo\Database\Emails\Email_Query::class;
 
 	/**
 	 * Post type.
@@ -52,7 +52,7 @@ class Email extends Post_Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $allowed_types = array('system_email');
+	protected $allowed_types = ['system_email'];
 
 	/**
 	 * Email slug.
@@ -68,7 +68,7 @@ class Email extends Post_Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $allowed_status = array('publish', 'draft');
+	protected $allowed_status = ['publish', 'draft'];
 
 	/**
 	 * If this email is going to be send later.
@@ -142,7 +142,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function validation_rules() {
 
-		return array(
+		return [
 			'schedule'            => 'boolean|default:0',
 			'type'                => 'in:system_email|default:system_email',
 			'event'               => 'required|default:',
@@ -159,7 +159,7 @@ class Email extends Post_Base_Model {
 			'send_copy_to_admin'  => 'boolean|default:0',
 			'active'              => 'default:1',
 			'legacy'              => 'boolean|default:0',
-		);
+		];
 	}
 
 	/**
@@ -233,7 +233,7 @@ class Email extends Post_Base_Model {
 	 * @options html,plain-text
 	 * @return void
 	 */
-	public function set_style($style) {
+	public function set_style($style): void {
 
 		$this->style = $style;
 
@@ -262,7 +262,7 @@ class Email extends Post_Base_Model {
 	 * @param bool $schedule Whether or not this is a scheduled email.
 	 * @return void
 	 */
-	public function set_schedule($schedule) {
+	public function set_schedule($schedule): void {
 
 		$this->schedule = $schedule;
 
@@ -398,7 +398,7 @@ class Email extends Post_Base_Model {
 	 * @param string $event The event that needs to be fired for this email to be sent.
 	 * @return void
 	 */
-	public function set_event($event) {
+	public function set_event($event): void {
 
 		$this->event = $event;
 
@@ -413,7 +413,7 @@ class Email extends Post_Base_Model {
 	 * @param string $email_schedule if the send will be schedule.
 	 * @return void
 	 */
-	public function set_email_schedule($email_schedule) {
+	public function set_email_schedule($email_schedule): void {
 
 		$this->meta['system_email_schedule'] = $email_schedule;
 	}
@@ -426,7 +426,7 @@ class Email extends Post_Base_Model {
 	 * @param string $send_hours The amount of hours that the email will wait before is sent.
 	 * @return void
 	 */
-	public function set_send_hours($send_hours) {
+	public function set_send_hours($send_hours): void {
 
 		$this->meta['system_email_send_hours'] = $send_hours;
 	}
@@ -439,7 +439,7 @@ class Email extends Post_Base_Model {
 	 * @param string $send_days The amount of days that the email will wait before is sent.
 	 * @return void
 	 */
-	public function set_send_days($send_days) {
+	public function set_send_days($send_days): void {
 
 		$this->meta['system_email_send_days'] = $send_days;
 	}
@@ -453,7 +453,7 @@ class Email extends Post_Base_Model {
 	 * @options days,hours
 	 * @return void
 	 */
-	public function set_schedule_type($schedule_type) {
+	public function set_schedule_type($schedule_type): void {
 
 		$this->meta['system_email_schedule_type'] = $schedule_type;
 	}
@@ -466,7 +466,7 @@ class Email extends Post_Base_Model {
 	 * @param string $name The name being set as title.
 	 * @return void
 	 */
-	public function set_name($name) {
+	public function set_name($name): void {
 
 		$this->set_title($name);
 	}
@@ -479,7 +479,7 @@ class Email extends Post_Base_Model {
 	 * @param string $slug The slug being set.
 	 * @return void
 	 */
-	public function set_slug($slug) {
+	public function set_slug($slug): void {
 
 		$this->slug = $slug;
 	}
@@ -492,7 +492,7 @@ class Email extends Post_Base_Model {
 	 * @param boolean $custom_sender If has a custom sender.
 	 * @return void
 	 */
-	public function set_custom_sender($custom_sender) {
+	public function set_custom_sender($custom_sender): void {
 
 		$this->meta['system_email_custom_sender'] = $custom_sender;
 	}
@@ -505,7 +505,7 @@ class Email extends Post_Base_Model {
 	 * @param string $custom_sender_name The name of the custom sender. E.g. From: John Doe.
 	 * @return void
 	 */
-	public function set_custom_sender_name($custom_sender_name) {
+	public function set_custom_sender_name($custom_sender_name): void {
 
 		$this->meta['system_email_custom_sender_name'] = $custom_sender_name;
 	}
@@ -518,7 +518,7 @@ class Email extends Post_Base_Model {
 	 * @param string $custom_sender_email The email of the custom sender. E.g. From: johndoe@gmail.com.
 	 * @return void
 	 */
-	public function set_custom_sender_email($custom_sender_email) {
+	public function set_custom_sender_email($custom_sender_email): void {
 
 		$this->meta['system_email_custom_sender_email'] = $custom_sender_email;
 	}
@@ -546,7 +546,7 @@ class Email extends Post_Base_Model {
 	 * @options customer,admin
 	 * @return void
 	 */
-	public function set_target($target) {
+	public function set_target($target): void {
 
 		$this->target = $target;
 
@@ -561,9 +561,9 @@ class Email extends Post_Base_Model {
 	 * @param array $payload The payload of the email being sent. Used to get the customer id.
 	 * @return array
 	 */
-	public function get_target_list($payload = array()) {
+	public function get_target_list($payload = []) {
 
-		$target_list = array();
+		$target_list = [];
 
 		$target_type = $this->get_target();
 
@@ -571,19 +571,19 @@ class Email extends Post_Base_Model {
 			$target_list = self::get_super_admin_targets();
 		} elseif ($target_type === 'customer') {
 			if ( ! wu_get_isset($payload, 'customer_id')) {
-				return array();
+				return [];
 			}
 
 			$customer = wu_get_customer($payload['customer_id']);
 
 			if ( ! $customer) {
-				return array();
+				return [];
 			}
 
-			$target_list[] = array(
+			$target_list[] = [
 				'name'  => $customer->get_display_name(),
 				'email' => $customer->get_email_address(),
-			);
+			];
 
 			/*
 			 * Maybe ad super admins as well.
@@ -606,7 +606,7 @@ class Email extends Post_Base_Model {
 	 */
 	public static function get_super_admin_targets() {
 
-		$target_list = array();
+		$target_list = [];
 
 		$super_admins = get_super_admins();
 
@@ -614,10 +614,10 @@ class Email extends Post_Base_Model {
 			$user = get_user_by('login', $super_admin);
 
 			if ($user) {
-				$target_list[] = array(
+				$target_list[] = [
 					'name'  => $user->display_name,
 					'email' => $user->user_email,
-				);
+				];
 			}
 		}
 
@@ -646,7 +646,7 @@ class Email extends Post_Base_Model {
 	 * @param boolean $send_copy_to_admin Checks if we should send a copy of the email to the admin.
 	 * @return void
 	 */
-	public function set_send_copy_to_admin($send_copy_to_admin) {
+	public function set_send_copy_to_admin($send_copy_to_admin): void {
 
 		$this->send_copy_to_admin = $send_copy_to_admin;
 
@@ -675,7 +675,7 @@ class Email extends Post_Base_Model {
 	 * @param bool $active Set this email as active (true), which means available will fire when the event occur, or inactive (false).
 	 * @return void
 	 */
-	public function set_active($active) {
+	public function set_active($active): void {
 
 		$this->active = $active;
 
@@ -704,7 +704,7 @@ class Email extends Post_Base_Model {
 	 * @param bool $legacy Whether or not this is a legacy email.
 	 * @return void
 	 */
-	public function set_legacy($legacy) {
+	public function set_legacy($legacy): void {
 
 		$this->legacy = $legacy;
 

@@ -11,9 +11,9 @@ $add_new_url = wu_get_setting('enable_multiple_sites') ? $element->get_new_site_
 
 // Redirect back to this page after create the site
 $add_new_url = add_query_arg(
-	array(
+	[
 		'redirect_url' => urlencode(wu_get_current_url()),
-	),
+	],
 	$add_new_url
 );
 
@@ -113,7 +113,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 					</span>
 
 					<span class="wu-text-xs wu-text-gray-600 wu-block wu-mt-2">
-						<?php echo str_replace(array('http://', 'https://'), '', $site->get_active_site_url()); ?>
+						<?php echo str_replace(['http://', 'https://'], '', $site->get_active_site_url()); ?>
 					</span>
 
 					</a>

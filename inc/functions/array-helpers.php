@@ -22,7 +22,7 @@ use WP_Ultimo\Helpers\Arr;
  */
 function wu_array_flatten($array, $indexes = false) {
 
-	$return = array();
+	$return = [];
 
 	array_walk_recursive(
 		$array,
@@ -99,9 +99,9 @@ function wu_array_merge_recursive_distinct(array &$array1, array &$array2, $shou
  * @param array $to_keep List of keys to keep regardless of diff status.
  * @return array
  */
-function wu_array_recursive_diff($array1, $array2, $to_keep = array()) {
+function wu_array_recursive_diff($array1, $array2, $to_keep = []) {
 
-	$arr_return = array();
+	$arr_return = [];
 
 	$array1 = (array) $array1;
 	$array2 = (array) $array2;
@@ -175,13 +175,13 @@ function wu_array_map_keys($callable, $array): array {
  */
 function wu_key_map_to_array($assoc_array, $key_name = 'id', $value_name = 'value') {
 
-	$results = array();
+	$results = [];
 
 	foreach ($assoc_array as $key => &$value) {
-		$results[] = array(
+		$results[] = [
 			$key_name   => $key,
 			$value_name => $value,
-		);
+		];
 	}
 
 	return $results;

@@ -68,7 +68,7 @@ class Validator {
 
 		$validation_error_messages = apply_filters(
 			'wu_validator_error_messages',
-			array(
+			[
 				'required'         => $field_required_message,
 				'required_without' => $field_required_message,
 				'required_with'    => $field_required_message,
@@ -84,17 +84,17 @@ class Validator {
 				'lowercase'        => sprintf(__('The %s must be lowercase', 'wp-ultimo'), ':attribute'),
 				// translators: %s is the field identifier
 				'integer'          => sprintf(__('The %s must be integer', 'wp-ultimo'), ':attribute'),
-			),
+			],
 			$this
 		);
 
 		$this->validator = new Validator_Helper($validation_error_messages);
 
 		$this->validator->setTranslations(
-			array(
+			[
 				'and' => __('and', 'wp-ultimo'),
 				'or'  => __('or', 'wp-ultimo'),
-			)
+			]
 		);
 
 		$this->validator->addValidator('unique', new Unique());
@@ -121,7 +121,7 @@ class Validator {
 	 * @param array $aliases List of aliases to be used with the validator.
 	 * @return \WP_Ultimo\Helpers\Validator
 	 */
-	public function validate($data, $rules = array(), $aliases = array()) {
+	public function validate($data, $rules = [], $aliases = []) {
 
 		$this->errors = new \WP_Error();
 

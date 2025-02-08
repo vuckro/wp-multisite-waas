@@ -88,7 +88,7 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.7
 	 * @var array
 	 */
-	protected $ids_of_interest = array();
+	protected $ids_of_interest = [];
 
 	/**
 	 * The status of our attempts to bypass server limitations.
@@ -107,7 +107,7 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		if ($this->is_migration_screen()) {
 			$this->session = wu_get_session('migrator');
@@ -120,7 +120,7 @@ class Migrator extends Base_Installer {
 		/*
 		 * Install the handler for the parallel installer.
 		 */
-		\WP_Ultimo\Async_Calls::register_listener('parallel_installers', array($this, 'handle_parallel_installers'));
+		\WP_Ultimo\Async_Calls::register_listener('parallel_installers', [$this, 'handle_parallel_installers']);
 
 		\WP_Ultimo\Async_Calls::install_listeners();
 	}
@@ -152,7 +152,7 @@ class Migrator extends Base_Installer {
 	 * @param string             $installer The name of the current installer.
 	 * @return void
 	 */
-	public function on_shutdown($session, $dry_run, $installer) {
+	public function on_shutdown($session, $dry_run, $installer): void {
 
 		$message = 'The migrator process exit unexpectedly while running the "%s" migration... You might need to increase server resources to run the migrator. Below, a list of the ids of interest collected thus far:';
 
@@ -185,10 +185,10 @@ class Migrator extends Base_Installer {
 	public static function is_migration_done() {
 
 		$plans = get_posts(
-			array(
+			[
 				'post_type'   => 'wpultimo_plan',
 				'numberposts' => 1,
-			)
+			]
 		);
 
 		if (empty($plans)) {
@@ -245,12 +245,12 @@ class Migrator extends Base_Installer {
 	 */
 	public function get_steps($force_all = false) {
 
-		$steps = array();
+		$steps = [];
 
 		$dry_run = wu_request('dry-run', true);
 
 		if ($dry_run && ! $force_all) {
-			$steps['dry_run_check'] = array(
+			$steps['dry_run_check'] = [
 				'title'       => __('Pre-Migration Check', 'wp-ultimo'),
 				'description' => __('Runs all migrations in a sand-boxed environment to see if it hits an error.', 'wp-ultimo'),
 				'help'        => wu_get_documentation_url('migration-errors'),
@@ -258,13 +258,13 @@ class Migrator extends Base_Installer {
 				'installing'  => __('Checking...', 'wp-ultimo'),
 				'success'     => __('Success!', 'wp-ultimo'),
 				'done'        => false,
-			);
+			];
 
 			return $steps;
 		}
 
 		if ( ! $dry_run) {
-			$steps['backup'] = array(
+			$steps['backup'] = [
 				'title'       => __('Prepare for Migration', 'wp-ultimo'),
 				'description' => __('Verifies the data before going forward with the migration.', 'wp-ultimo'),
 				'pending'     => __('Pending', 'wp-ultimo'),
@@ -272,110 +272,110 @@ class Migrator extends Base_Installer {
 				'success'     => __('Success!', 'wp-ultimo'),
 				'help'        => wu_get_documentation_url('migration-errors'),
 				'done'        => false,
-			);
+			];
 		}
 
-		$steps['settings'] = array(
+		$steps['settings'] = [
 			'title'       => __('Settings', 'wp-ultimo'),
 			'description' => __('Migrates the settings from the older version.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['products'] = array(
+		$steps['products'] = [
 			'title'       => __('Plans to Products', 'wp-ultimo'),
 			'description' => __('Converts the old plans into products.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['customers'] = array(
+		$steps['customers'] = [
 			'title'       => __('Users to Customers', 'wp-ultimo'),
 			'description' => __('Creates customers based on the existing users.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['memberships'] = array(
+		$steps['memberships'] = [
 			'title'       => __('Subscriptions to Memberships', 'wp-ultimo'),
 			'description' => __('Converts subscriptions into Memberships.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['transactions'] = array(
+		$steps['transactions'] = [
 			'title'       => __('Transactions to Payments & Events', 'wp-ultimo'),
 			'description' => __('Converts transactions into payments and events.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['discount_codes'] = array(
+		$steps['discount_codes'] = [
 			'title'       => __('Coupons to Discount Codes', 'wp-ultimo'),
 			'description' => __('Converts coupons into discount codes.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['sites'] = array(
+		$steps['sites'] = [
 			'title'       => __('Customer Sites', 'wp-ultimo'),
 			'description' => __('Adjusts existing customer sites.', 'wp-ultimo'),
 			'installing'  => __('Making Adjustments...', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['site_templates'] = array(
+		$steps['site_templates'] = [
 			'title'       => __('Sites Templates', 'wp-ultimo'),
 			'description' => __('Adjusts existing site templates.', 'wp-ultimo'),
 			'installing'  => __('Making Adjustments...', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['domains'] = array(
+		$steps['domains'] = [
 			'title'       => __('Mapped Domains', 'wp-ultimo'),
 			'description' => __('Converts mapped domains.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['forms'] = array(
+		$steps['forms'] = [
 			'title'       => __('Checkout Forms', 'wp-ultimo'),
 			'description' => __('Creates a checkout form based on the existing signup flow.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['emails'] = array(
+		$steps['emails'] = [
 			'title'       => __('Emails & Broadcasts', 'wp-ultimo'),
 			'description' => __('Converts the emails and broadcasts.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['webhooks'] = array(
+		$steps['webhooks'] = [
 			'title'       => __('Webhooks', 'wp-ultimo'),
 			'description' => __('Migrates existing webhooks.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
-		$steps['other'] = array(
+		$steps['other'] = [
 			'title'       => __('Other Migrations', 'wp-ultimo'),
 			'description' => __('Other migrations that don\'t really fit anywhere else.', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('migration-errors'),
 			'done'        => false,
-		);
+		];
 
 		$steps = array_map(
 			fn($item) => wp_parse_args(
 				$item,
-				array(
+				[
 					'pending'    => __('Pending', 'wp-ultimo'),
 					'installing' => __('Migrating...', 'wp-ultimo'),
 					'success'    => __('Success!', 'wp-ultimo'),
-				)
+				]
 			),
 			$steps
 		);
@@ -465,7 +465,7 @@ class Migrator extends Base_Installer {
 		 */
 		$this->dry_run = wu_request('dry-run', true);
 
-		$callable = array($this, "_install_{$installer}");
+		$callable = [$this, "_install_{$installer}"];
 
 		$callable = apply_filters("wu_installer_{$installer}_callback", $callable, $installer);
 
@@ -550,9 +550,9 @@ class Migrator extends Base_Installer {
 		}
 
 		if ($session) {
-			$session->set('errors', array());
+			$session->set('errors', []);
 
-			$session->set('back_traces', array());
+			$session->set('back_traces', []);
 		}
 
 		return $status;
@@ -601,7 +601,7 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	public function log_ids_of_interest() {
+	public function log_ids_of_interest(): void {
 
 		if ( ! is_array($this->ids_of_interest)) {
 			wu_log_add(self::LOG_FILE_NAME, 'The list of IDs of interested got corrupted, this might indicate problems with one or more migrations', LogLevel::ERROR);
@@ -610,7 +610,7 @@ class Migrator extends Base_Installer {
 		}
 
 		foreach ($this->ids_of_interest as $key => $ids) {
-			list($installer, $reason) = explode(':', $key);
+			[$installer, $reason] = explode(':', $key);
 
 			if (empty($ids)) {
 				continue;
@@ -634,11 +634,11 @@ class Migrator extends Base_Installer {
 	 * @param string       $installer The installer name.
 	 * @return void
 	 */
-	public function add_id_of_interest($id_or_ids, $reason, $installer) {
+	public function add_id_of_interest($id_or_ids, $reason, $installer): void {
 
 		$id_list_key = sprintf('%s:%s', $installer, $reason);
 
-		$id_list = wu_get_isset($this->ids_of_interest, $id_list_key, array());
+		$id_list = wu_get_isset($this->ids_of_interest, $id_list_key, []);
 
 		$id_or_ids = (array) $id_or_ids;
 
@@ -652,7 +652,7 @@ class Migrator extends Base_Installer {
 	 * @throws \Exception Halts the process on error.
 	 * @return mixed
 	 */
-	public function _install_dry_run_check() {
+	public function _install_dry_run_check(): void {
 
 		global $wpdb, $wu_migrator_current_installer;
 
@@ -661,7 +661,7 @@ class Migrator extends Base_Installer {
 		foreach ($all_steps as $installer => $step) {
 			$wu_migrator_current_installer = $installer;
 
-			$callable = array($this, "_install_{$installer}");
+			$callable = [$this, "_install_{$installer}"];
 
 			call_user_func($callable);
 		}
@@ -674,7 +674,7 @@ class Migrator extends Base_Installer {
 	 * @throws \Exception Halts the process on error.
 	 * @return mixed
 	 */
-	public function _install_backup() {
+	public function _install_backup(): void {
 
 		global $wpdb;
 
@@ -686,9 +686,9 @@ class Migrator extends Base_Installer {
 			sprintf('mysql:dbname=%s;host=%s', DB_NAME, DB_HOST),
 			DB_USER,
 			DB_PASSWORD,
-			array(
+			[
 				'compress' => MySQLDump::GZIP,
-			)
+			]
 		);
 
 		$dump->start($file_name);
@@ -761,7 +761,7 @@ class Migrator extends Base_Installer {
 		 */
 		wu_save_option("v1_settings_{$random_key}", $settings);
 
-		$keys_to_migrate = array(
+		$keys_to_migrate = [
 			// General
 			'currency_symbol',
 			'currency_position',
@@ -826,7 +826,7 @@ class Migrator extends Base_Installer {
 
 			// Other options we want to keep.
 			'limits_and_quotas',
-		);
+		];
 
 		$to_migrate = array_intersect_key($settings, array_flip($keys_to_migrate));
 
@@ -854,13 +854,13 @@ class Migrator extends Base_Installer {
 		/*
 		 * Gateway
 		 */
-		$active_gateways               = array_keys($this->get_old_setting('active_gateway', array()));
+		$active_gateways               = array_keys($this->get_old_setting('active_gateway', []));
 		$to_migrate['active_gateways'] = $active_gateways;
 
 		/*
 		* Stripe
 		*/
-		$is_sandbox = strpos((string) $this->get_old_setting('stripe_api_sk', ''), 'test') !== false;
+		$is_sandbox = str_contains((string) $this->get_old_setting('stripe_api_sk', ''), 'test');
 
 		$to_migrate['stripe_sandbox_mode'] = $is_sandbox;
 
@@ -905,7 +905,7 @@ class Migrator extends Base_Installer {
 		/*
 		 * Top-bar Settings
 		 */
-		$top_bar_settings = array(
+		$top_bar_settings = [
 			'enabled'                     => $this->get_old_setting('allow_template_top_bar', true),
 			'preview_url_parameter'       => 'template-preview',
 			'bg_color'                    => $this->get_old_setting('top-bar-bg-color', '#f9f9f9'),
@@ -914,7 +914,7 @@ class Migrator extends Base_Installer {
 			'display_responsive_controls' => $this->get_old_setting('top-bar-enable-resize', true),
 			'use_custom_logo'             => $this->get_old_setting('top-bar-use-logo'),
 			'custom_logo'                 => $this->get_old_setting('top-bar-logo'),
-		);
+		];
 
 		$save_settings = Template_Previewer::get_instance()->save_settings($top_bar_settings);
 
@@ -937,7 +937,7 @@ class Migrator extends Base_Installer {
 	 * @param array $to_migrate The list of settings to migrate.
 	 * @return array
 	 */
-	public function fake_register_settings($to_migrate = array()) {
+	public function fake_register_settings($to_migrate = []) {
 
 		add_filter(
 			'wu_settings_section_core_fields',
@@ -948,11 +948,11 @@ class Migrator extends Base_Installer {
 				$missing_keys = array_diff_key($to_migrate, $all_keys);
 
 				foreach ($missing_keys as $field_slug => $value) {
-					$fields[ $field_slug ] = array(
+					$fields[ $field_slug ] = [
 						'type'       => 'hidden',
 						'setting_id' => $field_slug,
 						'raw'        => true,
-					);
+					];
 				}
 
 				return $fields;
@@ -988,7 +988,7 @@ class Migrator extends Base_Installer {
 		$product_type_plan = 'plan';
 		$duration_unit_day = 'month';
 		$recurring         = true;
-		$currency          = isset($settings['currency']) ? $settings['currency'] : 'USD';
+		$currency          = $settings['currency'] ?? 'USD';
 
 		$plans = $wpdb->get_results(
 			"
@@ -1016,7 +1016,7 @@ class Migrator extends Base_Installer {
 				continue;
 			}
 
-			$product_data                     = array();
+			$product_data                     = [];
 			$product_data['type']             = 'plan';
 			$product_data['migrated_from_id'] = $plan->ID;
 			$product_data['name']             = $plan->name;
@@ -1042,7 +1042,7 @@ class Migrator extends Base_Installer {
 			 */
 			$default_trial_value                 = $this->get_old_setting('trial', 0);
 			$plan_trial_value                    = get_post_meta($plan->ID, 'wpu_trial', true);
-			$product_data['trial_duration']      = $plan_trial_value ? $plan_trial_value : $default_trial_value;
+			$product_data['trial_duration']      = $plan_trial_value ?: $default_trial_value;
 			$product_data['trial_duration_unit'] = $duration_unit_day;
 
 			$active                 = ! (bool) get_post_meta($plan->ID, 'wpu_hidden', true);
@@ -1050,7 +1050,7 @@ class Migrator extends Base_Installer {
 
 			$is_free = get_post_meta($plan->ID, 'wpu_free', true);
 
-			$price_variations = array();
+			$price_variations = [];
 
 			if ($is_free) {
 				$product_data['amount']       = 0;
@@ -1064,11 +1064,11 @@ class Migrator extends Base_Installer {
 						$product_data['duration']      = 1;
 						$product_data['duration_unit'] = 'month';
 					} else {
-						$price_variations[] = array(
+						$price_variations[] = [
 							'amount'        => $price_month,
 							'duration'      => 1,
 							'duration_unit' => 'month',
-						);
+						];
 					}
 				}
 
@@ -1080,11 +1080,11 @@ class Migrator extends Base_Installer {
 						$product_data['duration']      = 3;
 						$product_data['duration_unit'] = 'month';
 					} else {
-						$price_variations[] = array(
+						$price_variations[] = [
 							'amount'        => $price_3_month,
 							'duration'      => 3,
 							'duration_unit' => 'month',
-						);
+						];
 					}
 				}
 
@@ -1096,11 +1096,11 @@ class Migrator extends Base_Installer {
 						$product_data['duration']      = 1;
 						$product_data['duration_unit'] = 'year';
 					} else {
-						$price_variations[] = array(
+						$price_variations[] = [
 							'amount'        => $price_12_month,
 							'duration'      => 1,
 							'duration_unit' => 'year',
-						);
+						];
 					}
 				}
 
@@ -1172,7 +1172,7 @@ class Migrator extends Base_Installer {
 			/*
 			 * Build template list.
 			 */
-			$site_templates_limit = array();
+			$site_templates_limit = [];
 
 			$available_site_templates = wu_get_site_templates();
 
@@ -1188,28 +1188,28 @@ class Migrator extends Base_Installer {
 					$behavior = 'available';
 				}
 
-				$site_templates_limit[ $site_template_id ] = array(
+				$site_templates_limit[ $site_template_id ] = [
 					'behavior' => $behavior,
-				);
+				];
 			}
 
 			/**
 			 * Limitation modules.
 			 */
-			$limitations_modules = array(
-				'domain_mapping'     => array(
+			$limitations_modules = [
+				'domain_mapping'     => [
 					'enabled' => $has_custom_domain,
-				),
-				'customer_user_role' => array(
+				],
+				'customer_user_role' => [
 					'enabled' => true,
 					'limit'   => $product_data['customer_role'],
-				),
-				'site_templates'     => array(
+				],
+				'site_templates'     => [
 					'mode'    => $site_template_mode,
 					'enabled' => $site_template_enabled,
 					'limit'   => $site_templates_limit,
-				),
-			);
+				],
+			];
 
 			/**
 			 * Build the plugins limitations object.
@@ -1219,18 +1219,18 @@ class Migrator extends Base_Installer {
 			if (is_array($allowed_plugins)) {
 				$allowed_plugins = $allowed_plugins;
 
-				$plugins_limit = array();
+				$plugins_limit = [];
 
 				foreach (Limitation_Manager::get_instance()->get_all_plugins() as $plugin_path => &$plugin_data) {
-					$plugins_limit[ $plugin_path ] = array(
+					$plugins_limit[ $plugin_path ] = [
 						'visibility' => in_array($plugin_path, $allowed_plugins, true) ? 'visible' : 'hidden',
 						'behavior'   => in_array($plugin_path, $allowed_plugins, true) ? 'available' : 'not_available',
-					);
+					];
 				}
 
-				$limitations_modules['plugins'] = array(
+				$limitations_modules['plugins'] = [
 					'limit' => $plugins_limit,
-				);
+				];
 			}
 
 			/**
@@ -1239,61 +1239,61 @@ class Migrator extends Base_Installer {
 			 * @since 2.0.7
 			 */
 			if (is_array($allowed_themes)) {
-				$themes_limit = array();
+				$themes_limit = [];
 
 				foreach (Limitation_Manager::get_instance()->get_all_themes() as $stylesheet => &$theme_data) {
-					$themes_limit[ $stylesheet ] = array(
+					$themes_limit[ $stylesheet ] = [
 						'visibility' => in_array($stylesheet, $allowed_themes, true) ? 'visible' : 'hidden',
 						'behavior'   => in_array($stylesheet, $allowed_themes, true) ? 'available' : 'not_available',
-					);
+					];
 				}
 
-				$limitations_modules['themes'] = array(
+				$limitations_modules['themes'] = [
 					'limit' => $themes_limit,
-				);
+				];
 			}
 
 			$unlimited_users = (bool) get_post_meta($plan->ID, 'wpu_unlimited_extra_users', true);
 
-			$post_types_limit = array();
+			$post_types_limit = [];
 
 			foreach ($quotas as $post_type => $quota) {
 				if ($post_type === 'users' && ! $unlimited_users) {
 					$user_roles = get_editable_roles();
 
-					$roles_limit = array();
+					$roles_limit = [];
 
 					foreach ($user_roles as $role => $role_data) {
-						$roles_limit[ $role ] = array(
+						$roles_limit[ $role ] = [
 							'enabled' => true,
 							'number'  => $quota ? absint($quota) : '',
-						);
+						];
 					}
 
-					$limitations_modules['users'] = array(
+					$limitations_modules['users'] = [
 						'limit'   => $roles_limit,
 						'enabled' => true,
-					);
+					];
 				} elseif ($post_type === 'upload') {
-					$limitations_modules['disk_space'] = array(
+					$limitations_modules['disk_space'] = [
 						'limit'   => absint($quota),
 						'enabled' => true,
-					);
+					];
 				} elseif ($post_type === 'visits') {
-					$limitations_modules['visits'] = array(
+					$limitations_modules['visits'] = [
 						'limit'   => $quota ? absint($quota) : '',
 						'enabled' => true,
-					);
+					];
 				} elseif ($post_type === 'sites') {
-					$limitations_modules['sites'] = array(
+					$limitations_modules['sites'] = [
 						'limit'   => absint($quota),
 						'enabled' => true,
-					);
+					];
 				} else {
-					$post_types_limit[ $post_type ] = array(
+					$post_types_limit[ $post_type ] = [
 						'enabled' => in_array($post_type, $disabled_post_types, true) === false,
 						'number'  => $quota ? absint($quota) : '',
-					);
+					];
 				}
 			}
 
@@ -1301,10 +1301,10 @@ class Migrator extends Base_Installer {
 			 * If there's any limitations to post types, add it.
 			 */
 			if ($post_types_limit) {
-				$limitations_modules['post_types'] = array(
+				$limitations_modules['post_types'] = [
 					'limit'   => $post_types_limit,
 					'enabled' => true,
-				);
+				];
 			}
 
 			$limitations = new \WP_Ultimo\Objects\Limitations($limitations_modules);
@@ -1365,10 +1365,10 @@ class Migrator extends Base_Installer {
 		 */
 		if ($this->is_parallel() === false) {
 			if ($total_records > $threshold) {
-				$args = array(
+				$args = [
 					'installer' => $this->get_installer(),
 					'dry-run'   => $this->dry_run,
-				);
+				];
 
 				$result = \WP_Ultimo\Async_Calls::run('parallel_installers', $args, $total_records, $threshold, 10);
 
@@ -1461,13 +1461,13 @@ class Migrator extends Base_Installer {
 			}
 
 			$customer = wu_create_customer(
-				array(
+				[
 					'user_id'            => $user->user_id,
 					'email_verification' => 'verified',
 					'vip'                => false,
 					'date_registered'    => $user->created_at,
 					'last_login'         => $user->created_at,
-				)
+				]
 			);
 
 			if (is_wp_error($customer)) {
@@ -1555,9 +1555,9 @@ class Migrator extends Base_Installer {
 
 			$product = wu_get_product_by('migrated_from_id', absint($subscription->plan_id));
 
-			$v1_subscription_meta = (object) ($subscription->meta ? maybe_unserialize($subscription->meta) : array());
+			$v1_subscription_meta = (object) ($subscription->meta ? maybe_unserialize($subscription->meta) : []);
 
-			$membership_data = array();
+			$membership_data = [];
 
 			if ( ! $product) {
 				$this->add_id_of_interest($subscription->plan_id, 'plan_not_migrated', 'memberships');
@@ -1738,8 +1738,8 @@ class Migrator extends Base_Installer {
 			$membership_data['times_billed'] = absint($payments_count);
 
 			$membership_data = array_merge(
-				$product ? $product->to_array() : array(),
-				$customer ? $customer->to_array() : array(),
+				$product ? $product->to_array() : [],
+				$customer ? $customer->to_array() : [],
 				$membership_data
 			);
 
@@ -1822,17 +1822,17 @@ class Migrator extends Base_Installer {
 		 *
 		 * @since 2.0.0
 		 */
-		$types_to_skip = array(
+		$types_to_skip = [
 			'recurring_setup',
 			'cancel',
-		);
+		];
 
-		$map_status = array(
+		$map_status = [
 			'payment' => Payment_Status::COMPLETED,
 			'failed'  => Payment_Status::FAILED,
 			'refund'  => Payment_Status::REFUND,
 			'pending' => Payment_Status::PENDING,
-		);
+		];
 
 		foreach ($transactions as $transaction) {
 			/*
@@ -1857,10 +1857,10 @@ class Migrator extends Base_Installer {
 			}
 
 			$line_item = new \WP_Ultimo\Checkout\Line_Item(
-				array(
+				[
 					'product'  => $product,
 					'quantity' => 1,
-				)
+				]
 			);
 
 			$line_item->set_title($transaction->description);
@@ -1870,11 +1870,11 @@ class Migrator extends Base_Installer {
 			$line_item->set_subtotal(wu_to_float($transaction->amount));
 			$line_item->set_total(wu_to_float($transaction->amount));
 
-			$line_items = array(
+			$line_items = [
 				$line_item->get_id() => $line_item,
-			);
+			];
 
-			$payment_data = array(
+			$payment_data = [
 				'parent'             => 0,
 				'line_items'         => $line_items,
 				'status'             => wu_get_isset($map_status, $transaction->type, Payment_Status::COMPLETED),
@@ -1892,7 +1892,7 @@ class Migrator extends Base_Installer {
 				'migrated_from_id'   => $transaction->id,
 				'date_created'       => $transaction->time,
 				'date_modified'      => $transaction->time,
-			);
+			];
 
 			if ( ! $customer) {
 				$this->add_id_of_interest($transaction->user_id, 'customer_not_migrated', 'transactions');
@@ -1963,7 +1963,7 @@ class Migrator extends Base_Installer {
 
 			$limit_products = false;
 
-			$allowed_products = array();
+			$allowed_products = [];
 
 			if ($allowed_plans) {
 				$limit_products = true;
@@ -1977,7 +1977,7 @@ class Migrator extends Base_Installer {
 				}
 			}
 
-			$discount_code_data = array(
+			$discount_code_data = [
 				'uses'             => get_post_meta($coupon->ID, 'wpu_uses', true),
 				'max_uses'         => get_post_meta($coupon->ID, 'wpu_allowed_uses', true),
 				'name'             => $coupon->name,
@@ -1994,7 +1994,7 @@ class Migrator extends Base_Installer {
 				'date_created'     => $coupon->date_create,
 				'date_modified'    => $coupon->post_modified,
 				'skip_validation'  => true,
-			);
+			];
 
 			/*
 			 * Fix the type name.
@@ -2111,19 +2111,19 @@ class Migrator extends Base_Installer {
 		require_once wu_path('inc/functions/membership.php');
 		require_once wu_path('inc/functions/site.php');
 
-		$skip_ids = array();
+		$skip_ids = [];
 
 		/*
 		 * First thing, add the main site to the skip list.
 		 */
 		$skip_ids[] = wu_get_main_site_id();
 
-		$search_arguments = array(
+		$search_arguments = [
 			'network_id'    => get_current_site()->id,
 			'fields'        => 'ids',
 			'site__not_in'  => $skip_ids,
 			'no_found_rows' => true,
-		);
+		];
 
 		if ($this->dry_run) {
 			$per_page = 10;
@@ -2185,9 +2185,9 @@ class Migrator extends Base_Installer {
 						 */
 						wu_enqueue_async_action(
 							'wu_async_take_screenshot',
-							array(
+							[
 								'site_id' => $site_template->get_id(),
-							),
+							],
 							'site'
 						);
 					}
@@ -2267,14 +2267,14 @@ class Migrator extends Base_Installer {
 			}
 
 			$domain = wu_create_domain(
-				array(
+				[
 					'stage'          => 'done',
 					'domain'         => $domain->name,
 					'blog_id'        => $domain->blog_id,
 					'active'         => $domain->active,
 					'primary_domain' => true,
 					'secure'         => $https,
-				)
+				]
 			);
 
 			if (is_wp_error($domain)) {
@@ -2306,12 +2306,12 @@ class Migrator extends Base_Installer {
 			return;
 		}
 
-		$checkout_form = array(
+		$checkout_form = [
 			'name'              => __('Signup Form', 'wp-ultimo'),
 			'slug'              => 'main-form',
-			'allowed_countries' => $this->get_old_setting('allowed_countries', array()),
-			'settings'          => array(),
-		);
+			'allowed_countries' => $this->get_old_setting('allowed_countries', []),
+			'settings'          => [],
+		];
 
 		$status = wu_create_checkout_form($checkout_form);
 
@@ -2342,14 +2342,14 @@ class Migrator extends Base_Installer {
 		/*
 		 * Create the page on the main site.
 		 */
-		$post_details = array(
+		$post_details = [
 			'post_name'    => $page_slug,
 			'post_title'   => __('Signup', 'wp-ultimo'),
 			'post_status'  => 'publish',
 			'post_type'    => 'page',
 			'post_content' => sprintf($post_content, $status->get_slug()),
 			'post_author'  => get_current_user_id(),
-		);
+		];
 
 		$page_id = wp_insert_post($post_details);
 
@@ -2382,14 +2382,14 @@ class Migrator extends Base_Installer {
 		/*
 		 * Create the page on the main site.
 		 */
-		$login_post_details = array(
+		$login_post_details = [
 			'post_name'    => $login_page_slug,
 			'post_title'   => __('Login', 'wp-ultimo'),
 			'post_status'  => 'publish',
 			'post_type'    => 'page',
 			'post_content' => '',
 			'post_author'  => get_current_user_id(),
-		);
+		];
 
 		$login_page_id = wp_insert_post($login_post_details);
 
@@ -2484,23 +2484,23 @@ class Migrator extends Base_Installer {
 				$product_targets
 			);
 
-			$targets = array(
+			$targets = [
 				'customers' => array_filter($customer_targets),
 				'products'  => array_filter($product_targets),
-			);
+			];
 
 			$broadcast = wu_create_broadcast(
-				array(
+				[
 					'name'             => $broadcast->post_title,
 					'content'          => $broadcast->post_content,
 					'type'             => $new_type,
-					'style'            => $style ? $style : 'success',
+					'style'            => $style ?: 'success',
 					'date_created'     => $broadcast->post_date,
 					'date_modified'    => $broadcast->post_modified,
 					'message_targets'  => $targets,
 					'migrated_from_id' => $broadcast->ID,
 					'skip_validation'  => true,
-				)
+				]
 			);
 
 			if (is_wp_error($broadcast)) {
@@ -2538,7 +2538,7 @@ class Migrator extends Base_Installer {
 
 		foreach ($webhooks as $webhook) {
 			$webhook = wu_create_webhook(
-				array(
+				[
 					'name'             => $webhook->post_title,
 					'migrated_from_id' => $webhook->ID,
 					'webhook_url'      => get_post_meta($webhook->ID, 'wpu_url', true),
@@ -2546,7 +2546,7 @@ class Migrator extends Base_Installer {
 					'active'           => (bool) get_post_meta($webhook->ID, 'wpu_active', true),
 					'date_created'     => $webhook->post_date,
 					'date_modified'    => $webhook->post_modified,
-				)
+				]
 			);
 
 			if (is_wp_error($webhook)) {

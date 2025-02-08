@@ -91,7 +91,7 @@ function wu_get_event_type($slug) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Event[]
  */
-function wu_get_events($query = array()) {
+function wu_get_events($query = []) {
 
 	return \WP_Ultimo\Models\Event::query($query);
 }
@@ -135,19 +135,19 @@ function wu_create_event($event_data) {
 
 	$event_data = wp_parse_args(
 		$event_data,
-		array(
+		[
 			'severity'     => Event::SEVERITY_NEUTRAL,
 			'initiator'    => 'system',
 			'author_id'    => $author_id,
 			'object_type'  => 'network',
 			'object_id'    => 0,
 			'date_created' => wu_get_current_time('mysql', true),
-			'payload'      => array(
+			'payload'      => [
 				'key'       => 'None',
 				'old_value' => 'None',
 				'new_value' => 'None',
-			),
-		)
+			],
+		]
 	);
 
 	$event = new Event($event_data);
@@ -170,7 +170,7 @@ function wu_create_event($event_data) {
  */
 function wu_generate_event_payload($model_name, $model = false): array {
 
-	$payload = array();
+	$payload = [];
 
 	if ( ! $model) {
 		switch ($model_name) {
@@ -195,14 +195,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 		}
 
 		if ( ! $model) {
-			return array();
+			return [];
 		}
 	}
 
 	if ($model_name === 'customer') {
 		$payload = $model->to_search_results();
 
-		$payload = array(
+		$payload = [
 			'customer_id'                 => $payload['id'],
 			'customer_name'               => $payload['display_name'],
 			'customer_user_id'            => $payload['user_id'],
@@ -212,17 +212,17 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'customer_billing_address'    => $payload['billing_address'],
 			'customer_manage_url'         => wu_network_admin_url(
 				'wp-ultimo-edit-customer',
-				array(
+				[
 					'id' => $model->get_id(),
-				)
+				]
 			),
-		);
+		];
 	} elseif ($model_name === 'membership') {
 		$payload = $model->to_search_results();
 
 		$p = $payload;
 
-		$payload = array(
+		$payload = [
 			'membership_id'                 => $p['id'],
 			'membership_status'             => $p['status'],
 			'membership_reference_code'     => $p['reference_code'],
@@ -236,15 +236,15 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'membership_date_expiration'    => $p['date_expiration'],
 			'membership_manage_url'         => wu_network_admin_url(
 				'wp-ultimo-edit-membership',
-				array(
+				[
 					'id' => $model->get_id(),
-				)
+				]
 			),
-		);
+		];
 	} elseif ($model_name === 'product') {
 		$payload = $model->to_search_results();
 
-		$payload = array(
+		$payload = [
 			'product_id'            => $payload['id'],
 			'product_amount'        => wu_format_currency($payload['amount'], $payload['currency']),
 			'product_amount_raw'    => $payload['amount'],
@@ -255,15 +255,15 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'product_image'         => $payload['image'],
 			'product_manage_url'    => wu_network_admin_url(
 				'wp-ultimo-edit-payment',
-				array(
+				[
 					'id' => $model->get_id(),
-				)
+				]
 			),
-		);
+		];
 	} elseif ($model_name === 'payment') {
 		$payload = $model->to_search_results();
 
-		$payload = array(
+		$payload = [
 			'payment_id'             => $payload['id'],
 			'payment_status'         => $payload['status'],
 			'payment_reference_code' => $payload['reference_code'],
@@ -280,15 +280,15 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'payment_invoice_url'    => $model->get_invoice_url(),
 			'payment_manage_url'     => wu_network_admin_url(
 				'wp-ultimo-edit-payment',
-				array(
+				[
 					'id' => $model->get_id(),
-				)
+				]
 			),
-		);
+		];
 	} elseif ($model_name === 'site') {
 		$payload = $model->to_search_results();
 
-		$payload = array(
+		$payload = [
 			'site_id'          => $payload['blog_id'],
 			'site_title'       => $payload['title'],
 			'site_description' => $payload['description'],
@@ -296,15 +296,15 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'site_admin_url'   => get_admin_url($model->get_id()),
 			'site_manage_url'  => wu_network_admin_url(
 				'wp-ultimo-edit-site',
-				array(
+				[
 					'id' => $model->get_id(),
-				)
+				]
 			),
-		);
+		];
 	} elseif ($model_name === 'domain') {
 		$payload = $model->to_search_results();
 
-		$payload = array(
+		$payload = [
 			'domain_id'           => $payload['id'],
 			'domain_domain'       => $payload['domain'],
 			'domain_site_id'      => $payload['blog_id'],
@@ -315,11 +315,11 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'domain_date_created' => $payload['date_created'],
 			'domain_manage_url'   => wu_network_admin_url(
 				'wp-ultimo-edit-domain',
-				array(
+				[
 					'id' => $model->get_id(),
-				)
+				]
 			),
-		);
+		];
 	}
 
 	return $payload;

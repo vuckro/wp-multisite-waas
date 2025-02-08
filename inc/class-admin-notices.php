@@ -27,24 +27,24 @@ class Admin_Notices {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $notices = array(
-		'admin'         => array(),
-		'network-admin' => array(),
-		'user'          => array(),
-	);
+	protected $notices = [
+		'admin'         => [],
+		'network-admin' => [],
+		'user'          => [],
+	];
 
 	/**
 	 * Loads the hooks we need for dismissing notices
 	 *
 	 * @since 2.0.0
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
 
-		add_action('in_admin_header', array($this, 'display_notices'));
+		add_action('in_admin_header', [$this, 'display_notices']);
 
-		add_action('wp_ajax_wu_dismiss_admin_notice', array($this, 'ajax_dismiss_admin_notices'));
+		add_action('wp_ajax_wu_dismiss_admin_notice', [$this, 'ajax_dismiss_admin_notices']);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Admin_Notices {
 
 		$dismissed = get_user_meta(get_current_user_id(), 'wu_dismissed_admin_notices', true);
 
-		$dismissed = $dismissed ? $dismissed : array();
+		$dismissed = $dismissed ?: [];
 
 		return $dismissed;
 	}
@@ -77,16 +77,16 @@ class Admin_Notices {
 	 * @param array   $actions List of buttons to add to the notification block.
 	 * @return void
 	 */
-	public function add($notice, $type = 'success', $panel = 'admin', $dismissible_key = false, $actions = array()) {
+	public function add($notice, $type = 'success', $panel = 'admin', $dismissible_key = false, $actions = []): void {
 
-		$id = $dismissible_key ? $dismissible_key : md5($notice);
+		$id = $dismissible_key ?: md5($notice);
 
-		$this->notices[ $panel ][ $id ] = array(
+		$this->notices[ $panel ][ $id ] = [
 			'type'            => $type,
 			'message'         => $notice,
 			'dismissible_key' => is_string($dismissible_key) ? $dismissible_key : false,
 			'actions'         => $actions,
-		);
+		];
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Admin_Notices {
 	 */
 	public function get_notices($panel = 'admin', $filter = true) {
 
-		$notices = isset($this->notices[ $panel ]) ? $this->notices[ $panel ] : array();
+		$notices = $this->notices[ $panel ] ?? [];
 
 		$dismissed_messages = $this->get_dismissed_notices();
 
@@ -129,9 +129,9 @@ class Admin_Notices {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts(): void {
 
-		wp_enqueue_script('wu-admin-notices', wu_get_asset('admin-notices.js', 'js'), array('jquery'), wu_get_version());
+		wp_enqueue_script('wu-admin-notices', wu_get_asset('admin-notices.js', 'js'), ['jquery'], wu_get_version());
 	}
 
 	/**
@@ -161,7 +161,7 @@ class Admin_Notices {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_notices() {
+	public function display_notices(): void {
 
 		$panel = $this->get_current_panel();
 
@@ -169,10 +169,10 @@ class Admin_Notices {
 
 		wu_get_template(
 			'admin-notices',
-			array(
+			[
 				'notices' => $notices,
 				'nonce'   => wp_create_nonce('wu-dismiss-admin-notice'),
-			)
+			]
 		);
 	}
 
@@ -182,7 +182,7 @@ class Admin_Notices {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function ajax_dismiss_admin_notices() {
+	public function ajax_dismiss_admin_notices(): void {
 
 		if ( ! wp_verify_nonce($_POST['nonce'], 'wu-dismiss-admin-notice')) {
 			die('-1');

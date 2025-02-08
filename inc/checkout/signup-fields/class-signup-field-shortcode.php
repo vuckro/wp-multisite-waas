@@ -103,9 +103,9 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -116,10 +116,10 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			// 'id',
 			// 'name',
-		);
+		];
 	}
 
 	/**
@@ -130,9 +130,9 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'name' => __('Shortcode', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -143,14 +143,14 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'shortcode_code' => array(
+		return [
+			'shortcode_code' => [
 				'type'        => 'text',
 				'title'       => __('Shortcode', 'wp-ultimo'),
 				'placeholder' => __('e.g. [shortcode]', 'wp-ultimo'),
 				'desc'        => __('Please, enter the full shortcode, including [].', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -163,16 +163,16 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		return array(
-			$attributes['id'] => array(
+		return [
+			$attributes['id'] => [
 				'type'              => 'note',
 				'desc'              => fn() => do_shortcode($attributes['shortcode_code']),
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

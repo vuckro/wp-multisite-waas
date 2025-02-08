@@ -25,7 +25,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Payments\\Payment_Query';
+	protected $query_class = \WP_Ultimo\Database\Payments\Payment_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -35,11 +35,11 @@ class Line_Item_List_Table extends Payment_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Line Item', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Line Items', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                         // does this table support ajax?
-			)
+			]
 		);
 	}
 
@@ -93,15 +93,15 @@ class Line_Item_List_Table extends Payment_List_Table {
 			return '--';
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id'           => $this->get_payment()->get_id(),
 			'line_item_id' => $item->get_id(),
-		);
+		];
 
-		$actions = array(
+		$actions = [
 			'edit'   => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Edit Item', 'wp-ultimo'), wu_get_form_url('edit_line_item', $url_atts), __('Edit', 'wp-ultimo')),
 			'delete' => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Delete Item', 'wp-ultimo'), wu_get_form_url('delete_line_item', $url_atts), __('Delete', 'wp-ultimo')),
-		);
+		];
 
 		$html = sprintf('<span class="wu-block wu-text-gray-700">%s</span>', $item->get_title());
 
@@ -145,7 +145,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 			$tax_rate = $item->get_tax_rate() . '%';
 		}
 
-		$tax_label = $item->get_tax_rate() ? ($item->get_tax_label() ? $item->get_tax_label() : __('Tax Applied', 'wp-ultimo')) : __('No Taxes Applied', 'wp-ultimo');
+		$tax_label = $item->get_tax_rate() ? ($item->get_tax_label() ?: __('Tax Applied', 'wp-ultimo')) : __('No Taxes Applied', 'wp-ultimo');
 
 		return $html . sprintf('<small class="wu-block">%s (%s)</small>', $tax_rate, $tax_label);
 	}
@@ -168,7 +168,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 			$tax_rate = $item->get_discount_rate() . '%';
 		}
 
-		$tax_label = $item->get_discount_rate() ? ($item->get_discount_label() ? $item->get_discount_label() : __('Discount', 'wp-ultimo')) : __('No discount', 'wp-ultimo');
+		$tax_label = $item->get_discount_rate() ? ($item->get_discount_label() ?: __('Discount', 'wp-ultimo')) : __('No discount', 'wp-ultimo');
 
 		return $html . sprintf('<small class="wu-block">%s (%s)</small>', $tax_rate, $tax_label);
 	}
@@ -207,14 +207,14 @@ class Line_Item_List_Table extends Payment_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'service'         => __('Service', 'wp-ultimo'),
 			'unit_price'      => __('Unit Price', 'wp-ultimo'),
 			'discounts_total' => __('discounts', 'wp-ultimo'),
 			'subtotal'        => __('Subtotal', 'wp-ultimo'),
 			'tax_total'       => __('Taxes', 'wp-ultimo'),
 			'total'           => __('Total', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -227,6 +227,6 @@ class Line_Item_List_Table extends Payment_List_Table {
 	 */
 	public function get_sortable_columns() {
 
-		return array();
+		return [];
 	}
 }

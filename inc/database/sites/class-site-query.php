@@ -56,7 +56,7 @@ class Site_Query extends Query {
 	 * @access public
 	 * @var string
 	 */
-	protected $table_schema = '\\WP_Ultimo\\Database\\Sites\\Sites_Schema';
+	protected $table_schema = \WP_Ultimo\Database\Sites\Sites_Schema::class;
 
 	/** Item ******************************************************************/
 
@@ -85,7 +85,7 @@ class Site_Query extends Query {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $item_shape = '\\WP_Ultimo\\Models\\Site';
+	protected $item_shape = \WP_Ultimo\Models\Site::class;
 
 	/**
 	 * Group to cache queries and queried items in.
@@ -112,7 +112,7 @@ class Site_Query extends Query {
 	 *
 	 * @param string|array $query Array of query arguments.
 	 */
-	public function __construct($query = array()) {
+	public function __construct($query = []) {
 
 		parent::__construct($query);
 	}

@@ -30,9 +30,9 @@ class Product_List_Table extends Parent_Product_List_Table {
 
 		parent::__construct();
 
-		$this->modes = array(
+		$this->modes = [
 			'grid' => __('Grid View'),
-		);
+		];
 
 		$this->current_mode = 'grid';
 	}
@@ -45,7 +45,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 	 */
 	public function get_columns() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -55,10 +55,10 @@ class Product_List_Table extends Parent_Product_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(),
-			'date_filters' => array(),
-		);
+		return [
+			'filters'      => [],
+			'date_filters' => [],
+		];
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 	 */
 	public function bulk_actions($which = '') {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -82,14 +82,14 @@ class Product_List_Table extends Parent_Product_List_Table {
 	 * @param WP_Ultimo\Models\Customer $item The customer being shown.
 	 * @return void
 	 */
-	public function single_row_grid($item) {
+	public function single_row_grid($item): void {
 
 		wu_get_template(
 			'base/products/grid-item',
-			array(
+			[
 				'item'       => $item,
 				'list_table' => $this,
-			)
+			]
 		);
 	}
 }

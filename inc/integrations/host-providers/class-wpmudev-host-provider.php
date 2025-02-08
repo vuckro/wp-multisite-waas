@@ -52,11 +52,11 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
 		'no-instructions',
 		'no-config',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -64,9 +64,9 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WPMUDEV_HOSTING_SITE_ID',
-	);
+	];
 
 	/**
 	 * Runs on singleton instantiation.
@@ -74,7 +74,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @since 2.1.1
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
@@ -82,7 +82,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 		 * Add filter to increase the number of tries to get the SSL certificate.
 		 * This is needed because, from our tests, WPMU DEV hosting takes a while to get the SSL certificate.
 		 */
-		add_filter('wu_async_process_domain_stage_max_tries', array($this, 'ssl_tries'), 10, 2);
+		add_filter('wu_async_process_domain_stage_max_tries', [$this, 'ssl_tries'], 10, 2);
 	}
 
 	/**
@@ -127,31 +127,31 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		$site_id = WPMUDEV_HOSTING_SITE_ID;
 
 		$api_key = get_site_option('wpmudev_apikey');
 
-		$domains = array($domain);
+		$domains = [$domain];
 
-		if (strncmp($domain, 'www.', strlen('www.')) !== 0) {
+		if (! str_starts_with($domain, 'www.')) {
 			$domains[] = "www.$domain";
 		}
 
 		foreach ($domains as $_domain) {
 			$response = wp_remote_post(
 				"https://premium.wpmudev.org/api/hosting/v1/$site_id/domains",
-				array(
+				[
 					'timeout' => 50,
-					'body'    => array(
+					'body'    => [
 						'domain'  => $_domain,
 						'site_id' => $site_id,
-					),
-					'headers' => array(
+					],
+					'headers' => [
 						'Authorization' => $api_key,
-					),
-				)
+					],
+				]
 			);
 
 			if (is_wp_error($response)) {
@@ -182,7 +182,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		/**
 		 * The WPMU DEV Hosting REST API does not offer an endpoint to remove domains yet.
@@ -222,7 +222,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
 		$site_id = WPMUDEV_HOSTING_SITE_ID;
 
@@ -230,12 +230,12 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 
 		$response = wp_remote_get(
 			"https://premium.wpmudev.org/api/hosting/v1/{$site_id}/domains",
-			array(
+			[
 				'timeout' => 50,
-				'headers' => array(
+				'headers' => [
 					'Authorization' => $api_key,
-				),
-			)
+				],
+			]
 		);
 
 		if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
@@ -264,6 +264,6 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_logo() {
 
-		return wu_get_asset('wpmudev.jpg', 'img/hosts');
+		return wu_get_asset('wpmudev.webp', 'img/hosts');
 	}
 }

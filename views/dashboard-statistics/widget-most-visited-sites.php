@@ -12,30 +12,30 @@
 
 <?php
 
-$data    = array();
+$data    = [];
 $slug    = 'most_visited_sites';
-$headers = array(
+$headers = [
 	__('Site', 'wp-ultimo'),
 	__('Visits', 'wp-ultimo'),
-);
+];
 
 foreach ($sites as $site_visits) {
 	$site_line = $site_visits->site->get_title() . ' ' . get_admin_url($site_visits->site->get_id());
 
-	$line = array(
+	$line = [
 		$site_line,
 		$site_visits->count,
-	);
+	];
 
 	$data[] = $line;
 } // end foreach;
 
 $page->render_csv_button(
-	array(
+	[
 		'headers' => $headers,
 		'data'    => $data,
 		'slug'    => $slug,
-	)
+	]
 );
 
 ?>

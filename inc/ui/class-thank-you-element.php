@@ -84,7 +84,7 @@ class Thank_You_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 	}
@@ -130,28 +130,28 @@ class Thank_You_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		$has_pending_site = $this->membership ? (bool) $this->membership->get_pending_site() : false;
 		$is_publishing    = $has_pending_site ? $this->membership->get_pending_site()->is_publishing() : false;
 
-		wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), array(), wu_get_version());
+		wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), [], wu_get_version());
 
 		wp_localize_script(
 			'wu-thank-you',
 			'wu_thank_you',
-			array(
+			[
 				'creating'                        => $is_publishing,
 				'has_pending_site'                => $has_pending_site,
 				'next_queue'                      => wu_get_next_queue_run(),
 				'ajaxurl'                         => admin_url('admin-ajax.php'),
 				'resend_verification_email_nonce' => wp_create_nonce('wu_resend_verification_email_nonce'),
 				'membership_hash'                 => $this->membership ? $this->membership->get_hash() : false,
-				'i18n'                            => array(
+				'i18n'                            => [
 					'resending_verification_email' => __('Resending verification email...', 'wp-ultimo'),
 					'email_sent'                   => __('Verification email sent!', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		wp_enqueue_script('wu-thank-you');
@@ -207,62 +207,62 @@ class Thank_You_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('Thank You', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['thank_you_message'] = array(
+		$fields['thank_you_message'] = [
 			'type'      => 'textarea',
 			'title'     => __('Thank You Message', 'wp-ultimo'),
 			'desc'      => __('Shortcodes are supported.', 'wp-ultimo'),
 			'value'     => __('Thank you for your payment! Your transaction has been completed and a receipt for your purchase has been emailed to you.', 'wp-ultimo'),
 			'tooltip'   => '',
-			'html_attr' => array(
+			'html_attr' => [
 				'rows' => 4,
-			),
-		);
+			],
+		];
 
-		$fields['title_pending'] = array(
+		$fields['title_pending'] = [
 			'type'    => 'text',
 			'title'   => __('Title (Pending)', 'wp-ultimo'),
 			'value'   => __('Thank You', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely. This title is used when the payment was not yet confirmed.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['thank_you_message_pending'] = array(
+		$fields['thank_you_message_pending'] = [
 			'type'      => 'textarea',
 			'title'     => __('Thank You Message (Pending)', 'wp-ultimo'),
 			'desc'      => __('This content is used when the payment was not yet confirmed. Shortcodes are supported.', 'wp-ultimo'),
 			'value'     => __('Thank you for your order! We are waiting on the payment processor to confirm your payment, which can take up to 5 minutes. We will notify you via email when your site is ready.', 'wp-ultimo'),
 			'tooltip'   => '',
-			'html_attr' => array(
+			'html_attr' => [
 				'rows' => 4,
-			),
-		);
+			],
+		];
 
-		$fields['no_sites_message'] = array(
+		$fields['no_sites_message'] = [
 			'type'      => 'textarea',
 			'title'     => __('No Sites Message', 'wp-ultimo'),
 			'desc'      => __('A message to show if membership has no sites. Shortcodes are supported.', 'wp-ultimo'),
 			'value'     => __('No sites found', 'wp-ultimo'),
 			'tooltip'   => '',
-			'html_attr' => array(
+			'html_attr' => [
 				'rows' => 4,
-			),
-		);
+			],
+		];
 
 		return $fields;
 	}
@@ -286,13 +286,13 @@ class Thank_You_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Thank You',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -311,13 +311,13 @@ class Thank_You_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title'                     => __('Thank You', 'wp-ultimo'),
 			'thank_you_message'         => __('Thank you for your payment! Your transaction has been completed and a receipt for your purchase has been emailed to you.', 'wp-ultimo'),
 			'title_pending'             => __('Thank You', 'wp-ultimo'),
 			'thank_you_message_pending' => __('Thank you for your order! We are waiting on the payment processor to confirm your payment, which can take up to 5 minutes. We will notify you via email when your site is ready.', 'wp-ultimo'),
 			'no_sites_message'          => __('No sites found', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -326,7 +326,7 @@ class Thank_You_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->payment = wu_get_payment_by_hash(wu_request('payment'));
 
@@ -346,9 +346,9 @@ class Thank_You_Element extends Base_Element {
 
 		$this->customer = $this->membership->get_customer();
 
-		add_filter('document_title_parts', array($this, 'replace_page_title'));
+		add_filter('document_title_parts', [$this, 'replace_page_title']);
 
-		add_filter('the_title', array($this, 'maybe_replace_page_title'), 10, 2);
+		add_filter('the_title', [$this, 'maybe_replace_page_title'], 10, 2);
 	}
 
 	/**
@@ -357,7 +357,7 @@ class Thank_You_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->payment = wu_mock_payment();
 
@@ -395,7 +395,7 @@ class Thank_You_Element extends Base_Element {
 		$conversion_snippets = $atts['checkout_form']->get_conversion_snippets();
 
 		if ( ! empty($conversion_snippets)) {
-			$product_ids = array();
+			$product_ids = [];
 
 			foreach ($this->payment->get_line_items() as $line_item) {
 				if ($line_item->get_product_id()) {
@@ -405,7 +405,7 @@ class Thank_You_Element extends Base_Element {
 
 			$conversion_placeholders = apply_filters(
 				'wu_conversion_placeholders',
-				array(
+				[
 					'CUSTOMER_ID'         => $this->customer->get_id(),
 					'CUSTOMER_EMAIL'      => $this->customer->get_email_address(),
 					'MEMBERSHIP_DURATION' => $this->membership->get_recurring_description(),
@@ -415,7 +415,7 @@ class Thank_You_Element extends Base_Element {
 					'ORDER_CURRENCY'      => $this->payment->get_currency(),
 					'ORDER_PRODUCTS'      => array_values($product_ids),
 					'ORDER_AMOUNT'        => $this->payment->get_total(),
-				)
+				]
 			);
 
 			foreach ($conversion_placeholders as $placeholder => $value) {

@@ -52,7 +52,7 @@ class Site_Maintenance_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		if (wu_get_setting('maintenance_mode')) {
 			parent::init();
@@ -126,28 +126,28 @@ class Site_Maintenance_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'        => 'text',
 			'title'       => __('Label', 'wp-ultimo'),
 			'value'       => __('Toggle Maintenance Mode', 'wp-ultimo'),
 			'placeholder' => __('e.g. Toggle Maintenance Mode', 'wp-ultimo'),
 			'tooltip'     => '',
-		);
+		];
 
-		$fields['desc'] = array(
+		$fields['desc'] = [
 			'type'    => 'textarea',
 			'title'   => __('Description', 'wp-ultimo'),
 			'value'   => __('Put your site on maintenance mode. When activated, the front-end will only be accessible to logged users.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
 		return $fields;
 	}
@@ -171,12 +171,12 @@ class Site_Maintenance_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Login',
 			'Reset Password',
-		);
+		];
 	}
 
 	/**
@@ -195,10 +195,10 @@ class Site_Maintenance_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title' => __('Toggle Maintenance Mode', 'wp-ultimo'),
 			'desc'  => __('Put your site on maintenance mode. When activated, the front-end will only be accessible to logged users.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -207,7 +207,7 @@ class Site_Maintenance_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
@@ -224,7 +224,7 @@ class Site_Maintenance_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 	}
@@ -235,17 +235,17 @@ class Site_Maintenance_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
-		wp_register_script('wu-site-maintenance', wu_get_asset('site-maintenance.js', 'js'), array('jquery', 'wu-functions'), wu_get_version());
+		wp_register_script('wu-site-maintenance', wu_get_asset('site-maintenance.js', 'js'), ['jquery', 'wu-functions'], wu_get_version());
 
 		wp_localize_script(
 			'wu-site-maintenance',
 			'wu_site_maintenance',
-			array(
+			[
 				'nonce'   => wp_create_nonce('wu_toggle_maintenance_mode'),
 				'ajaxurl' => wu_ajax_url(),
-			)
+			]
 		);
 
 		wp_enqueue_script('wu-site-maintenance');
@@ -266,18 +266,18 @@ class Site_Maintenance_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		$fields = array(
-			'maintenance_mode' => array(
+		$fields = [
+			'maintenance_mode' => [
 				'type'  => 'toggle',
 				'title' => $atts['title'],
 				'desc'  => $atts['desc'],
 				'value' => wu_string_to_bool($this->site->get_meta('wu_maintenance_mode')),
-			),
-			'site_hash'        => array(
+			],
+			'site_hash'        => [
 				'type'  => 'hidden',
 				'value' => $this->site->get_hash(),
-			),
-		);
+			],
+		];
 
 		/**
 		 * Instantiate the form for the order details.
@@ -287,12 +287,12 @@ class Site_Maintenance_Element extends Base_Element {
 		$form = new \WP_Ultimo\UI\Form(
 			'maintenance-mode',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-widget-list wu-striped wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-list-none wu-p-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(),
-			)
+				'html_attr'             => [],
+			]
 		);
 
 		$atts['form'] = $form;

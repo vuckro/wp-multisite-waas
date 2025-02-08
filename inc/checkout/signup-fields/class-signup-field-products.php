@@ -103,9 +103,9 @@ class Signup_Field_Products extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -116,7 +116,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -127,10 +127,10 @@ class Signup_Field_Products extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'name' => __('Pre-selected Products', 'wp-ultimo'),
 			'id'   => 'products',
-		);
+		];
 	}
 
 	/**
@@ -141,22 +141,22 @@ class Signup_Field_Products extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'products' => array(
+		return [
+			'products' => [
 				'type'        => 'model',
 				'title'       => __('Products', 'wp-ultimo'),
 				'placeholder' => __('Products', 'wp-ultimo'),
 				'desc'        => __('Use this field to pre-select products. This is useful when you have a signup page for specific offering/bundles and do not want your customers to be able to choose plans and other products manually.', 'wp-ultimo'),
 				'tooltip'     => '',
-				'html_attr'   => array(
+				'html_attr'   => [
 					'data-model'        => 'product',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'name',
 					'data-search-field' => 'name',
 					'data-max-items'    => 10,
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -169,18 +169,18 @@ class Signup_Field_Products extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
 		$products = explode(',', (string) $attributes['products']);
 
 		foreach ($products as $product_id) {
-			$checkout_fields[ "products[{$product_id}]" ] = array(
+			$checkout_fields[ "products[{$product_id}]" ] = [
 				'type'      => 'hidden',
 				'value'     => $product_id,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-bind:name' => "'products[]'",
-				),
-			);
+				],
+			];
 		}
 
 		$this->insert_products_in_form($products);

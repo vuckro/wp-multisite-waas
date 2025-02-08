@@ -17,11 +17,11 @@ defined('ABSPATH') || exit;
  * @param array $args List of the page arguments.
  * @return string
  */
-function wu_render_empty_state($args = array()) {
+function wu_render_empty_state($args = []) {
 
 	$args = wp_parse_args(
 		$args,
-		array(
+		[
 			'message'                  => __('This is not yet available...'),
 			'sub_message'              => __('We\'re still working on this part of the product.'),
 			'link_label'               => __('&larr; Go Back', 'wp-ultimo'),
@@ -29,7 +29,7 @@ function wu_render_empty_state($args = array()) {
 			'link_classes'             => '',
 			'link_icon'                => '',
 			'display_background_image' => true,
-		)
+		]
 	);
 
 	return wu_get_template_contents('base/empty-state', $args);
@@ -55,17 +55,17 @@ function wu_wrap_use_container() {
  * @param array $second_row The second row, on the right.
  * @return string
  */
-function wu_responsive_table_row($args = array(), $first_row = array(), $second_row = array()) {
+function wu_responsive_table_row($args = [], $first_row = [], $second_row = []) {
 
 	$args = wp_parse_args(
 		$args,
-		array(
+		[
 			'id'     => '',
 			'title'  => __('No Title', 'wp-ultimo'),
 			'url'    => '#',
 			'status' => '',
 			'image'  => '',
-		)
+		]
 	);
 
 	return wu_get_template_contents('base/responsive-table-row', compact('args', 'first_row', 'second_row'));

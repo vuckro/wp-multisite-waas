@@ -15,7 +15,7 @@ if ( ! class_exists('MUCD_Data') ) {
 		 * @param  int $from_site_id duplicated site id
 		 * @param  int $to_site_id   new site id
 		 */
-		public static function copy_data($from_site_id, $to_site_id) {
+		public static function copy_data($from_site_id, $to_site_id): void {
 			self::$to_site_id = $to_site_id;
 
 			// Copy
@@ -25,16 +25,16 @@ if ( ! class_exists('MUCD_Data') ) {
 			self::db_update_data($from_site_id, $to_site_id, $saved_options);
 		}
 
-		public static function db_copy_blog_meta($from_site_id, $to_site_id) {
+		public static function db_copy_blog_meta($from_site_id, $to_site_id): void {
 
 			global $wpdb;
 
 			// Delete everything
 			$wpdb->delete(
 				_get_meta_table('blog'),
-				array(
+				[
 					'blog_id' => $to_site_id,
-				)
+				]
 			);
 
 			$meta = get_site_meta($from_site_id);
@@ -96,12 +96,12 @@ if ( ! class_exists('MUCD_Data') ) {
 
 			// die;
 
-			$tables_to_ignore = array(
+			$tables_to_ignore = [
 				'actionscheduler_actions',
 				'actionscheduler_claims',
 				'actionscheduler_groups',
 				'actionscheduler_logs',
-			);
+			];
 
 			foreach ($from_site_table as $table) {
 				$table_base_name = substr((string) $table, $from_site_prefix_length);
@@ -169,7 +169,7 @@ if ( ! class_exists('MUCD_Data') ) {
 		 * @param  int $from_site_id duplicated site id
 		 * @param  int $to_site_id   new site id
 		 */
-		public static function db_update_data($from_site_id, $to_site_id, $saved_options) {
+		public static function db_update_data($from_site_id, $to_site_id, $saved_options): void {
 
 			global $wpdb;
 
@@ -192,7 +192,7 @@ if ( ! class_exists('MUCD_Data') ) {
 
 			restore_current_blog();
 
-			$tables = array();
+			$tables = [];
 
 			// Bugfix : escape '_' , '%' and '/' character for mysql 'like' queries
 			$to_blog_prefix_like = $wpdb->esc_like($to_blog_prefix);
@@ -200,13 +200,13 @@ if ( ! class_exists('MUCD_Data') ) {
 			$results = self::do_sql_query('SHOW TABLES LIKE \'' . $to_blog_prefix_like . '%\'', 'col', false);
 
 			foreach ( $results as $k => $v ) {
-				$tables[ str_replace($to_blog_prefix, '', (string) $v) ] = array();
+				$tables[ str_replace($to_blog_prefix, '', (string) $v) ] = [];
 			}
 
 			foreach ( $tables as $table => $col) {
 				$results = self::do_sql_query('SHOW COLUMNS FROM `' . $to_blog_prefix . $table . '`', 'col', false);
 
-				$columns = array();
+				$columns = [];
 
 				foreach ( $results as $k => $v ) {
 					$columns[] = $v;
@@ -224,11 +224,11 @@ if ( ! class_exists('MUCD_Data') ) {
 			$from_site_prefix = $wpdb->get_blog_prefix($from_site_id);
 			$to_site_prefix   = $wpdb->get_blog_prefix($to_site_id);
 
-			$string_to_replace = array(
+			$string_to_replace = [
 				wu_replace_scheme($from_upload_url) => wu_replace_scheme($to_upload_url),
 				wu_replace_scheme($from_blog_url)   => wu_replace_scheme($to_blog_url),
 				$from_site_prefix                   => $to_site_prefix,
-			);
+			];
 
 			$string_to_replace = apply_filters('mucd_string_to_replace', $string_to_replace, $from_site_id, $to_site_id);
 
@@ -248,7 +248,7 @@ if ( ! class_exists('MUCD_Data') ) {
 		 * @param  int $from_site_id duplicated site id
 		 * @param  int $to_site_id   new site id
 		 */
-		public static function db_restore_data($to_site_id, $saved_options) {
+		public static function db_restore_data($to_site_id, $saved_options): void {
 
 			switch_to_blog($to_site_id);
 
@@ -272,7 +272,7 @@ if ( ! class_exists('MUCD_Data') ) {
 		 * @param  string          $from_string original string to replace
 		 * @param  string          $to_string new string
 		 */
-		public static function update($table, $fields, $from_string, $to_string) {
+		public static function update($table, $fields, $from_string, $to_string): void {
 			if (is_array($fields) || ! empty($fields)) {
 				global $wpdb;
 
@@ -336,7 +336,7 @@ if ( ! class_exists('MUCD_Data') ) {
 		 * @return string the new string
 		 */
 		public static function replace_recursive($val, $from_string, $to_string) {
-			$unset = array();
+			$unset = [];
 			if (is_array($val)) {
 				foreach ($val as $k => $v) {
 					$val[ $k ] = self::try_replace($val, $k, $from_string, $to_string);
@@ -457,7 +457,7 @@ if ( ! class_exists('MUCD_Data') ) {
 		 * @param  string $sql_query the query
 		 * @param  string $sql_error the error
 		 */
-		public static function sql_error($sql_query, $sql_error) {
+		public static function sql_error($sql_query, $sql_error): void {
 			wu_log_add('site-duplication-errors', sprintf('Got error "%s" while running: %s', $sql_error, $sql_query), LogLevel::ERROR);
 		}
 	}

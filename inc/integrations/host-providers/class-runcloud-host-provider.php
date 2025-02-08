@@ -52,9 +52,9 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -62,12 +62,12 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WU_RUNCLOUD_API_KEY',
 		'WU_RUNCLOUD_API_SECRET',
 		'WU_RUNCLOUD_SERVER_ID',
 		'WU_RUNCLOUD_APP_ID',
-	);
+	];
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -78,7 +78,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 */
 	public function detect(): bool {
 
-		return strpos(ABSPATH, 'runcloud') !== false;
+		return str_contains(ABSPATH, 'runcloud');
 	}
 
 	/**
@@ -89,28 +89,28 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_fields() {
 
-		return array(
-			'WU_RUNCLOUD_API_KEY'    => array(
+		return [
+			'WU_RUNCLOUD_API_KEY'    => [
 				'title'       => __('RunCloud API Key', 'wp-ultimo'),
 				'desc'        => __('The API Key retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. Sx9tHAn5XMrkeyZKS1a7uj8dGTLgKnlEOaJEFRt1m95L', 'wp-ultimo'),
-			),
-			'WU_RUNCLOUD_API_SECRET' => array(
+			],
+			'WU_RUNCLOUD_API_SECRET' => [
 				'title'       => __('RunCloud API Secret', 'wp-ultimo'),
 				'desc'        => __('The API secret retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. ZlAebXp2sa6J5xsrPoiPcMXZRIVsHJ2rEkNCNGknZnF0UK5cSNSePS8GBW9FXIQd', 'wp-ultimo'),
-			),
-			'WU_RUNCLOUD_SERVER_ID'  => array(
+			],
+			'WU_RUNCLOUD_SERVER_ID'  => [
 				'title'       => __('RunCloud Server ID', 'wp-ultimo'),
 				'desc'        => __('The Server ID retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. 11667', 'wp-ultimo'),
-			),
-			'WU_RUNCLOUD_APP_ID'     => array(
+			],
+			'WU_RUNCLOUD_APP_ID'     => [
 				'title'       => __('RunCloud App ID', 'wp-ultimo'),
 				'desc'        => __('The App ID retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. 940288', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -121,17 +121,17 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		$success = false;
 
 		$response = $this->send_runcloud_request(
 			$this->get_runcloud_base_url('domains'),
-			array(
+			[
 				'name'        => $domain,
 				'www'         => true,
 				'redirection' => 'non-www',
-			),
+			],
 			'POST'
 		);
 
@@ -163,7 +163,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		$domain_id = $this->get_runcloud_domain_id($domain);
 
@@ -171,7 +171,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 			wu_log_add('integration-runcloud', __('Domain name not found on runcloud', 'wp-ultimo'));
 		}
 
-		$response = $this->send_runcloud_request($this->get_runcloud_base_url("domains/$domain_id"), array(), 'DELETE');
+		$response = $this->send_runcloud_request($this->get_runcloud_base_url("domains/$domain_id"), [], 'DELETE');
 
 		if (is_wp_error($response)) {
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
@@ -210,9 +210,9 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
-		$response = $this->send_runcloud_request($this->get_runcloud_base_url('domains'), array(), 'GET');
+		$response = $this->send_runcloud_request($this->get_runcloud_base_url('domains'), [], 'GET');
 
 		if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
 			wp_send_json_error($response);
@@ -246,7 +246,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @param string $method HTTP Method to send. Defaults to POST.
 	 * @return array
 	 */
-	public function send_runcloud_request($url, $data = array(), $method = 'POST') {
+	public function send_runcloud_request($url, $data = [], $method = 'POST') {
 
 		$username = defined('WU_RUNCLOUD_API_KEY') ? WU_RUNCLOUD_API_KEY : '';
 
@@ -254,15 +254,15 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		$response = wp_remote_request(
 			$url,
-			array(
+			[
 				'timeout'     => 100,
 				'redirection' => 5,
 				'body'        => $data,
 				'method'      => $method,
-				'headers'     => array(
+				'headers'     => [
 					'Authorization' => 'Basic ' . base64_encode($username . ':' . $password),
-				),
-			)
+				],
+			]
 		);
 
 		return $response;
@@ -293,7 +293,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_runcloud_domain_id($domain) {
 
-		$domains_list = $this->send_runcloud_request($this->get_runcloud_base_url('domains'), array(), 'GET');
+		$domains_list = $this->send_runcloud_request($this->get_runcloud_base_url('domains'), [], 'GET');
 
 		$list = $this->maybe_return_runcloud_body($domains_list);
 
@@ -317,7 +317,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		$ssl_id = false;
 
-		$response = $this->send_runcloud_request($this->get_runcloud_base_url('ssl'), array(), 'GET');
+		$response = $this->send_runcloud_request($this->get_runcloud_base_url('ssl'), [], 'GET');
 
 		if (is_wp_error($response)) {
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
@@ -341,9 +341,9 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @param int $ssl_id The SSL id on RunCloud.
 	 * @return void
 	 */
-	public function redeploy_runcloud_ssl($ssl_id) {
+	public function redeploy_runcloud_ssl($ssl_id): void {
 
-		$response = $this->send_runcloud_request($this->get_runcloud_base_url("ssl/$ssl_id"), array(), 'PUT');
+		$response = $this->send_runcloud_request($this->get_runcloud_base_url("ssl/$ssl_id"), [], 'PUT');
 
 		if (is_wp_error($response)) {
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
@@ -358,7 +358,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function get_instructions() {
+	public function get_instructions(): void {
 
 		wu_get_template('wizards/host-integrations/runcloud-instructions');
 	}

@@ -55,7 +55,7 @@ wp_enqueue_script('wu-field-button-upload', WP_Ultimo()->get_asset("wu-field-ima
 		<?php echo $field['desc']; ?>
 	</p>
 
-	<input type="hidden" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" value="<?php echo wu_get_setting($field_slug) ? wu_get_setting($field_slug) : $field['default']; ?>">
+	<input type="hidden" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" value="<?php echo wu_get_setting($field_slug) ?: $field['default']; ?>">
 
 	<?php endif; ?>
 

@@ -11,7 +11,7 @@ foreach ($notices as $key => $notice) : ?>
 
 <div class="notice wu-hidden wu-admin-notice wu-styling hover:wu-styling notice-<?php echo esc_attr($notice['type']); ?> <?php echo $notice['dismissible_key'] ? esc_attr('is-dismissible') : ''; ?>">
 
-	<?php if (strpos($notice['message'], '<p>') !== false) : ?>
+	<?php if (str_contains($notice['message'], '<p>')) : ?>
 	
 		<?php echo $notice['message']; ?>
 	

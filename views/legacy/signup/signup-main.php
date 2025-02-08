@@ -23,23 +23,23 @@ require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
 require_once ABSPATH . 'wp-admin/includes/screen.php';
 
 // Load the admin actions removed in WordPress 6.0
-$admin_actions = array(
-	'admin_print_scripts'        => array(
+$admin_actions = [
+	'admin_print_scripts'        => [
 		'print_head_scripts' => 20,
-	),
-	'admin_print_styles'         => array(
+	],
+	'admin_print_styles'         => [
 		'print_admin_styles' => 20,
-	),
-	'admin_head'                 => array(
+	],
+	'admin_head'                 => [
 		'wp_color_scheme_settings' => 10,
 		'wp_admin_canonical_url'   => 10,
 		'wp_site_icon'             => 10,
 		'wp_admin_viewport_meta'   => 10,
-	),
-	'admin_print_footer_scripts' => array(
+	],
+	'admin_print_footer_scripts' => [
 		'_wp_footer_scripts' => 10,
-	),
-);
+	],
+];
 
 foreach ($admin_actions as $action => $handlers) {
 	foreach ($handlers as $handler => $priority) {
@@ -109,7 +109,7 @@ do_action('wu_checkout_scripts');
 
 			?>
 
-			<div class="wu-setup-content wu-content-<?php echo wu_request('step', isset($signup->step) ? $signup->step : 'default'); ?>">
+			<div class="wu-setup-content wu-content-<?php echo wu_request('step', $signup->step ?? 'default'); ?>">
 
 			<div name="loginform" id="loginform">
 
@@ -131,7 +131,7 @@ do_action('wu_checkout_scripts');
 			/**
 			 * Nav Links
 			 */
-			wu_get_template('legacy/signup/signup-nav-links', array('signup' => $signup));
+			wu_get_template('legacy/signup/signup-nav-links', ['signup' => $signup]);
 			?>
 
 		</div> <!-- /login -->
@@ -140,7 +140,7 @@ do_action('wu_checkout_scripts');
 			/**
 			 * Navigation Steps
 			 */
-			wu_get_template('legacy/signup/signup-steps-navigation', array('signup' => $signup));
+			wu_get_template('legacy/signup/signup-steps-navigation', ['signup' => $signup]);
 		?>
 
 		<?php

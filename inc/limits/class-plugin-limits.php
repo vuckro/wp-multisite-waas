@@ -43,9 +43,9 @@ class Plugin_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_sunrise_loaded', array($this, 'load_limitations'));
+		add_action('wu_sunrise_loaded', [$this, 'load_limitations']);
 	}
 
 	/**
@@ -54,27 +54,27 @@ class Plugin_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_limitations() {
+	public function load_limitations(): void {
 
 		if (wu_get_current_site()->has_limitations()) {
-			add_filter('site_option_active_sitewide_plugins', array($this, 'deactivate_network_plugins'));
+			add_filter('site_option_active_sitewide_plugins', [$this, 'deactivate_network_plugins']);
 
-			add_filter('option_active_plugins', array($this, 'deactivate_plugins'));
+			add_filter('option_active_plugins', [$this, 'deactivate_plugins']);
 
-			add_filter('all_plugins', array($this, 'clear_plugin_list'));
+			add_filter('all_plugins', [$this, 'clear_plugin_list']);
 
-			add_filter('the_content', array($this, 'clean_unused_shortcodes'), 9999);
+			add_filter('the_content', [$this, 'clean_unused_shortcodes'], 9999);
 
-			add_filter('plugin_action_links', array($this, 'clear_actions'), -2000, 2);
+			add_filter('plugin_action_links', [$this, 'clear_actions'], -2000, 2);
 
 			add_filter('show_network_active_plugins', '__return_true');
 
-			add_action('load-plugins.php', array($this, 'admin_page_hooks'));
+			add_action('load-plugins.php', [$this, 'admin_page_hooks']);
 		}
 
-		add_action('wu_site_post_save', array($this, 'activate_and_inactive_plugins'), 10, 3);
+		add_action('wu_site_post_save', [$this, 'activate_and_inactive_plugins'], 10, 3);
 
-		add_action('wu_checkout_done', array($this, 'maybe_activate_and_inactive_plugins'), 10, 5);
+		add_action('wu_checkout_done', [$this, 'maybe_activate_and_inactive_plugins'], 10, 5);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Plugin_Limits {
 	 * @since 2.0.5
 	 * @return void
 	 */
-	public function admin_page_hooks() {
+	public function admin_page_hooks(): void {
 		add_action('admin_enqueue_scripts', 'add_wubox');
 	}
 
@@ -97,7 +97,7 @@ class Plugin_Limits {
 	 * @param bool                   $new_site If this site is a new one.
 	 * @return void
 	 */
-	public function activate_and_inactive_plugins($data, $site_object, $new_site) {
+	public function activate_and_inactive_plugins($data, $site_object, $new_site): void {
 		if ($site_object && $new_site) {
 			$site_object->sync_plugins();
 		}
@@ -115,7 +115,7 @@ class Plugin_Limits {
 	 * @param string                       $type The cart type.
 	 * @return void
 	 */
-	public function maybe_activate_and_inactive_plugins($payment, $membership, $customer, $cart, $type) {
+	public function maybe_activate_and_inactive_plugins($payment, $membership, $customer, $cart, $type): void {
 		if ('new' !== $type && $membership) {
 			$membership->sync_plugins();
 		}
@@ -155,10 +155,10 @@ class Plugin_Limits {
 			$upgrade = sprintf(
 				'<a href="%s" class="wu-styling" title="%s"><span class="dashicons-wu-lock1 wu-mr-1"></span>%s</a>',
 				wu_generate_upgrade_to_unlock_url(
-					array(
+					[
 						'module' => 'plugins',
 						'type'   => $plugin_file,
-					)
+					]
 				),
 				__('Upgrade to unlock', 'wp-ultimo'),
 				__('Upgrade to unlock', 'wp-ultimo')
@@ -196,7 +196,7 @@ class Plugin_Limits {
 				unset($plugins[ $plugin_slug ]);
 			}
 
-			if (strncmp($plugin_slug, 'wp-ultimo', strlen('wp-ultimo')) === 0) {
+			if (str_starts_with($plugin_slug, 'wp-ultimo')) {
 				unset($plugins[ $plugin_slug ]);
 			}
 
@@ -236,7 +236,7 @@ class Plugin_Limits {
 		$plugin_limits = wu_get_current_site()->get_limitations()->plugins;
 
 		foreach ($plugins as $plugin_slug => $timestamp) {
-			if (strpos($plugin_slug, 'wp-ultimo') !== false) {
+			if (str_contains($plugin_slug, 'wp-ultimo')) {
 				continue;
 			}
 
@@ -289,7 +289,7 @@ class Plugin_Limits {
 		$plugin_limits = wu_get_current_site()->get_limitations()->plugins;
 
 		foreach ($plugins as $plugin_slug) {
-			if (strpos((string) $plugin_slug, 'wp-ultimo') !== false) {
+			if (str_contains((string) $plugin_slug, 'wp-ultimo')) {
 				continue;
 			}
 

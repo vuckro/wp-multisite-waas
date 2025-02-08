@@ -90,11 +90,11 @@ class Domain extends Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	const INACTIVE_STAGES = array(
+	const INACTIVE_STAGES = [
 		'checking-dns',
 		'checking-ssl-cert',
 		'failed',
-	);
+	];
 
 	/**
 	 * Query Class to the static query methods.
@@ -102,7 +102,7 @@ class Domain extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Domains\\Domain_Query';
+	protected $query_class = \WP_Ultimo\Database\Domains\Domain_Query::class;
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -118,14 +118,14 @@ class Domain extends Base_Model {
 
 		$id = $this->get_id();
 
-		return array(
+		return [
 			'blog_id'        => 'required|integer',
 			'domain'         => "required|domain|unique:\WP_Ultimo\Models\Domain,domain,{$id}",
 			'stage'          => 'required|in:checking-dns,checking-ssl-cert,done-without-ssl,done,failed|default:checking-dns',
 			'active'         => 'default:1',
 			'secure'         => 'default:0',
 			'primary_domain' => 'default:0',
-		);
+		];
 	}
 
 	/**
@@ -147,7 +147,7 @@ class Domain extends Base_Model {
 	 * @param string $domain Your Domain name. You don't need to put http or https in front of your domain in this field. e.g: example.com.
 	 * @return void
 	 */
-	public function set_domain($domain) {
+	public function set_domain($domain): void {
 
 		$this->domain = strtolower($domain);
 	}
@@ -185,7 +185,7 @@ class Domain extends Base_Model {
 	 * @param int $blog_id The blog ID attached to this domain.
 	 * @return void
 	 */
-	public function set_blog_id($blog_id) {
+	public function set_blog_id($blog_id): void {
 
 		$this->blog_id = $blog_id;
 	}
@@ -245,7 +245,7 @@ class Domain extends Base_Model {
 	 * @param boolean $active Set this domain as active (true), which means available to be used, or inactive (false).
 	 * @return void
 	 */
-	public function set_active($active) {
+	public function set_active($active): void {
 
 		$this->active = $active;
 	}
@@ -269,7 +269,7 @@ class Domain extends Base_Model {
 	 * @param boolean $primary_domain Define true to set this as primary domain of a site, meaning it's the main url, or set false.
 	 * @return void
 	 */
-	public function set_primary_domain($primary_domain) {
+	public function set_primary_domain($primary_domain): void {
 
 		$this->primary_domain = $primary_domain;
 	}
@@ -293,7 +293,7 @@ class Domain extends Base_Model {
 	 * @param boolean $secure If this domain has some SSL security or not.
 	 * @return void
 	 */
-	public function set_secure($secure) {
+	public function set_secure($secure): void {
 
 		$this->secure = $secure;
 	}
@@ -319,7 +319,7 @@ class Domain extends Base_Model {
 	 * @param string $stage The state of the domain model object. Can be one of this options: checking-dns, checking-ssl-cert, done-without-ssl, done and failed.
 	 * @return void
 	 */
-	public function set_stage($stage) {
+	public function set_stage($stage): void {
 
 		$this->stage = $stage;
 	}
@@ -377,7 +377,7 @@ class Domain extends Base_Model {
 	 * @param string $date_created Date when the domain was created. If no date is set, the current date and time will be used.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -456,9 +456,9 @@ class Domain extends Base_Model {
 		if (is_wp_error($results) === false) {
 			if ($new_domain) {
 				if (has_action('mercator.mapping.created')) {
-					$deprecated_args = array(
+					$deprecated_args = [
 						$this,
-					);
+					];
 
 					/**
 					 * Deprecated: Mercator created domain.
@@ -471,10 +471,10 @@ class Domain extends Base_Model {
 					do_action_deprecated('mercator.mapping.created', $deprecated_args, '2.0.0', 'wu_domain_post_save');
 				}
 			} elseif (has_action('mercator.mapping.updated')) {
-					$deprecated_args = array(
+					$deprecated_args = [
 						$this,
 						$before_changes,
-					);
+					];
 
 					/**
 					 * Deprecated: Mercator updated domain.
@@ -509,9 +509,9 @@ class Domain extends Base_Model {
 		$results = parent::delete();
 
 		if (is_wp_error($results) === false && has_action('mercator.mapping.deleted')) {
-			$deprecated_args = array(
+			$deprecated_args = [
 				$this,
-			);
+			];
 
 			/**
 			 * Deprecated: Mercator Deleted domain.

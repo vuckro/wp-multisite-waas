@@ -45,7 +45,7 @@ function wu_color($hex) {
  */
 function wu_get_random_color($index) {
 
-	$colors = array(
+	$colors = [
 		'wu-bg-red-500',
 		'wu-bg-green-500',
 		'wu-bg-blue-500',
@@ -53,7 +53,7 @@ function wu_get_random_color($index) {
 		'wu-bg-orange-500',
 		'wu-bg-purple-500',
 		'wu-bg-pink-500',
-	);
+	];
 
-	return wu_get_isset($colors, $index, $colors[ rand(0, count($colors) - 1) ]);
+	return wu_get_isset($colors, $index, $colors[ random_int(0, count($colors) - 1) ]);
 }

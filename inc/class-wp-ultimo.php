@@ -44,7 +44,7 @@ final class WP_Ultimo {
 	 *
 	 * @var array
 	 */
-	public $tables = array();
+	public $tables = [];
 
 	/**
 	 * Checks if WP Multisite WaaS was loaded or not.
@@ -100,7 +100,7 @@ final class WP_Ultimo {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		/*
 		 * Core Helper Functions
 		 */
@@ -229,7 +229,7 @@ final class WP_Ultimo {
 	 * @since 0.0.1
 	 * @return void
 	 */
-	public function setup_textdomain() {
+	public function setup_textdomain(): void {
 		/*
 		 * Loads the translation files.
 		 */
@@ -242,7 +242,7 @@ final class WP_Ultimo {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_tables() {
+	public function setup_tables(): void {
 
 		$this->tables = \WP_Ultimo\Loaders\Table_Loader::get_instance();
 	}
@@ -257,7 +257,7 @@ final class WP_Ultimo {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_public_apis() {
+	public function load_public_apis(): void {
 
 		/**
 		 * Primitive Helpers
@@ -423,7 +423,7 @@ final class WP_Ultimo {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	protected function load_extra_components() {
+	protected function load_extra_components(): void {
 		/*
 		 * SSO Functionality
 		 */
@@ -634,7 +634,7 @@ final class WP_Ultimo {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	protected function load_admin_pages() {
+	protected function load_admin_pages(): void {
 		/*
 		 * Migration Wizard Alert
 		 */
@@ -798,7 +798,7 @@ final class WP_Ultimo {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	protected function load_managers() {
+	protected function load_managers(): void {
 		/*
 		 * Loads the Event manager.
 		 */

@@ -28,7 +28,7 @@ class Domain_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Domains\\Domain_Query';
+	protected $query_class = \WP_Ultimo\Database\Domains\Domain_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -38,15 +38,15 @@ class Domain_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Domain', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Domains', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                       // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_get_form_url('add_new_domain'),
 					'classes' => 'wubox',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -75,19 +75,19 @@ class Domain_List_Table extends Base_List_Table {
 	 */
 	public function column_domain($item): string {
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'model' => 'domain',
-		);
+		];
 
 		$domain = sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-domain', $url_atts), $item->get_domain());
 
 		$html = "<span class='wu-font-mono'><strong>{$domain}</strong></span>";
 
-		$actions = array(
+		$actions = [
 			'edit'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-domain', $url_atts), __('Edit', 'wp-ultimo')),
 			'delete' => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Delete', 'wp-ultimo'), wu_get_form_url('delete_modal', $url_atts), __('Delete', 'wp-ultimo')),
-		);
+		];
 
 		return $html . $this->row_actions($actions);
 	}
@@ -156,7 +156,7 @@ class Domain_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'             => '<input type="checkbox" />',
 			'domain'         => __('Domain', 'wp-ultimo'),
 			'stage'          => __('Stage', 'wp-ultimo'),
@@ -165,7 +165,7 @@ class Domain_List_Table extends Base_List_Table {
 			'primary_domain' => __('Primary', 'wp-ultimo'),
 			'secure'         => __('HTTPS', 'wp-ultimo'),
 			'id'             => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -176,52 +176,52 @@ class Domain_List_Table extends Base_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(
+		return [
+			'filters'      => [
 
 				/**
 				 * Active
 				 */
-				'active'         => array(
+				'active'         => [
 					'label'   => __('Active', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						0 => __('Inactive', 'wp-ultimo'),
 						1 => __('Active', 'wp-ultimo'),
-					),
-				),
+					],
+				],
 
 				/**
 				 * Primay
 				 */
-				'primary_domain' => array(
+				'primary_domain' => [
 					'label'   => __('Is Primary', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						0 => __('Not Primary Domain', 'wp-ultimo'),
 						1 => __('Primary Domain', 'wp-ultimo'),
-					),
-				),
+					],
+				],
 
 				/**
 				 * Secure (HTTPS)
 				 */
-				'secure'         => array(
+				'secure'         => [
 					'label'   => __('HTTPS', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						0 => __('Non-HTTPS', 'wp-ultimo'),
 						1 => __('HTTPS', 'wp-ultimo'),
-					),
-				),
+					],
+				],
 
 				/**
 				 * Stage
 				 */
-				'stage'          => array(
+				'stage'          => [
 					'label'   => __('Verification Stage', 'wp-ultimo'),
 					'options' => Domain_Stage::to_array(),
-				),
+				],
 
-			),
-			'date_filters' => array(),
-		);
+			],
+			'date_filters' => [],
+		];
 	}
 }

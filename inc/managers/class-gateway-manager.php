@@ -39,7 +39,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $registered_gateways = array();
+	protected $registered_gateways = [];
 
 	/**
 	 * Lists the gateways that are enabled.
@@ -47,7 +47,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $enabled_gateways = array();
+	protected $enabled_gateways = [];
 
 	/**
 	 * Keeps a list of the gateways with auto-renew.
@@ -55,7 +55,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $auto_renewable_gateways = array();
+	protected $auto_renewable_gateways = [];
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -63,9 +63,9 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('plugins_loaded', array($this, 'on_load'));
+		add_action('plugins_loaded', [$this, 'on_load']);
 	}
 
 	/**
@@ -74,11 +74,11 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function on_load() {
+	public function on_load(): void {
 		/*
 		 * Adds our own default gateways.
 		 */
-		add_action('wu_register_gateways', array($this, 'add_default_gateways'), 5);
+		add_action('wu_register_gateways', [$this, 'add_default_gateways'], 5);
 		/*
 		 * Allow developers to add new gateways.
 		 */
@@ -93,24 +93,24 @@ class Gateway_Manager extends Base_Manager {
 		/*
 		 * Adds the Gateway selection fields
 		 */
-		add_action('init', array($this, 'add_gateway_selector_field'));
+		add_action('init', [$this, 'add_gateway_selector_field']);
 
 		/*
 		 * Handle gateway confirmations.
 		 * We need it both on the front-end and the back-end.
 		 */
-		add_action('template_redirect', array($this, 'process_gateway_confirmations'), -99999);
-		add_action('load-admin_page_wu-checkout', array($this, 'process_gateway_confirmations'), -99999);
+		add_action('template_redirect', [$this, 'process_gateway_confirmations'], -99999);
+		add_action('load-admin_page_wu-checkout', [$this, 'process_gateway_confirmations'], -99999);
 
 		/*
 		 * Waits for webhook signals and deal with them.
 		 */
-		add_action('init', array($this, 'maybe_process_webhooks'), 1);
+		add_action('init', [$this, 'maybe_process_webhooks'], 1);
 
 		/*
 		 * Waits for webhook signals and deal with them.
 		 */
-		add_action('admin_init', array($this, 'maybe_process_v1_webhooks'), 1);
+		add_action('admin_init', [$this, 'maybe_process_v1_webhooks'], 1);
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_process_webhooks() {
+	public function maybe_process_webhooks(): void {
 
 		$gateway = wu_request('wu-gateway');
 
@@ -185,15 +185,15 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.4
 	 * @return void
 	 */
-	public function maybe_process_v1_webhooks() {
+	public function maybe_process_v1_webhooks(): void {
 
 		$action = wu_request('action', '');
 
-		if ($action && strpos((string) $action, 'notify_gateway_') !== false) {
+		if ($action && str_contains((string) $action, 'notify_gateway_')) {
 			/*
 			 * Get the gateway id from the action.
 			 */
-			$gateway_id = str_replace(array('nopriv_', 'notify_gateway_'), '', (string) $action);
+			$gateway_id = str_replace(['nopriv_', 'notify_gateway_'], '', (string) $action);
 
 			$gateway = wu_get_gateway($gateway_id);
 
@@ -260,7 +260,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function process_gateway_confirmations() {
+	public function process_gateway_confirmations(): void {
 		/*
 		 * First we check for the confirmation parameter.
 		 */
@@ -270,7 +270,7 @@ class Gateway_Manager extends Base_Manager {
 
 		ob_start();
 
-		add_filter('body_class', fn($classes) => array_merge($classes, array('wu-process-confirmation')));
+		add_filter('body_class', fn($classes) => array_merge($classes, ['wu-process-confirmation']));
 
 		$gateway_id = sanitize_text_field(wu_request('wu-confirm'));
 
@@ -282,10 +282,10 @@ class Gateway_Manager extends Base_Manager {
 			wp_die(
 				$error,
 				__('Error', 'wp-ultimo'),
-				array(
+				[
 					'back_link' => true,
 					'response'  => '200',
-				)
+				]
 			);
 		}
 
@@ -311,10 +311,10 @@ class Gateway_Manager extends Base_Manager {
 				wp_die(
 					$results,
 					__('Error', 'wp-ultimo'),
-					array(
+					[
 						'back_link' => true,
 						'response'  => '200',
-					)
+					]
 				);
 			}
 		} catch (\Throwable $e) {
@@ -323,10 +323,10 @@ class Gateway_Manager extends Base_Manager {
 			wp_die(
 				$error,
 				__('Error', 'wp-ultimo'),
-				array(
+				[
 					'back_link' => true,
 					'response'  => '200',
-				)
+				]
 			);
 		}
 
@@ -347,19 +347,19 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_gateway_selector_field() {
+	public function add_gateway_selector_field(): void {
 
 		wu_register_settings_field(
 			'payment-gateways',
 			'active_gateways',
-			array(
+			[
 				'title'   => __('Active Payment Gateways', 'wp-ultimo'),
 				'desc'    => __('Payment gateways are what your customers will use to pay.', 'wp-ultimo'),
 				'type'    => 'multiselect',
 				'columns' => 2,
-				'options' => array($this, 'get_gateways_as_options'),
-				'default' => array(),
-			)
+				'options' => [$this, 'get_gateways_as_options'],
+				'default' => [],
+			]
 		);
 	}
 
@@ -373,7 +373,7 @@ class Gateway_Manager extends Base_Manager {
 		/*
 		 * We use this to order the options.
 		 */
-		$active_gateways = wu_get_setting('active_gateways', array());
+		$active_gateways = wu_get_setting('active_gateways', []);
 
 		$gateways = $this->get_registered_gateways();
 
@@ -388,7 +388,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_default_gateways() {
+	public function add_default_gateways(): void {
 		/*
 		 * Free Payments
 		 */
@@ -473,10 +473,10 @@ class Gateway_Manager extends Base_Manager {
 			return;
 		}
 
-		$active_gateways = (array) wu_get_setting('active_gateways', array());
+		$active_gateways = (array) wu_get_setting('active_gateways', []);
 
 		// Adds to the global
-		$this->registered_gateways[ $id ] = array(
+		$this->registered_gateways[ $id ] = [
 			'id'         => $id,
 			'title'      => $title,
 			'desc'       => $desc,
@@ -485,7 +485,7 @@ class Gateway_Manager extends Base_Manager {
 			'active'     => in_array($id, $active_gateways, true),
 			'hidden'     => (bool) $hidden,
 			'gateway'    => $class_name, // Deprecated.
-		);
+		];
 
 		$this->install_hooks($class_name);
 
@@ -501,7 +501,7 @@ class Gateway_Manager extends Base_Manager {
 	 * @param string $class_name Gateway class name.
 	 * @return void
 	 */
-	public function install_hooks($class_name) {
+	public function install_hooks($class_name): void {
 
 		$gateway = new $class_name();
 
@@ -515,18 +515,18 @@ class Gateway_Manager extends Base_Manager {
 			$this->auto_renewable_gateways[] = $gateway_id;
 		}
 
-		add_action('wu_checkout_scripts', array($gateway, 'register_scripts'));
+		add_action('wu_checkout_scripts', [$gateway, 'register_scripts']);
 
 		$gateway->hooks();
-		add_action('wu_settings_payment_gateways', array($gateway, 'settings'));
+		add_action('wu_settings_payment_gateways', [$gateway, 'settings']);
 
-		add_action("wu_{$gateway_id}_process_webhooks", array($gateway, 'process_webhooks'));
+		add_action("wu_{$gateway_id}_process_webhooks", [$gateway, 'process_webhooks']);
 
-		add_action("wu_{$gateway_id}_remote_payment_url", array($gateway, 'get_payment_url_on_gateway'));
+		add_action("wu_{$gateway_id}_remote_payment_url", [$gateway, 'get_payment_url_on_gateway']);
 
-		add_action("wu_{$gateway_id}_remote_subscription_url", array($gateway, 'get_subscription_url_on_gateway'));
+		add_action("wu_{$gateway_id}_remote_subscription_url", [$gateway, 'get_subscription_url_on_gateway']);
 
-		add_action("wu_{$gateway_id}_remote_customer_url", array($gateway, 'get_customer_url_on_gateway'));
+		add_action("wu_{$gateway_id}_remote_customer_url", [$gateway, 'get_customer_url_on_gateway']);
 
 		/*
 		 * Renders the gateway fields.
@@ -535,7 +535,7 @@ class Gateway_Manager extends Base_Manager {
 			'wu_checkout_gateway_fields',
 			function ($checkout) use ($gateway) {
 
-				$field_content = call_user_func(array($gateway, 'fields'));
+				$field_content = call_user_func([$gateway, 'fields']);
 
 				ob_start();
 

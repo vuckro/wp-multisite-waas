@@ -74,9 +74,9 @@ class About_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Returns the title of the page.
@@ -117,7 +117,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		wu_get_template('about');
 	}
@@ -128,7 +128,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
@@ -140,7 +140,7 @@ class About_Admin_Page extends Base_Admin_Page {
 			background: url("%s") right bottom no-repeat;
 			background-size: 60%%;	 
 		}',
-				wu_get_asset('bg-setup.png', 'img')
+				wu_get_asset('bg-setup.webp', 'img')
 			)
 		);
 	}

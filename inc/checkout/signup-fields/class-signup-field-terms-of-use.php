@@ -122,9 +122,9 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'tou_name' => __('I agree with the terms of use.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -135,7 +135,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -146,10 +146,10 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'   => 'terms_of_use',
 			'name' => __('Terms of Use', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -160,21 +160,21 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'tou_name' => array(
+		return [
+			'tou_name' => [
 				'order'       => 10,
 				'type'        => 'text',
 				'title'       => __('Terms Checkbox Label', 'wp-ultimo'),
 				'placeholder' => __('e.g. I agree with the terms of use.', 'wp-ultimo'),
-			),
-			'tou_url'  => array(
+			],
+			'tou_url'  => [
 				'order'       => 20,
 				'type'        => 'url',
 				'title'       => __('Link to the Terms Page', 'wp-ultimo'),
 				'desc'        => __('Enter the link to the terms of use content.', 'wp-ultimo'),
 				'placeholder' => __('e.g. https://yoursite.com/terms', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -187,18 +187,18 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
 		$tou_link = sprintf('<a href="%s" target="_blank">%s</a>', $attributes['tou_url'], __('Read here', 'wp-ultimo'));
 
-		$checkout_fields['terms_of_use'] = array(
+		$checkout_fields['terms_of_use'] = [
 			'type'            => 'checkbox',
 			'id'              => 'terms_of_use',
 			'name'            => $attributes['tou_name'] . ' - ',
 			'desc'            => $tou_link,
 			'wrapper_classes' => $attributes['element_classes'],
 			'required'        => true,
-		);
+		];
 
 		return $checkout_fields;
 	}

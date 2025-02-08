@@ -29,9 +29,9 @@
  */
 wu_get_template(
 	'checkout/fields/partials/field-errors',
-	array(
+	[
 		'field' => $field,
-	)
+	]
 );
 
 ?>

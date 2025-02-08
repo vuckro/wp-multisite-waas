@@ -144,7 +144,7 @@ abstract class Base_Signup_Field {
 	 */
 	public function get_field_as_type_option() {
 
-		return array(
+		return [
 			'title'            => $this->get_title(),
 			'desc'             => $this->get_description(),
 			'tooltip'          => $this->get_tooltip(),
@@ -154,8 +154,8 @@ abstract class Base_Signup_Field {
 			'default_fields'   => $this->default_fields(),
 			'force_attributes' => $this->force_attributes(),
 			'all_attributes'   => $this->get_all_attributes(),
-			'fields'           => array($this, 'get_editor_fields'),
-		);
+			'fields'           => [$this, 'get_editor_fields'],
+		];
 	}
 
 	/**
@@ -180,10 +180,10 @@ abstract class Base_Signup_Field {
 	 */
 	public function get_tabs() {
 
-		return array(
+		return [
 			'content',
 			'style',
-		);
+		];
 	}
 
 	/**
@@ -219,7 +219,7 @@ abstract class Base_Signup_Field {
 	 */
 	public function calculate_style_attr() {
 
-		$styles = array();
+		$styles = [];
 
 		$width = (int) wu_get_isset($this->attributes, 'width');
 
@@ -244,7 +244,7 @@ abstract class Base_Signup_Field {
 	 * @param array $attributes Array containing settings for the field.
 	 * @return void
 	 */
-	public function set_attributes($attributes) {
+	public function set_attributes($attributes): void {
 
 		$this->attributes = $attributes;
 	}
@@ -257,7 +257,7 @@ abstract class Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -268,7 +268,7 @@ abstract class Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -279,14 +279,14 @@ abstract class Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'name',
 			'placeholder',
 			'tooltip',
 			'default',
 			'required',
-		);
+		];
 	}
 
 	/**
@@ -297,7 +297,7 @@ abstract class Base_Signup_Field {
 	 * @param array $attributes The list of attributes of the field.
 	 * @return array
 	 */
-	public function get_editor_fields($attributes = array()) {
+	public function get_editor_fields($attributes = []) {
 
 		$final_field_list = $this->get_fields();
 
@@ -305,28 +305,28 @@ abstract class Base_Signup_Field {
 		 * Checks if this is a site field
 		 */
 		if ($this->is_site_field()) {
-			$final_field_list[ '_site_notice_field_' . uniqid() ] = array(
+			$final_field_list[ '_site_notice_field_' . uniqid() ] = [
 				'type'    => 'note',
 				'classes' => 'wu--mt-px',
 				'desc'    => sprintf('<div class="wu-p-4 wu--m-4 wu-bg-blue-100 wu-text-blue-600 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid">%s</div>', __('This is a site-related field. For that reason, this field will not show up when no plans are present on the shopping cart.', 'wp-ultimo')),
 				'order'   => 98.5,
-			);
+			];
 		}
 
 		/*
 		 * Checks if this is a user field
 		 */
 		if ($this->is_user_field()) {
-			$final_field_list[ '_user_notice_field_' . uniqid() ] = array(
+			$final_field_list[ '_user_notice_field_' . uniqid() ] = [
 				'type'    => 'note',
 				'classes' => 'wu--mt-px',
 				'desc'    => sprintf('<div class="wu-p-4 wu--m-4 wu-bg-blue-100 wu-text-blue-600 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid">%s</div>', __('This is a customer-related field. For that reason, this field will not show up when the user is logged and already has a customer on file.', 'wp-ultimo')),
 				'order'   => 98.5,
-			);
+			];
 		}
 
 		foreach ($final_field_list as $key => &$field) {
-			$field['html_attr'] = wu_get_isset($field, 'html_attr', array());
+			$field['html_attr'] = wu_get_isset($field, 'html_attr', []);
 
 			$value = wu_get_isset($attributes, $key, null);
 
@@ -382,11 +382,11 @@ abstract class Base_Signup_Field {
 			$tab = wu_get_isset($field, 'tab', 'content');
 
 			$field['wrapper_html_attr'] = array_merge(
-				wu_get_isset($field, 'wrapper_html_attr', array()),
-				array(
+				wu_get_isset($field, 'wrapper_html_attr', []),
+				[
 					'v-cloak' => 1,
 					'v-show'  => sprintf('require("type", "%s") && require("tab", "%s")', $this->get_type(), $tab) . ($show_reqs ? " && $show_reqs" : ''),
-				)
+				]
 			);
 		}
 
@@ -401,14 +401,14 @@ abstract class Base_Signup_Field {
 	 */
 	public function get_all_attributes() {
 
-		$styles = array(
+		$styles = [
 			'wrapper_element_classes',
 			'element_classes',
 			'element_id',
 			'from_request',
 			'width',
 			'logged',
-		);
+		];
 
 		$field_keys = array_keys($this->get_fields());
 
@@ -436,34 +436,34 @@ abstract class Base_Signup_Field {
 	 */
 	public static function fields_list() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['id'] = array(
+		$fields['id'] = [
 			'type'        => 'text',
 			'title'       => __('Field ID', 'wp-ultimo'),
 			'placeholder' => __('e.g. info-name', 'wp-ultimo'),
 			'tooltip'     => __('Only alpha-numeric and hyphens allowed.', 'wp-ultimo'),
 			'desc'        => __('The ID of the field. This is used to reference the field.', 'wp-ultimo'),
 			'value'       => wu_request('id', ''),
-			'html_attr'   => array(
+			'html_attr'   => [
 				'v-on:input'   => 'id = $event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, "")',
 				'v-bind:value' => 'id',
-			),
-		);
+			],
+		];
 
-		$fields['name'] = array(
+		$fields['name'] = [
 			'type'        => 'text',
 			'title'       => __('Field Label', 'wp-ultimo'),
 			'placeholder' => __('e.g. Your Name', 'wp-ultimo'),
 			'desc'        => __('This is what your customer see as the field title.', 'wp-ultimo'),
 			'tooltip'     => __('Leave blank to hide the field label. You can also set a placeholder value and tip in the "Additional Settings" tab.', 'wp-ultimo'),
 			'value'       => '',
-			'html_attr'   => array(
+			'html_attr'   => [
 				'v-model' => 'name',
-			),
-		);
+			],
+		];
 
-		$fields['placeholder'] = array(
+		$fields['placeholder'] = [
 			'type'        => 'text',
 			'title'       => __('Field Placeholder', 'wp-ultimo'),
 			'placeholder' => __('e.g. Placeholder value', 'wp-ultimo'),
@@ -471,12 +471,12 @@ abstract class Base_Signup_Field {
 			'tooltip'     => '',
 			'value'       => '',
 			'tab'         => 'advanced',
-			'html_attr'   => array(
+			'html_attr'   => [
 				'v-model' => 'placeholder',
-			),
-		);
+			],
+		];
 
-		$fields['tooltip'] = array(
+		$fields['tooltip'] = [
 			'type'        => 'textarea',
 			'title'       => __('Field Tooltip', 'wp-ultimo'),
 			'placeholder' => __('e.g. This field is great, be sure to fill it.', 'wp-ultimo'),
@@ -485,60 +485,60 @@ abstract class Base_Signup_Field {
 			'tooltip'     => '',
 			'value'       => '',
 			'tab'         => 'advanced',
-			'html_attr'   => array(
+			'html_attr'   => [
 				'v-model' => 'tooltip',
 				'rows'    => 4,
-			),
-		);
+			],
+		];
 
-		$fields['default_value'] = array(
+		$fields['default_value'] = [
 			'type'        => 'text',
 			'title'       => __('Default Value', 'wp-ultimo'),
 			'placeholder' => __('e.g. None', 'wp-ultimo'),
 			'value'       => '',
-			'html_attr'   => array(
+			'html_attr'   => [
 				'v-model' => 'default_value',
-			),
-		);
+			],
+		];
 
-		$fields['note'] = array(
+		$fields['note'] = [
 			'type'        => 'textarea',
 			'title'       => __('Content', 'wp-ultimo'),
 			'placeholder' => '',
 			'tooltip'     => '',
 			'value'       => '',
-			'html_attr'   => array(
+			'html_attr'   => [
 				'v-model' => 'content',
-			),
-		);
+			],
+		];
 
-		$fields['limits'] = array(
+		$fields['limits'] = [
 			'type'    => 'group',
 			'title'   => __('Field Length', 'wp-ultimo'),
 			'tooltip' => '',
-			'fields'  => array(
-				'min' => array(
+			'fields'  => [
+				'min' => [
 					'type'            => 'number',
 					'value'           => '',
 					'placeholder'     => __('Min', 'wp-ultimo'),
 					'wrapper_classes' => 'wu-w-1/2',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'min',
-					),
-				),
-				'max' => array(
+					],
+				],
+				'max' => [
 					'type'            => 'number',
 					'value'           => '',
 					'placeholder'     => __('Max', 'wp-ultimo'),
 					'wrapper_classes' => 'wu-ml-2 wu-w-1/2',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'max',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$fields['save_as'] = array(
+		$fields['save_as'] = [
 			'type'        => 'select',
 			'title'       => __('Save As', 'wp-ultimo'),
 			'desc'        => __('Select how you want to save this piece of meta data. You can attach it to the customer or the site as site meta or as site option.', 'wp-ultimo'),
@@ -546,28 +546,28 @@ abstract class Base_Signup_Field {
 			'tooltip'     => '',
 			'value'       => 'customer_meta',
 			'order'       => 99.5,
-			'options'     => array(
+			'options'     => [
 				'customer_meta' => __('Customer Meta', 'wp-ultimo'),
 				'user_meta'     => __('User Meta', 'wp-ultimo'),
 				'site_meta'     => __('Site Meta', 'wp-ultimo'),
 				'site_option'   => __('Site Option', 'wp-ultimo'),
 				'nothing'       => __('Do not save', 'wp-ultimo'),
-			),
-			'html_attr'   => array(
+			],
+			'html_attr'   => [
 				'v-model' => 'save_as',
-			),
-		);
+			],
+		];
 
-		$fields['required'] = array(
+		$fields['required'] = [
 			'type'      => 'toggle',
 			'title'     => __('Required', 'wp-ultimo'),
 			'desc'      => __('Mark this field as required. The checkout will not proceed unless this field is filled.', 'wp-ultimo'),
 			'value'     => 0,
 			'order'     => 98,
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'required',
-			),
-		);
+			],
+		];
 
 		return $fields;
 	}

@@ -27,7 +27,7 @@
 			:class="index > 0 ? 'wu-border-solid wu-border-0 wu-border-t wu-border-gray-300' : ''" 
 			v-for="(event, index) in queried.events"
 		>
-			<a :href="'<?php echo wu_network_admin_url('wp-ultimo-view-event', array('id' => '')); ?>=' + event.id" class="wu-block hover:wu-bg-gray-50">
+			<a :href="'<?php echo wu_network_admin_url('wp-ultimo-view-event', ['id' => '']); ?>=' + event.id" class="wu-block hover:wu-bg-gray-50">
 			<div class="wu-px-4 wu-py-4 wu-flex wu-items-center">
 				<div class="wu-min-w-0 wu-flex-1 sm:wu-flex sm:wu-items-center">
 				<div class="wu-mt-4 wu-flex-shrink-0 sm:wu-mt-0 sm:wu-mr-4">

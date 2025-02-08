@@ -46,7 +46,7 @@ class Broadcast_Query extends Post_Query {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $item_shape = '\\WP_Ultimo\\Models\\Broadcast';
+	protected $item_shape = \WP_Ultimo\Models\Broadcast::class;
 
 	/**
 	 * Group to cache queries and queried items in.
@@ -73,9 +73,9 @@ class Broadcast_Query extends Post_Query {
 	 * @param array $query Query parameters being passed.
 	 * @return array
 	 */
-	public function query($query = array()) {
+	public function query($query = []) {
 
-		$query['type__in'] = array('broadcast_email', 'broadcast_notice');
+		$query['type__in'] = ['broadcast_email', 'broadcast_notice'];
 
 		return parent::query($query);
 	}

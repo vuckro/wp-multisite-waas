@@ -31,7 +31,7 @@ if ( ! defined('ABSPATH')) {
 	 */
 	$dynamic_part = '<strong id="wu-your-site" v-html="site_url ? site_url : \'yoursite\'">';
 	// This is used on the yoursite.network.com during sign-up
-	$dynamic_part .= isset($signup->results['blogname']) ? $signup->results['blogname'] : __('yoursite', 'wp-ultimo');
+	$dynamic_part .= $signup->results['blogname'] ?? __('yoursite', 'wp-ultimo');
 	$dynamic_part .= '</strong>';
 
 	$site_url = preg_replace('#^https?://#', '', WU_Signup()->get_site_url_for_previewer());

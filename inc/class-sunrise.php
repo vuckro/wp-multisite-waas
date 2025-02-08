@@ -41,7 +41,7 @@ class Sunrise {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public static function init() {
+	public static function init(): void {
 
 		require_once __DIR__ . '/functions/sunrise.php';
 
@@ -66,13 +66,13 @@ class Sunrise {
 		 * Enqueue the main hooks that deal with Sunrise
 		 * loading and maintenance.
 		 */
-		add_action('ms_loaded', array('\WP_Ultimo\Sunrise', 'load'));
+		add_action('ms_loaded', [self::class, 'load']);
 
-		add_action('ms_loaded', array('\WP_Ultimo\Sunrise', 'loaded'), 999);
+		add_action('ms_loaded', [self::class, 'loaded'], 999);
 
-		add_action('init', array('\WP_Ultimo\Sunrise', 'maybe_tap_on_init'));
+		add_action('init', [self::class, 'maybe_tap_on_init']);
 
-		add_filter('wu_system_info_data', array('\WP_Ultimo\Sunrise', 'system_info'));
+		add_filter('wu_system_info_data', [self::class, 'system_info']);
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Sunrise {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public static function load_dependencies() {
+	public static function load_dependencies(): void {
 
 		require_once __DIR__ . '/deprecated/early-deprecated.php';
 
@@ -145,7 +145,7 @@ class Sunrise {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public static function load_domain_mapping() {
+	public static function load_domain_mapping(): void {
 
 		$should_startup = self::should_startup();
 
@@ -167,7 +167,7 @@ class Sunrise {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function load() {
+	public static function load(): void {
 
 		$should_startup = self::should_startup();
 
@@ -209,9 +209,9 @@ class Sunrise {
 					/**
 					 *  Disable all plugins except WP Multisite WaaS
 					 */
-					add_filter('option_active_plugins', fn() => array());
+					add_filter('option_active_plugins', fn() => []);
 
-					add_filter('site_option_active_sitewide_plugins', fn($plugins) => array(basename(dirname(__DIR__)) . '/wp-ultimo.php' => 1));
+					add_filter('site_option_active_sitewide_plugins', fn($plugins) => [basename(dirname(__DIR__)) . '/wp-ultimo.php' => 1]);
 				}
 			}
 		}
@@ -229,7 +229,7 @@ class Sunrise {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public static function loaded() {
+	public static function loaded(): void {
 
 		do_action('wu_sunrise_loaded');
 	}
@@ -240,7 +240,7 @@ class Sunrise {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function manage_sunrise_updates() {
+	public static function manage_sunrise_updates(): void {
 		/*
 		 * Get current version of the sunrise.php file
 		 */
@@ -260,10 +260,10 @@ class Sunrise {
 	 */
 	public static function try_upgrade() {
 
-		$possible_sunrises = array(
+		$possible_sunrises = [
 			WP_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
 			WPMU_PLUGIN_DIR . '/wp-multisite-waas/sunrise.php',
-		);
+		];
 
 		$sunrise_found = false;
 
@@ -292,9 +292,9 @@ class Sunrise {
 		}
 
 		if ($sunrise_found === false) {
-			$error = array(
+			$error = [
 				'message' => __('File not found.', 'wp-ultimo'),
-			);
+			];
 		}
 
 		if ( ! empty($error)) {
@@ -322,7 +322,7 @@ class Sunrise {
 
 		$sunrise_meta = get_network_option(null, 'wu_sunrise_meta', null);
 
-		$existing = array();
+		$existing = [];
 
 		if ($sunrise_meta) {
 			$existing = $sunrise_meta;
@@ -346,40 +346,40 @@ class Sunrise {
 
 		$sys_info = array_merge(
 			$sys_info,
-			array(
-				'Sunrise Data' => array(
-					'sunrise-status'           => array(
+			[
+				'Sunrise Data' => [
+					'sunrise-status'           => [
 						'tooltip' => '',
 						'title'   => 'Active',
 						'value'   => $data['active'] ? 'Enabled' : 'Disabled',
-					),
-					'sunrise-data'             => array(
+					],
+					'sunrise-data'             => [
 						'tooltip' => '',
 						'title'   => 'Version',
 						'value'   => self::$version,
-					),
-					'sunrise-created'          => array(
+					],
+					'sunrise-created'          => [
 						'tooltip' => '',
 						'title'   => 'Created',
 						'value'   => gmdate('Y-m-d @ H:i:s', $data['created']),
-					),
-					'sunrise-last-activated'   => array(
+					],
+					'sunrise-last-activated'   => [
 						'tooltip' => '',
 						'title'   => 'Last Activated',
 						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_activated']),
-					),
-					'sunrise-last-deactivated' => array(
+					],
+					'sunrise-last-deactivated' => [
 						'tooltip' => '',
 						'title'   => 'Last Deactivated',
 						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_deactivated']),
-					),
-					'sunrise-last-modified'    => array(
+					],
+					'sunrise-last-modified'    => [
 						'tooltip' => '',
 						'title'   => 'Last Modified',
 						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_modified']),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		return $sys_info;
@@ -404,7 +404,7 @@ class Sunrise {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public static function maybe_tap_on_init() {
+	public static function maybe_tap_on_init(): void {
 
 		$state = function_exists('WP_Ultimo') && WP_Ultimo()->is_loaded();
 
@@ -443,18 +443,18 @@ class Sunrise {
 	 * @param array  $existing Existing meta file values.
 	 * @return bool
 	 */
-	protected static function tap($mode = 'activating', $existing = array()) {
+	protected static function tap($mode = 'activating', $existing = []) {
 
 		$now = gmdate('U');
 
 		$to_save = wp_parse_args(
 			$existing,
-			array(
+			[
 				'active'           => false,
 				'created'          => $now,
 				'last_activated'   => 'unknown',
 				'last_deactivated' => 'unknown',
-			)
+			]
 		);
 
 		if ($mode === 'activating') {

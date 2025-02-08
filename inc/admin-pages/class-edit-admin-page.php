@@ -75,7 +75,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		/**
 		 * Setups the object
@@ -106,11 +106,11 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
 		parent::hooks();
 
-		add_filter('removable_query_args', array($this, 'removable_query_args'));
+		add_filter('removable_query_args', [$this, 'removable_query_args']);
 	}
 
 	/**
@@ -143,17 +143,17 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			// translators: %s is the date, using the site format options
 			$message = sprintf(__('This item is locked from editions.<br />This is probably due to a background action being performed (like a transfer between different accounts, for example). You can manually unlock it, but be careful. The lock should be released automatically in %s seconds.', 'wp-ultimo'), wu_get_next_queue_run() + 10);
 
-			$actions = array(
-				'preview' => array(
+			$actions = [
+				'preview' => [
 					'title' => __('Unlock', 'wp-ultimo'),
 					'url'   => add_query_arg(
-						array(
+						[
 							'remove-lock'           => 1,
 							'unlock_wpultimo_nonce' => wp_create_nonce(sprintf('unlocking_%s', $this->object_id)),
-						)
+						]
 					),
-				),
-			);
+				],
+			];
 
 			WP_Ultimo()->notices->add($message, 'warning', 'network-admin', false, $actions);
 		}
@@ -165,7 +165,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function remove_lock() {
+	public function remove_lock(): void {
 
 		$unlock_tag = "unlocking_{$this->object_id}";
 
@@ -186,10 +186,10 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 			wp_redirect(
 				remove_query_arg(
-					array(
+					[
 						'remove-lock',
 						'unlock_wpultimo_nonce',
-					)
+					]
 				)
 			);
 
@@ -203,7 +203,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	final public function process_save() {
+	final public function process_save(): void {
 
 		$saving_tag = "saving_{$this->object_id}";
 
@@ -234,7 +234,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	final public function process_delete() {
+	final public function process_delete(): void {
 
 		$deleting_tag = "deleting_{$this->object_id}";
 
@@ -263,7 +263,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_labels() {
 
-		$default_labels = array(
+		$default_labels = [
 			'edit_label'          => __('Edit Object', 'wp-ultimo'),
 			'add_new_label'       => __('Add New Object', 'wp-ultimo'),
 			'updated_message'     => __('Object updated with success!', 'wp-ultimo'),
@@ -273,7 +273,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 
 		return apply_filters('wu_edit_admin_page_labels', $default_labels);
 	}
@@ -284,7 +284,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
@@ -315,20 +315,20 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$screen = get_current_screen();
 
 		$this->add_info_widget(
 			'info',
-			array(
+			[
 				'title'    => __('Timestamps', 'wp-ultimo'),
 				'position' => 'side-bottom',
-			)
+			]
 		);
 
 		if ($this->edit) {
-			$this->add_delete_widget('delete', array());
+			$this->add_delete_widget('delete', []);
 		}
 	}
 
@@ -341,7 +341,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array containing the attributes to be passed to the widget.
 	 * @return void
 	 */
-	protected function add_info_widget($id, $atts = array()) {
+	protected function add_info_widget($id, $atts = []) {
 
 		$created_key = 'date_created';
 
@@ -349,38 +349,38 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			$created_key = 'date_registered';
 		}
 
-		$created_value = call_user_func(array($this->get_object(), "get_$created_key"));
+		$created_value = call_user_func([$this->get_object(), "get_$created_key"]);
 
-		$atts['fields'][ $created_key ] = array(
+		$atts['fields'][ $created_key ] = [
 			'title'         => __('Created at', 'wp-ultimo'),
 			'type'          => 'text-display',
 			'date'          => true,
 			'display_value' => $this->edit ? $created_value : false,
 			'value'         => $created_value,
 			'placeholder'   => '2020-04-04 12:00:00',
-			'html_attr'     => array(
+			'html_attr'     => [
 				'wu-datepicker'   => 'true',
 				'data-format'     => 'Y-m-d H:i:S',
 				'data-allow-time' => 'true',
-			),
-		);
+			],
+		];
 
 		$show_modified = wu_get_isset($atts, 'modified', true);
 
 		if ($this->edit && $show_modified === true) {
-			$atts['fields']['date_modified'] = array(
+			$atts['fields']['date_modified'] = [
 				'title'         => __('Last Modified at', 'wp-ultimo'),
 				'type'          => 'text-display',
 				'date'          => true,
 				'display_value' => $this->edit ? $this->get_object()->get_date_modified() : __('No date', 'wp-ultimo'),
 				'value'         => $this->get_object()->get_date_modified(),
 				'placeholder'   => '2020-04-04 12:00:00',
-				'html_attr'     => array(
+				'html_attr'     => [
 					'wu-datepicker'   => 'true',
 					'data-format'     => 'Y-m-d H:i:S',
 					'data-allow-time' => 'true',
-				),
-			);
+				],
+			];
 		}
 
 		$this->add_fields_widget($id, $atts);
@@ -395,11 +395,11 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array containing the attributes to be passed to the widget.
 	 * @return void
 	 */
-	protected function add_list_table_widget($id, $atts = array()) {
+	protected function add_list_table_widget($id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'widget_id'    => $id,
 				'before'       => '',
 				'after'        => '',
@@ -412,7 +412,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 				'edit'         => true,
 				'table'        => false,
 				'query_filter' => false,
-			)
+			]
 		);
 
 		$atts['table']->set_context('widget');
@@ -460,22 +460,22 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array of attributes to pass to the form.
 	 * @return void
 	 */
-	protected function add_fields_widget($id, $atts = array()) {
+	protected function add_fields_widget($id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'widget_id'             => $id,
 				'before'                => '',
 				'after'                 => '',
 				'title'                 => __('Fields', 'wp-ultimo'),
 				'position'              => 'side',
 				'screen'                => get_current_screen(),
-				'fields'                => array(),
-				'html_attr'             => array(),
+				'fields'                => [],
+				'html_attr'             => [],
 				'classes'               => '',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			)
+			]
 		);
 
 		add_meta_box(
@@ -484,13 +484,13 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			function () use ($atts) {
 
 				if (wu_get_isset($atts['html_attr'], 'data-wu-app')) {
-					$atts['fields']['loading'] = array(
+					$atts['fields']['loading'] = [
 						'type'              => 'note',
 						'desc'              => sprintf('<div class="wu-block wu-text-center wu-blinking-animation wu-text-gray-600 wu-my-1 wu-text-2xs wu-uppercase wu-font-semibold">%s</div>', __('Loading...', 'wp-ultimo')),
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-if' => 0,
-						),
-					);
+						],
+					];
 				}
 
 				/**
@@ -501,14 +501,14 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 				$form = new \WP_Ultimo\UI\Form(
 					$atts['widget_id'],
 					$atts['fields'],
-					array(
+					[
 						'views'                 => 'admin-pages/fields',
 						'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3 ' . $atts['classes'],
 						'field_wrapper_classes' => $atts['field_wrapper_classes'],
 						'html_attr'             => $atts['html_attr'],
 						'before'                => $atts['before'],
 						'after'                 => $atts['after'],
-					)
+					]
 				);
 
 				$form->render();
@@ -529,30 +529,30 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array of attributes to pass to the form.
 	 * @return void
 	 */
-	protected function add_tabs_widget($id, $atts = array()) {
+	protected function add_tabs_widget($id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'widget_id' => $id,
 				'before'    => '',
 				'after'     => '',
 				'title'     => __('Tabs', 'wp-ultimo'),
 				'position'  => 'advanced',
 				'screen'    => get_current_screen(),
-				'sections'  => array(),
-				'html_attr' => array(),
-			)
+				'sections'  => [],
+				'html_attr' => [],
+			]
 		);
 
 		$current_section = wu_request($id, current(array_keys($atts['sections'])));
 
 		$atts['html_attr']['data-wu-app'] = $id;
 
-		$atts['html_attr']['data-state'] = array(
+		$atts['html_attr']['data-state'] = [
 			'section'     => $current_section,
 			'display_all' => false,
-		);
+		];
 
 		add_meta_box(
 			"wp-ultimo-{$id}-widget",
@@ -562,16 +562,16 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 				foreach ($atts['sections'] as $section_id => &$section) {
 					$section = wp_parse_args(
 						$section,
-						array(
+						[
 							'form'                  => '',
 							'before'                => '',
 							'after'                 => '',
 							'v-show'                => '1',
-							'fields'                => array(),
-							'html_attr'             => array(),
-							'state'                 => array(),
+							'fields'                => [],
+							'html_attr'             => [],
+							'state'                 => [],
 							'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-						)
+						]
 					);
 
 					/**
@@ -579,25 +579,25 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 					 */
 					$atts['html_attr']['data-state'] = array_merge($atts['html_attr']['data-state'], $section['state']);
 
-					$section['html_attr'] = array(
+					$section['html_attr'] = [
 						'v-cloak' => 1,
 						'v-show'  => "(section == '{$section_id}' || display_all) && " . $section['v-show'],
-					);
+					];
 
 					/**
 					 * Adds a header field
 					 */
 					$section['fields'] = array_merge(
-						array(
-							$section_id => array(
+						[
+							$section_id => [
 								'title'             => $section['title'],
 								'desc'              => $section['desc'],
 								'type'              => 'header',
-								'wrapper_html_attr' => array(
+								'wrapper_html_attr' => [
 									'v-show' => 'display_all',
-								),
-							),
-						),
+								],
+							],
+						],
 						$section['fields']
 					);
 
@@ -609,25 +609,25 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 					$section['form'] = new \WP_Ultimo\UI\Form(
 						$section_id,
 						$section['fields'],
-						array(
+						[
 							'views'                 => 'admin-pages/fields',
 							'classes'               => 'wu-widget-list wu-striped wu-m-0 wu-border-solid wu-border-gray-300 wu-border-0 wu-border-b',
 							'field_wrapper_classes' => $section['field_wrapper_classes'],
 							'html_attr'             => $section['html_attr'],
 							'before'                => $section['before'],
 							'after'                 => $section['after'],
-						)
+						]
 					);
 				}
 
 				wu_get_template(
 					'base/edit/widget-tabs',
-					array(
+					[
 						'sections'  => $atts['sections'],
 						'html_attr' => $atts['html_attr'],
 						'before'    => $atts['before'],
 						'after'     => $atts['after'],
-					)
+					]
 				);
 			},
 			$atts['screen']->id,
@@ -645,11 +645,11 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Widget parameters.
 	 * @return void
 	 */
-	protected function add_widget($id, $atts = array()) {
+	protected function add_widget($id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'widget_id' => $id,
 				'before'    => '',
 				'after'     => '',
@@ -657,7 +657,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 				'screen'    => get_current_screen(),
 				'position'  => 'side',
 				'display'   => '__return_empty_string',
-			)
+			]
 		);
 
 		add_meta_box("wp-ultimo-{$id}-widget", $atts['title'], $atts['display'], $atts['screen']->id, $atts['position'], 'default');
@@ -672,7 +672,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array containing the attributes to be passed to the widget.
 	 * @return void
 	 */
-	protected function add_save_widget($id, $atts = array()) {
+	protected function add_save_widget($id, $atts = []) {
 
 		$labels = $this->get_labels();
 
@@ -681,15 +681,15 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		/**
 		 * Adds Submit Button
 		 */
-		$atts['fields']['submit_save'] = array(
+		$atts['fields']['submit_save'] = [
 			'type'              => 'submit',
 			'title'             => $labels['save_button_label'],
 			'placeholder'       => $labels['save_button_label'],
 			'value'             => 'save',
 			'classes'           => 'button button-primary wu-w-full',
-			'html_attr'         => array(),
-			'wrapper_html_attr' => array(),
-		);
+			'html_attr'         => [],
+			'wrapper_html_attr' => [],
+		];
 
 		if (isset($atts['html_attr']['data-wu-app'])) {
 			$atts['fields']['submit_save']['wrapper_html_attr']['v-cloak'] = 1;
@@ -713,28 +713,28 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array containing the attributes to be passed to the widget.
 	 * @return void
 	 */
-	protected function add_delete_widget($id, $atts = array()) {
+	protected function add_delete_widget($id, $atts = []) {
 
 		$labels = $this->get_labels();
 
-		$atts_default = array(
+		$atts_default = [
 			'title'    => __('Delete', 'wp-ultimo'),
 			'position' => 'side-bottom',
-		);
+		];
 		$atts         = array_merge($atts_default, $atts);
 
 		/**
 		 * Adds Note
 		 */
-		$atts['fields']['note'] = array(
+		$atts['fields']['note'] = [
 			'type' => 'note',
 			'desc' => $labels['delete_description'],
-		);
+		];
 
 		/**
 		 * Adds Submit Button
 		 */
-		$default_delete_field_settings = array(
+		$default_delete_field_settings = [
 			'type'            => 'link',
 			'title'           => '',
 			'display_value'   => $labels['delete_button_label'] ?? '',
@@ -742,19 +742,19 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			'value'           => 'delete',
 			'classes'         => 'button wubox wu-w-full wu-text-center',
 			'wrapper_classes' => 'wu-bg-gray-100',
-			'html_attr'       => array(
+			'html_attr'       => [
 				'title' => $labels['delete_button_label'],
 				'href'  => wu_get_form_url(
 					'delete_modal',
-					array(
+					[
 						'id'    => $this->get_object()->get_id(),
 						'model' => $this->get_object()->model,
-					)
+					]
 				),
-			),
-		);
+			],
+		];
 
-		$custom_delete_field_settings = wu_get_isset($atts['fields'], 'delete', array());
+		$custom_delete_field_settings = wu_get_isset($atts['fields'], 'delete', []);
 
 		$atts['fields']['delete'] = array_merge($default_delete_field_settings, $custom_delete_field_settings);
 
@@ -767,18 +767,18 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/edit',
-			array(
+			[
 				'screen' => get_current_screen(),
 				'page'   => $this,
 				'labels' => $this->get_labels(),
 				'object' => $this->get_object(),
-			)
+			]
 		);
 	}
 
@@ -846,9 +846,9 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 			return false;
 		} else {
-			$array_params = array(
+			$array_params = [
 				'updated' => 1,
-			);
+			];
 
 			if ($this->edit === false) {
 				$array_params['id'] = $object->get_id();
@@ -870,7 +870,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_delete() {
+	public function handle_delete(): void {
 
 		$object = $this->get_object();
 

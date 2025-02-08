@@ -33,7 +33,7 @@ function wu_get_payment($payment_id) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Payment[]
  */
-function wu_get_payments($query = array()) {
+function wu_get_payments($query = []) {
 
 	return \WP_Ultimo\Models\Payment::query($query);
 }
@@ -99,9 +99,9 @@ function wu_create_payment($payment_data, $save = true) {
 	 * Shortcode atts clean the array from not-allowed keys, so we don't need to worry much.
 	 */
 	$payment_data = shortcode_atts(
-		array(
-			'line_items'         => array(),
-			'meta'               => array(),
+		[
+			'line_items'         => [],
+			'meta'               => [],
 			'customer_id'        => false,
 			'membership_id'      => false,
 			'parent_id'          => '',
@@ -119,7 +119,7 @@ function wu_create_payment($payment_data, $save = true) {
 			'date_modified'      => wu_get_current_time('mysql', true),
 			'migrated_from_id'   => 0,
 			'skip_validation'    => false,
-		),
+		],
 		$payment_data
 	);
 
@@ -145,10 +145,10 @@ function wu_create_payment($payment_data, $save = true) {
  */
 function wu_get_refundable_payment_types() {
 
-	$refundable_payment_types = array(
+	$refundable_payment_types = [
 		Payment_Status::COMPLETED,
 		Payment_Status::PARTIAL_REFUND,
-	);
+	];
 
 	return apply_filters('wu_get_refundable_payment_type', $refundable_payment_types);
 }

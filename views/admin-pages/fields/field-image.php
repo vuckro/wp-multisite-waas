@@ -35,9 +35,9 @@ $content_wrapper_classes = $field->content_wrapper_classes
 		 */
 		wu_get_template(
 			'admin-pages/fields/partials/field-title',
-			array(
+			[
 				'field' => $field,
-			)
+			]
 		);
 
 		?>
@@ -53,9 +53,9 @@ $content_wrapper_classes = $field->content_wrapper_classes
 		 */
 		wu_get_template(
 			'admin-pages/fields/partials/field-description',
-			array(
+			[
 				'field' => $field,
-			)
+			]
 		);
 
 		?>

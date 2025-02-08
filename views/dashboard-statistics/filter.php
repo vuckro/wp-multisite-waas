@@ -41,11 +41,11 @@
 			<?php
 
 			$link = add_query_arg(
-				array(
+				[
 					'start_date' => $preset['start_date'],
 					'end_date'   => $preset['end_date'],
 					'preset'     => $slug,
-				)
+				]
 			);
 
 			$request_slug = wu_request('preset', 'none');

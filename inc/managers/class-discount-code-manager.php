@@ -42,7 +42,7 @@ class Discount_Code_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Discount_Code';
+	protected $model_class = \WP_Ultimo\Models\Discount_Code::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -50,13 +50,13 @@ class Discount_Code_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
 		$this->enable_wp_cli();
 
-		add_action('wu_gateway_payment_processed', array($this, 'maybe_add_use_on_payment_received'));
+		add_action('wu_gateway_payment_processed', [$this, 'maybe_add_use_on_payment_received']);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Discount_Code_Manager extends Base_Manager {
 	 * @param \WP_Ultimo\Models\Payment $payment The payment received.
 	 * @return void
 	 */
-	public function maybe_add_use_on_payment_received($payment) {
+	public function maybe_add_use_on_payment_received($payment): void {
 
 		if ( ! $payment) {
 			return;

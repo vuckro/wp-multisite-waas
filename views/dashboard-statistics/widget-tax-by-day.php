@@ -11,34 +11,34 @@
 
 	<?php
 
-	$data    = array();
+	$data    = [];
 	$slug    = 'taxes_by_day';
-	$headers = array(
+	$headers = [
 		__('Day', 'wp-ultimo'),
 		__('Orders', 'wp-ultimo'),
 		__('Total Sales', 'wp-ultimo'),
 		__('Tax Total', 'wp-ultimo'),
 		__('Net Profit', 'wp-ultimo'),
-	);
+	];
 
 	foreach ($taxes_by_day as $day => $tax_line) {
-		$line = array(
+		$line = [
 			date_i18n(get_option('date_format'), strtotime($day)),
 			$tax_line['order_count'],
 			wu_format_currency($tax_line['total']),
 			wu_format_currency($tax_line['tax_total']),
 			wu_format_currency($tax_line['net_profit']),
-		);
+		];
 
 		$data[] = $line;
 	} // end foreach;
 
 	$page->render_csv_button(
-		array(
+		[
 			'headers' => $headers,
 			'data'    => $data,
 			'slug'    => $slug,
-		)
+		]
 	);
 
 	?>

@@ -50,7 +50,7 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		/**
 		 * Process save, if necessary
@@ -59,7 +59,7 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 
 		$screen = get_current_screen();
 
-		add_action("wu_edit_{$screen->id}_after_normal", array($this, 'display_preview_window'));
+		add_action("wu_edit_{$screen->id}_after_normal", [$this, 'display_preview_window']);
 	}
 
 	/**
@@ -68,14 +68,14 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_preview_window() {
+	public function display_preview_window(): void {
 
 		wu_get_template(
 			'base/edit/editor-customizer',
-			array(
+			[
 				'preview_iframe_url' => $this->get_preview_url(),
 				'preview_height'     => $this->preview_height,
-			)
+			]
 		);
 	}
 
@@ -85,11 +85,11 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
-		wp_enqueue_script('wu-customizer', wu_get_asset('customizer.js', 'js'), array('jquery', 'wu-vue', 'wu-block-ui'));
+		wp_enqueue_script('wu-customizer', wu_get_asset('customizer.js', 'js'), ['jquery', 'wu-vue', 'wu-block-ui']);
 
 		wp_enqueue_style('wp-color-picker');
 

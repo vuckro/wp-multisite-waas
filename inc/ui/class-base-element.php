@@ -66,7 +66,7 @@ abstract class Base_Element {
 	 * @since 2.0.24
 	 * @var boolean
 	 */
-	protected static $public_elements = array();
+	protected static $public_elements = [];
 
 	/**
 	 * If the element exists, we pre-load the parameters.
@@ -217,25 +217,25 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('plugins_loaded', array($this, 'register_form'));
+		add_action('plugins_loaded', [$this, 'register_form']);
 
-		add_action('init', array($this, 'register_shortcode'));
+		add_action('init', [$this, 'register_shortcode']);
 
-		add_action('wp_enqueue_scripts', array($this, 'enqueue_element_scripts'));
+		add_action('wp_enqueue_scripts', [$this, 'enqueue_element_scripts']);
 
-		add_action("wu_{$this->id}_scripts", array($this, 'register_default_scripts'));
+		add_action("wu_{$this->id}_scripts", [$this, 'register_default_scripts']);
 
-		add_action("wu_{$this->id}_scripts", array($this, 'register_scripts'));
+		add_action("wu_{$this->id}_scripts", [$this, 'register_scripts']);
 
-		add_action('wp', array($this, 'maybe_setup'));
+		add_action('wp', [$this, 'maybe_setup']);
 
-		add_action('admin_head', array($this, 'setup_for_admin'), 100);
+		add_action('admin_head', [$this, 'setup_for_admin'], 100);
 
-		add_filter('pre_render_block', array($this, 'setup_for_block_editor'), 100, 2);
+		add_filter('pre_render_block', [$this, 'setup_for_block_editor'], 100, 2);
 
-		add_action('wu_element_preview', array($this, 'setup_preview'));
+		add_action('wu_element_preview', [$this, 'setup_preview']);
 
 		// Init should be the correct time to call this to avoid the deprecated notice from I18N.
 		// But it doesn't work for some reason, fix later.
@@ -255,7 +255,7 @@ abstract class Base_Element {
 	 * @param mixed $element The element instance to be registered.
 	 * @return void
 	 */
-	public static function register_public_element($element) {
+	public static function register_public_element($element): void {
 
 		static::$public_elements[] = $element;
 	}
@@ -296,10 +296,10 @@ abstract class Base_Element {
 		 */
 		$blocks_to_check = apply_filters(
 			'wu_element_block_types_to_check',
-			array(
+			[
 				'core/shortcode',
 				'core/paragraph',
-			)
+			]
 		);
 
 		if (in_array($block['blockName'], $blocks_to_check, true)) {
@@ -352,7 +352,7 @@ abstract class Base_Element {
 
 		$contains_metaboxes = wu_get_isset($wp_meta_boxes, $screen->id) || wu_get_isset($wp_meta_boxes, $pagenow);
 
-		$elements_to_cache = array();
+		$elements_to_cache = [];
 
 		$found = false;
 
@@ -384,7 +384,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_for_admin() {
+	public function setup_for_admin(): void {
 
 		if ($this->loaded === true) {
 			return;
@@ -406,7 +406,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_setup() {
+	public function maybe_setup(): void {
 
 		global $post;
 
@@ -534,7 +534,7 @@ abstract class Base_Element {
 			 * Tries to parse the shortcode out of the content
 			 * passed using the WordPress shortcode regex.
 			 */
-			$shortcode_regex = get_shortcode_regex(array($this->get_shortcode_id()));
+			$shortcode_regex = get_shortcode_regex([$this->get_shortcode_id()]);
 
 			preg_match_all('/' . $shortcode_regex . '/', $content, $matches, PREG_SET_ORDER);
 
@@ -573,7 +573,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_element_scripts() {
+	public function enqueue_element_scripts(): void {
 
 		global $post;
 
@@ -626,13 +626,13 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_shortcode() {
+	public function register_shortcode(): void {
 
 		if (wu_get_current_site()->get_type() === Site_Type::CUSTOMER_OWNED && is_admin() === false) {
 			return;
 		}
 
-		add_shortcode($this->get_shortcode_id(), array($this, 'display'));
+		add_shortcode($this->get_shortcode_id(), [$this, 'display']);
 	}
 
 	/**
@@ -641,17 +641,17 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_form() {
+	public function register_form(): void {
 		/*
 		 * Add Generator Forms
 		 */
 		wu_register_form(
 			"shortcode_{$this->id}",
-			array(
-				'render'     => array($this, 'render_generator_modal'),
+			[
+				'render'     => [$this, 'render_generator_modal'],
 				'handler'    => '__return_empty_string',
 				'capability' => 'manage_network',
-			)
+			]
 		);
 
 		/*
@@ -659,11 +659,11 @@ abstract class Base_Element {
 		 */
 		wu_register_form(
 			"customize_{$this->id}",
-			array(
-				'render'     => array($this, 'render_customize_modal'),
-				'handler'    => array($this, 'handle_customize_modal'),
+			[
+				'render'     => [$this, 'render_customize_modal'],
+				'handler'    => [$this, 'handle_customize_modal'],
 				'capability' => 'manage_network',
-			)
+			]
 		);
 	}
 
@@ -673,13 +673,13 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_generator_modal() {
+	public function render_generator_modal(): void {
 
 		$fields = $this->fields();
 
 		$defaults = $this->defaults();
 
-		$state = array();
+		$state = [];
 
 		foreach ($fields as $field_slug => &$field) {
 			if ($field['type'] === 'header' || $field['type'] === 'note') {
@@ -695,13 +695,13 @@ abstract class Base_Element {
 			 * specially when we're dealing with
 			 * complex fields, such as group.
 			 */
-			$additional_state = array();
+			$additional_state = [];
 
 			if ($field['type'] === 'group') {
 				foreach ($field['fields'] as $sub_field_slug => &$sub_field) {
-					$sub_field['html_attr'] = array(
+					$sub_field['html_attr'] = [
 						'v-model.lazy' => "attributes.{$sub_field_slug}",
-					);
+					];
 
 					$additional_state[ $sub_field_slug ] = wu_request($sub_field_slug, wu_get_isset($defaults, $sub_field_slug));
 				}
@@ -712,14 +712,14 @@ abstract class Base_Element {
 			/*
 			 * Set v-model
 			 */
-			$field['html_attr'] = array(
+			$field['html_attr'] = [
 				'v-model.lazy' => "attributes.{$field_slug}",
-			);
+			];
 
 			$required = wu_get_isset($field, 'required');
 
 			if (wu_get_isset($field, 'required')) {
-				$shows = array();
+				$shows = [];
 
 				foreach ($required as $key => $value) {
 					$value = is_string($value) ? "\"$value\"" : $value;
@@ -727,9 +727,9 @@ abstract class Base_Element {
 					$shows[] = "attributes.{$key} == $value";
 				}
 
-				$field['wrapper_html_attr'] = array(
+				$field['wrapper_html_attr'] = [
 					'v-show' => implode(' && ', $shows),
-				);
+				];
 
 				$state[ $field_slug . '_shortcode_requires' ] = $required;
 			}
@@ -737,42 +737,42 @@ abstract class Base_Element {
 			$state[ $field_slug ] = wu_request($field_slug, wu_get_isset($defaults, $field_slug));
 		}
 
-		$fields['shortcode_result'] = array(
+		$fields['shortcode_result'] = [
 			'type'            => 'note',
 			'wrapper_classes' => 'sm:wu-block',
 			'desc'            => '<div class="wu-w-full"><span class="wu-my-1 wu-text-2xs wu-uppercase wu-font-bold wu-block">' . __('Result', 'wp-ultimo') . '</span><pre v-html="shortcode" id="wu-shortcode" style="overflow-x: scroll !important;" class="wu-text-center wu-p-4 wu-m-0 wu-mt-2 wu-rounded wu-content-center wu-bg-gray-800 wu-text-white wu-font-mono wu-border wu-border-solid wu-border-gray-300 wu-max-h-screen wu-overflow-x-scroll"></pre></div>',
-		);
+		];
 
-		$fields['submit_copy'] = array(
+		$fields['submit_copy'] = [
 			'type'            => 'submit',
 			'title'           => __('Copy Shortcode', 'wp-ultimo'),
 			'value'           => 'edit',
 			'classes'         => 'button button-primary wu-w-full wu-copy',
 			'wrapper_classes' => 'wu-items-end',
-			'html_attr'       => array(
+			'html_attr'       => [
 				'data-clipboard-action' => 'copy',
 				'data-clipboard-target' => '#wu-shortcode',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			$this->id,
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-w-full',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => "{$this->id}_generator",
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'id'         => $this->get_shortcode_id(),
 							'defaults'   => $defaults,
 							'attributes' => $state,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		echo '<div class="wu-styling">';
@@ -788,18 +788,18 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_customize_modal() {
+	public function render_customize_modal(): void {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['hide'] = array(
+		$fields['hide'] = [
 			'type'            => 'toggle',
 			'title'           => __('Hide Element', 'wp-ultimo'),
 			'desc'            => __('Be careful. Hiding an element from the account page might remove important functionality from your customers\' reach.', 'wp-ultimo'),
 			'value'           => $this->hidden_by_default,
 			'classes'         => 'button button-primary wu-w-full',
 			'wrapper_classes' => 'wu-items-end',
-		);
+		];
 
 		$fields = array_merge($fields, $this->fields());
 
@@ -823,40 +823,40 @@ abstract class Base_Element {
 			}
 		}
 
-		$fields['save_line'] = array(
+		$fields['save_line'] = [
 			'type'            => 'group',
 			'classes'         => 'wu-justify-between',
 			'wrapper_classes' => 'wu-bg-gray-100',
-			'fields'          => array(
-				'restore' => array(
+			'fields'          => [
+				'restore' => [
 					'type'            => 'submit',
 					'title'           => __('Reset Settings', 'wp-ultimo'),
 					'value'           => 'edit',
 					'classes'         => 'button',
 					'wrapper_classes' => 'wu-mb-0',
-				),
-				'submit'  => array(
+				],
+				'submit'  => [
 					'type'            => 'submit',
 					'title'           => __('Save Changes', 'wp-ultimo'),
 					'value'           => 'edit',
 					'classes'         => 'button button-primary',
 					'wrapper_classes' => 'wu-mb-0',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			$this->id,
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => "{$this->id}_customize",
 					'data-state'  => wu_convert_to_state($state),
-				),
-			)
+				],
+			]
 		);
 
 		echo '<div class="wu-styling">';
@@ -872,16 +872,16 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_customize_modal() {
+	public function handle_customize_modal(): void {
 
-		$settings = array();
+		$settings = [];
 
 		if (wu_request('submit') !== 'restore') {
 			$fields = $this->fields();
 
-			$fields['hide'] = array(
+			$fields['hide'] = [
 				'type' => 'toggle',
-			);
+			];
 
 			foreach ($fields as $field_slug => $field) {
 				$setting = wu_request($field_slug, false);
@@ -895,14 +895,14 @@ abstract class Base_Element {
 		$this->save_widget_settings($settings);
 
 		wp_send_json_success(
-			array(
-				'send'         => array(
+			[
+				'send'         => [
 					'scope'         => 'window',
 					'function_name' => 'wu_block_ui',
 					'data'          => '#wpcontent',
-				),
+				],
 				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-			)
+			]
 		);
 	}
 
@@ -912,7 +912,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_default_scripts() {
+	public function register_default_scripts(): void {
 
 		wp_enqueue_style('wu-admin');
 	}
@@ -984,7 +984,7 @@ abstract class Base_Element {
 		 */
 		$atts['element'] = $this;
 
-		return call_user_func(array($this, 'output'), $atts);
+		return call_user_func([$this, 'output'], $atts);
 	}
 
 	/**
@@ -1002,20 +1002,20 @@ abstract class Base_Element {
 		$content = $this->display($atts);
 
 		$content = str_replace(
-			array(
+			[
 				'v-',
 				'data-wu',
 				'data-state',
-			),
+			],
 			'inactive-',
 			$content
 		);
 
 		$content = str_replace(
-			array(
+			[
 				'{{',
 				'}}',
-			),
+			],
 			'',
 			$content
 		);
@@ -1045,7 +1045,7 @@ abstract class Base_Element {
 	 * @param array  $atts Array containing the shortcode attributes.
 	 * @return void
 	 */
-	public function as_inline_content($screen_id, $hook = 'admin_notices', $atts = array()) {
+	public function as_inline_content($screen_id, $hook = 'admin_notices', $atts = []): void {
 
 		if ( ! function_exists('get_current_screen')) {
 			_doing_it_wrong(__METHOD__, __('An element can not be loaded as inline content unless the get_current_screen() function is already available.', 'wp-ultimo'), '2.0.0');
@@ -1112,7 +1112,7 @@ abstract class Base_Element {
 	 * @param array $settings The settings to save. Key => value array.
 	 * @return void
 	 */
-	public function save_widget_settings($settings) {
+	public function save_widget_settings($settings): void {
 
 		$key = wu_replace_dashes($this->id);
 
@@ -1129,7 +1129,7 @@ abstract class Base_Element {
 
 		$key = wu_replace_dashes($this->id);
 
-		return wu_get_setting("widget_{$key}_settings", array());
+		return wu_get_setting("widget_{$key}_settings", []);
 	}
 
 	/**
@@ -1142,7 +1142,7 @@ abstract class Base_Element {
 	 * @param array  $atts Array containing the shortcode attributes.
 	 * @return void
 	 */
-	public function as_metabox($screen_id, $position = 'normal', $atts = array()) {
+	public function as_metabox($screen_id, $position = 'normal', $atts = []): void {
 
 		$this->setup();
 
@@ -1195,7 +1195,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function super_admin_notice() {
+	public function super_admin_notice(): void {
 
 		$should_display = $this->should_display_customize_controls();
 
@@ -1264,7 +1264,7 @@ abstract class Base_Element {
 	 * @param boolean $display Controls whether or not the widget and element should display.
 	 * @return void
 	 */
-	public function set_display($display) {
+	public function set_display($display): void {
 
 		$this->display = $display;
 	}

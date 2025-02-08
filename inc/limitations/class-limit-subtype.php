@@ -88,10 +88,10 @@ class Limit_Subtype extends Limit {
 	 */
 	public function get_default_permissions($type) {
 
-		return array(
+		return [
 			'enabled' => true,
 			'number'  => '', // unlimited
-		);
+		];
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Limit_Subtype extends Limit {
 	 */
 	public function exists($type) {
 
-		$results = wu_get_isset($this->get_limit(), $type, array());
+		$results = wu_get_isset($this->get_limit(), $type, []);
 
 		return wu_get_isset($results, 'number', 'not-set') !== 'not-set';
 	}
@@ -117,7 +117,7 @@ class Limit_Subtype extends Limit {
 	 */
 	public function handle_limit() {
 
-		$received = wu_get_isset($_POST['modules'][ $this->id ], 'limit', array());
+		$received = wu_get_isset($_POST['modules'][ $this->id ], 'limit', []);
 
 		foreach ($received as $post_type => &$limitations) {
 			$limitations['enabled'] = (bool) wu_get_isset($_POST['modules'][ $this->id ]['limit'][ $post_type ], 'enabled', false);

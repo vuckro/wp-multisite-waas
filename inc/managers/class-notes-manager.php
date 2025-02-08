@@ -47,17 +47,17 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('plugins_loaded', array($this, 'register_forms'));
+		add_action('plugins_loaded', [$this, 'register_forms']);
 
-		add_filter('wu_membership_options_sections', array($this, 'add_notes_options_section'), 10, 2);
+		add_filter('wu_membership_options_sections', [$this, 'add_notes_options_section'], 10, 2);
 
-		add_filter('wu_payments_options_sections', array($this, 'add_notes_options_section'), 10, 2);
+		add_filter('wu_payments_options_sections', [$this, 'add_notes_options_section'], 10, 2);
 
-		add_filter('wu_customer_options_sections', array($this, 'add_notes_options_section'), 10, 2);
+		add_filter('wu_customer_options_sections', [$this, 'add_notes_options_section'], 10, 2);
 
-		add_filter('wu_site_options_sections', array($this, 'add_notes_options_section'), 10, 2);
+		add_filter('wu_site_options_sections', [$this, 'add_notes_options_section'], 10, 2);
 	}
 
 	/**
@@ -66,17 +66,17 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add note
 		 */
 		wu_register_form(
 			'add_note',
-			array(
-				'render'     => array($this, 'render_add_note_modal'),
-				'handler'    => array($this, 'handle_add_note_modal'),
+			[
+				'render'     => [$this, 'render_add_note_modal'],
+				'handler'    => [$this, 'handle_add_note_modal'],
 				'capability' => 'edit_notes',
-			)
+			]
 		);
 
 		/*
@@ -84,11 +84,11 @@ class Notes_Manager extends Base_Manager {
 		 */
 		wu_register_form(
 			'clear_notes',
-			array(
-				'render'     => array($this, 'render_clear_notes_modal'),
-				'handler'    => array($this, 'handle_clear_notes_modal'),
+			[
+				'render'     => [$this, 'render_clear_notes_modal'],
+				'handler'    => [$this, 'handle_clear_notes_modal'],
 				'capability' => 'delete_notes',
-			)
+			]
 		);
 
 		/*
@@ -96,11 +96,11 @@ class Notes_Manager extends Base_Manager {
 		 */
 		wu_register_form(
 			'delete_note',
-			array(
-				'render'     => array($this, 'render_delete_note_modal'),
-				'handler'    => array($this, 'handle_delete_note_modal'),
+			[
+				'render'     => [$this, 'render_delete_note_modal'],
+				'handler'    => [$this, 'handle_delete_note_modal'],
 				'capability' => 'delete_notes',
-			)
+			]
 		);
 	}
 
@@ -120,77 +120,77 @@ class Notes_Manager extends Base_Manager {
 			return $sections;
 		}
 
-		$fields = array();
+		$fields = [];
 
-		$fields['notes_panel'] = array(
+		$fields['notes_panel'] = [
 			'type'              => 'html',
 			'wrapper_classes'   => 'wu-m-0 wu-p-2 wu-notes-wrapper',
-			'wrapper_html_attr' => array(
-				'style' => sprintf('min-height: 500px; background: url("%s");', wu_get_asset('pattern-wp-ultimo.png')),
-			),
+			'wrapper_html_attr' => [
+				'style' => sprintf('min-height: 500px; background: url("%s");', wu_get_asset('pattern-wp-ultimo.webp')),
+			],
 			'content'           => wu_get_template_contents(
 				'base/edit/display-notes',
-				array(
+				[
 					'notes' => $object->get_notes(),
 					'model' => $object->model,
-				)
+				]
 			),
-		);
+		];
 
-		$fields_buttons = array();
+		$fields_buttons = [];
 
 		if (current_user_can('delete_notes')) {
-			$fields_buttons['button_clear_notes'] = array(
+			$fields_buttons['button_clear_notes'] = [
 				'type'            => 'link',
 				'display_value'   => __('Clear Notes', 'wp-ultimo'),
 				'wrapper_classes' => 'wu-mb-0',
 				'classes'         => 'button wubox',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'href'  => wu_get_form_url(
 						'clear_notes',
-						array(
+						[
 							'object_id' => $object->get_id(),
 							'model'     => $object->model,
-						)
+						]
 					),
 					'title' => __('Clear Notes', 'wp-ultimo'),
-				),
-			);
+				],
+			];
 		}
 
 		if (current_user_can('edit_notes')) {
-			$fields_buttons['button_add_note'] = array(
+			$fields_buttons['button_add_note'] = [
 				'type'            => 'link',
 				'display_value'   => __('Add new Note', 'wp-ultimo'),
 				'wrapper_classes' => 'wu-mb-0',
 				'classes'         => 'button button-primary wubox wu-absolute wu-right-5',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'href'  => wu_get_form_url(
 						'add_note',
-						array(
+						[
 							'object_id' => $object->get_id(),
 							'model'     => $object->model,
 							'height'    => 306,
-						)
+						]
 					),
 					'title' => __('Add new Note', 'wp-ultimo'),
-				),
-			);
+				],
+			];
 		}
 
-		$fields['buttons'] = array(
+		$fields['buttons'] = [
 			'type'            => 'group',
 			'wrapper_classes' => 'wu-bg-white',
 			'fields'          => $fields_buttons,
-		);
+		];
 
-		$sections['notes'] = array(
+		$sections['notes'] = [
 			'title'  => __('Notes', 'wp-ultimo'),
 			'desc'   => __('Add notes to this model.', 'wp-ultimo'),
 			'icon'   => 'dashicons-wu-text-document',
 			'order'  => 1001,
 			'fields' => $fields,
-		);
+		];
 
 		return $sections;
 	}
@@ -201,59 +201,59 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_note_modal() {
+	public function render_add_note_modal(): void {
 
-		$fields = array(
-			'content'         => array(
+		$fields = [
+			'content'         => [
 				'id'        => 'content',
 				'type'      => 'wp-editor',
 				'title'     => __('Note Content', 'wp-ultimo'),
 				'desc'      => __('Basic formatting is supported.', 'wp-ultimo'),
-				'settings'  => array(
-					'tinymce' => array(
+				'settings'  => [
+					'tinymce' => [
 						'toolbar1' => 'bold,italic,strikethrough,link,unlink,undo,redo,pastetext',
-					),
-				),
-				'html_attr' => array(
+					],
+				],
+				'html_attr' => [
 					'v-model' => 'content',
-				),
-			),
-			'submit_add_note' => array(
+				],
+			],
+			'submit_add_note' => [
 				'type'            => 'submit',
 				'title'           => __('Add Note', 'wp-ultimo'),
 				'placeholder'     => __('Add Note', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'wu-w-full button button-primary',
 				'wrapper_classes' => 'wu-items-end',
-			),
-			'object_id'       => array(
+			],
+			'object_id'       => [
 				'type'  => 'hidden',
 				'value' => wu_request('object_id'),
-			),
-			'model'           => array(
+			],
+			'model'           => [
 				'type'  => 'hidden',
 				'value' => wu_request('model'),
-			),
-		);
+			],
+		];
 
 		$fields = apply_filters('wu_notes_options_section_fields', $fields);
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_note',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_note',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'content' => '',
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -265,18 +265,18 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_add_note_modal() {
+	public function handle_add_note_modal(): void {
 
 		$model         = wu_request('model');
 		$function_name = "wu_get_{$model}";
 		$object        = $function_name(wu_request('object_id'));
 
 		$status = $object->add_note(
-			array(
+			[
 				'text'      => wu_remove_empty_p(wu_request('content')),
 				'author_id' => get_current_user_id(),
 				'note_id'   => uniqid(),
-			)
+			]
 		);
 
 		if (is_wp_error($status)) {
@@ -284,16 +284,16 @@ class Notes_Manager extends Base_Manager {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					"wp-ultimo-edit-{$model}",
-					array(
+					[
 						'id'      => $object->get_id(),
 						'updated' => 1,
 						'options' => 'notes',
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -303,54 +303,54 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_clear_notes_modal() {
+	public function render_clear_notes_modal(): void {
 
-		$fields = array(
-			'confirm_clear_notes' => array(
+		$fields = [
+			'confirm_clear_notes' => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm clear all notes?', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_clear_notes'  => array(
+				],
+			],
+			'submit_clear_notes'  => [
 				'type'            => 'submit',
 				'title'           => __('Clear Notes', 'wp-ultimo'),
 				'placeholder'     => __('Clear Notes', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'wu-w-full button button-primary',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-			'object_id'           => array(
+				],
+			],
+			'object_id'           => [
 				'type'  => 'hidden',
 				'value' => wu_request('object_id'),
-			),
-			'model'               => array(
+			],
+			'model'               => [
 				'type'  => 'hidden',
 				'value' => wu_request('model'),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'clear_notes',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'clear_notes',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -362,7 +362,7 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_clear_notes_modal() {
+	public function handle_clear_notes_modal(): void {
 
 		$model         = wu_request('model');
 		$function_name = "wu_get_{$model}";
@@ -379,16 +379,16 @@ class Notes_Manager extends Base_Manager {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					"wp-ultimo-edit-{$model}",
-					array(
+					[
 						'id'      => $object->get_id(),
 						'deleted' => 1,
 						'options' => 'notes',
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -398,58 +398,58 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_delete_note_modal() {
+	public function render_delete_note_modal(): void {
 
-		$fields = array(
-			'confirm_delete_note' => array(
+		$fields = [
+			'confirm_delete_note' => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm clear the note?', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_delete_note'  => array(
+				],
+			],
+			'submit_delete_note'  => [
 				'type'            => 'submit',
 				'title'           => __('Clear Note', 'wp-ultimo'),
 				'placeholder'     => __('Clear Note', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'wu-w-full button button-primary',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-			'object_id'           => array(
+				],
+			],
+			'object_id'           => [
 				'type'  => 'hidden',
 				'value' => wu_request('object_id'),
-			),
-			'model'               => array(
+			],
+			'model'               => [
 				'type'  => 'hidden',
 				'value' => wu_request('model'),
-			),
-			'note_id'             => array(
+			],
+			'note_id'             => [
 				'type'  => 'hidden',
 				'value' => wu_request('note_id'),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'delete_note',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'delete_note',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -461,7 +461,7 @@ class Notes_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_delete_note_modal() {
+	public function handle_delete_note_modal(): void {
 
 		$model         = wu_request('model');
 		$function_name = "wu_get_{$model}";
@@ -479,16 +479,16 @@ class Notes_Manager extends Base_Manager {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					"wp-ultimo-edit-{$model}",
-					array(
+					[
 						'id'      => $object->get_id(),
 						'deleted' => 1,
 						'options' => 'notes',
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 }

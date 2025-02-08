@@ -18,9 +18,9 @@
 	 */
 	wu_get_template(
 		'admin-pages/fields/partials/field-title',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>
@@ -35,11 +35,11 @@
 	$form = new \WP_Ultimo\UI\Form(
 		$field->id,
 		$field->fields,
-		array(
+		[
 			'views'                 => 'admin-pages/fields',
 			'classes'               => trim('wu-flex ' . esc_attr($field->classes)),
 			'field_wrapper_classes' => 'wu-bg-transparent',
-		)
+		]
 	);
 
 	$form->render();

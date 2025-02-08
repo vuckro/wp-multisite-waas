@@ -21,7 +21,7 @@
 
 	<div class="wu-w-2/3">
 
-		<input class="field-<?php echo esc_attr($field->id); ?>" name="<?php echo esc_attr($field->id); ?>" type="text" id="<?php echo esc_attr($field->id); ?>" class="regular-text" value="<?php echo wu_get_setting($field->id); ?>" placeholder="<?php echo $field->placeholder ? $field->placeholder : ''; ?>">
+		<input class="field-<?php echo esc_attr($field->id); ?>" name="<?php echo esc_attr($field->id); ?>" type="text" id="<?php echo esc_attr($field->id); ?>" class="regular-text" value="<?php echo wu_get_setting($field->id); ?>" placeholder="<?php echo $field->placeholder ?: ''; ?>">
 
 		<?php if ($field->desc) : ?>
 

@@ -43,7 +43,7 @@ class Customer_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Customer';
+	protected $model_class = \WP_Ultimo\Models\Customer::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -51,7 +51,7 @@ class Customer_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
@@ -63,21 +63,21 @@ class Customer_Manager extends Base_Manager {
 				Event_Manager::register_model_events(
 					'customer',
 					__('Customer', 'wp-ultimo'),
-					array('created', 'updated')
+					['created', 'updated']
 				);
 			}
 		);
-		add_action('wp_login', array($this, 'log_ip_and_last_login'), 10, 2);
+		add_action('wp_login', [$this, 'log_ip_and_last_login'], 10, 2);
 
-		add_filter('heartbeat_send', array($this, 'on_heartbeat_send'));
+		add_filter('heartbeat_send', [$this, 'on_heartbeat_send']);
 
-		add_action('wu_transition_customer_email_verification', array($this, 'transition_customer_email_verification'), 10, 3);
+		add_action('wu_transition_customer_email_verification', [$this, 'transition_customer_email_verification'], 10, 3);
 
-		add_action('init', array($this, 'maybe_verify_email_address'));
+		add_action('init', [$this, 'maybe_verify_email_address']);
 
-		add_action('wu_maybe_create_customer', array($this, 'maybe_add_to_main_site'), 10, 2);
+		add_action('wu_maybe_create_customer', [$this, 'maybe_add_to_main_site'], 10, 2);
 
-		add_action('wp_ajax_wu_resend_verification_email', array($this, 'handle_resend_verification_email'));
+		add_action('wp_ajax_wu_resend_verification_email', [$this, 'handle_resend_verification_email']);
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Customer_Manager extends Base_Manager {
 	 * @since 2.0.4
 	 * @return void
 	 */
-	public function handle_resend_verification_email() {
+	public function handle_resend_verification_email(): void {
 
 		if ( ! check_ajax_referer('wu_resend_verification_email_nonce', false, false)) {
 			wp_send_json_error(new \WP_Error('not-allowed', __('Error: you are not allowed to perform this action.', 'wp-ultimo')));
@@ -132,7 +132,7 @@ class Customer_Manager extends Base_Manager {
 	 * @param WP_User $user The WP User object of the user that logged in.
 	 * @return void
 	 */
-	public function log_ip_and_last_login($user) {
+	public function log_ip_and_last_login($user): void {
 
 		if ( ! is_a($user, '\WP_User')) {
 			$user = get_user_by('login', $user);
@@ -161,7 +161,7 @@ class Customer_Manager extends Base_Manager {
 	 * @param integer $customer_id Customer ID.
 	 * @return void
 	 */
-	public function transition_customer_email_verification($old_status, $new_status, $customer_id) {
+	public function transition_customer_email_verification($old_status, $new_status, $customer_id): void {
 
 		if ($new_status !== 'pending') {
 			return;
@@ -184,7 +184,7 @@ class Customer_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_verify_email_address() {
+	public function maybe_verify_email_address(): void {
 
 		$email_verify_key = wu_request('email-verification-key');
 
@@ -203,10 +203,10 @@ class Customer_Manager extends Base_Manager {
 					__('You must be authenticated in order to verify your email address. <a href=%s>Click here</a> to access your account.', 'wp-ultimo'),
 					wp_login_url(
 						add_query_arg(
-							array(
+							[
 								'email-verification-key' => $email_verify_key,
 								'customer'               => $customer_hash,
-							)
+							]
 						)
 					)
 				)
@@ -280,10 +280,10 @@ class Customer_Manager extends Base_Manager {
 
 			if ($payments) {
 				$redirect_url = add_query_arg(
-					array(
+					[
 						'payment' => $payments[0]->get_hash(),
 						'status'  => 'done',
-					),
+					],
 					wu_get_registration_url()
 				);
 
@@ -307,7 +307,7 @@ class Customer_Manager extends Base_Manager {
 	 * @param Checkout $checkout The checkout object.
 	 * @return void
 	 */
-	public function maybe_add_to_main_site($customer, $checkout) {
+	public function maybe_add_to_main_site($customer, $checkout): void {
 
 		if ( ! wu_get_setting('add_users_to_main_site')) {
 			return;

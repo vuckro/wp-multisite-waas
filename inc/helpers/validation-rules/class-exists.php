@@ -35,7 +35,7 @@ class Exists extends Rule {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fillableParams = array('model', 'column', 'except'); // phpcs:ignore
+	protected $fillableParams = ['model', 'column', 'except']; // phpcs:ignore
 
 	/**
 	 * Performs the actual check.
@@ -47,10 +47,10 @@ class Exists extends Rule {
 	public function check($value): bool {
 
 		$this->requireParameters(
-			array(
+			[
 				'model',
 				'column',
-			)
+			]
 		);
 
 		$column = $this->parameter('column');

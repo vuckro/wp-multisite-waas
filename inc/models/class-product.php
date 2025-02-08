@@ -267,7 +267,7 @@ class Product extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Products\\Product_Query';
+	protected $query_class = \WP_Ultimo\Database\Products\Product_Query::class;
 
 	/**
 	 * Map setters to other parameters.
@@ -275,9 +275,9 @@ class Product extends Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $_mappings = array(
+	protected $_mappings = [
 		'product_group' => 'group',
-	);
+	];
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -301,7 +301,7 @@ class Product extends Base_Model {
 
 		$currency = wu_get_setting('currency_symbol', 'USD');
 
-		return array(
+		return [
 			'featured_image_id'   => 'integer',
 			'currency'            => "required|default:{$currency}",
 			'pricing_type'        => 'required|in:free,paid,contact_us',
@@ -323,7 +323,7 @@ class Product extends Base_Model {
 			'contact_us_label'    => 'default:',
 			'contact_us_link'     => 'url:http,https',
 			'customer_role'       => 'alpha_dash',
-		);
+		];
 	}
 
 	/**
@@ -366,7 +366,7 @@ class Product extends Base_Model {
 	 * @param int $image_id The ID of the feature image of the product.
 	 * @return void
 	 */
-	public function set_featured_image_id($image_id) {
+	public function set_featured_image_id($image_id): void {
 
 		$this->meta['wu_featured_image_id'] = $image_id;
 
@@ -388,7 +388,7 @@ class Product extends Base_Model {
 	 *
 	 * @param string $slug The product slug. It needs to be unique and preferably make it clear what it is about. Example: my_new_product.
 	 */
-	public function set_slug($slug) {
+	public function set_slug($slug): void {
 
 		$this->slug = $slug;
 	}
@@ -408,7 +408,7 @@ class Product extends Base_Model {
 	 *
 	 * @param string $name Your product name, which is used as product title as well.
 	 */
-	public function set_name($name) {
+	public function set_name($name): void {
 
 		$this->name = $name;
 	}
@@ -428,7 +428,7 @@ class Product extends Base_Model {
 	 *
 	 * @param string $description A description for the product, usually a short text.
 	 */
-	public function set_description($description) {
+	public function set_description($description): void {
 
 		$this->description = $description;
 	}
@@ -459,7 +459,7 @@ class Product extends Base_Model {
 	 * @param string $currency The currency that this product accepts. It's a 3-letter code. E.g. 'USD'.
 	 * @return void
 	 */
-	public function set_currency($currency) {
+	public function set_currency($currency): void {
 
 		$this->currency = $currency;
 	}
@@ -483,7 +483,7 @@ class Product extends Base_Model {
 	 * @options free,paid,contact_us
 	 * @return void
 	 */
-	public function set_pricing_type($pricing_type) {
+	public function set_pricing_type($pricing_type): void {
 
 		$this->pricing_type = $pricing_type;
 
@@ -523,7 +523,7 @@ class Product extends Base_Model {
 	 * @param int $trial_duration The duration of the trial period of this product, if the product has one.
 	 * @return void
 	 */
-	public function set_trial_duration($trial_duration) {
+	public function set_trial_duration($trial_duration): void {
 
 		$this->trial_duration = $trial_duration;
 	}
@@ -547,7 +547,7 @@ class Product extends Base_Model {
 	 * @options day,week,month,year
 	 * @return void
 	 */
-	public function set_trial_duration_unit($trial_duration_unit) {
+	public function set_trial_duration_unit($trial_duration_unit): void {
 
 		$this->trial_duration_unit = $trial_duration_unit;
 	}
@@ -567,7 +567,7 @@ class Product extends Base_Model {
 	 *
 	 * @param int $duration Time interval between charges.
 	 */
-	public function set_duration($duration) {
+	public function set_duration($duration): void {
 
 		$this->duration = $duration;
 	}
@@ -587,7 +587,7 @@ class Product extends Base_Model {
 	 *
 	 * @param string $duration_unit Time interval unit between charges.
 	 */
-	public function set_duration_unit($duration_unit) {
+	public function set_duration_unit($duration_unit): void {
 
 		$this->duration_unit = $duration_unit;
 	}
@@ -624,7 +624,7 @@ class Product extends Base_Model {
 		}
 
 		if ($this->get_pricing_type() === 'contact_us') {
-			return $this->get_contact_us_label() ? $this->get_contact_us_label() : __('Contact Us', 'wp-ultimo');
+			return $this->get_contact_us_label() ?: __('Contact Us', 'wp-ultimo');
 		}
 
 		return wu_format_currency($this->get_amount(), $this->get_currency());
@@ -635,7 +635,7 @@ class Product extends Base_Model {
 	 *
 	 * @param int $amount The value of this product. E.g. 19.99.
 	 */
-	public function set_amount($amount) {
+	public function set_amount($amount): void {
 
 		$this->amount = wu_to_float($amount);
 	}
@@ -658,7 +658,7 @@ class Product extends Base_Model {
 	 * @param int $setup_fee The setup fee value, if the product has one. E.g. 159.99.
 	 * @return void
 	 */
-	public function set_setup_fee($setup_fee) {
+	public function set_setup_fee($setup_fee): void {
 
 		$this->setup_fee = wu_to_float($setup_fee);
 	}
@@ -694,7 +694,7 @@ class Product extends Base_Model {
 	 */
 	public function get_price_description($include_fees = true) {
 
-		$pricing = array();
+		$pricing = [];
 
 		if ($this->get_pricing_type() === 'contact_us') {
 			return __('Contact us', 'wp-ultimo');
@@ -786,7 +786,7 @@ class Product extends Base_Model {
 	 *
 	 * @param int $list_order The product list order. Useful when ordering products in a list.
 	 */
-	public function set_list_order($list_order) {
+	public function set_list_order($list_order): void {
 
 		$this->list_order = $list_order;
 	}
@@ -809,7 +809,7 @@ class Product extends Base_Model {
 	 * @param boolean $active Set this product as active (true), which means available to be used, or inactive (false).
 	 * @return void
 	 */
-	public function set_active($active) {
+	public function set_active($active): void {
 
 		$this->active = (bool) $active;
 	}
@@ -830,7 +830,7 @@ class Product extends Base_Model {
 	 * @param string $type The default product types are 'product', 'service' and 'package'. More types can be add using the product type filter.
 	 * @options plan,service,package
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		$this->type = $type;
 	}
@@ -879,7 +879,7 @@ class Product extends Base_Model {
 	 * @param int $parent_id The ID from another Product that this product is related to.
 	 * @return void
 	 */
-	public function set_parent_id($parent_id) {
+	public function set_parent_id($parent_id): void {
 
 		$this->parent_id = $parent_id;
 	}
@@ -913,7 +913,7 @@ class Product extends Base_Model {
 	 * @param boolean $recurring Set this product as a recurring one (true), which means the customer paid a defined amount each period of time, or not recurring (false).
 	 * @return void
 	 */
-	public function set_recurring($recurring) {
+	public function set_recurring($recurring): void {
 
 		$this->recurring = (bool) $recurring;
 	}
@@ -947,7 +947,7 @@ class Product extends Base_Model {
 	 * @param int $billing_cycles The number of times we should charge this product.
 	 * @return void
 	 */
-	public function set_billing_cycles($billing_cycles) {
+	public function set_billing_cycles($billing_cycles): void {
 
 		$this->billing_cycles = (int) $billing_cycles;
 	}
@@ -970,7 +970,7 @@ class Product extends Base_Model {
 	 * @param string $date_created Date when this was created.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -993,7 +993,7 @@ class Product extends Base_Model {
 	 * @param string $date_modified Date when this was last modified.
 	 * @return void
 	 */
-	public function set_date_modified($date_modified) {
+	public function set_date_modified($date_modified): void {
 
 		$this->date_modified = $date_modified;
 	}
@@ -1040,7 +1040,7 @@ class Product extends Base_Model {
 	 * @param bool $is_taxable Set this product as a taxable one (true), which means tax rules are applied to, or not taxable (false).
 	 * @return void
 	 */
-	public function set_taxable($is_taxable) {
+	public function set_taxable($is_taxable): void {
 
 		$this->meta['taxable'] = (bool) $is_taxable;
 
@@ -1070,7 +1070,7 @@ class Product extends Base_Model {
 	 * @param string $tax_category Category of taxes applied to this product. You need to set this if taxable is set to true.
 	 * @return void
 	 */
-	public function set_tax_category($tax_category) {
+	public function set_tax_category($tax_category): void {
 
 		$this->meta['tax_category'] = $tax_category;
 
@@ -1099,7 +1099,7 @@ class Product extends Base_Model {
 	 * @param string $contact_us_label If the product is the 'contact_us' type, it will need a label for the contact us button.
 	 * @return void
 	 */
-	public function set_contact_us_label($contact_us_label) {
+	public function set_contact_us_label($contact_us_label): void {
 
 		$this->meta['wu_contact_us_label'] = $contact_us_label;
 
@@ -1128,7 +1128,7 @@ class Product extends Base_Model {
 	 * @param string $contact_us_link The url where the contact us button will lead to.
 	 * @return void
 	 */
-	public function set_contact_us_link($contact_us_link) {
+	public function set_contact_us_link($contact_us_link): void {
 
 		$this->meta['wu_contact_us_link'] = $contact_us_link;
 
@@ -1157,7 +1157,7 @@ class Product extends Base_Model {
 	 * @param array $feature_list A list (array) of features of the product.
 	 * @return void
 	 */
-	public function set_feature_list($feature_list) {
+	public function set_feature_list($feature_list): void {
 
 		$this->meta['feature_list'] = $feature_list;
 
@@ -1203,8 +1203,8 @@ class Product extends Base_Model {
 	 */
 	public function get_as_variation($duration, $duration_unit) {
 
-		$duration      = $duration ? $duration : 1;
-		$duration_unit = $duration_unit ? $duration_unit : 'month';
+		$duration      = $duration ?: 1;
+		$duration_unit = $duration_unit ?: 'month';
 
 		if ($this->is_free()) {
 			return $this;
@@ -1215,9 +1215,9 @@ class Product extends Base_Model {
 		}
 
 		if (absint($duration) === $this->get_duration() && $duration_unit === $this->get_duration_unit()) {
-			$price_variation = array(
+			$price_variation = [
 				'amount' => $this->get_amount(),
-			);
+			];
 		}
 
 		$price_variation = apply_filters('wu_get_as_variation_price_variation', $price_variation, $duration, $duration_unit, $this);
@@ -1249,7 +1249,7 @@ class Product extends Base_Model {
 
 					return $price_variation;
 				},
-				$this->get_meta('price_variations', array())
+				$this->get_meta('price_variations', [])
 			);
 		}
 
@@ -1263,7 +1263,7 @@ class Product extends Base_Model {
 	 * @param ?array $price_variations Price variations array.
 	 * @return void
 	 */
-	public function set_price_variations(?array $price_variations) {
+	public function set_price_variations(?array $price_variations): void {
 
 		// Ensure the amount is a float.
 		$price_variations = array_map(
@@ -1273,7 +1273,7 @@ class Product extends Base_Model {
 
 				return $price_variation;
 			},
-			$price_variations ?? array()
+			$price_variations ?? []
 		);
 
 		$this->meta['price_variations'] = $price_variations;
@@ -1337,13 +1337,13 @@ class Product extends Base_Model {
 		$results = parent::save();
 
 		if ( ! is_wp_error($results) && has_action('save_post_wpultimo_plan')) {
-			do_action_deprecated('save_post_wpultimo_plan', array($this->get_id()), '2.0.0');
+			do_action_deprecated('save_post_wpultimo_plan', [$this->get_id()], '2.0.0');
 		}
 
 		if ( ! is_wp_error($results) && has_action('wu_save_plan')) {
 			$compat_plan = new \WU_Plan($this);
 
-			do_action_deprecated('wu_save_plan', array($compat_plan), '2.0.0', 'wu_product_post_save');
+			do_action_deprecated('wu_save_plan', [$compat_plan], '2.0.0', 'wu_product_post_save');
 		}
 
 		return $results;
@@ -1373,7 +1373,7 @@ class Product extends Base_Model {
 	public function get_available_addons() {
 
 		if ($this->available_addons === null) {
-			$this->available_addons = $this->get_meta('wu_available_addons', array());
+			$this->available_addons = $this->get_meta('wu_available_addons', []);
 
 			if (is_string($this->available_addons)) {
 				$this->available_addons = explode(',', $this->available_addons);
@@ -1390,7 +1390,7 @@ class Product extends Base_Model {
 	 * @param array $available_addons The available addons of this product.
 	 * @return void
 	 */
-	public function set_available_addons($available_addons) {
+	public function set_available_addons($available_addons): void {
 
 		$this->meta['wu_available_addons'] = $available_addons;
 
@@ -1427,7 +1427,7 @@ class Product extends Base_Model {
 	 * @param array $group The group of this product, if has any.
 	 * @return void
 	 */
-	public function set_group($group) {
+	public function set_group($group): void {
 
 		$this->product_group = $group;
 	}
@@ -1454,7 +1454,7 @@ class Product extends Base_Model {
 	 * @param bool $legacy_options If the legacy options are enabled.
 	 * @return void
 	 */
-	public function set_legacy_options($legacy_options) {
+	public function set_legacy_options($legacy_options): void {
 
 		$this->meta['legacy_options'] = $legacy_options;
 
@@ -1477,6 +1477,6 @@ class Product extends Base_Model {
 	 */
 	public function limitations_to_merge() {
 
-		return array();
+		return [];
 	}
 }

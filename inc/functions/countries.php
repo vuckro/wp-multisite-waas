@@ -19,7 +19,7 @@ function wu_get_countries() {
 
 	return apply_filters(
 		'wu_get_countries',
-		array(
+		[
 			'AF' => __('Afghanistan', 'wp-ultimo'),
 			'AX' => __('&#197;land Islands', 'wp-ultimo'),
 			'AL' => __('Albania', 'wp-ultimo'),
@@ -269,7 +269,7 @@ function wu_get_countries() {
 			'YE' => __('Yemen', 'wp-ultimo'),
 			'ZM' => __('Zambia', 'wp-ultimo'),
 			'ZW' => __('Zimbabwe', 'wp-ultimo'),
-		)
+		]
 	);
 }
 
@@ -282,9 +282,9 @@ function wu_get_countries() {
 function wu_get_countries_as_options() {
 
 	return array_merge(
-		array(
+		[
 			'' => __('Select Country', 'wp-ultimo'),
-		),
+		],
 		wu_get_countries()
 	);
 }
@@ -299,7 +299,7 @@ function wu_get_countries_as_options() {
  * @param array       $fallback_attributes Fallback attributes if the country class is not present.
  * @return \WP_Ultimo\Country\Country
  */
-function wu_get_country($country_code, $name = null, $fallback_attributes = array()) {
+function wu_get_country($country_code, $name = null, $fallback_attributes = []) {
 
 	$country_code = strtoupper($country_code);
 
@@ -324,9 +324,9 @@ function wu_get_country($country_code, $name = null, $fallback_attributes = arra
  */
 function wu_get_country_states($country_code, $key_name = 'id', $value_name = 'value') {
 
-	static $state_options = array();
+	static $state_options = [];
 
-	$options = array();
+	$options = [];
 
 	$cache = wu_get_isset($state_options, $country_code, false);
 
@@ -360,11 +360,11 @@ function wu_get_country_states($country_code, $key_name = 'id', $value_name = 'v
  */
 function wu_get_country_cities($country_code, $states, $key_name = 'id', $value_name = 'value') {
 
-	static $city_options = array();
+	static $city_options = [];
 
 	$states = (array) $states;
 
-	$options = array();
+	$options = [];
 
 	foreach ($states as $state_code) {
 		$cache = wu_get_isset($city_options, $state_code, false);
@@ -441,7 +441,7 @@ function wu_get_countries_of_customers($count = 10, $start_date = false, $end_da
 
 	$results = $wpdb->get_results($query); // phpcs:ignore
 
-	$countries = array();
+	$countries = [];
 
 	foreach ($results as $result) {
 		$countries[ $result->country ] = $result->count;
@@ -464,7 +464,7 @@ function wu_get_states_of_customers($country_code, $count = 100, $start_date = f
 
 	global $wpdb;
 
-	static $states = array();
+	static $states = [];
 
 	$table_name          = "{$wpdb->base_prefix}wu_customermeta";
 	$customer_table_name = "{$wpdb->base_prefix}wu_customers";
@@ -480,7 +480,7 @@ function wu_get_states_of_customers($country_code, $count = 100, $start_date = f
 	$states = wu_get_country_states('BR', false);
 
 	if (empty($states)) {
-		return array();
+		return [];
 	}
 
 	$states_in = implode("','", array_keys($states));
@@ -501,10 +501,10 @@ function wu_get_states_of_customers($country_code, $count = 100, $start_date = f
 	$results = $wpdb->get_results($query); // phpcs:ignore
 
 	if (empty($results)) {
-		return array();
+		return [];
 	}
 
-	$_states = array();
+	$_states = [];
 
 	foreach ($results as $result) {
 		$final_label = sprintf('%s (%s)', $states[ $result->state ], $result->state);

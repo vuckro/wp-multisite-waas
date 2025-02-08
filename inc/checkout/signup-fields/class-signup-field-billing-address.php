@@ -122,9 +122,9 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'zip_and_country' => true,
-		);
+		];
 	}
 
 	/**
@@ -135,9 +135,9 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
-		);
+		];
 	}
 
 	/**
@@ -148,10 +148,10 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'billing_address',
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -162,14 +162,14 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'zip_and_country' => array(
+		return [
+			'zip_and_country' => [
 				'type'  => 'toggle',
 				'title' => __('Display only ZIP and Country?', 'wp-ultimo'),
 				'desc'  => __('Checking this option will only add the ZIP and country fields, instead of all the normal billing address fields.', 'wp-ultimo'),
 				'value' => true,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -197,7 +197,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 
 		$field['type']                      = 'select';
 		$field['options_template']          = $option_template;
-		$field['options']                   = array();
+		$field['options']                   = [];
 		$field['required']                  = true;
 		$field['wrapper_html_attr']['v-if'] = "{$data_key_name}.length";
 		$field['html_attr']['required']     = 'required';
@@ -234,16 +234,16 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 		}
 
 		if (isset($fields['billing_country'])) {
-			$fields['billing_country']['html_attr'] = array(
+			$fields['billing_country']['html_attr'] = [
 				'v-model' => 'country',
-			);
+			];
 		}
 
 		if ( ! $zip_only) {
 			if (isset($fields['billing_state'])) {
-				$fields['billing_state']['html_attr'] = array(
+				$fields['billing_state']['html_attr'] = [
 					'v-model.lazy' => 'state',
-				);
+				];
 
 				/**
 				 * Format the state field accordingly.
@@ -254,9 +254,9 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 			}
 
 			if (isset($fields['billing_city'])) {
-				$fields['billing_city']['html_attr'] = array(
+				$fields['billing_city']['html_attr'] = [
 					'v-model.lazy' => 'city',
-				);
+				];
 
 				/**
 				 * Format the city field accordingly.

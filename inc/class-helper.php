@@ -74,7 +74,7 @@ class Helper {
 	 * @param string|false $default_view View to be used if the view passed is not found. Used as fallback.
 	 * @return void
 	 */
-	public function render($view, $vars = false, $default_view = false) {
+	public function render($view, $vars = false, $default_view = false): void {
 
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_get_template');
 
@@ -105,7 +105,7 @@ class Helper {
 	 * @param mixed  $default The default value.
 	 * @return mixed
 	 */
-	public function get_option($option_name = 'settings', $default = array()) {
+	public function get_option($option_name = 'settings', $default = []) {
 
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_get_option');
 
@@ -181,7 +181,7 @@ class Helper {
 	 *
 	 * @return void
 	 */
-	public function drop_tables() {
+	public function drop_tables(): void {
 
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_drop_tables');
 

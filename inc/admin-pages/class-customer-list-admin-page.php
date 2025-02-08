@@ -46,11 +46,11 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.1
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
-		add_action('plugins_loaded', array($this, 'export_customers'));
+		add_action('plugins_loaded', [$this, 'export_customers']);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.1
 	 * @return void
 	 */
-	public function export_customers() {
+	public function export_customers(): void {
 
 		if (wu_request('wu_action') !== 'wu_export_customers') {
 			return;
@@ -81,7 +81,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 				$billing_address = array_map(fn($field) => $field['value'], $customer->get_billing_address()->get_fields());
 
 				return array_merge(
-					array(
+					[
 						$customer->get_id(),
 						$customer->get_user_id(),
 						$customer->get_hash(),
@@ -93,12 +93,12 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 						$customer->get_signup_form(),
 						$membership_amount,
 						implode('|', $memberships_ids),
-					),
+					],
 					$billing_address,
-					array(
+					[
 						$customer->get_last_login(),
 						$customer->get_date_registered(),
-					)
+					]
 				);
 			},
 			wu_get_customers()
@@ -107,7 +107,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		$billing_fields = array_keys(\WP_Ultimo\Objects\Billing_Address::fields());
 
 		$headers = array_merge(
-			array(
+			[
 				'id',
 				'user_id',
 				'customer_hash',
@@ -119,17 +119,17 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 				'signup_form',
 				'membership_amount',
 				'membership_ids',
-			),
+			],
 			$billing_fields,
-			array(
+			[
 				'last_login',
 				'date_registered',
-			)
+			]
 		);
 
 		$file_name = sprintf('wp-ultimo-customers-(%s)', gmdate('Y-m-d', wu_get_current_time('timestamp')));
 
-		wu_generate_csv($file_name, array_merge(array($headers), $customer_data));
+		wu_generate_csv($file_name, array_merge([$headers], $customer_data));
 
 		die;
 	}
@@ -144,9 +144,9 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_customers',
-	);
+	];
 
 	/**
 	 * Register ajax forms that we use for payments.
@@ -154,17 +154,17 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add new Customer
 		 */
 		wu_register_form(
 			'add_new_customer',
-			array(
-				'render'     => array($this, 'render_add_new_customer_modal'),
-				'handler'    => array($this, 'handle_add_new_customer_modal'),
+			[
+				'render'     => [$this, 'render_add_new_customer_modal'],
+				'handler'    => [$this, 'handle_add_new_customer_modal'],
 				'capability' => 'wu_invite_customers',
-			)
+			]
 		);
 	}
 
@@ -174,100 +174,100 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_new_customer_modal() {
+	public function render_add_new_customer_modal(): void {
 
-		$fields = array(
-			'type'          => array(
+		$fields = [
+			'type'          => [
 				'type'      => 'tab-select',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'type',
-				),
-				'options'   => array(
+				],
+				'options'   => [
 					'existing' => __('Existing User', 'wp-ultimo'),
 					'new'      => __('Invite New', 'wp-ultimo'),
-				),
-			),
-			'user_id'       => array(
+				],
+			],
+			'user_id'       => [
 				'type'              => 'model',
 				'title'             => __('Existing User', 'wp-ultimo'),
 				'placeholder'       => __('Search WordPress user...', 'wp-ultimo'),
 				'tooltip'           => '',
 				'min'               => 1,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => "require('type', 'existing')",
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'data-model'        => 'user',
 					'data-value-field'  => 'ID',
 					'data-label-field'  => 'display_name',
 					'data-search-field' => 'display_name',
 					'data-max-items'    => 1,
-				),
-			),
-			'username'      => array(
+				],
+			],
+			'username'      => [
 				'type'              => 'text',
 				'title'             => __('Username', 'wp-ultimo'),
 				'placeholder'       => __('E.g. johnsmith', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => "require('type', 'new')",
-				),
-			),
-			'email_address' => array(
+				],
+			],
+			'email_address' => [
 				'type'              => 'email',
 				'title'             => __('Email Address', 'wp-ultimo'),
 				'placeholder'       => __('E.g. customer@wpultimo.dev', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => "require('type', 'new')",
-				),
-			),
-			'set_password'  => array(
+				],
+			],
+			'set_password'  => [
 				'type'              => 'toggle',
 				'title'             => __('Set Password', 'wp-ultimo'),
 				'desc'              => __('If not set, the user will be asked to set a password after accepting the invite.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => "require('type', 'new')",
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'set_password',
-				),
-			),
-			'password'      => array(
+				],
+			],
+			'password'      => [
 				'type'              => 'password',
 				'title'             => __('Password', 'wp-ultimo'),
 				'placeholder'       => __('E.g. p@$$w0rd', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => "require('type', 'new') && require('set_password', true)",
-				),
-			),
-			'submit_button' => array(
+				],
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Create Customer', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					// 'v-bind:disabled' => '!confirmed',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_new_customer',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_new_customer',
 					'data-state'  => json_encode(
-						array(
+						[
 							'set_password' => false,
 							'type'         => 'existing',
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -279,19 +279,19 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_add_new_customer_modal() {
+	public function handle_add_new_customer_modal(): void {
 
 		if (wu_request('type', 'existing') === 'new') {
-			$customer_data = array(
+			$customer_data = [
 				'email'    => wu_request('email_address'),
 				'username' => wu_request('username'),
 				'password' => wu_request('password', false),
-				'meta'     => array(),
-			);
+				'meta'     => [],
+			];
 		} else {
-			$customer_data = array(
+			$customer_data = [
 				'user_id' => wu_request('user_id', 0),
-			);
+			];
 		}
 
 		/*
@@ -304,14 +304,14 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					'wp-ultimo-edit-customer',
-					array(
+					[
 						'id' => $customer->get_id(),
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -331,10 +331,10 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Customer removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Customer', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -378,24 +378,24 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add Customer', 'wp-ultimo'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_customer'),
-			),
-			array(
+			],
+			[
 				'label' => __('Export as CSV', 'wp-ultimo'),
 				'icon'  => 'wu-export',
 				'url'   => add_query_arg(
-					array(
+					[
 						'wu_action' => 'wu_export_customers',
 						'nonce'     => wp_create_nonce('wu_export_customers'),
-					)
+					]
 				),
-			),
-		);
+			],
+		];
 	}
 
 	/**

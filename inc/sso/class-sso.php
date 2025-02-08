@@ -71,7 +71,7 @@ class SSO {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		$this->is_enabled() && $this->startup();
 	}
 
@@ -182,7 +182,7 @@ class SSO {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function startup() {
+	public function startup(): void {
 
 		/**
 		 * Loads the modified auth functions we need
@@ -206,9 +206,9 @@ class SSO {
 		 * @see https://developer.wordpress.org/reference/functions/auth_redirect/
 		 * @see https://developer.wordpress.org/reference/functions/wp_set_auth_cookie/
 		 */
-		add_filter('secure_logged_in_cookie', array($this, 'force_secure_login_cookie'));
+		add_filter('secure_logged_in_cookie', [$this, 'force_secure_login_cookie']);
 
-		add_filter('wu_auth_redirect', array($this, 'handle_auth_redirect'));
+		add_filter('wu_auth_redirect', [$this, 'handle_auth_redirect']);
 
 		/**
 		 * Install the SSO listeners for the Server and the Broker.
@@ -230,13 +230,13 @@ class SSO {
 
 		add_action('wu_sso_handle', 'send_origin_headers');
 
-		add_action('plugins_loaded', array($this, 'handle_requests'), 0);
+		add_action('plugins_loaded', [$this, 'handle_requests'], 0);
 
-		add_action('wu_sso_handle_sso_grant', array($this, 'handle_server'));
+		add_action('wu_sso_handle_sso_grant', [$this, 'handle_server']);
 
-		add_action('wu_sso_handle_sso', array($this, 'handle_broker'), 20);
+		add_action('wu_sso_handle_sso', [$this, 'handle_broker'], 20);
 
-		add_filter('allowed_http_origins', array($this, 'add_additional_origins'));
+		add_filter('allowed_http_origins', [$this, 'add_additional_origins']);
 
 		/**
 		 * Authorize a user via a bearer, and converts it into a regular cookie
@@ -250,11 +250,11 @@ class SSO {
 		 *
 		 * @see https://developer.wordpress.org/reference/hooks/determine_current_user/
 		 */
-		add_filter('determine_current_user', array($this, 'determine_current_user'), 90);
+		add_filter('determine_current_user', [$this, 'determine_current_user'], 90);
 
-		add_action('init', array($this, 'convert_bearer_into_auth_cookies'));
+		add_action('init', [$this, 'convert_bearer_into_auth_cookies']);
 
-		add_filter('removable_query_args', array($this, 'add_sso_removable_query_args'));
+		add_filter('removable_query_args', [$this, 'add_sso_removable_query_args']);
 
 		/**
 		 * Adds the SSO scripts to the head of the front-end
@@ -262,9 +262,9 @@ class SSO {
 		 *
 		 * @see assets/js/sso.js
 		 */
-		add_action('wp_head', array($this, 'enqueue_script'));
+		add_action('wp_head', [$this, 'enqueue_script']);
 
-		add_action('login_head', array($this, 'enqueue_script'));
+		add_action('login_head', [$this, 'enqueue_script']);
 
 		/**
 		 * Allow plugin developers to add additional hooks, if needed.
@@ -280,7 +280,7 @@ class SSO {
 		 * Schedule another loaded hook to be triggered
 		 * on init, so later functionality can also hook into it.
 		 */
-		add_action('init', array($this, 'loaded_on_init'));
+		add_action('init', [$this, 'loaded_on_init']);
 	}
 
 	/**
@@ -289,7 +289,7 @@ class SSO {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function loaded_on_init() {
+	public function loaded_on_init(): void {
 		do_action('wu_sso_loaded_on_init', $this);
 	}
 
@@ -362,9 +362,9 @@ class SSO {
 			$redirect_after = 'index.php' === $pagenow ? '' : $this->get_current_url();
 
 			$redirect_url = add_query_arg(
-				array(
+				[
 					$sso_path => 'login',
-				),
+				],
 				wp_login_url($redirect_after)
 			);
 
@@ -392,7 +392,7 @@ class SSO {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function handle_requests() {
+	public function handle_requests(): void {
 
 		$action = $this->get_sso_action();
 
@@ -402,7 +402,7 @@ class SSO {
 
 		header('Access-Control-Allow-Headers: Content-Type');
 
-		remove_filter('determine_current_user', array($this, 'determine_current_user'), 90);
+		remove_filter('determine_current_user', [$this, 'determine_current_user'], 90);
 
 		status_header(200);
 
@@ -425,7 +425,7 @@ class SSO {
 	 * @param string $response_type Redirect or jsonp.
 	 * @return void
 	 */
-	public function handle_server($response_type = 'redirect') {
+	public function handle_server($response_type = 'redirect'): void {
 
 		nocache_headers();
 
@@ -438,29 +438,29 @@ class SSO {
 			if (is_ssl()) {
 				$verification_code = null;
 
-				$error = array(
+				$error = [
 					'code'    => $e->getCode(),
 					'message' => $e->getMessage(),
-				);
+				];
 			} else {
 				$verification_code = 'must-redirect';
 			}
 		} catch (\Throwable $th) {
 			$verification_code = null;
 
-			$error = array(
+			$error = [
 				'code'    => $th->getCode(),
 				'message' => $th->getMessage(),
-			);
+			];
 		}
 
 		if ('jsonp' === $response_type) {
 			$data = wp_json_encode(
-				$error ?? array( // phpcs:ignore
+				$error ?? [ // phpcs:ignore
 					'code'       => 200,
 					'verify'     => $verification_code,
 					'return_url' => $this->input('return_url', ''),
-				)
+				]
 			);
 
 			$response_code = 200; // phpcs:ignore
@@ -471,9 +471,9 @@ class SSO {
 
 			exit;
 		} elseif ($response_type === 'redirect') {
-			$args = array(
-				'sso_verify' => $verification_code ? $verification_code : 'invalid',
-			);
+			$args = [
+				'sso_verify' => $verification_code ?: 'invalid',
+			];
 
 			if (isset($error) && $error) {
 				$args['sso_error'] = $error['message'];
@@ -497,7 +497,7 @@ class SSO {
 	 * @param string $response_type Redirect or jsonp.
 	 * @return void
 	 */
-	public function handle_broker($response_type = 'redirect') {
+	public function handle_broker($response_type = 'redirect'): void {
 
 		if (is_main_site()) {
 			return;
@@ -531,15 +531,15 @@ class SSO {
 
 			if ( 'jsonp' === $response_type) {
 				$attach_url = $broker->getAttachUrl(
-					array(
+					[
 						'_jsonp' => '1',
-					)
+					]
 				);
 			} else {
 				$attach_url = $broker->getAttachUrl(
-					array(
+					[
 						'return_url' => $return_url,
-					)
+					]
 				);
 			}
 
@@ -569,18 +569,18 @@ class SSO {
 
 		global $current_site;
 
-		$additional_domains = array(
+		$additional_domains = [
 			"http://{$current_site->domain}",
 			"https://{$current_site->domain}",
-		);
+		];
 
 		$origin_url = wp_parse_url(get_http_origin());
 
 		$sites = get_sites(
-			array(
+			[
 				'network_id' => get_current_network_id(),
 				'domain'     => $this->get_isset($origin_url, 'host', 'invalid'),
-			)
+			]
 		);
 
 		if ($sites) {
@@ -592,12 +592,12 @@ class SSO {
 
 		if ($site) {
 			$domains = wu_get_domains(
-				array(
+				[
 					'active'        => true,
 					'blog_id'       => $site->blog_id,
 					'stage__not_in' => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
 					'fields'        => 'domain',
-				)
+				]
 			);
 
 			foreach ($domains as $domain) {
@@ -632,7 +632,7 @@ class SSO {
 		try {
 			$bearer = $broker->getBearerToken();
 
-			$server_request = $this->build_server_request('GET', $this->get_current_url())->withHeader('Authorization', "Bearer $bearer");
+			$server_request = $this->build_server_request('GET')->withHeader('Authorization', "Bearer $bearer");
 
 			$this->get_server()->startBrokerSession($server_request);
 
@@ -667,7 +667,7 @@ class SSO {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function convert_bearer_into_auth_cookies() {
+	public function convert_bearer_into_auth_cookies(): void {
 
 		$broker = $this->get_broker();
 
@@ -702,7 +702,7 @@ class SSO {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function enqueue_script() {
+	public function enqueue_script(): void {
 
 		if (is_main_site()) {
 			return;
@@ -723,19 +723,19 @@ class SSO {
 
 		wp_register_script('wu-detect-incognito', wu_get_asset('detectincognito.js', 'js/lib'), false, wu_get_version());
 
-		wp_register_script('wu-sso', wu_get_asset('sso.js', 'js'), array('wu-cookie-helpers', 'wu-detect-incognito'), wu_get_version());
+		wp_register_script('wu-sso', wu_get_asset('sso.js', 'js'), ['wu-cookie-helpers', 'wu-detect-incognito'], wu_get_version());
 
 		$sso_path = $this->get_url_path();
 
 		$home_site = get_home_url(get_current_blog_id(), $this->get_url_path());
 
-		$removable_query_args = array(
+		$removable_query_args = [
 			$sso_path,
 			"{$sso_path}-grant",
 			'return_url',
-		);
+		];
 
-		$options = array(
+		$options = [
 			'server_url'            => $home_site,
 			'return_url'            => $this->get_current_url(),
 			'is_user_logged_in'     => is_user_logged_in() || $this->get_isset($_COOKIE, 'wu_sso_denied'),
@@ -743,7 +743,7 @@ class SSO {
 			'filtered_url'          => remove_query_arg($removable_query_args, $this->get_current_url()),
 			'img_folder'            => dirname((string) wu_get_asset('img', 'img')),
 			'use_overlay'           => $this->get_setting('enable_sso_loading_overlay', true),
-		);
+		];
 
 		wp_localize_script('wu-sso', 'wu_sso_config', $options);
 
@@ -786,7 +786,7 @@ class SSO {
 
 		$parsed_url = wp_parse_url($return_url);
 
-		$query_values = array();
+		$query_values = [];
 
 		if (isset($parsed_url['query'])) {
 			parse_str($parsed_url['query'], $query_values);
@@ -798,14 +798,14 @@ class SSO {
 
 		$parsed_url['path'] = trim($parsed_url['path'], '/');
 
-		$fragments = array(
+		$fragments = [
 			$parsed_url['scheme'] . '://' . $parsed_url['host'],
 			$parsed_url['path'],
-		);
+		];
 
-		$args = array(
+		$args = [
 			$sso_path => 'done',
-		);
+		];
 
 		if (isset($query_values['redirect_to'])) {
 			$args['redirect_to'] = rawurlencode($query_values['redirect_to']);
@@ -825,11 +825,11 @@ class SSO {
 	 */
 	public function get_return_type() {
 
-		$allowed_return_types = array(
+		$allowed_return_types = [
 			'jsonp',
 			'json',
 			'redirect',
-		);
+		];
 
 		$received_type = $this->input('return_type', 'redirect');
 
@@ -848,7 +848,7 @@ class SSO {
 
 		$pattern = "/\/?{$sso_path}(-grant)?\/?$/";
 
-		$m = array();
+		$m = [];
 
 		$path = wp_parse_url($this->get_current_url(), PHP_URL_PATH);
 
@@ -960,7 +960,7 @@ class SSO {
 
 		$session_handler = new SSO_Session_Handler($this);
 
-		$server = (new Server(array($this, 'get_broker_by_id'), $this->cache()))->withSession($session_handler);
+		$server = (new Server([$this, 'get_broker_by_id'], $this->cache()))->withSession($session_handler);
 
 		return apply_filters('wu_sso_get_server', $server, $this);
 	}
@@ -979,7 +979,7 @@ class SSO {
 
 		$site_id = $this->decode($id, $this->salt());
 
-		$site = get_site($site_id ? $site_id : 'non-existent');
+		$site = get_site($site_id ?: 'non-existent');
 
 		if ( ! $site) {
 			return null;
@@ -987,10 +987,10 @@ class SSO {
 
 		$main_domain = wp_parse_url(get_home_url($site_id), PHP_URL_HOST);
 
-		$domain_list = array(
+		$domain_list = [
 			$current_site->domain,
 			$main_domain,
-		);
+		];
 
 		if (is_subdomain_install()) {
 			$domain_list[] = $site->domain;
@@ -998,10 +998,10 @@ class SSO {
 
 		$domain_list = apply_filters('wu_sso_site_allowed_domains', $domain_list, $site_id, $site, $this);
 
-		return array(
+		return [
 			'secret'  => $this->calculate_secret_from_date($site->registered),
 			'domains' => $domain_list,
-		);
+		];
 	}
 
 	/**
@@ -1033,7 +1033,7 @@ class SSO {
 	 * @param int $target_user_id The target user id to set.
 	 * @return void
 	 */
-	public function set_target_user_id($target_user_id) {
+	public function set_target_user_id($target_user_id): void {
 		$this->target_user_id = $target_user_id;
 	}
 
@@ -1059,9 +1059,9 @@ class SSO {
 	 */
 	public function get_url_path($action = ''): string {
 
-		$fragments = array(
+		$fragments = [
 			apply_filters('wu_sso_get_url_path', 'sso', $action, $this),
-		);
+		];
 
 		if ($action) {
 			$fragments[] = $action;
@@ -1088,9 +1088,9 @@ class SSO {
 
 		$sso_path = $sso->get_url_path();
 
-		$sso_params = array(
+		$sso_params = [
 			$sso_path => 'login',
-		);
+		];
 
 		return add_query_arg($sso_params, $url);
 	}

@@ -29,14 +29,14 @@ class Block_Editor_Widget_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		if (\WP_Ultimo\Compat\Gutenberg_Support::get_instance()->should_load()) {
-			add_action('wu_element_loaded', array($this, 'handle_element'));
+			add_action('wu_element_loaded', [$this, 'handle_element']);
 
-			add_action('init', array($this, 'register_scripts'));
+			add_action('init', [$this, 'register_scripts']);
 
-			add_action('wu_element_is_preview', array($this, 'is_block_preview'));
+			add_action('wu_element_is_preview', [$this, 'is_block_preview']);
 		}
 	}
 
@@ -46,11 +46,11 @@ class Block_Editor_Widget_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
-		\WP_Ultimo\Scripts::get_instance()->register_script('wu-blocks', wu_get_asset('blocks.js', 'js', 'inc/builders/block-editor/assets'), array('underscore', 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wu-functions', 'wp-i18n', 'wp-polyfill'));
+		\WP_Ultimo\Scripts::get_instance()->register_script('wu-blocks', wu_get_asset('blocks.js', 'js', 'inc/builders/block-editor/assets'), ['underscore', 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wu-functions', 'wp-i18n', 'wp-polyfill']);
 
-		$blocks = apply_filters('wu_blocks', array());
+		$blocks = apply_filters('wu_blocks', []);
 
 		wp_localize_script('wu-blocks', 'wu_blocks', $blocks);
 	}
@@ -79,7 +79,7 @@ class Block_Editor_Widget_Manager {
 	 * @param \WP_Ultimo\UI\Base_Element $element The element being registered.
 	 * @return void
 	 */
-	public function handle_element($element) {
+	public function handle_element($element): void {
 
 		if (wu_get_current_site()->get_type() === Site_Type::CUSTOMER_OWNED) {
 			return;
@@ -98,7 +98,7 @@ class Block_Editor_Widget_Manager {
 	 * @param \WP_Ultimo\UI\Base_Element $element The element being registered.
 	 * @return void
 	 */
-	public function register_block($element) {
+	public function register_block($element): void {
 
 		if (\WP_Block_Type_Registry::get_instance()->is_registered($element->get_id())) {
 			return;
@@ -108,11 +108,11 @@ class Block_Editor_Widget_Manager {
 
 		register_block_type(
 			$element->get_id(),
-			array(
+			[
 				'attributes'      => $attributes,
 				'editor_script'   => 'wu-blocks',
-				'render_callback' => \Closure::fromCallable(array($element, 'display')),
-			)
+				'render_callback' => \Closure::fromCallable([$element, 'display']),
+			]
 		);
 	}
 
@@ -126,20 +126,20 @@ class Block_Editor_Widget_Manager {
 	 */
 	protected function consolidate_callables($fields) {
 
-		$callable_keys = array(
+		$callable_keys = [
 			'options',
 			'value',
-		);
+		];
 
-		$fields_to_ignore = array(
+		$fields_to_ignore = [
 			'note',
-		);
+		];
 
 		foreach ($fields as $field_slug => &$field) {
 			/*
 			 * Discard fields that are notes and start with _
 			 */
-			if (in_array($field['type'], $fields_to_ignore, true) && strncmp($field_slug, '_', strlen('_')) === 0) {
+			if (in_array($field['type'], $fields_to_ignore, true) && str_starts_with($field_slug, '_')) {
 				unset($fields[ $field_slug ]);
 			}
 
@@ -184,13 +184,13 @@ class Block_Editor_Widget_Manager {
 
 		$fields = $this->consolidate_callables($element->fields());
 
-		$blocks[] = array(
+		$blocks[] = [
 			'id'          => $element->get_id(),
 			'title'       => $element->get_title(),
 			'description' => $element->get_description(),
 			'fields'      => $fields,
 			'keywords'    => $element->keywords(),
-		);
+		];
 
 		return $blocks;
 	}
@@ -208,7 +208,7 @@ class Block_Editor_Widget_Manager {
 
 		$defaults = $element->defaults();
 
-		$_fields = array();
+		$_fields = [];
 
 		foreach ($fields as $field_id => $field) {
 			$type = 'string';
@@ -223,10 +223,10 @@ class Block_Editor_Widget_Manager {
 
 			$default_value = wu_get_isset($defaults, $field_id, '');
 
-			$_fields[ $field_id ] = array(
+			$_fields[ $field_id ] = [
 				'default' => wu_get_isset($field, 'value', $default_value),
 				'type'    => $type,
-			);
+			];
 		}
 
 		return $_fields;

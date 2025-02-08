@@ -54,7 +54,7 @@ class Memory_Trap {
 	 * @param string $return_type 'json' or 'plain'.
 	 * @return void
 	 */
-	public function set_return_type($return_type) {
+	public function set_return_type($return_type): void {
 
 		$this->return_type = $return_type;
 	}
@@ -65,7 +65,7 @@ class Memory_Trap {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->memory_reserve = str_repeat('*', 1024 * 1024);
 
@@ -78,7 +78,7 @@ class Memory_Trap {
 
 				$err = error_get_last();
 
-			if ((!is_null($err)) && (!in_array($err['type'], array(E_NOTICE, E_WARNING, E_DEPRECATED, E_USER_DEPRECATED)))) { // phpcs:ignore
+			if ((!is_null($err)) && (!in_array($err['type'], [E_NOTICE, E_WARNING, E_DEPRECATED, E_USER_DEPRECATED]))) { // phpcs:ignore
 
 					$this->memory_limit_error_handler($err);
 				}
@@ -95,15 +95,15 @@ class Memory_Trap {
 	 * @param array $error The error array.
 	 * @return void
 	 */
-	public function memory_limit_error_handler($error) { // phpcs:ignore
+	public function memory_limit_error_handler($error): void { // phpcs:ignore
 
 		$message = sprintf(__('Your server\'s PHP and WordPress memory limits are too low to perform this check. You might need to contact your host provider and ask the PHP memory limit in particular to be raised.', 'wp-ultimo'));
 
 		if ($this->return_type === 'json') {
 			wp_send_json_error(
-				array(
+				[
 					'message' => $message,
-				)
+				]
 			);
 
 			die;

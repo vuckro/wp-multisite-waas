@@ -48,17 +48,17 @@ function wu_get_email_by($column, $value) {
  * @param array $query Query arguments.
  * @return Email[]
  */
-function wu_get_emails($query = array()) {
+function wu_get_emails($query = []) {
 
-	$query['type__in'] = array('system_email');
+	$query['type__in'] = ['system_email'];
 
 	if (wu_get_isset($query, 'event')) {
-		$query['meta_query'] = array(
-			'event_query' => array(
+		$query['meta_query'] = [
+			'event_query' => [
 				'key'   => 'wu_system_email_event',
 				'value' => wu_get_isset($query, 'event'),
-			),
-		);
+			],
+		];
 	}
 
 	return Email::query($query);
@@ -74,10 +74,10 @@ function wu_get_emails($query = array()) {
 function wu_get_all_system_emails() {
 
 	return Email::query(
-		array(
-			'status__in' => array('draft', 'publish'),
-			'type__in'   => array('system_email'),
-		)
+		[
+			'status__in' => ['draft', 'publish'],
+			'type__in'   => ['system_email'],
+		]
 	);
 }
 
@@ -119,7 +119,7 @@ function wu_create_default_system_email($slug) {
  * @param array $args With content, subject and other arguments, has shortcodes, mail type.
  * @return array
  */
-function wu_send_mail($from = array(), $to = array(), $args = array()) {
+function wu_send_mail($from = [], $to = [], $args = []) {
 
 	return Sender::send_mail($from, $to, $args);
 }
@@ -154,7 +154,7 @@ function wu_create_email($email_data) {
 
 	$email_data = wp_parse_args(
 		$email_data,
-		array(
+		[
 			'type'          => 'system_email',
 			'event'         => 'Laborum consectetur',
 			'title'         => 'Lorem Ipsum',
@@ -162,7 +162,7 @@ function wu_create_email($email_data) {
 			'target'        => 'admin',
 			'date_created'  => wu_get_current_time('mysql', true),
 			'date_modified' => wu_get_current_time('mysql', true),
-		)
+		]
 	);
 
 	$email = new Email($email_data);

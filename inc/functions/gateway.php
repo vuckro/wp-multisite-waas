@@ -52,9 +52,9 @@ function wu_get_gateways() {
  */
 function wu_get_active_gateways() {
 
-	$gateways = array();
+	$gateways = [];
 
-	$active_gateways = (array) wu_get_setting('active_gateways', array());
+	$active_gateways = (array) wu_get_setting('active_gateways', []);
 
 	foreach ($active_gateways as $active_gateway) {
 		if (Gateway_Manager::get_instance()->is_gateway_registered($active_gateway)) {
@@ -95,7 +95,7 @@ function wu_get_gateway($id, $subscription = null) {
  */
 function wu_get_gateway_as_options() {
 
-	$options = array();
+	$options = [];
 
 	foreach (wu_get_gateways() as $gateway_slug => $gateway) {
 		$instance = class_exists($gateway['class_name']) ? new $gateway['class_name']() : false;
@@ -118,7 +118,7 @@ function wu_get_gateway_as_options() {
  */
 function wu_get_active_gateway_as_options() {
 
-	$options = array();
+	$options = [];
 
 	foreach (wu_get_active_gateways() as $gateway_slug => $gateway) {
 		$instance = class_exists($gateway['class_name']) ? new $gateway['class_name']() : false;

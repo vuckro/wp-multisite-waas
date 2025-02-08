@@ -76,9 +76,9 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_edit_customers',
-	);
+	];
 
 	/**
 	 * Allow child classes to add hooks to be run once the page is loaded.
@@ -87,13 +87,13 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
 		parent::hooks();
 
-		add_action('wu_page_edit_redirect_handlers', array($this, 'handle_send_verification_notice'));
+		add_action('wu_page_edit_redirect_handlers', [$this, 'handle_send_verification_notice']);
 
-		add_filter('removable_query_args', array($this, 'remove_query_args'));
+		add_filter('removable_query_args', [$this, 'remove_query_args']);
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 1.8.2
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
@@ -119,27 +119,27 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Transfer customer - Confirmation modal
 		 */
 		wu_register_form(
 			'transfer_customer',
-			array(
-				'render'     => array($this, 'render_transfer_customer_modal'),
-				'handler'    => array($this, 'handle_transfer_customer_modal'),
+			[
+				'render'     => [$this, 'render_transfer_customer_modal'],
+				'handler'    => [$this, 'handle_transfer_customer_modal'],
 				'capability' => 'wu_transfer_customer',
-			)
+			]
 		);
 
 		/*
 		 * Adds the hooks to handle deletion.
 		 */
-		add_filter('wu_form_fields_delete_customer_modal', array($this, 'customer_extra_delete_fields'), 10, 2);
+		add_filter('wu_form_fields_delete_customer_modal', [$this, 'customer_extra_delete_fields'], 10, 2);
 
-		add_filter('wu_form_attributes_delete_customer_modal', array($this, 'customer_extra_form_attributes'));
+		add_filter('wu_form_attributes_delete_customer_modal', [$this, 'customer_extra_form_attributes']);
 
-		add_action('wu_after_delete_customer_modal', array($this, 'customer_after_delete_actions'));
+		add_action('wu_after_delete_customer_modal', [$this, 'customer_after_delete_actions']);
 	}
 
 	/**
@@ -148,7 +148,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function render_transfer_customer_modal() {
+	public function render_transfer_customer_modal(): void {
 
 		$user = wu_get_customer(wu_request('id'));
 
@@ -156,52 +156,52 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 			return;
 		}
 
-		$fields = array(
-			'confirm'        => array(
+		$fields = [
+			'confirm'        => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Transfer', 'wp-ultimo'),
 				'desc'      => __('This will start the transfer of assets from one user to another.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_button'  => array(
+				],
+			],
+			'submit_button'  => [
 				'type'            => 'submit',
 				'title'           => __('Start Transfer', 'wp-ultimo'),
 				'placeholder'     => __('Start Transfer', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-			'id'             => array(
+				],
+			],
+			'id'             => [
 				'type'  => 'hidden',
 				'value' => $user->get_id(),
-			),
-			'target_user_id' => array(
+			],
+			'target_user_id' => [
 				'type'  => 'hidden',
 				'value' => wu_request('target_user_id'),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'total-actions',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'transfer_customer',
 					'data-state'  => wp_json_encode(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -213,7 +213,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function handle_transfer_customer_modal() {
+	public function handle_transfer_customer_modal(): void {
 
 		global $wpdb;
 
@@ -237,14 +237,14 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					'wp-ultimo-edit-customer',
-					array(
+					[
 						'id' => $customer->get_id(),
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -258,33 +258,33 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function customer_extra_delete_fields($fields, $customer): array {
 
-		$custom_fields = array(
-			'delete_all'                => array(
+		$custom_fields = [
+			'delete_all'                => [
 				'type'      => 'toggle',
 				'title'     => __('Delete everything', 'wp-ultimo'),
 				'desc'      => __('Sites, payments and memberships.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-bind:value' => 'delete_all_confirmed',
 					'v-model'      => 'delete_all_confirmed',
-				),
-			),
-			're_assignment_customer_id' => array(
+				],
+			],
+			're_assignment_customer_id' => [
 				'type'              => 'model',
 				'title'             => __('Re-assignment to customer', 'wp-ultimo'),
 				'placeholder'       => __('Select Customer...', 'wp-ultimo'),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'data-model'        => 'customer',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'display_name',
 					'data-search-field' => 'display_name',
 					'data-max-items'    => 1,
-					'data-exclude'      => wp_json_encode(array($customer->get_id())),
-				),
-				'wrapper_html_attr' => array(
+					'data-exclude'      => wp_json_encode([$customer->get_id()]),
+				],
+				'wrapper_html_attr' => [
 					'v-show' => '!delete_all_confirmed',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		if ( ! current_user_can('wu_delete_sites') || ! current_user_can('wu_delete_memberships') || ! current_user_can('wu_delete_payments')) {
 			unset($custom_fields['delete_all']);
@@ -324,7 +324,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function customer_after_delete_actions($customer) {
+	public function customer_after_delete_actions($customer): void {
 
 		$delete_all = wu_request('delete_all');
 
@@ -336,9 +336,9 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				 */
 				wu_enqueue_async_action(
 					'wu_async_delete_membership',
-					array(
+					[
 						'membership_id' => $membership->get_id(),
-					),
+					],
 					'membership'
 				);
 			}
@@ -350,9 +350,9 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				 */
 				wu_enqueue_async_action(
 					'wu_async_delete_payment',
-					array(
+					[
 						'payment_id' => $payment->get_id(),
-					),
+					],
 					'payment'
 				);
 			}
@@ -367,10 +367,10 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 					 */
 					wu_enqueue_async_action(
 						'wu_async_transfer_membership',
-						array(
+						[
 							'membership_id'      => $membership->get_id(),
 							'target_customer_id' => $re_assignment_customer->get_id(),
-						),
+						],
 						'membership'
 					);
 				}
@@ -382,10 +382,10 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 					 */
 					wu_enqueue_async_action(
 						'wu_async_transfer_payment',
-						array(
+						[
 							'payment_id'         => $payment->get_id(),
 							'target_customer_id' => $re_assignment_customer->get_id(),
-						),
+						],
 						'payment'
 					);
 				}
@@ -403,26 +403,26 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$custom_meta_keys = wu_get_all_customer_meta($this->get_object()->get_id(), true);
 
-		$meta_fields_set = array();
+		$meta_fields_set = [];
 
-		$meta_fields_unset = array();
+		$meta_fields_unset = [];
 
 		foreach ($custom_meta_keys as $key => $value) {
-			$field_location_breadcrumbs = array(
+			$field_location_breadcrumbs = [
 				__(
 					'orphan field - the original form no longer exists',
 					'wp-ultimo'
 				),
-			);
+			];
 
 			$form = wu_get_isset($value, 'form');
 
 			if ($form) {
-				$field_location_breadcrumbs = array(
+				$field_location_breadcrumbs = [
 					$form,
 					wu_get_isset($value, 'step'),
 					wu_get_isset($value, 'id'),
-				);
+				];
 			}
 
 			$location = sprintf(
@@ -431,7 +431,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				implode(' &rarr; ', array_filter($field_location_breadcrumbs))
 			);
 
-			$options = wu_get_isset($value, 'options', array());
+			$options = wu_get_isset($value, 'options', []);
 
 			if ($options) {
 				$options = array_combine(
@@ -440,16 +440,16 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				);
 			}
 
-			$options = array_merge(array('' => '--'), $options);
+			$options = array_merge(['' => '--'], $options);
 
-			$field_data = array(
+			$field_data = [
 				'title'   => wu_get_isset($value, 'title', wu_slug_to_name($key)),
 				'type'    => wu_get_isset($value, 'type', 'text'),
 				'desc'    => wu_get_isset($value, 'description', '') . $location,
 				'options' => $options,
 				'tooltip' => wu_get_isset($value, 'tooltip', ''),
 				'value'   => wu_get_customer_meta($this->get_object()->get_id(), $key),
-			);
+			];
 
 			if ($field_data['type'] === 'hidden') {
 				$field_data['type'] = 'text';
@@ -463,18 +463,18 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 			if (wu_get_isset($value, 'exists')) {
 				$meta_fields_set[ "meta_key_$key" ] = $field_data;
 			} else {
-				$field_data['wrapper_html_attr'] = array(
+				$field_data['wrapper_html_attr'] = [
 					'v-show' => 'display_unset_fields',
-				);
+				];
 
 				$meta_fields_unset[ "meta_key_$key" ] = $field_data;
 			}
 		}
 
-		$collapsible_header = array();
+		$collapsible_header = [];
 
 		if ($meta_fields_unset) {
-			$collapsible_header['display_unset_fields'] = array(
+			$collapsible_header['display_unset_fields'] = [
 				'title'           => __('Display unset fields', 'wp-ultimo'),
 				'desc'            => __(
 					'If fields were added after the customer creation or onto a different form, they will not have a set value for this customer. You can manually set those here.',
@@ -482,133 +482,133 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				),
 				'type'            => 'toggle',
 				'wrapper_classes' => 'wu-bg-gray-100',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-model' => 'display_unset_fields',
-				),
-			);
+				],
+			];
 		}
 
 		$final_fields = array_merge($meta_fields_set, $collapsible_header, $meta_fields_unset);
 
 		if (empty($final_fields)) {
-			$final_fields['empty'] = array(
+			$final_fields['empty'] = [
 				'type'    => 'note',
 				'desc'    => __('No custom meta data collected and no custom fields found.', 'wp-ultimo'),
 				'classes' => 'wu-text-center',
-			);
+			];
 		}
 
-		$final_fields['display_new_meta_repeater'] = array(
+		$final_fields['display_new_meta_repeater'] = [
 			'title'           => __('Manually add custom meta fields', 'wp-ultimo'),
 			'desc'            => __('Add new custom meta fields to this customer.', 'wp-ultimo'),
 			'type'            => 'toggle',
 			'wrapper_classes' => 'wu-bg-gray-100',
-			'html_attr'       => array(
+			'html_attr'       => [
 				'v-model' => 'new_meta_fields_show',
-			),
-		);
+			],
+		];
 
-		$default_meta_value = fn(string $type, $value = '', bool $is_default = false) => array(
+		$default_meta_value = fn(string $type, $value = '', bool $is_default = false) => [
 			'title'             => __('Value', 'wp-ultimo'),
 			'type'              => $type,
 			'value'             => $value,
 			'wrapper_classes'   => 'wu-w-1/4 wu-ml-2',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-show' => ($is_default ? '!new_meta_field.type || ' : '') . "new_meta_field.type === '$type'",
-			),
-			'html_attr'         => array(
+			],
+			'html_attr'         => [
 				'v-model'     => 'new_meta_field.value',
 				'v-bind:name' => '"new_meta_fields[" + index + "][value]"',
-			),
-		);
+			],
+		];
 
-		$new_meta_fields = array(
-			'new_meta_fields' => array(
+		$new_meta_fields = [
+			'new_meta_fields' => [
 				'type'              => 'group',
 				'wrapper_classes'   => 'wu-relative',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-for' => '(new_meta_field, index) in new_meta_fields',
-				),
-				'fields'            => array(
-					'new_meta_remove'         => array(
+				],
+				'fields'            => [
+					'new_meta_remove'         => [
 						'type'            => 'note',
 						'desc'            => sprintf(
 							'<a title="%s" class="wu-no-underline wu-inline-block wu-text-gray-600" href="#" @click.prevent="() => new_meta_fields.splice(index, 1)"><span class="dashicons-wu-squared-cross"></span></a>',
 							__('Remove', 'wp-ultimo')
 						),
 						'wrapper_classes' => 'wu-absolute wu-top-0 wu-right-0',
-					),
-					'new_meta_slug'           => array(
+					],
+					'new_meta_slug'           => [
 						'title'           => __('Slug', 'wp-ultimo'),
 						'type'            => 'text',
 						'value'           => '',
 						'wrapper_classes' => 'wu-w-1/4',
-						'html_attr'       => array(
+						'html_attr'       => [
 							'v-on:input'  => "new_meta_field.slug = \$event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, '')",
 							'v-model'     => 'new_meta_field.slug',
 							'v-bind:name' => '"new_meta_fields[" + index + "][slug]"',
-						),
-					),
-					'new_meta_title'          => array(
+						],
+					],
+					'new_meta_title'          => [
 						'title'           => __('Title', 'wp-ultimo'),
 						'type'            => 'text',
 						'value'           => '',
 						'wrapper_classes' => 'wu-w-1/4 wu-ml-2',
-						'html_attr'       => array(
+						'html_attr'       => [
 							'v-bind:name' => '"new_meta_fields[" + index + "][title]"',
-						),
-					),
-					'new_meta_type'           => array(
+						],
+					],
+					'new_meta_type'           => [
 						'title'           => __('Type', 'wp-ultimo'),
 						'type'            => 'select',
-						'options'         => array(
+						'options'         => [
 							'text'     => __('Text', 'wp-ultimo'),
 							'textarea' => __('Textarea', 'wp-ultimo'),
 							'checkbox' => __('Checkbox', 'wp-ultimo'),
 							'color'    => __('Color', 'wp-ultimo'),
 							'image'    => __('Image', 'wp-ultimo'),
-						),
+						],
 						'wrapper_classes' => 'wu-w-1/4 wu-ml-2',
-						'html_attr'       => array(
+						'html_attr'       => [
 							'v-model'     => 'new_meta_field.type',
 							'v-bind:name' => '"new_meta_fields[" + index + "][type]"',
-						),
-					),
+						],
+					],
 					'new_meta_value_text'     => $default_meta_value('text', '', true),
 					'new_meta_value_textarea' => $default_meta_value('textarea'),
 					'new_meta_value_checkbox' => $default_meta_value('checkbox', true),
 					'new_meta_value_color'    => $default_meta_value('color', '#4299e1'),
 					'new_meta_value_image'    => array_merge(
 						$default_meta_value('image'),
-						array(
+						[
 							'content_wrapper_classes' => 'wu-mt-2',
 							'stacked'                 => true,
-						)
+						]
 					),
-				),
-			),
-			'repeat_option'   => array(
+				],
+			],
+			'repeat_option'   => [
 				'type'            => 'submit',
 				'title'           => __('+ Add meta field', 'wp-ultimo'),
 				'classes'         => 'button wu-self-end',
 				'wrapper_classes' => 'wu-bg-whiten wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-on:click.prevent' => '() => new_meta_fields.push({
 						type: "text",
 						slug: "",
 					})',
-				),
-			),
-		);
+				],
+			],
+		];
 
-		$final_fields['new_meta_fields_wrapper'] = array(
+		$final_fields['new_meta_fields_wrapper'] = [
 			'type'              => 'group',
 			'classes'           => 'wu-grid',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-show' => 'new_meta_fields_show',
-			),
+			],
 			'fields'            => $new_meta_fields,
-		);
+		];
 
 		return $final_fields;
 	}
@@ -619,7 +619,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 1.8.2
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
@@ -627,23 +627,23 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$this->add_fields_widget(
 			'at_a_glance',
-			array(
+			[
 				'title'                 => __('At a Glance', 'wp-ultimo'),
 				'position'              => 'normal',
 				'classes'               => 'wu-overflow-hidden wu-m-0 wu--mt-1 wu--mx-3 wu--mb-3',
 				'field_wrapper_classes' => 'wu-w-1/3 wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t-0 wu-border-l-0 wu-border-r wu-border-b-0 wu-border-gray-300 wu-border-solid wu-float-left wu-relative',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'style' => 'margin-top: -6px;',
-				),
-				'fields'                => array(
-					'id'            => array(
+				],
+				'fields'                => [
+					'id'            => [
 						'type'          => 'text-display',
 						'copy'          => true,
 						'title'         => __('Customer ID', 'wp-ultimo'),
 						'display_value' => $this->get_object()->get_id(),
 						'tooltip'       => '',
-					),
-					'last_login'    => array(
+					],
+					'last_login'    => [
 						'edit'          => false,
 						'title'         => __('Last Login', 'wp-ultimo'),
 						'type'          => 'text-edit',
@@ -652,71 +652,71 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 							'wp-ultimo'
 						),
 						'display_value' => $this->edit ? $this->get_object()->get_last_login(false) : false,
-					),
-					'total_grossed' => array(
+					],
+					'total_grossed' => [
 						'type'          => 'text-display',
 						'title'         => __('Total Grossed', 'wp-ultimo'),
 						'display_value' => wu_format_currency($this->get_object()->get_total_grossed()),
 						'tooltip'       => '',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$this->add_list_table_widget(
 			'memberships',
-			array(
+			[
 				'title'        => __('Memberships', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Customers_Membership_List_Table(),
-				'query_filter' => array($this, 'memberships_query_filter'),
-			)
+				'query_filter' => [$this, 'memberships_query_filter'],
+			]
 		);
 
 		$this->add_tabs_widget(
 			'options',
-			array(
+			[
 				'title'    => __('Customer Options', 'wp-ultimo'),
 				'position' => 'normal',
 				'sections' => apply_filters(
 					'wu_customer_options_sections',
-					array(
-						'general'      => array(
+					[
+						'general'      => [
 							'title'  => __('General', 'wp-ultimo'),
 							'desc'   => __('General options for the customer.', 'wp-ultimo'),
 							'icon'   => 'dashicons-wu-globe',
-							'fields' => array(
-								'vip' => array(
+							'fields' => [
+								'vip' => [
 									'type'    => 'toggle',
 									'title'   => __('VIP', 'wp-ultimo'),
 									'desc'    => __('Set this customer as a VIP.', 'wp-ultimo'),
 									'tooltip' => '',
 									'value'   => $this->get_object()->is_vip(),
-								),
-							),
-						),
-						'billing_info' => array(
+								],
+							],
+						],
+						'billing_info' => [
 							'title'  => __('Billing Info', 'wp-ultimo'),
 							'desc'   => __('Billing information for this particular customer', 'wp-ultimo'),
 							'icon'   => 'dashicons-wu-address',
 							'fields' => $this->get_object()->get_billing_address()->get_fields(),
-						),
-						'custom_meta'  => array(
+						],
+						'custom_meta'  => [
 							'title'  => __('Custom Meta', 'wp-ultimo'),
 							'desc'   => __('Custom data collected via WP Multisite WaaS forms.', 'wp-ultimo'),
 							'icon'   => 'dashicons-wu-database wu-pt-px',
 							'fields' => $this->generate_customer_meta_fields(),
-							'state'  => array(
+							'state'  => [
 								'display_unset_fields' => false,
 								'new_meta_fields_show' => false,
-								'new_meta_fields'      => array(
-									array(
+								'new_meta_fields'      => [
+									[
 										'type' => 'text',
 										'slug' => '',
-									),
-								),
-							),
-						),
-					// @todo: bring these back
+									],
+								],
+							],
+						],
+						// @todo: bring these back
 				// phpcs:disable
 				// 'payment_methods' => array(
 				// 	'title'  => __('Payment Methods', 'wp-ultimo'),
@@ -725,62 +725,62 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				// 	'fields' => apply_filters('wu_customer_payment_methods', array(), $this->get_object(), $this),
 				// ),
 				// phpcs:enable
-					),
+					],
 					$this->get_object()
 				),
-			)
+			]
 		);
 
 		$this->add_list_table_widget(
 			'payments',
-			array(
+			[
 				'title'        => __('Payments', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Customers_Payment_List_Table(),
-				'query_filter' => array($this, 'memberships_query_filter'),
-			)
+				'query_filter' => [$this, 'memberships_query_filter'],
+			]
 		);
 
 		$this->add_list_table_widget(
 			'sites',
-			array(
+			[
 				'title'        => __('Sites', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Customers_Site_List_Table(),
-				'query_filter' => array($this, 'sites_query_filter'),
-			)
+				'query_filter' => [$this, 'sites_query_filter'],
+			]
 		);
 
 		$this->add_list_table_widget(
 			'events',
-			array(
+			[
 				'title'        => __('Events', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'events_query_filter'),
-			)
+				'query_filter' => [$this, 'events_query_filter'],
+			]
 		);
 
 		$this->add_fields_widget(
 			'save',
-			array(
-				'html_attr' => array(
+			[
+				'html_attr' => [
 					'data-wu-app' => 'customer_save',
 					'data-state'  => json_encode(
-						array(
+						[
 							'original_user_id'            => $this->get_object()->get_user_id(),
 							'user_id'                     => $this->get_object()->get_user_id(),
 							'original_email_verification' => $this->get_object()->get_email_verification(),
 							'email_verification'          => $this->get_object()->get_email_verification(),
-						)
+						]
 					),
-				),
+				],
 				'before'    => wu_get_template_contents(
 					'customers/widget-avatar',
-					array(
+					[
 						'customer' => $this->get_object(),
 						'user'     => $this->get_object()->get_user(),
-					)
+					]
 				),
-				'fields'    => array(
-					'user_id'            => array(
+				'fields'    => [
+					'user_id'            => [
 						'type'              => 'model',
 						'title'             => __('User', 'wp-ultimo'),
 						'placeholder'       => __('Search WordPress user...', 'wp-ultimo'),
@@ -788,7 +788,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 						'value'             => $this->get_object()->get_user_id(),
 						'tooltip'           => '',
 						'min'               => 1,
-						'html_attr'         => array(
+						'html_attr'         => [
 							'v-model'           => 'user_id',
 							'data-model'        => 'user',
 							'data-value-field'  => 'ID',
@@ -796,24 +796,24 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 							'data-search-field' => 'display_name',
 							'data-max-items'    => 1,
 							'data-selected'     => json_encode($this->get_object()->get_user()->data),
-						),
-						'wrapper_html_attr' => array(
+						],
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-					),
-					'transfer_note'      => array(
+						],
+					],
+					'transfer_note'      => [
 						'type'              => 'note',
 						'desc'              => __(
 							'Changing the user will transfer the customer and all its assets to the new user.',
 							'wp-ultimo'
 						),
 						'classes'           => 'wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-show'  => '(original_user_id != user_id) && user_id',
 							'v-cloak' => '1',
-						),
-					),
-					'email_verification' => array(
+						],
+					],
+					'email_verification' => [
 						'type'              => 'select',
 						'title'             => __('Email Verification', 'wp-ultimo'),
 						'placeholder'       => __('Select Status', 'wp-ultimo'),
@@ -821,21 +821,21 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 							'The email verification status. This gets automatically switched to Verified when the customer verifies their email address.',
 							'wp-ultimo'
 						),
-						'options'           => array(
+						'options'           => [
 							'none'     => __('None', 'wp-ultimo'),
 							'pending'  => __('Pending', 'wp-ultimo'),
 							'verified' => __('Verified', 'wp-ultimo'),
-						),
+						],
 						'value'             => $this->get_object()->get_email_verification(),
 						'tooltip'           => '',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'v-model' => 'email_verification',
-						),
-					),
-					'confirm_membership' => array(
+						],
+					],
+					'confirm_membership' => [
 						'type'              => 'toggle',
 						'title'             => __('Activate Memberships', 'wp-ultimo'),
 						'desc'              => __(
@@ -843,62 +843,62 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 							'wp-ultimo'
 						),
 						'value'             => 0,
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-if'    => 'email_verification !== original_email_verification && email_verification === "verified" && original_email_verification === "pending"',
 							'v-cloak' => '1',
-						),
-					),
-					'send_verification'  => array(
+						],
+					],
+					'send_verification'  => [
 						'type'              => 'submit',
 						'title'             => __('Re-send Verification Email &rarr;', 'wp-ultimo'),
 						'value'             => 'send_verification',
 						'classes'           => 'button wu-w-full',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-if'    => 'email_verification === "pending" && original_email_verification == "pending"',
 							'v-cloak' => '1',
-						),
-					),
-					'submit_save'        => array(
+						],
+					],
+					'submit_save'        => [
 						'type'              => 'submit',
 						'title'             => $labels['save_button_label'],
 						'placeholder'       => $labels['save_button_label'],
 						'value'             => 'save',
 						'classes'           => 'button button-primary wu-w-full',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-show'  => 'original_user_id == user_id || !user_id',
 							'v-cloak' => '1',
-						),
-					),
-					'transfer'           => array(
+						],
+					],
+					'transfer'           => [
 						'type'              => 'link',
 						'display_value'     => __('Transfer Customer', 'wp-ultimo'),
 						'wrapper_classes'   => 'wu-bg-gray-200',
 						'classes'           => 'button wubox wu-w-full wu-text-center',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-show'  => 'original_user_id != user_id && user_id',
 							'v-cloak' => '1',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'v-bind:href' => "'" . wu_get_form_url(
 								'transfer_customer',
-								array(
+								[
 									'id'             => $this->get_object()->get_id(),
 									'target_user_id' => '',
-								)
+								]
 							) . "=' + user_id",
 							'title'       => __('Transfer Customer', 'wp-ultimo'),
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 
 		$this->add_fields_widget(
 			'last-login',
-			array(
+			[
 				'title'  => __('Last Login & IPs', 'wp-ultimo'),
-				'fields' => array(
-					'last_login' => array(
+				'fields' => [
+					'last_login' => [
 						'edit'          => true,
 						'title'         => __('Last Login', 'wp-ultimo'),
 						'type'          => 'text-edit',
@@ -909,24 +909,24 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 						),
 						'display_value' => $this->edit ? $this->get_object()->get_last_login(false) : false,
 						'placeholder'   => '2020-04-04 12:00:00',
-						'html_attr'     => array(
+						'html_attr'     => [
 							'wu-datepicker'   => 'true',
 							'data-format'     => 'Y-m-d H:i:S',
 							'data-allow-time' => 'true',
-						),
-					),
-					'ips'        => array(
+						],
+					],
+					'ips'        => [
 						'title'         => __('IP Address', 'wp-ultimo'),
 						'type'          => 'text-edit',
 						'display_value' => $this->get_object()->get_last_ip(),
-					),
-					'country'    => array(
+					],
+					'country'    => [
 						'title'         => __('IP Address Country', 'wp-ultimo'),
 						'type'          => 'text-edit',
-						'display_value' => array($this, 'render_country'),
-					),
-				),
-			)
+						'display_value' => [$this, 'render_country'],
+					],
+				],
+			]
 		);
 	}
 
@@ -986,7 +986,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -997,7 +997,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('Edit Customer', 'wp-ultimo'),
 			'add_new_label'       => __('Add new Customer', 'wp-ultimo'),
 			'updated_message'     => __('Customer updated with success!', 'wp-ultimo'),
@@ -1007,7 +1007,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Customer', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -1035,12 +1035,12 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function sites_query_filter($args) {
 
-		$args['meta_query'] = array(
-			'customer_id' => array(
+		$args['meta_query'] = [
+			'customer_id' => [
 				'key'   => 'wu_customer_id',
 				'value' => $this->get_object()->get_id(),
-			),
-		);
+			],
+		];
 
 		return $args;
 	}
@@ -1055,10 +1055,10 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function events_query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'customer',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -1106,7 +1106,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		if ($_POST['submit_button'] === 'send_verification') {
 			$customer = $this->get_object();
@@ -1115,10 +1115,10 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 			$redirect_url = wu_network_admin_url(
 				'wp-ultimo-edit-customer',
-				array(
+				[
 					'id'                       => $customer->get_id(),
 					'notice_verification_sent' => 1,
-				)
+				]
 			);
 
 			wp_redirect($redirect_url);
@@ -1170,7 +1170,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 			);
 		}
 
-		foreach (wu_get_isset($_POST, 'new_meta_fields', array()) as $meta_field) {
+		foreach (wu_get_isset($_POST, 'new_meta_fields', []) as $meta_field) {
 			$slug = sanitize_key(wu_get_isset($meta_field, 'slug', ''));
 
 			if (empty($slug) || $this->restricted_customer_meta_keys($slug)) {
@@ -1199,14 +1199,14 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function restricted_customer_meta_keys(string $meta_slug): bool {
 
-		$restricted_meta = array(
+		$restricted_meta = [
 			'wu_verification_key',
 			'wu_billing_address',
 			'ip_state',
 			'ip_country',
 			'wu_has_trialed',
 			'wu_custom_meta_keys',
-		);
+		];
 
 		return in_array($meta_slug, $restricted_meta, true);
 	}
@@ -1217,7 +1217,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function handle_send_verification_notice() {
+	public function handle_send_verification_notice(): void {
 
 		if (isset($_GET['notice_verification_sent'])) : ?>
 

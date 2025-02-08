@@ -78,7 +78,7 @@ class Arr {
 	public static function filter($array, $closure) {
 
 		if ($closure) {
-			$result = array();
+			$result = [];
 
 			foreach ($array as $key => $value) {
 				if (call_user_func($closure, $value, $key)) {
@@ -145,7 +145,7 @@ class Arr {
 			$key = array_shift($keys);
 
 			if ( ! isset($array[ $key ]) || ! is_array($array[ $key ])) {
-				$array[ $key ] = array();
+				$array[ $key ] = [];
 			}
 
 			$array =& $array[ $key ];

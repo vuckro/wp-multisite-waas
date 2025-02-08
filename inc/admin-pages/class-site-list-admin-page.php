@@ -50,9 +50,9 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_sites',
-	);
+	];
 
 	/**
 	 * Register ajax forms that we use for sites.
@@ -60,17 +60,17 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Edit/Add New Site
 		 */
 		wu_register_form(
 			'add_new_site',
-			array(
-				'render'     => array($this, 'render_add_new_site_modal'),
-				'handler'    => array($this, 'handle_add_new_site_modal'),
+			[
+				'render'     => [$this, 'render_add_new_site_modal'],
+				'handler'    => [$this, 'handle_add_new_site_modal'],
 				'capability' => 'wu_add_sites',
-			)
+			]
 		);
 
 		/*
@@ -78,14 +78,14 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		 */
 		wu_register_form(
 			'publish_pending_site',
-			array(
-				'render'     => array($this, 'render_publish_pending_site_modal'),
-				'handler'    => array($this, 'handle_publish_pending_site_modal'),
+			[
+				'render'     => [$this, 'render_publish_pending_site_modal'],
+				'handler'    => [$this, 'handle_publish_pending_site_modal'],
 				'capability' => 'wu_publish_sites',
-			)
+			]
 		);
 
-		add_action('wu_handle_bulk_action_form_site_screenshot', array($this, 'handle_bulk_screenshots'), 10, 3);
+		add_action('wu_handle_bulk_action_form_site_screenshot', [$this, 'handle_bulk_screenshots'], 10, 3);
 	}
 
 	/**
@@ -98,16 +98,16 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @param array  $ids The ids list.
 	 * @return void
 	 */
-	public function handle_bulk_screenshots($action, $model, $ids) {
+	public function handle_bulk_screenshots($action, $model, $ids): void {
 
 		$item_ids = array_filter($ids);
 
 		foreach ($item_ids as $item_id) {
 			wu_enqueue_async_action(
 				'wu_async_take_screenshot',
-				array(
+				[
 					'site_id' => $item_id,
-				),
+				],
 				'site'
 			);
 		}
@@ -119,7 +119,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_publish_pending_site_modal() {
+	public function render_publish_pending_site_modal(): void {
 
 		$membership = wu_get_membership(wu_request('membership_id'));
 
@@ -127,52 +127,52 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			return;
 		}
 
-		$fields = array(
-			'confirm'       => array(
+		$fields = [
+			'confirm'       => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Publication', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_button' => array(
+				],
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Publish', 'wp-ultimo'),
 				'placeholder'     => __('Publish', 'wp-ultimo'),
 				'value'           => 'publish',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-			'wu-when'       => array(
+				],
+			],
+			'wu-when'       => [
 				'type'  => 'hidden',
 				'value' => base64_encode('init'),
-			),
-			'membership_id' => array(
+			],
+			'membership_id' => [
 				'type'  => 'hidden',
 				'value' => $membership->get_id(),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'total-actions',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'true',
 					'data-state'  => json_encode(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -184,7 +184,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_publish_pending_site_modal() {
+	public function handle_publish_pending_site_modal(): void {
 
 		$membership = wu_get_membership(wu_request('membership_id'));
 
@@ -216,14 +216,14 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		$redirect = current_user_can('wu_edit_sites') ? 'wp-ultimo-edit-site' : 'wp-ultimo-sites';
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					$redirect,
-					array(
+					[
 						'id' => $pending_site->get_id(),
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -248,17 +248,17 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			$path   = $d->path;
 		}
 
-		$atts = array(
+		$atts = [
 			'domain'                => $domain,
 			'path'                  => $path,
 			'title'                 => wu_request('title'),
 			'type'                  => wu_request('type'),
 			'template_id'           => wu_request('template_site', 0),
 			'membership_id'         => wu_request('membership_id', false),
-			'duplication_arguments' => array(
+			'duplication_arguments' => [
 				'copy_media' => wu_request('copy_media'),
-			),
-		);
+			],
+		];
 
 		$site = wu_create_site($atts);
 
@@ -275,16 +275,16 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		$redirect = current_user_can('wu_edit_sites') ? 'wp-ultimo-edit-site' : 'wp-ultimo-sites';
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					$redirect,
-					array(
+					[
 						'id'           => $site->get_id(),
 						'wu-new-model' => 1,
 						'updated'      => 1,
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -294,7 +294,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_new_site_modal() {
+	public function render_add_new_site_modal(): void {
 
 		global $current_site;
 
@@ -323,11 +323,11 @@ class Site_List_Admin_Page extends List_Admin_Page {
 
 		$save_label = $duplicate_id ? __('Duplicate Site', 'wp-ultimo') : __('Add new Site', 'wp-ultimo');
 
-		$options = array(
+		$options = [
 			'sub-domain'    => __('Subdomain', 'wp-ultimo'),
 			'sub-directory' => __('Subdirectory', 'wp-ultimo'),
 			'domain'        => __('Domain', 'wp-ultimo'),
-		);
+		];
 
 		/*
 		 * Only keep the tab that correspond to the install type.
@@ -338,137 +338,137 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			unset($options['sub-domain']);
 		}
 
-		$fields = array(
-			'tab'           => array(
+		$fields = [
+			'tab'           => [
 				'type'              => 'tab-select',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'tab',
-				),
+				],
 				'options'           => $options,
-			),
-			'title'         => array(
+			],
+			'title'         => [
 				'type'        => 'text',
 				'title'       => __('Site Title', 'wp-ultimo'),
 				'placeholder' => __('New Network Site', 'wp-ultimo'),
 				'value'       => $title,
-			),
-			'domain_group'  => array(
+			],
+			'domain_group'  => [
 				'type'   => 'group',
 				// translators: the %s is the site preview url.
 				'desc'   => sprintf(__('The site URL will be: %s', 'wp-ultimo'), '<span class="wu-font-mono">{{ tab === "domain" ? domain : ( tab === "sub-directory" ? scheme + base_url + domain : scheme + domain + "." + base_url ) }}</span>'),
-				'fields' => array(
-					'domain' => array(
+				'fields' => [
+					'domain' => [
 						'type'            => 'text',
 						'title'           => __('Site Domain/Path', 'wp-ultimo'),
 						'tooltip'         => __('Enter the complete domain for the site', 'wp-ultimo'),
 						'wrapper_classes' => 'wu-w-full',
-						'html_attr'       => array(
+						'html_attr'       => [
 							'v-bind:placeholder' => 'tab === "domain" ? "mysite.com" : "mysite"',
 							'v-on:input'         => 'domain = tab === "domain" ? $event.target.value.toLowerCase().replace(/[^a-z0-9-.-]+/g, "") : $event.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, "")',
 							'v-bind:value'       => 'domain',
-						),
-					),
-				),
-			),
-			'type'          => array(
+						],
+					],
+				],
+			],
+			'type'          => [
 				'type'        => 'select',
 				'title'       => __('Site Type', 'wp-ultimo'),
 				'value'       => $type,
 				'placeholder' => '',
-				'options'     => array(
+				'options'     => [
 					'default'        => __('Regular WP Site', 'wp-ultimo'),
 					'site_template'  => __('Site Template', 'wp-ultimo'),
 					'customer_owned' => __('Customer-Owned', 'wp-ultimo'),
-				),
-				'html_attr'   => array(
+				],
+				'html_attr'   => [
 					'v-model' => 'type',
-				),
-			),
-			'membership_id' => array(
+				],
+			],
+			'membership_id' => [
 				'type'              => 'model',
 				'title'             => __('Associated Membership', 'wp-ultimo'),
 				'placeholder'       => __('Search Membership...', 'wp-ultimo'),
 				'value'             => '',
 				'tooltip'           => '',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => "type === 'customer_owned'",
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'data-model'        => 'membership',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'reference_code',
 					'data-search-field' => 'reference_code',
 					'data-max-items'    => 1,
-				),
-			),
-			'copy'          => array(
+				],
+			],
+			'copy'          => [
 				'type'      => 'toggle',
 				'title'     => __('Copy Site', 'wp-ultimo'),
 				'desc'      => __('Select an existing site to use as a starting point.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'copy',
-				),
-			),
-			'template_site' => array(
+				],
+			],
+			'template_site' => [
 				'type'              => 'model',
 				'title'             => __('Template Site', 'wp-ultimo'),
 				'placeholder'       => __('Search Sites...', 'wp-ultimo'),
 				'desc'              => __('The site selected will be copied and used as a starting point.', 'wp-ultimo'),
 				'value'             => $template_id,
-				'html_attr'         => array(
+				'html_attr'         => [
 					'data-model'        => 'site',
 					'data-selected'     => $site ? json_encode($site->to_search_results()) : '',
 					'data-value-field'  => 'blog_id',
 					'data-label-field'  => 'title',
 					'data-search-field' => 'title',
 					'data-max-items'    => 1,
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'copy',
-				),
-			),
-			'copy_media'    => array(
+				],
+			],
+			'copy_media'    => [
 				'type'              => 'toggle',
 				'title'             => __('Copy Media on Duplication', 'wp-ultimo'),
 				'desc'              => __('Copy media files from the template site on duplication. Disabling this can lead to broken images on the new site.', 'wp-ultimo'),
 				'value'             => true,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'copy',
-				),
-			),
-			'wu-when'       => array(
+				],
+			],
+			'wu-when'       => [
 				'type'  => 'hidden',
 				'value' => base64_encode('init'),
-			),
-			'submit_button' => array(
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => $save_label,
 				'placeholder'     => $save_label,
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end wu-text-right',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => 'install_type !== tab && tab !== "domain"',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$d = wu_get_site_domain_and_path('replace');
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_new_site',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_new_site',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'tab'          => is_subdomain_install() ? 'sub-domain' : 'sub-directory',
 							'install_type' => is_subdomain_install() ? 'sub-domain' : 'sub-directory',
 							'membership'   => $membership_id,
@@ -477,10 +477,10 @@ class Site_List_Admin_Page extends List_Admin_Page {
 							'base_url'     => str_replace('replace.', '', (string) $d->domain) . '/',
 							'scheme'       => is_ssl() ? 'https://' : 'http://',
 							'domain'       => $path,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -502,10 +502,10 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Site removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Site', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -549,14 +549,14 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add Site'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_site'),
-			),
-		);
+			],
+		];
 	}
 
 	/**

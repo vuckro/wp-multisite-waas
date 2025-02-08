@@ -18,7 +18,7 @@ function wu_get_currencies(): array {
 
 	$currencies = apply_filters(
 		'wu_currencies',
-		array(
+		[
 			'AED' => __('United Arab Emirates Dirham', 'wp-ultimo'),
 			'ARS' => __('Argentine Peso', 'wp-ultimo'),
 			'AUD' => __('Australian Dollars', 'wp-ultimo'),
@@ -68,7 +68,7 @@ function wu_get_currencies(): array {
 			'USD' => __('US Dollars', 'wp-ultimo'),
 			'VND' => __('Vietnamese Dong', 'wp-ultimo'),
 			'EGP' => __('Egyptian Pound', 'wp-ultimo'),
-		)
+		]
 	);
 
 	return array_unique($currencies);
@@ -238,26 +238,26 @@ function wu_format_currency($value, $currency = null, $format = null, $thousands
 
 	$value = wu_to_float($value);
 
-	$args = array(
+	$args = [
 		'currency'      => $currency,
 		'format'        => $format,
 		'thousands_sep' => $thousands_sep,
 		'decimal_sep'   => $decimal_sep,
 		'precision'     => $precision,
-	);
+	];
 
 	// Remove invalid args
 	$args = array_filter($args);
 
 	$atts = wp_parse_args(
 		$args,
-		array(
+		[
 			'currency'      => wu_get_setting('currency_symbol'),
 			'format'        => wu_get_setting('currency_position'),
 			'thousands_sep' => wu_get_setting('thousand_separator'),
 			'decimal_sep'   => wu_get_setting('decimal_separator'),
 			'precision'     => (int) wu_get_setting('precision', 2),
-		)
+		]
 	);
 
 	$currency_symbol = wu_get_currency_symbol($atts['currency']);
@@ -280,7 +280,7 @@ function wu_format_currency($value, $currency = null, $format = null, $thousands
  */
 function wu_is_zero_decimal_currency($currency = 'USD') {
 
-	$zero_dec_currencies = array(
+	$zero_dec_currencies = [
 		'BIF', // Burundian Franc
 		'CLP', // Chilean Peso
 		'DJF', // Djiboutian Franc
@@ -296,7 +296,7 @@ function wu_is_zero_decimal_currency($currency = 'USD') {
 		'XAF', // Central African CFA Franc
 		'XOF', // West African CFA Franc
 		'XPF', // CFP Franc
-	);
+	];
 
 	return apply_filters('wu_is_zero_decimal_currency', in_array($currency, $zero_dec_currencies, true));
 }

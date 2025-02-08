@@ -19,10 +19,10 @@ use WP_Ultimo\Models\Broadcast;
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Broadcast[]
  */
-function wu_get_broadcasts($query = array()) {
+function wu_get_broadcasts($query = []) {
 
 	if ( ! isset($query['type__in'])) {
-		$query['type__in'] = array('broadcast_email', 'broadcast_notice');
+		$query['type__in'] = ['broadcast_email', 'broadcast_notice'];
 	}
 
 	return \WP_Ultimo\Models\Broadcast::query($query);
@@ -45,17 +45,17 @@ function wu_get_broadcast_by($column, $value) {
 		return $first_attempt;
 	}
 
-	$query = array(
+	$query = [
 		'number'   => 1,
-		'type__in' => array('broadcast_email', 'broadcast_notice'),
-	);
+		'type__in' => ['broadcast_email', 'broadcast_notice'],
+	];
 
-	$query['meta_query'] = array(
-		array(
+	$query['meta_query'] = [
+		[
 			'key'   => $column,
 			'value' => $value,
-		),
-	);
+		],
+	];
 
 	$results = \WP_Ultimo\Models\Broadcast::query($query);
 
@@ -96,7 +96,7 @@ function wu_get_broadcast_targets($broadcast_id, $type) {
 		return explode(',', $targets[ $type ]);
 	}
 
-	return array();
+	return [];
 }
 
 /**
@@ -113,18 +113,18 @@ function wu_create_broadcast($broadcast_data) {
 
 	$broadcast_data = wp_parse_args(
 		$broadcast_data,
-		array(
+		[
 			'type'             => 'broadcast_notice',
 			'notice_type'      => 'success',
 			'date_created'     => wu_get_current_time('mysql', true),
 			'date_modified'    => wu_get_current_time('mysql', true),
 			'migrated_from_id' => 0,
 			'skip_validation'  => false,
-			'message_targets'  => array(
-				'customers' => array(),
-				'products'  => array(),
-			),
-		)
+			'message_targets'  => [
+				'customers' => [],
+				'products'  => [],
+			],
+		]
 	);
 
 	$broadcast = new Broadcast($broadcast_data);

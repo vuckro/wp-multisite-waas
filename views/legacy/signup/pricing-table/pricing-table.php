@@ -96,12 +96,12 @@ if (empty($plans)) {
 		foreach ($plans as $plan) {
 			wu_get_template(
 				'legacy/signup/pricing-table/plan',
-				array(
+				[
 					'plan'         => $plan,
 					'count'        => $count,
 					'columns'      => $columns,
 					'current_plan' => $current_plan,
-				)
+				]
 			);
 		} // end foreach;
 

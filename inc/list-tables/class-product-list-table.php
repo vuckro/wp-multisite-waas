@@ -25,7 +25,7 @@ class Product_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Products\\Product_Query';
+	protected $query_class = \WP_Ultimo\Database\Products\Product_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -35,15 +35,15 @@ class Product_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Product', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Products', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                        // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_network_admin_url('wp-ultimo-edit-product'),
 					'classes' => '',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -57,31 +57,31 @@ class Product_List_Table extends Base_List_Table {
 	 */
 	public function column_name($item) {
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'model' => 'product',
-		);
+		];
 
 		$title = sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-product', $url_atts), $item->get_name());
 
 		// Concatenate the two blocks
 		$title = "<strong>$title</strong>";
 
-		$actions = array(
+		$actions = [
 			'edit'      => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-product', $url_atts), __('Edit', 'wp-ultimo')),
 			'duplicate' => sprintf(
 				'<a href="%s">%s</a>',
 				wu_network_admin_url(
 					'wp-ultimo-products',
-					array(
+					[
 						'action' => 'duplicate',
 						'id'     => $item->get_id(),
-					)
+					]
 				),
 				__('Duplicate', 'wp-ultimo')
 			),
 			'delete'    => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Delete', 'wp-ultimo'), wu_get_form_url('delete_modal', $url_atts), __('Delete', 'wp-ultimo')),
-		);
+		];
 
 		return $title . $this->row_actions($actions);
 	}
@@ -191,7 +191,7 @@ class Product_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function process_single_action() {
+	public function process_single_action(): void {
 
 		$bulk_action = $this->current_action();
 
@@ -226,10 +226,10 @@ class Product_List_Table extends Base_List_Table {
 
 			$redirect_url = wu_network_admin_url(
 				'wp-ultimo-edit-product',
-				array(
+				[
 					'id'      => $new_product->get_id(),
 					'updated' => 1,
-				)
+				]
 			);
 
 			wp_redirect($redirect_url);
@@ -246,7 +246,7 @@ class Product_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'                => '<input type="checkbox" />',
 			'featured_image_id' => '<span class="dashicons-wu-image"></span>',
 			'name'              => __('Name', 'wp-ultimo'),
@@ -255,7 +255,7 @@ class Product_List_Table extends Base_List_Table {
 			'amount'            => __('Price', 'wp-ultimo'),
 			'setup_fee'         => __('Setup Fee', 'wp-ultimo'),
 			'id'                => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -268,14 +268,14 @@ class Product_List_Table extends Base_List_Table {
 	 * @param WP_Ultimo\Models\Product $item The line item being displayed.
 	 * @return void
 	 */
-	public function single_row_grid($item) {
+	public function single_row_grid($item): void {
 
 		wu_get_template(
 			'base/products/grid-item',
-			array(
+			[
 				'item'  => $item,
 				'table' => $this,
-			)
+			]
 		);
 	}
 
@@ -286,9 +286,9 @@ class Product_List_Table extends Base_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters' => array(),
-		);
+		return [
+			'filters' => [],
+		];
 	}
 
 	/**
@@ -299,31 +299,31 @@ class Product_List_Table extends Base_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all'     => array(
+		return [
+			'all'     => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'all'),
 				'label' => __('All Products', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'plan'    => array(
+			],
+			'plan'    => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'plan'),
 				'label' => __('Plans', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'package' => array(
+			],
+			'package' => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'package'),
 				'label' => __('Packages', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'service' => array(
+			],
+			'service' => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'service'),
 				'label' => __('Services', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 }

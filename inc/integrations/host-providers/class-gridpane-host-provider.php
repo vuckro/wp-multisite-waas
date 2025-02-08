@@ -51,10 +51,10 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
 		'no-config',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -62,9 +62,9 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WU_GRIDPANE',
-	);
+	];
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -85,7 +85,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enable() {
+	public function enable(): void {
 		/*
 		 * Prevent issues with Gridpane
 		 */
@@ -104,19 +104,19 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @param string $method The HTTP method.
 	 * @return mixed
 	 */
-	public function send_gridpane_api_request($endpoint, $data = array(), $method = 'POST') {
+	public function send_gridpane_api_request($endpoint, $data = [], $method = 'POST') {
 
-		$post_fields = array(
+		$post_fields = [
 			'timeout'  => 45,
 			'blocking' => true,
 			'method'   => $method,
 			'body'     => array_merge(
-				array(
+				[
 					'api_token' => WU_GRIDPANE_API_KEY,
-				),
+				],
 				$data
 			),
-		);
+		];
 
 		$response = wp_remote_request("https://my.gridpane.com/api/{$endpoint}", $post_fields);
 
@@ -143,11 +143,11 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 
 		return $this->send_gridpane_api_request(
 			'application/add-domain',
-			array(
+			[
 				'server_ip'  => WU_GRIDPANE_SERVER_ID,
 				'site_url'   => WU_GRIDPANE_APP_ID,
 				'domain_url' => $domain,
-			)
+			]
 		);
 	}
 
@@ -163,11 +163,11 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 
 		return $this->send_gridpane_api_request(
 			'application/delete-domain',
-			array(
+			[
 				'server_ip'  => WU_GRIDPANE_SERVER_ID,
 				'site_url'   => WU_GRIDPANE_APP_ID,
 				'domain_url' => $domain,
-			)
+			]
 		);
 	}
 
@@ -201,30 +201,30 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
 		$results = $this->on_remove_domain('test.com', false);
 
 		if (wu_get_isset($results, 'message') === 'This action is unauthorized.') {
 			wp_send_json_error(
-				array(
+				[
 					'error' => __('We were not able to successfully establish a connection.', 'wp-ultimo'),
-				)
+				]
 			);
 		}
 
 		if (is_wp_error($results)) {
 			wp_send_json_error(
-				array(
+				[
 					'error' => __('We were not able to successfully establish a connection.', 'wp-ultimo'),
-				)
+				]
 			);
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'success' => __('Connection successfully established.', 'wp-ultimo'),
-			)
+			]
 		);
 	}
 
@@ -234,7 +234,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function get_instructions() {
+	public function get_instructions(): void {
 
 		wu_get_template('wizards/host-integrations/gridpane-instructions');
 	}
@@ -258,6 +258,6 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_logo() {
 
-		return wu_get_asset('gridpane.png', 'img/hosts');
+		return wu_get_asset('gridpane.webp', 'img/hosts');
 	}
 }

@@ -106,11 +106,11 @@ function wu_register_settings_side_panel($section_slug, $atts) {
 
 	$atts = wp_parse_args(
 		$atts,
-		array(
+		[
 			'title'  => __('Side Panel', 'wp-ultimo'),
 			'render' => '__return_false',
 			'show'   => '__return_true',
-		)
+		]
 	);
 
 	$callback = wu_get_isset($atts, 'show', '__return_true');
@@ -154,7 +154,7 @@ function wu_get_network_logo($size = 'full') {
 		return $settings_logo[0];
 	}
 
-	$logo = wu_get_asset('logo.png', 'img');
+	$logo = wu_get_asset('logo.webp', 'img');
 
 	$custom_logo = wp_get_attachment_image_src(get_theme_mod('custom_logo'), $size);
 
@@ -173,7 +173,7 @@ function wu_get_network_logo($size = 'full') {
  */
 function wu_get_network_favicon($size = '48') {
 
-	$custom_icon = get_site_icon_url($size, wu_get_asset('badge.png', 'img'), wu_get_main_site_id());
+	$custom_icon = get_site_icon_url($size, wu_get_asset('badge.webp', 'img'), wu_get_main_site_id());
 
 	return $custom_icon;
 }

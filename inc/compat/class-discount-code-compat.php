@@ -29,9 +29,9 @@ class Discount_Code_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_filter('update_post_metadata', array($this, 'check_update_coupon'), 10, 5);
+		add_filter('update_post_metadata', [$this, 'check_update_coupon'], 10, 5);
 	}
 
 	/**

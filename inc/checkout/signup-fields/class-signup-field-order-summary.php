@@ -104,10 +104,10 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'order_summary_template' => 'clean',
 			'table_columns'          => 'simple',
-		);
+		];
 	}
 
 	/**
@@ -118,9 +118,9 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
-		);
+		];
 	}
 
 	/**
@@ -131,9 +131,9 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id' => 'order_summary',
-		);
+		];
 	}
 
 	/**
@@ -157,34 +157,34 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields = array();
+		$editor_fields = [];
 
-		$editor_fields['table_columns'] = array(
+		$editor_fields['table_columns'] = [
 			'type'    => 'select',
 			'title'   => __('Table Columns', 'wp-ultimo'),
 			'desc'    => __('"Simplified" will condense all discount and tax info into separate rows to keep the table with only two columns. "Display All" adds a discounts and taxes column to each product row.', 'wp-ultimo'),
-			'options' => array(
+			'options' => [
 				'simple' => __('Simplified', 'wp-ultimo'),
 				'full'   => __('Display All', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
-		$editor_fields['order_summary_template'] = array(
+		$editor_fields['order_summary_template'] = [
 			'type'   => 'group',
 			'desc'   => Field_Templates_Manager::get_instance()->render_preview_block('order_summary'),
-			'fields' => array(
-				'order_summary_template' => array(
+			'fields' => [
+				'order_summary_template' => [
 					'type'            => 'select',
 					'title'           => __('Layout', 'wp-ultimo'),
 					'placeholder'     => __('Select your Layout', 'wp-ultimo'),
-					'options'         => array($this, 'get_templates'),
+					'options'         => [$this, 'get_templates'],
 					'wrapper_classes' => 'wu-flex-grow',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'order_summary_template',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		// @todo: re-add developer notes.
 		// $editor_fields['_dev_note_develop_your_own_template_order_summary'] = array(
@@ -208,7 +208,7 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
 		/*
 		 * Backwards compatibility with previous betas
@@ -221,15 +221,15 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 
 		$content = $template_class ? $template_class->render_container($attributes) : __('Template does not exist.', 'wp-ultimo');
 
-		$checkout_fields[ $attributes['id'] ] = array(
+		$checkout_fields[ $attributes['id'] ] = [
 			'type'              => 'note',
 			'desc'              => $content,
 			'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 			'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'style' => $this->calculate_style_attr(),
-			),
-		);
+			],
+		];
 
 		return $checkout_fields;
 	}

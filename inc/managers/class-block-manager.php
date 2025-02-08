@@ -31,13 +31,13 @@ class Block_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		global $wp_version;
 
 		$hook = version_compare($wp_version, '5.8', '<') ? 'block_categories' : 'block_categories_all';
 
-		add_filter($hook, array($this, 'add_wp_ultimo_block_category'), 1, 2);
+		add_filter($hook, [$this, 'add_wp_ultimo_block_category'], 1, 2);
 	}
 
 	/**
@@ -53,12 +53,12 @@ class Block_Manager extends Base_Manager {
 
 		return array_merge(
 			$categories,
-			array(
-				array(
+			[
+				[
 					'slug'  => 'wp-ultimo',
 					'title' => __('Multisite WaaS', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 	}
 }

@@ -27,9 +27,9 @@ class Membership_Line_Item_List_Table extends Product_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'responsive' => '',
-		);
+		];
 
 		return $columns;
 	}
@@ -65,7 +65,7 @@ class Membership_Line_Item_List_Table extends Product_List_Table {
 	 * @param object $item The item being rendered.
 	 * @return void
 	 */
-	public function column_responsive($item) {
+	public function column_responsive($item): void {
 
 		$quantity = $item['quantity'];
 
@@ -75,89 +75,89 @@ class Membership_Line_Item_List_Table extends Product_List_Table {
 
 		if ( ! $item) {
 			echo wu_responsive_table_row(
-				array(
+				[
 					'url'    => false,
 					'id'     => 'not-found',
 					'title'  => __('Product not found', 'wp-ultimo'),
 					'status' => '',
 					'image'  => $this->column_featured_image_id(new \WP_Ultimo\Models\Product()),
-				),
-				array(
-					'quantity' => array(
+				],
+				[
+					'quantity' => [
 						'icon'  => 'dashicons-wu-package wu-align-middle wu-mr-1',
 						'label' => __('Quantity', 'wp-ultimo'),
 						'value' => sprintf(__('x%d', 'wp-ultimo'), $quantity),
-					),
-				)
+					],
+				]
 			);
 
 			return;
 		}
 
-		$first_row = array(
-			'quantity' => array(
+		$first_row = [
+			'quantity' => [
 				'icon'  => 'dashicons-wu-package wu-align-middle wu-mr-1',
 				'label' => __('Quantity', 'wp-ultimo'),
 				'value' => sprintf(__('x%d', 'wp-ultimo'), $quantity),
-			),
-			'total'    => array(
+			],
+			'total'    => [
 				'icon'  => 'dashicons-wu-shopping-bag1 wu-align-middle wu-mr-1',
 				'label' => __('Price description', 'wp-ultimo'),
 				'value' => $item->get_price_description(),
-			),
-		);
+			],
+		];
 
-		$second_row = array(
-			'slug' => array(
+		$second_row = [
+			'slug' => [
 				'icon'  => 'dashicons-wu-bookmark1 wu-align-middle wu-mr-1',
 				'label' => __('Product Slug', 'wp-ultimo'),
 				'value' => $item->get_slug(),
-			),
-		);
+			],
+		];
 
 		if ($item->get_type() === 'plan') {
-			$first_row['change'] = array(
+			$first_row['change'] = [
 				'wrapper_classes' => 'wubox',
 				'icon'            => 'dashicons-wu-edit1 wu-align-middle wu-mr-1',
 				'label'           => '',
 				'value'           => __('Upgrade or Downgrade', 'wp-ultimo'),
 				'url'             => wu_get_form_url(
 					'change_membership_plan',
-					array(
+					[
 						'id'         => $membership_id,
 						'product_id' => $item->get_id(),
-					)
+					]
 				),
-			);
+			];
 		} else {
-			$first_row['remove'] = array(
+			$first_row['remove'] = [
 				'wrapper_classes' => 'wu-text-red-500 wubox',
 				'icon'            => 'dashicons-wu-trash-2 wu-align-middle wu-mr-1',
 				'label'           => '',
 				'value'           => __('Remove', 'wp-ultimo'),
 				'url'             => wu_get_form_url(
 					'remove_membership_product',
-					array(
+					[
 						'id'         => $membership_id,
 						'product_id' => $item->get_id(),
-					)
+					]
 				),
-			);
+			];
 		}
 
 		echo wu_responsive_table_row(
-			array(
+			[
 				'id'     => $item->get_id(),
 				'title'  => $item->get_name(),
 				'url'    => wu_network_admin_url(
 					'wp-ultimo-edit-product',
-					array(
+					[
 						'id' => $item->get_id(),
-					)
+					]
 				),
 				'image'  => $this->column_featured_image_id($item),
 				'status' => $this->column_type($item),
-			),
+			],
 			$first_row,
 			$second_row
 		);

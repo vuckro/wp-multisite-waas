@@ -72,7 +72,7 @@ final class Sites_Table extends Table {
 	 * @since  2.0.0
 	 * @return void
 	 */
-	protected function set_schema() {
+	protected function set_schema(): void {
 
 		$this->schema = false;
 	}
@@ -82,5 +82,5 @@ final class Sites_Table extends Table {
 	 *
 	 * @since 2.0.0
 	 */
-	public function install() {}
+	public function install(): void {}
 }

@@ -43,7 +43,7 @@ class Membership_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Membership';
+	protected $model_class = \WP_Ultimo\Models\Membership::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -51,7 +51,7 @@ class Membership_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
@@ -60,34 +60,34 @@ class Membership_Manager extends Base_Manager {
 		add_action(
 			'init',
 			function () {
-				Event_Manager::register_model_events('membership', __('Membership', 'wp-ultimo'), array('created', 'updated'));
+				Event_Manager::register_model_events('membership', __('Membership', 'wp-ultimo'), ['created', 'updated']);
 			}
 		);
 
-		add_action('wu_async_transfer_membership', array($this, 'async_transfer_membership'), 10, 2);
+		add_action('wu_async_transfer_membership', [$this, 'async_transfer_membership'], 10, 2);
 
-		add_action('wu_async_delete_membership', array($this, 'async_delete_membership'), 10);
+		add_action('wu_async_delete_membership', [$this, 'async_delete_membership'], 10);
 
 		/*
 		 * Transitions
 		 */
-		add_action('wu_transition_membership_status', array($this, 'mark_cancelled_date'), 10, 3);
+		add_action('wu_transition_membership_status', [$this, 'mark_cancelled_date'], 10, 3);
 
-		add_action('wu_transition_membership_status', array($this, 'transition_membership_status'), 10, 3);
+		add_action('wu_transition_membership_status', [$this, 'transition_membership_status'], 10, 3);
 
 		/*
 		 * Deal with delayed/schedule swaps
 		 */
-		add_action('wu_async_membership_swap', array($this, 'async_membership_swap'), 10);
+		add_action('wu_async_membership_swap', [$this, 'async_membership_swap'], 10);
 
 		/*
 		 * Deal with pending sites creation
 		 */
-		add_action('wp_ajax_wu_publish_pending_site', array($this, 'publish_pending_site'));
+		add_action('wp_ajax_wu_publish_pending_site', [$this, 'publish_pending_site']);
 
-		add_action('wp_ajax_wu_check_pending_site_created', array($this, 'check_pending_site_created'));
+		add_action('wp_ajax_wu_check_pending_site_created', [$this, 'check_pending_site_created']);
 
-		add_action('wu_async_publish_pending_site', array($this, 'async_publish_pending_site'), 10);
+		add_action('wu_async_publish_pending_site', [$this, 'async_publish_pending_site'], 10);
 	}
 
 	/**
@@ -95,7 +95,7 @@ class Membership_Manager extends Base_Manager {
 	 *
 	 * @since 2.0.11
 	 */
-	public function publish_pending_site() {
+	public function publish_pending_site(): void {
 
 		check_ajax_referer('wu_publish_pending_site');
 
@@ -103,7 +103,7 @@ class Membership_Manager extends Base_Manager {
 
 		// Don't make the request block till we finish, if possible.
 		if ( function_exists('fastcgi_finish_request') && version_compare(phpversion(), '7.0.16', '>=') ) {
-			wp_send_json(array('status' => 'creating-site'));
+			wp_send_json(['status' => 'creating-site']);
 
 			fastcgi_finish_request();
 		}
@@ -160,12 +160,12 @@ class Membership_Manager extends Base_Manager {
 			/**
 			 * We do not have a pending site, so we can assume the site was created.
 			 */
-			wp_send_json(array('publish_status' => 'completed'));
+			wp_send_json(['publish_status' => 'completed']);
 
 			exit;
 		}
 
-		wp_send_json(array('publish_status' => $pending_site->is_publishing() ? 'running' : 'stopped'));
+		wp_send_json(['publish_status' => $pending_site->is_publishing() ? 'running' : 'stopped']);
 
 		exit;
 	}
@@ -235,21 +235,21 @@ class Membership_Manager extends Base_Manager {
 	 * @param integer $membership_id Payment ID.
 	 * @return void
 	 */
-	public function transition_membership_status($old_status, $new_status, $membership_id) {
+	public function transition_membership_status($old_status, $new_status, $membership_id): void {
 
-		$allowed_previous_status = array(
+		$allowed_previous_status = [
 			Membership_Status::PENDING,
 			Membership_Status::ON_HOLD,
-		);
+		];
 
 		if ( ! in_array($old_status, $allowed_previous_status, true)) {
 			return;
 		}
 
-		$allowed_status = array(
+		$allowed_status = [
 			Membership_Status::ACTIVE,
 			Membership_Status::TRIALING,
-		);
+		];
 
 		if ( ! in_array($new_status, $allowed_status, true)) {
 			return;
@@ -277,7 +277,7 @@ class Membership_Manager extends Base_Manager {
 	 * @param int    $item_id The membership id.
 	 * @return void
 	 */
-	public function mark_cancelled_date($old_value, $new_value, $item_id) {
+	public function mark_cancelled_date($old_value, $new_value, $item_id): void {
 
 		if ($new_value === 'cancelled' && $new_value !== $old_value) {
 			$membership = wu_get_membership($item_id);
@@ -316,14 +316,14 @@ class Membership_Manager extends Base_Manager {
 			 * Get Sites and move them over.
 			 */
 			$sites = wu_get_sites(
-				array(
-					'meta_query' => array(
-						'membership_id' => array(
+				[
+					'meta_query' => [
+						'membership_id' => [
 							'key'   => 'wu_membership_id',
 							'value' => $membership->get_id(),
-						),
-					),
-				)
+						],
+					],
+				]
 			);
 
 			foreach ($sites as $site) {
@@ -388,14 +388,14 @@ class Membership_Manager extends Base_Manager {
 			 * Get Sites and delete them.
 			 */
 			$sites = wu_get_sites(
-				array(
-					'meta_query' => array(
-						'membership_id' => array(
+				[
+					'meta_query' => [
+						'membership_id' => [
 							'key'   => 'wu_membership_id',
 							'value' => $membership->get_id(),
-						),
-					),
-				)
+						],
+					],
+				]
 			);
 
 			foreach ($sites as $site) {

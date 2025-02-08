@@ -94,7 +94,7 @@ class Post_Base_Model extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Posts\\Post_Query';
+	protected $query_class = \WP_Ultimo\Database\Posts\Post_Query::class;
 
 	/**
 	 * Get author ID.
@@ -111,7 +111,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param int $author_id The author ID.
 	 */
-	public function set_author_id($author_id) {
+	public function set_author_id($author_id): void {
 
 		$this->author_id = $author_id;
 	}
@@ -131,7 +131,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $type Post type.
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		$this->type = $type;
 	}
@@ -151,7 +151,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $title Post title.
 	 */
-	public function set_title($title) {
+	public function set_title($title): void {
 
 		$this->title = $title;
 	}
@@ -174,7 +174,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $content Post content.
 	 */
-	public function set_content($content) {
+	public function set_content($content): void {
 
 		$this->content = $content;
 	}
@@ -194,7 +194,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $excerpt Post excerpt.
 	 */
-	public function set_excerpt($excerpt) {
+	public function set_excerpt($excerpt): void {
 
 		$this->excerpt = $excerpt;
 	}
@@ -214,7 +214,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $date_created Post creation date.
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -234,7 +234,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $date_modified Post last modification date.
 	 */
-	public function set_date_modified($date_modified) {
+	public function set_date_modified($date_modified): void {
 
 		$this->date_modified = $date_modified;
 	}
@@ -254,7 +254,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param int $list_order The post list order.
 	 */
-	public function set_list_order($list_order) {
+	public function set_list_order($list_order): void {
 
 		$this->list_order = $list_order;
 	}
@@ -274,7 +274,7 @@ class Post_Base_Model extends Base_Model {
 	 *
 	 * @param string $status The post status.
 	 */
-	public function set_status($status) {
+	public function set_status($status): void {
 
 		$this->status = $status;
 	}

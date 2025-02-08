@@ -107,7 +107,7 @@ class Event extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Events\\Event_Query';
+	protected $query_class = \WP_Ultimo\Database\Events\Event_Query::class;
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -121,7 +121,7 @@ class Event extends Base_Model {
 	 */
 	public function validation_rules() {
 
-		return array(
+		return [
 			'severity'    => 'required|numeric|between:1,5',
 			'payload'     => 'required',
 			'object_type' => 'required|alpha_dash|lowercase',
@@ -129,7 +129,7 @@ class Event extends Base_Model {
 			'author_id'   => 'integer|default:0',
 			'slug'        => 'required|alpha_dash',
 			'initiator'   => 'required|in:system,manual',
-		);
+		];
 	}
 
 	/**
@@ -151,15 +151,15 @@ class Event extends Base_Model {
 	 */
 	public function get_severity_label() {
 
-		$labels = array(
+		$labels = [
 			self::SEVERITY_SUCCESS => __('Success', 'wp-ultimo'),
 			self::SEVERITY_NEUTRAL => __('Neutral', 'wp-ultimo'),
 			self::SEVERITY_INFO    => __('Info', 'wp-ultimo'),
 			self::SEVERITY_WARNING => __('Warning', 'wp-ultimo'),
 			self::SEVERITY_FATAL   => __('Fatal', 'wp-ultimo'),
-		);
+		];
 
-		return isset($labels[ $this->get_severity() ]) ? $labels[ $this->get_severity() ] : __('Note', 'wp-ultimo');
+		return $labels[ $this->get_severity() ] ?? __('Note', 'wp-ultimo');
 	}
 
 	/**
@@ -170,15 +170,15 @@ class Event extends Base_Model {
 	 */
 	public function get_severity_class() {
 
-		$classes = array(
+		$classes = [
 			self::SEVERITY_SUCCESS => 'wu-bg-green-200 wu-text-green-700',
 			self::SEVERITY_NEUTRAL => 'wu-bg-gray-200 wu-text-gray-700',
 			self::SEVERITY_INFO    => 'wu-bg-blue-200 wu-text-blue-700',
 			self::SEVERITY_WARNING => 'wu-bg-yellow-200 wu-text-yellow-700',
 			self::SEVERITY_FATAL   => 'wu-bg-red-200 wu-text-red-700',
-		);
+		];
 
-		return isset($classes[ $this->get_severity() ]) ? $classes[ $this->get_severity() ] : '';
+		return $classes[ $this->get_severity() ] ?? '';
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Event extends Base_Model {
 	 * @param int $severity Severity of the problem.
 	 * @return void
 	 */
-	public function set_severity($severity) {
+	public function set_severity($severity): void {
 
 		$this->severity = $severity;
 	}
@@ -211,7 +211,7 @@ class Event extends Base_Model {
 	 * @param string $date_created Date when the event was created.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -236,7 +236,7 @@ class Event extends Base_Model {
 	 * @param object $payload Payload of the event.
 	 * @return void
 	 */
-	public function set_payload($payload) {
+	public function set_payload($payload): void {
 
 		$this->payload = $payload;
 	}
@@ -265,7 +265,7 @@ class Event extends Base_Model {
 
 		$payload = json_decode(json_encode($payload), true);
 
-		$interpolation_keys = array();
+		$interpolation_keys = [];
 
 		foreach ($payload as $key => &$value) {
 			$interpolation_keys[] = "{{{$key}}}";
@@ -296,7 +296,7 @@ class Event extends Base_Model {
 	 */
 	public static function get_default_system_messages($slug) {
 
-		$default_messages = array();
+		$default_messages = [];
 
 		$default_messages['changed'] = __('The <strong>{{model}}</strong> #{{object_id}} was changed: {{payload}}', 'wp-ultimo');
 		$default_messages['created'] = __('The <strong>{{model}}</strong> #{{object_id}} was created.', 'wp-ultimo');
@@ -326,7 +326,7 @@ class Event extends Base_Model {
 	 * @param string $initiator The type of user responsible for initiating the event. There are two options: Manual and System. By default, the event is saved as manual.
 	 * @return void
 	 */
-	public function set_initiator($initiator) {
+	public function set_initiator($initiator): void {
 
 		$this->initiator = $initiator;
 	}
@@ -396,7 +396,7 @@ class Event extends Base_Model {
 	 * @param int $author_id The user responsible for creating the event. By default, the event is saved with the current user_id.
 	 * @return void
 	 */
-	public function set_author_id($author_id) {
+	public function set_author_id($author_id): void {
 
 		$this->author_id = $author_id;
 	}
@@ -518,7 +518,7 @@ class Event extends Base_Model {
 	 * @param string $object_type The type of object related to this event. It's usually the model name.
 	 * @return void
 	 */
-	public function set_object_type($object_type) {
+	public function set_object_type($object_type): void {
 
 		$this->object_type = $object_type;
 	}
@@ -541,7 +541,7 @@ class Event extends Base_Model {
 	 * @param string $slug The event slug. It needs to be unique and preferably make it clear what it is about. Example: account_created is about creating an account.
 	 * @return void
 	 */
-	public function set_slug($slug) {
+	public function set_slug($slug): void {
 
 		$this->slug = $slug;
 	}
@@ -564,7 +564,7 @@ class Event extends Base_Model {
 	 * @param int $object_id The ID of the related objects.
 	 * @return void
 	 */
-	public function set_object_id($object_id) {
+	public function set_object_id($object_id): void {
 
 		$this->object_id = $object_id;
 	}
@@ -587,7 +587,7 @@ class Event extends Base_Model {
 
 		$array['severity_classes'] = $this->get_severity_class();
 
-		$array['author'] = array();
+		$array['author'] = [];
 
 		if ($this->get_initiator() === 'manual') {
 			$user = get_user_by('ID', $this->get_author_id());
@@ -600,9 +600,9 @@ class Event extends Base_Model {
 
 				$array['author']['avatar'] = get_avatar_url(
 					$this->get_author_id(),
-					array(
+					[
 						'default' => 'identicon',
-					)
+					]
 				);
 			}
 		}

@@ -28,7 +28,7 @@ class Toolbox {
 	 */
 	public function __construct() {
 
-		add_action('init', array($this, 'load_toolbox'));
+		add_action('init', [$this, 'load_toolbox']);
 	}
 
 	/**
@@ -56,14 +56,14 @@ class Toolbox {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_toolbox() {
+	public function load_toolbox(): void {
 
 		if ($this->is_toolbox_enabled()) {
-			add_action('wp_footer', array($this, 'output'));
+			add_action('wp_footer', [$this, 'output']);
 
-			add_action('admin_footer', array($this, 'output'));
+			add_action('admin_footer', [$this, 'output']);
 
-			add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
+			add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
 		}
 	}
 
@@ -73,7 +73,7 @@ class Toolbox {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles(): void {
 
 		wp_enqueue_style('wu-admin');
 	}
@@ -84,18 +84,18 @@ class Toolbox {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		$current_site = wu_get_current_site();
 
 		wu_get_template(
 			'ui/toolbox',
-			array(
+			[
 				'toolbox'      => $this,
 				'current_site' => $current_site,
 				'customer'     => $current_site ? $current_site->get_customer() : false,
 				'membership'   => $current_site ? $current_site->get_membership() : false,
-			)
+			]
 		);
 	}
 }

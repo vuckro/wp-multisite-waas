@@ -69,25 +69,25 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
 		wu_register_form(
 			'see_product_details',
-			array(
-				'render'     => array($this, 'render_product_details'),
+			[
+				'render'     => [$this, 'render_product_details'],
 				'capability' => 'exist',
-			)
+			]
 		);
 
 		wu_register_form(
 			'edit_membership_product_modal',
-			array(
-				'render'     => array($this, 'render_edit_membership_product_modal'),
-				'handler'    => array($this, 'handle_edit_membership_product_modal'),
+			[
+				'render'     => [$this, 'render_edit_membership_product_modal'],
+				'handler'    => [$this, 'handle_edit_membership_product_modal'],
 				'capability' => 'exist',
-			)
+			]
 		);
 	}
 
@@ -97,7 +97,7 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		add_wubox();
 	}
@@ -167,31 +167,31 @@ class Current_Membership_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('Your Membership', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['display_images'] = array(
+		$fields['display_images'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Product Images?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the product images on the element.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
-		$fields['columns'] = array(
+		$fields['columns'] = [
 			'type'    => 'number',
 			'title'   => __('Columns', 'wp-ultimo'),
 			'desc'    => __('How many columns to use.', 'wp-ultimo'),
@@ -199,7 +199,7 @@ class Current_Membership_Element extends Base_Element {
 			'value'   => 2,
 			'min'     => 1,
 			'max'     => 5,
-		);
+		];
 
 		return $fields;
 	}
@@ -223,13 +223,13 @@ class Current_Membership_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Membership',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -248,11 +248,11 @@ class Current_Membership_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title'          => __('Your Membership', 'wp-ultimo'),
 			'display_images' => 1,
 			'columns'        => 2,
-		);
+		];
 	}
 
 	/**
@@ -261,7 +261,7 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
@@ -280,7 +280,7 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->membership = wu_mock_membership();
 
@@ -320,10 +320,10 @@ class Current_Membership_Element extends Base_Element {
 				$swap_membership = (clone $this->membership)->swap($pending_swap_order->order);
 
 				$pending_products = array_map(
-					fn($product) => array(
+					fn($product) => [
 						'id'       => $product['product']->get_id(),
 						'quantity' => $product['quantity'],
-					),
+					],
 					$swap_membership->get_all_products()
 				);
 
@@ -343,7 +343,7 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_product_details() {
+	public function render_product_details(): void {
 
 		$product = wu_get_product_by_slug(wu_request('product'));
 
@@ -362,7 +362,7 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_edit_membership_product_modal() {
+	public function render_edit_membership_product_modal(): void {
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
@@ -385,21 +385,21 @@ class Current_Membership_Element extends Base_Element {
 		}
 
 		if ( ! empty($error)) {
-			$error_field = array(
-				'error_message' => array(
+			$error_field = [
+				'error_message' => [
 					'type' => 'note',
 					'desc' => $error,
-				),
-			);
+				],
+			];
 
 			$form = new \WP_Ultimo\UI\Form(
 				'cancel_payment_method',
 				$error_field,
-				array(
+				[
 					'views'                 => 'admin-pages/fields',
 					'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				)
+				]
 			);
 
 			$form->render();
@@ -427,56 +427,56 @@ class Current_Membership_Element extends Base_Element {
 
 		$existing_quantity = array_filter($membership->get_addon_products(), fn($item) => $item['product']->get_id() === $product->get_id())[0]['quantity'];
 
-		$fields = array(
-			'membership'    => array(
+		$fields = [
+			'membership'    => [
 				'type'  => 'hidden',
 				'value' => wu_request('membership'),
-			),
-			'product'       => array(
+			],
+			'product'       => [
 				'type'  => 'hidden',
 				'value' => wu_request('product'),
-			),
-			'quantity'      => array(
+			],
+			'quantity'      => [
 				'type'              => 'number',
 				'title'             => __('Quantity to Cancel', 'wp-ultimo'),
 				'value'             => 1,
 				'placeholder'       => 1,
 				'wrapper_classes'   => 'wu-w-1/2',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'min'      => 1,
 					'max'      => $existing_quantity,
 					'required' => 'required',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => $existing_quantity > 1 ? 'true' : 'false',
 					'v-cloak' => '1',
-				),
-			),
-			'confirm'       => array(
+				],
+			],
+			'confirm'       => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Product Cancellation', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'update_note'   => array(
+				],
+			],
+			'update_note'   => [
 				'type'    => 'note',
 				'desc'    => $gateway_message,
 				'classes' => 'sm:wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
-			),
-			'submit_button' => array(
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Cancel Product Subscription', 'wp-ultimo'),
 				'placeholder'     => __('Cancel Product Subscription', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'wu-w-full button button-primary',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		if ( ! $gateway_message) {
 			unset($fields['update_note']);
@@ -485,19 +485,19 @@ class Current_Membership_Element extends Base_Element {
 		$form = new \WP_Ultimo\UI\Form(
 			'edit_membership_product',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'edit_membership_product',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -509,7 +509,7 @@ class Current_Membership_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_edit_membership_product_modal() {
+	public function handle_edit_membership_product_modal(): void {
 
 		if ( ! wu_request('confirm')) {
 			$error = new \WP_Error('not-confirmed', __('Please confirm the cancellation.', 'wp-ultimo'));
@@ -605,9 +605,9 @@ class Current_Membership_Element extends Base_Element {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-			)
+			]
 		);
 	}
 }

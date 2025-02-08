@@ -61,10 +61,10 @@ class Login_Form_Element extends Base_Element {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		// Handle login redirection
-		add_filter('login_redirect', array($this, 'handle_redirect'), -1, 3);
+		add_filter('login_redirect', [$this, 'handle_redirect'], -1, 3);
 
 		parent::init();
 	}
@@ -135,160 +135,160 @@ class Login_Form_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['display_title'] = array(
+		$fields['display_title'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Title?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the title element.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'     => 'text',
 			'title'    => __('Title', 'wp-ultimo'),
 			'value'    => __('Login', 'wp-ultimo'),
 			'desc'     => '',
 			'tooltip'  => '',
-			'required' => array(
+			'required' => [
 				'display_title' => 1,
-			),
-		);
+			],
+		];
 
-		$fields['redirect_type'] = array(
+		$fields['redirect_type'] = [
 			'type'    => 'select',
 			'title'   => __('Redirect Type', 'wp-ultimo'),
 			'desc'    => __('The behavior after login', 'wp-ultimo'),
 			'tooltip' => '',
 			'default' => 'default',
-			'options' => array(
+			'options' => [
 				'default'       => __('Wordpress Default', 'wp-ultimo'),
 				'customer_site' => __('Send To Customer Site', 'wp-ultimo'),
 				'main_site'     => __('Send To Main Site', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
-		$fields['customer_redirect_path'] = array(
+		$fields['customer_redirect_path'] = [
 			'type'     => 'text',
 			'title'    => __('Customer Redirect Path', 'wp-ultimo'),
 			'value'    => __('/wp-admin', 'wp-ultimo'),
 			'desc'     => __('e.g. /wp-admin', 'wp-ultimo'),
 			'tooltip'  => '',
-			'required' => array(
+			'required' => [
 				'redirect_type' => 'customer_site',
-			),
-		);
+			],
+		];
 
-		$fields['main_redirect_path'] = array(
+		$fields['main_redirect_path'] = [
 			'type'     => 'text',
 			'title'    => __('Main Site Redirect Path', 'wp-ultimo'),
 			'value'    => __('/wp-admin', 'wp-ultimo'),
 			'desc'     => __('e.g. /wp-admin', 'wp-ultimo'),
 			'tooltip'  => '',
-			'required' => array(
+			'required' => [
 				'redirect_type' => 'main_site',
-			),
-		);
+			],
+		];
 
-		$fields['header_username'] = array(
+		$fields['header_username'] = [
 			'title' => __('Username Field', 'wp-ultimo'),
 			'desc'  => __('Username Field', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['label_username'] = array(
+		$fields['label_username'] = [
 			'type'    => 'text',
 			'title'   => __('Username Field Label', 'wp-ultimo'),
 			'value'   => __('Username or Email Address', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['placeholder_username'] = array(
+		$fields['placeholder_username'] = [
 			'type'    => 'text',
 			'title'   => __('Username Field Placeholder', 'wp-ultimo'),
 			'desc'    => __('e.g. Username Here', 'wp-ultimo'),
 			'value'   => '',
 			'tooltip' => '',
-		);
+		];
 
-		$fields['header_password'] = array(
+		$fields['header_password'] = [
 			'title' => __('Password Field', 'wp-ultimo'),
 			'desc'  => __('Password Field', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['label_password'] = array(
+		$fields['label_password'] = [
 			'type'    => 'text',
 			'title'   => __('Password Field Label', 'wp-ultimo'),
 			'value'   => __('Password', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['placeholder_password'] = array(
+		$fields['placeholder_password'] = [
 			'type'    => 'text',
 			'title'   => __('Password Field Placeholder', 'wp-ultimo'),
 			'desc'    => __('e.g. Your Password', 'wp-ultimo'),
 			'value'   => '',
 			'tooltip' => '',
-		);
+		];
 
-		$fields['header_remember'] = array(
+		$fields['header_remember'] = [
 			'title' => __('Remember Me', 'wp-ultimo'),
 			'desc'  => __('Remember Me', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['remember'] = array(
+		$fields['remember'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Remember Toggle?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the remember me checkbox.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
-		$fields['label_remember'] = array(
+		$fields['label_remember'] = [
 			'type'     => 'text',
 			'title'    => __('Remember Me Label', 'wp-ultimo'),
 			'value'    => __('Remember Me'),
 			'desc'     => '',
 			'tooltip'  => '',
-			'required' => array(
+			'required' => [
 				'remember' => 1,
-			),
-		);
+			],
+		];
 
-		$fields['desc_remember'] = array(
+		$fields['desc_remember'] = [
 			'type'     => 'text',
 			'title'    => __('Remember Me Description', 'wp-ultimo'),
 			'value'    => __('Keep me logged in for two weeks.', 'wp-ultimo'),
 			'desc'     => '',
 			'tooltip'  => '',
-			'required' => array(
+			'required' => [
 				'remember' => 1,
-			),
-		);
+			],
+		];
 
-		$fields['header_submit'] = array(
+		$fields['header_submit'] = [
 			'title' => __('Submit Button', 'wp-ultimo'),
 			'desc'  => __('Submit Button', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['label_log_in'] = array(
+		$fields['label_log_in'] = [
 			'type'    => 'text',
 			'title'   => __('Submit Button Label', 'wp-ultimo'),
 			'value'   => __('Log In', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
 		return $fields;
 	}
@@ -299,7 +299,7 @@ class Login_Form_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_enqueue_style('wu-admin');
 	}
@@ -323,12 +323,12 @@ class Login_Form_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Login',
 			'Reset Password',
-		);
+		];
 	}
 
 	/**
@@ -350,7 +350,7 @@ class Login_Form_Element extends Base_Element {
 		// Default 'redirect' value takes the user back to the request URI.
 		$redirect_to = wu_get_current_url();
 
-		return array(
+		return [
 			'display_title'          => 1,
 			'title'                  => __('Login', 'wp-ultimo'),
 
@@ -379,7 +379,7 @@ class Login_Form_Element extends Base_Element {
 			'remember'               => true,
 			'value_username'         => '',
 			'value_remember'         => false, // Set 'value_remember' to true to default the "Remember me" checkbox to checked.
-		);
+		];
 	}
 
 	/**
@@ -388,7 +388,7 @@ class Login_Form_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->logged = is_user_logged_in();
 
@@ -400,9 +400,19 @@ class Login_Form_Element extends Base_Element {
 			if (isset($_GET['key']) && isset($_GET['login'])) {
 				$value = sprintf('%s:%s', wp_unslash($_GET['login']), wp_unslash($_GET['key']));
 
-				setcookie($rp_cookie, $value, 0, $rp_path, (string) COOKIE_DOMAIN, is_ssl(), true);
+				setcookie(
+					$rp_cookie,
+					$value,
+					[
+						'expires'  => 0,
+						'path'     => $rp_path,
+						'domain'   => (string) COOKIE_DOMAIN,
+						'secure'   => is_ssl(),
+						'httponly' => true,
+					]
+				);
 
-				wp_safe_redirect(remove_query_arg(array('key', 'login')));
+				wp_safe_redirect(remove_query_arg(['key', 'login']));
 
 				exit;
 			}
@@ -518,7 +528,7 @@ class Login_Form_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->logged = false;
 	}
@@ -560,12 +570,12 @@ class Login_Form_Element extends Base_Element {
 		 * login URL so the user can re-login with the new password.
 		 */
 		if ($this->is_reset_confirmation_page()) {
-			$fields = array(
-				'email-activation-instructions' => array(
+			$fields = [
+				'email-activation-instructions' => [
 					'type' => 'note',
 					'desc' => __('Your password has been reset.') . ' <a href="' . esc_url(wp_login_url()) . '">' . __('Log in') . '</a>',
-				),
-			);
+				],
+			];
 
 			/*
 			* Check if are in the email confirmation instructions page.
@@ -573,16 +583,16 @@ class Login_Form_Element extends Base_Element {
 			* If that's the case, we show the instructions.
 			*/
 		} elseif ($this->is_check_email_confirm()) {
-			$fields = array(
-				'email-activation-instructions' => array(
+			$fields = [
+				'email-activation-instructions' => [
 					'type' => 'note',
 					'desc' => sprintf(
 						/* translators: %s: Link to the login page. */
 						__('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'),
 						wp_login_url()
 					),
-				),
-			);
+				],
+			];
 
 			/*
 			* Check if we are in the set new password page.
@@ -594,7 +604,7 @@ class Login_Form_Element extends Base_Element {
 			$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
 
 			if (isset($_COOKIE[ $rp_cookie ]) && 0 < strpos((string) $_COOKIE[ $rp_cookie ], ':')) {
-				list($rp_login, $rp_key) = explode(':', wp_unslash($_COOKIE[ $rp_cookie ]), 2);
+				[$rp_login, $rp_key] = explode(':', wp_unslash($_COOKIE[ $rp_cookie ]), 2);
 
 				$user = check_password_reset_key($rp_key, $rp_login);
 
@@ -605,58 +615,58 @@ class Login_Form_Element extends Base_Element {
 				$user = false;
 			}
 
-			$redirect_to = add_query_arg('password-reset', 'success', remove_query_arg(array('action', 'error')));
+			$redirect_to = add_query_arg('password-reset', 'success', remove_query_arg(['action', 'error']));
 
-			$fields = array(
-				'pass1'                      => array(
+			$fields = [
+				'pass1'                      => [
 					'type'        => 'password',
 					'title'       => __('New password'),
 					'placeholder' => '',
 					'value'       => '',
-					'html_attr'   => array(
+					'html_attr'   => [
 						'size'           => 24,
 						'autocapitalize' => 'off',
-					),
-				),
-				'pass2'                      => array(
+					],
+				],
+				'pass2'                      => [
 					'type'        => 'password',
 					'title'       => __('Confirm new password'),
 					'placeholder' => '',
 					'value'       => '',
-					'html_attr'   => array(
+					'html_attr'   => [
 						'size'           => 24,
 						'autocapitalize' => 'off',
-					),
-				),
-				'lost-password-instructions' => array(
+					],
+				],
+				'lost-password-instructions' => [
 					'type'    => 'note',
 					'desc'    => wp_get_password_hint(),
 					'tooltip' => '',
-				),
-				'action'                     => array(
+				],
+				'action'                     => [
 					'type'  => 'hidden',
 					'value' => 'resetpass',
-				),
-				'rp_key'                     => array(
+				],
+				'rp_key'                     => [
 					'type'  => 'hidden',
 					'value' => $rp_key,
-				),
-				'user_login'                 => array(
+				],
+				'user_login'                 => [
 					'type'  => 'hidden',
 					'value' => $rp_login,
-				),
-				'redirect_to'                => array(
+				],
+				'redirect_to'                => [
 					'type'  => 'hidden',
 					'value' => $redirect_to,
-				),
-				'wp-submit'                  => array(
+				],
+				'wp-submit'                  => [
 					'type'            => 'submit',
 					'title'           => __('Save Password'),
 					'value'           => __('Save Password'),
 					'classes'         => 'button button-primary wu-w-full',
 					'wrapper_classes' => 'wu-items-end wu-bg-none',
-				),
-			);
+				],
+			];
 
 			/*
 			* Checks if we are in the first reset password page, where the customer requests a reset.
@@ -671,70 +681,70 @@ class Login_Form_Element extends Base_Element {
 				$user_login = wp_unslash($user_login);
 			}
 
-			$redirect_to = add_query_arg('checkemail', 'confirm', remove_query_arg(array('action', 'error')));
+			$redirect_to = add_query_arg('checkemail', 'confirm', remove_query_arg(['action', 'error']));
 
-			$fields = array(
-				'lost-password-instructions' => array(
+			$fields = [
+				'lost-password-instructions' => [
 					'type'    => 'note',
 					'desc'    => __('Please enter your username or email address. You will receive an email message with instructions on how to reset your password.'),
 					'tooltip' => '',
-				),
-				'user_login'                 => array(
+				],
+				'user_login'                 => [
 					'type'        => 'text',
 					'title'       => __('Username or Email Address'),
 					'placeholder' => '',
 					'value'       => $user_login,
-					'html_attr'   => array(
+					'html_attr'   => [
 						'size'           => 20,
 						'autocapitalize' => 'off',
-					),
-				),
-				'action'                     => array(
+					],
+				],
+				'action'                     => [
 					'type'  => 'hidden',
 					'value' => 'lostpassword',
-				),
-				'redirect_to'                => array(
+				],
+				'redirect_to'                => [
 					'type'  => 'hidden',
 					'value' => $redirect_to,
-				),
-				'wp-submit'                  => array(
+				],
+				'wp-submit'                  => [
 					'type'            => 'submit',
 					'title'           => __('Get New Password'),
 					'value'           => __('Get New Password'),
 					'classes'         => 'button button-primary wu-w-full',
 					'wrapper_classes' => 'wu-items-end wu-bg-none',
-				),
-			);
+				],
+			];
 		} else {
 			$view = 'dashboard-widgets/login-form';
 
-			$fields = array(
-				'log' => array(
+			$fields = [
+				'log' => [
 					'type'        => 'text',
 					'title'       => $atts['label_username'],
 					'placeholder' => $atts['placeholder_username'],
 					'tooltip'     => '',
-				),
-				'pwd' => array(
+				],
+				'pwd' => [
 					'type'        => 'password',
 					'title'       => $atts['label_password'],
 					'placeholder' => $atts['placeholder_password'],
 					'tooltip'     => '',
-				),
-			);
+				],
+			];
 
 			if ($atts['remember']) {
-				$fields['rememberme'] = array(
+				$fields['rememberme'] = [
 					'type'  => 'toggle',
 					'title' => $atts['label_remember'],
 					'desc'  => $atts['desc_remember'],
-				);
+				];
 			}
 
-			$fields['redirect_to'] = array(
+			$fields['redirect_to'] = [
 				'type'  => 'hidden',
 				'value' => $atts['redirect'],
-			);
+			];
 
 			if (isset($_GET['redirect_to'])) {
 				$atts['redirect_type']          = 'query_redirect';
@@ -745,25 +755,25 @@ class Login_Form_Element extends Base_Element {
 				$fields['redirect_to']['value'] = $atts['main_redirect_path'];
 			}
 
-			$fields['wu_login_form_redirect_type'] = array(
+			$fields['wu_login_form_redirect_type'] = [
 				'type'  => 'hidden',
 				'value' => $atts['redirect_type'],
-			);
+			];
 
-			$fields['wp-submit'] = array(
+			$fields['wp-submit'] = [
 				'type'            => 'submit',
 				'title'           => $atts['label_log_in'],
 				'value'           => $atts['label_log_in'],
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end wu-bg-none',
-			);
+			];
 
-			$fields['lost-password'] = array(
+			$fields['lost-password'] = [
 				'type'            => 'html',
 				'content'         => sprintf('<a class="wu-text-xs wu-block wu-text-center wu--mt-4" href="%s">%s</a>', esc_url(add_query_arg('action', 'lostpassword')), __('Lost your password?')),
 				'classes'         => '',
 				'wrapper_classes' => 'wu-items-end wu-bg-none',
-			);
+			];
 		}
 
 		/*
@@ -775,20 +785,20 @@ class Login_Form_Element extends Base_Element {
 		if (wu_request('error')) {
 			$username = wu_request('username', '');
 
-			$error_message_field = array(
-				'error_message' => array(
+			$error_message_field = [
+				'error_message' => [
 					'type' => 'note',
 					'desc' => Checkout_Pages::get_instance()->get_error_message(wu_request('error'), $username),
-				),
-			);
+				],
+			];
 
 			$fields = array_merge($error_message_field, $fields);
 		}
 
-		$fields['wu_login_page_url'] = array(
+		$fields['wu_login_page_url'] = [
 			'type'  => 'hidden',
 			'value' => wu_get_current_url(),
-		);
+		];
 
 		/**
 		 * Instantiate the form for the order details.
@@ -798,16 +808,16 @@ class Login_Form_Element extends Base_Element {
 		$form = new \WP_Ultimo\UI\Form(
 			$this->get_id(),
 			$fields,
-			array(
+			[
 				'action'                => esc_url(site_url('wp-login.php', 'login_post')),
 				'wrap_in_form_tag'      => true,
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-p-0 wu-m-0',
 				'field_wrapper_classes' => 'wu-box-border wu-items-center wu-flex wu-justify-between wu-py-4 wu-m-0',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'class' => 'wu-w-full',
-				),
-			)
+				],
+			]
 		);
 
 		$atts['logged']    = $this->logged;

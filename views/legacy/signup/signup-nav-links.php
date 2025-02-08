@@ -30,10 +30,10 @@ if ( ! defined('ABSPATH')) {
  */
 $nav_links = apply_filters(
 	'wu_signup_form_nav_links',
-	array(
+	[
 		home_url()     => __('Return to Home', 'wp-ultimo'),
 		wp_login_url() => sprintf('<strong>%s</strong>', __('Log In', 'wp-ultimo')),
-	)
+	]
 );
 
 if ( ! isset($signup->step)) {

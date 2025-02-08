@@ -84,10 +84,10 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'admin_menu'      => 'exist',
 		'user_admin_menu' => 'exist',
-	);
+	];
 
 	/**
 	 * The current customer instance.
@@ -137,7 +137,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		$this->customer = wu_get_current_customer();
 	}
@@ -157,7 +157,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function force_screen_options() {
+	public function force_screen_options(): void {
 
 		if (get_current_screen()->id !== 'toplevel_page_sites') {
 			return;
@@ -166,10 +166,10 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		// Forces Screen options so we can add our links.
 		add_screen_option(
 			'wu_fix',
-			array(
+			[
 				'option' => 'test',
 				'value'  => true,
-			)
+			]
 		);
 	}
 
@@ -187,17 +187,17 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		\WP_Ultimo\UI\Simple_Text_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes');
 
 		\WP_Ultimo\UI\Checkout_Element::get_instance()->as_inline_content(
 			get_current_screen()->id,
 			'wu_dash_before_metaboxes',
-			array(
+			[
 				'slug'                   => 'wu-add-new-site',
-				'membership_limitations' => array('sites'),
-			)
+				'membership_limitations' => ['sites'],
+			]
 		);
 	}
 
@@ -240,17 +240,17 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/dash',
-			array(
+			[
 				'screen'            => get_current_screen(),
 				'page'              => $this,
 				'has_full_position' => false,
-			)
+			]
 		);
 	}
 }

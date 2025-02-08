@@ -48,11 +48,11 @@ class Country_NE extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'NE',
 		'currency'     => 'XOF',
 		'phone_code'   => 227,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -81,7 +81,7 @@ class Country_NE extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'1' => __('Agadez Region', 'wp-ultimo'),
 			'2' => __('Diffa Region', 'wp-ultimo'),
 			'3' => __('Dosso Region', 'wp-ultimo'),
@@ -89,6 +89,6 @@ class Country_NE extends Country {
 			'5' => __('Tahoua Region', 'wp-ultimo'),
 			'6' => __('Tillabéri Region', 'wp-ultimo'),
 			'7' => __('Zinder Region', 'wp-ultimo'),
-		);
+		];
 	}
 }

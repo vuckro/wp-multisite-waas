@@ -122,9 +122,9 @@ class Signup_Field_Checkbox extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -135,13 +135,13 @@ class Signup_Field_Checkbox extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'name',
 			'tooltip',
 			'save_as',
 			'required',
-		);
+		];
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Signup_Field_Checkbox extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -163,15 +163,15 @@ class Signup_Field_Checkbox extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'default_state' => array(
+		return [
+			'default_state' => [
 				'type'  => 'toggle',
 				'title' => __('Default State', 'wp-ultimo'),
 				'desc'  => __('Use the toggle to the set the default state of the checkbox.', 'wp-ultimo'),
 				'value' => 0,
 				'order' => 12,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -184,16 +184,16 @@ class Signup_Field_Checkbox extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields[ $attributes['id'] ] = array(
+		$checkout_fields[ $attributes['id'] ] = [
 			'type'            => 'checkbox',
 			'id'              => $attributes['id'],
 			'name'            => $attributes['name'],
 			'tooltip'         => $attributes['tooltip'],
 			'required'        => $attributes['required'],
 			'wrapper_classes' => $attributes['element_classes'],
-		);
+		];
 
 		if ($attributes['default_state']) {
 			$checkout_fields[ $attributes['id'] ]['html_attr']['checked'] = 'checked';

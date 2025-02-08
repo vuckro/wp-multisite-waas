@@ -104,9 +104,9 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'steps_template' => 'clean',
-		);
+		];
 	}
 
 	/**
@@ -117,7 +117,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -128,9 +128,9 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id' => 'steps',
-		);
+		];
 	}
 
 	/**
@@ -154,23 +154,23 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields['steps_template'] = array(
+		$editor_fields['steps_template'] = [
 			'type'   => 'group',
 			'desc'   => Field_Templates_Manager::get_instance()->render_preview_block('steps'),
 			'order'  => 98,
-			'fields' => array(
-				'steps_template' => array(
+			'fields' => [
+				'steps_template' => [
 					'type'            => 'select',
 					'title'           => __('Layout', 'wp-ultimo'),
 					'placeholder'     => __('Select your Layout', 'wp-ultimo'),
-					'options'         => array($this, 'get_templates'),
+					'options'         => [$this, 'get_templates'],
 					'wrapper_classes' => 'wu-flex-grow',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'steps_template',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		// @todo: re-add developer notes.
 		// $editor_fields['_dev_note_develop_your_own_template_steps'] = array(
@@ -195,7 +195,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if (wu_get_isset($attributes, 'steps_template') === 'legacy') {
-			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
+			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons'], wu_get_version());
 
 			wp_add_inline_style('legacy-shortcodes', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
 		}
@@ -207,12 +207,12 @@ class Signup_Field_Steps extends Base_Signup_Field {
 
 		$content = $template_class ? $template_class->render_container($attributes) : __('Template does not exist.', 'wp-ultimo');
 
-		return array(
-			$attributes['id'] => array(
+		return [
+			$attributes['id'] => [
 				'type'            => 'note',
 				'desc'            => $content,
 				'wrapper_classes' => $attributes['element_classes'],
-			),
-		);
+			],
+		];
 	}
 }

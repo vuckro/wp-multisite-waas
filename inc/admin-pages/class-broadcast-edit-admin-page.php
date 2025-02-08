@@ -76,9 +76,9 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_edit_broadcasts',
-	);
+	];
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -86,72 +86,72 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
 		$this->add_list_table_widget(
 			'events',
-			array(
+			[
 				'title'        => __('Events', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'events_query_filter'),
-			)
+				'query_filter' => [$this, 'events_query_filter'],
+			]
 		);
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'html_attr' => array(
+			[
+				'html_attr' => [
 					'data-wu-app' => 'save_broadcast',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'type' => $this->get_object()->get_type(),
-						)
+						]
 					),
-				),
-				'fields'    => array(
-					'type'        => array(
+				],
+				'fields'    => [
+					'type'        => [
 						'type'        => 'select',
 						'title'       => __('Broadcast Type', 'wp-ultimo'),
 						'placeholder' => __('Type', 'wp-ultimo'),
 						'desc'        => __('Broadcast type cannot be edited.', 'wp-ultimo'),
-						'options'     => array(
+						'options'     => [
 							'broadcast_email'  => __('Email', 'wp-ultimo'),
 							'broadcast_notice' => __('Admin Notice', 'wp-ultimo'),
-						),
+						],
 						'value'       => $this->get_object()->get_type(),
 						'tooltip'     => '',
-						'html_attr'   => array(
+						'html_attr'   => [
 							'disabled' => 'disabled',
 							'name'     => '',
-						),
-					),
-					'notice_type' => array(
+						],
+					],
+					'notice_type' => [
 						'type'              => 'select',
 						'title'             => __('Broadcast Status', 'wp-ultimo'),
 						'placeholder'       => __('Status', 'wp-ultimo'),
 						'desc'              => __('This option determines the color of the admin notice.', 'wp-ultimo'),
-						'options'           => array(
+						'options'           => [
 							'info'    => __('Info (blue)', 'wp-ultimo'),
 							'success' => __('Success (green)', 'wp-ultimo'),
 							'warning' => __('Warning (yellow)', 'wp-ultimo'),
 							'error'   => __('Error (red)', 'wp-ultimo'),
-						),
+						],
 						'value'             => $this->get_object()->get_notice_type(),
 						'tooltip'           => '',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-if'    => 'type === "broadcast_notice"',
 							'v-cloak' => 1,
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 
-		add_meta_box('wp-ultimo-broadcast-customer-targets', __('Customer Targets', 'wp-ultimo'), array($this, 'output_default_widget_customer_targets'), get_current_screen()->id, 'side');
+		add_meta_box('wp-ultimo-broadcast-customer-targets', __('Customer Targets', 'wp-ultimo'), [$this, 'output_default_widget_customer_targets'], get_current_screen()->id, 'side');
 
-		add_meta_box('wp-ultimo-broadcast-product-targets', __('Product Targets', 'wp-ultimo'), array($this, 'output_default_widget_product_targets'), get_current_screen()->id, 'side');
+		add_meta_box('wp-ultimo-broadcast-product-targets', __('Product Targets', 'wp-ultimo'), [$this, 'output_default_widget_product_targets'], get_current_screen()->id, 'side');
 	}
 
 	/**
@@ -160,13 +160,13 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output_default_widget_customer_targets() {
+	public function output_default_widget_customer_targets(): void {
 
 		$object = $this->get_object();
 
 		$all_targets = $object->get_message_targets();
 
-		$targets = array();
+		$targets = [];
 
 		$customer_targets = wu_get_isset($all_targets, 'customers', '');
 
@@ -198,9 +198,9 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 			case $targets_count === 1:
 				$customer = wu_get_customer($targets[0]);
 
-				$url_atts = array(
+				$url_atts = [
 					'id' => $customer->get_id(),
-				);
+				];
 
 				$customer_link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -209,10 +209,10 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 					32,
 					'identicon',
 					'',
-					array(
+					[
 						'force_display' => true,
 						'class'         => 'wu-rounded-full wu-border-solid wu-border-1 wu-border-white hover:wu-border-gray-400',
-					)
+					]
 				);
 
 				$display_name = $customer->get_display_name();
@@ -242,14 +242,14 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 						32,
 						'identicon',
 						'',
-						array(
+						[
 							'class' => 'wu-rounded-full wu-border-solid wu-border-1 wu-border-white hover:wu-border-gray-400',
-						)
+						]
 					);
 
-					$url_atts = array(
+					$url_atts = [
 						'id' => $customer->get_id(),
-					);
+					];
 
 					$customer_link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -257,13 +257,13 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 				}
 
 				if ($targets_count < 7) {
-					$modal_atts = array(
+					$modal_atts = [
 						'action'      => 'wu_modal_targets_display',
 						'object_id'   => $object->get_id(),
 						'width'       => '400',
 						'height'      => '360',
 						'target_type' => 'customers',
-					);
+					];
 
 					$html .= sprintf(
 						'<div class="wu-inline-block wu--mr-4">
@@ -277,13 +277,13 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 				} else {
 					$count = $targets_count - 6;
 
-					$modal_atts = array(
+					$modal_atts = [
 						'action'      => 'wu_modal_targets_display',
 						'object_id'   => $object->get_id(),
 						'width'       => '400',
 						'height'      => '360',
 						'target_type' => 'customers',
-					);
+					];
 
 					$html .= sprintf(
 						'<div class="wu-inline-block wu-ml-4">
@@ -310,25 +310,25 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output_default_widget_product_targets() {
+	public function output_default_widget_product_targets(): void {
 
 		$object = $this->get_object();
 
 		$targets = wu_get_broadcast_targets($object->get_id(), 'products');
 
-		$product_targets = array();
+		$product_targets = [];
 
 		if ($targets) {
 			foreach ($targets as $key => $value) {
 				$product = wu_get_product($value);
 
 				if ($product) {
-					$modal_atts = array(
+					$modal_atts = [
 						'action'     => 'wu_modal_product_targets_display',
 						'product_id' => $product->get_id(),
 						'width'      => '400',
 						'height'     => '360',
-					);
+					];
 
 					$link = wu_get_form_url('view_broadcast_targets', $modal_atts);
 
@@ -347,23 +347,23 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 					// translators: %s is the number of customers.
 					$description = sprintf(__('%s customer(s) targeted.', 'wp-ultimo'), $customer_count);
 
-					$product_targets[ $key ] = array(
+					$product_targets[ $key ] = [
 						'link'         => $link,
 						'avatar'       => $image,
 						'display_name' => $product->get_name(),
 						'id'           => $product->get_id(),
 						'description'  => $description,
-					);
+					];
 				}
 			}
 		}
 
-		$args = array(
+		$args = [
 			'targets'       => $product_targets,
 			'loading_text'  => __('Loading...', 'wp-ultimo'),
 			'wrapper_class' => 'wu-bg-gray-100 wu--mt-3 wu--mb-6 wu--mx-3',
 			'modal_class'   => 'wubox',
-		);
+		];
 
 		wu_get_template('broadcast/widget-targets', $args);
 	}
@@ -398,7 +398,7 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -409,7 +409,7 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('Edit Broadcast', 'wp-ultimo'),
 			'add_new_label'       => __('Add new Broadcast', 'wp-ultimo'),
 			'updated_message'     => __('Broadcast updated with success!', 'wp-ultimo'),
@@ -419,7 +419,7 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Broadcast', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -432,10 +432,10 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'broadcast',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -495,10 +495,10 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function events_query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'broadcast',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}

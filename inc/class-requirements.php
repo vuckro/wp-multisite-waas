@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo;
 
-use \WP_Ultimo\Loaders\Table_Loader;
-use \WP_Ultimo\Installers\Core_Installer;
+use WP_Ultimo\Loaders\Table_Loader;
+use WP_Ultimo\Installers\Core_Installer;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -136,7 +136,7 @@ class Requirements {
 	public static function check_php_version(): bool {
 
 		if (version_compare(phpversion(), self::$php_version, '<')) {
-			add_action('network_admin_notices', array('WP_Ultimo\Requirements', 'notice_unsupported_php_version'));
+			add_action('network_admin_notices', [self::class, 'notice_unsupported_php_version']);
 
 			return false;
 		}
@@ -153,7 +153,7 @@ class Requirements {
 		global $wp_version;
 
 		if (version_compare($wp_version, self::$wp_version, '<')) {
-			add_action('network_admin_notices', array('WP_Ultimo\Requirements', 'notice_unsupported_wp_version'));
+			add_action('network_admin_notices', [self::class, 'notice_unsupported_wp_version']);
 
 			return false;
 		}
@@ -197,14 +197,14 @@ class Requirements {
 
 		$cron_request = apply_filters(
 			'cron_request', // phpcs:ignore
-			array(
+			[
 				'url'  => site_url('wp-cron.php?doing_wp_cron=' . $doing_wp_cron),
-				'args' => array(
+				'args' => [
 					'timeout'   => 3,
 					'blocking'  => true,
 					'sslverify' => apply_filters('https_local_ssl_verify', $sslverify), // phpcs:ignore
-				),
-			)
+				],
+			]
 		);
 
 		$result = wp_remote_post($cron_request['url'], $cron_request['args']);
@@ -225,7 +225,7 @@ class Requirements {
 	public static function is_multisite(): bool {
 
 		if (! is_multisite()) {
-			add_action('admin_notices', array('WP_Ultimo\Requirements', 'notice_not_multisite'));
+			add_action('admin_notices', [self::class, 'notice_not_multisite']);
 
 			return false;
 		}
@@ -260,7 +260,7 @@ class Requirements {
 		}
 
 		if (! is_plugin_active_for_network(WP_ULTIMO_PLUGIN_BASENAME) && ! self::is_unit_test()) {
-			add_action('admin_notices', array('WP_Ultimo\Requirements', 'notice_not_network_active'));
+			add_action('admin_notices', [self::class, 'notice_not_network_active']);
 
 			return false;
 		}
@@ -274,7 +274,7 @@ class Requirements {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function notice_unsupported_php_version() {
+	public static function notice_unsupported_php_version(): void {
 
 		// translators: the %1$s placeholder is the required PHP version, while the %2$s is the current PHP version.
 		$message = sprintf(__('WP Multisite WaaS requires at least PHP version %1$s to run. Your current PHP version is <strong>%2$s</strong>. Please, contact your hosting company support to upgrade your PHP version. If you want maximum performance consider upgrading your PHP to version 7.0 or later.', 'wp-ultimo'), self::$php_version, phpversion());
@@ -288,7 +288,7 @@ class Requirements {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function notice_unsupported_wp_version() {
+	public static function notice_unsupported_wp_version(): void {
 
 		global $wp_version;
 
@@ -304,7 +304,7 @@ class Requirements {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function notice_not_multisite() {
+	public static function notice_not_multisite(): void {
 
 		$message = __('WP Multisite WaaS requires a multisite install to run properly. To know more about WordPress Networks, visit this link: <a href="https://wordpress.org/support/article/create-a-network/">Create a Network &rarr;</a>', 'wp-ultimo');
 
@@ -317,7 +317,7 @@ class Requirements {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function notice_not_network_active() {
+	public static function notice_not_network_active(): void {
 
 		// translators: %s is a placeholder for the Network Admin plugins page URL.
 		$message = sprintf(__('WP Multisite WaaS needs to be network active to run properly. You can "Network Activate" it <a href="%s">here</a>', 'wp-ultimo'), network_admin_url('plugins.php'));

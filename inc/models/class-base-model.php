@@ -62,7 +62,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $meta_fields = array();
+	protected $meta_fields = [];
 
 	/**
 	 * Model creation date.
@@ -86,7 +86,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	public $meta = array();
+	public $meta = [];
 
 	/**
 	 * The ID of the original 1.X model that was used to generate this item on migration.
@@ -118,7 +118,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $_mappings = array();
+	protected $_mappings = [];
 
 	/**
 	 * Mocked status. Used to suppress errors.
@@ -165,7 +165,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 *
 	 * @param mixed $slug The slug.
 	 */
-	public function set_slug($slug) {
+	public function set_slug($slug): void {
 
 		$this->slug = $slug;
 	}
@@ -179,7 +179,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function get_hash($field = 'id') {
 
-		$value = call_user_func(array($this, "get_{$field}"));
+		$value = call_user_func([$this, "get_{$field}"]);
 
 		if ( ! is_numeric($value)) {
 			_doing_it_wrong(__METHOD__, __('You can only use numeric fields to generate hashes.', 'wp-ultimo'), '2.0.0');
@@ -232,13 +232,13 @@ abstract class Base_Model implements \JsonSerializable {
 			}
 
 			if (method_exists($this, "set_$key")) {
-				call_user_func(array($this, "set_$key"), $value);
+				call_user_func([$this, "set_$key"], $value);
 			}
 
 			$mapping = wu_get_isset($this->_mappings, $key);
 
 			if ($mapping && method_exists($this, "set_$mapping")) {
-				call_user_func(array($this, "set_$mapping"), $value);
+				call_user_func([$this, "set_$mapping"], $value);
 			}
 		}
 
@@ -376,7 +376,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param array $query Arguments for the query.
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
-	public static function get_items_as_array($query = array()) {
+	public static function get_items_as_array($query = []) {
 
 		$instance = new static();
 
@@ -406,12 +406,12 @@ abstract class Base_Model implements \JsonSerializable {
 	public function has_running_jobs() {
 
 		$jobs = wu_get_scheduled_actions(
-			array(
+			[
 				'status' => \ActionScheduler_Store::STATUS_RUNNING,
-				'args'   => array(
+				'args'   => [
 					"{$this->model}_id" => $this->get_id(),
-				),
-			)
+				],
+			]
 		);
 
 		return $jobs;
@@ -424,7 +424,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param integer $id ID of the object.
 	 * @return void
 	 */
-	private function set_id($id) {
+	private function set_id($id): void {
 
 		$this->id = $id;
 	}
@@ -441,7 +441,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function validation_rules() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -492,7 +492,7 @@ abstract class Base_Model implements \JsonSerializable {
 
 		$data_unserialized = $data;
 
-		$meta = wu_get_isset($data, 'meta', array());
+		$meta = wu_get_isset($data, 'meta', []);
 
 		$new = ! $this->exists();
 
@@ -507,10 +507,10 @@ abstract class Base_Model implements \JsonSerializable {
 		 */
 		$meta = apply_filters("wu_{$this->model}_meta_pre_save", $meta, $data_unserialized, $this);
 
-		$blocked_attributes = array(
+		$blocked_attributes = [
 			'query_class',
 			'meta',
-		);
+		];
 
 		foreach ($blocked_attributes as $attribute) {
 			unset($data[ $attribute ]);
@@ -805,7 +805,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param array $args Query arguments.
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
-	public static function query($args = array()) {
+	public static function query($args = []) {
 
 		$instance = new static();
 
@@ -835,7 +835,7 @@ abstract class Base_Model implements \JsonSerializable {
 		unset($array['_mocked']);
 
 		foreach ($array as $key => $value) {
-			if (strncmp('_', $key, strlen($key)) === 0) {
+			if (str_starts_with('_', $key)) {
 				unset($array[ $key ]);
 			}
 		}
@@ -864,7 +864,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	protected static function to_instances($data) {
 
-		return array_map(array(get_called_class(), 'to_instance'), $data);
+		return array_map([static::class, 'to_instance'], $data);
 	}
 
 	/**
@@ -931,7 +931,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param string $date_created Model creation date.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -943,7 +943,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param string $date_modified Model last modification date.
 	 * @return void
 	 */
-	public function set_date_modified($date_modified) {
+	public function set_date_modified($date_modified): void {
 
 		$this->date_modified = $date_modified;
 	}
@@ -966,7 +966,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param int $migrated_from_id The ID of the original 1.X model that was used to generate this item on migration.
 	 * @return void
 	 */
-	public function set_migrated_from_id($migrated_from_id) {
+	public function set_migrated_from_id($migrated_from_id): void {
 
 		$this->migrated_from_id = absint($migrated_from_id);
 	}
@@ -1034,7 +1034,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param array $query_args If you need to select a type to get all.
 	 * @return array With all items requested.
 	 */
-	public static function get_all($query_args = array()) {
+	public static function get_all($query_args = []) {
 
 		$instance = new static();
 
@@ -1072,7 +1072,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hydrate() {
+	public function hydrate(): void {
 
 		$attributes = get_object_vars($this);
 		$attributes = array_filter($attributes, fn ($value) => $value === null);
@@ -1080,10 +1080,10 @@ abstract class Base_Model implements \JsonSerializable {
 		unset($attributes['meta']);
 
 		foreach ($attributes as $attribute => $maybe_null) {
-			$possible_setters = array(
+			$possible_setters = [
 				"get_{$attribute}",
 				"is_{$attribute}",
-			);
+			];
 
 			foreach ($possible_setters as $setter) {
 				$setter = method_exists($this, $setter) ? $setter : '';
@@ -1106,7 +1106,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 * @param boolean $skip_validation Set true to have field information validation bypassed when saving this event.
 	 * @return void
 	 */
-	public function set_skip_validation($skip_validation = false) {
+	public function set_skip_validation($skip_validation = false): void {
 
 		$this->skip_validation = $skip_validation;
 	}

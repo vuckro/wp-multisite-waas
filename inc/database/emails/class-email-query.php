@@ -46,7 +46,7 @@ class Email_Query extends Post_Query {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $item_shape = '\\WP_Ultimo\\Models\\Email';
+	protected $item_shape = \WP_Ultimo\Models\Email::class;
 
 	/**
 	 * Group to cache queries and queried items in.
@@ -73,9 +73,9 @@ class Email_Query extends Post_Query {
 	 * @param array $query Query parameters being passed.
 	 * @return array
 	 */
-	public function query($query = array()) {
+	public function query($query = []) {
 
-		$query['type__in'] = array('system_email');
+		$query['type__in'] = ['system_email'];
 
 		return parent::query($query);
 	}

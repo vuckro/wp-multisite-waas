@@ -274,10 +274,10 @@
 					echo esc_attr(
 						wu_get_form_url(
 							'see_product_details',
-							array(
+							[
 								'product' => $addon['product']->get_slug(),
 								'width'   => 500,
-							)
+							]
 						)
 					);
 					?>
@@ -298,11 +298,11 @@
 					echo esc_attr(
 						wu_get_form_url(
 							'edit_membership_product_modal',
-							array(
+							[
 								'membership' => $membership->get_hash(),
 								'product'    => $addon['product']->get_slug(),
 								'width'      => 500,
-							)
+							]
 						)
 					);
 					?>

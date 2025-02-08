@@ -30,7 +30,7 @@ if ( ! defined('ABSPATH')) {
  */
 $plan_attrs = '';
 
-foreach (array(1, 3, 12) as $type) {
+foreach ([1, 3, 12] as $type) {
 	$price       = $plan->free ? __('Free!', 'wp-ultimo') : str_replace(wu_get_currency_symbol(), '', wu_format_currency((((float) $plan->{'price_' . $type}) / $type)));
 	$plan_attrs .= " data-price-$type='$price'";
 } // end foreach;
@@ -65,7 +65,7 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	<?php else : ?>
 
 	<h5>
-		<?php $symbol_left = in_array(wu_get_setting('currency_position', '%s%v'), array('%s%v', '%s %v')); ?>
+		<?php $symbol_left = in_array(wu_get_setting('currency_position', '%s%v'), ['%s%v', '%s %v']); ?>
 		<?php
 		if ($symbol_left) :
 			?>
@@ -88,10 +88,10 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	 *
 	 * Display quarterly and Annually plans, to be hidden
 	 */
-	$prices_total = array(
+	$prices_total = [
 		3  => __('every 3 months', 'wp-ultimo'),
 		12 => __('yearly', 'wp-ultimo'),
-	);
+	];
 
 	foreach ($prices_total as $freq => $string) {
 		$text = sprintf(__('%1$s, billed %2$s', 'wp-ultimo'), wu_format_currency($plan->{"price_$freq"}), $string);

@@ -47,9 +47,9 @@ function wu_get_tax_category($tax_category = 'default') {
 	return wu_get_isset(
 		$tax_categories,
 		$tax_category,
-		array(
-			'rates' => array(),
-		)
+		[
+			'rates' => [],
+		]
 	);
 }
 /**
@@ -128,12 +128,12 @@ function wu_get_tax_amount($base_price, $amount, $type, $format = true, $inclusi
 function wu_get_applicable_tax_rates($country, $tax_category = 'default', $state = '*', $city = '*') {
 
 	if ( ! $country) {
-		return array();
+		return [];
 	}
 
 	$tax_category = wu_get_tax_category($tax_category);
 
-	$results = array();
+	$results = [];
 
 	foreach ($tax_category['rates'] as &$rate) {
 		/*
@@ -144,11 +144,11 @@ function wu_get_applicable_tax_rates($country, $tax_category = 'default', $state
 
 		$keys_of_interest = array_intersect_key(
 			$rate,
-			array(
+			[
 				'country' => 1,
 				'state'   => 1,
 				'city'    => 1,
-			)
+			]
 		);
 
 		$priority = 0;

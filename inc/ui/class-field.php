@@ -25,7 +25,7 @@ class Field implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $atts = array();
+	protected $atts = [];
 
 	/**
 	 * Holds the value of the settings represented by this field.
@@ -57,11 +57,11 @@ class Field implements \JsonSerializable {
 	 * @param array  $atts Field attributes.
 	 * @return void
 	 */
-	public function set_attributes($id, $atts) {
+	public function set_attributes($id, $atts): void {
 
 		$this->atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'id'                => $id,
 				'type'              => 'text',
 				'icon'              => 'dashicons-wu-cog',
@@ -102,14 +102,14 @@ class Field implements \JsonSerializable {
 				'columns'           => 1,
 				'classes'           => '',
 				'wrapper_classes'   => '',
-				'html_attr'         => array(),
-				'wrapper_html_attr' => array(),
-				'sub_fields'        => array(),
+				'html_attr'         => [],
+				'wrapper_html_attr' => [],
+				'sub_fields'        => [],
 				'prefix'            => '',
 				'suffix'            => '',
-				'prefix_html_attr'  => array(),
-				'suffix_html_attr'  => array(),
-			)
+				'prefix_html_attr'  => [],
+				'suffix_html_attr'  => [],
+			]
 		);
 	}
 
@@ -122,7 +122,7 @@ class Field implements \JsonSerializable {
 	 * @param mixed  $value The new attribute value.
 	 * @return void
 	 */
-	public function set_attribute($att, $value) {
+	public function set_attribute($att, $value): void {
 
 		$this->atts[ $att ] = $value;
 	}
@@ -153,18 +153,18 @@ class Field implements \JsonSerializable {
 	 */
 	public function get_compat_template_name() {
 
-		$aliases = array(
+		$aliases = [
 			'heading'             => 'header',
 			'heading_collapsible' => 'header',
 			'select2'             => 'select',
 			'checkbox'            => 'toggle',
-		);
+		];
 
-		$deprecated = array(
+		$deprecated = [
 			'heading',
 			'heading_collapsible',
 			'select2',
-		);
+		];
 
 		if (array_key_exists($this->type, $aliases)) {
 			$new_type_name = $aliases[ $this->type ];
@@ -204,7 +204,7 @@ class Field implements \JsonSerializable {
 
 		$compat_name = $this->get_compat_template_name();
 
-		$view_name = $compat_name ? $compat_name : $this->type;
+		$view_name = $compat_name ?: $this->type;
 
 		return str_replace('_', '-', (string) $view_name);
 	}
@@ -219,7 +219,7 @@ class Field implements \JsonSerializable {
 	 */
 	public function __get($att) {
 
-		$allowed_callable = array(
+		$allowed_callable = [
 			'title',
 			'desc',
 			'content',
@@ -232,11 +232,11 @@ class Field implements \JsonSerializable {
 			'value',
 			'html_attr',
 			'img',
-		);
+		];
 
-		$attr = isset($this->atts[ $att ]) ? $this->atts[ $att ] : false;
+		$attr = $this->atts[ $att ] ?? false;
 
-		$allow_callable_prefix = is_string($attr) && strncmp($attr, 'wu_get_', strlen('wu_get_')) === 0 && is_callable($attr);
+		$allow_callable_prefix = is_string($attr) && str_starts_with($attr, 'wu_get_') && is_callable($attr);
 		$allow_callable_method = is_array($attr) && is_callable($attr);
 
 		if (in_array($att, $allowed_callable, true) && ($allow_callable_prefix || $allow_callable_method || is_a($attr, \Closure::class))) {
@@ -278,17 +278,17 @@ class Field implements \JsonSerializable {
 	 */
 	protected function sanitization_rules() {
 
-		$rules = array(
+		$rules = [
 			'text'           => 'sanitize_text_field',
 			'header'         => '__return_null',
-			'number'         => array($this, 'validate_number_field'),
-			'wp_editor'      => array($this, 'validate_textarea_field'),
-			'textarea'       => array($this, 'validate_textarea_field'),
+			'number'         => [$this, 'validate_number_field'],
+			'wp_editor'      => [$this, 'validate_textarea_field'],
+			'textarea'       => [$this, 'validate_textarea_field'],
 			'checkbox'       => 'wu_string_to_bool',
 			'multi_checkbox' => false,
 			'select2'        => false,
 			'multiselect'    => false,
-		);
+		];
 
 		return apply_filters('wu_settings_fields_sanitization_rules', $rules);
 	}
@@ -332,11 +332,11 @@ class Field implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function sanitize() {
+	public function sanitize(): void {
 
 		$rules = $this->sanitization_rules();
 
-		$sanitize_method = isset($rules[ $this->type ]) ? $rules[ $this->type ] : $rules['text'];
+		$sanitize_method = $rules[ $this->type ] ?? $rules['text'];
 
 		if ($sanitize_method) {
 			$this->value = call_user_func($sanitize_method, $this->value);

@@ -69,9 +69,9 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'capability_here',
-	);
+	];
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -79,12 +79,12 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		add_meta_box(
 			'wp-ultimo-debug-pages',
 			__('All Registered Pages', 'wp-ultimo'),
-			array($this, 'render_debug_pages'),
+			[$this, 'render_debug_pages'],
 			get_current_screen()->id,
 			'normal',
 			null
@@ -97,7 +97,7 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_debug_pages() {
+	public function render_debug_pages(): void {
 
 		$pages = Debug::get_instance()->get_pages();
 
@@ -157,15 +157,15 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		wu_get_template(
 			'base/dash',
-			array(
+			[
 				'page'              => $this,
 				'screen'            => get_current_screen(),
 				'has_full_position' => false,
-			)
+			]
 		);
 	}
 }

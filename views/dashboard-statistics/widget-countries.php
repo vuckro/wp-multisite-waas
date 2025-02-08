@@ -11,28 +11,28 @@
 
 <?php
 
-$data    = array();
+$data    = [];
 $slug    = 'signup_countries';
-$headers = array(
+$headers = [
 	__('Country', 'wp-ultimo'),
 	__('Customer Count', 'wp-ultimo'),
-);
+];
 
 foreach ($countries as $country_code => $count) {
-	$line = array(
+	$line = [
 		wu_get_country_name($country_code),
 		$count,
-	);
+	];
 
 	$data[] = $line;
 } // end foreach;
 
 $page->render_csv_button(
-	array(
+	[
 		'headers' => $headers,
 		'data'    => $data,
 		'slug'    => $slug,
-	)
+	]
 );
 
 ?>

@@ -62,9 +62,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_settings',
-	);
+	];
 
 	/**
 	 * Should we hide admin notices on this page?
@@ -104,7 +104,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_enqueue_editor();
 
@@ -130,56 +130,56 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
 		wu_register_settings_side_panel(
 			'login-and-registration',
-			array(
+			[
 				'title'  => __('Checkout Forms', 'wp-ultimo'),
-				'render' => array($this, 'render_checkout_forms_side_panel'),
-			)
+				'render' => [$this, 'render_checkout_forms_side_panel'],
+			]
 		);
 
 		wu_register_settings_side_panel(
 			'sites',
-			array(
+			[
 				'title'  => __('Template Previewer', 'wp-ultimo'),
-				'render' => array($this, 'render_site_template_side_panel'),
-			)
+				'render' => [$this, 'render_site_template_side_panel'],
+			]
 		);
 
 		wu_register_settings_side_panel(
 			'sites',
-			array(
+			[
 				'title'  => __('Placeholder Editor', 'wp-ultimo'),
-				'render' => array($this, 'render_site_placeholders_side_panel'),
-			)
+				'render' => [$this, 'render_site_placeholders_side_panel'],
+			]
 		);
 
 		wu_register_settings_side_panel(
 			'payment-gateways',
-			array(
+			[
 				'title'  => __('Invoices', 'wp-ultimo'),
-				'render' => array($this, 'render_invoice_side_panel'),
-			)
+				'render' => [$this, 'render_invoice_side_panel'],
+			]
 		);
 
 		wu_register_settings_side_panel(
 			'emails',
-			array(
+			[
 				'title'  => __('System Emails', 'wp-ultimo'),
-				'render' => array($this, 'render_system_emails_side_panel'),
-			)
+				'render' => [$this, 'render_system_emails_side_panel'],
+			]
 		);
 
 		wu_register_settings_side_panel(
 			'emails',
-			array(
+			[
 				'title'  => __('Email Template', 'wp-ultimo'),
-				'render' => array($this, 'render_email_template_side_panel'),
-			)
+				'render' => [$this, 'render_email_template_side_panel'],
+			]
 		);
 	}
 
@@ -189,7 +189,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_checkout_forms_side_panel() {
+	public function render_checkout_forms_side_panel(): void {
 		?>
 
 		<div class="wu-widget-inset">
@@ -201,7 +201,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Checkout Forms', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/checkout-forms.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Checkout Forms', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/checkout-forms.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -231,7 +231,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_site_template_side_panel() {
+	public function render_site_template_side_panel(): void {
 
 		?>
 
@@ -244,7 +244,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Customize the Template Previewer', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/site-template.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Customize the Template Previewer', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/site-template.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -274,7 +274,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_site_placeholders_side_panel() {
+	public function render_site_placeholders_side_panel(): void {
 
 		?>
 
@@ -287,7 +287,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Customize the Template Placeholders', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/template-placeholders.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Customize the Template Placeholders', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/template-placeholders.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -317,7 +317,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_invoice_side_panel() {
+	public function render_invoice_side_panel(): void {
 
 		?>
 
@@ -330,7 +330,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Customize the Invoice Template', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/invoice-template.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Customize the Invoice Template', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/invoice-template.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -360,7 +360,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_system_emails_side_panel() {
+	public function render_system_emails_side_panel(): void {
 
 		?>
 
@@ -373,7 +373,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Customize System Emails', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/system-emails.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Customize System Emails', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/system-emails.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -403,7 +403,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_email_template_side_panel() {
+	public function render_email_template_side_panel(): void {
 
 		?>
 
@@ -416,7 +416,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Customize Email Template', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/email-template.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Customize Email Template', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/email-template.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -470,7 +470,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Enqueue the base Dashboard Scripts
 		 */
@@ -486,14 +486,14 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 
 		wu_get_template(
 			'base/settings',
-			array(
+			[
 				'screen'               => get_current_screen(),
 				'page'                 => $this,
 				'classes'              => '',
 				'sections'             => $this->get_sections(),
 				'current_section'      => $this->get_current_section(),
 				'clickable_navigation' => $this->clickable_navigation,
-			)
+			]
 		);
 	}
 
@@ -514,14 +514,14 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function default_handler() {
+	public function default_handler(): void {
 
 		if ( ! current_user_can('wu_edit_settings')) {
 			wp_die(__('You do not have the permissions required to change settings.', 'wp-ultimo'));
 		}
 
 		if ( ! isset($_POST['active_gateways']) && wu_request('tab') === 'payment-gateways') {
-			$_POST['active_gateways'] = array();
+			$_POST['active_gateways'] = [];
 		}
 
 		WP_Ultimo()->settings->save_settings($_POST);
@@ -537,7 +537,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function default_view() {
+	public function default_view(): void {
 
 		$sections = $this->get_sections();
 
@@ -552,15 +552,15 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		/*
 		 * Get Field to save
 		 */
-		$fields['save'] = array(
+		$fields['save'] = [
 			'type'            => 'submit',
 			'title'           => __('Save Settings', 'wp-ultimo'),
 			'classes'         => 'button button-primary button-large wu-ml-auto wu-w-full md:wu-w-auto',
 			'wrapper_classes' => 'wu-sticky wu-bottom-0 wu-save-button wu-mr-px wu-w-full md:wu-w-auto',
-			'html_attr'       => array(
+			'html_attr'       => [
 				'v-on:click' => 'send("window", "wu_block_ui", "#wpcontent")',
-			),
-		);
+			],
+		];
 
 		if ( ! current_user_can('wu_edit_settings')) {
 			$fields['save']['html_attr']['disabled'] = 'disabled';
@@ -569,17 +569,17 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		$form = new Form(
 			$section_slug,
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu--mt-5 wu--mx-in wu--mb-in',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-py-5 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'style'        => '',
 					'data-on-load' => 'remove_block_ui',
 					'data-wu-app'  => str_replace('-', '_', $section_slug),
 					'data-state'   => json_encode(wu_array_map_keys('wu_replace_dashes', Settings::get_instance()->get_all(true))),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();

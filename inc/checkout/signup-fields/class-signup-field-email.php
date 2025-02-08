@@ -115,9 +115,9 @@ class Signup_Field_Email extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'display_notices' => true,
-		);
+		];
 	}
 
 	/**
@@ -128,11 +128,11 @@ class Signup_Field_Email extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
 			'placeholder',
 			'tooltip',
-		);
+		];
 	}
 
 	/**
@@ -143,10 +143,10 @@ class Signup_Field_Email extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'email_address',
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -157,18 +157,18 @@ class Signup_Field_Email extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'display_notices' => array(
+		return [
+			'display_notices' => [
 				'type'      => 'toggle',
 				'title'     => __('Display Notices', 'wp-ultimo'),
 				'desc'      => __('When the customer is already logged in, a box with the customer\'s username and a link to logout is displayed instead of the email field. Disable this option if you do not want that box to show up.', 'wp-ultimo'),
 				'tooltip'   => '',
 				'value'     => 1,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'display_notices',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -181,34 +181,34 @@ class Signup_Field_Email extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
 		if (is_user_logged_in()) {
 			if ($attributes['display_notices']) {
-				$checkout_fields['login_note'] = array(
+				$checkout_fields['login_note'] = [
 					'type'              => 'note',
 					'title'             => __('Not you?', 'wp-ultimo'),
-					'desc'              => array($this, 'render_not_you_customer_message'),
+					'desc'              => [$this, 'render_not_you_customer_message'],
 					'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
-					'wrapper_html_attr' => array(
+					'wrapper_html_attr' => [
 						'style' => $this->calculate_style_attr(),
-					),
-				);
+					],
+				];
 			}
 		} else {
 			if ($attributes['display_notices']) {
-				$checkout_fields['login_note'] = array(
+				$checkout_fields['login_note'] = [
 					'type'              => 'note',
 					'title'             => __('Existing customer?', 'wp-ultimo'),
-					'desc'              => array($this, 'render_existing_customer_message'),
+					'desc'              => [$this, 'render_existing_customer_message'],
 					'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
-					'wrapper_html_attr' => array(
+					'wrapper_html_attr' => [
 						'style' => $this->calculate_style_attr(),
-					),
-				);
+					],
+				];
 			}
 
-			$checkout_fields['email_address'] = array(
+			$checkout_fields['email_address'] = [
 				'type'              => 'text',
 				'id'                => 'email_address',
 				'name'              => $attributes['name'],
@@ -218,10 +218,10 @@ class Signup_Field_Email extends Base_Signup_Field {
 				'required'          => true,
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			);
+				],
+			];
 		}
 
 		return $checkout_fields;

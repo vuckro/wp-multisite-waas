@@ -130,66 +130,66 @@ class My_Sites_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['site_manage_type'] = array(
+		$fields['site_manage_type'] = [
 			'type'    => 'select',
 			'title'   => __('Site Manage Type', 'wp-ultimo'),
 			'desc'    => __('The page to manage a site.', 'wp-ultimo'),
 			'tooltip' => '',
 			'default' => 'default',
-			'options' => array(
+			'options' => [
 				'default'     => __('Same Page', 'wp-ultimo'),
 				'wp_admin'    => __('WP Admin', 'wp-ultimo'),
 				'custom_page' => __('Custom Page', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
-		$fields['site_show'] = array(
+		$fields['site_show'] = [
 			'type'    => 'select',
 			'title'   => __('Which sites to show?', 'wp-ultimo'),
 			'desc'    => __('Select which sites should be listed for user.', 'wp-ultimo'),
 			'tooltip' => '',
 			'default' => 'all',
-			'options' => array(
+			'options' => [
 				'all'   => __('All', 'wp-ultimo'),
 				'owned' => __('Owned', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 
 		$pages = get_pages(
-			array(
-				'exclude' => array(get_the_ID()),
-			)
+			[
+				'exclude' => [get_the_ID()],
+			]
 		);
 
-		$pages = $pages ? $pages : array();
+		$pages = $pages ?: [];
 
-		$pages_list = array(0 => __('Current Page', 'wp-ultimo'));
+		$pages_list = [0 => __('Current Page', 'wp-ultimo')];
 
 		foreach ($pages as $page) {
 			$pages_list[ $page->ID ] = $page->post_title;
 		}
 
-		$fields['custom_manage_page'] = array(
+		$fields['custom_manage_page'] = [
 			'type'     => 'select',
 			'title'    => __('Manage Redirect Page', 'wp-ultimo'),
 			'value'    => 0,
 			'desc'     => __('The page to redirect user after select a site.', 'wp-ultimo'),
 			'tooltip'  => '',
-			'required' => array(
+			'required' => [
 				'site_manage_type' => 'custom_page',
-			),
+			],
 			'options'  => $pages_list,
-		);
+		];
 
-		$fields['columns'] = array(
+		$fields['columns'] = [
 			'type'    => 'number',
 			'title'   => __('Columns', 'wp-ultimo'),
 			'desc'    => __('How many columns to use.', 'wp-ultimo'),
@@ -197,15 +197,15 @@ class My_Sites_Element extends Base_Element {
 			'value'   => 4,
 			'min'     => 1,
 			'max'     => 5,
-		);
+		];
 
-		$fields['display_images'] = array(
+		$fields['display_images'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Site Screenshot?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the site screenshots on the element.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
 		return $fields;
 	}
@@ -229,13 +229,13 @@ class My_Sites_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Site',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -254,13 +254,13 @@ class My_Sites_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'columns'            => 4,
 			'display_images'     => 1,
 			'site_manage_type'   => 'default',
 			'custom_manage_page' => 0,
 			'site_show'          => 'owned',
-		);
+		];
 	}
 
 	/**
@@ -269,7 +269,7 @@ class My_Sites_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_enqueue_style('wu-admin');
 	}
@@ -280,7 +280,7 @@ class My_Sites_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		global $wpdb;
 
@@ -299,14 +299,14 @@ class My_Sites_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->customer = wu_mock_customer();
 
-		$this->sites = array(
+		$this->sites = [
 			wu_mock_site(1),
 			wu_mock_site(2),
-		);
+		];
 	}
 
 	/**
@@ -343,14 +343,14 @@ class My_Sites_Element extends Base_Element {
 			return $this->sites;
 		}
 
-		$this->sites = apply_filters('wp_ultimo_pre_my_sites_sites', array(), $show);
+		$this->sites = apply_filters('wp_ultimo_pre_my_sites_sites', [], $show);
 
 		if ( ! empty($this->sites)) {
 			return $this->sites;
 		}
 
 		if ( ! empty($this->customer)) {
-			$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending', array('customer_id' => $this->customer->get_id()));
+			$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending', ['customer_id' => $this->customer->get_id()]);
 
 			$customer_sites = array_reduce(
 				$this->customer->get_sites(),
@@ -367,7 +367,7 @@ class My_Sites_Element extends Base_Element {
 			$user_sites = array_reduce(
 				$wp_user_sites,
 				function ($user_sites, $wp_site) use ($customer_sites) {
-					if ( ! array_key_exists($wp_site->userblog_id, $customer_sites ?? array()) && $wp_site->userblog_id !== get_main_site_id()) {
+					if ( ! array_key_exists($wp_site->userblog_id, $customer_sites ?? []) && $wp_site->userblog_id !== get_main_site_id()) {
 						$wu_site = wu_get_site($wp_site->userblog_id);
 						$wu_site->set_membership_id(0);
 						$user_sites[ $wp_site->userblog_id ] = $wu_site;
@@ -378,9 +378,9 @@ class My_Sites_Element extends Base_Element {
 		}
 
 		$sites = array_merge(
-			$pending_sites ?? array(),
-			$customer_sites ?? array(),
-			$user_sites ?? array(),
+			$pending_sites ?? [],
+			$customer_sites ?? [],
+			$user_sites ?? [],
 		);
 
 		$this->sites = apply_filters('wp_ultimo_after_my_sites_sites', $sites, $show);
@@ -413,9 +413,9 @@ class My_Sites_Element extends Base_Element {
 			$site_hash = \WP_Ultimo\Helpers\Hash::encode($site_id, 'site');
 
 			return add_query_arg(
-				array(
+				[
 					$url_param => $site_hash,
-				),
+				],
 				$custom_page
 			);
 		}
@@ -441,9 +441,9 @@ class My_Sites_Element extends Base_Element {
 		if ($membership) {
 			if ($url) {
 				return add_query_arg(
-					array(
+					[
 						'membership' => $membership->get_hash(),
-					),
+					],
 					$url
 				);
 			}
@@ -453,9 +453,9 @@ class My_Sites_Element extends Base_Element {
 
 				if ( ! empty($sites)) {
 					return add_query_arg(
-						array(
+						[
 							'page' => 'add-new-site',
-						),
+						],
 						get_admin_url($sites[0]->get_id())
 					);
 				}

@@ -28,10 +28,10 @@ class Customers_Schema extends Schema {
 	 * @access public
 	 * @var array
 	 */
-	public $columns = array(
+	public $columns = [
 
 		// id
-		array(
+		[
 			'name'       => 'id',
 			'type'       => 'bigint',
 			'length'     => '20',
@@ -40,27 +40,27 @@ class Customers_Schema extends Schema {
 			'primary'    => true,
 			'sortable'   => true,
 			'searchable' => true,
-		),
+		],
 
 		// user_id
-		array(
+		[
 			'name'       => 'user_id',
 			'type'       => 'bigint',
 			'length'     => '20',
 			'unsigned'   => true,
 			'searchable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'type',
 			'type'       => 'varchar',
 			'default'    => 'customer',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
 		// date_registered
-		array(
+		[
 			'name'       => 'date_registered',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -68,28 +68,28 @@ class Customers_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
 		// email_verification
-		array(
+		[
 			'name'       => 'email_verification',
 			'type'       => 'enum(\'verified\', \'pending\', \'none\')',
 			'default'    => 'none',
 			'transition' => true,
-		),
+		],
 
 		// last_login
-		array(
+		[
 			'name'       => 'last_login',
 			'type'       => 'datetime',
 			'default'    => null,
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
 		// has_trialed
-		array(
+		[
 			'name'       => 'has_trialed',
 			'type'       => 'smallint',
 			'length'     => '',
@@ -97,10 +97,10 @@ class Customers_Schema extends Schema {
 			'default'    => null,
 			'transition' => true,
 			'allow_null' => true,
-		),
+		],
 
 		// vip
-		array(
+		[
 			'name'       => 'vip',
 			'type'       => 'smallint',
 			'length'     => '',
@@ -108,25 +108,25 @@ class Customers_Schema extends Schema {
 			'default'    => 0,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
 		// ips
-		array(
+		[
 			'name'       => 'ips',
 			'type'       => 'longtext',
 			'default'    => '',
 			'searchable' => true,
 			'allow_null' => true,
-		),
+		],
 
 		// Added on 2.0 beta 7
-		array(
+		[
 			'name'       => 'signup_form',
 			'type'       => 'varchar',
 			'default'    => 'by-admin',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-	);
+	];
 }

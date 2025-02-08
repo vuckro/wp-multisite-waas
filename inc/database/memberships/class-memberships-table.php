@@ -50,9 +50,9 @@ final class Memberships_Table extends Table {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = array(
+	protected $upgrades = [
 		'2.0.1-revision.20230601' => 20_230_601,
-	);
+	];
 
 	/**
 	 * Memberships constructor.
@@ -73,7 +73,7 @@ final class Memberships_Table extends Table {
 	 * @since  2.0.0
 	 * @return void
 	 */
-	protected function set_schema() {
+	protected function set_schema(): void {
 
 		$this->schema = "id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			customer_id bigint(20) unsigned NOT NULL default '0',
@@ -119,7 +119,7 @@ final class Memberships_Table extends Table {
 	 */
 	protected function __20230601(): bool {
 
-		$null_columns = array(
+		$null_columns = [
 			'date_created',
 			'date_activated',
 			'date_trial_end',
@@ -128,7 +128,7 @@ final class Memberships_Table extends Table {
 			'date_expiration',
 			'date_payment_plan_completed',
 			'date_modified',
-		);
+		];
 
 		foreach ($null_columns as $column) {
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";

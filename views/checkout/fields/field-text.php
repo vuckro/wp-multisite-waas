@@ -16,9 +16,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-title',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>
@@ -27,7 +27,7 @@
 
 	<div class="sm:wu-flex wu-items-stretch wu-content-center">
 
-		<div <?php echo wu_array_to_html_attrs($field->prefix_html_attr ?? array()); ?>>
+		<div <?php echo wu_array_to_html_attrs($field->prefix_html_attr ?? []); ?>>
 		<?php echo $field->prefix; ?>
 		</div>
 
@@ -37,7 +37,7 @@
 
 	<?php if ($field->suffix) : ?>
 
-	<div <?php echo wu_array_to_html_attrs($field->suffix_html_attr ?? array()); ?>>
+	<div <?php echo wu_array_to_html_attrs($field->suffix_html_attr ?? []); ?>>
 		<?php echo $field->suffix; ?>
 	</div>
 
@@ -58,9 +58,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-errors',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>

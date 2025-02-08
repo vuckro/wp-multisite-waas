@@ -109,10 +109,10 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'order_bump_template'         => 'simple',
 			'display_product_description' => 0,
-		);
+		];
 	}
 
 	/**
@@ -123,10 +123,10 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			// 'id',
 			'name',
-		);
+		];
 	}
 
 	/**
@@ -137,9 +137,9 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'order_bump_template' => 'simple',
-		);
+		];
 	}
 
 	/**
@@ -163,37 +163,37 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields = array(
-			'product'                     => array(
+		$editor_fields = [
+			'product'                     => [
 				'type'        => 'model',
 				'title'       => __('Product', 'wp-ultimo'),
 				'placeholder' => __('e.g. Premium', 'wp-ultimo'),
 				'desc'        => __('Select the product that will be presented to the customer as an add-on option.', 'wp-ultimo'),
 				'tooltip'     => '',
 				'order'       => 12,
-				'html_attr'   => array(
+				'html_attr'   => [
 					'data-model'        => 'product',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'name',
 					'data-search-field' => 'name',
 					'data-max-items'    => 1,
-				),
-			),
-			'display_product_description' => array(
+				],
+			],
+			'display_product_description' => [
 				'order' => 13,
 				'type'  => 'toggle',
 				'title' => __('Display Product Description', 'wp-ultimo'),
 				'desc'  => __('Toggle to display the product description as well, if one is available.', 'wp-ultimo'),
 				'value' => 0,
-			),
-			'display_product_image'       => array(
+			],
+			'display_product_image'       => [
 				'order' => 14,
 				'type'  => 'toggle',
 				'title' => __('Display Product Image', 'wp-ultimo'),
 				'desc'  => __('Toggle to display the product image as well, if one is available.', 'wp-ultimo'),
 				'value' => 1,
-			),
-		);
+			],
+		];
 
 		// $editor_fields['order_bump_template'] = array(
 		// 'type'   => 'group',
@@ -240,7 +240,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 		$product = is_numeric($product_id) ? wu_get_product($product_id) : wu_get_product_by_slug($product_id);
 
 		if ( ! $product) {
-			return array();
+			return [];
 		}
 
 		$attributes['product'] = $product;
@@ -249,12 +249,12 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 
 		$content = $template_class ? $template_class->render_container($attributes) : __('Template does not exist.', 'wp-ultimo');
 
-		return array(
-			$attributes['id'] => array(
+		return [
+			$attributes['id'] => [
 				'type'            => 'note',
 				'desc'            => $content,
 				'wrapper_classes' => $attributes['element_classes'],
-			),
-		);
+			],
+		];
 	}
 }

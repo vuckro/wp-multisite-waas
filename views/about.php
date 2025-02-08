@@ -54,7 +54,6 @@
 		We also added a bunch of improvements and fixes that go from more translated strings for Spanish, Brazilian Portuguese, and French, to better PHP 8.2 compatibility, to webhook triggering.
 	</p>
 	<div class="wu-inline-block wu-float-right wu-ml-8 wu-mb-4">
-		<img class="wu-block wu-rounded" src="<?php echo wu_get_asset('erasmo-carlos.jpg'); ?>" width="200">
 		<small class="wu-block wu-mt-1">Gilberto Gil</small>
 	</div>
 	<p class="wu-text-lg wu-leading-relaxed">
@@ -90,9 +89,9 @@
 			64,
 			'',
 			'Arindo Duque',
-			array(
+			[
 				'class' => 'wu-rounded-full',
-			)
+			]
 		);
 		?>
 
@@ -108,50 +107,50 @@
 
 	<?php
 
-	$key_people = array(
-		'arindo'         => array(
+	$key_people = [
+		'arindo'         => [
 			'email'     => 'arindo@wpultimo.com',
 			'signature' => 'arindo.png',
 			'name'      => 'Arindo Duque',
 			'position'  => 'Founder and CEO',
-		),
-		'allyson'        => array(
+		],
+		'allyson'        => [
 			'email'     => 'allyson@wpultimo.com',
 			'signature' => '',
 			'name'      => 'Allyson Souza',
 			'position'  => 'Developer',
-		),
-		'anyssa'         => array(
+		],
+		'anyssa'         => [
 			'email'     => 'anyssa@wpultimo.com',
 			'signature' => '',
 			'name'      => 'Anyssa Ferreira',
 			'position'  => 'Designer',
-		),
-		'gustavo'        => array(
+		],
+		'gustavo'        => [
 			'email'     => 'gustavo@wpultimo.com',
 			'signature' => '',
 			'name'      => 'Gustavo Modesto',
 			'position'  => 'Developer',
-		),
-		'juliana'        => array(
+		],
+		'juliana'        => [
 			'email'     => 'juliana@wpultimo.com',
 			'signature' => '',
 			'name'      => 'Juliana Dias Gomes',
 			'position'  => 'Do-it-all',
-		),
-		'lucas-carvalho' => array(
+		],
+		'lucas-carvalho' => [
 			'email'     => 'lucas@wpultimo.com',
 			'signature' => '',
 			'name'      => 'Lucas Carvalho',
 			'position'  => 'Developer',
-		),
-		'yan'            => array(
+		],
+		'yan'            => [
 			'email'     => 'yan@wpultimo.com',
 			'signature' => '',
 			'name'      => 'Yan Kairalla',
 			'position'  => 'Developer',
-		),
-	);
+		],
+	];
 
 	?>
 
@@ -167,9 +166,9 @@
 				64,
 				'',
 				'Arindo Duque',
-				array(
+				[
 					'class' => 'wu-rounded-full',
-				)
+				]
 			);
 			?>
 			<strong class="wu-text-base wu-block"><?php echo $person['name']; ?></strong>

@@ -60,9 +60,9 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Returns the title of the page.
@@ -103,29 +103,29 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		do_action('wu_load_tax_rates_list_page');
 
 		$columns = apply_filters(
 			'wu_tax_rates_columns',
-			array(
+			[
 				'title'    => __('Label', 'wp-ultimo'),
 				'country'  => __('Country', 'wp-ultimo'),
 				'state'    => __('State / Province', 'wp-ultimo'),
 				'city'     => __('City', 'wp-ultimo'),
 				'tax_rate' => __('Tax Rate (%)', 'wp-ultimo'),
 				'move'     => '',
-			)
+			]
 		);
 
 		wu_get_template(
 			'taxes/list',
-			array(
+			[
 				'columns' => $columns,
 				'screen'  => get_current_screen(),
 				'types'   => Tax::get_instance()->get_tax_rate_types(),
-			)
+			]
 		);
 	}
 
@@ -135,25 +135,25 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
-		wp_register_script('wu-tax-rates', wu_get_asset('tax-rates.js', 'js'), array('wu-admin', 'wu-vue', 'underscore', 'wu-selectizer'), wu_get_version(), false);
+		wp_register_script('wu-tax-rates', wu_get_asset('tax-rates.js', 'js'), ['wu-admin', 'wu-vue', 'underscore', 'wu-selectizer'], wu_get_version(), false);
 
 		wp_localize_script(
 			'wu-tax-rates',
 			'wu_tax_ratesl10n',
-			array(
+			[
 				'name'                                => __('Tax', 'wp-ultimo'),
 				'confirm_message'                     => __('Are you sure you want to delete this rows?', 'wp-ultimo'),
 				'confirm_delete_tax_category_message' => __('Are you sure you want to delete this tax category?', 'wp-ultimo'),
-			)
+			]
 		);
 
-		wp_enqueue_script('wu-vue-sortable', '//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js', array(), wu_get_version());
+		wp_enqueue_script('wu-vue-sortable', '//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js', [], wu_get_version());
 
-		wp_enqueue_script('wu-vue-draggable', '//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js', array(), wu_get_version());
+		wp_enqueue_script('wu-vue-draggable', '//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js', [], wu_get_version());
 
 		wp_enqueue_script('wu-tax-rates');
 	}
@@ -168,22 +168,22 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 	 * @param array  $atts Array of attributes to pass to the form.
 	 * @return void
 	 */
-	protected function add_fields_widget($id, $atts = array()) {
+	protected function add_fields_widget($id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'widget_id'             => $id,
 				'before'                => '',
 				'after'                 => '',
 				'title'                 => __('Fields', 'wp-ultimo'),
 				'position'              => 'side',
 				'screen'                => get_current_screen(),
-				'fields'                => array(),
-				'html_attr'             => array(),
+				'fields'                => [],
+				'html_attr'             => [],
 				'classes'               => '',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			)
+			]
 		);
 
 		add_meta_box(
@@ -192,13 +192,13 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 			function () use ($atts) {
 
 				if (wu_get_isset($atts['html_attr'], 'data-wu-app')) {
-					$atts['fields']['loading'] = array(
+					$atts['fields']['loading'] = [
 						'type'              => 'note',
 						'desc'              => sprintf('<div class="wu-block wu-text-center wu-blinking-animation wu-text-gray-600 wu-my-1 wu-text-2xs wu-uppercase wu-font-semibold">%s</div>', __('Loading...', 'wp-ultimo')),
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-if' => 0,
-						),
-					);
+						],
+					];
 				}
 
 				/**
@@ -209,14 +209,14 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 				$form = new \WP_Ultimo\UI\Form(
 					$atts['widget_id'],
 					$atts['fields'],
-					array(
+					[
 						'views'                 => 'admin-pages/fields',
 						'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3 ' . $atts['classes'],
 						'field_wrapper_classes' => $atts['field_wrapper_classes'],
 						'html_attr'             => $atts['html_attr'],
 						'before'                => $atts['before'],
 						'after'                 => $atts['after'],
-					)
+					]
 				);
 
 				$form->render();

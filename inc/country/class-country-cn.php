@@ -73,11 +73,11 @@ class Country_CN extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'CN',
 		'currency'     => 'CNY',
 		'phone_code'   => 86,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -106,7 +106,7 @@ class Country_CN extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AH' => __('Anhui', 'wp-ultimo'),
 			'BJ' => __('Beijing', 'wp-ultimo'),
 			'CQ' => __('Chongqing', 'wp-ultimo'),
@@ -141,6 +141,6 @@ class Country_CN extends Country {
 			'XZ' => __('Xizang', 'wp-ultimo'),
 			'YN' => __('Yunnan', 'wp-ultimo'),
 			'ZJ' => __('Zhejiang', 'wp-ultimo'),
-		);
+		];
 	}
 }

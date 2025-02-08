@@ -14,7 +14,7 @@
 		<a 
 		class="button wu-ml-2 wubox"
 		title="<?php esc_attr_e('Add new Product', 'wp-ultimo'); ?>"
-		href="<?php echo esc_attr(wu_get_form_url('edit_membership_product', array('id' => $membership->get_id()))); ?>"
+		href="<?php echo esc_attr(wu_get_form_url('edit_membership_product', ['id' => $membership->get_id()])); ?>"
 		>
 		<span class="dashicons-wu-circle-with-plus wu-align-text-bottom"></span>
 		<?php _e('Add new Product', 'wp-ultimo'); ?>

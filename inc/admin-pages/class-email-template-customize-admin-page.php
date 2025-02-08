@@ -66,9 +66,9 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_customize_email_template',
-	);
+	];
 
 	/**
 	 * Overrides the init method to add additional hooks.
@@ -76,11 +76,11 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
-		add_action('wp_ajax_wu-email-template-preview', array($this, 'email_template_preview'));
+		add_action('wp_ajax_wu-email-template-preview', [$this, 'email_template_preview']);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function email_template_preview() {
+	public function email_template_preview(): void {
 
 		$object = $this;
 
@@ -151,14 +151,14 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		wu_get_template(
 			'broadcast/emails/base',
-			array(
+			[
 				'site_name'         => get_network_option(null, 'site_name'),
 				'site_url'          => get_site_url(),
 				'logo_url'          => wu_get_network_logo(),
 				'content'           => $content,
 				'subject'           => __('Sample Subject', 'wp-ultimo'),
 				'is_editor'         => true,
-				'template_settings' => array(
+				'template_settings' => [
 					'use_custom_logo'         => wu_string_to_bool(wu_request('use_custom_logo', $first_request ? $object->get_setting('use_custom_logo', false) : false)),
 					'custom_logo'             => wu_request('custom_logo', $object->get_setting('custom_logo', false)),
 					'background_color'        => wu_request('background_color', $object->get_setting('background_color', '#f9f9f9')),
@@ -174,8 +174,8 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 					'footer_color'            => wu_request('footer_color', $object->get_setting('footer_color', '#000000')),
 					'footer_align'            => wu_request('footer_align', $object->get_setting('footer_align', 'center')),
 					'display_company_address' => wu_string_to_bool(wu_request('display_company_address', $first_request ? $object->get_setting('display_company_address', true) : false)),
-				),
-			)
+				],
+			]
 		);
 
 		die;
@@ -192,10 +192,10 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		$url = get_admin_url(wu_get_main_site_id(), 'admin-ajax.php');
 
 		return add_query_arg(
-			array(
+			[
 				'action'     => 'wu-email-template-preview',
 				'customizer' => 1,
-			),
+			],
 			$url
 		);
 	}
@@ -206,22 +206,22 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'html_attr' => array(
+			[
+				'html_attr' => [
 					'data-wu-app' => 'save',
 					'data-state'  => wu_convert_to_state(),
-				),
-				'fields'    => array(
-					'note' => array(
+				],
+				'fields'    => [
+					'note' => [
 						'type' => 'note',
 						'desc' => __('System emails and broadcasts will be sent using this template.', 'wp-ultimo'),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$settings = $this->get_attributes();
@@ -232,273 +232,273 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$custom_logo_url = $custom_logo_args ? $custom_logo_args[0] : '';
 
-		$fields = array(
-			'tab'                     => array(
+		$fields = [
+			'tab'                     => [
 				'type'              => 'tab-select',
 				'wrapper_classes'   => '',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'tab',
-				),
-				'options'           => array(
+				],
+				'options'           => [
 					'header'  => __('Header', 'wp-ultimo'),
 					'content' => __('Content', 'wp-ultimo'),
 					'footer'  => __('Footer', 'wp-ultimo'),
-				),
-			),
-			'use_custom_logo'         => array(
+				],
+			],
+			'use_custom_logo'         => [
 				'type'              => 'toggle',
 				'title'             => __('Use Custom Logo', 'wp-ultimo'),
 				'desc'              => __('You can set a different logo to be used on the system emails.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'use_custom_logo',
-				),
-			),
-			'custom_logo'             => array(
+				],
+			],
+			'custom_logo'             => [
 				'type'              => 'image',
 				'stacked'           => true,
 				'title'             => __('Custom Logo', 'wp-ultimo'),
 				'desc'              => __('The custom logo is used in the email header, if HTML emails are used.', 'wp-ultimo'),
 				'value'             => $custom_logo,
 				'img'               => $custom_logo_url,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header") && require("use_custom_logo", true)',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					// 'v-model' => 'custom_logo',
-				),
-			),
-			'background_color'        => array(
+				],
+			],
+			'background_color'        => [
 				'type'              => 'color-picker',
 				'title'             => __('Background Color', 'wp-ultimo'),
 				'tooltip'           => __('The cover background color of the email.', 'wp-ultimo'),
 				'value'             => '#00a1ff',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'background_color',
-				),
-			),
-			'title_color'             => array(
+				],
+			],
+			'title_color'             => [
 				'type'              => 'color-picker',
 				'title'             => __('Title Color', 'wp-ultimo'),
 				'value'             => '#00a1ff',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'title_color',
-				),
-			),
-			'title_size'              => array(
+				],
+			],
+			'title_size'              => [
 				'type'              => 'select',
 				'title'             => __('Title Size', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'title_size'),
-				'options'           => array(
+				'options'           => [
 					'h1' => __('h1', 'wp-ultimo'),
 					'h2' => __('h2', 'wp-ultimo'),
 					'h3' => __('h3', 'wp-ultimo'),
 					'h4' => __('h4', 'wp-ultimo'),
 					'h5' => __('h5', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'title_size',
-				),
-			),
-			'title_align'             => array(
+				],
+			],
+			'title_align'             => [
 				'type'              => 'select',
 				'title'             => __('Title Align', 'wp-ultimo'),
 				'tooltip'           => __('Aligment of the font in the title.', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'title_align', ''),
-				'options'           => array(
+				'options'           => [
 					'left'   => __('Left', 'wp-ultimo'),
 					'center' => __('Center', 'wp-ultimo'),
 					'right'  => __('Right', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'title_align',
-				),
-			),
-			'title_font'              => array(
+				],
+			],
+			'title_font'              => [
 				'type'              => 'select',
 				'title'             => __('Title Font-Family', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'title_font', ''),
-				'options'           => array(
+				'options'           => [
 					'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif' => __('Helvetica', 'wp-ultimo'),
 					'Arial, Helvetica, sans-serif'       => __('Arial', 'wp-ultimo'),
 					'Times New Roman, Times, serif'      => __('Times New Roman', 'wp-ultimo'),
 					'Lucida Console, Courier, monospace' => __('Lucida', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "header")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'title_font',
-				),
-			),
-			'content_color'           => array(
+				],
+			],
+			'content_color'           => [
 				'type'              => 'color-picker',
 				'title'             => __('Content Color', 'wp-ultimo'),
 				'value'             => '#000000',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "content")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'content_color',
-				),
-			),
-			'content_align'           => array(
+				],
+			],
+			'content_align'           => [
 				'type'              => 'select',
 				'title'             => __('Content Alignment', 'wp-ultimo'),
 				'tooltip'           => __('Alignment of the font in the main email content.', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'content_align', ''),
-				'options'           => array(
+				'options'           => [
 					'left'   => __('Left', 'wp-ultimo'),
 					'center' => __('Center', 'wp-ultimo'),
 					'right'  => __('Right', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "content")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'content_align',
-				),
-			),
-			'content_font'            => array(
+				],
+			],
+			'content_font'            => [
 				'type'              => 'select',
 				'title'             => __('Content Font-Family', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'content_font', ''),
-				'options'           => array(
+				'options'           => [
 					'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif' => __('Helvetica', 'wp-ultimo'),
 					'Arial, Helvetica, sans-serif'       => __('Arial', 'wp-ultimo'),
 					'Times New Roman, Times, serif'      => __('Times New Roman', 'wp-ultimo'),
 					'Lucida Console, Courier, monospace' => __('Lucida', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "content")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'content_font',
-				),
-			),
-			'display_company_address' => array(
+				],
+			],
+			'display_company_address' => [
 				'type'              => 'toggle',
 				'title'             => __('Display Company Address', 'wp-ultimo'),
 				'desc'              => __('Toggle to show/hide your company address.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "footer")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'display_company_address',
-				),
-			),
-			'footer_text'             => array(
+				],
+			],
+			'footer_text'             => [
 				'type'              => 'textarea',
 				'title'             => __('Footer Content', 'wp-ultimo'),
 				'placeholder'       => __('e.g. Extra info in the email footer.', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'footer_text', ''),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "footer")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'footer_text',
-				),
-			),
-			'footer_font'             => array(
+				],
+			],
+			'footer_font'             => [
 				'type'              => 'select',
 				'title'             => __('Footer Font-Family', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'footer_font', ''),
-				'options'           => array(
+				'options'           => [
 					'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif' => __('Helvetica', 'wp-ultimo'),
 					'Arial, Helvetica, sans-serif'       => __('Arial', 'wp-ultimo'),
 					'Times New Roman, Times, serif'      => __('Times New Roman', 'wp-ultimo'),
 					'Lucida Console, Courier, monospace' => __('Lucida', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "footer")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'footer_font',
-				),
-			),
-			'footer_color'            => array(
+				],
+			],
+			'footer_color'            => [
 				'type'              => 'color-picker',
 				'title'             => __('Footer Color', 'wp-ultimo'),
 				'value'             => '#000000',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "footer")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'footer_color',
-				),
-			),
-			'footer_align'            => array(
+				],
+			],
+			'footer_align'            => [
 				'type'              => 'select',
 				'title'             => __('Footer Alignment', 'wp-ultimo'),
 				'tooltip'           => __('Alignment of the font in the main email footer.', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'footer_align', ''),
-				'options'           => array(
+				'options'           => [
 					'left'   => __('Left', 'wp-ultimo'),
 					'center' => __('Center', 'wp-ultimo'),
 					'right'  => __('Right', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "footer")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'footer_align',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$state = array_merge(
 			$settings,
-			array(
+			[
 				'tab'     => 'header',
 				'refresh' => true,
-			)
+			]
 		);
 
 		$this->add_fields_widget(
 			'customizer',
-			array(
+			[
 				'title'     => __('Customizer', 'wp-ultimo'),
 				'position'  => 'side',
 				'fields'    => $fields,
-				'html_attr' => array(
+				'html_attr' => [
 					'style'                    => 'margin-top: -6px;',
 					'data-wu-app'              => 'email_template_customizer',
 					'data-wu-customizer-panel' => true,
 					'data-state'               => json_encode($state),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -532,7 +532,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -543,7 +543,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'customize_label'     => __('Customize Email Template', 'wp-ultimo'),
 			'add_new_label'       => __('Customize Email Template', 'wp-ultimo'),
 			'edit_label'          => __('Edit Email Template', 'wp-ultimo'),
@@ -554,7 +554,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Email Template', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -563,7 +563,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		$_POST['footer_text'] = stripslashes((string) $_POST['footer_text']);
 
@@ -590,9 +590,9 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function get_attributes() {
 
-		$saved_atts = $this->get_settings();
+		$saved_atts = static::get_settings();
 
-		$attributes = wp_parse_args($saved_atts, $this->get_default_settings());
+		$attributes = wp_parse_args($saved_atts, static::get_default_settings());
 
 		return $attributes;
 	}
@@ -605,7 +605,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public static function get_default_settings() {
 
-		return array(
+		return [
 			'use_custom_logo'         => false,
 			'custom_logo'             => false,
 			'display_company_address' => true,
@@ -621,7 +621,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'footer_text'             => '',
 			'footer_color'            => '#000000',
 			'footer_align'            => 'center',
-		);
+		];
 	}
 
 	/**
@@ -633,7 +633,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public static function get_settings() {
 
-		return wu_get_option('email_template', array());
+		return wu_get_option('email_template', []);
 	}
 
 	/**
@@ -648,7 +648,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_setting($setting, $default = false) {
 
 		if ($setting) {
-			$return = wu_get_option('email_template', array());
+			$return = wu_get_option('email_template', []);
 
 			if ($return && isset($return[ $setting ])) {
 				$return = $return[ $setting ];

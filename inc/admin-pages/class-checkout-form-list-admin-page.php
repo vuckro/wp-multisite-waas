@@ -52,9 +52,9 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_checkout_forms',
-	);
+	];
 
 	/**
 	 * Register the list page tour.
@@ -62,31 +62,31 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		\WP_Ultimo\UI\Tours::get_instance()->create_tour(
 			'checkout-form-list',
-			array(
-				array(
+			[
+				[
 					'id'    => 'checkout-form-list',
 					'title' => __('Checkout Forms', 'wp-ultimo'),
-					'text'  => array(
+					'text'  => [
 						__('Checkout Forms are an easy and flexible way to experiment with different approaches when trying to convert new customers.', 'wp-ultimo'),
-					),
-				),
-				array(
+					],
+				],
+				[
 					'id'       => 'default-form',
 					'title'    => __('Experiment!', 'wp-ultimo'),
-					'text'     => array(
+					'text'     => [
 						__('You can create as many checkout forms as you want, with different fields, products on offer, etc.', 'wp-ultimo'),
 						__('Planning on running some sort of promotion? Why not create a custom landing page with a tailor-maid checkout form to go with? The possibilities are endless.', 'wp-ultimo'),
-					),
-					'attachTo' => array(
+					],
+					'attachTo' => [
 						'element' => '#wp-ultimo-wrap > h1 > a:first-child',
 						'on'      => 'right',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 	}
 
@@ -96,17 +96,17 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add new Checkout Form
 		 */
 		wu_register_form(
 			'add_new_checkout_form',
-			array(
-				'render'     => array($this, 'render_add_new_checkout_form_modal'),
-				'handler'    => array($this, 'handle_add_new_checkout_form_modal'),
+			[
+				'render'     => [$this, 'render_add_new_checkout_form_modal'],
+				'handler'    => [$this, 'handle_add_new_checkout_form_modal'],
 				'capability' => 'wu_edit_checkout_forms',
-			)
+			]
 		);
 	}
 
@@ -116,10 +116,10 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_new_checkout_form_modal() {
+	public function render_add_new_checkout_form_modal(): void {
 
-		$fields = array(
-			'template'      => array(
+		$fields = [
+			'template'      => [
 				'type'        => 'select-icon',
 				'title'       => __('Checkout Form Template', 'wp-ultimo'),
 				'desc'        => __('Select a starting point for a new Checkout Form.', 'wp-ultimo'),
@@ -127,49 +127,49 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 				'tooltip'     => '',
 				'value'       => '',
 				'classes'     => 'wu-w-1/3',
-				'html_attr'   => array(
+				'html_attr'   => [
 					'v-model' => 'template',
-				),
-				'options'     => array(
-					'single-step' => array(
+				],
+				'options'     => [
+					'single-step' => [
 						'title' => __('Single Step', 'wp-ultimo'),
 						'icon'  => 'dashicons-before dashicons-list-view',
-					),
-					'multi-step'  => array(
+					],
+					'multi-step'  => [
 						'title' => __('Multi-Step', 'wp-ultimo'),
 						'icon'  => 'dashicons-before dashicons-excerpt-view',
-					),
-					'blank'       => array(
+					],
+					'blank'       => [
 						'title' => __('Blank', 'wp-ultimo'),
 						'icon'  => 'dashicons-before dashicons-admin-page',
-					),
-				),
-			),
-			'submit_button' => array(
+					],
+				],
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Go to the Editor &rarr;', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_new_checkout_form',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_checkout_form_field',
 					'data-state'  => json_encode(
-						array(
+						[
 							'template' => 'single-step',
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -181,7 +181,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_add_new_checkout_form_modal() {
+	public function handle_add_new_checkout_form_modal(): void {
 
 		$template = wu_request('template');
 
@@ -201,14 +201,14 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 			wp_send_json_error($status);
 		} else {
 			wp_send_json_success(
-				array(
+				[
 					'redirect_url' => wu_network_admin_url(
 						'wp-ultimo-edit-checkout-form',
-						array(
+						[
 							'id' => $checkout_form->get_id(),
-						)
+						]
 					),
-				)
+				]
 			);
 		}
 	}
@@ -221,10 +221,10 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Checkout Form removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Checkout Form', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -268,14 +268,14 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add Checkout Form'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_checkout_form'),
-			),
-		);
+			],
+		];
 	}
 
 	/**

@@ -50,9 +50,9 @@ final class Webhooks_Table extends Table {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = array(
+	protected $upgrades = [
 		'2.0.1-revision.20230601' => 20_230_601,
-	);
+	];
 
 	/**
 	 * Webhook constructor.
@@ -73,7 +73,7 @@ final class Webhooks_Table extends Table {
 	 * @since  2.0.0
 	 * @return void
 	 */
-	protected function set_schema() {
+	protected function set_schema(): void {
 
 		// phpcs:disable
 
@@ -101,10 +101,10 @@ final class Webhooks_Table extends Table {
 	 */
 	protected function __20230601(): bool {
 
-		$null_columns = array(
+		$null_columns = [
 			'date_created',
 			'date_modified',
-		);
+		];
 
 		foreach ($null_columns as $column) {
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";

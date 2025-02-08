@@ -28,7 +28,7 @@ class Admin_Themes_Compatibility {
 	 */
 	public function __construct() {
 
-		add_filter('admin_body_class', array($this, 'add_body_classes'));
+		add_filter('admin_body_class', [$this, 'add_body_classes']);
 	}
 
 	/**
@@ -62,26 +62,26 @@ class Admin_Themes_Compatibility {
 
 		return apply_filters(
 			'wu_admin_themes_compatibility',
-			array(
-				'material-wp' => array(
+			[
+				'material-wp' => [
 					'activated' => class_exists('MaterialWP'),
-				),
-				'pro-theme'   => array(
+				],
+				'pro-theme'   => [
 					'activated' => class_exists('PROTheme'),
-				),
-				'admin-2020'  => array(
+				],
+				'admin-2020'  => [
 					'activated' => function_exists('run_admin_2020'),
-				),
-				'clientside'  => array(
+				],
+				'clientside'  => [
 					'activated' => class_exists('Clientside'),
-				),
-				'wphave'      => array(
+				],
+				'wphave'      => [
 					'activated' => class_exists('wphave_admin'),
-				),
-				'waaspro'     => array(
+				],
+				'waaspro'     => [
 					'activated' => class_exists('AdminUIPRO') || class_exists('AdminUIPROflat'),
-				),
-			)
+				],
+			]
 		);
 	}
 }

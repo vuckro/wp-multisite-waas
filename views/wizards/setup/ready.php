@@ -12,7 +12,7 @@
 	<span class="dashicons dashicons-yes-alt wu-text-green-400 wu-w-auto wu-h-auto wu-text-5xl wu-mb-2"></span>
 
 	<h1 class="wu-text-gray-800">
-		<?php printf(__('We are ready, %s!', 'wp-ultimo'), apply_filters('wu_setup_step_done_name', isset($page->customer->first) ? $page->customer->first : __('my friend', 'wp-ultimo'))); ?>
+		<?php printf(__('We are ready, %s!', 'wp-ultimo'), apply_filters('wu_setup_step_done_name', $page->customer->first ?? __('my friend', 'wp-ultimo'))); ?>
 	</h1>
 
 	<p class="wu-text-lg wu-text-gray-600 wu-my-4">

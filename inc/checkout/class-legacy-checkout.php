@@ -90,26 +90,26 @@ class Legacy_Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->session = wu_get_session('signup');
 
-		$this->templates = array(
+		$this->templates = [
 			'signup-main.php' => __('WP Multisite WaaS Legacy Signup', 'wp-ultimo'),
-		);
+		];
 
 		// add_filter('request', array($this, 'maybe_render_legacy_signup'));
 
-		add_action('wu_signup_enqueue_scripts', array($this, 'register_scripts'));
+		add_action('wu_signup_enqueue_scripts', [$this, 'register_scripts']);
 
-		add_filter('theme_page_templates', array($this, 'add_new_template'));
+		add_filter('theme_page_templates', [$this, 'add_new_template']);
 
 		// Add a filter to the save post to inject out template into the page cache
-		add_filter('wp_insert_post_data', array($this, 'register_legacy_templates'));
+		add_filter('wp_insert_post_data', [$this, 'register_legacy_templates']);
 
 		// Add a filter to the template include to determine if the page has our
 		// template assigned and return it's path
-		add_filter('template_include', array($this, 'view_legacy_template'));
+		add_filter('template_include', [$this, 'view_legacy_template']);
 
 	}
 
@@ -153,7 +153,7 @@ class Legacy_Checkout {
 
 		if (empty($templates)) {
 
-			$templates = array();
+			$templates = [];
 
 		}
 
@@ -228,21 +228,21 @@ class Legacy_Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_enqueue_script('wu-block-ui');
 
-		wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), array('wu-functions'));
+		wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions']);
 
-		wp_localize_script('wu-legacy-signup', 'wpu', array(
+		wp_localize_script('wu-legacy-signup', 'wpu', [
 			'default_pricing_option' => 1,
-		));
+		]);
 
 		wp_enqueue_script('wu-legacy-signup');
 
-		wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), array('dashicons', 'install', 'admin-bar'));
+		wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), ['dashicons', 'install', 'admin-bar']);
 
-		wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons', 'install'));
+		wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons', 'install']);
 
 		wp_add_inline_style('legacy-signup', $this->get_legacy_dynamic_styles());
 
@@ -315,9 +315,9 @@ class Legacy_Checkout {
 
 		$checkout_page_slug = 'register';
 
-		$page_name = isset($request['pagename']) ? $request['pagename'] : '';
+		$page_name = $request['pagename'] ?? '';
 
-		if (strncmp((string) $page_name, $checkout_page_slug, strlen($checkout_page_slug)) === 0) {
+		if (str_starts_with((string) $page_name, $checkout_page_slug)) {
 			$page = explode('/', (string) $page_name);
 
 			/**
@@ -347,13 +347,13 @@ class Legacy_Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function legacy_signup() {
+	public function legacy_signup(): void {
 
 		status_header(200);
 
 		$this->session = wu_get_session('signup');
 
-		$this->session->set('form', array('not-empty'));
+		$this->session->set('form', ['not-empty']);
 
 		// Apply a filter so we can add steps in the future
 		$this->steps = $this->get_steps();
@@ -365,9 +365,9 @@ class Legacy_Checkout {
 
 		wu_get_template(
 			'legacy/signup/signup-main',
-			array(
+			[
 				'signup' => $this,
-			)
+			]
 		);
 
 		exit;
@@ -378,7 +378,7 @@ class Legacy_Checkout {
 	 *
 	 * @return void
 	 */
-	public function check_geolocation() {
+	public function check_geolocation(): void {
 
 		$location = \WP_Ultimo\Geolocation::geolocate_ip();
 
@@ -425,7 +425,7 @@ class Legacy_Checkout {
 			if (isset($current_step['handler']) && $current_step['handler']) {
 				$handler_function = $current_step['handler'];
 			} else {
-				$handler_function = array($this, 'default_save');
+				$handler_function = [$this, 'default_save'];
 			}
 
 			/** Allows for handler rewrite */
@@ -441,7 +441,7 @@ class Legacy_Checkout {
 	 * @since 1.4.0
 	 * @return void
 	 */
-	public function begin_signup() {
+	public function begin_signup(): void {
 
 		/**
 		 * Check Geo-location
@@ -452,9 +452,9 @@ class Legacy_Checkout {
 		$uniqid = uniqid('', true);
 
 		/** Initializes the content holder with the honeypot unique id */
-		$content = array(
+		$content = [
 			'honeypot_id' => uniqid(''),
-		);
+		];
 
 		/**
 		 * Saves the coupon code in the request, only if that option is available
@@ -519,7 +519,7 @@ class Legacy_Checkout {
 	 */
 	public static function is_customizer(): bool {
 
-		$exclude_list = apply_filters('wu_replace_signup_urls_exclude', array('wu-signup-customizer-preview'));
+		$exclude_list = apply_filters('wu_replace_signup_urls_exclude', ['wu-signup-customizer-preview']);
 
 		foreach ($exclude_list as $replace_word) {
 			if (isset($_GET[ $replace_word ])) {
@@ -556,7 +556,7 @@ class Legacy_Checkout {
 		$current_step = wu_request('step', current(array_keys($this->steps)));
 
 		// Always get the first step for the customizer //
-		if ($this->is_customizer()) {
+		if (static::is_customizer()) {
 			$current_step = $this->get_first_step();
 		}
 
@@ -569,7 +569,7 @@ class Legacy_Checkout {
 	 * @param string $step The current step.
 	 * @return void
 	 */
-	public function get_step_view($step) {
+	public function get_step_view($step): void {
 
 		$transient = $this->session->get('form');
 		$geo       = $this->session->get('geolocation');
@@ -578,7 +578,7 @@ class Legacy_Checkout {
 		 * Set the errors
 		 */
 		if ($this->results === null) {
-			$this->results = array('errors' => new \WP_Error());
+			$this->results = ['errors' => new \WP_Error()];
 		}
 
 		if (empty($_POST)) {
@@ -588,12 +588,12 @@ class Legacy_Checkout {
 		/**
 		 * Builds the array containing the available elements inside the template
 		 */
-		$args = array(
+		$args = [
 			'signup'    => $this,
 			'transient' => $transient,
-			'fields'    => isset($this->steps[ $step ]['fields']) ? $this->steps[ $step ]['fields'] : array(),
+			'fields'    => $this->steps[ $step ]['fields'] ?? [],
 			'results'   => $this->results,
-		);
+		];
 
 		/**
 		 * Checks if anything is passed to the view element
@@ -626,47 +626,47 @@ class Legacy_Checkout {
 	public function get_steps($include_hidden = true, $filtered = true) {
 
 		// Set the Steps
-		$steps = array();
+		$steps = [];
 
 		// Plan Selector
-		$steps['plan'] = array(
+		$steps['plan'] = [
 			'name'    => __('Pick a Plan', 'wp-ultimo'),
 			'desc'    => __('Which one of our amazing plans you want to get?', 'wp-ultimo'),
 			'view'    => 'step-plans',
-			'handler' => array($this, 'plans_save'),
+			'handler' => [$this, 'plans_save'],
 			'order'   => 10,
 			'fields'  => false,
 			'core'    => true,
-		);
+		];
 
-		$site_templates = array(
+		$site_templates = [
 			2,
-		);
+		];
 
 		// We add template selection if this has template
 		if ($site_templates) {
-			$steps['template'] = array(
+			$steps['template'] = [
 				'name'    => __('Template Selection', 'wp-ultimo'),
 				'desc'    => __('Select the base template of your new site.', 'wp-ultimo'),
 				'view'    => 'step-template',
 				'order'   => 20,
 				'handler' => false,
 				'core'    => true,
-			);
+			];
 		}
 
 		// Domain registering
-		$steps['domain'] = array(
+		$steps['domain'] = [
 			'name'    => __('Site Details', 'wp-ultimo'),
 			'desc'    => __('Ok, now it\'s time to pick your site url and title!', 'wp-ultimo'),
-			'handler' => array($this, 'domain_save'),
+			'handler' => [$this, 'domain_save'],
 			'view'    => false,
 			'order'   => 30,
 			'core'    => true,
 			'fields'  => apply_filters(
 				'wu_signup_fields_domain',
-				array(
-					'blog_title'  => array(
+				[
+					'blog_title'  => [
 						'order'       => 10,
 						'name'        => apply_filters('wu_signup_site_title_label', __('Site Title', 'wp-ultimo')),
 						'type'        => 'text',
@@ -675,8 +675,8 @@ class Legacy_Checkout {
 						'tooltip'     => apply_filters('wu_signup_site_title_tooltip', __('Select the title your site is going to have.', 'wp-ultimo')),
 						'required'    => true,
 						'core'        => true,
-					),
-					'blogname'    => array(
+					],
+					'blogname'    => [
 						'order'       => 20,
 						'name'        => apply_filters('wu_signup_site_url_label', __('URL', 'wp-ultimo')),
 						'type'        => 'text',
@@ -685,30 +685,30 @@ class Legacy_Checkout {
 						'tooltip'     => apply_filters('wu_signup_site_url_tooltip', __('Site urls can only contain lowercase letters (a-z) and numbers and must be at least 4 characters. .', 'wp-ultimo')),
 						'required'    => true,
 						'core'        => true,
-					),
-					'url_preview' => array(
+					],
+					'url_preview' => [
 						'order'   => 30,
 						'name'    => __('Site URL Preview', 'wp-ultimo'),
 						'type'    => 'html',
 						'content' => wu_get_template_contents('legacy/signup/steps/step-domain-url-preview'),
-					),
-					'submit'      => array(
+					],
+					'submit'      => [
 						'order' => 100,
 						'type'  => 'submit',
 						'name'  => __('Continue to the next step', 'wp-ultimo'),
 						'core'  => true,
-					),
-				)
+					],
+				]
 			),
-		);
+		];
 
 		/**
 		 * Since there are some conditional fields on the accounts step, we need to declare the variable before
 		 * so we can append items and filter it later
 		 */
-		$account_fields = array(
+		$account_fields = [
 
-			'user_name'      => array(
+			'user_name'      => [
 				'order'       => 10,
 				'name'        => apply_filters('wu_signup_username_label', __('Username', 'wp-ultimo')),
 				'type'        => 'text',
@@ -717,9 +717,9 @@ class Legacy_Checkout {
 				'tooltip'     => apply_filters('wu_signup_username_tooltip', __('Username must be at least 4 characters.', 'wp-ultimo')),
 				'required'    => true,
 				'core'        => true,
-			),
+			],
 
-			'user_email'     => array(
+			'user_email'     => [
 				'order'       => 20,
 				'name'        => apply_filters('wu_signup_email_label', __('Email', 'wp-ultimo')),
 				'type'        => 'email',
@@ -728,9 +728,9 @@ class Legacy_Checkout {
 				'tooltip'     => apply_filters('wu_signup_email_tooltip', ''),
 				'required'    => true,
 				'core'        => true,
-			),
+			],
 
-			'user_pass'      => array(
+			'user_pass'      => [
 				'order'       => 30,
 				'name'        => apply_filters('wu_signup_password_label', __('Password', 'wp-ultimo')),
 				'type'        => 'password',
@@ -739,9 +739,9 @@ class Legacy_Checkout {
 				'tooltip'     => apply_filters('wu_signup_password_tooltip', __('Your password should be at least 6 characters long.', 'wp-ultimo')),
 				'required'    => true,
 				'core'        => true,
-			),
+			],
 
-			'user_pass_conf' => array(
+			'user_pass_conf' => [
 				'order'       => 40,
 				'name'        => apply_filters('wu_signup_password_conf_label', __('Confirm Password', 'wp-ultimo')),
 				'type'        => 'password',
@@ -750,28 +750,28 @@ class Legacy_Checkout {
 				'tooltip'     => apply_filters('wu_signup_password_conf_tooltip', ''),
 				'required'    => true,
 				'core'        => true,
-			),
+			],
 
 			/**
 			 * HoneyPot Field
 			 */
-			'site_url'       => array(
-				'order'              => rand(1, 59), // Use random order for Honeypot
+			'site_url'       => [
+				'order'              => random_int(1, 59), // Use random order for Honeypot
 				'name'               => __('Site URL', 'wp-ultimo'),
 				'type'               => 'text',
 				'default'            => '',
 				'placeholder'        => '',
 				'tooltip'            => '',
 				'core'               => true,
-				'wrapper_attributes' => array(
+				'wrapper_attributes' => [
 					'style' => 'display: none;',
-				),
-				'attributes'         => array(
+				],
+				'attributes'         => [
 					'autocomplete' => 'nope',
-				),
-			),
+				],
+			],
 
-		);
+		];
 
 		/**
 		 * Check and Add Coupon Code Fields
@@ -819,22 +819,22 @@ class Legacy_Checkout {
 		/**
 		 * Submit Field
 		 */
-		$account_fields['submit'] = array(
+		$account_fields['submit'] = [
 			'order' => 100,
 			'type'  => 'submit',
 			'name'  => __('Create Account', 'wp-ultimo'),
 			'core'  => true,
-		);
+		];
 
 		// Account registering
-		$steps['account'] = array(
+		$steps['account'] = [
 			'name'    => __('Account Details', 'wp-ultimo'),
 			'view'    => false,
-			'handler' => array($this, 'account_save'),
+			'handler' => [$this, 'account_save'],
 			'order'   => 40,
 			'core'    => true,
 			'fields'  => apply_filters('wu_signup_fields_account', $account_fields),
-		);
+		];
 
 		/**
 		 * Add additional steps via filters
@@ -842,21 +842,21 @@ class Legacy_Checkout {
 		$steps = $filtered ? apply_filters('wp_ultimo_registration_steps', $steps) : $steps;
 
 		// Sort elements based on their order
-		uasort($steps, array($this, 'sort_steps_and_fields'));
+		uasort($steps, [$this, 'sort_steps_and_fields']);
 
 		// Sorts each of the fields block
 		foreach ($steps as &$step) {
 			$step = wp_parse_args(
 				$step,
-				array(
+				[
 					'hidden' => false,
-				)
+				]
 			);
 
 			if (isset($step['fields']) && is_array($step['fields'])) {
 
 				// Sort elements based on their order
-				uasort($step['fields'], array($this, 'sort_steps_and_fields'));
+				uasort($step['fields'], [$this, 'sort_steps_and_fields']);
 			}
 		}
 
@@ -865,32 +865,32 @@ class Legacy_Checkout {
 		*
 		 * @since  1.4.0
 		 */
-		$begin_signup = array(
-			'begin-signup' => array(
+		$begin_signup = [
+			'begin-signup' => [
 				'name'    => __('Begin Signup Process', 'wp-ultimo'),
-				'handler' => array($this, 'begin_signup'),
+				'handler' => [$this, 'begin_signup'],
 				'view'    => false,
 				'hidden'  => true,
 				'order'   => 0,
 				'core'    => true,
-			),
-		);
+			],
+		];
 
 		/**
 		 * Adds the hidden step now responsible for validating data entry and the actual account creation
 		*
 		 * @since  1.4.0
 		 */
-		$create_account = array(
-			'create-account' => array(
+		$create_account = [
+			'create-account' => [
 				'name'    => __('Creating Account', 'wp-ultimo'),
-				'handler' => array($this, 'create_account'),
+				'handler' => [$this, 'create_account'],
 				'view'    => false,
 				'hidden'  => true,
 				'core'    => true,
 				'order'   => 1_000_000_000,
-			),
-		);
+			],
+		];
 
 		/**
 		 * Glue the required steps together with the filterable ones
@@ -923,9 +923,9 @@ class Legacy_Checkout {
 	public static function get_transient($die = true) {
 
 		if (self::is_customizer()) {
-			$transient = array(
+			$transient = [
 				'not-empty' => '',
-			);
+			];
 		} else {
 			$transient = wu_get_session('signup')->get('form');
 		}
@@ -936,7 +936,7 @@ class Legacy_Checkout {
 		}
 
 		if (is_null($transient)) {
-			return array();
+			return [];
 		}
 
 		return $transient;
@@ -947,7 +947,7 @@ class Legacy_Checkout {
 	 *
 	 * @param array $transient Array containing the transient data.
 	 */
-	public function update_transient($transient) {
+	public function update_transient($transient): void {
 
 		$this->session->set('form', $transient);
 
@@ -958,7 +958,7 @@ class Legacy_Checkout {
 	 */
 	public function has_plan_step(): bool {
 
-		$transient = $this->get_transient();
+		$transient = static::get_transient();
 
 		if (isset($transient['skip_plan']) && isset($transient['plan_id']) && isset($transient['plan_freq'])) {
 			return false;
@@ -973,7 +973,7 @@ class Legacy_Checkout {
 	 * @param array $params The params.
 	 * @return string The link for the next step
 	 */
-	public function get_next_step_link($params = array()) {
+	public function get_next_step_link($params = []) {
 
 		// Add CS
 		if (isset($_GET['cs'])) {
@@ -1020,7 +1020,7 @@ class Legacy_Checkout {
 	 * @param array $args Arguments to build the URL.
 	 * @return void
 	 */
-	public function next_step($args = array()) {
+	public function next_step($args = []): void {
 
 		/** Redirect the user to the next step */
 		wp_redirect(esc_url_raw($this->get_next_step_link($args)));
@@ -1035,7 +1035,7 @@ class Legacy_Checkout {
 	 * @param array $params The params.
 	 * @return string The link for the previous step
 	 */
-	public function get_prev_step_link($params = array()) {
+	public function get_prev_step_link($params = []) {
 
 		// Add CS
 		if (isset($_GET['cs'])) {
@@ -1089,10 +1089,10 @@ class Legacy_Checkout {
 	 * @param integer $freq The freq.
 	 * @return void
 	 */
-	public function form_fields($current_plan = false, $step = 'plan', $freq = false) {
+	public function form_fields($current_plan = false, $step = 'plan', $freq = false): void {
 
 		/** Select the default frequency */
-		$freq = $freq ? $freq : wu_get_setting('default_pricing_option');
+		$freq = $freq ?: wu_get_setting('default_pricing_option');
 
 		?>
 
@@ -1127,7 +1127,7 @@ class Legacy_Checkout {
 	 */
 	public function get_site_url_for_previewer() {
 
-		$domain_options = array();
+		$domain_options = [];
 
 		$site = get_current_site();
 
@@ -1153,10 +1153,10 @@ class Legacy_Checkout {
 	/**
 	 * We pass the following info
 	 */
-	public function plans_save() {
+	public function plans_save(): void {
 
 		// Get transient
-		$transient = $this->get_transient();
+		$transient = static::get_transient();
 
 		// Check referer
 		check_admin_referer('signup_form_1', '_signup_form');
@@ -1200,10 +1200,10 @@ class Legacy_Checkout {
 	/**
 	 * Personal Info Settings.
 	 */
-	public function domain_save() {
+	public function domain_save(): void {
 
 		// Get transient
-		$transient = $this->get_transient();
+		$transient = static::get_transient();
 
 		// Check referer
 		check_admin_referer('signup_form_1', '_signup_form');
@@ -1247,7 +1247,7 @@ class Legacy_Checkout {
 	 */
 	public function filter_post_array($post, $exclude_list = false) {
 
-		$exclude_list = $exclude_list ? $exclude_list : array('_signup_form', '_wp_http_referer');
+		$exclude_list = $exclude_list ?: ['_signup_form', '_wp_http_referer'];
 
 		/** Filter Array */
 		$post = $this->array_filter_key($post, fn($element_key) => ! in_array($element_key, $exclude_list, true));
@@ -1267,7 +1267,7 @@ class Legacy_Checkout {
 	 */
 	public function array_filter_key(array $array, $callback): array {
 
-		$matched_keys = array_filter(array_keys($array), $callback === null ? fn($v, $k): bool => ! empty($v) : $callback, $callback === null ? ARRAY_FILTER_USE_BOTH : 0);
+		$matched_keys = array_filter(array_keys($array), $callback ?? fn($v, $k): bool => ! empty($v), $callback === null ? ARRAY_FILTER_USE_BOTH : 0);
 
 		return array_intersect_key($array, array_flip($matched_keys));
 	}
@@ -1296,7 +1296,7 @@ class Legacy_Checkout {
 	 * @param array   $step The step info.
 	 * @return void
 	 */
-	public function add_signup_step($id, $order, $step) {
+	public function add_signup_step($id, $order, $step): void {
 
 		add_filter(
 			'wp_ultimo_registration_steps',
@@ -1325,7 +1325,7 @@ class Legacy_Checkout {
 	 * @param array   $field The field.
 	 * @return void
 	 */
-	public function add_signup_field($step, $id, $order, $field) {
+	public function add_signup_field($step, $id, $order, $field): void {
 
 		add_filter(
 			'wp_ultimo_registration_steps',

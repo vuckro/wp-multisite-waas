@@ -146,7 +146,7 @@ if ( ! class_exists('MUCD_Log') ) {
 		 *
 		 * @since 0.2.0
 		 */
-		public function close_log() {
+		public function close_log(): void {
 			@fclose($this->fp);
 		}
 	}

@@ -108,9 +108,9 @@ class Signup_Field_Select extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Signup_Field_Select extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'name',
 			'placeholder',
@@ -129,7 +129,7 @@ class Signup_Field_Select extends Base_Signup_Field {
 			'tooltip',
 			'required',
 			'save_as',
-		);
+		];
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Signup_Field_Select extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -151,81 +151,81 @@ class Signup_Field_Select extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields = array();
+		$editor_fields = [];
 
-		$editor_fields['options_header'] = array(
+		$editor_fields['options_header'] = [
 			'order' => 12,
 			'type'  => 'small-header',
 			'title' => __('Options', 'wp-ultimo'),
 			'desc'  => __('Add different options below. The first option is used as the default.', 'wp-ultimo'),
-		);
+		];
 
-		$editor_fields['options_empty'] = array(
+		$editor_fields['options_empty'] = [
 			'type'              => 'note',
 			'desc'              => __('Add the first option using the button below.', 'wp-ultimo'),
 			'classes'           => 'wu-text-gray-600 wu-text-xs wu-text-center wu-w-full',
 			'wrapper_classes'   => 'wu-bg-gray-100 wu-items-end',
 			'order'             => 13,
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-if'    => 'options.length === 0',
 				'v-cloak' => '1',
-			),
-		);
+			],
+		];
 
-		$editor_fields['options'] = array(
+		$editor_fields['options'] = [
 			'order'             => 14,
 			'type'              => 'group',
 			'tooltip'           => '',
 			'wrapper_classes'   => 'wu-relative wu-bg-gray-100',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-if'    => 'options.length',
 				'v-for'   => '(option, index) in options',
 				'v-cloak' => '1',
-			),
-			'fields'            => array(
-				'options_remove' => array(
+			],
+			'fields'            => [
+				'options_remove' => [
 					'type'            => 'note',
 					'desc'            => sprintf('<a title="%s" class="wu-no-underline wu-inline-block wu-text-gray-600 wu-mt-2 wu-mr-2" href="#" @click.prevent="() => options.splice(index, 1)"><span class="dashicons-wu-squared-cross"></span></a>', __('Remove', 'wp-ultimo')),
 					'wrapper_classes' => 'wu-absolute wu-top-0 wu-right-0',
-				),
-				'options_key'    => array(
+				],
+				'options_key'    => [
 					'type'            => 'text',
 					'title'           => __('Option Value', 'wp-ultimo'),
 					'placeholder'     => __('e.g. option1', 'wp-ultimo'),
 					'wrapper_classes' => 'wu-w-1/2 wu-mr-2',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model'     => 'option.key',
 						'steps'       => 1,
 						'v-bind:name' => '"options[" + index + "][key]"',
-					),
-				),
-				'options_label'  => array(
+					],
+				],
+				'options_label'  => [
 					'type'            => 'text',
 					'title'           => __('Label', 'wp-ultimo'),
 					'placeholder'     => __('e.g. Option 1', 'wp-ultimo'),
 					'wrapper_classes' => 'wu-w-1/2 wu-ml-2',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model'     => 'option.label',
 						'v-bind:name' => '"options[" + index + "][label]"',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$editor_fields['repeat_select_option'] = array(
+		$editor_fields['repeat_select_option'] = [
 			'order'             => 16,
 			'type'              => 'submit',
 			'title'             => __('+ Add option', 'wp-ultimo'),
 			'classes'           => 'wu-uppercase wu-text-2xs wu-text-blue-700 wu-border-none wu-bg-transparent wu-font-bold wu-text-right wu-w-full wu-cursor-pointer',
 			'wrapper_classes'   => 'wu-bg-gray-100 wu-items-end',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-cloak' => '1',
-			),
-			'html_attr'         => array(
+			],
+			'html_attr'         => [
 				'type'               => 'button',
 				'v-on:click.prevent' => '() => options.push({})',
-			),
-		);
+			],
+		];
 
 		return $editor_fields;
 	}
@@ -240,14 +240,14 @@ class Signup_Field_Select extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$options = array();
+		$options = [];
 
 		foreach ($attributes['options'] as $_option) {
 			$options[ $_option['key'] ] = $_option['label'];
 		}
 
-		return array(
-			$attributes['id'] => array(
+		return [
+			$attributes['id'] => [
 				'type'            => 'select',
 				'id'              => $attributes['id'],
 				'name'            => $attributes['name'],
@@ -258,7 +258,7 @@ class Signup_Field_Select extends Base_Signup_Field {
 				'wrapper_classes' => $attributes['element_classes'],
 				'options'         => $options,
 				'value'           => $this->get_value(),
-			),
-		);
+			],
+		];
 	}
 }

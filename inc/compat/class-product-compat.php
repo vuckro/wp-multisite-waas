@@ -29,11 +29,11 @@ class Product_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_filter('wu_product_options_sections', array($this, 'add_legacy_section'), 100, 2);
+		add_filter('wu_product_options_sections', [$this, 'add_legacy_section'], 100, 2);
 
-		add_filter('update_post_metadata', array($this, 'check_update_plan'), 10, 5);
+		add_filter('update_post_metadata', [$this, 'check_update_plan'], 10, 5);
 	}
 
 	/**
@@ -93,47 +93,47 @@ class Product_Compat {
 	 */
 	public function add_legacy_section($sections, $object) {
 
-		$sections['legacy_options_core'] = array(
+		$sections['legacy_options_core'] = [
 			'title'  => __('Legacy Options', 'wp-ultimo'),
 			'desc'   => __('Options used by old 1.X versions. ', 'wp-ultimo'),
 			'icon'   => 'dashicons-wu-spreadsheet',
-			'state'  => array(
+			'state'  => [
 				'legacy_options' => $object->get_legacy_options(),
-			),
-			'fields' => array(
-				'legacy_options' => array(
+			],
+			'fields' => [
+				'legacy_options' => [
 					'type'      => 'toggle',
 					'value'     => $object->get_legacy_options(),
 					'title'     => __('Toggle Legacy Options', 'wp-ultimo'),
 					'desc'      => __('Toggle this option to edit legacy options.', 'wp-ultimo'),
-					'html_attr' => array(
+					'html_attr' => [
 						'v-model' => 'legacy_options',
-					),
-				),
-				'featured_plan'  => array(
+					],
+				],
+				'featured_plan'  => [
 					'type'              => 'toggle',
 					'value'             => $object->is_featured_plan(),
 					'title'             => __('Featured Plan', 'wp-ultimo'),
 					'desc'              => __('Toggle this option to mark this product as featured on the legacy pricing tables.', 'wp-ultimo'),
-					'wrapper_html_attr' => array(
+					'wrapper_html_attr' => [
 						'v-show' => 'legacy_options',
-					),
-				),
-				'feature_list'   => array(
+					],
+				],
+				'feature_list'   => [
 					'type'              => 'textarea',
 					'title'             => __('Features List', 'wp-ultimo'),
 					'placeholder'       => __('E.g. Feature 1', 'wp-ultimo') . PHP_EOL . __('Feature 2', 'wp-ultimo'),
 					'desc'              => __('Add a feature per line. These will be shown on the pricing tables.', 'wp-ultimo'),
 					'value'             => $object->get_feature_list(),
-					'wrapper_html_attr' => array(
+					'wrapper_html_attr' => [
 						'v-show' => 'legacy_options',
-					),
-					'html_attr'         => array(
+					],
+					'html_attr'         => [
 						'rows' => 6,
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		return $sections;
 	}

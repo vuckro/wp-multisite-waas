@@ -30,17 +30,17 @@ class Ajax {
 		/*
 		 * Load search endpoints.
 		 */
-		add_action('wu_ajax_wu_search', array($this, 'search_models'));
+		add_action('wu_ajax_wu_search', [$this, 'search_models']);
 
 		/*
 		 * Adds the Selectize templates to the admin_footer.
 		 */
-		add_action('in_admin_footer', array($this, 'render_selectize_templates'));
+		add_action('in_admin_footer', [$this, 'render_selectize_templates']);
 
 		/*
 		 * Load search endpoints.
 		 */
-		add_action('wp_ajax_wu_list_table_fetch_ajax_results', array($this, 'refresh_list_table'));
+		add_action('wp_ajax_wu_list_table_fetch_ajax_results', [$this, 'refresh_list_table']);
 	}
 	/**
 	 * Reverts the name of the table being processed.
@@ -60,7 +60,7 @@ class Ajax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function refresh_list_table() {
+	public function refresh_list_table(): void {
 
 		$table_id = wu_request('table_id');
 
@@ -83,7 +83,7 @@ class Ajax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function search_models() {
+	public function search_models(): void {
 
 		/**
 		 * Fires before the processing of the search request.
@@ -100,18 +100,18 @@ class Ajax {
 
 		$args = wp_parse_args(
 			$_REQUEST,
-			array(
+			[
 				'model'   => 'membership',
-				'query'   => array(),
-				'exclude' => array(),
-			)
+				'query'   => [],
+				'exclude' => [],
+			]
 		);
 
 		$query = array_merge(
 			$args['query'],
-			array(
+			[
 				'number' => -1,
-			)
+			]
 		);
 
 		if ($args['exclude']) {
@@ -151,18 +151,18 @@ class Ajax {
 			}
 		}
 
-		$results = array();
+		$results = [];
 
 		if ($args['model'] === 'user') {
 			$results = $this->search_wordpress_users($query);
 		} elseif ($args['model'] === 'page') {
 			$results = get_posts(
-				array(
+				[
 					'post_type'   => 'page',
 					'post_status' => 'publish',
 					'numberposts' => -1,
-					'exclude'     => isset($query['id__not_in']) ? $query['id__not_in'] : '',
-				)
+					'exclude'     => $query['id__not_in'] ?? '',
+				]
 			);
 		} elseif ($args['model'] === 'setting') {
 			$results = $this->search_wp_ultimo_setting($query);
@@ -181,7 +181,7 @@ class Ajax {
 			if (function_exists($model_func)) {
 				$result = $model_func(trim((string) $query['search'], '*'));
 
-				$results = $result ? array($result) : array();
+				$results = $result ? [$result] : [];
 			}
 		}
 
@@ -196,13 +196,13 @@ class Ajax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function search_all_models() {
+	public function search_all_models(): void {
 
 		$query = array_merge(
-			wu_request('query', array()),
-			array(
+			wu_request('query', []),
+			[
 				'number' => 10000,
-			)
+			]
 		);
 
 		$results_user = array_map(
@@ -242,7 +242,7 @@ class Ajax {
 		 */
 		$data_sources = apply_filters(
 			'wu_search_models_functions',
-			array(
+			[
 				'wu_get_customers',
 				'wu_get_products',
 				'wu_get_plans',
@@ -252,7 +252,7 @@ class Ajax {
 				'wu_get_payments',
 				'wu_get_broadcasts',
 				'wu_get_checkout_forms',
-			)
+			]
 		);
 
 		foreach ($data_sources as $function) {
@@ -265,9 +265,9 @@ class Ajax {
 
 					$item->value = wu_network_admin_url(
 						"wp-ultimo-edit-{$url}",
-						array(
+						[
 							'id' => $item->get_id(),
-						)
+						]
 					);
 
 					$item->group = ucwords((string) $item->model) . 's';
@@ -284,9 +284,9 @@ class Ajax {
 
 					$discount['value'] = wu_network_admin_url(
 						'wp-ultimo-edit-discount-code',
-						array(
+						[
 							'id' => $discount['id'],
-						)
+						]
 					);
 
 					$discount['group'] = 'Discount Codes';
@@ -312,7 +312,7 @@ class Ajax {
 
 		$sections = \WP_Ultimo\Settings::get_instance()->get_sections();
 
-		$all_fields = array();
+		$all_fields = [];
 
 		foreach ($sections as $section_slug => $section) {
 			$section['fields'] = array_map(
@@ -324,9 +324,9 @@ class Ajax {
 
 					$item['url'] = wu_network_admin_url(
 						'wp-ultimo-settings',
-						array(
+						[
 							'tab' => $section_slug,
-						)
+						]
 					) . '#' . $item['setting_id'];
 
 					return $item;
@@ -339,13 +339,13 @@ class Ajax {
 
 		$_settings = \Arrch\Arrch::find(
 			$all_fields,
-			array(
+			[
 				'sort_key' => 'title',
-				'where'    => array(
-					array('setting_id', '~', trim((string) $query['search'], '*')),
-					array('type', '!=', 'header'),
-				),
-			)
+				'where'    => [
+					['setting_id', '~', trim((string) $query['search'], '*')],
+					['type', '!=', 'header'],
+				],
+			]
 		);
 
 		return array_values($_settings);
@@ -362,18 +362,18 @@ class Ajax {
 	public function search_wordpress_users($query) {
 
 		$results = get_users(
-			array(
+			[
 				'blog_id'        => 0,
 				'search'         => '*' . $query['search'] . '*',
-				'search_columns' => array(
+				'search_columns' => [
 					'ID',
 					'user_login',
 					'user_email',
 					'user_url',
 					'user_nicename',
 					'display_name',
-				),
-			)
+				],
+			]
 		);
 
 		$results = array_map(
@@ -386,10 +386,10 @@ class Ajax {
 					40,
 					'identicon',
 					'',
-					array(
+					[
 						'force_display' => true,
 						'class'         => 'wu-rounded-full wu-mr-3',
-					)
+					]
 				);
 
 				return $item->data;
@@ -406,7 +406,7 @@ class Ajax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_selectize_templates() {
+	public function render_selectize_templates(): void {
 
 		if (current_user_can('manage_network')) {
 			wu_get_template('ui/selectize-templates');

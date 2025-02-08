@@ -159,44 +159,44 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		/*
 		 * Setup and handle checkout
 		 */
-		add_action('wu_setup_checkout', array($this, 'setup_checkout'));
+		add_action('wu_setup_checkout', [$this, 'setup_checkout']);
 
-		add_action('wu_setup_checkout', array($this, 'maybe_process_checkout'), 20);
+		add_action('wu_setup_checkout', [$this, 'maybe_process_checkout'], 20);
 
 		/*
 		 * Add the rewrite rules.
 		 */
-		add_action('init', array($this, 'add_rewrite_rules'), 20);
+		add_action('init', [$this, 'add_rewrite_rules'], 20);
 
-		add_filter('wu_request', array($this, 'get_checkout_from_query_vars'), 10, 2);
+		add_filter('wu_request', [$this, 'get_checkout_from_query_vars'], 10, 2);
 
 		/*
 		 * Creates the order object to display to the customer
 		 */
-		add_action('wu_ajax_wu_create_order', array($this, 'create_order'));
+		add_action('wu_ajax_wu_create_order', [$this, 'create_order']);
 
-		add_action('wu_ajax_nopriv_wu_create_order', array($this, 'create_order'));
+		add_action('wu_ajax_nopriv_wu_create_order', [$this, 'create_order']);
 
 		/*
 		 * Validates form and process preflight.
 		 */
-		add_action('wu_ajax_wu_validate_form', array($this, 'maybe_handle_order_submission'));
+		add_action('wu_ajax_wu_validate_form', [$this, 'maybe_handle_order_submission']);
 
-		add_action('wu_ajax_nopriv_wu_validate_form', array($this, 'maybe_handle_order_submission'));
+		add_action('wu_ajax_nopriv_wu_validate_form', [$this, 'maybe_handle_order_submission']);
 
 		/*
 		 * Adds the necessary scripts
 		 */
-		add_action('wu_checkout_scripts', array($this, 'register_scripts'));
+		add_action('wu_checkout_scripts', [$this, 'register_scripts']);
 
 		/*
 		 * Errors
 		 */
-		add_action('wu_checkout_errors', array($this, 'maybe_display_checkout_errors'));
+		add_action('wu_checkout_errors', [$this, 'maybe_display_checkout_errors']);
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_rewrite_rules() {
+	public function add_rewrite_rules(): void {
 
 		$register = Checkout_Pages::get_instance()->get_signup_page('register');
 
@@ -297,13 +297,13 @@ class Checkout {
 
 		$cart_arguments = apply_filters(
 			'wu_get_checkout_from_query_vars',
-			array(
+			[
 				'products',
 				'duration',
 				'duration_unit',
 				'template_id',
 				'wu_preselected',
-			)
+			]
 		);
 
 		/**
@@ -345,7 +345,7 @@ class Checkout {
 	 * @param \WP_Ultimo\UI\Checkout_Element $element The checkout element.
 	 * @return void
 	 */
-	public function setup_checkout($element = null) {
+	public function setup_checkout($element = null): void {
 
 		if ($this->already_setup) {
 			return;
@@ -362,7 +362,7 @@ class Checkout {
 		if ( ! $checkout_form_slug && is_a($element, \WP_Ultimo\UI\Checkout_Element::class)) {
 			$pre_loaded_checkout_form_slug = $element->get_pre_loaded_attribute('slug', $checkout_form_slug);
 
-			$checkout_form_slug = $pre_loaded_checkout_form_slug ? $pre_loaded_checkout_form_slug : $checkout_form_slug;
+			$checkout_form_slug = $pre_loaded_checkout_form_slug ?: $checkout_form_slug;
 		}
 
 		$this->checkout_form = wu_get_checkout_form_by_slug($checkout_form_slug);
@@ -382,7 +382,7 @@ class Checkout {
 
 			$this->step = $this->checkout_form->get_step($this->step_name, true);
 
-			$this->step['fields'] ??= array();
+			$this->step['fields'] ??= [];
 
 			$this->auto_submittable_field = $this->contains_auto_submittable_field($this->step['fields']);
 
@@ -408,19 +408,19 @@ class Checkout {
 	 */
 	public function contains_auto_submittable_field($fields) {
 
-		$relevant_fields = array();
+		$relevant_fields = [];
 
-		$field_types_to_ignore = array(
+		$field_types_to_ignore = [
 			'hidden',
 			'products',
 			'submit_button',
 			'period_selection',
 			'steps',
-		);
+		];
 
 		// Extra check to prevent error messages from being displayed.
 		if ( ! is_array($fields)) {
-			$fields = array();
+			$fields = [];
 		}
 
 		foreach ($fields as $field) {
@@ -457,10 +457,10 @@ class Checkout {
 		 * while the value should be the parameter we should watch for changes
 		 * so we can submit the form when we detect one.
 		 */
-		$auto_submittable_fields = array(
+		$auto_submittable_fields = [
 			'template_selection' => 'template_id',
 			'pricing_table'      => 'products',
-		);
+		];
 
 		return apply_filters('wu_checkout_get_auto_submittable_fields', $auto_submittable_fields, $this);
 	}
@@ -471,7 +471,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_handle_order_submission() {
+	public function maybe_handle_order_submission(): void {
 
 		$this->setup_checkout();
 
@@ -484,7 +484,7 @@ class Checkout {
 				wp_send_json_error($validation);
 			}
 
-			wp_send_json_success(array());
+			wp_send_json_success([]);
 		}
 	}
 
@@ -498,7 +498,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_order_submission() {
+	public function handle_order_submission(): void {
 
 		global $wpdb;
 
@@ -545,7 +545,7 @@ class Checkout {
 
 		$wpdb->query('COMMIT');
 
-		$this->session->set('signup', array());
+		$this->session->set('signup', []);
 		$this->session->commit();
 
 		wp_send_json_success($results);
@@ -589,8 +589,8 @@ class Checkout {
 		$cart = new Cart(
 			apply_filters(
 				'wu_cart_parameters',
-				array(
-					'products'      => $this->request_or_session('products', array()),
+				[
+					'products'      => $this->request_or_session('products', []),
 					'discount_code' => $this->request_or_session('discount_code'),
 					'country'       => $this->request_or_session('billing_country'),
 					'state'         => $this->request_or_session('billing_state'),
@@ -601,7 +601,7 @@ class Checkout {
 					'duration'      => $this->request_or_session('duration'),
 					'duration_unit' => $this->request_or_session('duration_unit'),
 					'cart_type'     => $this->request_or_session('cart_type', 'new'),
-				),
+				],
 				$this
 			)
 		);
@@ -684,7 +684,7 @@ class Checkout {
 		/*
 		 * Handles display names, if needed.
 		 */
-		add_filter('pre_user_display_name', array($this, 'handle_display_name'));
+		add_filter('pre_user_display_name', [$this, 'handle_display_name']);
 
 		/*
 		 * If we get to this point, most of the validations are done.
@@ -834,7 +834,7 @@ class Checkout {
 				$gateway->trigger_payment_processed($this->payment, $this->membership);
 			}
 
-			$success_data = array(
+			$success_data = [
 				'nonce'           => wp_create_nonce('wp-ultimo-register-nonce'),
 				'customer'        => $this->customer->to_search_results(),
 				'total'           => $this->order->get_total(),
@@ -843,11 +843,11 @@ class Checkout {
 				'payment_id'      => $this->payment->get_id(),
 				'cart_type'       => $this->order->get_cart_type(),
 				'auto_renew'      => $this->order->should_auto_renew(),
-				'gateway'         => array(
+				'gateway'         => [
 					'slug' => $gateway->get_id(),
-					'data' => array(),
-				),
-			);
+					'data' => [],
+				],
+			];
 
 			/*
 			 * Let's the gateway do its thing.
@@ -862,7 +862,7 @@ class Checkout {
 			/*
 			 * Attach the gateway results to the return array.
 			 */
-			$success_data['gateway']['data'] = $result && is_array($result) ? $result : array();
+			$success_data['gateway']['data'] = $result && is_array($result) ? $result : [];
 
 			/*
 			 * On error, bail.
@@ -941,24 +941,24 @@ class Checkout {
 			 *
 			 * Next step then would be to create one.
 			 */
-			$customer_data = array(
+			$customer_data = [
 				'username'           => $username,
 				'email'              => $this->request_or_session('email_address'),
 				'password'           => $this->request_or_session('password'),
 				'email_verification' => $this->get_customer_email_verification_status(),
 				'signup_form'        => $form_slug,
-				'meta'               => array(),
-			);
+				'meta'               => [],
+			];
 
 			/*
 			 * If the user is logged in,
 			 * we use the existing email address to create the customer.
 			 */
 			if ($this->is_existing_user()) {
-				$customer_data = array(
+				$customer_data = [
 					'email'              => wp_get_current_user()->user_email,
 					'email_verification' => 'verified',
-				);
+				];
 			} elseif (isset($customer_data['email']) && get_user_by('email', $customer_data['email'])) {
 				return new \WP_Error('email_exists', __('The email address you entered is already in use.', 'wp-ultimo'));
 			}
@@ -993,7 +993,7 @@ class Checkout {
 		 * class, so there's no problem in passing
 		 * the entire post array in here.
 		 */
-		$session = $this->session->get('signup') ?? array();
+		$session = $this->session->get('signup') ?? [];
 		$billing_address->attributes(array_merge($session, $_POST));
 
 		/*
@@ -1068,7 +1068,7 @@ class Checkout {
 		if ($checkout_form) {
 			$customer_meta_fields = $checkout_form->get_all_meta_fields('customer_meta');
 
-			$meta_repository = array();
+			$meta_repository = [];
 
 			foreach ($customer_meta_fields as $customer_meta_field) {
 				/*
@@ -1106,7 +1106,7 @@ class Checkout {
 
 			$user = $customer->get_user();
 
-			$user_meta_repository = array();
+			$user_meta_repository = [];
 
 			foreach ($user_meta_fields as $user_meta_field) {
 				/*
@@ -1239,7 +1239,7 @@ class Checkout {
 			if ($auto_generate_url === 'username') {
 				$site_url = $this->customer->get_username();
 
-				$site_title = $site_title ? $site_title : $site_url;
+				$site_title = $site_title ?: $site_url;
 			} else {
 				$site_url = strtolower(str_replace(' ', '', preg_replace('/&([a-z])[a-z]+;/i', '$1', htmlentities(trim((string) $site_title)))));
 			}
@@ -1278,7 +1278,7 @@ class Checkout {
 		 * that way we can use it when actually registering
 		 * the site on WordPress.
 		 */
-		$transient = array();
+		$transient = [];
 
 		if ($this->checkout_form) {
 			$site_meta_fields = $this->checkout_form->get_all_fields();
@@ -1289,7 +1289,7 @@ class Checkout {
 				 * to make sure plain passwords do not get stored
 				 * on the database.
 				 */
-				if (strpos((string) $site_meta_field['id'], 'password') !== false ) {
+				if (str_contains((string) $site_meta_field['id'], 'password') ) {
 					continue;
 				}
 
@@ -1310,7 +1310,7 @@ class Checkout {
 		 */
 		$template_id = apply_filters('wu_checkout_template_id', (int) $this->request_or_session('template_id'), $this->membership, $this);
 
-		$site_data = array(
+		$site_data = [
 			'domain'         => $d->domain,
 			'path'           => $d->path,
 			'title'          => $site_title,
@@ -1321,7 +1321,7 @@ class Checkout {
 			'signup_options' => $this->get_site_meta_fields($form_slug, 'site_option'),
 			'signup_meta'    => $this->get_site_meta_fields($form_slug, 'site_meta'),
 			'type'           => Site_Type::CUSTOMER_OWNED,
-		);
+		];
 
 		$pending_site = $this->membership->create_pending_site($site_data);
 
@@ -1340,12 +1340,12 @@ class Checkout {
 	protected function get_site_meta_fields($form_slug, $meta_type = 'site_meta') {
 
 		if (empty($form_slug) || $form_slug === 'none') {
-			return array();
+			return [];
 		}
 
 		$checkout_form = wu_get_checkout_form_by_slug($form_slug);
 
-		$list = array();
+		$list = [];
 
 		if ($checkout_form) {
 			$site_meta_fields = $checkout_form->get_all_meta_fields($meta_type);
@@ -1389,11 +1389,11 @@ class Checkout {
 		 */
 		$previous_payment = $this->membership->get_last_pending_payment();
 
-		$cancel_types = array(
+		$cancel_types = [
 			'upgrade',
 			'downgrade',
 			'addon',
-		);
+		];
 
 		if ($previous_payment && in_array($this->type, $cancel_types, true)) {
 			$previous_payment->set_status(Payment_Status::CANCELLED);
@@ -1444,12 +1444,12 @@ class Checkout {
 		 */
 		if ($this->order->has_trial()) {
 			$payment->attributes(
-				array(
+				[
 					'tax_total'    => 0,
 					'subtotal'     => 0,
 					'refund_total' => 0,
 					'total'        => 0,
-				)
+				]
 			);
 
 			$payment->save();
@@ -1464,7 +1464,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function validate_form() {
+	public function validate_form(): void {
 
 		$validation = $this->validate();
 
@@ -1481,7 +1481,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function create_order() {
+	public function create_order(): void {
 
 		$this->setup_checkout();
 
@@ -1493,8 +1493,8 @@ class Checkout {
 		$cart = new Cart(
 			apply_filters(
 				'wu_cart_parameters',
-				array(
-					'products'      => $this->request_or_session('products', array()),
+				[
+					'products'      => $this->request_or_session('products', []),
 					'discount_code' => $this->request_or_session('discount_code'),
 					'country'       => $country,
 					'state'         => $state,
@@ -1505,7 +1505,7 @@ class Checkout {
 					'duration'      => $this->request_or_session('duration'),
 					'duration_unit' => $this->request_or_session('duration_unit'),
 					'cart_type'     => $this->request_or_session('cart_type', 'new'),
-				),
+				],
 				$this
 			)
 		);
@@ -1518,15 +1518,15 @@ class Checkout {
 		$country_data = wu_get_country($cart->get_country());
 
 		wp_send_json_success(
-			array(
+			[
 				'order'  => $cart->done(),
 				'states' => wu_key_map_to_array($country_data->get_states_as_options(), 'code', 'name'),
 				'cities' => wu_key_map_to_array($country_data->get_cities_as_options($state), 'code', 'name'),
-				'labels' => array(
+				'labels' => [
 					'state_field' => $country_data->get_administrative_division_name(null, true),
 					'city_field'  => $country_data->get_municipality_name(null, true),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -1543,11 +1543,11 @@ class Checkout {
 		/*
 		 * Localized strings.
 		 */
-		$i18n = array(
+		$i18n = [
 			'loading'        => __('Loading...', 'wp-ultimo'),
 			'added_to_order' => __('The item was added!', 'wp-ultimo'),
 			'weak_password'  => __('The Password entered is too weak.', 'wp-ultimo'),
-		);
+		];
 
 		/*
 		 * Get the default gateway.
@@ -1579,14 +1579,14 @@ class Checkout {
 			}
 		}
 
-		$products = array_merge($this->request_or_session('products', array()), wu_request('products', array()));
+		$products = array_merge($this->request_or_session('products', []), wu_request('products', []));
 
 		$geolocation = \WP_Ultimo\Geolocation::geolocate_ip('', true);
 
 		/*
 		 * Set the default variables.
 		 */
-		$variables = array(
+		$variables = [
 			'i18n'               => $i18n,
 			'ajaxurl'            => wu_ajax_url(),
 			'late_ajaxurl'       => wu_ajax_url('init'),
@@ -1603,7 +1603,7 @@ class Checkout {
 			'needs_billing_info' => true,
 			'auto_renew'         => true,
 			'products'           => array_unique($products),
-		);
+		];
 
 		/*
 		 * There's a couple of things we need to determine.
@@ -1651,7 +1651,7 @@ class Checkout {
 			$variables['membership_id'] = $membership_id;
 		}
 
-		list($plan, $other_products) = wu_segregate_products($variables['products']);
+		[$plan, $other_products] = wu_segregate_products($variables['products']);
 
 		$variables['plan'] = $plan ? $plan->get_id() : 0;
 
@@ -1700,7 +1700,7 @@ class Checkout {
 		 *
 		 * First, let's set upm the general rules:
 		 */
-		$rules = array(
+		$rules = [
 			'email_address'    => 'required_without:user_id|email|unique:\WP_User,email',
 			'username'         => 'required_without:user_id|alpha_dash|min:4|lowercase|unique:\WP_User,login',
 			'password'         => 'required_without:user_id|min:6',
@@ -1713,7 +1713,7 @@ class Checkout {
 			'billing_zip_code' => 'required_with:billing_zip_code',
 			'billing_state'    => 'state',
 			'billing_city'     => 'city',
-		);
+		];
 
 		/*
 		 * Add rules for site when creating a new account.
@@ -1745,7 +1745,7 @@ class Checkout {
 		$validation_rules = $this->validation_rules();
 
 		if (wu_request('pre-flight') || wu_request('checkout_form') === 'wu-finish-checkout') {
-			$validation_rules = array();
+			$validation_rules = [];
 
 			return $validation_rules;
 		}
@@ -1764,10 +1764,10 @@ class Checkout {
 		}
 
 		// We'll use this to validate product fields
-		$product_fields = array(
+		$product_fields = [
 			'pricing_table',
 			'products',
-		);
+		];
 
 		/**
 		 * Add the additional required fields.
@@ -1825,9 +1825,9 @@ class Checkout {
 			$rules = $this->get_validation_rules();
 		}
 
-		$base_aliases = array();
+		$base_aliases = [];
 
-		$checkout_form_fields = $this->checkout_form ? $this->checkout_form->get_all_fields() : array();
+		$checkout_form_fields = $this->checkout_form ? $this->checkout_form->get_all_fields() : [];
 
 		// Add current form fields
 		foreach ($checkout_form_fields as $field) {
@@ -1841,13 +1841,13 @@ class Checkout {
 
 		// Add some hidden or compound fields ids
 		$validation_aliases = array_merge(
-			array(
+			[
 				'password_conf'  => __('Password confirmation', 'wp-ultimo'),
 				'template_id'    => __('Template ID', 'wp-ultimo'),
 				'valid_password' => __('Valid password', 'wp-ultimo'),
 				'products'       => __('Products', 'wp-ultimo'),
 				'gateway'        => __('Payment Gateway', 'wp-ultimo'),
-			),
+			],
 			$base_aliases
 		);
 
@@ -1885,7 +1885,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_process_checkout() {
+	public function maybe_process_checkout(): void {
 		/*
 		 * Sets up the checkout
 		 * environment.
@@ -1944,10 +1944,10 @@ class Checkout {
 				 */
 				if ($payment) {
 					$redirect_url = add_query_arg(
-						array(
+						[
 							'payment' => $payment->get_hash(),
 							'status'  => 'error',
-						),
+						],
 						$redirect_url
 					);
 				}
@@ -1973,11 +1973,11 @@ class Checkout {
 			 * have checkout_ on their name, or start
 			 * with a underscore.
 			 */
-			$to_save = array_filter($_POST, fn($item) => strncmp((string) $item, 'checkout_', strlen('checkout_')) !== 0 && strncmp((string) $item, '_', strlen('_')) !== 0, ARRAY_FILTER_USE_KEY);
+			$to_save = array_filter($_POST, fn($item) => ! str_starts_with((string) $item, 'checkout_') && ! str_starts_with((string) $item, '_'), ARRAY_FILTER_USE_KEY);
 
 			if (isset($to_save['pre-flight'])) {
 				unset($to_save['pre-flight']);
-				$this->session->add_values('signup', array('pre_selected' => $to_save));
+				$this->session->add_values('signup', ['pre_selected' => $to_save]);
 			}
 
 			/*
@@ -2119,12 +2119,12 @@ class Checkout {
 			if (has_action('wp_ultimo_registration')) {
 				$_payment = wu_get_payment($payment->get_id());
 
-				$args = array(
+				$args = [
 					0, // Site ID is not yet available at this point
 					$customer->get_user_id(),
 					$this->session->get('signup'),
 					$_payment && $_payment->get_membership() ? new \WU_Plan($_payment->get_membership()->get_plan()) : false,
-				);
+				];
 
 				ob_start();
 
@@ -2152,10 +2152,10 @@ class Checkout {
 				$redirect_url = apply_filters('wp_ultimo_redirect_url_after_signup', $redirect_url, 0, get_current_user_id(), $_POST);
 
 				$redirect_url = add_query_arg(
-					array(
+					[
 						'payment' => $payment ? $payment->get_hash() : 'none',
 						'status'  => 'done',
-					),
+					],
 					$redirect_url
 				);
 			}
@@ -2174,10 +2174,10 @@ class Checkout {
 			return new \WP_Error(
 				'error',
 				$e->getMessage(),
-				array(
+				[
 					'trace'   => $e->getTrace(),
 					'payment' => $payment,
-				)
+				]
 			);
 		}
 	}
@@ -2254,7 +2254,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		$custom_css = apply_filters('wu_checkout_custom_css', '');
 
@@ -2264,7 +2264,7 @@ class Checkout {
 
 		wp_enqueue_style('wu-admin');
 
-		wp_register_script('wu-checkout', wu_get_asset('checkout.js', 'js'), array('jquery-core', 'wu-vue', 'moment', 'wu-block-ui', 'wu-functions', 'password-strength-meter', 'underscore', 'wp-polyfill', 'wp-hooks', 'wu-cookie-helpers'), wu_get_version(), true);
+		wp_register_script('wu-checkout', wu_get_asset('checkout.js', 'js'), ['jquery-core', 'wu-vue', 'moment', 'wu-block-ui', 'wu-functions', 'password-strength-meter', 'underscore', 'wp-polyfill', 'wp-hooks', 'wu-cookie-helpers'], wu_get_version(), true);
 
 		wp_localize_script('wu-checkout', 'wu_checkout', $this->get_checkout_variables());
 
@@ -2326,7 +2326,7 @@ class Checkout {
 
 		$index = $current_step_index + 1;
 
-		return isset($keys[ $index ]) ? $keys[ $index ] : $keys[ $current_step_index ];
+		return $keys[ $index ] ?? $keys[ $current_step_index ];
 	}
 
 	/**
@@ -2390,7 +2390,7 @@ class Checkout {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_display_checkout_errors() {
+	public function maybe_display_checkout_errors(): void {
 
 		if (wu_request('status') !== 'error') {
 			return;

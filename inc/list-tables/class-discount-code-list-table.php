@@ -25,7 +25,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Discount_Codes\\Discount_Code_Query';
+	protected $query_class = \WP_Ultimo\Database\Discount_Codes\Discount_Code_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -35,15 +35,15 @@ class Discount_Code_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Discount Code', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Discount Codes', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                              // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_network_admin_url('wp-ultimo-edit-discount-code'),
 					'classes' => '',
-				),
-			)
+				],
+			]
 		);
 	}
 	/**
@@ -55,14 +55,14 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 */
 	public function column_name($item): string {
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'model' => 'discount_code',
-		);
+		];
 
 		$title = sprintf('<a href="%s"><strong>%s</strong></a>', wu_network_admin_url('wp-ultimo-edit-discount-code', $url_atts), $item->get_name());
 
-		$actions = array(
+		$actions = [
 			'edit'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-discount-code', $url_atts), __('Edit', 'wp-ultimo')),
 			'delete' => sprintf(
 				'<a title="%s" class="wubox" href="%s">%s</a>',
@@ -73,7 +73,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 				),
 				__('Delete', 'wp-ultimo')
 			),
-		);
+		];
 
 		return $title . $this->row_actions($actions);
 	}
@@ -183,7 +183,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'              => '<input type="checkbox" />',
 			'name'            => __('Name', 'wp-ultimo'),
 			'coupon_code'     => __('Code', 'wp-ultimo'),
@@ -191,7 +191,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 			'value'           => __('Value', 'wp-ultimo'),
 			'setup_fee_value' => __('Setup Fee Value', 'wp-ultimo'),
 			'date_expiration' => __('Dates', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -202,9 +202,9 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(),
-			'date_filters' => array(),
-		);
+		return [
+			'filters'      => [],
+			'date_filters' => [],
+		];
 	}
 }

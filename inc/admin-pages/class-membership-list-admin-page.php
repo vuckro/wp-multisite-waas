@@ -53,9 +53,9 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_memberships',
-	);
+	];
 
 	/**
 	 * Register ajax forms to handle adding new memberships.
@@ -63,17 +63,17 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add new Membership
 		 */
 		wu_register_form(
 			'add_new_membership',
-			array(
-				'render'     => array($this, 'render_add_new_membership_modal'),
-				'handler'    => array($this, 'handle_add_new_membership_modal'),
+			[
+				'render'     => [$this, 'render_add_new_membership_modal'],
+				'handler'    => [$this, 'handle_add_new_membership_modal'],
 				'capability' => 'wu_edit_memberships',
-			)
+			]
 		);
 	}
 
@@ -83,37 +83,37 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_new_membership_modal() {
+	public function render_add_new_membership_modal(): void {
 
-		$fields = array(
-			'customer_id'     => array(
+		$fields = [
+			'customer_id'     => [
 				'type'        => 'model',
 				'title'       => __('Customer', 'wp-ultimo'),
 				'placeholder' => __('Search Customer...', 'wp-ultimo'),
 				'desc'        => __('The customer to attach this membership to.', 'wp-ultimo'),
-				'html_attr'   => array(
+				'html_attr'   => [
 					'data-model'        => 'customer',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'display_name',
 					'data-search-field' => 'display_name',
 					'data-max-items'    => 1,
-				),
-			),
-			'product_ids'     => array(
+				],
+			],
+			'product_ids'     => [
 				'type'        => 'model',
 				'title'       => __('Products', 'wp-ultimo'),
 				'placeholder' => __('Search Products...', 'wp-ultimo'),
 				'desc'        => __('You can add multiples products to this membership.', 'wp-ultimo'),
 				'tooltip'     => '',
-				'html_attr'   => array(
+				'html_attr'   => [
 					'data-model'        => 'product',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'name',
 					'data-search-field' => 'name',
 					'data-max-items'    => 99,
-				),
-			),
-			'status'          => array(
+				],
+			],
+			'status'          => [
 				'type'        => 'select',
 				'title'       => __('Status', 'wp-ultimo'),
 				'placeholder' => __('Status', 'wp-ultimo'),
@@ -121,59 +121,59 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 				'tooltip'     => '',
 				'value'       => Membership_Status::PENDING,
 				'options'     => Membership_Status::to_array(),
-			),
-			'lifetime'        => array(
+			],
+			'lifetime'        => [
 				'type'      => 'toggle',
 				'title'     => __('Lifetime', 'wp-ultimo'),
 				'desc'      => __('Activate this toggle to mark the newly created membership as lifetime.', 'wp-ultimo'),
 				'value'     => 1,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'lifetime',
-				),
-			),
-			'date_expiration' => array(
+				],
+			],
+			'date_expiration' => [
 				'title'             => __('Expiration Date', 'wp-ultimo'),
 				'desc'              => __('Set the expiration date of the membership to be created.', 'wp-ultimo'),
 				'type'              => 'text',
 				'date'              => true,
 				'value'             => gmdate('Y-m-d', strtotime('+1 month')),
 				'placeholder'       => '2020-04-04',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'wu-datepicker'   => 'true',
 					'data-format'     => 'Y-m-d',
 					'data-allow-time' => 'false',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => '!lifetime',
 					'v-cloak' => 1,
-				),
-			),
-			'submit_button'   => array(
+				],
+			],
+			'submit_button'   => [
 				'type'            => 'submit',
 				'title'           => __('Create Membership', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_new_membership',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app'  => 'add_new_membership',
 					'data-on-load' => 'wu_initialize_datepickers',
 					'data-state'   => wu_convert_to_state(
-						array(
+						[
 							'lifetime' => 1,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -185,7 +185,7 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_add_new_membership_modal() {
+	public function handle_add_new_membership_modal(): void {
 
 		global $wpdb;
 
@@ -214,10 +214,10 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 		}
 
 		$cart = new \WP_Ultimo\Checkout\Cart(
-			array(
+			[
 				'products' => $products,
 				'country'  => $customer->get_country(),
-			)
+			]
 		);
 
 		$data = $cart->to_membership_data();
@@ -243,14 +243,14 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					'wp-ultimo-edit-membership',
-					array(
+					[
 						'id' => $membership->get_id(),
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -262,10 +262,10 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Membership removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Membership', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -309,14 +309,14 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add Membership'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_membership'),
-			),
-		);
+			],
+		];
 	}
 
 	/**

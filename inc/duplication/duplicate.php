@@ -16,7 +16,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 *
 		 * @since 0.2.0
 		 */
-		public static function init() {
+		public static function init(): void {
 			self::$log = false;
 		}
 
@@ -30,7 +30,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		public static function duplicate_site($data) {
 
 			global $wpdb;
-			$form_message = array();
+			$form_message = [];
 			$wpdb->hide_errors();
 
 			self::init_log($data);
@@ -61,7 +61,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 
 			// Create new site
 			switch_to_blog(1);
-			$to_site_id = wpmu_create_blog($newdomain, $path, $title, $user_id, array('public' => $public), $network_id);
+			$to_site_id = wpmu_create_blog($newdomain, $path, $title, $user_id, ['public' => $public], $network_id);
 			$wpdb->show_errors();
 
 			if ( is_wp_error($to_site_id) ) {
@@ -140,7 +140,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * @param  int $from_site_id duplicated site id
 		 * @param  int $to_site_id   new site id
 		 */
-		public static function copy_users($from_site_id, $to_site_id) {
+		public static function copy_users($from_site_id, $to_site_id): void {
 
 			global $wpdb;
 
@@ -151,7 +151,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 
 			if (is_main_site($from_site_id)) {
 				$is_from_main_site = true;
-				$args              = array('fields' => 'ids');
+				$args              = ['fields' => 'ids'];
 				$all_sites_ids     = MUCD_Functions::get_sites($args);
 				if ( ! empty($all_sites_ids)) {
 					$all_sites_ids = array_map('user_array_map', $all_sites_ids);
@@ -205,12 +205,12 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * @since 0.2.0
 		 * @param  array $data data from FORM
 		 */
-		public static function init_log($data) {
+		public static function init_log($data): void {
 			// INIT LOG AND SAVE OPTION
 			if (isset($data['log']) && $data['log'] == 'yes' ) {
 				if (isset($data['log-path']) && ! empty($data['log-path'])) {
 					$log_name = @date('Y_m_d_His') . '-' . $data['domain'] . '.log';
-					if (substr_compare((string) $data['log-path'], '/', -strlen('/')) !== 0) {
+					if (! str_ends_with((string) $data['log-path'], '/')) {
 						$data['log-path'] = $data['log-path'] . '/';
 					}
 					self::$log = new MUCD_Log(true, $data['log-path'], $log_name);
@@ -246,7 +246,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * @since 0.2.0
 		 * @param  string $msg the message
 		 */
-		public static function write_log($msg) {
+		public static function write_log($msg): void {
 			if (self::log() !== false) {
 				self::$log->write_log($msg);
 			}
@@ -257,7 +257,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 *
 		 * @since 0.2.0
 		 */
-		public static function close_log() {
+		public static function close_log(): void {
 			if (self::log() !== false) {
 				self::$log->close_log();
 			}
@@ -291,7 +291,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 *
 		 * @since 0.2.0
 		 */
-		public static function bypass_server_limit() {
+		public static function bypass_server_limit(): void {
 			@ini_set('memory_limit', '1024M');
 			@ini_set('max_execution_time', '0');
 		}

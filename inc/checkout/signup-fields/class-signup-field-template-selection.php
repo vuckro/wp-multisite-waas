@@ -105,13 +105,13 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
-			'template_selection_sites'                  => implode(',', wu_get_site_templates(array('fields' => 'ids'))),
+		return [
+			'template_selection_sites'                  => implode(',', wu_get_site_templates(['fields' => 'ids'])),
 			'template_selection_type'                   => 'name',
 			'template_selection_template'               => 'clean',
 			'cols'                                      => 3,
 			'hide_template_selection_when_pre_selected' => false,
-		);
+		];
 	}
 
 	/**
@@ -122,9 +122,9 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			// 'name',
-		);
+		];
 	}
 
 	/**
@@ -135,11 +135,11 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'template_selection',
 			'name'     => __('Template Selection', 'wp-ultimo'),
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -163,50 +163,50 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields = array();
+		$editor_fields = [];
 
-		$editor_fields['cols'] = array(
+		$editor_fields['cols'] = [
 			'type' => 'hidden',
-		);
+		];
 
-		$editor_fields['template_selection_type'] = array(
+		$editor_fields['template_selection_type'] = [
 			'type'      => 'select',
 			'title'     => __('Available templates', 'wp-ultimo'),
 			'desc'      => __('How do you want to choose available which templates will be available.', 'wp-ultimo'),
 			'order'     => 20,
-			'options'   => array(
+			'options'   => [
 				'name'       => __('Select by names'),
 				'categories' => __('Select by categories'),
 				'all'        => __('All templates'),
-			),
-			'html_attr' => array(
+			],
+			'html_attr' => [
 				'v-model' => 'template_selection_type',
-			),
-		);
+			],
+		];
 
-		$editor_fields['template_selection_categories'] = array(
+		$editor_fields['template_selection_categories'] = [
 			'type'              => 'select',
 			'title'             => __('Template Categories', 'wp-ultimo'),
 			'placeholder'       => __('e.g.: Landing Page, Health...', 'wp-ultimo'),
 			'desc'              => __('Customers will be able to filter by categories during signup.', 'wp-ultimo'),
 			'order'             => 21,
 			'options'           => Site::get_all_categories(),
-			'html_attr'         => array(
+			'html_attr'         => [
 				'data-selectize-categories' => 1,
 				'multiple'                  => 1,
-			),
-			'wrapper_html_attr' => array(
+			],
+			'wrapper_html_attr' => [
 				'v-show' => 'template_selection_type === "categories"',
-			),
-		);
+			],
+		];
 
-		$editor_fields['template_selection_sites'] = array(
+		$editor_fields['template_selection_sites'] = [
 			'type'              => 'model',
 			'title'             => __('Template Sites', 'wp-ultimo'),
 			'placeholder'       => __('e.g. Template Site 1, My Agency', 'wp-ultimo'),
 			'desc'              => __('Be sure to add the templates in the order you want them to show up.', 'wp-ultimo'),
 			'order'             => 22,
-			'html_attr'         => array(
+			'html_attr'         => [
 				'v-model'           => 'template_selection_sites',
 				'data-model'        => 'site',
 				'data-value-field'  => 'blog_id',
@@ -216,46 +216,46 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 				'data-include'      => implode(
 					',',
 					wu_get_site_templates(
-						array(
+						[
 							'fields' => 'blog_id',
-						)
+						]
 					)
 				),
-			),
-			'wrapper_html_attr' => array(
+			],
+			'wrapper_html_attr' => [
 				'v-show' => 'template_selection_type === \'name\'',
-			),
-		);
+			],
+		];
 
-		$editor_fields['hide_template_selection_when_pre_selected'] = array(
+		$editor_fields['hide_template_selection_when_pre_selected'] = [
 			'type'      => 'toggle',
 			'title'     => __('Hide when Pre-Selected', 'wp-ultimo'),
 			'desc'      => __('Prevent customers from seeing this field when a template was already selected via the URL.', 'wp-ultimo'),
 			'tooltip'   => __('If the template selection field is the only field in the current step, the step will be skipped.', 'wp-ultimo'),
 			'value'     => 0,
 			'order'     => 23,
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'hide_template_selection_when_pre_selected',
-			),
-		);
+			],
+		];
 
-		$editor_fields['template_selection_template'] = array(
+		$editor_fields['template_selection_template'] = [
 			'type'   => 'group',
 			'order'  => 24,
 			'desc'   => Field_Templates_Manager::get_instance()->render_preview_block('template_selection'),
-			'fields' => array(
-				'template_selection_template' => array(
+			'fields' => [
+				'template_selection_template' => [
 					'type'            => 'select',
 					'title'           => __('Template Selector Template', 'wp-ultimo'),
 					'placeholder'     => __('Select your Template', 'wp-ultimo'),
-					'options'         => array($this, 'get_template_selection_templates'),
+					'options'         => [$this, 'get_template_selection_templates'],
 					'wrapper_classes' => 'wu-flex-grow',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'template_selection_template',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		// @todo: re-add developer notes.
 		// $editor_fields['_dev_note_develop_your_own_template_1'] = array(
@@ -296,14 +296,14 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields['template_id'] = array(
+		$checkout_fields['template_id'] = [
 			'type'      => 'hidden',
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'template_id',
-			),
-		);
+			],
+		];
 
 		/**
 		 * Hide when pre-selected.
@@ -313,22 +313,22 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 		}
 
 		if (wu_get_isset($attributes, 'template_selection_template') === 'legacy') {
-			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), array('wu-functions'), wu_get_version());
+			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], wu_get_version());
 
 			wp_enqueue_script('wu-legacy-signup');
 
-			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
+			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons'], wu_get_version());
 		}
 
 		$site_list = $this->site_list($attributes);
 
-		$customer_sites = array();
+		$customer_sites = [];
 
 		if (wu_get_setting('allow_own_site_as_template')) {
 			$customer = wu_get_current_customer();
 
 			if ($customer) {
-				$customer_sites = $customer->get_sites(array('fields' => 'ids'));
+				$customer_sites = $customer->get_sites(['fields' => 'ids']);
 
 				$site_list = array_merge(
 					$customer_sites,
@@ -344,23 +344,23 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 		// Remove inactive sites
 		$sites = array_filter($sites, fn($site) => $site->is_active());
 
-		$template_attributes = array(
+		$template_attributes = [
 			'sites'          => $sites,
 			'name'           => $attributes['name'],
 			'cols'           => $attributes['cols'],
 			'categories'     => $attributes['template_selection_categories'] ?? \WP_Ultimo\Models\Site::get_all_categories($sites),
 			'customer_sites' => $customer_sites,
-		);
+		];
 
 		$template_class = Field_Templates_Manager::get_instance()->get_template_class('template_selection', $attributes['template_selection_template']);
 
 		$content = $template_class ? $template_class->render_container($template_attributes, $this) : __('Template does not exist.', 'wp-ultimo');
 
-		$checkout_fields[ $attributes['id'] ] = array(
+		$checkout_fields[ $attributes['id'] ] = [
 			'type'            => 'note',
 			'desc'            => $content,
 			'wrapper_classes' => $attributes['element_classes'],
-		);
+		];
 
 		return $checkout_fields;
 	}
@@ -380,16 +380,16 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 		}
 
 		if ($selection_type === 'all') {
-			return wu_get_site_templates(array('fields' => 'blog_id'));
+			return wu_get_site_templates(['fields' => 'blog_id']);
 		}
 
 		if ($selection_type === 'categories') {
 			return array_column(
 				\WP_Ultimo\Models\Site::get_all_by_categories(
 					$attributes['template_selection_categories'],
-					array(
-						'fields' => array('blog_id'),
-					),
+					[
+						'fields' => ['blog_id'],
+					],
 				),
 				'blog_id'
 			);

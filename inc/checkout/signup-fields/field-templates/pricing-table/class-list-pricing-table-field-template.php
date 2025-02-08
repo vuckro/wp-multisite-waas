@@ -68,7 +68,7 @@ class List_Pricing_Table_Field_Template extends Base_Field_Template {
 	 */
 	public function get_preview(): string {
 
-		return wu_get_asset('checkout-forms/list-pricing-table.png');
+		return wu_get_asset('checkout-forms/list-pricing-table.webp');
 	}
 
 	/**
@@ -79,7 +79,7 @@ class List_Pricing_Table_Field_Template extends Base_Field_Template {
 	 * @param array $attributes The field template attributes.
 	 * @return void
 	 */
-	public function output($attributes) {
+	public function output($attributes): void {
 
 		wu_get_template('checkout/templates/pricing-table/list', $attributes);
 	}

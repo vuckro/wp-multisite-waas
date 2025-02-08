@@ -119,9 +119,9 @@ class Signup_Field_Site_Title extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'auto_generate_site_title' => false,
-		);
+		];
 	}
 
 	/**
@@ -132,11 +132,11 @@ class Signup_Field_Site_Title extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
 			'placeholder',
 			'tooltip',
-		);
+		];
 	}
 
 	/**
@@ -147,10 +147,10 @@ class Signup_Field_Site_Title extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'site_title',
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -161,18 +161,18 @@ class Signup_Field_Site_Title extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'auto_generate_site_title' => array(
+		return [
+			'auto_generate_site_title' => [
 				'type'      => 'toggle',
 				'title'     => __('Auto-generate?', 'wp-ultimo'),
 				'desc'      => __('Check this option to auto-generate this field based on the username of the customer.', 'wp-ultimo'),
 				'tooltip'   => '',
 				'value'     => 0,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'auto_generate_site_title',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -188,24 +188,24 @@ class Signup_Field_Site_Title extends Base_Signup_Field {
 		 * If we should auto-generate, add as hidden.
 		 */
 		if (isset($attributes['auto_generate_site_title']) && $attributes['auto_generate_site_title']) {
-			return array(
-				'auto_generate_site_title' => array(
+			return [
+				'auto_generate_site_title' => [
 					'type'  => 'hidden',
 					'id'    => 'auto_generate_site_title',
 					'value' => 'username',
-				),
-				'site_title'               => array(
+				],
+				'site_title'               => [
 					'type'      => 'hidden',
 					'id'        => 'site_title',
-					'html_attr' => array(
+					'html_attr' => [
 						'v-bind:value' => 'username',
-					),
-				),
-			);
+					],
+				],
+			];
 		}
 
-		return array(
-			'site_title' => array(
+		return [
+			'site_title' => [
 				'type'              => 'text',
 				'id'                => 'site_title',
 				'required'          => true,
@@ -215,10 +215,10 @@ class Signup_Field_Site_Title extends Base_Signup_Field {
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
 				'value'             => $this->get_value(),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

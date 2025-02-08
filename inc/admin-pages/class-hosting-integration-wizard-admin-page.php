@@ -66,9 +66,9 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Current integration being setup.
@@ -84,7 +84,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		if (isset($_GET['integration'])) {
 			$domain_manager = \WP_Ultimo\Managers\Domain_Manager::get_instance();
@@ -131,30 +131,30 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_sections() {
 
-		$sections = array(
-			'activation'   => array(
+		$sections = [
+			'activation'   => [
 				'title'   => __('Activation', 'wp-ultimo'),
-				'view'    => array($this, 'section_activation'),
-				'handler' => array($this, 'handle_activation'),
-			),
-			'instructions' => array(
+				'view'    => [$this, 'section_activation'],
+				'handler' => [$this, 'handle_activation'],
+			],
+			'instructions' => [
 				'title' => __('Instructions', 'wp-ultimo'),
-				'view'  => array($this, 'section_instructions'),
-			),
-			'config'       => array(
+				'view'  => [$this, 'section_instructions'],
+			],
+			'config'       => [
 				'title'   => __('Configuration', 'wp-ultimo'),
-				'view'    => array($this, 'section_configuration'),
-				'handler' => array($this, 'handle_configuration'),
-			),
-			'testing'      => array(
+				'view'    => [$this, 'section_configuration'],
+				'handler' => [$this, 'handle_configuration'],
+			],
+			'testing'      => [
 				'title' => __('Testing Integration', 'wp-ultimo'),
-				'view'  => array($this, 'section_test'),
-			),
-			'done'         => array(
+				'view'  => [$this, 'section_test'],
+			],
+			'done'         => [
 				'title' => __('Ready!', 'wp-ultimo'),
-				'view'  => array($this, 'section_ready'),
-			),
-		);
+				'view'  => [$this, 'section_ready'],
+			],
+		];
 
 		/*
 		 * Some host providers require no instructions.
@@ -179,19 +179,19 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_activation() {
+	public function section_activation(): void {
 
 		$explainer_lines = $this->integration->get_explainer_lines();
 
 		wu_get_template(
 			'wizards/host-integrations/activation',
-			array(
+			[
 				'screen'      => get_current_screen(),
 				'page'        => $this,
 				'integration' => $this->integration,
 				'will'        => $explainer_lines['will'],
 				'will_not'    => $explainer_lines['will_not'],
-			)
+			]
 		);
 	}
 
@@ -201,9 +201,9 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_instructions() {
+	public function section_instructions(): void {
 
-		call_user_func(array($this->integration, 'get_instructions'));
+		call_user_func([$this->integration, 'get_instructions']);
 
 		$this->render_submit_box();
 	}
@@ -214,7 +214,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_configuration() {
+	public function section_configuration(): void {
 
 		$fields = $this->integration->get_fields();
 
@@ -225,23 +225,23 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 		$form = new \WP_Ultimo\UI\Form(
 			$this->get_current_section(),
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-px-6 wu-py-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			)
+			]
 		);
 
 		if (wu_request('manual')) {
 			wu_get_template(
 				'wizards/host-integrations/configuration-results',
-				array(
+				[
 					'screen'      => get_current_screen(),
 					'page'        => $this,
 					'integration' => $this->integration,
 					'form'        => $form,
 					'post'        => $_GET['post'],
-				)
+				]
 			);
 
 			return;
@@ -249,12 +249,12 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		wu_get_template(
 			'wizards/host-integrations/configuration',
-			array(
+			[
 				'screen'      => get_current_screen(),
 				'page'        => $this,
 				'integration' => $this->integration,
 				'form'        => $form,
-			)
+			]
 		);
 	}
 
@@ -264,15 +264,15 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_ready() {
+	public function section_ready(): void {
 
 		wu_get_template(
 			'wizards/host-integrations/ready',
-			array(
+			[
 				'screen'      => get_current_screen(),
 				'page'        => $this,
 				'integration' => $this->integration,
-			)
+			]
 		);
 	}
 
@@ -282,7 +282,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_activation() {
+	public function handle_activation(): void {
 
 		$is_enabled = $this->integration->is_enabled();
 
@@ -305,15 +305,15 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_configuration() {
+	public function handle_configuration(): void {
 
 		if (wu_request('submit') == '0') { // phpcs:ignore
 
 			$redirect_url = add_query_arg(
-				array(
+				[
 					'manual' => '1',
 					'post'   => $_POST,
-				)
+				]
 			);
 
 			wp_redirect($redirect_url);
@@ -344,17 +344,17 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_test() {
+	public function section_test(): void {
 
 		wp_enqueue_script('wu-vue');
 
 		wu_get_template(
 			'wizards/host-integrations/test',
-			array(
+			[
 				'screen'      => get_current_screen(),
 				'page'        => $this,
 				'integration' => $this->integration,
-			)
+			]
 		);
 	}
 }

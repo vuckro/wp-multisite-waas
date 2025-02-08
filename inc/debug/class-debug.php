@@ -29,7 +29,7 @@ class Debug {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	private array $pages = array();
+	private array $pages = [];
 
 	/**
 	 * Initializes main hooks.
@@ -37,15 +37,15 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->load();
 
-		add_action('wp_ultimo_debug', array($this, 'add_main_debug_menu'));
+		add_action('wp_ultimo_debug', [$this, 'add_main_debug_menu']);
 
-		add_action('wp_ultimo_debug', array($this, 'add_additional_hooks'));
+		add_action('wp_ultimo_debug', [$this, 'add_additional_hooks']);
 
-		add_action('wp_ultimo_debug', array($this, 'register_forms'));
+		add_action('wp_ultimo_debug', [$this, 'register_forms']);
 	}
 
 	/**
@@ -54,9 +54,9 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_additional_hooks() {
+	public function add_additional_hooks(): void {
 
-		add_action('wu_header_left', array($this, 'add_debug_links'));
+		add_action('wu_header_left', [$this, 'add_debug_links']);
 	}
 
 	// phpcs:disable
@@ -67,7 +67,7 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_debug_links() { ?>
+	public function add_debug_links(): void { ?>
 
 			<a  
 				href="<?php wu_network_admin_url('wp-ultimo-debug-pages'); ?>" 
@@ -117,16 +117,16 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add Generator Form
 		 */
 		wu_register_form(
 			'add_debug_generator_form',
-			array(
-				'render'  => array($this, 'render_debug_generator_form'),
-				'handler' => array($this, 'handle_debug_generator_form'),
-			)
+			[
+				'render'  => [$this, 'render_debug_generator_form'],
+				'handler' => [$this, 'handle_debug_generator_form'],
+			]
 		);
 
 		/*
@@ -134,10 +134,10 @@ class Debug {
 		 */
 		wu_register_form(
 			'add_debug_reset_database_form',
-			array(
-				'render'  => array($this, 'render_debug_reset_database_form'),
-				'handler' => array($this, 'handle_debug_reset_database_form'),
-			)
+			[
+				'render'  => [$this, 'render_debug_reset_database_form'],
+				'handler' => [$this, 'handle_debug_reset_database_form'],
+			]
 		);
 
 		/*
@@ -145,10 +145,10 @@ class Debug {
 		 */
 		wu_register_form(
 			'add_debug_drop_database_form',
-			array(
-				'render'  => array($this, 'render_debug_drop_database_form'),
-				'handler' => array($this, 'handle_debug_drop_database_form'),
-			)
+			[
+				'render'  => [$this, 'render_debug_drop_database_form'],
+				'handler' => [$this, 'handle_debug_drop_database_form'],
+			]
 		);
 	}
 
@@ -158,148 +158,148 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_debug_generator_form() {
+	public function render_debug_generator_form(): void {
 
-		$fields = array(
-			'customers'             => array(
+		$fields = [
+			'customers'             => [
 				'title'     => __('Customers', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate customers.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'customers',
-				),
-			),
-			'customers_number'      => array(
+				],
+			],
+			'customers_number'      => [
 				'title'             => __('Number of Customers', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 10,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'customers',
 					'v-cloak' => '1',
-				),
-			),
-			'products'              => array(
+				],
+			],
+			'products'              => [
 				'title'     => __('Products', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate products.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'products',
-				),
-			),
-			'products_number'       => array(
+				],
+			],
+			'products_number'       => [
 				'title'             => __('Number of Products', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 10,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'products',
 					'v-cloak' => '1',
-				),
-			),
-			'memberships'           => array(
+				],
+			],
+			'memberships'           => [
 				'title'     => __('Memberships', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate memberships.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'memberships',
-				),
-			),
-			'memberships_number'    => array(
+				],
+			],
+			'memberships_number'    => [
 				'title'             => __('Number of Memberships', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 10,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'memberships',
 					'v-cloak' => '1',
-				),
-			),
-			'sites'                 => array(
+				],
+			],
+			'sites'                 => [
 				'title'     => __('Sites', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate sites.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'sites',
-				),
-			),
-			'sites_number'          => array(
+				],
+			],
+			'sites_number'          => [
 				'title'             => __('Number of Sites', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 10,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'sites',
 					'v-cloak' => '1',
-				),
-			),
-			'domains'               => array(
+				],
+			],
+			'domains'               => [
 				'title'     => __('Domains', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate domains.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'domains',
-				),
-			),
-			'domains_number'        => array(
+				],
+			],
+			'domains_number'        => [
 				'title'             => __('Number of Domains', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 10,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'domains',
 					'v-cloak' => '1',
-				),
-			),
-			'discount_codes'        => array(
+				],
+			],
+			'discount_codes'        => [
 				'title'     => __('Discount Codes', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate discount codes.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'discount_codes',
-				),
-			),
-			'discount_codes_number' => array(
+				],
+			],
+			'discount_codes_number' => [
 				'title'             => __('Number of Discount Codes', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 10,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'discount_codes',
 					'v-cloak' => '1',
-				),
-			),
-			'payments'              => array(
+				],
+			],
+			'payments'              => [
 				'title'     => __('Payments', 'wp-ultimo'),
 				'desc'      => __('Toggle to generate payments.', 'wp-ultimo'),
 				'type'      => 'toggle',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'payments',
-				),
-			),
-			'payments_number'       => array(
+				],
+			],
+			'payments_number'       => [
 				'title'             => __('Number of Payments', 'wp-ultimo'),
 				'type'              => 'number',
 				'value'             => 30,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'payments',
 					'v-cloak' => '1',
-				),
-			),
-			'submit_button'         => array(
+				],
+			],
+			'submit_button'         => [
 				'title'           => __('Generate Data &rarr;', 'wp-ultimo'),
 				'type'            => 'submit',
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_debug_generator_form',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'debug_generator',
 					'data-state'  => json_encode(
-						array(
+						[
 							'customers'      => false,
 							'products'       => false,
 							'memberships'    => false,
@@ -308,10 +308,10 @@ class Debug {
 							'discount_codes' => false,
 							'webhooks'       => false,
 							'payments'       => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -323,7 +323,7 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_debug_generator_form() {
+	public function handle_debug_generator_form(): void {
 
 		ignore_user_abort(true); // You and I are gonna live forever!
 
@@ -373,7 +373,7 @@ class Debug {
 
 		$fake_data_generated = $faker->get_fake_data_generated();
 
-		$fake_ids_generated = array();
+		$fake_ids_generated = [];
 
 		foreach ($fake_data_generated as $key => $model) {
 			foreach ($model as $object) {
@@ -388,9 +388,9 @@ class Debug {
 		$wpdb->query('COMMIT');
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url('wp-ultimo'),
-			)
+			]
 		);
 	}
 
@@ -400,43 +400,43 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_debug_reset_database_form() {
+	public function render_debug_reset_database_form(): void {
 
-		$fields = array(
-			'reset_only_fake_data' => array(
+		$fields = [
+			'reset_only_fake_data' => [
 				'title'     => __('Only reset generated data.', 'wp-ultimo'),
 				'desc'      => __('Toggle this option to only remove data that was added by the generator previously. Untoggling this option will reset ALL data in WP Multisite WaaS tables.', 'wp-ultimo'),
 				'type'      => 'toggle',
 				'value'     => true,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'reset_only',
-				),
-			),
-			'submit_button'        => array(
+				],
+			],
+			'submit_button'        => [
 				'title'           => __('Reset Database &rarr;', 'wp-ultimo'),
 				'type'            => 'submit',
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'debug_reset_database_form',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'debug_reset_database_form',
 					'data-state'  => json_encode(
-						array(
+						[
 							'reset_only' => true,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -448,7 +448,7 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_debug_reset_database_form() {
+	public function handle_debug_reset_database_form(): void {
 
 		global $wpdb;
 
@@ -473,9 +473,9 @@ class Debug {
 		wu_delete_option('debug_faker');
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url('wp-ultimo-setup'),
-			)
+			]
 		);
 	}
 
@@ -485,38 +485,38 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_debug_drop_database_form() {
+	public function render_debug_drop_database_form(): void {
 
-		$fields = array(
-			'reset_note'    => array(
+		$fields = [
+			'reset_note'    => [
 				'type' => 'note',
 				'desc' => __('This action will drop the WP Multisite WaaS database tables and is irreversable.', 'wp-ultimo'),
-			),
-			'submit_button' => array(
+			],
+			'submit_button' => [
 				'title'           => __('Drop Database Tables &rarr;', 'wp-ultimo'),
 				'type'            => 'submit',
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'debug_drop_database_form',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'debug_drop_database_form',
 					'data-state'  => json_encode(
-						array(
+						[
 							'reset_only' => true,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -528,26 +528,22 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_debug_drop_database_form() {
+	public function handle_debug_drop_database_form(): void {
 
 		global $wpdb;
 
 		try {
 			wu_drop_tables();
-		} catch (\Throwable $e) {
-			$error = new \WP_Error($e->getCode(), $e->getMessage());
-
-			wp_send_json_error($error);
-		} catch (\Exception $e) {
+		} catch (\Throwable| \Exception $e) {
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
 			wp_send_json_error($error);
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url('wp-ultimo-setup&step=installation'),
-			)
+			]
 		);
 	}
 
@@ -571,10 +567,10 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load() {
+	public function load(): void {
 
 		if ($this->should_load()) {
-			add_action('wu_page_added', array($this, 'add_page'));
+			add_action('wu_page_added', [$this, 'add_page']);
 
 			add_filter('wu_tour_finished', '__return_false');
 
@@ -596,7 +592,7 @@ class Debug {
 	 * @param string $page_id The page ID. e.g. wp-ultimo.
 	 * @return void
 	 */
-	public function add_page($page_id) {
+	public function add_page($page_id): void {
 
 		$this->pages[ $page_id ] = wu_network_admin_url($page_id);
 	}
@@ -618,7 +614,7 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_main_debug_menu() {
+	public function add_main_debug_menu(): void {
 
 		new \WP_Ultimo\Admin_Pages\Debug\Debug_Admin_Page();
 	}
@@ -629,9 +625,9 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	private function reset_fake_data() {
+	private function reset_fake_data(): void {
 
-		$fake_data_generated = wu_get_option('debug_faker', array());
+		$fake_data_generated = wu_get_option('debug_faker', []);
 
 		$customers_id = wu_get_isset($fake_data_generated, 'customers');
 
@@ -668,7 +664,7 @@ class Debug {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	private function reset_all_data() {
+	private function reset_all_data(): void {
 
 		$this->reset_customers();
 
@@ -703,7 +699,7 @@ class Debug {
 	 * @return void
 	 * @throws \Exception In case of failures, an exception is thrown.
 	 */
-	private function reset_table($table, $ids = array(), $field = 'ID') {
+	private function reset_table($table, $ids = [], $field = 'ID'): void {
 
 		global $wpdb;
 
@@ -736,7 +732,7 @@ class Debug {
 	 * @return void
 	 * @throws \Exception In case of failures, an exception is thrown.
 	 */
-	private function reset_customers($ids = array()) {
+	private function reset_customers($ids = []): void {
 		global $wpdb;
 
 		$customers_table = "{$wpdb->base_prefix}wu_customers";
@@ -770,7 +766,7 @@ class Debug {
 	 * @return void
 	 * @throws \Exception In case of failures, an exception is thrown.
 	 */
-	private function reset_sites($ids = array()) {
+	private function reset_sites($ids = []): void {
 
 		if ( ! empty($ids)) {
 			foreach ($ids as $id) {
@@ -790,7 +786,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_products($ids = array()) {
+	private function reset_products($ids = []): void {
 
 		global $wpdb;
 
@@ -810,7 +806,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_memberships($ids = array()) {
+	private function reset_memberships($ids = []): void {
 
 		global $wpdb;
 
@@ -830,7 +826,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_domains($ids = array()) {
+	private function reset_domains($ids = []): void {
 
 		global $wpdb;
 
@@ -846,7 +842,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_discount_codes($ids = array()) {
+	private function reset_discount_codes($ids = []): void {
 
 		global $wpdb;
 
@@ -862,7 +858,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_webhooks($ids = array()) {
+	private function reset_webhooks($ids = []): void {
 
 		global $wpdb;
 
@@ -878,7 +874,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_payments($ids = array()) {
+	private function reset_payments($ids = []): void {
 
 		global $wpdb;
 
@@ -894,7 +890,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_checkout_forms($ids = array()) {
+	private function reset_checkout_forms($ids = []): void {
 
 		global $wpdb;
 
@@ -914,7 +910,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_post_like_models($ids = array()) {
+	private function reset_post_like_models($ids = []): void {
 
 		global $wpdb;
 
@@ -934,7 +930,7 @@ class Debug {
 	 * @param array $ids The ids to delete.
 	 * @return void
 	 */
-	private function reset_events($ids = array()) {
+	private function reset_events($ids = []): void {
 
 		global $wpdb;
 
@@ -949,7 +945,7 @@ class Debug {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	private function reset_settings() {
+	private function reset_settings(): void {
 
 		$the_prefix = 'wp-ultimo_';
 
@@ -957,7 +953,7 @@ class Debug {
 		 * List of WP Multisite WaaS options.
 		 * Format: $option_name => $should_use_prefix
 		 */
-		$options = array(
+		$options = [
 			'v2_settings'                  => true,
 			'debug_faker'                  => true,
 			'finished'                     => true,
@@ -970,7 +966,7 @@ class Debug {
 			'wu_default_email_template'    => false,
 			'wu_is_migration_done'         => false,
 			'wu_host_integrations_enabled' => false,
-		);
+		];
 
 		foreach ($options as $option_name => $should_use_prefix) {
 			$prefix = $should_use_prefix ? $the_prefix : '';

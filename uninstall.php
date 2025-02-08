@@ -22,13 +22,13 @@ $wu_settings = get_network_option(null, "wp-ultimo_{$wu_settings_key}");
 /*
  * Check if we want to wipe things clean on uninstall...
  */
-$wu_settings_uninstall_wipe_tables = isset($wu_settings['uninstall_wipe_tables']) ? $wu_settings['uninstall_wipe_tables'] : false;
+$wu_settings_uninstall_wipe_tables = $wu_settings['uninstall_wipe_tables'] ?? false;
 
 /*
  * Let's do it.
  */
 if ($wu_settings_uninstall_wipe_tables) {
-	$wu_tables = array(
+	$wu_tables = [
 		'customers',
 		'customermeta',
 		'discount_codes',
@@ -44,7 +44,7 @@ if ($wu_settings_uninstall_wipe_tables) {
 		'productmeta',
 		'products',
 		'webhooks',
-	);
+	];
 
 	$wu_prefix_table = "{$wpdb->prefix}wu_";
 

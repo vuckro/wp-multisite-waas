@@ -42,7 +42,7 @@ class Product_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Product';
+	protected $model_class = \WP_Ultimo\Models\Product::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -50,7 +50,7 @@ class Product_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 

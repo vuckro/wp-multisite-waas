@@ -10,10 +10,10 @@
 	$order_form = new \WP_Ultimo\UI\Form(
 		'product-fields',
 		$product_fields,
-		array(
+		[
 			'title' => __('Products', 'wp-ultimo'),
 			'views' => 'checkout/fields',
-		)
+		]
 	);
 
 	/**
@@ -29,7 +29,7 @@
 	 *
 	 * @since 2.0.0
 	 */
-	$submit = new \WP_Ultimo\UI\Form('submit-fields', $submit_fields, array('views' => 'checkout/fields'));
+	$submit = new \WP_Ultimo\UI\Form('submit-fields', $submit_fields, ['views' => 'checkout/fields']);
 
 	/**
 	 * Render form fields.

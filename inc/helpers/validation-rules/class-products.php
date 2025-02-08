@@ -35,7 +35,7 @@ class Products extends Rule {
 	 * @since 2.0.4
 	 * @var array
 	 */
-	protected $fillableParams = array(); // phpcs:ignore
+	protected $fillableParams = []; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *
@@ -49,7 +49,7 @@ class Products extends Rule {
 
 		$product_objects = array_map('wu_get_product', $products);
 
-		list($plan, $additional_products) = wu_segregate_products($product_objects);
+		[$plan, $additional_products] = wu_segregate_products($product_objects);
 
 		if ($plan) {
 			return true;

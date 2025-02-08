@@ -102,9 +102,9 @@ class Template_Switching_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_ajax_wu_switch_template', array($this, 'switch_template'));
+		add_action('wu_ajax_wu_switch_template', [$this, 'switch_template']);
 
 		parent::init();
 	}
@@ -116,16 +116,16 @@ class Template_Switching_Element extends Base_Element {
 	 *
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
-		wp_register_script('wu-template-switching', wu_get_asset('template-switching.js', 'js'), array('jquery', 'wu-vue-apps', 'wu-selectizer', 'wp-hooks', 'wu-cookie-helpers'));
+		wp_register_script('wu-template-switching', wu_get_asset('template-switching.js', 'js'), ['jquery', 'wu-vue-apps', 'wu-selectizer', 'wp-hooks', 'wu-cookie-helpers']);
 
 		wp_localize_script(
 			'wu-template-switching',
 			'wu_template_switching_params',
-			array(
+			[
 				'ajaxurl' => wu_ajax_url(),
-			)
+			]
 		);
 
 		wp_enqueue_script('wu-template-switching');
@@ -139,39 +139,39 @@ class Template_Switching_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('Layout', 'wp-ultimo'),
 			'desc'  => __('Layout', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['template_selection_template'] = array(
+		$fields['template_selection_template'] = [
 			'type'   => 'group',
 			'desc'   => Field_Templates_Manager::get_instance()->render_preview_block('template_selection'),
-			'fields' => array(
-				'template_selection_template' => array(
+			'fields' => [
+				'template_selection_template' => [
 					'type'            => 'select',
 					'title'           => __('Template Selector Layout', 'wp-ultimo'),
 					'placeholder'     => __('Select your Layout', 'wp-ultimo'),
 					'default'         => 'clean',
-					'options'         => array($this, 'get_template_selection_templates'),
+					'options'         => [$this, 'get_template_selection_templates'],
 					'wrapper_classes' => 'wu-flex-grow',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'template_selection_template',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$fields['_dev_note_develop_your_own_template_1'] = array(
+		$fields['_dev_note_develop_your_own_template_1'] = [
 			'type'            => 'note',
 			'order'           => 99,
 			'wrapper_classes' => 'sm:wu-p-0 sm:wu-block',
 			'classes'         => '',
 			'desc'            => sprintf('<div class="wu-p-4 wu-bg-blue-100 wu-text-grey-600">%s</div>', __('Want to add customized template selection templates?<br><a target="_blank" class="wu-no-underline" href="https://help.wpultimo.com/article/343-customize-your-checkout-flow-using-field-templates">See how you can do that here</a>.', 'wp-ultimo')),
-		);
+		];
 
 		return $fields;
 	}
@@ -185,12 +185,12 @@ class Template_Switching_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Template',
 			'Template Switching',
-		);
+		];
 	}
 
 	/**
@@ -202,16 +202,16 @@ class Template_Switching_Element extends Base_Element {
 	public function defaults() {
 
 		$site_template_ids = wu_get_site_templates(
-			array(
+			[
 				'fields' => 'ids',
-			)
+			]
 		);
 
-		return array(
+		return [
 			'slug'                        => 'template-switching',
 			'template_selection_template' => 'clean',
 			'template_selection_sites'    => implode(',', $site_template_ids),
-		);
+		];
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Template_Switching_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->site = wu_get_current_site();
 
@@ -232,9 +232,9 @@ class Template_Switching_Element extends Base_Element {
 
 		$this->membership = $this->site->get_membership();
 
-		$this->products = array();
+		$this->products = [];
 
-		$all_membership_products = array();
+		$all_membership_products = [];
 
 		if ($this->membership) {
 			$all_membership_products = $this->membership->get_all_products();
@@ -254,7 +254,7 @@ class Template_Switching_Element extends Base_Element {
 	 *
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 	}
@@ -291,14 +291,14 @@ class Template_Switching_Element extends Base_Element {
 
 		if ($switch) {
 			wp_send_json_success(
-				array(
+				[
 					'redirect_url' => add_query_arg(
-						array(
+						[
 							'updated' => 1,
-						),
+						],
 						$_SERVER['HTTP_REFERER']
 					),
-				)
+				]
 			);
 		}
 	}
@@ -326,7 +326,7 @@ class Template_Switching_Element extends Base_Element {
 			$template_selection_field = $filter_template_limits->maybe_filter_template_selection_options($atts);
 
 			if ( ! isset($template_selection_field['sites'])) {
-				$template_selection_field['sites'] = array();
+				$template_selection_field['sites'] = [];
 			}
 
 			$atts['template_selection_sites'] = implode(',', $template_selection_field['sites']);
@@ -339,11 +339,11 @@ class Template_Switching_Element extends Base_Element {
 
 			$categories = \WP_Ultimo\Models\Site::get_all_categories($sites);
 
-			$template_attributes = array(
+			$template_attributes = [
 				'sites'      => $sites,
 				'name'       => '',
 				'categories' => $categories,
-			);
+			];
 
 			$reducer_class = new \WP_Ultimo\Checkout\Signup_Fields\Signup_Field_Template_Selection();
 
@@ -351,74 +351,74 @@ class Template_Switching_Element extends Base_Element {
 
 			$content = $template_class ? $template_class->render_container($template_attributes, $reducer_class) : __('Template does not exist.', 'wp-ultimo');
 
-			$checkout_fields['back_to_template_selection'] = array(
+			$checkout_fields['back_to_template_selection'] = [
 				'type'              => 'note',
 				'order'             => 0,
 				'desc'              => sprintf('<a href="#" class="wu-no-underline wu-mt-1 wu-uppercase wu-text-2xs wu-font-semibold wu-text-gray-600" v-on:click.prevent="template_id = original_template_id; confirm_switch = false">%s</a>', __('&larr; Back to Template Selection', 'wp-ultimo')),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-init:original_template_id' => $this->site->get_template_id(),
 					'v-show'                      => 'template_id != original_template_id',
 					'v-cloak'                     => '1',
-				),
-			);
+				],
+			];
 
-			$checkout_fields['template_element'] = array(
+			$checkout_fields['template_element'] = [
 				'type'              => 'note',
 				'wrapper_classes'   => 'wu-w-full',
 				'classes'           => 'wu-w-full',
 				'desc'              => $content,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'template_id == original_template_id',
 					'v-cloak' => '1',
-				),
-			);
+				],
+			];
 
-			$checkout_fields['confirm_switch'] = array(
+			$checkout_fields['confirm_switch'] = [
 				'type'              => 'toggle',
 				'title'             => __('Confirm template switch?', 'wp-ultimo'),
 				'desc'              => __('Switching your current template completely overwrites the content of your site with the contents of the newly chosen template. All customizations will be lost. This action cannot be undone.', 'wp-ultimo'),
 				'tooltip'           => '',
 				'wrapper_classes'   => '',
 				'value'             => 0,
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model' => 'confirm_switch',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'template_id != 0 && template_id != original_template_id',
 					'v-cloak' => 1,
-				),
-			);
+				],
+			];
 
-			$checkout_fields['submit_switch'] = array(
+			$checkout_fields['submit_switch'] = [
 				'type'              => 'link',
 				'display_value'     => __('Process Switch', 'wp-ultimo'),
 				'wrapper_classes'   => 'wu-text-right wu-bg-gray-100',
 				'classes'           => 'button button-primary',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak'            => 1,
 					'v-show'             => 'confirm_switch',
 					'v-on:click.prevent' => 'ready = true',
-				),
-			);
+				],
+			];
 
-			$checkout_fields['template_id'] = array(
+			$checkout_fields['template_id'] = [
 				'type'      => 'hidden',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model'            => 'template_id',
 					'v-init:template_id' => $this->site->get_template_id(),
-				),
-			);
+				],
+			];
 
 			$section_slug = 'wu-template-switching-form';
 
 			$form = new Form(
 				$section_slug,
 				$checkout_fields,
-				array(
+				[
 					'views'                 => 'admin-pages/fields',
 					'classes'               => 'wu-striped wu-widget-inset',
 					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-py-5 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				)
+				]
 			);
 
 			ob_start();

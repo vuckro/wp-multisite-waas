@@ -16,7 +16,7 @@ if ( ! class_exists('MUCD_Files') ) {
 			switch_to_blog($from_site_id);
 			$wp_upload_info   = wp_upload_dir();
 			$from_dir['path'] = $wp_upload_info['basedir'];
-			$from_site_id == MUCD_PRIMARY_SITE_ID ? $from_dir['exclude'] = MUCD_Option::get_primary_dir_exclude() : $from_dir['exclude'] = array();
+			$from_site_id == MUCD_PRIMARY_SITE_ID ? $from_dir['exclude'] = MUCD_Option::get_primary_dir_exclude() : $from_dir['exclude'] = [];
 
 			// Switch to Destination site and get uploads info
 			switch_to_blog($to_site_id);
@@ -25,12 +25,12 @@ if ( ! class_exists('MUCD_Files') ) {
 
 			restore_current_blog();
 
-			$dirs   = array();
-			$dirs[] = array(
+			$dirs   = [];
+			$dirs[] = [
 				'from_dir_path' => $from_dir['path'],
 				'to_dir_path'   => $to_dir,
 				'exclude_dirs'  => $from_dir['exclude'],
-			);
+			];
 
 			$dirs = apply_filters('mucd_copy_dirs', $dirs, $from_site_id, $to_site_id);
 
@@ -53,7 +53,7 @@ if ( ! class_exists('MUCD_Files') ) {
 		 * @param  string $dst destination directory path
 		 * @param  array  $exclude_dirs directories to ignore
 		 */
-		public static function recurse_copy($src, $dst, $exclude_dirs = array()) {
+		public static function recurse_copy($src, $dst, $exclude_dirs = []): void {
 			$src = rtrim($src, '/');
 			$dst = rtrim($dst, '/');
 			$dir = opendir($src);
@@ -102,7 +102,7 @@ if ( ! class_exists('MUCD_Files') ) {
 		 * @since 0.2.0
 		 * @param  string $dir the path
 		 */
-		public static function rrmdir($dir) {
+		public static function rrmdir($dir): void {
 			if (is_dir($dir)) {
 				$objects = scandir($dir);
 				foreach ($objects as $object) {
@@ -125,7 +125,7 @@ if ( ! class_exists('MUCD_Files') ) {
 		 * @since 0.2.0
 		 * @param  string $dir_path the path
 		 */
-		public static function mkdir_error($dir_path) {
+		public static function mkdir_error($dir_path): void {
 			$error_1 = 'ERROR DURING FILE COPY : CANNOT CREATE ' . $dir_path;
 			MUCD_Duplicate::write_log($error_1);
 			$error_2 = sprintf(MUCD_NETWORK_PAGE_DUPLICATE_COPY_FILE_ERROR, MUCD_Functions::get_primary_upload_dir());

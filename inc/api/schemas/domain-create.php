@@ -18,62 +18,62 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'domain'           => array(
+return [
+	'domain'           => [
 		'description' => __("Your Domain name. You don't need to put http or https in front of your domain in this field. e.g: example.com.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'blog_id'          => array(
+	],
+	'blog_id'          => [
 		'description' => __('The blog ID attached to this domain.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => true,
-	),
-	'active'           => array(
+	],
+	'active'           => [
 		'description' => __('Set this domain as active (true), which means available to be used, or inactive (false).', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'primary_domain'   => array(
+	],
+	'primary_domain'   => [
 		'description' => __("Define true to set this as primary domain of a site, meaning it's the main url, or set false.", 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'secure'           => array(
+	],
+	'secure'           => [
 		'description' => __('If this domain has some SSL security or not.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'stage'            => array(
+	],
+	'stage'            => [
 		'description' => __('The state of the domain model object. Can be one of this options: checking-dns, checking-ssl-cert, done-without-ssl, done and failed.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-		'enum'        => array(
+		'enum'        => [
 			'checking-dns',
 			'checking-ssl-cert',
 			'done-without-ssl',
 			'done',
 			'failed',
-		),
-	),
-	'date_created'     => array(
+		],
+	],
+	'date_created'     => [
 		'description' => __('Date when the domain was created. If no date is set, the current date and time will be used.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'    => array(
+	],
+	'date_modified'    => [
 		'description' => __('Model last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'migrated_from_id' => array(
+	],
+	'migrated_from_id' => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'  => array(
+	],
+	'skip_validation'  => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

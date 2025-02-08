@@ -44,7 +44,7 @@ class Limit_Plugins extends Limit {
 
 		$plugin = (object) $this->{$value_to_check};
 
-		$types = array(
+		$types = [
 			'visible'               => $plugin->visibility === 'visible',
 			'hidden'                => $plugin->visibility === 'hidden',
 			'default'               => $plugin->behavior === 'default',
@@ -52,7 +52,7 @@ class Limit_Plugins extends Limit {
 			'force_inactive'        => $plugin->behavior === 'force_inactive',
 			'force_active_locked'   => $plugin->behavior === 'force_active_locked',
 			'force_inactive_locked' => $plugin->behavior === 'force_inactive_locked',
-		);
+		];
 
 		return wu_get_isset($types, $type, false);
 	}
@@ -83,21 +83,21 @@ class Limit_Plugins extends Limit {
 	 */
 	public function get_by_type($behavior = null, $visibility = null) {
 
-		$search_params = array();
+		$search_params = [];
 
 		if ($behavior) {
-			$search_params[] = array('behavior', $behavior);
+			$search_params[] = ['behavior', $behavior];
 		}
 
 		if ($visibility) {
-			$search_params[] = array('visibility', $visibility);
+			$search_params[] = ['visibility', $visibility];
 		}
 
 		$results = \Arrch\Arrch::find(
 			(array) $this->get_limit(),
-			array(
+			[
 				'where' => $search_params,
-			)
+			]
 		);
 
 		return $results;
@@ -113,10 +113,10 @@ class Limit_Plugins extends Limit {
 	 */
 	public function get_default_permissions($type) {
 
-		return array(
+		return [
 			'visibility' => 'visible',
 			'behavior'   => 'default',
-		);
+		];
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Limit_Plugins extends Limit {
 	 */
 	public function exists($plugin_name) {
 
-		$results = wu_get_isset($this->get_limit(), $plugin_name, array());
+		$results = wu_get_isset($this->get_limit(), $plugin_name, []);
 
 		return wu_get_isset($results, 'visibility', 'not-set') !== 'not-set' || wu_get_isset($results, 'behavior', 'not-set') !== 'not-set';
 	}

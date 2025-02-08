@@ -36,7 +36,7 @@ function wu_get_product($product_id_or_slug) {
  * @param array $query Query arguments.
  * @return Product[]
  */
-function wu_get_products($query = array()) {
+function wu_get_products($query = []) {
 
 	return Product::query($query);
 }
@@ -49,7 +49,7 @@ function wu_get_products($query = array()) {
  * @param array $query Query arguments.
  * @return Product[]
  */
-function wu_get_plans($query = array()) {
+function wu_get_plans($query = []) {
 
 	$query['type'] = 'plan';
 
@@ -70,7 +70,7 @@ function wu_get_plans($query = array()) {
  */
 function wu_get_plans_as_options() {
 
-	$options = array();
+	$options = [];
 
 	foreach (wu_get_plans() as $plan) {
 		$options[ $plan->get_id() ] = $plan->get_name();
@@ -117,7 +117,7 @@ function wu_create_product($product_data) {
 
 	$product_data = wp_parse_args(
 		$product_data,
-		array(
+		[
 			'name'                => false,
 			'description'         => false,
 			'currency'            => false,
@@ -139,10 +139,10 @@ function wu_create_product($product_data) {
 			'date_created'        => wu_get_current_time('mysql', true),
 			'date_modified'       => wu_get_current_time('mysql', true),
 			'migrated_from_id'    => 0,
-			'meta'                => array(),
-			'available_addons'    => array(),
+			'meta'                => [],
+			'available_addons'    => [],
 			'group'               => '',
-		)
+		]
 	);
 
 	$product = new Product($product_data);
@@ -177,7 +177,7 @@ function wu_get_product_groups(): array {
  */
 function wu_segregate_products($products) {
 
-	$results = array(false, array());
+	$results = [false, []];
 
 	foreach ($products as $product) {
 		if (is_a($product, Product::class) === false) {

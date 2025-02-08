@@ -19,9 +19,9 @@ $active_gateways = wu_get_active_gateway_as_options();
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-title',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>
@@ -71,9 +71,9 @@ $active_gateways = wu_get_active_gateway_as_options();
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-errors',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	/**

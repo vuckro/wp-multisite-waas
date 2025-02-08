@@ -29,7 +29,7 @@ class Cache_Manager {
 	 * @since 2.1.2
 	 * @return void
 	 */
-	public function flush_known_caches() {
+	public function flush_known_caches(): void {
 
 		/**
 		 * Iterate through known caching plugins methods and flush them
@@ -38,7 +38,7 @@ class Cache_Manager {
 		 * To support more caching plugins, just add a method to this class suffixed with '_cache_flush'
 		 */
 		foreach (get_class_methods($this) as $method) {
-			if (substr_compare($method, '_cache_flush', -strlen('_cache_flush')) === 0) {
+			if (str_ends_with($method, '_cache_flush')) {
 				$this->$method();
 			}
 		}

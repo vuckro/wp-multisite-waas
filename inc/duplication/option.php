@@ -13,7 +13,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 * @param string $network_value the value for site option
 		 * @since 0.2.0
 		 */
-		public static function init_duplicable_option($blogs_value = 'no', $network_value = 'all') {
+		public static function init_duplicable_option($blogs_value = 'no', $network_value = 'all'): void {
 			$network_blogs = MUCD_Functions::get_sites();
 			foreach ( $network_blogs as $blog ) {
 				$blog_id = $blog['blog_id'];
@@ -28,7 +28,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 *
 		 * @since 0.2.0
 		 */
-		public static function delete_duplicable_option() {
+		public static function delete_duplicable_option(): void {
 			$network_blogs = MUCD_Functions::get_sites();
 			foreach ( $network_blogs as $blog ) {
 				$blog_id = $blog['blog_id'];
@@ -44,7 +44,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 * @since 0.2.0
 		 * @param array $blogs list of blogs we want the option set to "yes"
 		 */
-		public static function set_duplicable_option($blogs) {
+		public static function set_duplicable_option($blogs): void {
 			$network_blogs = MUCD_Functions::get_sites();
 			foreach ( $network_blogs as $blog ) {
 				if (in_array($blog['blog_id'], $blogs)) {
@@ -61,7 +61,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 *
 		 * @since 1.3.0
 		 */
-		public static function init_options() {
+		public static function init_options(): void {
 			add_site_option('mucd_copy_files', 'yes');
 			add_site_option('mucd_keep_users', 'yes');
 			add_site_option('mucd_log', 'no');
@@ -77,7 +77,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 *
 		 * @since 1.3.0
 		 */
-		public static function delete_options() {
+		public static function delete_options(): void {
 			delete_site_option('mucd_copy_files');
 			delete_site_option('mucd_keep_users');
 			delete_site_option('mucd_log');
@@ -106,9 +106,9 @@ if ( ! class_exists('MUCD_Option') ) {
 		 * @return  array of string
 		 */
 		public static function get_primary_dir_exclude() {
-			return array(
+			return [
 				'sites',
-			);
+			];
 		}
 
 
@@ -119,7 +119,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 * @return  array of string
 		 */
 		public static function get_default_saved_option() {
-			return array(
+			return [
 				'siteurl'                                => '',
 				'home'                                   => '',
 				'upload_path'                            => '',
@@ -132,7 +132,7 @@ if ( ! class_exists('MUCD_Option') ) {
 				'schema-ActionScheduler_StoreSchema'     => '',
 				'schema-ActionScheduler_LoggerSchema'    => '',
 				'action_scheduler_lock_async-request-runner' => '',
-			);
+			];
 		}
 
 
@@ -154,17 +154,17 @@ if ( ! class_exists('MUCD_Option') ) {
 		 * @return array '%table_name' => array('%field_name_1','%field_name_2','%field_name_3', ...)
 		 */
 		public static function get_default_fields_to_update() {
-			return array(
-				'commentmeta'        => array(),
-				'comments'           => array(),
-				'links'              => array('link_url', 'link_image'),
-				'options'            => array('option_name', 'option_value'),
-				'postmeta'           => array('meta_value'),
-				'posts'              => array('post_content', 'guid', 'post_title', 'post_name'),
-				'terms'              => array(),
-				'term_relationships' => array(),
-				'term_taxonomy'      => array(),
-			);
+			return [
+				'commentmeta'        => [],
+				'comments'           => [],
+				'links'              => ['link_url', 'link_image'],
+				'options'            => ['option_name', 'option_value'],
+				'postmeta'           => ['meta_value'],
+				'posts'              => ['post_content', 'guid', 'post_title', 'post_name'],
+				'terms'              => [],
+				'term_relationships' => [],
+				'term_taxonomy'      => [],
+			];
 		}
 
 
@@ -186,7 +186,7 @@ if ( ! class_exists('MUCD_Option') ) {
 		 * @return  array of string
 		 */
 		public static function get_default_primary_tables_to_copy() {
-			return array(
+			return [
 				'commentmeta',
 				'comments',
 				'links',
@@ -197,7 +197,7 @@ if ( ! class_exists('MUCD_Option') ) {
 				'term_relationships',
 				'term_taxonomy',
 				'termmeta',
-			);
+			];
 		}
 
 

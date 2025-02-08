@@ -34,7 +34,7 @@ function wu_get_next_queue_run() {
  * @param string $group The group to assign this job to.
  * @return int The action ID.
  */
-function wu_enqueue_async_action($hook, $args = array(), $group = '') {
+function wu_enqueue_async_action($hook, $args = [], $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_enqueue_async_action($hook, $args, $group));
 }
@@ -51,7 +51,7 @@ function wu_enqueue_async_action($hook, $args = array(), $group = '') {
  *
  * @return int The action ID.
  */
-function wu_schedule_single_action($timestamp, $hook, $args = array(), $group = '') {
+function wu_schedule_single_action($timestamp, $hook, $args = [], $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_schedule_single_action($timestamp, $hook, $args, $group));
 }
@@ -69,7 +69,7 @@ function wu_schedule_single_action($timestamp, $hook, $args = array(), $group = 
  *
  * @return int The action ID.
  */
-function wu_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $args = array(), $group = '') {
+function wu_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $args = [], $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $args, $group));
 }
@@ -99,7 +99,7 @@ function wu_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $
  *
  * @return int The action ID.
  */
-function wu_schedule_cron_action($timestamp, $schedule, $hook, $args = array(), $group = '') {
+function wu_schedule_cron_action($timestamp, $schedule, $hook, $args = [], $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_schedule_cron_action($timestamp, $schedule, $hook, $args, $group));
 }
@@ -115,7 +115,7 @@ function wu_schedule_cron_action($timestamp, $schedule, $hook, $args = array(), 
  *
  * @return string|null The scheduled action ID if a scheduled action was found, or null if no matching action found.
  */
-function wu_unschedule_action($hook, $args = array(), $group = '') {
+function wu_unschedule_action($hook, $args = [], $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_unschedule_action($hook, $args, $group));
 }
@@ -129,7 +129,7 @@ function wu_unschedule_action($hook, $args = array(), $group = '') {
  * @param array  $args Args that would have been passed to the job.
  * @param string $group The group the job is assigned to.
  */
-function wu_unschedule_all_actions($hook, $args = array(), $group = '') {
+function wu_unschedule_all_actions($hook, $args = [], $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_unschedule_all_actions($hook, $args, $group));
 }
@@ -166,7 +166,7 @@ function wu_next_scheduled_action($hook, $args = null, $group = '') {
  *
  * @return array
  */
-function wu_get_scheduled_actions($args = array(), $return_format = OBJECT) {
+function wu_get_scheduled_actions($args = [], $return_format = OBJECT) {
 
 	return wu_switch_blog_and_run(fn() => as_get_scheduled_actions($args, $return_format));
 }

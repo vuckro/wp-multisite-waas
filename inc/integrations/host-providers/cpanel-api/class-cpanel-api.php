@@ -113,7 +113,7 @@ class CPanel_API {
 	 * @since 1.6.2
 	 * @return void
 	 */
-	public function generate_cookie() {
+	public function generate_cookie(): void {
 
 		wu_log_add('integration-cpanel-cookie', '');
 	}
@@ -138,7 +138,7 @@ class CPanel_API {
 	 * @param array  $params Request parameters to send.
 	 * @return mixed
 	 */
-	private function request($url, $params = array()) {
+	private function request($url, $params = []) {
 
 		if ($this->log) {
 			$curl_log = fopen($this->curlfile, 'a+');
@@ -162,7 +162,7 @@ class CPanel_API {
 
 		$ch = curl_init();
 
-		$curl_opts = array(
+		$curl_opts = [
 			CURLOPT_URL            => $url,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => false,
@@ -170,7 +170,7 @@ class CPanel_API {
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_COOKIEJAR      => realpath($this->cookie_file),
 			CURLOPT_COOKIEFILE     => realpath($this->cookie_file),
-			CURLOPT_HTTPHEADER     => array(
+			CURLOPT_HTTPHEADER     => [
 				CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0',
 				'Host: ' . $this->host,
 				'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -178,8 +178,8 @@ class CPanel_API {
 				'Accept-Encoding: gzip, deflate',
 				'Connection: keep-alive',
 				'Content-Type: application/x-www-form-urlencoded',
-			),
-		);
+			],
+		];
 
 		if ( ! empty($params)) {
 			$curl_opts[ CURLOPT_POST ]       = true;
@@ -258,7 +258,7 @@ class CPanel_API {
 	 * @param array  $parameters Parameters to the API endpoint.
 	 * @return boolean
 	 */
-	public function execute($api, $module, $function, array $parameters = array()) {
+	public function execute($api, $module, $function, array $parameters = []) {
 
 		switch ($api) {
 			case 'api2':
@@ -279,7 +279,7 @@ class CPanel_API {
 	 * @param array  $parameters Parameters to the API endpoint.
 	 * @return mixed
 	 */
-	public function uapi($module, $function, array $parameters = array()) {
+	public function uapi($module, $function, array $parameters = []) {
 
 		if (count($parameters) < 1) {
 			$parameters = '';
@@ -299,7 +299,7 @@ class CPanel_API {
 	 * @param array  $parameters Parameters to the API endpoint.
 	 * @return mixed
 	 */
-	public function api2($module, $function, array $parameters = array()) {
+	public function api2($module, $function, array $parameters = []) {
 
 		if (count($parameters) < 1) {
 			$parameters = '';

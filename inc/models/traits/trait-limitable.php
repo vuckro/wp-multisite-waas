@@ -23,7 +23,7 @@ trait Limitable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $_limitations = array();
+	protected $_limitations = [];
 
 	/**
 	 * List of limitations that need to be merged.
@@ -54,7 +54,7 @@ trait Limitable {
 		 * This is because we don't want to limit sites other than the customer owned ones.
 		 */
 		if ($this->model === 'site' && $this->get_type() !== Site_Type::CUSTOMER_OWNED) {
-			return new Limitations(array());
+			return new Limitations([]);
 		}
 
 		$cache_key = $waterfall ? '_composite_limitations_' : '_limitations_';
@@ -70,16 +70,16 @@ trait Limitable {
 		}
 
 		if ( ! is_array($this->meta)) {
-			$this->meta = array();
+			$this->meta = [];
 		}
 
 		if (did_action('muplugins_loaded') === false) {
-			$modules_data = $this->get_meta('wu_limitations', array());
+			$modules_data = $this->get_meta('wu_limitations', []);
 		} else {
 			$modules_data = Limitations::early_get_limitations($this->model, $this->get_id());
 		}
 
-		$limitations = new Limitations(array());
+		$limitations = new Limitations([]);
 
 		if ($waterfall) {
 			$limitations = $limitations->merge(...$this->limitations_to_merge());
@@ -155,9 +155,9 @@ trait Limitable {
 	 * @since 2.0.5
 	 * @return void
 	 */
-	public function sync_plugins() {
+	public function sync_plugins(): void {
 
-		$sites = array();
+		$sites = [];
 
 		if ($this->model === 'site') {
 			$sites[] = $this;
@@ -201,7 +201,7 @@ trait Limitable {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_limitations() {
+	public function handle_limitations(): void {
 		/*
 		 * Only handle limitations if there are to handle in the first place.
 		 */
@@ -213,14 +213,14 @@ trait Limitable {
 
 		$saved_limitations = $object_limitations->to_array();
 
-		$modules_to_save = array();
+		$modules_to_save = [];
 
 		$limitations = Limitations::repository();
 
 		$current_limitations = $this->get_limitations(true, true);
 
 		foreach ($limitations as $limitation_id => $class_name) {
-			$module = wu_get_isset($saved_limitations, $limitation_id, array());
+			$module = wu_get_isset($saved_limitations, $limitation_id, []);
 
 			try {
 				if (is_string($module)) {
@@ -265,10 +265,10 @@ trait Limitable {
 	public function get_applicable_product_slugs() {
 
 		if ($this->model === 'product') {
-			return array($this->get_slug());
+			return [$this->get_slug()];
 		}
 
-		$slugs = array();
+		$slugs = [];
 
 		if ($this->model === 'membership') {
 			$membership = $this;

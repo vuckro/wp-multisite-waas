@@ -53,11 +53,11 @@ class Country_NL extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'NL',
 		'currency'     => 'EUR',
 		'phone_code'   => 31,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -86,7 +86,7 @@ class Country_NL extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'BQ1' => __('Bonaire', 'wp-ultimo'),
 			'DR'  => __('Drenthe', 'wp-ultimo'),
 			'FL'  => __('Flevoland', 'wp-ultimo'),
@@ -102,6 +102,6 @@ class Country_NL extends Country {
 			'ZH'  => __('South Holland', 'wp-ultimo'),
 			'UT'  => __('Utrecht', 'wp-ultimo'),
 			'ZE'  => __('Zeeland', 'wp-ultimo'),
-		);
+		];
 	}
 }

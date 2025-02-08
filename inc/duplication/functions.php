@@ -50,7 +50,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 * @since 0.2.0
 		 * @param  int $blog_id the blog id
 		 */
-		public static function remove_blog($blog_id) {
+		public static function remove_blog($blog_id): void {
 			switch_to_blog($blog_id);
 			$wp_upload_info = wp_upload_dir();
 			$dir            = str_replace(' ', '\\ ', trailingslashit($wp_upload_info['basedir']));
@@ -87,8 +87,8 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 * @return array of blog data
 		 */
 		public static function get_site_list() {
-			$site_list     = array();
-			$network_blogs = self::get_sites(apply_filters('mucd_get_site_list_args', array()));
+			$site_list     = [];
+			$network_blogs = self::get_sites(apply_filters('mucd_get_site_list_args', []));
 			foreach ( $network_blogs as $blog ) {
 				if (self::is_duplicable($blog['blog_id']) && MUCD_SITE_DUPLICATION_EXCLUDE != $blog['blog_id']) {
 					$site_list[] = $blog;
@@ -147,7 +147,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 *
 		 * @since 1.3.1
 		 */
-		public static function set_locale_to_en_US() {
+		public static function set_locale_to_en_US(): void {
 
 			// Bugfix Pierre Dargham : relocating this declaration outside of the call to add_filter
 			// PHP < 5.3 does not accept anonymous functions
@@ -185,9 +185,9 @@ if ( ! class_exists('MUCD_Functions') ) {
 			return false;
 		}
 
-		public static function get_sites($args = array()) {
+		public static function get_sites($args = []) {
 			if (version_compare(get_bloginfo('version'), '4.6', '>=')) {
-				$defaults = array('number' => MUCD_MAX_NUMBER_OF_SITE);
+				$defaults = ['number' => MUCD_MAX_NUMBER_OF_SITE];
 				$args     = wp_parse_args($args, $defaults);
 				$args     = apply_filters('mucd_get_sites_args', $args);
 				$sites    = get_sites($args);
@@ -196,7 +196,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 				}
 				return $sites;
 			} else {
-				$defaults = array('limit' => MUCD_MAX_NUMBER_OF_SITE);
+				$defaults = ['limit' => MUCD_MAX_NUMBER_OF_SITE];
 				$args     = apply_filters('mucd_get_sites_args', $args);
 				$args     = wp_parse_args($args, $defaults);
 				return wp_get_sites($args);
@@ -208,7 +208,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 *
 		 * @since 0.2.0
 		 */
-		public static function check_if_multisite() {
+		public static function check_if_multisite(): void {
 			if ( ! function_exists('is_multisite') || ! is_multisite()) {
 				deactivate_plugins(plugin_basename(__FILE__));
 				wp_die('multisite-clone-duplicator works only for multisite installation');
@@ -220,7 +220,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 *
 		 * @since 1.4.0
 		 */
-		public static function check_if_network_admin() {
+		public static function check_if_network_admin(): void {
 			if ( ! is_network_admin() ) {
 				deactivate_plugins(plugin_basename(__FILE__));
 				wp_die('multisite-clone-duplicator works only as multisite network-wide plugin');

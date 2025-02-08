@@ -146,19 +146,19 @@ class Checkout_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['slug'] = array(
+		$fields['slug'] = [
 			'title' => __('Slug', 'wp-ultimo'),
 			'desc'  => __('The checkout form slug.', 'wp-ultimo'),
 			'type'  => 'text',
-		);
+		];
 
 		return $fields;
 	}
@@ -182,13 +182,13 @@ class Checkout_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Checkout',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -207,12 +207,12 @@ class Checkout_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'slug'                   => 'main-form',
 			'step'                   => false,
 			'display_title'          => false,
-			'membership_limitations' => array(),
-		);
+			'membership_limitations' => [],
+		];
 	}
 
 	/**
@@ -232,7 +232,7 @@ class Checkout_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		if ($this->is_thank_you_page()) {
 			\WP_Ultimo\UI\Thank_You_Element::get_instance()->setup();
@@ -251,7 +251,7 @@ class Checkout_Element extends Base_Element {
 	 * @param \WP_Ultimo\Models\Checkout_Form $checkout_form The current checkout form.
 	 * @return void
 	 */
-	public function print_custom_css($checkout_form) {
+	public function print_custom_css($checkout_form): void {
 
 		$scss = new Compiler();
 
@@ -339,9 +339,9 @@ class Checkout_Element extends Base_Element {
 				$message = sprintf(__('Hi %s. You have a pending payment for your membership!', 'wp-ultimo'), $customer->get_display_name());
 
 				$payment_url = add_query_arg(
-					array(
+					[
 						'payment' => $pending_payment->get_hash(),
-					),
+					],
 					wu_get_registration_url()
 				);
 
@@ -360,9 +360,9 @@ class Checkout_Element extends Base_Element {
 				return apply_filters('wu_checkout_pending_payment_error_message', $message, $membership, $customer);
 			}
 
-			$membership_blocked_forms = array(
+			$membership_blocked_forms = [
 				'wu-add-new-site',
-			);
+			];
 
 			if ( ! $membership->is_active() && $membership->get_status() !== Membership_Status::TRIALING && in_array($atts['slug'], $membership_blocked_forms, true)) {
 
@@ -373,20 +373,20 @@ class Checkout_Element extends Base_Element {
 					/**
 					 * Enqueue thank you page scripts to handle resend email verification link
 					 */
-					wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), array(), wu_get_version());
+					wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), [], wu_get_version());
 
 					wp_localize_script(
 						'wu-thank-you',
 						'wu_thank_you',
-						array(
+						[
 							'ajaxurl'         => admin_url('admin-ajax.php'),
 							'resend_verification_email_nonce' => wp_create_nonce('wu_resend_verification_email_nonce'),
 							'membership_hash' => $membership->get_hash(),
-							'i18n'            => array(
+							'i18n'            => [
 								'resending_verification_email' => __('Resending verification email...', 'wp-ultimo'),
 								'email_sent' => __('Verification email sent!', 'wp-ultimo'),
-							),
-						)
+							],
+						]
 					);
 
 					wp_enqueue_script('wu-thank-you');
@@ -416,10 +416,10 @@ class Checkout_Element extends Base_Element {
 				 */
 				$allowed_forms = apply_filters(
 					'wu_get_membership_allowed_forms',
-					array(
+					[
 						'wu-checkout',
 						'wu-add-new-site',
-					)
+					]
 				);
 
 				if ( ! in_array($slug, $allowed_forms, true) && ! wu_request('payment')) {
@@ -502,9 +502,9 @@ class Checkout_Element extends Base_Element {
 
 							if ($update_url) {
 								$update_link = add_query_arg(
-									array(
+									[
 										'membership' => $membership->get_hash(),
-									),
+									],
 									$update_url
 								);
 							} elseif (is_admin()) {
@@ -590,14 +590,14 @@ class Checkout_Element extends Base_Element {
 
 		$step = $checkout_form->get_step($atts['step'], true);
 
-		$this->step = $step ? $step : current($this->steps);
+		$this->step = $step ?: current($this->steps);
 
 		$this->step = wp_parse_args(
 			$this->step,
-			array(
+			[
 				'classes' => '',
-				'fields'  => array(),
-			)
+				'fields'  => [],
+			]
 		);
 
 		$this->step_name = $this->step['id'] ?? '';
@@ -634,14 +634,14 @@ class Checkout_Element extends Base_Element {
 		/*
 		 * Adds the product fields to keep them.
 		 */
-		$final_fields['products[]'] = array(
+		$final_fields['products[]'] = [
 			'type'      => 'hidden',
-			'html_attr' => array(
+			'html_attr' => [
 				'v-for'     => '(product, index) in unique_products',
 				'v-model'   => 'products[index]',
 				'v-bind:id' => '"products-" + index',
-			),
-		);
+			],
+		];
 
 		$this->inject_inline_auto_submittable_field($auto_submittable_field);
 
@@ -649,14 +649,14 @@ class Checkout_Element extends Base_Element {
 
 		return wu_get_template_contents(
 			'checkout/form',
-			array(
+			[
 				'step'               => $this->step,
 				'step_name'          => $this->step_name,
 				'checkout_form_name' => $atts['slug'],
 				'errors'             => $checkout->errors,
 				'display_title'      => $atts['display_title'],
 				'final_fields'       => $final_fields,
-			)
+			]
 		);
 	}
 
@@ -668,7 +668,7 @@ class Checkout_Element extends Base_Element {
 	 * @param string $auto_submittable_field The auto-submittable field.
 	 * @return void
 	 */
-	public function inject_inline_auto_submittable_field($auto_submittable_field) {
+	public function inject_inline_auto_submittable_field($auto_submittable_field): void {
 
 		$callback = function () use ($auto_submittable_field) {
 
@@ -712,20 +712,20 @@ class Checkout_Element extends Base_Element {
 	public function output($atts, $content = null) {
 
 		if (wu_is_update_page()) {
-			$atts = array(
+			$atts = [
 				'slug'          => apply_filters('wu_membership_update_form', 'wu-checkout'),
 				'step'          => false,
 				'display_title' => false,
-			);
+			];
 		}
 
 		if (wu_is_new_site_page()) {
-			$atts = array(
+			$atts = [
 				'slug'                   => apply_filters('wu_membership_new_site_form', 'wu-add-new-site'),
 				'step'                   => false,
 				'display_title'          => false,
-				'membership_limitations' => array('sites'),
-			);
+				'membership_limitations' => ['sites'],
+			];
 		}
 
 		if ($this->is_thank_you_page()) {
@@ -739,25 +739,25 @@ class Checkout_Element extends Base_Element {
 		 */
 		$update_forms = apply_filters(
 			'wu_membership_update_forms',
-			array(
+			[
 				'wu-checkout',
-			)
+			]
 		);
 
 		if ( ! in_array($atts['slug'], $update_forms, true) && (wu_request('payment') || wu_request('payment_id'))) {
-			$atts = array(
+			$atts = [
 				'slug'          => 'wu-finish-checkout',
 				'step'          => false,
 				'display_title' => false,
-			);
+			];
 		}
 
 		if (wu_request('wu_form') && in_array(wu_request('wu_form'), $update_forms, true)) {
-			$atts = array(
+			$atts = [
 				'slug'          => wu_request('wu_form'),
 				'step'          => false,
 				'display_title' => false,
-			);
+			];
 		}
 
 		return $this->output_form($atts, $content);

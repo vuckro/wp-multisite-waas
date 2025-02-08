@@ -64,47 +64,47 @@
 
 						$status = "<span class='wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-leading-none wu-font-mono $class'>{$label}</span>";
 
-						$second_row_actions = array();
+						$second_row_actions = [];
 
 						if ( ! $item->is_primary_domain()) {
-							$second_row_actions['make_primary'] = array(
+							$second_row_actions['make_primary'] = [
 								'wrapper_classes' => 'wubox',
 								'icon'            => 'dashicons-wu-edit1 wu-align-middle wu-mr-1',
 								'label'           => '',
 								'url'             => $domain['primary_link'],
 								'value'           => __('Make Primary', 'wp-ultimo'),
-							);
+							];
 						} // end if;
 
-						$second_row_actions['remove'] = array(
+						$second_row_actions['remove'] = [
 							'wrapper_classes' => 'wu-text-red-500 wubox',
 							'icon'            => 'dashicons-wu-trash-2 wu-align-middle wu-mr-1',
 							'label'           => '',
 							'value'           => __('Delete', 'wp-ultimo'),
 							'url'             => $domain['delete_link'],
-						);
+						];
 
 						echo wu_responsive_table_row(
-							array(
+							[
 								'id'     => false,
 								'title'  => strtolower($item->get_domain()),
 								'url'    => false,
 								'status' => $status,
-							),
-							array(
-								'primary' => array(
+							],
+							[
+								'primary' => [
 									'wrapper_classes' => $item->is_primary_domain() ? 'wu-text-blue-600' : '',
 									'icon'            => $item->is_primary_domain() ? 'dashicons-wu-filter_1 wu-align-text-bottom wu-mr-1' : 'dashicons-wu-plus-square wu-align-text-bottom wu-mr-1',
 									'label'           => '',
 									'value'           => $item->is_primary_domain() ? __('Primary', 'wp-ultimo') . wu_tooltip(__('All other mapped domains will redirect to the primary domain.', 'wp-ultimo'), 'dashicons-editor-help wu-align-middle wu-ml-1') : __('Alias', 'wp-ultimo'),
-								),
-								'secure'  => array(
+								],
+								'secure'  => [
 									'wrapper_classes' => $item->is_secure() ? 'wu-text-green-500' : '',
 									'icon'            => $item->is_secure() ? 'dashicons-wu-lock1 wu-align-text-bottom wu-mr-1' : 'dashicons-wu-lock1 wu-align-text-bottom wu-mr-1',
 									'label'           => '',
 									'value'           => $item->is_secure() ? __('Secure (HTTPS)', 'wp-ultimo') : __('Not Secure (HTTP)', 'wp-ultimo'),
-								),
-							),
+								],
+							],
 							$second_row_actions
 						);
 

@@ -51,7 +51,7 @@ class Limit_Site_Templates extends Limit {
 	 * @param array $data The module data.
 	 * @return void
 	 */
-	public function setup($data) {
+	public function setup($data): void {
 
 		parent::setup($data);
 
@@ -86,11 +86,11 @@ class Limit_Site_Templates extends Limit {
 
 		$template = (object) $this->{$value_to_check};
 
-		$types = array(
+		$types = [
 			'available'     => $template->behavior === 'available',
 			'not_available' => $template->behavior === 'not_available',
 			'pre_selected'  => $template->behavior === 'pre_selected',
-		);
+		];
 
 		return wu_get_isset($types, $type, true);
 	}
@@ -122,9 +122,9 @@ class Limit_Site_Templates extends Limit {
 	 */
 	public function get_default_permissions($type) {
 
-		return array(
+		return [
 			'behavior' => 'available',
-		);
+		];
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Limit_Site_Templates extends Limit {
 
 		$template_id = str_replace('site_', '', $template_id);
 
-		$results = wu_get_isset($this->get_limit(), $template_id, array());
+		$results = wu_get_isset($this->get_limit(), $template_id, []);
 
 		return wu_get_isset($results, 'behavior', 'not-set') !== 'not-set';
 	}
@@ -173,7 +173,7 @@ class Limit_Site_Templates extends Limit {
 
 		$limits = (array) $limits;
 
-		$available = array();
+		$available = [];
 
 		foreach ($limits as $site_id => $site_settings) {
 			$site_settings = (object) $site_settings;
@@ -221,7 +221,7 @@ class Limit_Site_Templates extends Limit {
 	 */
 	public function handle_limit() {
 
-		$module = wu_get_isset($_POST['modules'], $this->id, array());
+		$module = wu_get_isset($_POST['modules'], $this->id, []);
 
 		return wu_get_isset($module, 'limit', $this->get_limit());
 	}
@@ -236,7 +236,7 @@ class Limit_Site_Templates extends Limit {
 	 */
 	public function handle_others($module) {
 
-		$_module = wu_get_isset($_POST['modules'], $this->id, array());
+		$_module = wu_get_isset($_POST['modules'], $this->id, []);
 
 		$module['mode'] = wu_get_isset($_module, 'mode', 'default');
 
@@ -251,10 +251,10 @@ class Limit_Site_Templates extends Limit {
 	 */
 	public static function default_state() {
 
-		return array(
+		return [
 			'enabled' => true,
 			'limit'   => null,
 			'mode'    => 'default',
-		);
+		];
 	}
 }

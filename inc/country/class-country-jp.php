@@ -88,11 +88,11 @@ class Country_JP extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'JP',
 		'currency'     => 'JPY',
 		'phone_code'   => 81,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -121,7 +121,7 @@ class Country_JP extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'10' => __('Gunma Prefecture', 'wp-ultimo'),
 			'11' => __('Saitama Prefecture', 'wp-ultimo'),
 			'12' => __('Chiba Prefecture', 'wp-ultimo'),
@@ -169,6 +169,6 @@ class Country_JP extends Country {
 			'04' => __('Miyagi Prefecture', 'wp-ultimo'),
 			'09' => __('Tochigi Prefecture', 'wp-ultimo'),
 			'06' => __('Yamagata Prefecture', 'wp-ultimo'),
-		);
+		];
 	}
 }

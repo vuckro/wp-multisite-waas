@@ -108,9 +108,9 @@ class Signup_Field_Hidden extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'from_request' => true,
-		);
+		];
 	}
 
 	/**
@@ -121,10 +121,10 @@ class Signup_Field_Hidden extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'save_as',
-		);
+		];
 	}
 
 	/**
@@ -135,7 +135,7 @@ class Signup_Field_Hidden extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -146,8 +146,8 @@ class Signup_Field_Hidden extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'fixed_value' => array(
+		return [
+			'fixed_value' => [
 				'order'       => 12,
 				'type'        => 'text',
 				'title'       => __('Pre-filled Value', 'wp-ultimo'),
@@ -155,8 +155,8 @@ class Signup_Field_Hidden extends Base_Signup_Field {
 				'placeholder' => __('e.g. blue', 'wp-ultimo'),
 				'tooltip'     => '',
 				'value'       => '',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -186,13 +186,13 @@ class Signup_Field_Hidden extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		return array(
-			$attributes['id'] => array(
+		return [
+			$attributes['id'] => [
 				'type'            => 'hidden',
 				'id'              => $attributes['id'],
 				'wrapper_classes' => $attributes['element_classes'],
 				'value'           => $this->get_value(),
-			),
-		);
+			],
+		];
 	}
 }

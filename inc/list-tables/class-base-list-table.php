@@ -50,10 +50,10 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $labels = array(
+	protected $labels = [
 		'singular' => '',
 		'plural'   => '',
-	);
+	];
 
 	/**
 	 * Keeps track of the current view mode for this particular list table.
@@ -69,7 +69,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	public $modes = array('list' => 'List');
+	public $modes = ['list' => 'List'];
 
 	/**
 	 * The list table context.
@@ -105,7 +105,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @param string $context The new context to set.
 	 * @return void
 	 */
-	public function set_context($context = 'page') {
+	public function set_context($context = 'page'): void {
 
 		$this->context = $context;
 	}
@@ -117,28 +117,28 @@ class Base_List_Table extends \WP_List_Table {
 	 *
 	 * @param array $args Arguments of the list table.
 	 */
-	public function __construct($args = array()) {
+	public function __construct($args = []) {
 
 		$this->id = $this->get_table_id();
 
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'screen' => $this->id,
-			)
+			]
 		);
 
 		parent::__construct($args);
 
 		$this->labels = shortcode_atts($this->labels, $args);
 
-		add_action('admin_enqueue_scripts', array($this, 'register_scripts'));
+		add_action('admin_enqueue_scripts', [$this, 'register_scripts']);
 
-		add_action('in_admin_header', array($this, 'add_default_screen_options'));
+		add_action('in_admin_header', [$this, 'add_default_screen_options']);
 
 		$this->set_list_mode();
 
-		$this->_args['add_new'] = wu_get_isset($args, 'add_new', array());
+		$this->_args['add_new'] = wu_get_isset($args, 'add_new', []);
 	}
 
 	/**
@@ -147,13 +147,13 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_default_screen_options() {
+	public function add_default_screen_options(): void {
 
-		$args = array(
+		$args = [
 			'default' => 20,
 			'label'   => $this->get_per_page_option_label(),
 			'option'  => $this->get_per_page_option_name(),
-		);
+		];
 
 		add_screen_option('per_page', $args);
 	}
@@ -182,7 +182,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function set_list_mode() {
+	public function set_list_mode(): void {
 
 		if ($this->context !== 'page') {
 			$this->current_mode = 'list';
@@ -217,7 +217,7 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_label($label = 'singular') {
 
-		return isset($this->labels[ $label ]) ? $this->labels[ $label ] : 'Object';
+		return $this->labels[ $label ] ?? 'Object';
 	}
 
 	/**
@@ -232,19 +232,19 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_items($per_page = 5, $page_number = 1, $count = false) {
 
-		$query_args = array(
+		$query_args = [
 			'number'  => $per_page,
 			'offset'  => ($page_number - 1) * $per_page,
 			'orderby' => wu_request('orderby', 'id'),
 			'order'   => wu_request('order', 'DESC'),
 			'search'  => wu_request('s', false),
 			'count'   => $count,
-		);
+		];
 
-		$extra_query_args = array(
+		$extra_query_args = [
 			'status',
 			'type',
-		);
+		];
 
 		foreach ($extra_query_args as $extra_query_arg) {
 			$query = wu_request($extra_query_arg, 'all');
@@ -351,7 +351,7 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	protected function has_search() {
 
-		return ! empty($this->get_schema_columns(array('searchable' => true)));
+		return ! empty($this->get_schema_columns(['searchable' => true]));
 	}
 	/**
 	 * Generates the search field label, based on the table labels.
@@ -370,7 +370,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function prepare_items() {
+	public function prepare_items(): void {
 
 		$this->_column_headers = $this->get_column_info();
 
@@ -381,10 +381,10 @@ class Base_List_Table extends \WP_List_Table {
 		$total_items = $this->record_count();
 
 		$this->set_pagination_args(
-			array(
+			[
 				'total_items' => $total_items, // We have to calculate the total number of items.
 				'per_page'    => $per_page,     // We have to determine how many items to show on a page.
-			)
+			]
 		);
 
 		$this->items = $this->get_items($per_page, $current_page);
@@ -396,18 +396,18 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_localize_script(
 			'wu-ajax-list-table',
 			'wu_list_table',
-			array(
+			[
 				'base_url' => wu_get_form_url('bulk_actions'),
 				'model'    => strchr($this->get_table_id(), '_', true),
-				'i18n'     => array(
+				'i18n'     => [
 					'confirm' => __('Confirm Action', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		wp_enqueue_script('wu-ajax-list-table');
@@ -419,7 +419,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_ajax_filters() {
+	public function display_ajax_filters(): void {
 
 		/**
 		 * Add the nonce field before we generate the results
@@ -453,7 +453,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_view_list() {
+	public function display_view_list(): void {
 
 		printf('<div id="wu-%s" class="wu-list-table wu-mode-list">', esc_attr($this->id));
 
@@ -473,7 +473,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_view_grid() {
+	public function display_view_grid(): void {
 
 		printf('<div id="wu-%s" class="wu-list-table wu-mode-grid">', esc_attr($this->id));
 
@@ -481,9 +481,9 @@ class Base_List_Table extends \WP_List_Table {
 
 		wu_get_template(
 			'base/grid',
-			array(
+			[
 				'table' => $this,
-			)
+			]
 		);
 
 		echo '</div>';
@@ -497,13 +497,13 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 3.1.0
 	 * @access public
 	 */
-	public function display() {
+	public function display(): void {
 		/*
 		 * Any items at all?
 		 */
 		if ( ! $this->has_items() && $this->context === 'page') {
 			echo wu_render_empty_state(
-				array(
+				[
 					'message'      => sprintf(__("You don't have any %s yet.", 'wp-ultimo'), $this->labels['plural']),
 					'sub_message'  => $this->_args['add_new'] ? __('How about we create a new one?', 'wp-ultimo') : __('...but you will see them here once they get created.', 'wp-ultimo'),
 					// translators: %s is the singular value of the model, such as Product, or Payment.
@@ -511,10 +511,10 @@ class Base_List_Table extends \WP_List_Table {
 					'link_url'     => wu_get_isset($this->_args['add_new'], 'url', ''),
 					'link_classes' => wu_get_isset($this->_args['add_new'], 'classes', ''),
 					'link_icon'    => 'dashicons-wu-circle-with-plus',
-				)
+				]
 			);
 		} else {
-			call_user_func(array($this, "display_view_{$this->current_mode}"));
+			call_user_func([$this, "display_view_{$this->current_mode}"]);
 		}
 	}
 
@@ -525,7 +525,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function filters() {
+	public function filters(): void {
 
 		$filters = $this->get_filters();
 
@@ -534,14 +534,14 @@ class Base_List_Table extends \WP_List_Table {
 		if (true) {
 			$args = array_merge(
 				$filters,
-				array(
+				[
 					'filters_el_id'   => sprintf('%s-filters', $this->id),
 					'has_search'      => $this->has_search(),
 					'search_label'    => $this->get_search_input_label(),
 					'views'           => $views,
 					'has_view_switch' => ! empty($this->modes),
 					'table'           => $this,
-				)
+				]
 			);
 
 			wu_get_template('base/filter', $args);
@@ -556,9 +556,9 @@ class Base_List_Table extends \WP_List_Table {
 	 * @param mixed $item The line item being displayed.
 	 * @return void
 	 */
-	public function single_row($item) {
+	public function single_row($item): void {
 
-		call_user_func(array($this, "single_row_{$this->current_mode}"), $item);
+		call_user_func([$this, "single_row_{$this->current_mode}"], $item);
 	}
 
 	/**
@@ -569,7 +569,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @param mixed $item The line item being displayed.
 	 * @return void
 	 */
-	public function single_row_list($item) {
+	public function single_row_list($item): void {
 
 		parent::single_row($item);
 	}
@@ -590,7 +590,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function no_items() {
+	public function no_items(): void {
 
 		printf(
 			'<div class="wu-py-6 wu-text-gray-600 wu-text-sm wu-text-center">
@@ -607,14 +607,14 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 
-		$default_bulk_actions = array(
+		$default_bulk_actions = [
 			'delete' => __('Delete', 'wp-ultimo'),
-		);
+		];
 
 		$has_active = $this->get_schema_columns(
-			array(
+			[
 				'name' => 'active',
-			)
+			]
 		);
 
 		if ($has_active) {
@@ -709,7 +709,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function ajax_response() {
+	public function ajax_response(): void {
 
 		check_ajax_referer(sprintf('ajax-%s-nonce', $this->_get_js_var_name()), sprintf('_ajax_%s_nonce', $this->_get_js_var_name()));
 
@@ -764,7 +764,7 @@ class Base_List_Table extends \WP_List_Table {
 		/**
 		 * Build the response
 		 */
-		$response                         = array('rows' => $rows);
+		$response                         = ['rows' => $rows];
 		$response['pagination']['top']    = $pagination_top;
 		$response['pagination']['bottom'] = $pagination_bottom;
 		$response['column_headers']       = $headers;
@@ -798,13 +798,13 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function column_default($item, $column_name) {
 
-		$value = call_user_func(array($item, "get_{$column_name}"));
+		$value = call_user_func([$item, "get_{$column_name}"]);
 
 		$datetime_columns = array_column(
 			$this->get_schema_columns(
-				array(
+				[
 					'date_query' => true,
-				)
+				]
 			),
 			'name'
 		);
@@ -864,9 +864,9 @@ class Base_List_Table extends \WP_List_Table {
 			</div>";
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $membership->get_id(),
-		);
+		];
 
 		$status_classes = $membership->get_status_class();
 
@@ -912,9 +912,9 @@ class Base_List_Table extends \WP_List_Table {
 			</div>";
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $payment->get_id(),
-		);
+		];
 
 		$status_classes = $payment->get_status_class();
 
@@ -960,19 +960,19 @@ class Base_List_Table extends \WP_List_Table {
 			</div>";
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $customer->get_id(),
-		);
+		];
 
 		$avatar = get_avatar(
 			$customer->get_user_id(),
 			32,
 			'identicon',
 			'',
-			array(
+			[
 				'force_display' => true,
 				'class'         => 'wu-rounded-full wu-mr-2',
-			)
+			]
 		);
 
 		$display_name = $customer->get_display_name();
@@ -1017,9 +1017,9 @@ class Base_List_Table extends \WP_List_Table {
 			</div>";
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $product->get_id(),
-		);
+		];
 
 		$image = $product->get_featured_image('thumbnail');
 
@@ -1070,9 +1070,9 @@ class Base_List_Table extends \WP_List_Table {
 			</div>";
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $site->get_id(),
-		);
+		];
 
 		$site_link = wu_network_admin_url('wp-ultimo-edit-site', $url_atts);
 
@@ -1146,7 +1146,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function _js_vars() {
+	public function _js_vars(): void {
 
 		/**
 		 * Call the parent method for backwards compat.
@@ -1190,7 +1190,7 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function fill_normal_type($name) {
 
-		return isset($_REQUEST[ $name ]) ? ((array) $_REQUEST[ $name ]) : array();
+		return isset($_REQUEST[ $name ]) ? ((array) $_REQUEST[ $name ]) : [];
 	}
 
 	/**
@@ -1203,11 +1203,11 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function fill_date_type($name) {
 
-		return (object) array(
-			'after'  => isset($_REQUEST[ $name ]['after']) ? $_REQUEST[ $name ]['after'] : 'all',
-			'before' => isset($_REQUEST[ $name ]['before']) ? $_REQUEST[ $name ]['before'] : 'all',
-			'type'   => isset($_REQUEST[ 'filter_' . $name ]) ? $_REQUEST[ 'filter_' . $name ] : 'all',
-		);
+		return (object) [
+			'after'  => $_REQUEST[ $name ]['after'] ?? 'all',
+			'before' => $_REQUEST[ $name ]['before'] ?? 'all',
+			'type'   => $_REQUEST[ 'filter_' . $name ] ?? 'all',
+		];
 	}
 
 	/**
@@ -1218,53 +1218,53 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_default_date_filter_options() {
 
-		return array(
-			'all'           => array(
+		return [
+			'all'           => [
 				'label'  => __('All', 'wp-ultimo'),
 				'after'  => null,
 				'before' => null,
-			),
-			'today'         => array(
+			],
+			'today'         => [
 				'label'  => __('Today', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('today')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('today')),
-			),
-			'yesterday'     => array(
+			],
+			'yesterday'     => [
 				'label'  => __('Yesterday', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('yesterday')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('yesterday')),
-			),
-			'last_week'     => array(
+			],
+			'last_week'     => [
 				'label'  => __('Last 7 Days', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('last week')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('today')),
-			),
-			'last_month'    => array(
+			],
+			'last_month'    => [
 				'label'  => __('Last 30 Days', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('last month')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('today')),
-			),
-			'current_month' => array(
+			],
+			'current_month' => [
 				'label'  => __('Current Month', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('first day of this month')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('today')),
-			),
-			'last_year'     => array(
+			],
+			'last_year'     => [
 				'label'  => __('Last 12 Months', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('last year')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('today')),
-			),
-			'year_to_date'  => array(
+			],
+			'year_to_date'  => [
 				'label'  => __('Year to Date', 'wp-ultimo'),
 				'after'  => date_i18n('Y-m-d 00:00:00', strtotime('first day of january this year')),
 				'before' => date_i18n('Y-m-d 23:59:59', strtotime('today')),
-			),
-			'custom'        => array(
+			],
+			'custom'        => [
 				'label'  => __('Custom', 'wp-ultimo'),
 				'after'  => null,
 				'before' => null,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -1281,7 +1281,7 @@ class Base_List_Table extends \WP_List_Table {
 	 * @param boolean $field Field to return.
 	 * @return array.
 	 */
-	protected function get_schema_columns($args = array(), $operator = 'and', $field = false) {
+	protected function get_schema_columns($args = [], $operator = 'and', $field = false) {
 
 		$query_class = new $this->query_class();
 
@@ -1302,15 +1302,15 @@ class Base_List_Table extends \WP_List_Table {
 	public function get_sortable_columns() {
 
 		$sortable_columns_from_schema = $this->get_schema_columns(
-			array(
+			[
 				'sortable' => true,
-			)
+			]
 		);
 
-		$sortable_columns = array();
+		$sortable_columns = [];
 
 		foreach ($sortable_columns_from_schema as $sortable_column_from_schema) {
-			$sortable_columns[ $sortable_column_from_schema->name ] = array($sortable_column_from_schema->name, false);
+			$sortable_columns[ $sortable_column_from_schema->name ] = [$sortable_column_from_schema->name, false];
 		}
 
 		return $sortable_columns;
@@ -1324,9 +1324,9 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_extra_fields() {
 
-		return array();
+		return [];
 
-		$_filter_fields = array();
+		$_filter_fields = [];
 
 		if (isset($filters['filters'])) {
 			foreach ($filters['filters'] as $field_name => $field) {
@@ -1347,7 +1347,7 @@ class Base_List_Table extends \WP_List_Table {
 
 		$filters = $this->get_filters();
 
-		$_filter_fields = array();
+		$_filter_fields = [];
 
 		if (isset($filters['date_filters'])) {
 			foreach ($filters['date_filters'] as $field_name => $field) {
@@ -1374,7 +1374,7 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_extra_query_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -1389,10 +1389,10 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_hidden_fields() {
 
-		$final_fields = array(
-			'order'   => isset($this->_pagination_args['order']) ? $this->_pagination_args['order'] : '',
-			'orderby' => isset($this->_pagination_args['orderby']) ? $this->_pagination_args['orderby'] : '',
-		);
+		$final_fields = [
+			'order'   => $this->_pagination_args['order'] ?? '',
+			'orderby' => $this->_pagination_args['orderby'] ?? '',
+		];
 
 		return $final_fields;
 	}
@@ -1405,14 +1405,14 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all' => array(
+		return [
+			'all' => [
 				'field' => 'type',
 				'url'   => '#',
 				'label' => sprintf(__('All %s', 'wp-ultimo'), $this->get_label('plural')),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 
 	/**

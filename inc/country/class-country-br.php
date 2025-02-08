@@ -68,11 +68,11 @@ class Country_BR extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'BR',
 		'currency'     => 'BRL',
 		'phone_code'   => 55,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -101,7 +101,7 @@ class Country_BR extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AC' => __('Acre', 'wp-ultimo'),
 			'AL' => __('Alagoas', 'wp-ultimo'),
 			'AP' => __('Amapá', 'wp-ultimo'),
@@ -129,6 +129,6 @@ class Country_BR extends Country {
 			'SE' => __('Sergipe', 'wp-ultimo'),
 			'SP' => __('São Paulo', 'wp-ultimo'),
 			'TO' => __('Tocantins', 'wp-ultimo'),
-		);
+		];
 	}
 }

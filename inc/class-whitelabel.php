@@ -43,7 +43,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $search = array();
+	protected $search = [];
 
 	/**
 	 * Array of terms to replace with. Must be a 1 to 1 relationship with the search array.
@@ -51,7 +51,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $replace = array();
+	protected $replace = [];
 
 	/**
 	 * Adds the hooks.
@@ -59,15 +59,15 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wp_ultimo_load', array($this, 'add_settings'), 20);
+		add_action('wp_ultimo_load', [$this, 'add_settings'], 20);
 
-		add_action('admin_init', array($this, 'clear_footer_texts'));
+		add_action('admin_init', [$this, 'clear_footer_texts']);
 
-		add_action('init', array($this, 'hooks'));
+		add_action('init', [$this, 'hooks']);
 
-		add_filter('gettext', array($this, 'replace_text'), 10, 3);
+		add_filter('gettext', [$this, 'replace_text'], 10, 3);
 	}
 
 	/**
@@ -76,22 +76,22 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
 		if (wu_get_setting('hide_wordpress_logo', true)) {
-			add_action('wp_before_admin_bar_render', array($this, 'wp_logo_admin_bar_remove'), 0);
+			add_action('wp_before_admin_bar_render', [$this, 'wp_logo_admin_bar_remove'], 0);
 
-			add_action('wp_user_dashboard_setup', array($this, 'remove_dashboard_widgets'), 11);
+			add_action('wp_user_dashboard_setup', [$this, 'remove_dashboard_widgets'], 11);
 
-			add_action('wp_dashboard_setup', array($this, 'remove_dashboard_widgets'), 11);
+			add_action('wp_dashboard_setup', [$this, 'remove_dashboard_widgets'], 11);
 
-			add_action('admin_enqueue_scripts', array($this, 'enqueue_styles'));
+			add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
 
-			add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
+			add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
 		}
 
 		if (wu_get_setting('hide_sites_menu', true)) {
-			add_action('network_admin_menu', array($this, 'remove_sites_admin_menu'));
+			add_action('network_admin_menu', [$this, 'remove_sites_admin_menu']);
 		}
 	}
 
@@ -101,7 +101,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles(): void {
 
 		WP_Ultimo()->scripts->register_style('wu-whitelabel', wu_get_asset('whitelabel.css', 'css'));
 
@@ -123,10 +123,10 @@ class Whitelabel {
 		if ($this->allowed_domains === null) {
 			$this->allowed_domains = apply_filters(
 				'wu_replace_text_allowed_domains',
-				array(
+				[
 					'default',
 					'wp-ultimo',
-				)
+				]
 			);
 		}
 
@@ -144,12 +144,12 @@ class Whitelabel {
 		 *
 		 * @since 2.1.0
 		 */
-		if (strncmp($translation, 'http', strlen('http')) === 0) {
+		if (str_starts_with($translation, 'http')) {
 			return $translation;
 		}
 
 		if ($this->init === false) {
-			$search_and_replace = array();
+			$search_and_replace = [];
 
 			$site_plural = wu_get_setting('rename_site_plural');
 
@@ -196,87 +196,87 @@ class Whitelabel {
 	 *
 	 * @return void
 	 */
-	public function add_settings() {
+	public function add_settings(): void {
 
 		wu_register_settings_section(
 			'whitelabel',
-			array(
+			[
 				'title' => __('Whitelabel', 'wp-ultimo'),
 				'desc'  => __('Basic Whitelabel', 'wp-ultimo'),
 				'icon'  => 'dashicons-wu-eye',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'whitelabel',
 			'whitelabel_header',
-			array(
+			[
 				'title' => __('Whitelabel', 'wp-ultimo'),
 				'desc'  => __('Hide a couple specific WordPress elements and rename others.', 'wp-ultimo'),
 				'type'  => 'header',
-			)
+			]
 		);
 
-		$preview_image = wu_preview_image(wu_get_asset('settings/settings-hide-wp-logo-preview.png'));
+		$preview_image = wu_preview_image(wu_get_asset('settings/settings-hide-wp-logo-preview.webp'));
 
 		wu_register_settings_field(
 			'whitelabel',
 			'hide_wordpress_logo',
-			array(
+			[
 				'title'   => __('Hide WordPress Logo', 'wp-ultimo') . $preview_image,
 				'desc'    => __('Hide the WordPress logo from the top-bar and replace the same logo on the My Sites top-bar item with a more generic icon.', 'wp-ultimo'),
 				'type'    => 'toggle',
 				'default' => 1,
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'whitelabel',
 			'hide_sites_menu',
-			array(
+			[
 				'title'   => __('Hide Sites Admin Menu', 'wp-ultimo'),
 				'desc'    => __('We recommend that you manage all of your sites using the WP Multisite WaaS &rarr; Sites page. To avoid confusion, you can hide the default "Sites" item from the WordPress admin menu by toggling this option.', 'wp-ultimo'),
 				'type'    => 'toggle',
 				'default' => 0,
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'whitelabel',
 			'rename_wordpress',
-			array(
+			[
 				'title'       => __('Replace the word "WordPress"', 'wp-ultimo'),
 				'placeholder' => __('e.g. My App', 'wp-ultimo'),
 				'desc'        => __('Replace all occurrences of the word "WordPress" with a different word.', 'wp-ultimo'),
 				'type'        => 'text',
 				'default'     => '',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'whitelabel',
 			'rename_site_singular',
-			array(
+			[
 				'title'           => __('Replace the word "Site" (singular)', 'wp-ultimo'),
 				'placeholder'     => __('e.g. App', 'wp-ultimo'),
 				'desc'            => __('Replace all occurrences of the word "Site" with a different word.', 'wp-ultimo'),
 				'type'            => 'text',
 				'default'         => '',
 				'wrapper_classes' => 'wu-w-1/2',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'whitelabel',
 			'rename_site_plural',
-			array(
+			[
 				'title'           => __('Replace the word "Sites" (plural)', 'wp-ultimo'),
 				'placeholder'     => __('e.g. Apps', 'wp-ultimo'),
 				'desc'            => __('Replace all occurrences of the word "Sites" with a different word.', 'wp-ultimo'),
 				'type'            => 'text',
 				'default'         => '',
 				'wrapper_classes' => 'wu-w-1/2',
-			)
+			]
 		);
 	}
 
@@ -286,7 +286,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function wp_logo_admin_bar_remove() {
+	public function wp_logo_admin_bar_remove(): void {
 
 		global $wp_admin_bar;
 
@@ -299,7 +299,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function remove_dashboard_widgets() {
+	public function remove_dashboard_widgets(): void {
 
 		global $wp_meta_boxes;
 
@@ -319,7 +319,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function clear_footer_texts() {
+	public function clear_footer_texts(): void {
 
 		if (current_user_can('manage_network')) {
 			return;
@@ -336,7 +336,7 @@ class Whitelabel {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function remove_sites_admin_menu() {
+	public function remove_sites_admin_menu(): void {
 
 		global $menu;
 

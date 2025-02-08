@@ -43,7 +43,7 @@ class Broadcast_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Broadcast';
+	protected $model_class = \WP_Ultimo\Models\Broadcast::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -51,7 +51,7 @@ class Broadcast_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
@@ -61,7 +61,7 @@ class Broadcast_Manager extends Base_Manager {
 		 * Add unseen broadcast notices to the panel.
 		 */
 		if ( ! is_network_admin() && ! is_main_site()) {
-			add_action('init', array($this, 'add_unseen_broadcast_notices'));
+			add_action('init', [$this, 'add_unseen_broadcast_notices']);
 		}
 	}
 
@@ -71,7 +71,7 @@ class Broadcast_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_unseen_broadcast_notices() {
+	public function add_unseen_broadcast_notices(): void {
 
 		$current_customer = wu_get_current_customer();
 
@@ -80,12 +80,12 @@ class Broadcast_Manager extends Base_Manager {
 		}
 
 		$all_broadcasts = Broadcast::query(
-			array(
+			[
 				'number'   => 10,
 				'order'    => 'DESC',
 				'order_by' => 'id',
-				'type__in' => array('broadcast_notice'),
-			)
+				'type__in' => ['broadcast_notice'],
+			]
 		);
 
 		if (isset($all_broadcasts)) {
@@ -94,7 +94,7 @@ class Broadcast_Manager extends Base_Manager {
 					$targets = $this->get_all_notice_customer_targets($broadcast->get_id());
 
 					if ( ! is_array($targets)) {
-						$targets = array($targets);
+						$targets = [$targets];
 					}
 
 					$dismissed = get_user_meta(get_current_user_id(), 'wu_dismissed_admin_notices');
@@ -118,7 +118,7 @@ class Broadcast_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function handle_broadcast() {
+	public function handle_broadcast(): void {
 
 		$args = $_POST;
 
@@ -135,10 +135,10 @@ class Broadcast_Manager extends Base_Manager {
 		$args['type'] = $broadcast_type;
 
 		if ($broadcast_type === 'broadcast_notice') {
-			$targets = array(
+			$targets = [
 				'customers' => $target_customers,
 				'products'  => $target_products,
-			);
+			];
 
 			$args['targets'] = $targets;
 
@@ -152,18 +152,18 @@ class Broadcast_Manager extends Base_Manager {
 			$redirect = current_user_can('wu_edit_broadcasts') ? 'wp-ultimo-edit-broadcast' : 'wp-ultimo-broadcasts';
 
 			wp_send_json_success(
-				array(
+				[
 					'redirect_url' => add_query_arg('id', $saved->get_id(), wu_network_admin_url($redirect)),
-				)
+				]
 			);
 		}
 
 		if ($args['type'] === 'broadcast_email') {
-			$to = array();
+			$to = [];
 
-			$bcc = array();
+			$bcc = [];
 
-			$targets = array();
+			$targets = [];
 
 			if ($args['target_customers']) {
 				$customers = explode(',', (string) $args['target_customers']);
@@ -174,7 +174,7 @@ class Broadcast_Manager extends Base_Manager {
 			if ($args['target_products']) {
 				$product_targets = explode(',', (string) $args['target_products']);
 
-				$customers = array();
+				$customers = [];
 
 				foreach ($product_targets as $product_id) {
 					$customers = array_merge($customers, wu_get_membership_customers($product_id));
@@ -192,36 +192,36 @@ class Broadcast_Manager extends Base_Manager {
 				$customer = wu_get_customer($target);
 
 				if ($customer) {
-					$to[] = array(
+					$to[] = [
 						'name'  => $customer->get_display_name(),
 						'email' => $customer->get_email_address(),
-					);
+					];
 				}
 			}
 
 			if ( ! isset($args['custom_sender'])) {
-				$from = array(
+				$from = [
 					'name'  => wu_get_setting('from_name', get_network_option(null, 'site_name')),
 					'email' => wu_get_setting('from_email', get_network_option(null, 'admin_email')),
-				);
+				];
 			} else {
-				$from = array(
+				$from = [
 					'name'  => $args['custom_sender']['from_name'],
 					'email' => $args['custom_sender']['from_email'],
-				);
+				];
 			}
 
 			$template_type = wu_get_setting('email_template_type', 'html');
 
-			$template_type = $template_type ? $template_type : 'html';
+			$template_type = $template_type ?: 'html';
 
-			$send_args = array(
+			$send_args = [
 				'site_name' => get_network_option(null, 'site_name'),
 				'site_url'  => get_site_url(),
 				'type'      => $template_type,
 				'subject'   => $args['subject'],
 				'content'   => $args['content'],
-			);
+			];
 
 			try {
 				$status = Sender::send_mail($from, $to, $send_args);
@@ -232,18 +232,18 @@ class Broadcast_Manager extends Base_Manager {
 			}
 
 			if ($status) {
-				$args['targets'] = array(
+				$args['targets'] = [
 					'customers' => $args['target_customers'],
 					'products'  => $args['target_products'],
-				);
+				];
 
 				// then we save with the message status (success, fail)
 				$this->save_broadcast($args);
 
 				wp_send_json_success(
-					array(
+					[
 						'redirect_url' => wu_network_admin_url('wp-ultimo-broadcasts'),
-					)
+					]
 				);
 			}
 		}
@@ -263,12 +263,12 @@ class Broadcast_Manager extends Base_Manager {
 	 */
 	public function save_broadcast($args) {
 
-		$broadcast_data = array(
+		$broadcast_data = [
 			'type'    => $args['type'],
 			'name'    => $args['subject'],
 			'content' => $args['content'],
 			'status'  => 'publish',
-		);
+		];
 
 		$broadcast = new Broadcast($broadcast_data);
 
@@ -306,7 +306,7 @@ class Broadcast_Manager extends Base_Manager {
 			return (array) $targets[ $type ];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -323,7 +323,7 @@ class Broadcast_Manager extends Base_Manager {
 
 		$products = $this->get_broadcast_targets($object_id, 'products');
 
-		$product_customers = array();
+		$product_customers = [];
 
 		if (is_array($products) && $products[0]) {
 			foreach ($products as $product_key => $product) {

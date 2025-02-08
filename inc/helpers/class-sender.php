@@ -29,20 +29,20 @@ class Sender {
 	 * @param array $args The args passed.
 	 * @return array
 	 */
-	public static function parse_args($args = array()) {
+	public static function parse_args($args = []) {
 
-		$default_args = array(
-			'from'        => array(
+		$default_args = [
+			'from'        => [
 				'name'  => wu_get_setting('from_name'),
 				'email' => wu_get_setting('from_email'),
-			),
+			],
 			'content'     => '',
 			'subject'     => '',
-			'bcc'         => array(),
-			'payload'     => array(),
-			'attachments' => array(),
+			'bcc'         => [],
+			'payload'     => [],
+			'attachments' => [],
 			'style'       => wu_get_setting('email_template_type', 'html'),
-		);
+		];
 
 		$args = wp_parse_args($args, $default_args);
 
@@ -59,13 +59,13 @@ class Sender {
 	 * @param array  $args With content, subject and other arguments, has shortcodes, mail type.
 	 * @return array With the send response.
 	 */
-	public static function send_mail($from = array(), $to = array(), $args = array()) {
+	public static function send_mail($from = [], $to = [], $args = []) {
 
 		if ( ! $from) {
-			$from = array(
+			$from = [
 				'email' => wu_get_setting('from_email'),
 				'name'  => wu_get_setting('from_name'),
-			);
+			];
 		}
 
 		$args = self::parse_args($args);
@@ -73,7 +73,7 @@ class Sender {
 		/*
 		 * First, replace shortcodes.
 		 */
-		$payload = wu_get_isset($args, 'payload', array());
+		$payload = wu_get_isset($args, 'payload', []);
 
 		$subject = self::process_shortcodes(wu_get_isset($args, 'subject', ''), $payload);
 
@@ -82,7 +82,7 @@ class Sender {
 		/*
 		 * Content type and template
 		 */
-		$headers = array();
+		$headers = [];
 
 		if (wu_get_isset($args, 'style', 'html') === 'html') {
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
@@ -95,7 +95,7 @@ class Sender {
 
 			$template = wu_get_template_contents(
 				'broadcast/emails/base',
-				array(
+				[
 					'site_name'         => get_network_option(null, 'site_name'),
 					'site_url'          => get_site_url(wu_get_main_site_id()),
 					'logo_url'          => wu_get_network_logo(),
@@ -103,7 +103,7 @@ class Sender {
 					'subject'           => $subject,
 					'content'           => $content,
 					'template_settings' => $template_settings,
-				)
+				]
 			);
 		} else {
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
@@ -151,9 +151,9 @@ class Sender {
 				$to = $main_to;
 			}
 		} else {
-			$to = array(
+			$to = [
 				wu_format_email_string(wu_get_isset($to[0], 'email'), wu_get_isset($to[0], 'name')),
-			);
+			];
 		}
 
 		/*
@@ -192,13 +192,13 @@ class Sender {
 	 * @param array  $payload   Payload with the values to render in the content.
 	 * @return string
 	 */
-	public static function process_shortcodes($content, $payload = array()) {
+	public static function process_shortcodes($content, $payload = []) {
 
 		if (empty($payload)) {
 			return $content;
 		}
 
-		$match = array();
+		$match = [];
 
 		preg_match_all('/{{(.*?)}}/', $content, $match);
 

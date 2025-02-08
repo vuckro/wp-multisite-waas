@@ -76,9 +76,9 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_edit_domains',
-	);
+	];
 
 	/**
 	 * Register ajax forms.
@@ -86,13 +86,13 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Adds the hooks to handle deletion.
 		 */
-		add_filter('wu_form_fields_delete_domain_modal', array($this, 'domain_extra_delete_fields'), 10, 2);
+		add_filter('wu_form_fields_delete_domain_modal', [$this, 'domain_extra_delete_fields'], 10, 2);
 
-		add_action('wu_after_delete_domain_modal', array($this, 'domain_after_delete_actions'));
+		add_action('wu_after_delete_domain_modal', [$this, 'domain_after_delete_actions']);
 	}
 
 	/**
@@ -116,47 +116,47 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 			$has_other_domains = is_countable($other_domains) ? count($other_domains) - 1 : false;
 		}
 
-		$custom_fields = array(
-			'set_domain_as_primary' => array(
+		$custom_fields = [
+			'set_domain_as_primary' => [
 				'type'              => 'model',
 				'title'             => __('Set another domain as primary', 'wp-ultimo'),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'data-model'        => 'domain',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'domain',
 					'data-search-field' => 'domain',
 					'data-max-items'    => 1,
-					'data-exclude'      => json_encode(array($domain->get_id())),
+					'data-exclude'      => json_encode([$domain->get_id()]),
 					'data-include'      => json_encode($domain->get_blog_id()),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-if' => $is_primary_domain && $has_other_domains ? 'true' : 'false',
-				),
-			),
-			'confirm'               => array(
+				],
+			],
+			'confirm'               => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Deletion', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_button'         => array(
+				],
+			],
+			'submit_button'         => [
 				'type'            => 'submit',
 				'title'           => __('Delete', 'wp-ultimo'),
 				'placeholder'     => __('Delete', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-			'id'                    => array(
+				],
+			],
+			'id'                    => [
 				'type'  => 'hidden',
 				'value' => $domain->get_id(),
-			),
-		);
+			],
+		];
 
 		return array_merge($custom_fields, $fields);
 	}
@@ -169,7 +169,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @param object $domain The domain object.
 	 * @return void
 	 */
-	public function domain_after_delete_actions($domain) {
+	public function domain_after_delete_actions($domain): void {
 
 		$new_primary_domain_name = wu_request('set_domain_as_primary');
 
@@ -188,180 +188,180 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
 		$this->add_fields_widget(
 			'domain-url',
-			array(
+			[
 				'title'    => __('Domain URL', 'wp-ultimo'),
 				'position' => 'normal',
-				'after'    => array($this, 'render_dns_widget'),
-				'fields'   => array(
-					'domain' => array(
+				'after'    => [$this, 'render_dns_widget'],
+				'fields'   => [
+					'domain' => [
 						'type'          => 'text-display',
 						'title'         => __('Domain', 'wp-ultimo'),
 						'tooltip'       => __('Editing an existing domain is not possible. If you want to make changes to this domain, first delete it, and then re-add the right domain.', 'wp-ultimo'),
 						'display_value' => '<span class="wu-text-sm wu-uppercase wu-font-mono">' . $this->get_object()->get_domain() . '</span> <a target="_blank" class="wu-no-underline" href="' . esc_url($this->get_object()->get_url()) . '"><span class="dashicons-wu-link1	"></span></a>',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$this->add_tabs_widget(
 			'options',
-			array(
+			[
 				'title'    => __('Domain Options', 'wp-ultimo'),
 				'position' => 'normal',
-				'sections' => array(
-					'general' => array(
+				'sections' => [
+					'general' => [
 						'title'  => __('General', 'wp-ultimo'),
 						'desc'   => __('General options for the domain.', 'wp-ultimo'),
 						'icon'   => 'dashicons-wu-globe',
-						'state'  => array(
+						'state'  => [
 							'primary_domain' => $this->get_object()->is_primary_domain(),
-						),
-						'fields' => array(
-							'primary_domain' => array(
+						],
+						'fields' => [
+							'primary_domain' => [
 								'type'      => 'toggle',
 								'title'     => __('Is Primary Domain?', 'wp-ultimo'),
 								'desc'      => __('Set as the primary domain.', 'wp-ultimo'),
 								'tooltip'   => __('Setting this as the primary domain will remove any other domain mapping marked as the primary domain for this site.', 'wp-ultimo'),
 								'value'     => $this->get_object()->is_primary_domain(),
-								'html_attr' => array(
+								'html_attr' => [
 									'v-model' => 'primary_domain',
-								),
-							),
-							'primary_note'   => array(
+								],
+							],
+							'primary_note'   => [
 								'type'              => 'note',
 								'desc'              => __('By making this the primary domain, we will convert the previous primary domain for this site, if one exists, into an alias domain.', 'wp-ultimo'),
-								'wrapper_html_attr' => array(
+								'wrapper_html_attr' => [
 									'v-if' => "require('primary_domain', true)",
-								),
-							),
-							'secure'         => array(
+								],
+							],
+							'secure'         => [
 								'type'  => 'toggle',
 								'title' => __('Is Secure?', 'wp-ultimo'),
 								'desc'  => __('Force the load using HTTPS.', 'wp-ultimo'),
 								'value' => $this->get_object()->is_secure(),
-							),
-						),
-					),
-				),
-			)
+							],
+						],
+					],
+				],
+			]
 		);
 
 		$this->add_list_table_widget(
 			'sites',
-			array(
+			[
 				'title'        => __('Linked Site', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Memberships_Site_List_Table(),
-				'query_filter' => array($this, 'sites_query_filter'),
-			)
+				'query_filter' => [$this, 'sites_query_filter'],
+			]
 		);
 
-		add_meta_box('wp-ultimo-domain-log', __('Domain Test Log', 'wp-ultimo'), array($this, 'render_log_widget'), get_current_screen()->id, 'normal', null);
+		add_meta_box('wp-ultimo-domain-log', __('Domain Test Log', 'wp-ultimo'), [$this, 'render_log_widget'], get_current_screen()->id, 'normal', null);
 
 		$this->add_list_table_widget(
 			'events',
-			array(
+			[
 				'title'        => __('Events', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'query_filter'),
-			)
+				'query_filter' => [$this, 'query_filter'],
+			]
 		);
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'html_attr' => array(
+			[
+				'html_attr' => [
 					'data-wu-app' => 'save',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'stage' => $this->get_object()->get_stage(),
-						)
+						]
 					),
-				),
-				'fields'    => array(
-					'stage'   => array(
+				],
+				'fields'    => [
+					'stage'   => [
 						'type'              => 'select',
 						'title'             => __('Stage', 'wp-ultimo'),
 						'placeholder'       => __('Select Stage', 'wp-ultimo'),
 						'desc'              => __('The stage in the checking lifecycle of this domain.', 'wp-ultimo'),
 						'options'           => Domain_Stage::to_array(),
 						'value'             => $this->get_object()->get_stage(),
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'@change' => 'window.wu_basic.stage = $event.target.value',
 							'v-model' => 'stage',
-						),
-					),
-					'blog_id' => array(
+						],
+					],
+					'blog_id' => [
 						'type'              => 'model',
 						'title'             => __('Site', 'wp-ultimo'),
 						'placeholder'       => __('Search Site...', 'wp-ultimo'),
 						'desc'              => __('The target site of this domain.', 'wp-ultimo'),
 						'value'             => $this->get_object()->get_blog_id(),
 						'tooltip'           => '',
-						'html_attr'         => array(
+						'html_attr'         => [
 							'data-model'        => 'site',
 							'data-value-field'  => 'blog_id',
 							'data-label-field'  => 'title',
 							'data-search-field' => 'title',
 							'data-max-items'    => 1,
 							'data-selected'     => $this->get_object()->get_site() ? json_encode($this->get_object()->get_site()->to_search_results()) : '',
-						),
-						'wrapper_html_attr' => array(
+						],
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 
 		$check_for_active_string = sprintf('%s.includes(stage)', json_encode(\WP_Ultimo\Models\Domain::INACTIVE_STAGES));
 
 		$this->add_fields_widget(
 			'basic',
-			array(
+			[
 				'title'     => __('Active', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'data-wu-app' => 'basic',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'stage' => $this->get_object()->get_stage(),
-						)
+						]
 					),
-				),
-				'fields'    => array(
-					'active' => array(
+				],
+				'fields'    => [
+					'active' => [
 						'type'              => 'toggle',
 						'title'             => __('Active', 'wp-ultimo'),
 						'desc'              => __('Use this option to manually enable or disable this domain.', 'wp-ultimo'),
 						'value'             => $this->get_object()->is_active(),
-						'html_attr'         => array(
+						'html_attr'         => [
 							'v-cloak'         => '1',
 							'v-bind:disabled' => $check_for_active_string,
-						),
-						'wrapper_html_attr' => array(
+						],
+						'wrapper_html_attr' => [
 							'v-bind:class' => "$check_for_active_string ? 'wu-cursor-not-allowed wu-opacity-75' : ''",
-						),
+						],
 
-					),
-					'note'   => array(
+					],
+					'note'   => [
 						'type'              => 'note',
 						'desc'              => __('This domain has a domain stage that forces it to be inactive. Change the status to Ready or Ready (without SSL) to be able to control the active status directly.', 'wp-ultimo'),
 						'classes'           => 'wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-show'  => $check_for_active_string,
 							'v-cloak' => '1',
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 	}
 
@@ -371,13 +371,13 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_dns_widget() {
+	public function render_dns_widget(): void {
 
 		wu_get_template(
 			'domain/dns-table',
-			array(
+			[
 				'domain' => $this->get_object(),
-			)
+			]
 		);
 	}
 
@@ -387,14 +387,14 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_log_widget() {
+	public function render_log_widget(): void {
 
 		wu_get_template(
 			'domain/log',
-			array(
+			[
 				'domain'   => $this->get_object(),
 				'log_path' => \WP_Ultimo\Logger::get_logs_folder(),
-			)
+			]
 		);
 	}
 
@@ -428,7 +428,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -439,7 +439,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('Edit Domain', 'wp-ultimo'),
 			'add_new_label'       => __('Add new Domain', 'wp-ultimo'),
 			'updated_message'     => __('Domain updated with success!', 'wp-ultimo'),
@@ -449,7 +449,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Domain', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -462,10 +462,10 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'domain',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -527,7 +527,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		if ( ! wu_request('primary_domain')) {
 			$_POST['primary_domain'] = false;
@@ -541,7 +541,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 			$_POST['secure'] = false;
 		}
 
-		wu_enqueue_async_action('wu_async_process_domain_stage', array('domain_id' => $this->get_object()->get_id()), 'domain');
+		wu_enqueue_async_action('wu_async_process_domain_stage', ['domain_id' => $this->get_object()->get_id()], 'domain');
 
 		parent::handle_save();
 	}

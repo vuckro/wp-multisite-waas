@@ -119,7 +119,7 @@ class Customer extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Customers\\Customer_Query';
+	protected $query_class = \WP_Ultimo\Database\Customers\Customer_Query::class;
 
 	/**
 	 * Allows injection, which is useful for mocking.
@@ -153,7 +153,7 @@ class Customer extends Base_Model {
 
 		$id = $this->get_id();
 
-		return array(
+		return [
 			'user_id'            => "required|integer|unique:\WP_Ultimo\Models\Customer,user_id,{$id}",
 			'email_verification' => 'required|in:none,pending,verified',
 			'type'               => 'required|in:customer',
@@ -163,7 +163,7 @@ class Customer extends Base_Model {
 			'ips'                => 'array',
 			'extra_information'  => 'default:',
 			'signup_form'        => 'default:',
-		);
+		];
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Customer extends Base_Model {
 	 * @param int $user_id The WordPress user ID attached to this customer.
 	 * @return void
 	 */
-	public function set_user_id($user_id) {
+	public function set_user_id($user_id): void {
 
 		$this->user_id = $user_id;
 	}
@@ -229,11 +229,11 @@ class Customer extends Base_Model {
 	public function get_default_billing_address() {
 
 		return new \WP_Ultimo\Objects\Billing_Address(
-			array(
+			[
 				'company_name'    => $this->get_display_name(),
 				'billing_email'   => $this->get_email_address(),
 				'billing_country' => $this->get_meta('ip_country'),
-			)
+			]
 		);
 	}
 
@@ -309,7 +309,7 @@ class Customer extends Base_Model {
 	 * @param string $date_registered Date when the customer was created.
 	 * @return void
 	 */
-	public function set_date_registered($date_registered) {
+	public function set_date_registered($date_registered): void {
 
 		$this->date_registered = $date_registered;
 	}
@@ -332,7 +332,7 @@ class Customer extends Base_Model {
 	 * @param string $email_verification Email verification status - either `none`, `pending`, or `verified`.
 	 * @return void
 	 */
-	public function set_email_verification($email_verification) {
+	public function set_email_verification($email_verification): void {
 
 		$this->email_verification = $email_verification;
 	}
@@ -356,7 +356,7 @@ class Customer extends Base_Model {
 	 * @param string $last_login Date this customer last logged in.
 	 * @return void
 	 */
-	public function set_last_login($last_login) {
+	public function set_last_login($last_login): void {
 
 		$this->last_login = $last_login;
 	}
@@ -377,12 +377,12 @@ class Customer extends Base_Model {
 
 		if ( ! $this->has_trialed) {
 			$trial = wu_get_memberships(
-				array(
+				[
 					'customer_id'            => $this->get_id(),
-					'date_trial_end__not_in' => array(null, '0000-00-00 00:00:00'),
+					'date_trial_end__not_in' => [null, '0000-00-00 00:00:00'],
 					'fields'                 => 'ids',
 					'number'                 => 1,
-				)
+				]
 			);
 
 			if ( ! empty($trial)) {
@@ -402,7 +402,7 @@ class Customer extends Base_Model {
 	 * @param bool $has_trialed Whether or not the customer has trialed before.
 	 * @return void
 	 */
-	public function set_has_trialed($has_trialed) {
+	public function set_has_trialed($has_trialed): void {
 
 		$this->meta['wu_has_trialed'] = $has_trialed;
 
@@ -427,7 +427,7 @@ class Customer extends Base_Model {
 	 * @param bool $vip If this customer is a VIP customer or not.
 	 * @return void
 	 */
-	public function set_vip($vip) {
+	public function set_vip($vip): void {
 
 		$this->vip = $vip;
 	}
@@ -441,7 +441,7 @@ class Customer extends Base_Model {
 	public function get_ips() {
 
 		if (empty($this->ips)) {
-			return array();
+			return [];
 		}
 
 		if (is_string($this->ips)) {
@@ -471,7 +471,7 @@ class Customer extends Base_Model {
 	 * @param array $ips List of IP addresses used by this customer.
 	 * @return void
 	 */
-	public function set_ips($ips) {
+	public function set_ips($ips): void {
 
 		if (is_string($ips)) {
 			$ips = maybe_unserialize(wp_unslash($ips));
@@ -488,12 +488,12 @@ class Customer extends Base_Model {
 	 * @param string $ip New IP address to add.
 	 * @return void
 	 */
-	public function add_ip($ip) {
+	public function add_ip($ip): void {
 
 		$ips = $this->get_ips();
 
 		if ( ! is_array($ips)) {
-			$ips = array();
+			$ips = [];
 		}
 
 		/*
@@ -520,9 +520,9 @@ class Customer extends Base_Model {
 	public function update_last_login($update_ip = true, $update_country_and_state = false) {
 
 		$this->attributes(
-			array(
+			[
 				'last_login' => wu_get_current_time('mysql', true),
-			)
+			]
 		);
 
 		$geolocation = $update_ip || $update_country_and_state ? \WP_Ultimo\Geolocation::geolocate_ip('', true) : false;
@@ -563,7 +563,7 @@ class Customer extends Base_Model {
 	 * @param array $extra_information Any extra information related to this customer.
 	 * @return void
 	 */
-	public function set_extra_information($extra_information) {
+	public function set_extra_information($extra_information): void {
 
 		$extra_information = array_filter((array) $extra_information);
 
@@ -580,9 +580,9 @@ class Customer extends Base_Model {
 	public function get_memberships() {
 
 		return Membership::query(
-			array(
+			[
 				'customer_id' => $this->get_id(),
-			)
+			]
 		);
 	}
 
@@ -593,18 +593,18 @@ class Customer extends Base_Model {
 	 * @param array $query_args Query arguments.
 	 * @return array
 	 */
-	public function get_sites($query_args = array()) {
+	public function get_sites($query_args = []) {
 
 		$query_args = array_merge(
 			$query_args,
-			array(
-				'meta_query' => array(
-					'customer_id' => array(
+			[
+				'meta_query' => [
+					'customer_id' => [
 						'key'   => 'wu_customer_id',
 						'value' => $this->get_id(),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		return Site::query($query_args);
@@ -618,7 +618,7 @@ class Customer extends Base_Model {
 	 */
 	public function get_pending_sites() {
 
-		$pending_sites = array();
+		$pending_sites = [];
 
 		$memberships = $this->get_memberships();
 
@@ -666,9 +666,9 @@ class Customer extends Base_Model {
 	public function get_payments() {
 
 		return Payment::query(
-			array(
+			[
 				'customer_id' => $this->get_id(),
-			)
+			]
 		);
 	}
 
@@ -696,10 +696,10 @@ class Customer extends Base_Model {
 				40,
 				'identicon',
 				'',
-				array(
+				[
 					'force_display' => true,
 					'class'         => 'wu-rounded-full wu-mr-3',
-				)
+				]
 			);
 
 			$search_result = array_merge((array) $user->data, $search_result);
@@ -730,7 +730,7 @@ class Customer extends Base_Model {
 	 * @options customer
 	 * @return void
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		$this->type = $type;
 	}
@@ -832,10 +832,10 @@ class Customer extends Base_Model {
 		}
 
 		return add_query_arg(
-			array(
+			[
 				'email-verification-key' => $key,
 				'customer'               => $this->get_hash(),
-			),
+			],
 			get_site_url(wu_get_main_site_id())
 		);
 	}
@@ -846,12 +846,12 @@ class Customer extends Base_Model {
 	 * @since 2.0.4
 	 * @return void
 	 */
-	public function send_verification_email() {
+	public function send_verification_email(): void {
 
 		$this->generate_verification_key();
 
 		$payload = array_merge(
-			array('verification_link' => $this->get_verification_url()),
+			['verification_link' => $this->get_verification_url()],
 			wu_generate_event_payload('customer', $this)
 		);
 
@@ -876,7 +876,7 @@ class Customer extends Base_Model {
 	 * @param string $signup_form The form used to signup.
 	 * @return void
 	 */
-	public function set_signup_form($signup_form) {
+	public function set_signup_form($signup_form): void {
 
 		$this->signup_form = $signup_form;
 	}

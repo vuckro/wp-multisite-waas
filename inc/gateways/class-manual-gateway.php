@@ -43,11 +43,11 @@ class Manual_Gateway extends Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 		/*
 		 * Adds payment instructions to the thank you page.
 		 */
-		add_action('wu_thank_you_before_info_blocks', array($this, 'add_payment_instructions_block'), 10, 3);
+		add_action('wu_thank_you_before_info_blocks', [$this, 'add_payment_instructions_block'], 10, 3);
 	}
 
 	/**
@@ -81,35 +81,35 @@ class Manual_Gateway extends Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function settings() {
+	public function settings(): void {
 
 		wu_register_settings_field(
 			'payment-gateways',
 			'manual_header',
-			array(
+			[
 				'title'           => __('Manual', 'wp-ultimo'),
 				'desc'            => __('Use the settings section below to configure the manual payment method. This method allows your customers to manually pay for their memberships, but those payments require manual confirmation on your part.', 'wp-ultimo'),
 				'type'            => 'header',
 				'show_as_submenu' => true,
-				'require'         => array(
+				'require'         => [
 					'active_gateways' => 'manual',
-				),
-			)
+				],
+			]
 		);
 
 		wu_register_settings_field(
 			'payment-gateways',
 			'manual_payment_instructions',
-			array(
+			[
 				'title'      => __('Payment Instructions', 'wp-ultimo'),
 				'desc'       => __('This instructions will be shown to the customer on the thank you page, as well as be sent via email.', 'wp-ultimo'),
 				'type'       => 'wp_editor',
 				'allow_html' => true,
 				'default'    => __('Payment instructions here.', 'wp-ultimo'),
-				'require'    => array(
+				'require'    => [
 					'active_gateways' => 'manual',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -332,7 +332,7 @@ class Manual_Gateway extends Base_Gateway {
 	 * @param \WP_Ultimo\Models\Customer   $customer The customer checking out.
 	 * @return void|bool
 	 */
-	public function process_refund($amount, $payment, $membership, $customer) {
+	public function process_refund($amount, $payment, $membership, $customer): void {
 
 		$status = $payment->refund($amount);
 
@@ -367,7 +367,7 @@ class Manual_Gateway extends Base_Gateway {
 	 * @param \WP_Ultimo\Models\Customer   $customer the current customer.
 	 * @return void
 	 */
-	public function add_payment_instructions_block($payment, $membership, $customer) {
+	public function add_payment_instructions_block($payment, $membership, $customer): void {
 
 		if ($payment->get_gateway() !== $this->id) {
 			return;

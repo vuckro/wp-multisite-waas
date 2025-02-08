@@ -35,7 +35,7 @@ class Base_Installer {
 	 */
 	public function get_steps() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -75,7 +75,7 @@ class Base_Installer {
 
 		global $wpdb;
 
-		$callable = array($this, "_install_{$installer}");
+		$callable = [$this, "_install_{$installer}"];
 
 		$callable = apply_filters("wu_installer_{$installer}_callback", $callable, $installer);
 

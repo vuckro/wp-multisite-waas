@@ -36,9 +36,9 @@ class Sites_Schema extends Schema {
 	 * @access public
 	 * @var array
 	 */
-	public $columns = array(
+	public $columns = [
 
-		array(
+		[
 			'name'       => 'blog_id',
 			'type'       => 'bigint',
 			'length'     => '20',
@@ -46,33 +46,33 @@ class Sites_Schema extends Schema {
 			'extra'      => 'auto_increment',
 			'primary'    => true,
 			'sortable'   => true,
-			'aliases'    => array('id', 'ID'),
+			'aliases'    => ['id', 'ID'],
 			'searchable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'site_id',
 			'type'     => 'bigint',
 			'length'   => '20',
 			'unsigned' => true,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'domain',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'path',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'registered',
 			'type'       => 'datetime',
 			'default'    => '0000-00-00 00:00:00',
@@ -80,9 +80,9 @@ class Sites_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'last_updated',
 			'type'       => 'datetime',
 			'default'    => '0000-00-00 00:00:00',
@@ -90,61 +90,61 @@ class Sites_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'public',
 			'type'     => 'tinyint',
 			'length'   => '2',
 			'unsigned' => true,
 			'default'  => 1,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'archived',
 			'type'     => 'tinyint',
 			'length'   => '2',
 			'unsigned' => true,
 			'default'  => 0,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'mature',
 			'type'     => 'tinyint',
 			'length'   => '2',
 			'unsigned' => true,
 			'default'  => 0,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'spam',
 			'type'     => 'tinyint',
 			'length'   => '2',
 			'unsigned' => true,
 			'default'  => 0,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'deleted',
 			'type'     => 'tinyint',
 			'length'   => '2',
 			'unsigned' => true,
 			'default'  => 0,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'lang_id',
 			'type'     => 'int',
 			'length'   => '11',
 			'unsigned' => true,
 			'default'  => 0,
 			'sortable' => true,
-		),
+		],
 
-	);
+	];
 }

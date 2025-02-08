@@ -19,9 +19,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-title',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	/**
@@ -31,9 +31,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-description',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>
@@ -53,9 +53,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-errors',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>

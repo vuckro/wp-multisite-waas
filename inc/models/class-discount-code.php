@@ -157,7 +157,7 @@ class Discount_Code extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Discount_Codes\\Discount_Code_Query';
+	protected $query_class = \WP_Ultimo\Database\Discount_Codes\Discount_Code_Query::class;
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -171,7 +171,7 @@ class Discount_Code extends Base_Model {
 	 */
 	public function validation_rules() {
 
-		return array(
+		return [
 			'name'              => 'required|min:2',
 			'code'              => 'required|min:2|max:20|alpha_dash',
 			'uses'              => 'integer|default:0',
@@ -184,7 +184,7 @@ class Discount_Code extends Base_Model {
 			'setup_fee_value'   => 'numeric',
 			'allowed_products'  => 'array',
 			'limit_products'    => 'default:0',
-		);
+		];
 	}
 
 	/**
@@ -205,7 +205,7 @@ class Discount_Code extends Base_Model {
 	 * @param string $name Your discount code name, which is used as discount code title as well.
 	 * @return void
 	 */
-	public function set_name($name) {
+	public function set_name($name): void {
 
 		$this->name = $name;
 	}
@@ -228,7 +228,7 @@ class Discount_Code extends Base_Model {
 	 * @param string $code A unique identification to redeem the discount code. E.g. PROMO10.
 	 * @return void
 	 */
-	public function set_code($code) {
+	public function set_code($code): void {
 
 		$this->code = $code;
 	}
@@ -251,7 +251,7 @@ class Discount_Code extends Base_Model {
 	 * @param string $description A description for the discount code, usually a short text.
 	 * @return void
 	 */
-	public function set_description($description) {
+	public function set_description($description): void {
 
 		$this->description = $description;
 	}
@@ -274,7 +274,7 @@ class Discount_Code extends Base_Model {
 	 * @param int $uses Number of times this discount was applied.
 	 * @return void
 	 */
-	public function set_uses($uses) {
+	public function set_uses($uses): void {
 
 		$this->uses = (int) $uses;
 	}
@@ -286,7 +286,7 @@ class Discount_Code extends Base_Model {
 	 * @param integer $uses Number of uses to add.
 	 * @return void
 	 */
-	public function add_use($uses = 1) {
+	public function add_use($uses = 1): void {
 
 		$use_count = (int) $this->get_uses();
 
@@ -311,7 +311,7 @@ class Discount_Code extends Base_Model {
 	 * @param int $max_uses The number of times this discount can be used before becoming inactive.
 	 * @return void
 	 */
-	public function set_max_uses($max_uses) {
+	public function set_max_uses($max_uses): void {
 
 		$this->max_uses = (int) $max_uses;
 	}
@@ -345,7 +345,7 @@ class Discount_Code extends Base_Model {
 	 * @param bool $apply_to_renewals Wether or not we should apply the discount to membership renewals.
 	 * @return void
 	 */
-	public function set_apply_to_renewals($apply_to_renewals) {
+	public function set_apply_to_renewals($apply_to_renewals): void {
 
 		$this->apply_to_renewals = (bool) $apply_to_renewals;
 	}
@@ -369,7 +369,7 @@ class Discount_Code extends Base_Model {
 	 * @options percentage,absolute
 	 * @return void
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		$this->type = $type;
 	}
@@ -392,7 +392,7 @@ class Discount_Code extends Base_Model {
 	 * @param int $value Amount discounted in cents.
 	 * @return void
 	 */
-	public function set_value($value) {
+	public function set_value($value): void {
 
 		$this->value = $value;
 	}
@@ -416,7 +416,7 @@ class Discount_Code extends Base_Model {
 	 * @options percentage,absolute
 	 * @return void
 	 */
-	public function set_setup_fee_type($setup_fee_type) {
+	public function set_setup_fee_type($setup_fee_type): void {
 
 		$this->setup_fee_type = $setup_fee_type;
 	}
@@ -439,7 +439,7 @@ class Discount_Code extends Base_Model {
 	 * @param int $setup_fee_value Amount discounted for setup fees in cents.
 	 * @return void
 	 */
-	public function set_setup_fee_value($setup_fee_value) {
+	public function set_setup_fee_value($setup_fee_value): void {
 
 		$this->setup_fee_value = $setup_fee_value;
 	}
@@ -540,7 +540,7 @@ class Discount_Code extends Base_Model {
 	 * @param bool $active Set this discount code as active (true), which means available to be used, or inactive (false).
 	 * @return void
 	 */
-	public function set_active($active) {
+	public function set_active($active): void {
 
 		$this->active = (bool) $active;
 	}
@@ -567,7 +567,7 @@ class Discount_Code extends Base_Model {
 	 * @param string $date_start Start date for the coupon code to be considered valid.
 	 * @return void
 	 */
-	public function set_date_start($date_start) {
+	public function set_date_start($date_start): void {
 
 		$this->date_start = $date_start;
 	}
@@ -594,7 +594,7 @@ class Discount_Code extends Base_Model {
 	 * @param string $date_expiration Expiration date for the coupon code.
 	 * @return void
 	 */
-	public function set_date_expiration($date_expiration) {
+	public function set_date_expiration($date_expiration): void {
 
 		$this->date_expiration = $date_expiration;
 	}
@@ -617,7 +617,7 @@ class Discount_Code extends Base_Model {
 	 * @param string $date_created Date when this discount code was created.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -628,7 +628,7 @@ class Discount_Code extends Base_Model {
 	 */
 	public function get_discount_description(): string {
 
-		$description = array();
+		$description = [];
 
 		if ($this->get_value() > 0) {
 			$value = wu_format_currency($this->get_value());
@@ -694,7 +694,7 @@ class Discount_Code extends Base_Model {
 
 			$compat_coupon = $this;
 
-			do_action_deprecated('wp_ultimo_coupon_after_save', array($compat_coupon), '2.0.0', 'wu_discount_code_post_save');
+			do_action_deprecated('wp_ultimo_coupon_after_save', [$compat_coupon], '2.0.0', 'wu_discount_code_post_save');
 		}
 
 		return $results;
@@ -709,7 +709,7 @@ class Discount_Code extends Base_Model {
 	public function get_allowed_products() {
 
 		if ($this->allowed_products === null) {
-			$this->allowed_products = $this->get_meta('wu_allowed_products', array());
+			$this->allowed_products = $this->get_meta('wu_allowed_products', []);
 		}
 
 		return (array) $this->allowed_products;
@@ -722,7 +722,7 @@ class Discount_Code extends Base_Model {
 	 * @param array $allowed_products The list of products that allows this discount code to be used. If empty, all products will accept this code.
 	 * @return void
 	 */
-	public function set_allowed_products($allowed_products) {
+	public function set_allowed_products($allowed_products): void {
 
 		$this->meta['wu_allowed_products'] = (array) $allowed_products;
 
@@ -751,7 +751,7 @@ class Discount_Code extends Base_Model {
 	 * @param bool $limit_products This discount code will be limited to be used in certain products? If set to true, you must define a list of allowed products.
 	 * @return void
 	 */
-	public function set_limit_products($limit_products) {
+	public function set_limit_products($limit_products): void {
 
 		$this->meta['wu_limit_products'] = (bool) $limit_products;
 

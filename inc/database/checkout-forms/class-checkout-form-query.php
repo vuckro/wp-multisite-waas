@@ -48,7 +48,7 @@ class Checkout_Form_Query extends Query {
 	 * @access public
 	 * @var string
 	 */
-	protected $table_schema = '\\WP_Ultimo\\Database\\Checkout_Forms\\Checkout_Forms_Schema';
+	protected $table_schema = \WP_Ultimo\Database\Checkout_Forms\Checkout_Forms_Schema::class;
 
 	/** Item ******************************************************************/
 
@@ -77,7 +77,7 @@ class Checkout_Form_Query extends Query {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $item_shape = '\\WP_Ultimo\\Models\\Checkout_Form';
+	protected $item_shape = \WP_Ultimo\Models\Checkout_Form::class;
 
 	/**
 	 * Group to cache queries and queried items in.
@@ -104,7 +104,7 @@ class Checkout_Form_Query extends Query {
 	 *
 	 * @param string|array $query Array of query arguments.
 	 */
-	public function __construct($query = array()) {
+	public function __construct($query = []) {
 
 		parent::__construct($query);
 	}

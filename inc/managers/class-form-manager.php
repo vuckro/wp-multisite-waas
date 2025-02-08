@@ -31,7 +31,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $registered_forms = array();
+	protected $registered_forms = [];
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -39,13 +39,13 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_ajax_wu_form_display', array($this, 'display_form'));
+		add_action('wu_ajax_wu_form_display', [$this, 'display_form']);
 
-		add_action('wu_ajax_wu_form_handler', array($this, 'handle_form'));
+		add_action('wu_ajax_wu_form_handler', [$this, 'handle_form']);
 
-		add_action('wu_register_forms', array($this, 'register_action_forms'));
+		add_action('wu_register_forms', [$this, 'register_action_forms']);
 
 		add_action('wu_page_load', 'add_wubox');
 
@@ -62,7 +62,7 @@ class Form_Manager extends Base_Manager {
 	 * @param \WP_Error|false $error Error message, if applicable.
 	 * @return void
 	 */
-	public function display_form_unavailable($error = false) {
+	public function display_form_unavailable($error = false): void {
 
 		$message = __('Form not available', 'wp-ultimo');
 
@@ -93,7 +93,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_form() {
+	public function display_form(): void {
 
 		$this->security_checks();
 
@@ -104,9 +104,9 @@ class Form_Manager extends Base_Manager {
 			$form['id'],
 			$this->get_form_url(
 				$form['id'],
-				array(
+				[
 					'action' => 'wu_form_handler',
-				)
+				]
 			)
 		);
 
@@ -118,7 +118,7 @@ class Form_Manager extends Base_Manager {
 			</ul>
 		</div>',
 			$form['id'] . '_errors',
-			htmlspecialchars(json_encode(array('errors' => array())))
+			htmlspecialchars(json_encode(['errors' => []]))
 		);
 
 		call_user_func($form['render']);
@@ -140,7 +140,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_form() {
+	public function handle_form(): void {
 
 		$this->security_checks();
 
@@ -239,17 +239,17 @@ class Form_Manager extends Base_Manager {
 	 * @param array  $atts Form attributes, check wp_parse_atts call below.
 	 * @return void
 	 */
-	public function register_form($id, $atts = array()) {
+	public function register_form($id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'id'         => $id,
 				'form'       => '',
 				'capability' => 'manage_network',
 				'handler'    => '__return_false',
 				'render'     => '__return_empty_string',
-			)
+			]
 		);
 
 		// Checks if gateway was already added
@@ -271,16 +271,16 @@ class Form_Manager extends Base_Manager {
 	 * @param array  $atts List of parameters, check wp_parse_args below.
 	 * @return string
 	 */
-	public function get_form_url($form_id, $atts = array()) {
+	public function get_form_url($form_id, $atts = []) {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'form'   => $form_id,
 				'action' => 'wu_form_display',
 				'width'  => '400',
 				'height' => '360',
-			)
+			]
 		);
 
 		return add_query_arg($atts, wu_ajax_url('init'));
@@ -291,28 +291,28 @@ class Form_Manager extends Base_Manager {
 	 *
 	 * @since 2.0.0
 	 */
-	public function register_action_forms() {
+	public function register_action_forms(): void {
 
 		$model = wu_request('model');
 
 		wu_register_form(
 			'delete_modal',
-			array(
-				'render'     => array($this, 'render_model_delete_form'),
-				'handler'    => array($this, 'handle_model_delete_form'),
+			[
+				'render'     => [$this, 'render_model_delete_form'],
+				'handler'    => [$this, 'handle_model_delete_form'],
 				'capability' => "wu_delete_{$model}s",
-			)
+			]
 		);
 
 		wu_register_form(
 			'bulk_actions',
-			array(
-				'render'  => array($this, 'render_bulk_action_form'),
-				'handler' => array($this, 'handle_bulk_action_form'),
-			)
+			[
+				'render'  => [$this, 'render_bulk_action_form'],
+				'handler' => [$this, 'handle_bulk_action_form'],
+			]
 		);
 
-		add_action('wu_handle_bulk_action_form', array($this, 'default_bulk_action_handler'), 100, 3);
+		add_action('wu_handle_bulk_action_form', [$this, 'default_bulk_action_handler'], 100, 3);
 	}
 
 	/**
@@ -321,7 +321,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_model_delete_form() {
+	public function render_model_delete_form(): void {
 
 		$model = wu_request('model');
 
@@ -333,7 +333,7 @@ class Form_Manager extends Base_Manager {
 			/*
 			 * Handle metadata elements passed as model
 			 */
-			if (strpos((string) $model, '_meta_') !== false) {
+			if (str_contains((string) $model, '_meta_')) {
 				$elements = explode('_meta_', (string) $model);
 
 				$model = $elements[0];
@@ -358,62 +358,62 @@ class Form_Manager extends Base_Manager {
 
 			$fields = apply_filters(
 				"wu_form_fields_delete_{$model}_modal",
-				array(
-					'confirm'       => array(
+				[
+					'confirm'       => [
 						'type'      => 'toggle',
 						'title'     => __('Confirm Deletion', 'wp-ultimo'),
 						'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-						'html_attr' => array(
+						'html_attr' => [
 							'v-model' => 'confirmed',
-						),
-					),
-					'submit_button' => array(
+						],
+					],
+					'submit_button' => [
 						'type'            => 'submit',
 						'title'           => __('Delete', 'wp-ultimo'),
 						'placeholder'     => __('Delete', 'wp-ultimo'),
 						'value'           => 'save',
 						'classes'         => 'button button-primary wu-w-full',
 						'wrapper_classes' => 'wu-items-end',
-						'html_attr'       => array(
+						'html_attr'       => [
 							'v-bind:disabled' => '!confirmed',
-						),
-					),
-					'id'            => array(
+						],
+					],
+					'id'            => [
 						'type'  => 'hidden',
 						'value' => $object->get_id(),
-					),
-					'meta_key'      => array(
+					],
+					'meta_key'      => [
 						'type'  => 'hidden',
 						'value' => $meta_key,
-					),
-					'redirect_to'   => array(
+					],
+					'redirect_to'   => [
 						'type'  => 'hidden',
 						'value' => wu_request('redirect_to'),
-					),
-					'model'         => array(
+					],
+					'model'         => [
 						'type'  => 'hidden',
 						'value' => $model,
-					),
-				),
+					],
+				],
 				$object
 			);
 
 			$form_attributes = apply_filters(
 				"wu_form_attributes_delete_{$model}_modal",
-				array(
+				[
 					'title'                 => 'Delete',
 					'views'                 => 'admin-pages/fields',
 					'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-					'html_attr'             => array(
+					'html_attr'             => [
 						'data-wu-app' => 'true',
 						'data-state'  => json_encode(
-							array(
+							[
 								'confirmed' => false,
-							)
+							]
 						),
-					),
-				)
+					],
+				]
 			);
 
 			$form = new \WP_Ultimo\UI\Form('total-actions', $fields, $form_attributes);
@@ -430,7 +430,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_model_delete_form() {
+	public function handle_model_delete_form(): void {
 
 		global $wpdb;
 
@@ -451,9 +451,9 @@ class Form_Manager extends Base_Manager {
 			if ($meta_key) {
 				$status = delete_metadata('wu_membership', wu_request('id'), 'pending_site');
 
-				$data_json_success = array(
+				$data_json_success = [
 					'redirect_url' => add_query_arg('deleted', 1, $redirect_to),
-				);
+				];
 
 				wp_send_json_success($data_json_success);
 
@@ -488,9 +488,9 @@ class Form_Manager extends Base_Manager {
 
 			$data_json_success = apply_filters(
 				"wu_data_json_success_delete_{$model}_modal",
-				array(
-					'redirect_url' => wu_network_admin_url("wp-ultimo-{$plural_name}", array('deleted' => 1)),
-				)
+				[
+					'redirect_url' => wu_network_admin_url("wp-ultimo-{$plural_name}", ['deleted' => 1]),
+				]
 			);
 
 			wp_send_json_success($data_json_success);
@@ -505,7 +505,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_bulk_action_form() {
+	public function render_bulk_action_form(): void {
 
 		$action = wu_request('bulk_action');
 
@@ -513,56 +513,56 @@ class Form_Manager extends Base_Manager {
 
 		$fields = apply_filters(
 			"wu_bulk_actions_{$model}_{$action}",
-			array(
-				'confirm'       => array(
+			[
+				'confirm'       => [
 					'type'      => 'toggle',
 					'title'     => __('Confirm Action', 'wp-ultimo'),
 					'desc'      => __('Review this action carefully.', 'wp-ultimo'),
-					'html_attr' => array(
+					'html_attr' => [
 						'v-model' => 'confirmed',
-					),
-				),
-				'submit_button' => array(
+					],
+				],
+				'submit_button' => [
 					'type'            => 'submit',
 					'title'           => wu_slug_to_name($action),
 					'placeholder'     => wu_slug_to_name($action),
 					'value'           => 'save',
 					'classes'         => 'button button-primary wu-w-full',
 					'wrapper_classes' => 'wu-items-end',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-bind:disabled' => '!confirmed',
-					),
-				),
-				'model'         => array(
+					],
+				],
+				'model'         => [
 					'type'  => 'hidden',
 					'value' => $model,
-				),
-				'bulk_action'   => array(
+				],
+				'bulk_action'   => [
 					'type'  => 'hidden',
 					'value' => wu_request('bulk_action'),
-				),
-				'ids'           => array(
+				],
+				'ids'           => [
 					'type'  => 'hidden',
 					'value' => implode(',', wu_request('bulk-delete', '')),
-				),
-			)
+				],
+			]
 		);
 
 		$form_attributes = apply_filters(
 			"wu_bulk_actions_{$action}_form",
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'true',
 					'data-state'  => json_encode(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form = new \WP_Ultimo\UI\Form('total-actions', $fields, $form_attributes);
@@ -576,7 +576,7 @@ class Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_bulk_action_form() {
+	public function handle_bulk_action_form(): void {
 
 		global $wpdb;
 
@@ -601,7 +601,7 @@ class Form_Manager extends Base_Manager {
 	 * @param array  $ids The ids list.
 	 * @return void
 	 */
-	public function default_bulk_action_handler($action, $model, $ids) {
+	public function default_bulk_action_handler($action, $model, $ids): void {
 
 		$status = \WP_Ultimo\List_Tables\Base_List_Table::process_bulk_action();
 
@@ -610,9 +610,9 @@ class Form_Manager extends Base_Manager {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => add_query_arg($action, count($ids), wu_get_current_url()),
-			)
+			]
 		);
 	}
 }

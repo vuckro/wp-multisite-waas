@@ -19,7 +19,7 @@ use WP_Ultimo\Models\Webhook;
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Webhook[]
  */
-function wu_get_webhooks($query = array()) {
+function wu_get_webhooks($query = []) {
 
 	return \WP_Ultimo\Models\Webhook::query($query);
 }
@@ -51,7 +51,7 @@ function wu_create_webhook($webhook_data) {
 
 	$webhook_data = wp_parse_args(
 		$webhook_data,
-		array(
+		[
 			'name'             => false,
 			'webhook_url'      => false,
 			'event'            => false,
@@ -60,7 +60,7 @@ function wu_create_webhook($webhook_data) {
 			'date_created'     => wu_get_current_time('mysql', true),
 			'date_modified'    => wu_get_current_time('mysql', true),
 			'migrated_from_id' => 0,
-		)
+		]
 	);
 
 	$webhook = new Webhook($webhook_data);

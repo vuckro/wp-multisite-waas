@@ -32,7 +32,7 @@ class Collector_Overview extends \QM_Collector {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function set_up() {
+	public function set_up(): void {
 
 		parent::set_up();
 	}
@@ -43,7 +43,7 @@ class Collector_Overview extends \QM_Collector {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function tear_down() {
+	public function tear_down(): void {
 
 		parent::tear_down();
 	}
@@ -57,7 +57,7 @@ class Collector_Overview extends \QM_Collector {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function process() {
+	public function process(): void {
 
 		$this->data = $_REQUEST;
 	}

@@ -60,9 +60,9 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_dashboard',
-	);
+	];
 
 	/**
 	 * The tab being displayed.
@@ -94,7 +94,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
@@ -113,11 +113,11 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
-		add_action('wu_dash_after_full_metaboxes', array($this, 'render_filter'));
+		add_action('wu_dash_after_full_metaboxes', [$this, 'render_filter']);
 
-		add_action('wu_dashboard_general_widgets', array($this, 'register_general_tab_widgets'), 10, 2);
+		add_action('wu_dashboard_general_widgets', [$this, 'register_general_tab_widgets'], 10, 2);
 	}
 
 	/**
@@ -128,32 +128,32 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @param WP_Ultimo\Admin_Pages\Base_Admin_Page $page The page object.
 	 * @return void
 	 */
-	public function render_filter($page) {
+	public function render_filter($page): void {
 
 		if (apply_filters('wu_dashboard_display_filter', true) === false) {
 			return;
 		}
 
 		if ($page->id === 'wp-ultimo') {
-			$preset_options = array(
-				'last_7_days'  => array(
+			$preset_options = [
+				'last_7_days'  => [
 					'label'      => __('Last 7 days', 'wp-ultimo'),
 					'start_date' => date_i18n('Y-m-d', strtotime('-7 days')),
 					'end_date'   => date_i18n('Y-m-d'),
-				),
-				'last_30_days' => array(
+				],
+				'last_30_days' => [
 					'label'      => __('Last 30 days', 'wp-ultimo'),
 					'start_date' => date_i18n('Y-m-d', strtotime('-30 days')),
 					'end_date'   => date_i18n('Y-m-d'),
-				),
-				'year_to_date' => array(
+				],
+				'year_to_date' => [
 					'label'      => __('Year to date', 'wp-ultimo'),
 					'start_date' => date_i18n('Y-m-d', strtotime('first day of january this year')),
 					'end_date'   => date_i18n('Y-m-d'),
-				),
-			);
+				],
+			];
 
-			$args = array(
+			$args = [
 				'preset_options'  => $preset_options,
 				'filters_el_id'   => 'dashboard-filters',
 				'search_label'    => '',
@@ -162,7 +162,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 				'table'           => $this,
 				'active_tab'      => $this->tab,
 				'views'           => $this->get_views(),
-			);
+			];
 
 			wu_get_template('dashboard-statistics/filter', $args);
 		}
@@ -176,14 +176,14 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_views() {
 
-		$dashboard_filters = array(
-			'general' => array(
+		$dashboard_filters = [
+			'general' => [
 				'field' => 'type',
 				'url'   => add_query_arg('tab', 'general'),
 				'label' => __('General', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 
 		return apply_filters('wu_dashboard_filter_bar', $dashboard_filters);
 	}
@@ -194,7 +194,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$screen = get_current_screen();
 
@@ -227,49 +227,49 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 		if (wu_request('tab', 'general') === 'general') {
 			\WP_Ultimo\UI\Tours::get_instance()->create_tour(
 				'wp-ultimo-dashboard',
-				array(
-					array(
+				[
+					[
 						'id'    => 'your-dashboard',
 						'title' => __('Our dashboard', 'wp-ultimo'),
-						'text'  => array(
+						'text'  => [
 							__('This is the <strong>WP Multisite WaaS Dashboard</strong>, where you will find most of the important information you will need regarding your business\' performance.', 'wp-ultimo'),
-						),
-					),
-					array(
+						],
+					],
+					[
 						'id'       => 'documentation',
 						'title'    => __('Learning more', 'wp-ultimo'),
-						'text'     => array(
+						'text'     => [
 							__('Most of the WP Multisite WaaS admin pages will contain a link like this one at the top. These will link directly to the relevant knowledge base page on the WP Multisite WaaS site.', 'wp-ultimo'),
-						),
-						'attachTo' => array(
+						],
+						'attachTo' => [
 							'element' => '#wp-ultimo-wrap > h1 > a:last-child',
 							'on'      => 'left',
-						),
-					),
-					array(
+						],
+					],
+					[
 						'id'       => 'mrr-growth',
 						'title'    => __('It\'s all about growth!', 'wp-ultimo'),
-						'text'     => array(
+						'text'     => [
 							__('This graph allows you to follow how your monthly recurring revenue is growing this year.', 'wp-ultimo'),
-						),
-						'attachTo' => array(
+						],
+						'attachTo' => [
 							'element' => '#wp-ultimo-mrr-growth',
 							'on'      => 'bottom',
-						),
-					),
-					array(
+						],
+					],
+					[
 						'id'       => 'tailor-made',
 						'title'    => __('Date-range support', 'wp-ultimo'),
-						'text'     => array(
+						'text'     => [
 							__('Checking statistics and comparing data for different periods is key in maintaining a good grasp on your business.', 'wp-ultimo'),
 							__('You can use the date-range selectors to have access to just the data you need and nothing more.', 'wp-ultimo'),
-						),
-						'attachTo' => array(
+						],
+						'attachTo' => [
 							'element' => '#dashboard-filters',
 							'on'      => 'bottom',
-						),
-					),
-				)
+						],
+					],
+				]
 			);
 		}
 	}
@@ -283,21 +283,21 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @param \WP_Screen $screen The screen object.
 	 * @return void
 	 */
-	public function register_general_tab_widgets($tab, $screen) {
+	public function register_general_tab_widgets($tab, $screen): void {
 
 		if (current_user_can('wu_read_financial')) {
-			add_meta_box('wp-ultimo-mrr-growth', __('Monthly Recurring Revenue Growth', 'wp-ultimo'), array($this, 'output_widget_mrr_growth'), $screen->id, 'full', 'high');
+			add_meta_box('wp-ultimo-mrr-growth', __('Monthly Recurring Revenue Growth', 'wp-ultimo'), [$this, 'output_widget_mrr_growth'], $screen->id, 'full', 'high');
 
-			add_meta_box('wp-ultimo-revenue', __('Revenue', 'wp-ultimo'), array($this, 'output_widget_revenues'), $screen->id, 'normal', 'high');
+			add_meta_box('wp-ultimo-revenue', __('Revenue', 'wp-ultimo'), [$this, 'output_widget_revenues'], $screen->id, 'normal', 'high');
 		}
 
-		add_meta_box('wp-ultimo-countries', __('Signups by Countries', 'wp-ultimo'), array($this, 'output_widget_countries'), $screen->id, 'side', 'high');
+		add_meta_box('wp-ultimo-countries', __('Signups by Countries', 'wp-ultimo'), [$this, 'output_widget_countries'], $screen->id, 'side', 'high');
 
-		add_meta_box('wp-ultimo-signups', __('Signups by Form', 'wp-ultimo'), array($this, 'output_widget_forms'), $screen->id, 'side', 'high');
+		add_meta_box('wp-ultimo-signups', __('Signups by Form', 'wp-ultimo'), [$this, 'output_widget_forms'], $screen->id, 'side', 'high');
 
-		add_meta_box('wp-ultimo-most-visited-sites', __('Most Visited Sites', 'wp-ultimo'), array($this, 'output_widget_most_visited_sites'), $screen->id, 'side', 'low');
+		add_meta_box('wp-ultimo-most-visited-sites', __('Most Visited Sites', 'wp-ultimo'), [$this, 'output_widget_most_visited_sites'], $screen->id, 'side', 'low');
 
-		add_meta_box('wp-ultimo-new-accounts', __('New Memberships', 'wp-ultimo'), array($this, 'output_widget_new_accounts'), $screen->id, 'normal', 'low');
+		add_meta_box('wp-ultimo-new-accounts', __('New Memberships', 'wp-ultimo'), [$this, 'output_widget_new_accounts'], $screen->id, 'normal', 'low');
 	}
 
 	/**
@@ -306,7 +306,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function output_widget_mrr_growth() {
+	public function output_widget_mrr_growth(): void {
 
 		wu_get_template('dashboard-statistics/widget-mrr-growth');
 	}
@@ -317,14 +317,14 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function output_widget_countries() {
+	public function output_widget_countries(): void {
 
 		wu_get_template(
 			'dashboard-statistics/widget-countries',
-			array(
+			[
 				'countries' => wu_get_countries_of_customers(10, $this->start_date, $this->end_date),
 				'page'      => $this,
-			)
+			]
 		);
 	}
 
@@ -334,14 +334,14 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function output_widget_forms() {
+	public function output_widget_forms(): void {
 
 		wu_get_template(
 			'dashboard-statistics/widget-forms',
-			array(
+			[
 				'forms' => wu_calculate_signups_by_form($this->start_date, $this->end_date),
 				'page'  => $this,
-			)
+			]
 		);
 	}
 
@@ -351,9 +351,9 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @return void
 	 * @since 2.0.0
 	 */
-	public function output_widget_most_visited_sites() {
+	public function output_widget_most_visited_sites(): void {
 
-		$sites = array();
+		$sites = [];
 
 		$site_results = \WP_Ultimo\Objects\Visits::get_sites_by_visit_count($this->start_date, $this->end_date, 10);
 
@@ -364,18 +364,18 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 				continue;
 			}
 
-			$sites[] = (object) array(
+			$sites[] = (object) [
 				'site'  => $site,
 				'count' => $site_result->count,
-			);
+			];
 		}
 
 		wu_get_template(
 			'dashboard-statistics/widget-most-visited-sites',
-			array(
+			[
 				'sites' => $sites,
 				'page'  => $this,
-			)
+			]
 		);
 	}
 
@@ -388,16 +388,16 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @param array  $metabox With the metabox arguments passed when registered.
 	 * @return void.
 	 */
-	public function output_widget_revenues($unknown = null, $metabox = null) {
+	public function output_widget_revenues($unknown = null, $metabox = null): void {
 
 		wu_get_template(
 			'dashboard-statistics/widget-revenue',
-			array(
+			[
 				'mrr'           => wu_calculate_mrr(),
 				'gross_revenue' => wu_calculate_revenue($this->start_date, $this->end_date),
 				'refunds'       => wu_calculate_refunds($this->start_date, $this->end_date),
 				'product_stats' => wu_calculate_financial_data_by_product($this->start_date, $this->end_date),
-			)
+			]
 		);
 	}
 
@@ -410,25 +410,25 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @param array  $metabox With the metabox arguments passed when registered.
 	 * @return void.
 	 */
-	public function output_widget_new_accounts($unknown = null, $metabox = array()) {
+	public function output_widget_new_accounts($unknown = null, $metabox = []): void {
 
 		$new_accounts = wu_get_memberships(
-			array(
-				'fields'     => array('plan_id'),
-				'date_query' => array(
+			[
+				'fields'     => ['plan_id'],
+				'date_query' => [
 					'column'    => 'date_created',
 					'after'     => $this->start_date . ' 00:00:00',
 					'before'    => $this->end_date . ' 23:59:59',
 					'inclusive' => true,
-				),
-			)
+				],
+			]
 		);
 
 		$products = wu_get_products(
-			array(
+			[
 				'type'   => 'plan',
-				'fields' => array('id', 'name', 'count'),
-			)
+				'fields' => ['id', 'name', 'count'],
+			]
 		);
 
 		$products_ids = array_column($products, 'id');
@@ -448,10 +448,10 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 		/**
 		 * Add edge case for no plan.
 		 */
-		$products['none'] = (object) array(
+		$products['none'] = (object) [
 			'name'  => __('No Product', 'wp-ultimo'),
 			'count' => 0,
-		);
+		];
 
 		foreach ($new_accounts as $new_account) {
 			if (isset($products[ $new_account->plan_id ])) {
@@ -463,10 +463,10 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 
 		wu_get_template(
 			'dashboard-statistics/widget-new-accounts',
-			array(
+			[
 				'new_accounts' => count($new_accounts),
 				'products'     => $products,
-			)
+			]
 		);
 	}
 
@@ -476,9 +476,9 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
-		$month_list = array();
+		$month_list = [];
 
 		$current_year = date_i18n('Y');
 
@@ -487,42 +487,42 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 		}
 
 		$statistics = new Dashboard_Statistics(
-			array(
+			[
 				'start_date' => $this->start_date,
 				'end_date'   => $this->end_date,
-				'types'      => array(
+				'types'      => [
 					'mrr_growth' => 'mrr_growth',
-				),
-			)
+				],
+			]
 		);
 
 		$data = $statistics->statistics_data();
 
-		wp_register_script('wu-apex-charts', wu_get_asset('apexcharts.js', 'js/lib'), array(), wu_get_version(), true);
+		wp_register_script('wu-apex-charts', wu_get_asset('apexcharts.js', 'js/lib'), [], wu_get_version(), true);
 
-		wp_register_script('wu-vue-apex-charts', wu_get_asset('vue-apexcharts.js', 'js/lib'), array(), wu_get_version(), true);
+		wp_register_script('wu-vue-apex-charts', wu_get_asset('vue-apexcharts.js', 'js/lib'), [], wu_get_version(), true);
 
-		wp_register_script('wu-dashboard-stats', wu_get_asset('dashboard-statistics.js', 'js'), array('jquery', 'wu-functions', 'wu-ajax-list-table', 'moment', 'wu-block-ui', 'dashboard', 'wu-apex-charts', 'wu-vue-apex-charts'), wu_get_version(), true);
+		wp_register_script('wu-dashboard-stats', wu_get_asset('dashboard-statistics.js', 'js'), ['jquery', 'wu-functions', 'wu-ajax-list-table', 'moment', 'wu-block-ui', 'dashboard', 'wu-apex-charts', 'wu-vue-apex-charts'], wu_get_version(), true);
 
 		wp_localize_script(
 			'wu-dashboard-stats',
 			'wu_dashboard_statistics_vars',
-			array(
+			[
 				'mrr_array'  => $data['mrr_growth'],
 				'start_date' => date_i18n('Y-m-d', strtotime((string) wu_request('start_date', '-1 month'))),
 				'end_date'   => date_i18n('Y-m-d', strtotime((string) wu_request('end_date', 'tomorrow'))),
 				'today'      => date_i18n('Y-m-d', strtotime('tomorrow')),
 				'month_list' => $month_list,
-				'i18n'       => array(
+				'i18n'       => [
 					'new_mrr'       => __('New MRR', 'wp-ultimo'),
 					'cancellations' => __('Cancellations', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		wp_enqueue_script('wu-dashboard-stats');
 
-		wp_enqueue_style('wu-apex-charts', wu_get_asset('apexcharts.css', 'css'), array(), wu_get_version());
+		wp_enqueue_style('wu-apex-charts', wu_get_asset('apexcharts.css', 'css'), [], wu_get_version());
 
 		wp_enqueue_style('wu-flags');
 	}
@@ -566,17 +566,17 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/dash',
-			array(
+			[
 				'screen'            => get_current_screen(),
 				'page'              => $this,
 				'has_full_position' => true,
-			)
+			]
 		);
 	}
 
@@ -588,16 +588,16 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 	 * @param array $args Data array to convert to CSV.
 	 * @return void
 	 */
-	public function render_csv_button($args) {
+	public function render_csv_button($args): void {
 
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'slug'    => 'csv',
-				'headers' => array(),
-				'data'    => array(),
+				'headers' => [],
+				'data'    => [],
 				'action'  => apply_filters('wu_export_data_table_action', 'wu_generate_csv'),
-			)
+			]
 		);
 
 		$slug = $args['slug'];

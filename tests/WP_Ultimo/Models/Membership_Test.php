@@ -32,9 +32,9 @@ class Membership_Test extends \WP_UnitTestCase {
 	/**
 	 * Test if the customer is allowed access to the membership.
 	 */
-	public function test_is_customer_allowed() {
+	public function test_is_customer_allowed(): void {
 		// Admins with 'manage_network' capability should always return true.
-		$admin_user_id = $this->factory()->user->create(array('role' => 'administrator'));
+		$admin_user_id = $this->factory()->user->create(['role' => 'administrator']);
 		grant_super_admin($admin_user_id);
 		wp_set_current_user($admin_user_id);
 		$this->assertTrue($this->membership->is_customer_allowed(), 'Failed asserting that admin is allowed.');
@@ -58,7 +58,7 @@ class Membership_Test extends \WP_UnitTestCase {
 	/**
 	 * Test adding a product to the membership.
 	 */
-	public function test_add_product() {
+	public function test_add_product(): void {
 		// Add a product with a specific ID and quantity.
 		$quantity = 2;
 		$faker    = new Faker();
@@ -92,7 +92,7 @@ class Membership_Test extends \WP_UnitTestCase {
 	/**
 	 * Test removing a product from the membership.
 	 */
-	public function test_remove_product() {
+	public function test_remove_product(): void {
 		// Add a product with a specific quantity.
 		$quantity = 5;
 		$faker    = new Faker();
@@ -123,7 +123,7 @@ class Membership_Test extends \WP_UnitTestCase {
 	/**
 	 * Test get_remaining_days_in_cycle() method.
 	 */
-	public function test_get_remaining_days_in_cycle() {
+	public function test_get_remaining_days_in_cycle(): void {
 		$this->membership->set_amount(12.99);
 		// Case 1: Non-recurring membership should return 10000.
 		$this->membership->set_recurring(false);

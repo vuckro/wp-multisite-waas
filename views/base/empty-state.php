@@ -7,7 +7,7 @@
 ?>
 <div 
 	class="wu-flex wu-justify-center wu-items-center wu-text-center wu-bg-contain wu-bg-no-repeat wu--mb-12 wu-pb-12"
-	style="background-image: url(<?php echo $display_background_image ? wu_get_asset('empty-state-bg.png', 'img') : ''; ?>); <?php echo $display_background_image ? 'height: calc(100vh - 300px); background-position: center -30px;' : ''; ?>"
+	style="background-image: url(<?php echo $display_background_image ? wu_get_asset('empty-state-bg.webp', 'img') : ''; ?>); <?php echo $display_background_image ? 'height: calc(100vh - 300px); background-position: center -30px;' : ''; ?>"
 >
 
 	<div class="wu-block wu-p-4 md:wu-pt-12 wu-self-center">

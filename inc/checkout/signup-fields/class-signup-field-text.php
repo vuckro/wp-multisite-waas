@@ -108,9 +108,9 @@ class Signup_Field_Text extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Signup_Field_Text extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'name',
 			'placeholder',
@@ -129,7 +129,7 @@ class Signup_Field_Text extends Base_Signup_Field {
 			'tooltip',
 			'required',
 			'save_as',
-		);
+		];
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Signup_Field_Text extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -151,7 +151,7 @@ class Signup_Field_Text extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -164,8 +164,8 @@ class Signup_Field_Text extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$fields = array(
-			$attributes['id'] => array(
+		$fields = [
+			$attributes['id'] => [
 				'type'            => 'text',
 				'id'              => $attributes['id'],
 				'name'            => $attributes['name'],
@@ -174,8 +174,8 @@ class Signup_Field_Text extends Base_Signup_Field {
 				'required'        => $attributes['required'],
 				'wrapper_classes' => $attributes['element_classes'],
 				'value'           => $this->get_value(),
-			),
-		);
+			],
+		];
 
 		return $fields;
 	}

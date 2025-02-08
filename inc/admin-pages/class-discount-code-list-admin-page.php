@@ -50,9 +50,9 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_discount_codes',
-	);
+	];
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -70,10 +70,10 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Discount Code removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Discount Code', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -117,13 +117,13 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'url'   => wu_network_admin_url('wp-ultimo-edit-discount-code'),
 				'label' => __('Add Discount Code'),
 				'icon'  => 'wu-circle-with-plus',
-			),
-		);
+			],
+		];
 	}
 
 	/**

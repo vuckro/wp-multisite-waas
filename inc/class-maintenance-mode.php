@@ -28,9 +28,9 @@ class Maintenance_Mode {
 	 *
 	 * @since 2.0.0
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wp_ultimo_load', array($this, 'add_settings'));
+		add_action('wp_ultimo_load', [$this, 'add_settings']);
 
 		if (wu_get_setting('maintenance_mode')) {
 			$this->hooks();
@@ -43,19 +43,19 @@ class Maintenance_Mode {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
-		add_action('wu_ajax_toggle_maintenance_mode', array($this, 'toggle_maintenance_mode'));
+		add_action('wu_ajax_toggle_maintenance_mode', [$this, 'toggle_maintenance_mode']);
 
 		if ( ! is_main_site()) {
-			add_action('admin_bar_menu', array($this, 'add_notice_to_admin_bar'), 15);
+			add_action('admin_bar_menu', [$this, 'add_notice_to_admin_bar'], 15);
 		}
 
 		if (self::check_maintenance_mode()) {
 			add_filter('pre_option_blog_public', '__return_true');
 
 			if ( ! is_admin()) {
-				add_action('wp', array($this, 'render_page'));
+				add_action('wp', [$this, 'render_page']);
 
 				if (function_exists('wp_robots_no_robots')) {
 					add_filter('wp_robots', 'wp_robots_no_robots'); // WordPress 5.7+
@@ -74,23 +74,23 @@ class Maintenance_Mode {
 	 * @param WP_Admin_Bar $wp_admin_bar The Admin Bar class.
 	 * @return void
 	 */
-	public function add_notice_to_admin_bar($wp_admin_bar) {
+	public function add_notice_to_admin_bar($wp_admin_bar): void {
 
 		if ( ! current_user_can('manage_options')) {
 			return;
 		}
 
 		if (is_admin() || self::check_maintenance_mode()) {
-			$args = array(
+			$args = [
 				'id'     => 'wu-maintenance-mode',
 				'parent' => 'top-secondary',
 				'title'  => __('Maintenance Mode - Active', 'wp-ultimo'),
 				'href'   => '#wp-ultimo-site-maintenance-element',
-				'meta'   => array(
+				'meta'   => [
 					'class' => 'wu-maintenance-mode ' . (self::check_maintenance_mode() ? '' : 'hidden'),
 					'title' => __('This means that your site is not available for visitors at the moment. Only you and other logged users have access to it. Click here to toggle this option.', 'wp-ultimo'),
-				),
-			);
+				],
+			];
 
 			$wp_admin_bar->add_node($args);
 		}
@@ -102,7 +102,7 @@ class Maintenance_Mode {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_page() {
+	public function render_page(): void {
 
 		if (is_main_site() || current_user_can('read')) {
 			return;
@@ -146,10 +146,10 @@ class Maintenance_Mode {
 
 		if ( ! current_user_can_for_blog($site_id, 'manage_options')) {
 			return wp_send_json_error(
-				array(
+				[
 					'message' => __('You do not have the necessary permissions to perform this option.', 'wp-ultimo'),
 					'value'   => false,
-				)
+				]
 			);
 		}
 
@@ -159,10 +159,10 @@ class Maintenance_Mode {
 
 		update_site_meta($site_id, 'wu_maintenance_mode', $value);
 
-		$return = array(
+		$return = [
 			'message' => __('New maintenance settings saved.', 'wp-ultimo'),
 			'value'   => $value,
-		);
+		];
 
 		// Flush the cache so the maintenance mode new status is applied immediately.
 		Cache_Manager::get_instance()->flush_known_caches();
@@ -176,18 +176,18 @@ class Maintenance_Mode {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_settings() {
+	public function add_settings(): void {
 
 		wu_register_settings_field(
 			'sites',
 			'maintenance_mode',
-			array(
+			[
 				'title'   => __('Site Maintenance Mode', 'wp-ultimo'),
 				'desc'    => __('Allow your customers and super admins to quickly take sites offline via a toggle on the site dashboard.', 'wp-ultimo'),
 				'type'    => 'toggle',
 				'default' => 0,
 				'order'   => 23,
-			)
+			]
 		);
 	}
 }

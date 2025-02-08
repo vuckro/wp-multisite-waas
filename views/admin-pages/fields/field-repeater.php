@@ -22,7 +22,7 @@
 			 */
 			wu_get_template(
 				'admin-pages/fields/partials/field-title',
-				array('field' => $field)
+				['field' => $field]
 			);
 			?>
 
@@ -35,9 +35,9 @@
 			 */
 			wu_get_template(
 				'admin-pages/fields/partials/field-description',
-				array(
+				[
 					'field' => $field,
-				)
+				]
 			);
 
 			?>
@@ -51,7 +51,7 @@
 <?php
 
 if (! $field->values && $field->value) {
-	$_values = array();
+	$_values = [];
 	$columns = array_keys($field->value);
 	$values  = $field->value;
 
@@ -65,7 +65,7 @@ if (! $field->values && $field->value) {
 	$field->values = $_values;
 }
 
-$fields = array();
+$fields = [];
 
 foreach ($field->fields as $key => $value) {
 	$fields[ $key . '[]' ] = $field->fields[ $key ];
@@ -91,11 +91,11 @@ if (is_array($field->values)) {
 				(new \WP_Ultimo\UI\Form(
 					$field->id,
 					$fields,
-					array(
+					[
 						'views'                 => 'admin-pages/fields',
 						'classes'               => 'wu-flex',
 						'field_wrapper_classes' => 'wu-bg-transparent',
-					)
+					]
 				))->render();
 				?>
 			</div>
@@ -118,11 +118,11 @@ if (is_array($field->values)) {
 			(new \WP_Ultimo\UI\Form(
 				$field->id,
 				$fields,
-				array(
+				[
 					'views'                 => 'admin-pages/fields',
 					'classes'               => 'wu-flex',
 					'field_wrapper_classes' => 'wu-bg-transparent',
-				)
+				]
 			))->render();
 
 			?>

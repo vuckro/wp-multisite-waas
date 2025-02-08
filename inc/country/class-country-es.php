@@ -59,11 +59,11 @@ class Country_ES extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'ES',
 		'currency'     => 'EUR',
 		'phone_code'   => 34,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -92,7 +92,7 @@ class Country_ES extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AN' => __('Andalusia', 'wp-ultimo'),
 			'AR' => __('Aragon', 'wp-ultimo'),
 			'AS' => __('Asturias', 'wp-ultimo'),
@@ -121,6 +121,6 @@ class Country_ES extends Country {
 			'VA' => __('Valladolid Province', 'wp-ultimo'),
 			'ZA' => __('Zamora Province', 'wp-ultimo'),
 			'AV' => __('Ávila', 'wp-ultimo'),
-		);
+		];
 	}
 }

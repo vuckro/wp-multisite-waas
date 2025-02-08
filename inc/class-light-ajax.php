@@ -36,7 +36,7 @@ class Light_Ajax {
 
 			wu_x_header("X-Ultimo-Ajax-When: $action");
 
-			add_action($action, array($this, 'process_light_ajax'), 20);
+			add_action($action, [$this, 'process_light_ajax'], 20);
 		}
 	}
 
@@ -50,7 +50,7 @@ class Light_Ajax {
 
 		$allowed_actions = apply_filters(
 			'wu_light_ajax_should_skip_referer_check',
-			array(
+			[
 
 				/**
 				 * Checkout Form Actions
@@ -64,7 +64,7 @@ class Light_Ajax {
 				'wu_create_order',
 				'wu_validate_form',
 
-			)
+			]
 		);
 
 		return in_array(wu_request('action', 'no-action'), $allowed_actions, true);
@@ -93,12 +93,12 @@ class Light_Ajax {
 		 */
 		$allowed_list = apply_filters(
 			'wu_light_ajax_allowed_hooks',
-			array(
+			[
 				'plugins_loaded',
 				'setup_theme',
 				'after_setup_theme',
 				'init',
-			)
+			]
 		);
 
 		$action = isset($_REQUEST['wu-when']) ? base64_decode((string) $_REQUEST['wu-when']) : 'plugins_loaded';
@@ -112,7 +112,7 @@ class Light_Ajax {
 	 * @since 1.9.14
 	 * @return void
 	 */
-	public function process_light_ajax() {
+	public function process_light_ajax(): void {
 
 		// mimic the actual admin-ajax
 		define('DOING_AJAX', true); // phpcs:ignore

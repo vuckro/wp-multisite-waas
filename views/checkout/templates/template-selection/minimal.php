@@ -22,13 +22,13 @@ if ( ! $should_display) {
 	return;
 } // end if;
 
-$sites = array_map('wu_get_site', isset($sites) ? $sites : array());
+$sites = array_map('wu_get_site', $sites ?? []);
 
-$categories = isset($categories) ? $categories : array();
+$categories ??= [];
 
 $customer_sites_category = __('Your Sites', 'wp_ultimo');
 
-$customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) : array();
+$customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) : [];
 
 ?>
 <div id="wu-site-template-container">
@@ -89,7 +89,7 @@ $customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) 
 
 		<?php $is_template = $site_template->get_type() === 'site_template'; ?>
 
-		<?php $categories = array_merge($site_template->get_categories(), ! $is_template ? array($customer_sites_category) : array()); ?>
+		<?php $categories = array_merge($site_template->get_categories(), ! $is_template ? [$customer_sites_category] : []); ?>
 
 		<div
 		id="wu-site-template-<?php echo esc_attr($site_template->get_id()); ?>"

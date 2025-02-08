@@ -37,7 +37,7 @@ class Site_Template extends Rule {
 	 * @since 2.0.4
 	 * @var array
 	 */
-	protected $fillableParams = array(); // phpcs:ignore
+	protected $fillableParams = []; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *
@@ -81,7 +81,7 @@ class Site_Template extends Rule {
 
 		$allowed_templates = false;
 
-		$product_ids_or_slugs = Checkout::get_instance()->request_or_session('products', array());
+		$product_ids_or_slugs = Checkout::get_instance()->request_or_session('products', []);
 
 		$product_ids_or_slugs = array_unique($product_ids_or_slugs);
 
@@ -90,9 +90,9 @@ class Site_Template extends Rule {
 
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
-			list($plan, $additional_products) = wu_segregate_products($products);
+			[$plan, $additional_products] = wu_segregate_products($products);
 
-			$products = array_merge(array($plan), $additional_products);
+			$products = array_merge([$plan], $additional_products);
 
 			foreach ($products as $product) {
 				$limits = $limits->merge($product->get_limitations());

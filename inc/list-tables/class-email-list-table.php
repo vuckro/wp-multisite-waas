@@ -25,7 +25,7 @@ class Email_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Emails\\Email_Query';
+	protected $query_class = \WP_Ultimo\Database\Emails\Email_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -35,15 +35,15 @@ class Email_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Email', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Emails', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                         // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_network_admin_url('wp-ultimo-edit-email'),
 					'classes' => '',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -59,11 +59,11 @@ class Email_List_Table extends Base_List_Table {
 	 */
 	public function get_items($per_page = 5, $page_number = 1, $count = false) {
 
-		$query = array(
+		$query = [
 			'number' => $per_page,
 			'offset' => ($page_number - 1) * $per_page,
 			'count'  => $count,
-		);
+		];
 
 		$search = wu_request('s');
 
@@ -74,12 +74,12 @@ class Email_List_Table extends Base_List_Table {
 		$target = wu_request('target');
 
 		if ($target && $target !== 'all') {
-			$query['meta_query'] = array(
-				'type' => array(
+			$query['meta_query'] = [
+				'type' => [
 					'key'   => 'wu_target',
 					'value' => $target,
-				),
-			);
+				],
+			];
 		}
 
 		$query = apply_filters("wu_{$this->id}_get_items", $query, $this);
@@ -95,10 +95,10 @@ class Email_List_Table extends Base_List_Table {
 	 */
 	public function column_title($item): string {
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'model' => 'email',
-		);
+		];
 
 		$title = sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-email', $url_atts), $item->get_title());
 
@@ -108,11 +108,11 @@ class Email_List_Table extends Base_List_Table {
 
 		$content = wp_trim_words(wp_strip_all_tags($item->get_content()), 6);
 
-		$actions = array(
+		$actions = [
 			'edit'      => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-email', $url_atts), __('Edit', 'wp-ultimo')),
 			'duplicate' => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-email', $url_atts), __('Duplicate', 'wp-ultimo')),
 			'send-test' => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Send Test Email', 'wp-ultimo'), wu_get_form_url('send_new_test', $url_atts), __('Send Test Email', 'wp-ultimo')),
-		);
+		];
 
 		$slug = $item->get_slug();
 
@@ -190,14 +190,14 @@ class Email_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'       => '<input type="checkbox" />',
 			'title'    => __('Content', 'wp-ultimo'),
 			'slug'     => __('Event', 'wp-ultimo'),
 			'event'    => __('slug', 'wp-ultimo'),
 			'schedule' => __('When', 'wp-ultimo'),
 			'id'       => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -208,7 +208,7 @@ class Email_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function process_single_action() {
+	public function process_single_action(): void {
 
 		$bulk_action = $this->current_action();
 
@@ -269,10 +269,10 @@ class Email_List_Table extends Base_List_Table {
 
 			$redirect_url = wu_network_admin_url(
 				'wp-ultimo-edit-email',
-				array(
+				[
 					'id'      => $new_email->get_id(),
 					'updated' => 1,
-				)
+				]
 			);
 
 			wp_redirect($redirect_url);
@@ -287,23 +287,23 @@ class Email_List_Table extends Base_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(
-				'type' => array(
+		return [
+			'filters'      => [
+				'type' => [
 					'label'   => __('Email Type', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						'email_email'     => __('Email', 'wp-ultimo'),
 						'broadcast_email' => __('Notices', 'wp-ultimo'),
-					),
-				),
-			),
-			'date_filters' => array(
-				'date_created' => array(
+					],
+				],
+			],
+			'date_filters' => [
+				'date_created' => [
 					'label'   => __('Date', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -314,25 +314,25 @@ class Email_List_Table extends Base_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all'      => array(
+		return [
+			'all'      => [
 				'field' => 'target',
 				'url'   => add_query_arg('target', 'all'),
 				'label' => __('All Emails', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'admin'    => array(
+			],
+			'admin'    => [
 				'field' => 'target',
 				'url'   => add_query_arg('target', 'admin'),
 				'label' => __('Admin Emails', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'customer' => array(
+			],
+			'customer' => [
 				'field' => 'target',
 				'url'   => add_query_arg('target', 'customer'),
 				'label' => __('Customer Emails', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 }

@@ -9,11 +9,11 @@ class Dashboard_Taxes_Tab_Test extends WP_UnitTestCase {
 	/**
 	 * Test that register_scripts method registers the correct scripts.
 	 */
-	public function test_register_scripts_registers_scripts() {
+	public function test_register_scripts_registers_scripts(): void {
 		// Create a mock instance of Dashboard_Admin_Page and call the register_scripts method.
 		$dashboard_admin_page = $this->getMockBuilder(Dashboard_Taxes_Tab::class)
 									->disableOriginalConstructor()
-									->setMethods(array('output'))
+									->setMethods(['output'])
 									->getMock();
 
 		// Execute register_scripts method.

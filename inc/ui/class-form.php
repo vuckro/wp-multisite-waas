@@ -27,7 +27,7 @@ class Form implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $atts = array();
+	protected $atts = [];
 
 	/**
 	 * Holds the fields we want to display using this form.
@@ -35,7 +35,7 @@ class Form implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fields = array();
+	protected $fields = [];
 
 	/**
 	 * Set and the attributes passed via the constructor.
@@ -46,13 +46,13 @@ class Form implements \JsonSerializable {
 	 * @param array  $fields List of arrays representing the form fields.
 	 * @param array  $atts Form attributes.
 	 */
-	public function __construct($id, $fields, $atts = array()) {
+	public function __construct($id, $fields, $atts = []) {
 
 		$this->atts = apply_filters(
 			"wu_{$id}_form_atts",
 			wp_parse_args(
 				$atts,
-				array(
+				[
 					'id'                    => $id,
 					'method'                => 'post',
 					'before'                => '',
@@ -65,15 +65,15 @@ class Form implements \JsonSerializable {
 					'field_wrapper_classes' => false,
 					'field_classes'         => false,
 					'views'                 => 'settings/fields',
-					'variables'             => array(),
-					'step'                  => (object) array(
+					'variables'             => [],
+					'step'                  => (object) [
 						'classes'    => '',
 						'element_id' => '',
-					),
-					'html_attr'             => array(
+					],
+					'html_attr'             => [
 						'class' => '',
-					),
-				)
+					],
+				]
 			)
 		);
 
@@ -90,12 +90,12 @@ class Form implements \JsonSerializable {
 	 */
 	public function __get($att) {
 
-		$allowed_callable = array(
+		$allowed_callable = [
 			'before',
 			'after',
-		);
+		];
 
-		$attr = isset($this->atts[ $att ]) ? $this->atts[ $att ] : false;
+		$attr = $this->atts[ $att ] ?? false;
 
 		if (in_array($att, $allowed_callable, true) && is_callable($attr)) {
 			$attr = call_user_func($attr, $this);
@@ -134,7 +134,7 @@ class Form implements \JsonSerializable {
 	 * @param array $fields List of fields of the form.
 	 * @return void
 	 */
-	public function set_fields($fields) {
+	public function set_fields($fields): void {
 
 		$id = $this->id;
 
@@ -160,15 +160,15 @@ class Form implements \JsonSerializable {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render() {
+	public function render(): void {
 
 		$variables = array_merge(
 			$this->variables,
-			array(
+			[
 				'form_slug' => $this->id,
 				'form'      => $this,
 				'step'      => $this->step,
-			)
+			]
 		);
 
 		ob_start();
@@ -186,10 +186,10 @@ class Form implements \JsonSerializable {
 
 			wu_get_template(
 				"{$this->views}/field-{$template_name}",
-				array(
+				[
 					'field_slug' => $field_slug,
 					'field'      => $field,
-				),
+				],
 				"{$this->views}/field-text"
 			);
 		}

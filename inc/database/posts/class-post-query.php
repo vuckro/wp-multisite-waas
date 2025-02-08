@@ -48,7 +48,7 @@ class Post_Query extends Query {
 	 * @access public
 	 * @var string
 	 */
-	protected $table_schema = '\\WP_Ultimo\\Database\\Posts\\Posts_Schema';
+	protected $table_schema = \WP_Ultimo\Database\Posts\Posts_Schema::class;
 
 	/** Item ******************************************************************/
 
@@ -77,7 +77,7 @@ class Post_Query extends Query {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $item_shape = '\\WP_Ultimo\\Models\\Post_Base_Model';
+	protected $item_shape = \WP_Ultimo\Models\Post_Base_Model::class;
 
 	/**
 	 * Group to cache queries and queried items in.
@@ -96,7 +96,7 @@ class Post_Query extends Query {
 	 *
 	 * @param string|array $query Array of query arguments.
 	 */
-	public function query($query = array()) {
+	public function query($query = []) {
 
 		if ( ! isset($query['type__in'])) {
 			$query['type'] = $this->item_name;

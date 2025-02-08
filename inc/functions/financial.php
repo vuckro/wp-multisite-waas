@@ -23,12 +23,12 @@ function wu_calculate_mrr() {
 	$total_mrr = 0;
 
 	$memberships = wu_get_memberships(
-		array(
+		[
 			'recurring'  => true,
-			'status__in' => array(
+			'status__in' => [
 				Membership_Status::ACTIVE,
-			),
-		)
+			],
+		]
 	);
 
 	foreach ($memberships as $membership) {
@@ -38,7 +38,7 @@ function wu_calculate_mrr() {
 			continue;
 		}
 
-		$duration = $membership->get_duration() ? $membership->get_duration() : 1;
+		$duration = $membership->get_duration() ?: 1;
 
 		$duration_unit = $membership->get_duration_unit();
 
@@ -113,14 +113,14 @@ function wu_calculate_revenue($start_date = false, $end_date = false, $inclusive
 
 	$total_revenue = 0;
 
-	$query_args = array(
-		'fields'     => array('total'),
-		'date_query' => array(),
-		'status__in' => array(
+	$query_args = [
+		'fields'     => ['total'],
+		'date_query' => [],
+		'status__in' => [
 			Payment_Status::COMPLETED,
 			Payment_Status::PARTIAL,
-		),
-	);
+		],
+	];
 
 	if ($start_date) {
 		$query_args['date_query']['column']    = 'date_created';
@@ -157,14 +157,14 @@ function wu_calculate_refunds($start_date = false, $end_date = false, $inclusive
 
 	$total_revenue = 0;
 
-	$query_args = array(
-		'fields'     => array('refund_total'),
-		'date_query' => array(),
-		'status__in' => array(
+	$query_args = [
+		'fields'     => ['refund_total'],
+		'date_query' => [],
+		'status__in' => [
 			Payment_Status::REFUND,
 			Payment_Status::PARTIAL_REFUND,
-		),
-	);
+		],
+	];
 
 	if ($start_date) {
 		$query_args['date_query']['column']    = 'date_created';
@@ -199,9 +199,9 @@ function wu_calculate_refunds($start_date = false, $end_date = false, $inclusive
  */
 function wu_calculate_taxes_by_rate($start_date = false, $end_date = false, $inclusive = true) {
 
-	$query_args = array(
-		'date_query' => array(),
-	);
+	$query_args = [
+		'date_query' => [],
+	];
 
 	if ($start_date) {
 		$query_args['date_query']['after']     = $start_date;
@@ -215,7 +215,7 @@ function wu_calculate_taxes_by_rate($start_date = false, $end_date = false, $inc
 
 	$order = 0;
 
-	$taxes_paid_list = array();
+	$taxes_paid_list = [];
 
 	$line_items_groups = \WP_Ultimo\Checkout\Line_Item::get_line_items($query_args);
 
@@ -230,14 +230,14 @@ function wu_calculate_taxes_by_rate($start_date = false, $end_date = false, $inc
 			}
 
 			if ( ! wu_get_isset($taxes_paid_list, $tax_name)) {
-				$taxes_paid_list[ $tax_name ] = array(
+				$taxes_paid_list[ $tax_name ] = [
 					'title'       => $tax_name,
 					'country'     => '',
 					'state'       => '',
 					'order_count' => $order,
 					'tax_rate'    => $line_item->get_tax_rate(),
 					'tax_total'   => $line_item->get_tax_total(),
-				);
+				];
 			} else {
 				$taxes_paid_list[ $tax_name ]['tax_total']   += $line_item->get_tax_total();
 				$taxes_paid_list[ $tax_name ]['order_count'] += $order;
@@ -260,10 +260,10 @@ function wu_calculate_taxes_by_rate($start_date = false, $end_date = false, $inc
  */
 function wu_calculate_financial_data_by_product($start_date = false, $end_date = false, $inclusive = true) {
 
-	$query_args = array(
-		'date_query'     => array(),
+	$query_args = [
+		'date_query'     => [],
 		'payment_status' => Payment_Status::COMPLETED,
-	);
+	];
 
 	if ($start_date) {
 		$query_args['date_query']['after']     = $start_date;
@@ -277,15 +277,15 @@ function wu_calculate_financial_data_by_product($start_date = false, $end_date =
 
 	$line_items_groups = \WP_Ultimo\Checkout\Line_Item::get_line_items($query_args);
 
-	$data = array();
+	$data = [];
 
 	$products = wu_get_products();
 
 	foreach ($products as $product) {
-		$data[ $product->get_id() ] = array(
+		$data[ $product->get_id() ] = [
 			'label'   => $product->get_name(),
 			'revenue' => 0,
-		);
+		];
 	}
 
 	foreach ($line_items_groups as $line_items_group) {
@@ -321,9 +321,9 @@ function wu_calculate_financial_data_by_product($start_date = false, $end_date =
  */
 function wu_calculate_taxes_by_day($start_date = false, $end_date = false, $inclusive = true) {
 
-	$query_args = array(
-		'date_query' => array(),
-	);
+	$query_args = [
+		'date_query' => [],
+	];
 
 	if ($start_date) {
 		$query_args['date_query']['after']     = $start_date;
@@ -337,7 +337,7 @@ function wu_calculate_taxes_by_day($start_date = false, $end_date = false, $incl
 
 	$line_items_groups = \WP_Ultimo\Checkout\Line_Item::get_line_items($query_args);
 
-	$data = array();
+	$data = [];
 
 	$period = new \DatePeriod(
 		new \DateTime($start_date),
@@ -348,12 +348,12 @@ function wu_calculate_taxes_by_day($start_date = false, $end_date = false, $incl
 	$days = array_reverse(iterator_to_array($period));
 
 	foreach ($days as $day_datetime) {
-		$data[ $day_datetime->format('Y-m-d') ] = array(
+		$data[ $day_datetime->format('Y-m-d') ] = [
 			'order_count' => 0,
 			'total'       => 0,
 			'tax_total'   => 0,
 			'net_profit'  => 0,
-		);
+		];
 	}
 
 	foreach ($line_items_groups as $line_items_group) {
@@ -361,12 +361,12 @@ function wu_calculate_taxes_by_day($start_date = false, $end_date = false, $incl
 			$date = gmdate('Y-m-d', strtotime((string) $line_item->date_created));
 
 			if ( ! wu_get_isset($data, $date)) {
-				$data[ $date ] = array(
+				$data[ $date ] = [
 					'order_count' => 0,
 					'total'       => $line_item->get_total(),
 					'tax_total'   => $line_item->get_tax_total(),
 					'net_profit'  => $line_item->get_total() - $line_item->get_tax_total(),
-				);
+				];
 			} else {
 				$data[ $date ]['order_count'] += 1;
 				$data[ $date ]['total']       += $line_item->get_total();
@@ -393,17 +393,17 @@ function wu_calculate_taxes_by_month() {
 		return $cache;
 	}
 
-	$query_args = array(
-		'date_query' => array(
+	$query_args = [
+		'date_query' => [
 			'after'     => 'first day of January this year',
 			'before'    => 'last day of December this year',
 			'inclusive' => true,
-		),
-	);
+		],
+	];
 
 	$line_items_groups = \WP_Ultimo\Checkout\Line_Item::get_line_items($query_args);
 
-	$data = array();
+	$data = [];
 
 	$period = new \DatePeriod(
 		new \DateTime($query_args['date_query']['after']),
@@ -414,12 +414,12 @@ function wu_calculate_taxes_by_month() {
 	$months = iterator_to_array($period);
 
 	foreach ($months as $month_datetime) {
-		$data[ $month_datetime->format('n') ] = array(
+		$data[ $month_datetime->format('n') ] = [
 			'order_count' => 0,
 			'total'       => 0,
 			'tax_total'   => 0,
 			'net_profit'  => 0,
-		);
+		];
 	}
 
 	foreach ($line_items_groups as $line_items_group) {
@@ -427,12 +427,12 @@ function wu_calculate_taxes_by_month() {
 			$date = gmdate('n', strtotime((string) $line_item->date_created));
 
 			if ( ! wu_get_isset($data, $date)) {
-				$data[ $date ] = array(
+				$data[ $date ] = [
 					'order_count' => 0,
 					'total'       => $line_item->get_total(),
 					'tax_total'   => $line_item->get_tax_total(),
 					'net_profit'  => $line_item->get_total() - $line_item->get_tax_total(),
-				);
+				];
 			} else {
 				$data[ $date ]['order_count'] += 1;
 				$data[ $date ]['total']       += $line_item->get_total();
@@ -461,9 +461,9 @@ function wu_calculate_signups_by_form($start_date = false, $end_date = false, $i
 
 	global $wpdb;
 
-	$query = array(
-		'date_query' => array(),
-	);
+	$query = [
+		'date_query' => [],
+	];
 
 	if ($start_date) {
 		$query['date_query']['after']     = $start_date;

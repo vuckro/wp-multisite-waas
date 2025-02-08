@@ -11,7 +11,7 @@ class WP_Ultimo_Test extends \WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function testLoadAllHelperFunctionsCorrectly() {
+	public function testLoadAllHelperFunctionsCorrectly(): void {
 		// Assert that all helper functions are loaded correctly.
 		// This is all done in the bootstrap.
 		$this->assertTrue(function_exists('wu_to_float'));
@@ -19,13 +19,13 @@ class WP_Ultimo_Test extends \WP_UnitTestCase {
 		$this->assertTrue(function_exists('wu_get_initials'));
 	}
 
-	public function testLoaded() {
+	public function testLoaded(): void {
 		$wpUltimo = \WP_Ultimo();
 		$this->assertTrue($wpUltimo->version === \WP_Ultimo::VERSION);
 		$this->assertTrue($wpUltimo->is_loaded());
 	}
 
-	public function testPublicProperties() {
+	public function testPublicProperties(): void {
 		$wpUltimo = \WP_Ultimo();
 		$this->assertTrue($wpUltimo->settings instanceof Settings);
 		$this->assertTrue($wpUltimo->helper instanceof Helper);

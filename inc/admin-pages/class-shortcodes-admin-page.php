@@ -68,9 +68,9 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Allow child classes to add further initializations.
@@ -78,7 +78,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 	}
@@ -122,16 +122,16 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		$screen = get_current_screen();
 
 		wu_get_template(
 			'shortcodes/shortcodes',
-			array(
+			[
 				'screen' => $screen,
 				'data'   => $this->get_data(),
-			)
+			]
 		);
 	}
 
@@ -145,7 +145,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 
 		$elements = Base_Element::get_public_elements();
 
-		$data = array();
+		$data = [];
 
 		foreach ($elements as $element) {
 			$defaults = $element->defaults();
@@ -162,7 +162,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 						$params[ $key ]['options'] = '0 | 1';
 						break;
 					case 'select':
-						$params[ $key ]['options'] = implode(' | ', array_keys(wu_get_isset($value, 'options', array())));
+						$params[ $key ]['options'] = implode(' | ', array_keys(wu_get_isset($value, 'options', [])));
 						break;
 					case 'int':
 						$params[ $key ]['options'] = __('integer', 'wp-ultimo');
@@ -184,17 +184,17 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 
 			$id = $element->get_id();
 
-			if (strncmp((string) $id, 'wp-ultimo/', strlen('wp-ultimo/')) === 0) {
+			if (str_starts_with((string) $id, 'wp-ultimo/')) {
 				$id = substr((string) $element->get_id(), strlen('wp-ultimo/'));
 			}
 
-			$data[] = array(
+			$data[] = [
 				'generator_form_url' => wu_get_form_url("shortcode_{$id}"),
 				'title'              => $element->get_title(),
 				'shortcode'          => $element->get_shortcode_id(),
 				'description'        => $element->get_description(),
 				'params'             => $params,
-			);
+			];
 		}
 
 		return $data;

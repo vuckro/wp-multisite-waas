@@ -20,12 +20,12 @@ function wu_mock_site($seed = false) {
 
 	$atts = apply_filters(
 		'wu_mock_site',
-		array(
+		[
 			'title'       => __('Example Site', 'wp-ultimo'),
 			'description' => __('This is an example of a site description.', 'wp-ultimo'),
 			'domain'      => __('examplesite.dev', 'wp-ultimo'),
 			'path'        => '/',
-		)
+		]
 	);
 
 	if ($seed) {
@@ -45,14 +45,14 @@ function wu_mock_site($seed = false) {
 function wu_mock_membership() {
 
 	return new \WP_Ultimo\Models\Membership(
-		array(
+		[
 			'billing_address' => new \WP_Ultimo\Objects\Billing_Address(
-				array(
+				[
 					'company_name'  => 'Company Co.',
 					'billing_email' => 'company@co.dev',
-				)
+				]
 			),
-		)
+		]
 	);
 }
 
@@ -65,9 +65,9 @@ function wu_mock_membership() {
 function wu_mock_product() {
 
 	$product = new \WP_Ultimo\Models\Product(
-		array(
+		[
 			'name' => __('Test Product', 'wp-ultimo'),
-		)
+		]
 	);
 
 	$product->_mocked = true;
@@ -84,18 +84,18 @@ function wu_mock_product() {
 function wu_mock_customer() {
 
 	$customer = new \WP_Ultimo\Models\Customer(
-		array(
+		[
 			'billing_address' => new \WP_Ultimo\Objects\Billing_Address(
-				array(
+				[
 					'company_name'  => 'Company Co.',
 					'billing_email' => 'company@co.dev',
-				)
+				]
 			),
-		)
+		]
 	);
 
-	$customer->_user = (object) array(
-		'data' => (object) array(
+	$customer->_user = (object) [
+		'data' => (object) [
 			'ID'                  => '1',
 			'user_login'          => 'mockeduser',
 			'user_pass'           => 'passwordhash',
@@ -108,8 +108,8 @@ function wu_mock_customer() {
 			'display_name'        => 'John McMocked',
 			'spam'                => '0',
 			'deleted'             => '0',
-		),
-	);
+		],
+	];
 
 	return $customer;
 }
@@ -125,15 +125,15 @@ function wu_mock_payment() {
 	$payment = new \WP_Ultimo\Models\Payment();
 
 	$line_item = new \WP_Ultimo\Checkout\Line_Item(
-		array(
+		[
 			'product' => wu_mock_product(),
-		)
+		]
 	);
 
 	$payment->set_line_items(
-		array(
+		[
 			$line_item,
-		)
+		]
 	);
 
 	return $payment;
@@ -148,14 +148,14 @@ function wu_mock_payment() {
 function wu_mock_domain() {
 
 	$domain = new \WP_Ultimo\Models\Domain(
-		array(
+		[
 			'blog_id'        => 1,
 			'domain'         => 'example.com',
 			'active'         => true,
 			'primary_domain' => true,
 			'secure'         => true,
 			'stage'          => 'checking-dns',
-		)
+		]
 	);
 
 	return $domain;

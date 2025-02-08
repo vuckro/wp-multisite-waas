@@ -45,7 +45,7 @@ class Email_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Email';
+	protected $model_class = \WP_Ultimo\Models\Email::class;
 
 	/**
 	 * All default system emails and their original content.
@@ -61,7 +61,7 @@ class Email_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
@@ -77,21 +77,21 @@ class Email_Manager extends Base_Manager {
 		/*
 		 * Adds the Email fields
 		 */
-		add_action('wu_settings_emails', array($this, 'add_email_fields'));
+		add_action('wu_settings_emails', [$this, 'add_email_fields']);
 
-		add_action('wu_event', array($this, 'send_system_email'), 10, 2);
+		add_action('wu_event', [$this, 'send_system_email'], 10, 2);
 
 		/*
 		 * Registering a callback action to a schedule send.
 		 */
-		add_action('wu_send_schedule_system_email', array($this, 'send_schedule_system_email'), 10, 5);
+		add_action('wu_send_schedule_system_email', [$this, 'send_schedule_system_email'], 10, 3);
 
 		/*
 		 * Create a log when a mail send fails.
 		 */
-		add_action('wp_mail_failed', array($this, 'log_mailer_failure'));
+		add_action('wp_mail_failed', [$this, 'log_mailer_failure']);
 
-		add_action('wp_ajax_wu_get_event_payload_placeholders', array($this, 'get_event_placeholders'));
+		add_action('wp_ajax_wu_get_event_payload_placeholders', [$this, 'get_event_placeholders']);
 	}
 
 	/**
@@ -101,28 +101,28 @@ class Email_Manager extends Base_Manager {
 	 * @param array  $payload Payload of the event.
 	 * @return void.
 	 */
-	public function send_system_email($slug, $payload) {
+	public function send_system_email($slug, $payload): void {
 
 		$all_emails = wu_get_emails(
-			array(
+			[
 				'event' => $slug,
-			)
+			]
 		);
 
-		$original_from = array(
+		$original_from = [
 			'name'  => wu_get_setting('from_name'),
 			'email' => wu_get_setting('from_email'),
-		);
+		];
 
 		/*
 		 * Loop through all the emails registered.
 		 */
 		foreach ($all_emails as $email) {
 			if ($email->get_custom_sender()) {
-				$from = array(
+				$from = [
 					'name'  => $email->get_custom_sender_name(),
 					'email' => $email->get_custom_sender_email(),
-				);
+				];
 			} else {
 				$from = $original_from;
 			}
@@ -138,12 +138,12 @@ class Email_Manager extends Base_Manager {
 				return;
 			}
 
-			$args = array(
+			$args = [
 				'style'   => $email->get_style(),
 				'content' => $email->get_content(),
 				'subject' => get_network_option(null, 'site_name') . ' - ' . $email->get_title(),
 				'payload' => $payload,
-			);
+			];
 
 			/*
 			 * Add the invoice attachment, if need be.
@@ -174,7 +174,7 @@ class Email_Manager extends Base_Manager {
 	 * @param string $email_subject The email subject, to avoid attaching a file to the wrong email.
 	 * @return void
 	 */
-	public function attach_file_by_url($file_url, $file_name, $email_subject = '') {
+	public function attach_file_by_url($file_url, $file_name, $email_subject = ''): void {
 
 		add_action(
 			'phpmailer_init',
@@ -187,9 +187,9 @@ class Email_Manager extends Base_Manager {
 
 				$response = wp_remote_get(
 					$file_url,
-					array(
+					[
 						'timeout' => 50,
-					)
+					]
 				);
 
 				if (is_wp_error($response)) {
@@ -212,98 +212,98 @@ class Email_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_email_fields() {
+	public function add_email_fields(): void {
 
 		wu_register_settings_field(
 			'emails',
 			'sender_header',
-			array(
+			[
 				'title' => __('Sender Settings', 'wp-ultimo'),
 				'desc'  => __('Change the settings of the email headers, like from and name.', 'wp-ultimo'),
 				'type'  => 'header',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'emails',
 			'from_name',
-			array(
+			[
 				'title'       => __('"From" Name', 'wp-ultimo'),
 				'desc'        => __('How the sender name will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
 				'type'        => 'text',
 				'placeholder' => get_network_option(null, 'site_name'),
 				'default'     => get_network_option(null, 'site_name'),
-				'html_attr'   => array(
+				'html_attr'   => [
 					'v-model' => 'from_name',
-				),
-			)
+				],
+			]
 		);
 
 		wu_register_settings_field(
 			'emails',
 			'from_email',
-			array(
+			[
 				'title'       => __('"From" E-mail', 'wp-ultimo'),
 				'desc'        => __('How the sender email will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
 				'type'        => 'email',
 				'placeholder' => get_network_option(null, 'admin_email'),
 				'default'     => get_network_option(null, 'admin_email'),
-				'html_attr'   => array(
+				'html_attr'   => [
 					'v-model' => 'from_email',
-				),
-			)
+				],
+			]
 		);
 
 		wu_register_settings_field(
 			'emails',
 			'template_header',
-			array(
+			[
 				'title' => __('Template Settings', 'wp-ultimo'),
 				'desc'  => __('Change the settings of the email templates.', 'wp-ultimo'),
 				'type'  => 'header',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'emails',
 			'email_template_type',
-			array(
+			[
 				'title'     => __('Email Templates Style', 'wp-ultimo'),
 				'desc'      => __('Choose if email body will be sent using the HTML template or in plain text.', 'wp-ultimo'),
 				'type'      => 'select',
 				'default'   => 'html',
-				'options'   => array(
+				'options'   => [
 					'html'  => __('HTML Emails', 'wp-ultimo'),
 					'plain' => __('Plain Emails', 'wp-ultimo'),
-				),
-				'html_attr' => array(
+				],
+				'html_attr' => [
 					'v-model' => 'emails_template',
-				),
-			)
+				],
+			]
 		);
 
 		wu_register_settings_field(
 			'emails',
 			'expiring_header',
-			array(
+			[
 				'title' => __('Expiring Notification Settings', 'wp-ultimo'),
 				'desc'  => __('Change the settings for the expiring notification (trials and subscriptions) emails.', 'wp-ultimo'),
 				'type'  => 'header',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'emails',
 			'expiring_days',
-			array(
+			[
 				'title'       => __('Days to Expire', 'wp-ultimo'),
 				'desc'        => __('Select when we should send the notification email. If you select 3 days, for example, a notification email will be sent to every membership (or trial period) expiring in the next 3 days. Memberships are checked hourly.', 'wp-ultimo'),
 				'type'        => 'number',
 				'placeholder' => __('e.g. 3', 'wp-ultimo'),
-				'html_attr'   => array(
+				'html_attr'   => [
 					'v-model' => 'expiring_days',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -315,7 +315,7 @@ class Email_Manager extends Base_Manager {
 	 * @param array $args System email params.
 	 * @return void.
 	 */
-	public function register_default_system_email($args) {
+	public function register_default_system_email($args): void {
 
 		$this->registered_default_system_emails[ $args['slug'] ] = $args;
 	}
@@ -336,7 +336,7 @@ class Email_Manager extends Base_Manager {
 
 		$email_args = wp_parse_args(
 			$args,
-			array(
+			[
 				'event'              => '',
 				'title'              => '',
 				'content'            => '',
@@ -349,7 +349,7 @@ class Email_Manager extends Base_Manager {
 				'date_registered'    => wu_get_current_time('mysql', true),
 				'date_modified'      => wu_get_current_time('mysql', true),
 				'status'             => 'publish',
-			)
+			]
 		);
 
 		$email = new Email($email_args);
@@ -366,7 +366,7 @@ class Email_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function create_all_system_emails() {
+	public function create_all_system_emails(): void {
 
 		$system_emails = wu_get_default_system_emails();
 
@@ -382,96 +382,96 @@ class Email_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function register_all_default_system_emails() {
+	public function register_all_default_system_emails(): void {
 		/*
 		 * Payment Successful - Admin
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'payment_received',
 				'slug'    => 'payment_received_admin',
 				'target'  => 'admin',
 				'title'   => __('You got a new payment!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/admin/payment-received'),
-			)
+			]
 		);
 
 		/*
 		 * Payment Successful - Customer
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'payment_received',
 				'slug'    => 'payment_received_customer',
 				'target'  => 'customer',
 				'title'   => __('We got your payment!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/customer/payment-received'),
-			)
+			]
 		);
 
 		/*
 		 * Site Published - Admin
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'site_published',
 				'target'  => 'admin',
 				'slug'    => 'site_published_admin',
 				'title'   => __('A new site was created on your Network!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/admin/site-published'),
-			)
+			]
 		);
 
 		/*
 		 * Site Published - Customer
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'site_published',
 				'target'  => 'customer',
 				'slug'    => 'site_published_customer',
 				'title'   => __('Your site is ready!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/customer/site-published'),
-			)
+			]
 		);
 
 		/*
 		 * Site Published - Customer
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'confirm_email_address',
 				'target'  => 'customer',
 				'slug'    => 'confirm_email_address',
 				'title'   => __('Confirm your email address!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/customer/confirm-email-address'),
-			)
+			]
 		);
 
 		/*
 		 * Domain Created - Admin
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'domain_created',
 				'target'  => 'admin',
 				'slug'    => 'domain_created_admin',
 				'title'   => __('A new domain was added to your Network!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/admin/domain-created'),
-			)
+			]
 		);
 
 		/*
 		 * Pending Renewal Payment Created - Customer
 		 */
 		$this->register_default_system_email(
-			array(
+			[
 				'event'   => 'renewal_payment_created',
 				'target'  => 'customer',
 				'slug'    => 'renewal_payment_created',
 				'title'   => __('You have a new pending payment!', 'wp-ultimo'),
 				'content' => wu_get_template_contents('emails/customer/renewal-payment-created'),
-			)
+			]
 		);
 
 		do_action('wu_system_emails_after_register');
@@ -515,7 +515,7 @@ class Email_Manager extends Base_Manager {
 	 */
 	public function get_event_placeholders($slug = '') {
 
-		$placeholders = array();
+		$placeholders = [];
 
 		if (wu_request('email_event')) {
 			$slug = wu_request('email_event');
@@ -528,10 +528,10 @@ class Email_Manager extends Base_Manager {
 				foreach (wu_maybe_lazy_load_payload($event['payload']) as $placeholder => $value) {
 					$name = ucwords(str_replace('_', ' ', $placeholder));
 
-					$placeholders[] = array(
+					$placeholders[] = [
 						'name'        => $name,
 						'placeholder' => $placeholder,
-					);
+					];
 				}
 			}
 		}
@@ -551,13 +551,11 @@ class Email_Manager extends Base_Manager {
 	 * @param array  $to Email targets.
 	 * @param string $subject Email subject.
 	 * @param string $template Email content.
-	 * @param array  $headers Email headers.
-	 * @param array  $attachments Email attachments.
 	 * @return mixed
 	 */
-	public function send_schedule_system_email($to, $subject, $template, $headers, $attachments) {
+	public function send_schedule_system_email($to, $subject, $template) {
 
-		return Sender::send_mail($to, $subject, $template, $headers, $attachments);
+		return Sender::send_mail($to, $subject, $template);
 	}
 
 	/**
@@ -568,7 +566,7 @@ class Email_Manager extends Base_Manager {
 	 * @param \WP_Error $error The error with the mailer.
 	 * @return void.
 	 */
-	public function log_mailer_failure($error) {
+	public function log_mailer_failure($error): void {
 
 		if (is_wp_error($error)) {
 			wu_log_add('mailer-errors', $error->get_error_message(), LogLevel::ERROR);

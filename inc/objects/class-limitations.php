@@ -32,7 +32,7 @@ class Limitations {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	static $limitations_cache = array();
+	static $limitations_cache = [];
 
 	/**
 	 * Version of the limitation schema.
@@ -48,7 +48,7 @@ class Limitations {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $modules = array();
+	protected $modules = [];
 
 	/**
 	 * The current limitation being merged in merge_recursive.
@@ -65,7 +65,7 @@ class Limitations {
 	 *
 	 * @param array $modules_data Array of modules data.
 	 */
-	public function __construct($modules_data = array()) {
+	public function __construct($modules_data = []) {
 
 		$this->build_modules($modules_data);
 	}
@@ -88,7 +88,7 @@ class Limitations {
 			$class_name = wu_get_isset($repo, $name, false);
 
 			if (class_exists($class_name)) {
-				$module = new $class_name(array());
+				$module = new $class_name([]);
 
 				$this->modules[ $name ] = $module;
 
@@ -270,10 +270,10 @@ class Limitations {
 
 		$current_id = $this->current_merge_id;
 
-		$force_enabled_list = array(
+		$force_enabled_list = [
 			'plugins',
 			'themes',
-		);
+		];
 
 		$force_enabled = in_array($current_id, $force_enabled_list, true);
 
@@ -283,9 +283,9 @@ class Limitations {
 		}
 
 		if ( ! wu_get_isset($array1, 'enabled', true)) {
-			$array1 = array(
+			$array1 = [
 				'enabled' => false,
-			);
+			];
 		}
 
 		if ( ! wu_get_isset($array2, 'enabled', true) && $should_sum) {
@@ -325,32 +325,32 @@ class Limitations {
 				} elseif (isset($array1[ $key ]) && is_numeric($array1[ $key ]) && is_numeric($value) && $should_sum && ! $is_unlimited) {
 					$array1[ $key ] = ((int) $array1[ $key ]) + $value;
 				} elseif ($key === 'visibility' && isset($array1[ $key ]) && $should_sum) {
-					$key_priority = array(
+					$key_priority = [
 						'hidden'  => 0,
 						'visible' => 1,
-					);
+					];
 
 					$array1[ $key ] = $key_priority[ $value ] > $key_priority[ $array1[ $key ] ] ? $value : $array1[ $key ];
 				} elseif ($key === 'behavior' && isset($array1[ $key ]) && $should_sum) {
-					$key_priority_list = array(
-						'plugins' => array(
+					$key_priority_list = [
+						'plugins' => [
 							'default'               => 10,
 							'force_inactive_locked' => 20,
 							'force_inactive'        => 30,
 							'force_active_locked'   => 40,
 							'force_active'          => 50,
-						),
-						'site'    => array(
+						],
+						'site'    => [
 							'not_available' => 10,
 							'available'     => 20,
 							'pre_selected'  => 30,
-						),
-						'themes'  => array(
+						],
+						'themes'  => [
 							'not_available' => 10,
 							'available'     => 20,
 							'force_active'  => 30,
-						),
-					);
+						],
+					];
 
 					$key_priority = apply_filters("wu_limitation_{$current_id}_priority", $key_priority_list[ $current_id ]);
 
@@ -408,7 +408,7 @@ class Limitations {
 
 		global $wpdb;
 
-		$limitations = array();
+		$limitations = [];
 
 		$table_name = "{$wpdb->base_prefix}{$wu_prefix}{$slug}meta";
 
@@ -437,7 +437,7 @@ class Limitations {
 	 * @param int    $id The id of the meta id.
 	 * @return void
 	 */
-	public static function remove_limitations($slug, $id) {
+	public static function remove_limitations($slug, $id): void {
 
 		global $wpdb;
 
@@ -487,7 +487,7 @@ class Limitations {
 	 */
 	public static function repository() {
 
-		$classes = array(
+		$classes = [
 			'post_types'         => \WP_Ultimo\Limitations\Limit_Post_Types::class,
 			'plugins'            => \WP_Ultimo\Limitations\Limit_Plugins::class,
 			'sites'              => \WP_Ultimo\Limitations\Limit_Sites::class,
@@ -498,7 +498,7 @@ class Limitations {
 			'site_templates'     => \WP_Ultimo\Limitations\Limit_Site_Templates::class,
 			'domain_mapping'     => \WP_Ultimo\Limitations\Limit_Domain_Mapping::class,
 			'customer_user_role' => \WP_Ultimo\Limitations\Limit_Customer_User_Role::class,
-		);
+		];
 
 		return apply_filters('wu_limit_classes', $classes);
 	}

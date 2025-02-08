@@ -68,10 +68,10 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'admin_menu'      => 'exist',
 		'user_admin_menu' => 'exist',
-	);
+	];
 
 	/**
 	 * The current site instance.
@@ -113,7 +113,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		$this->current_site = wu_get_current_site();
 
@@ -166,7 +166,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		\WP_Ultimo\UI\Current_Membership_Element::get_instance()->as_metabox(get_current_screen()->id);
 
@@ -186,7 +186,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 
 		\WP_Ultimo\UI\Simple_Text_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes');
 
-		\WP_Ultimo\UI\Current_Site_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes', array('show_admin_link' => false));
+		\WP_Ultimo\UI\Current_Site_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes', ['show_admin_link' => false]);
 	}
 
 	/**
@@ -228,17 +228,17 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/dash',
-			array(
+			[
 				'screen'            => get_current_screen(),
 				'page'              => $this,
 				'has_full_position' => false,
-			)
+			]
 		);
 	}
 }

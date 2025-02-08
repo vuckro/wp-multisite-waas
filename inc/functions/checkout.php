@@ -64,15 +64,15 @@ function wu_stripe_generate_idempotency_key($args, $context = 'new') {
  * @param array $fields List of signup field types.
  * @return array
  */
-function wu_create_checkout_fields($fields = array()) {
+function wu_create_checkout_fields($fields = []) {
 
 	$field_types = Signup_Fields_Manager::get_instance()->get_field_types();
 
-	$actual_fields = array();
+	$actual_fields = [];
 
 	// Extra check to prevent error messages from being displayed.
 	if ( ! is_array($fields)) {
-		$fields = array();
+		$fields = [];
 	}
 
 	foreach ($fields as $field) {
@@ -117,10 +117,10 @@ function wu_create_checkout_fields($fields = array()) {
 		 */
 		$field = wp_parse_args(
 			$field,
-			array(
+			[
 				'element_classes' => '',
 				'classes'         => '',
-			)
+			]
 		);
 
 		$field_array = $field_class->to_fields_array($field);
@@ -290,7 +290,7 @@ function wu_register_field_template($field_type, $field_template_id, $field_temp
 		'wu_checkout_field_templates',
 		function ($field_templates) use ($field_type, $field_template_id, $field_template_class_name) {
 
-			$field_templates_for_field_type = wu_get_isset($field_templates, $field_type, array());
+			$field_templates_for_field_type = wu_get_isset($field_templates, $field_type, []);
 
 			$field_templates_for_field_type[ $field_template_id ] = $field_template_class_name;
 

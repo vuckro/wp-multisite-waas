@@ -145,21 +145,21 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('About this Site', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
 		return $fields;
 	}
@@ -183,12 +183,12 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'Account',
 			'Summary',
 			'WP Multisite WaaS',
-		);
+		];
 	}
 
 	/**
@@ -207,9 +207,9 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title' => __('About this Site', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -218,7 +218,7 @@ class Account_Summary_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
@@ -242,14 +242,14 @@ class Account_Summary_Element extends Base_Element {
 
 		is_multisite() && restore_current_blog();
 
-		$this->atts = array(
+		$this->atts = [
 			'site_trial'      => 0, // @todo: fix this
 			'space_used'      => $space_used,
 			'space_allowed'   => $space_allowed,
 			'percentage'      => $percentage,
 			'unlimited_space' => $unlimited_space,
 			'message'         => $message,
-		);
+		];
 	}
 
 	/**
@@ -258,7 +258,7 @@ class Account_Summary_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 
@@ -269,14 +269,14 @@ class Account_Summary_Element extends Base_Element {
 		$unlimited_space = get_site_option('upload_space_check_disabled');
 		$message         = $unlimited_space ? '%s' : '%s / %s';
 
-		$this->atts = array(
+		$this->atts = [
 			'site_trial'      => 30, // @todo: fix this
 			'space_used'      => 120 * MB_IN_BYTES,
 			'space_allowed'   => 1 * GB_IN_BYTES,
 			'percentage'      => 120 * MB_IN_BYTES / 1 * GB_IN_BYTES,
 			'unlimited_space' => $unlimited_space,
 			'message'         => $message,
-		);
+		];
 	}
 
 	/**

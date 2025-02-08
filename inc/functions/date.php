@@ -167,7 +167,7 @@ function wu_human_time_diff($from, $limit = '-5 days', $to = false): string {
  */
 function wu_convert_php_date_format_to_moment_js_format($php_date_format): string {
 
-	$replacements = array(
+	$replacements = [
 		'A' => 'A',      // for the sake of escaping below
 		'a' => 'a',      // for the sake of escaping below
 		'B' => '',       // Swatch internet time (.beats), no equivalent
@@ -206,7 +206,7 @@ function wu_convert_php_date_format_to_moment_js_format($php_date_format): strin
 		'y' => 'YY',
 		'Z' => '',       // time zone offset in minutes => moment().zone();
 		'z' => 'DDD',
-	);
+	];
 
 	// Converts escaped characters.
 	foreach ($replacements as $from => $to) {

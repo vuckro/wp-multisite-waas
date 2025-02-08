@@ -43,7 +43,7 @@ class Event_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Event';
+	protected $model_class = \WP_Ultimo\Models\Event::class;
 
 	/**
 	 * Holds the list of available events for webhooks.
@@ -51,7 +51,7 @@ class Event_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $events = array();
+	protected $events = [];
 
 	/**
 	 * The list of registered models events.
@@ -59,7 +59,7 @@ class Event_Manager extends Base_Manager {
 	 * @since 2.1.4
 	 * @var array
 	 */
-	protected $models_events = array();
+	protected $models_events = [];
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -67,21 +67,21 @@ class Event_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
 		$this->enable_wp_cli();
 
-		add_action('init', array($this, 'register_all_events'));
+		add_action('init', [$this, 'register_all_events']);
 
-		add_action('wp_ajax_wu_get_event_payload_preview', array($this, 'event_payload_preview'));
+		add_action('wp_ajax_wu_get_event_payload_preview', [$this, 'event_payload_preview']);
 
-		add_action('rest_api_init', array($this, 'hooks_endpoint'));
+		add_action('rest_api_init', [$this, 'hooks_endpoint']);
 
-		add_action('wu_model_post_save', array($this, 'log_transitions'), 10, 4);
+		add_action('wu_model_post_save', [$this, 'log_transitions'], 10, 4);
 
-		add_action('wu_daily', array($this, 'clean_old_events'));
+		add_action('wu_daily', [$this, 'clean_old_events']);
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Event_Manager extends Base_Manager {
 
 			$keys_to_remove = apply_filters(
 				'wu_exclude_transitions_keys',
-				array(
+				[
 					'meta',
 					'last_login',
 					'ips',
@@ -121,7 +121,7 @@ class Event_Manager extends Base_Manager {
 					'_compiled_product_list',
 					'_gateway_info',
 					'_limitations',
-				)
+				]
 			);
 
 			foreach ($keys_to_remove as $key_to_remove) {
@@ -135,7 +135,7 @@ class Event_Manager extends Base_Manager {
 				return;
 			}
 
-			$changed = array();
+			$changed = [];
 
 			/**
 			 * Loop changed data.
@@ -151,27 +151,27 @@ class Event_Manager extends Base_Manager {
 					return;
 				}
 
-				$changed[ $key ] = array(
+				$changed[ $key ] = [
 					'old_value' => $old_value,
 					'new_value' => $new_value,
-				);
+				];
 			}
 
-			$event_data = array(
+			$event_data = [
 				'severity'    => Event::SEVERITY_INFO,
 				'slug'        => 'changed',
 				'object_type' => $model,
 				'object_id'   => $object->get_id(),
 				'payload'     => $changed,
-			);
+			];
 		} else {
-			$event_data = array(
+			$event_data = [
 				'severity'    => Event::SEVERITY_INFO,
 				'slug'        => 'created',
 				'object_type' => $model,
 				'object_id'   => $object->get_id(),
-				'payload'     => array(),
-			);
+				'payload'     => [],
+			];
 		}
 
 		if ( ! empty($_POST) && is_user_logged_in()) {
@@ -188,7 +188,7 @@ class Event_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function event_payload_preview() {
+	public function event_payload_preview(): void {
 
 		if ( ! wu_request('event')) {
 			wp_send_json_error(new \WP_Error('error', __('No event was selected.', 'wp-ultimo')));
@@ -223,9 +223,9 @@ class Event_Manager extends Base_Manager {
 		/*
 		 * We use this to order the options.
 		*/
-		$event_type_settings = wu_get_setting('saving_type', array());
+		$event_type_settings = wu_get_setting('saving_type', []);
 
-		$types = array(
+		$types = [
 			'id'         => '$id',
 			'title'      => '$title',
 			'desc'       => '$desc',
@@ -234,7 +234,7 @@ class Event_Manager extends Base_Manager {
 			'active'     => 'in_array($id, $active_gateways, true)',
 			'gateway'    => '$class_name', // Deprecated.
 			'hidden'     => false,
-		);
+		];
 
 		$types = array_filter($types, fn($item) => $item['hidden'] === false);
 
@@ -256,14 +256,14 @@ class Event_Manager extends Base_Manager {
 		$registered_event = $this->get_event($slug);
 
 		if ( ! $registered_event) {
-			return array('error' => 'Event not found');
+			return ['error' => 'Event not found'];
 		}
 
 		$payload_diff = array_diff_key(wu_maybe_lazy_load_payload($registered_event['payload']), $payload);
 
 		if (isset($payload_diff[0])) {
 			foreach ($payload_diff[0] as $diff_key => $diff_value) {
-				return array('error' => 'Param required:' . $diff_key);
+				return ['error' => 'Param required:' . $diff_key];
 			}
 		}
 
@@ -337,17 +337,17 @@ class Event_Manager extends Base_Manager {
 	 * @param array  $payload with event params.
 	 * @return void.
 	 */
-	public function save_event($slug, $payload) {
+	public function save_event($slug, $payload): void {
 
 		$event = new Event(
-			array(
+			[
 				'object_id'    => wu_get_isset($payload, 'object_id', ''),
 				'object_type'  => wu_get_isset($payload, 'object_type', ''),
 				'severity'     => wu_get_isset($payload, 'type', Event::SEVERITY_INFO),
 				'date_created' => wu_get_current_time('mysql', true),
 				'slug'         => strtolower($slug),
 				'payload'      => $payload,
-			)
+			]
 		);
 
 		$event->save();
@@ -359,14 +359,14 @@ class Event_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_all_events() {
+	public function register_all_events(): void {
 
 		/**
 		 * Payment Received.
 		 */
 		wu_register_event_type(
 			'payment_received',
-			array(
+			[
 				'name'            => __('Payment Received', 'wp-ultimo'),
 				'desc'            => __('This event is fired every time a new payment is received, regardless of the payment status.', 'wp-ultimo'),
 				'payload'         => fn() => array_merge(
@@ -374,14 +374,14 @@ class Event_Manager extends Base_Manager {
 					wu_generate_event_payload('membership'),
 					wu_generate_event_payload('customer')
 				),
-				'deprecated_args' => array(
+				'deprecated_args' => [
 					'user_id' => 'customer_user_id',
 					'amount'  => 'payment_total',
 					'gateway' => 'payment_gateway',
 					'status'  => 'payment_status',
 					'date'    => 'payment_date_created',
-				),
-			)
+				],
+			]
 		);
 
 		/**
@@ -389,7 +389,7 @@ class Event_Manager extends Base_Manager {
 		 */
 		wu_register_event_type(
 			'site_published',
-			array(
+			[
 				'name'            => __('Site Published', 'wp-ultimo'),
 				'desc'            => __('This event is fired every time a new site is created tied to a membership, or transitions from a pending state to a published state.', 'wp-ultimo'),
 				'payload'         => fn() => array_merge(
@@ -397,8 +397,8 @@ class Event_Manager extends Base_Manager {
 					wu_generate_event_payload('customer'),
 					wu_generate_event_payload('membership')
 				),
-				'deprecated_args' => array(),
-			)
+				'deprecated_args' => [],
+			]
 		);
 
 		/**
@@ -406,17 +406,17 @@ class Event_Manager extends Base_Manager {
 		 */
 		wu_register_event_type(
 			'confirm_email_address',
-			array(
+			[
 				'name'            => __('Email Verification Needed', 'wp-ultimo'),
 				'desc'            => __('This event is fired every time a new customer is added with an email verification status of pending.', 'wp-ultimo'),
 				'payload'         => fn() => array_merge(
-					array(
+					[
 						'verification_link' => 'https://linktoverifyemail.com',
-					),
+					],
 					wu_generate_event_payload('customer')
 				),
-				'deprecated_args' => array(),
-			)
+				'deprecated_args' => [],
+			]
 		);
 
 		/**
@@ -424,7 +424,7 @@ class Event_Manager extends Base_Manager {
 		 */
 		wu_register_event_type(
 			'domain_created',
-			array(
+			[
 				'name'            => __('New Domain Mapping Added', 'wp-ultimo'),
 				'desc'            => __('This event is fired every time a new domain mapping is added by a customer.', 'wp-ultimo'),
 				'payload'         => fn() => array_merge(
@@ -433,14 +433,14 @@ class Event_Manager extends Base_Manager {
 					wu_generate_event_payload('membership'),
 					wu_generate_event_payload('customer')
 				),
-				'deprecated_args' => array(
+				'deprecated_args' => [
 					'user_id'       => 1,
 					'user_site_id'  => 1,
 					'mapped_domain' => 'mydomain.com',
 					'user_site_url' => 'http://test.mynetwork.com/',
 					'network_ip'    => '125.399.3.23',
-				),
-			)
+				],
+			]
 		);
 
 		/**
@@ -448,19 +448,19 @@ class Event_Manager extends Base_Manager {
 		 */
 		wu_register_event_type(
 			'renewal_payment_created',
-			array(
+			[
 				'name'            => __('New Renewal Payment Created', 'wp-ultimo'),
 				'desc'            => __('This event is fired every time a new renewal payment is created by WP Multisite WaaS.', 'wp-ultimo'),
 				'payload'         => fn() => array_merge(
-					array(
+					[
 						'default_payment_url' => 'https://linktopayment.com',
-					),
+					],
 					wu_generate_event_payload('payment'),
 					wu_generate_event_payload('membership'),
 					wu_generate_event_payload('customer')
 				),
-				'deprecated_args' => array(),
-			)
+				'deprecated_args' => [],
+			]
 		);
 
 		$models = $this->models_events;
@@ -469,16 +469,16 @@ class Event_Manager extends Base_Manager {
 			foreach ($params['types'] as $type) {
 				wu_register_event_type(
 					$model . '_' . $type,
-					array(
+					[
 						'name'            => sprintf(__('%1$s %2$s', 'wp-ultimo'), $params['label'], ucfirst($type)),
 						'desc'            => sprintf(__('This event is fired every time a %1$s is %2$s by WP Multisite WaaS.', 'wp-ultimo'), $params['label'], $type),
-						'deprecated_args' => array(),
+						'deprecated_args' => [],
 						'payload'         => fn() => $this->get_model_payload($model),
-					)
+					]
 				);
 			}
 
-			add_action("wu_{$model}_post_save", array($this, 'dispatch_base_model_event'), 10, 3);
+			add_action("wu_{$model}_post_save", [$this, 'dispatch_base_model_event'], 10, 3);
 		}
 
 		do_action('wu_register_all_events');
@@ -496,10 +496,10 @@ class Event_Manager extends Base_Manager {
 
 		$instance = self::get_instance();
 
-		$instance->models_events[ $slug ] = array(
+		$instance->models_events[ $slug ] = [
 			'label' => $label,
 			'types' => $event_types,
-		);
+		];
 	}
 
 	/**
@@ -574,9 +574,7 @@ class Event_Manager extends Base_Manager {
 				$payload = array_merge(
 					$payload,
 					array_map(
-						function () {
-							return '';
-						},
+						fn() => '',
 						\WP_Ultimo\Objects\Billing_Address::fields()
 					)
 				);
@@ -603,14 +601,14 @@ class Event_Manager extends Base_Manager {
 		}
 
 		$events_to_remove = wu_get_events(
-			array(
+			[
 				'number'     => 100,
-				'date_query' => array(
+				'date_query' => [
 					'column'    => 'date_created',
 					'before'    => "-{$threshold_days} days",
 					'inclusive' => true,
-				),
-			)
+				],
+			]
 		);
 
 		$success_count = 0;
@@ -635,7 +633,7 @@ class Event_Manager extends Base_Manager {
 	 *
 	 * @return mixed
 	 */
-	public function hooks_endpoint() {
+	public function hooks_endpoint(): void {
 
 		if ( ! wu_get_setting('enable_api', true)) {
 			return;
@@ -646,11 +644,11 @@ class Event_Manager extends Base_Manager {
 		register_rest_route(
 			$api->get_namespace(),
 			'/hooks',
-			array(
+			[
 				'methods'             => 'GET',
-				'callback'            => array($this, 'get_hooks_rest'),
-				'permission_callback' => array($api, 'check_authorization'),
-			)
+				'callback'            => [$this, 'get_hooks_rest'],
+				'permission_callback' => [$api, 'check_authorization'],
+			]
 		);
 	}
 

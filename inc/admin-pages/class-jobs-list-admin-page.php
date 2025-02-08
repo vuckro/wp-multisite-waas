@@ -66,9 +66,9 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_jobs',
-	);
+	];
 
 	/**
 	 * Overrides the init method to add additional hooks.
@@ -76,11 +76,11 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
-		add_filter('action_scheduler_admin_view_class', array($this, 'hide_as_admin_page'), 9999, 1);
+		add_filter('action_scheduler_admin_view_class', [$this, 'hide_as_admin_page'], 9999, 1);
 	}
 
 	/**
@@ -97,7 +97,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 			return $admin_view_class;
 		}
 
-		return '\WP_Ultimo\Compat\AS_Admin_View';
+		return \WP_Ultimo\Compat\AS_Admin_View::class;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.10
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		\ActionScheduler_AdminView::instance()->process_admin_ui();
 	}
@@ -152,7 +152,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		\ActionScheduler_AdminView::instance()->render_admin_ui();
 	}

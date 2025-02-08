@@ -205,7 +205,7 @@ class Site extends Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	private $duplication_arguments = array();
+	private $duplication_arguments = [];
 
 	/**
 	 * The site type of this particular site.
@@ -237,7 +237,7 @@ class Site extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Sites\\Site_Query';
+	protected $query_class = \WP_Ultimo\Database\Sites\Site_Query::class;
 
 	/**
 	 * Keeps form date from the signup form.
@@ -281,7 +281,7 @@ class Site extends Base_Model {
 
 		$site_types = implode(',', array_values($site_types->get_options()));
 
-		return array(
+		return [
 			'categories'        => 'default:',
 			'featured_image_id' => 'integer|default:',
 			'site_id'           => 'required|integer',
@@ -304,7 +304,7 @@ class Site extends Base_Model {
 			'template_id'       => 'integer|default:',
 			'type'              => "required|in:{$site_types}",
 			'signup_options'    => 'default:',
-		);
+		];
 	}
 
 	/**
@@ -328,7 +328,7 @@ class Site extends Base_Model {
 	 * @param array $categories The categories this site belongs to.
 	 * @return void
 	 */
-	public function set_categories($categories) {
+	public function set_categories($categories): void {
 
 		$this->meta['wu_categories'] = $categories;
 
@@ -344,11 +344,11 @@ class Site extends Base_Model {
 	public function get_categories() {
 
 		if ($this->categories === null) {
-			$this->categories = $this->get_meta('wu_categories', array());
+			$this->categories = $this->get_meta('wu_categories', []);
 		}
 
 		if ( ! is_array($this->categories)) {
-			return array();
+			return [];
 		}
 
 		return array_filter($this->categories);
@@ -378,7 +378,7 @@ class Site extends Base_Model {
 	public function get_featured_image($size = 'wu-thumb-medium') {
 
 		if ($this->get_type() === 'external') {
-			return wu_get_asset('wp-ultimo-screenshot.png');
+			return wu_get_asset('wp-ultimo-screenshot.webp');
 		}
 
 		is_multisite() && switch_to_blog(wu_get_main_site_id());
@@ -393,7 +393,7 @@ class Site extends Base_Model {
 			return $image_attributes[0];
 		}
 
-		return wu_get_asset('site-placeholder-image.png', 'img');
+		return wu_get_asset('site-placeholder-image.webp', 'img');
 	}
 
 	/**
@@ -403,7 +403,7 @@ class Site extends Base_Model {
 	 * @param int $image_id The ID of the feature image of the site.
 	 * @return void
 	 */
-	public function set_featured_image_id($image_id) {
+	public function set_featured_image_id($image_id): void {
 
 		$this->meta['wu_featured_image_id'] = $image_id;
 
@@ -469,7 +469,7 @@ class Site extends Base_Model {
 	 * @param int $blog_id The blog ID. Should be accessed via id.
 	 * @return void
 	 */
-	public function set_blog_id($blog_id) {
+	public function set_blog_id($blog_id): void {
 
 		$this->blog_id = $blog_id;
 	}
@@ -492,7 +492,7 @@ class Site extends Base_Model {
 	 * @param int $site_id The network ID for this site.
 	 * @return void
 	 */
-	public function set_site_id($site_id) {
+	public function set_site_id($site_id): void {
 
 		$this->site_id = $site_id;
 	}
@@ -514,7 +514,7 @@ class Site extends Base_Model {
 	 * @param string $title The site title.
 	 * @return void
 	 */
-	public function set_title($title) {
+	public function set_title($title): void {
 
 		$this->title = sanitize_text_field($title);
 	}
@@ -537,7 +537,7 @@ class Site extends Base_Model {
 	 * @param string $title The site name.
 	 * @return void
 	 */
-	public function set_name($title) {
+	public function set_name($title): void {
 
 		$this->set_title($title);
 	}
@@ -566,7 +566,7 @@ class Site extends Base_Model {
 	 * @param string $description A description for the site, usually a short text.
 	 * @return void
 	 */
-	public function set_description($description) {
+	public function set_description($description): void {
 
 		$this->description = $description;
 	}
@@ -589,7 +589,7 @@ class Site extends Base_Model {
 	 * @param string $domain The site domain. You don't need to put http or https in front of your domain in this field. e.g: example.com.
 	 * @return void
 	 */
-	public function set_domain($domain) {
+	public function set_domain($domain): void {
 
 		$this->domain = $domain;
 	}
@@ -610,7 +610,7 @@ class Site extends Base_Model {
 	 * @param string $path Path of the site. Used when in sub-directory mode.
 	 * @return void
 	 */
-	public function set_path($path) {
+	public function set_path($path): void {
 
 		$this->path = $path;
 	}
@@ -644,7 +644,7 @@ class Site extends Base_Model {
 	 * @param string $registered Date when the site was registered.
 	 * @return void
 	 */
-	public function set_registered($registered) {
+	public function set_registered($registered): void {
 
 		$this->registered = $registered;
 	}
@@ -678,7 +678,7 @@ class Site extends Base_Model {
 	 * @param string $last_updated Date of the last update on this site.
 	 * @return void
 	 */
-	public function set_last_updated($last_updated) {
+	public function set_last_updated($last_updated): void {
 
 		$this->last_updated = $last_updated;
 	}
@@ -701,7 +701,7 @@ class Site extends Base_Model {
 	 * @param int $publishing Holds the ID of the customer that owns this site.
 	 * @return void
 	 */
-	public function set_publishing($publishing) {
+	public function set_publishing($publishing): void {
 
 		$this->is_publishing = $publishing;
 	}
@@ -728,7 +728,7 @@ class Site extends Base_Model {
 	 * @param int $active Holds the ID of the customer that owns this site.
 	 * @return void
 	 */
-	public function set_active($active) {
+	public function set_active($active): void {
 
 		$this->meta['wu_active'] = $active;
 
@@ -753,7 +753,7 @@ class Site extends Base_Model {
 	 * @param bool $public Set true if this site is a public one, false if not.
 	 * @return void
 	 */
-	public function set_public($public) {
+	public function set_public($public): void {
 
 		$this->public = $public;
 	}
@@ -776,7 +776,7 @@ class Site extends Base_Model {
 	 * @param bool $archived Is this an archived site.
 	 * @return void
 	 */
-	public function set_archived($archived) {
+	public function set_archived($archived): void {
 
 		$this->archived = $archived;
 	}
@@ -799,7 +799,7 @@ class Site extends Base_Model {
 	 * @param bool $mature Is this a site with mature content.
 	 * @return void
 	 */
-	public function set_mature($mature) {
+	public function set_mature($mature): void {
 
 		$this->mature = $mature;
 	}
@@ -822,7 +822,7 @@ class Site extends Base_Model {
 	 * @param bool $spam Is this an spam site.
 	 * @return void
 	 */
-	public function set_spam($spam) {
+	public function set_spam($spam): void {
 
 		$this->spam = $spam;
 	}
@@ -845,7 +845,7 @@ class Site extends Base_Model {
 	 * @param bool $deleted Is this site deleted.
 	 * @return void
 	 */
-	public function set_deleted($deleted) {
+	public function set_deleted($deleted): void {
 
 		$this->deleted = $deleted;
 	}
@@ -868,7 +868,7 @@ class Site extends Base_Model {
 	 * @param int $lang_id The ID of the language being used on this site.
 	 * @return void
 	 */
-	public function set_lang_id($lang_id) {
+	public function set_lang_id($lang_id): void {
 
 		$this->lang_id = $lang_id;
 	}
@@ -895,7 +895,7 @@ class Site extends Base_Model {
 	 * @param int $customer_id The ID of the customer that owns this site.
 	 * @return void
 	 */
-	public function set_customer_id($customer_id) {
+	public function set_customer_id($customer_id): void {
 
 		$this->meta['wu_customer_id'] = $customer_id;
 
@@ -960,7 +960,7 @@ class Site extends Base_Model {
 	 * @param int $membership_id The ID of the membership associated with this site, if any.
 	 * @return void
 	 */
-	public function set_membership_id($membership_id) {
+	public function set_membership_id($membership_id): void {
 
 		$this->meta['wu_membership_id'] = $membership_id;
 
@@ -1066,7 +1066,7 @@ class Site extends Base_Model {
 	 * @param int $template_id The ID of the templated used to create this site.
 	 * @return void
 	 */
-	public function set_template_id($template_id) {
+	public function set_template_id($template_id): void {
 
 		$this->meta['wu_template_id'] = absint($template_id);
 
@@ -1092,11 +1092,11 @@ class Site extends Base_Model {
 	 */
 	protected function get_default_duplication_arguments() {
 
-		return array(
+		return [
 			'keep_users' => true,
 			'copy_files' => true,
 			'public'     => true,
-		);
+		];
 	}
 
 	/**
@@ -1130,7 +1130,7 @@ class Site extends Base_Model {
 	 * @param array $duplication_arguments Duplication arguments.
 	 * @return void
 	 */
-	public function set_duplication_arguments($duplication_arguments) {
+	public function set_duplication_arguments($duplication_arguments): void {
 
 		$this->duplication_arguments = $duplication_arguments;
 	}
@@ -1150,7 +1150,7 @@ class Site extends Base_Model {
 		if ($this->type === null) {
 			$type = $this->get_meta('wu_type');
 
-			$this->type = $type ? $type : 'default';
+			$this->type = $type ?: 'default';
 		}
 
 		return $this->type;
@@ -1164,7 +1164,7 @@ class Site extends Base_Model {
 	 * @options \WP_Ultimo\Database\Sites\Site_Type
 	 * @return void
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		$this->meta = (array) $this->meta;
 
@@ -1185,12 +1185,12 @@ class Site extends Base_Model {
 		}
 
 		$domains = wu_get_domains(
-			array(
+			[
 				'primary_domain' => true,
 				'blog_id'        => $this->get_id(),
 				'stage__not_in'  => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
 				'number'         => 1,
-			)
+			]
 		);
 
 		return empty($domains) ? false : $domains[0];
@@ -1297,7 +1297,7 @@ class Site extends Base_Model {
 	 * @param array $transient Form data.
 	 * @return void
 	 */
-	public function set_transient($transient) {
+	public function set_transient($transient): void {
 
 		$this->meta['wu_transient'] = $transient;
 
@@ -1312,7 +1312,7 @@ class Site extends Base_Model {
 	 */
 	public function get_signup_options() {
 
-		return is_array($this->signup_options) ? $this->signup_options : array();
+		return is_array($this->signup_options) ? $this->signup_options : [];
 	}
 
 	/**
@@ -1322,7 +1322,7 @@ class Site extends Base_Model {
 	 * @param array $signup_options Keeps signup options for the site.
 	 * @return void
 	 */
-	public function set_signup_options($signup_options) {
+	public function set_signup_options($signup_options): void {
 
 		$this->signup_options = $signup_options;
 	}
@@ -1335,7 +1335,7 @@ class Site extends Base_Model {
 	 */
 	public function get_signup_meta() {
 
-		return is_array($this->signup_meta) ? $this->signup_meta : array();
+		return is_array($this->signup_meta) ? $this->signup_meta : [];
 	}
 
 	/**
@@ -1345,7 +1345,7 @@ class Site extends Base_Model {
 	 * @param array $signup_meta Keeps signup meta for the site.
 	 * @return void
 	 */
-	public function set_signup_meta($signup_meta) {
+	public function set_signup_meta($signup_meta): void {
 
 		$this->signup_meta = $signup_meta;
 	}
@@ -1388,13 +1388,13 @@ class Site extends Base_Model {
 	 */
 	public function __call($name, $args) {
 
-		if (strpos($name, 'get_option_') !== false) {
+		if (str_contains($name, 'get_option_')) {
 			$option = str_replace('get_option_', '', $name);
 
 			return get_blog_option($this->get_id(), $option, false);
 		}
 
-		throw new \BadMethodCallException(__CLASS__ . "::$name()");
+		throw new \BadMethodCallException(self::class . "::$name()");
 	}
 
 	/**
@@ -1538,9 +1538,9 @@ class Site extends Base_Model {
 		if ($new) {
 			$network = get_network();
 
-			$domain = $this->get_domain() ? $this->get_domain() : $network->domain;
+			$domain = $this->get_domain() ?: $network->domain;
 
-			$network_id = $this->get_site_id() ? $this->get_site_id() : get_current_network_id();
+			$network_id = $this->get_site_id() ?: get_current_network_id();
 
 			$user_id = get_current_user_id();
 
@@ -1564,13 +1564,13 @@ class Site extends Base_Model {
 				$saved = \WP_Ultimo\Helpers\Site_Duplicator::duplicate_site(
 					$this->get_template_id(),
 					$this->get_title(),
-					array(
+					[
 						'email'   => $email,
 						'path'    => $this->get_path(),
 						'domain'  => $domain,
 						'meta'    => $this->get_signup_options(),
-						'user_id' => $user_id ? $user_id : 0,
-					)
+						'user_id' => $user_id ?: 0,
+					]
 				);
 
 				if (is_wp_error($saved)) {
@@ -1592,9 +1592,9 @@ class Site extends Base_Model {
 
 					wp_update_site(
 						$site_id,
-						array(
+						[
 							'public' => $this->get_public(),
-						)
+						]
 					);
 				}
 
@@ -1613,9 +1613,9 @@ class Site extends Base_Model {
 			if ( ! is_wp_error($saved) && wu_get_setting('enable_screenshot_generator', true)) {
 				wu_enqueue_async_action(
 					'wu_async_take_screenshot',
-					array(
+					[
 						'site_id' => $saved,
-					),
+					],
 					'site'
 				);
 			}
@@ -1740,7 +1740,7 @@ class Site extends Base_Model {
 	 * @param array  $query_args Additional query args.
 	 * @return array
 	 */
-	public static function get_all_by_type($type = 'customer_owned', $query_args = array()) {
+	public static function get_all_by_type($type = 'customer_owned', $query_args = []) {
 
 		global $wpdb;
 
@@ -1753,10 +1753,10 @@ class Site extends Base_Model {
 
 			if ($customer_id) {
 				$memberships = wu_get_memberships(
-					array(
-						'fields'      => array('id'),
+					[
+						'fields'      => ['id'],
 						'customer_id' => $customer_id,
-					)
+					]
 				);
 
 				$memberships_str = '';
@@ -1789,12 +1789,12 @@ class Site extends Base_Model {
 
 		$query = $query_args;
 
-		$query['meta_query'] = array(
-			array(
+		$query['meta_query'] = [
+			[
 				'key'   => 'wu_type',
 				'value' => $type,
-			),
-		);
+			],
+		];
 
 		return static::query($query);
 	}
@@ -1808,19 +1808,19 @@ class Site extends Base_Model {
 	 * @param array $query_args Additional query args.
 	 * @return array
 	 */
-	public static function get_all_by_categories($categories = array(), $query_args = array()) {
+	public static function get_all_by_categories($categories = [], $query_args = []) {
 
 		global $wpdb;
 
 		$query = $query_args;
 
-		$query['meta_query'] = array(
-			array(
+		$query['meta_query'] = [
+			[
 				'key'     => 'wu_categories',
 				'value'   => maybe_serialize($categories),
 				'compare' => 'LIKE',
-			),
-		);
+			],
+		];
 
 		return static::query($query);
 	}
@@ -1832,7 +1832,7 @@ class Site extends Base_Model {
 	 * @param array $sites An array of selected site ids or site objects.
 	 * @return array
 	 */
-	public static function get_all_categories($sites = array()) {
+	public static function get_all_categories($sites = []) {
 
 		global $wpdb;
 
@@ -1842,7 +1842,7 @@ class Site extends Base_Model {
 			return $cache;
 		}
 
-		$final_array = array();
+		$final_array = [];
 
 		$query = "SELECT DISTINCT meta_value FROM {$wpdb->base_prefix}blogmeta WHERE meta_key = %s";
 
@@ -1867,7 +1867,7 @@ class Site extends Base_Model {
 		$all_arrays = array_map('maybe_unserialize', $all_arrays);
 
 		if ($all_arrays) {
-			$filtered_array = array();
+			$filtered_array = [];
 
 			foreach ($all_arrays as $array) {
 				if (is_array($array)) {
@@ -1904,7 +1904,7 @@ class Site extends Base_Model {
 	 */
 	public function limitations_to_merge() {
 
-		$limitations_to_merge = array();
+		$limitations_to_merge = [];
 
 		$membership = $this->get_membership();
 

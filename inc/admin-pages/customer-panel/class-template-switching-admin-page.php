@@ -66,10 +66,10 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'user_admin_menu' => 'read',
 		'admin_menu'      => 'read',
-	);
+	];
 
 	/**
 	 * Should we hide admin notices on this page?
@@ -123,7 +123,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		do_action('wu_template_switching_admin_page_scripts', null, null);
 	}
@@ -134,7 +134,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		do_action('wu_template_switching_admin_page', null);
 
@@ -147,20 +147,20 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/centered',
-			array(
+			[
 				'screen'  => get_current_screen(),
 				'page'    => $this,
 				'content' => '',
-				'labels'  => array(
+				'labels'  => [
 					'updated_message' => __('Template switched successfully!', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -170,7 +170,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		\WP_Ultimo\UI\Template_Switching_Element::get_instance()->as_metabox(get_current_screen()->id);
 	}

@@ -27,7 +27,7 @@ class Session_Cookie implements Session {
 	 *
 	 * @var array
 	 */
-	protected $data = array();
+	protected $data = [];
 
 	/**
 	 * If the session has already loaded
@@ -115,7 +115,7 @@ class Session_Cookie implements Session {
 	 */
 	public function add_values($key, $values): bool {
 
-		$old_values = isset($this->data[ $key ]) ? $this->data[ $key ] : array();
+		$old_values = $this->data[ $key ] ?? [];
 
 		$this->data[ $key ] = array_merge($old_values, $values);
 
@@ -157,9 +157,9 @@ class Session_Cookie implements Session {
 	 *
 	 * @since 2.0.18
 	 */
-	public function clear() {
+	public function clear(): void {
 
-		$this->data = array();
+		$this->data = [];
 	}
 
 	/**

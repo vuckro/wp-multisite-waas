@@ -46,7 +46,7 @@ class Dashboard_Statistics {
 	 *
 	 * @var array
 	 */
-	protected $types = array();
+	protected $types = [];
 
 	/**
 	 * Loads the hooks we need for dismissing notices
@@ -56,7 +56,7 @@ class Dashboard_Statistics {
 	 * @param array $args With the start_date, end_date and the data type functions.
 	 * @return void.
 	 */
-	public function __construct($args = array()) {
+	public function __construct($args = []) {
 
 		if ($args) {
 			$this->start_date = $args['start_date'];
@@ -83,7 +83,7 @@ class Dashboard_Statistics {
 	 */
 	public function statistics_data() {
 
-		$data = array();
+		$data = [];
 
 		foreach ($this->types as $key => $type) {
 			$data_function = 'get_data_' . $type;
@@ -102,80 +102,80 @@ class Dashboard_Statistics {
 	 */
 	public function get_data_mrr_growth() {
 
-		$payments_per_month = array(
-			'january'   => array(
+		$payments_per_month = [
+			'january'   => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'february'  => array(
+			],
+			'february'  => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'march'     => array(
+			],
+			'march'     => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'april'     => array(
+			],
+			'april'     => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'may'       => array(
+			],
+			'may'       => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'june'      => array(
+			],
+			'june'      => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'july'      => array(
+			],
+			'july'      => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'august'    => array(
+			],
+			'august'    => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'september' => array(
+			],
+			'september' => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'october'   => array(
+			],
+			'october'   => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'november'  => array(
+			],
+			'november'  => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-			'december'  => array(
+			],
+			'december'  => [
 				'total'     => 0,
 				'cancelled' => 0,
-			),
-		);
+			],
+		];
 
 		$memberships = wu_get_memberships(
-			array(
-				'date_query' => array(
+			[
+				'date_query' => [
 					'column'   => 'date_created',
 					'compare'  => 'BETWEEN',
 					'relation' => '',
-					array(
+					[
 						'year' => current_time('Y', true),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
-		$mrr_status = array(
+		$mrr_status = [
 			'active',
 			'cancelled',
 			'expired',
-		);
+		];
 
-		$churn_status = array(
+		$churn_status = [
 			'cancelled',
 			'expired',
-		);
+		];
 
 		foreach ($memberships as $membership) {
 			if ( ! $membership->is_recurring()) {

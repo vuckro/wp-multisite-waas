@@ -9,11 +9,11 @@ class Dashboard_Admin_Page_Test extends WP_UnitTestCase {
 	/**
 	 * Test the register_scripts method enqueues the necessary scripts and styles.
 	 */
-	public function test_register_scripts() {
+	public function test_register_scripts(): void {
 		// Create a mock instance of Dashboard_Admin_Page and call the register_scripts method
 		$dashboard_admin_page = $this->getMockBuilder(Dashboard_Admin_Page::class)
 									->disableOriginalConstructor()
-									->setMethods(array('output'))
+									->setMethods(['output'])
 									->getMock();
 
 		// Fake dates for testing

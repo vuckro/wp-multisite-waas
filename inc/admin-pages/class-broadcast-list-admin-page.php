@@ -52,9 +52,9 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_broadcasts',
-	);
+	];
 
 	/**
 	 * Register ajax forms that we use for send broadcasts.
@@ -62,28 +62,28 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add new broadcast notice.
 		 */
 		wu_register_form(
 			'add_new_broadcast_message',
-			array(
-				'render'     => array($this, 'render_add_new_broadcast_modal'),
-				'handler'    => array($this, 'handle_add_new_broadcast_modal'),
+			[
+				'render'     => [$this, 'render_add_new_broadcast_modal'],
+				'handler'    => [$this, 'handle_add_new_broadcast_modal'],
 				'capability' => 'wu_add_broadcasts',
-			)
+			]
 		);
 
 		/**
 		 * Ajax to render the broadcast targets modal.
 		 */
-		add_action('wu_ajax_wu_modal_targets_display', array($this, 'display_targets_modal'));
+		add_action('wu_ajax_wu_modal_targets_display', [$this, 'display_targets_modal']);
 
 		/**
 		 * Ajax to render the targets modal with customers from a specific membership.
 		 */
-		add_action('wu_ajax_wu_modal_product_targets_display', array($this, 'display_product_targets_modal'));
+		add_action('wu_ajax_wu_modal_product_targets_display', [$this, 'display_product_targets_modal']);
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
@@ -105,7 +105,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_targets_modal() {
+	public function display_targets_modal(): void {
 
 		$broadcast_id = wu_request('object_id');
 
@@ -115,16 +115,16 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 
 		$targets = wu_get_broadcast_targets($object->get_id(), $target_type);
 
-		$display_targets = array();
+		$display_targets = [];
 
 		if ($targets) {
 			if ($target_type === 'customers') {
 				foreach ($targets as $key => $value) {
 					$customer = wu_get_customer($value);
 
-					$url_atts = array(
+					$url_atts = [
 						'id' => $customer->get_id(),
-					);
+					];
 
 					$link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -133,19 +133,19 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 						48,
 						'identicon',
 						'',
-						array(
+						[
 							'force_display' => true,
 							'class'         => 'wu-rounded-full',
-						)
+						]
 					);
 
-					$display_targets[ $key ] = array(
+					$display_targets[ $key ] = [
 						'link'         => $link,
 						'avatar'       => $avatar,
 						'display_name' => $customer->get_display_name(),
 						'id'           => $customer->get_id(),
 						'description'  => $customer->get_email_address(),
-					);
+					];
 				}
 			}
 
@@ -153,9 +153,9 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				foreach ($targets as $key => $value) {
 					$product = wu_get_product($value);
 
-					$url_atts = array(
+					$url_atts = [
 						'id' => $product->get_id(),
-					);
+					];
 
 					$link = wu_network_admin_url('wp-ultimo-edit-product', $url_atts);
 
@@ -178,22 +178,22 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 					// translators: %s is the number of customers.
 					$description = sprintf(__('%s customer(s) targeted.', 'wp-ultimo'), $customer_count);
 
-					$display_targets[ $key ] = array(
+					$display_targets[ $key ] = [
 						'link'         => $link,
 						'avatar'       => $avatar,
 						'display_name' => $product->get_name(),
 						'id'           => $product->get_id(),
 						'description'  => $description,
-					);
+					];
 				}
 			}
 		}
 
-		$args = array(
+		$args = [
 			'targets'       => $display_targets,
 			'wrapper_class' => 'wu-bg-gray-100 wu--mt-3 wu--mb-6 wu-max-h-2',
 			'modal_class'   => '',
-		);
+		];
 
 		wu_get_template('broadcast/widget-targets', $args);
 
@@ -206,21 +206,21 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_product_targets_modal() {
+	public function display_product_targets_modal(): void {
 
 		$product_id = wu_request('product_id');
 
 		$customers = wu_get_membership_customers($product_id);
 
-		$display_targets = array();
+		$display_targets = [];
 
 		if ($customers) {
 			foreach ($customers as $key => $value) {
 				$customer = wu_get_customer($value);
 
-				$url_atts = array(
+				$url_atts = [
 					'id' => $customer->get_id(),
-				);
+				];
 
 				$link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -229,27 +229,27 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 					48,
 					'identicon',
 					'',
-					array(
+					[
 						'force_display' => true,
 						'class'         => 'wu-rounded-full',
-					)
+					]
 				);
 
-				$display_targets[ $key ] = array(
+				$display_targets[ $key ] = [
 					'link'         => $link,
 					'avatar'       => $avatar,
 					'display_name' => $customer->get_display_name(),
 					'id'           => $customer->get_id(),
 					'description'  => $customer->get_email_address(),
-				);
+				];
 			}
 		}
 
-		$args = array(
+		$args = [
 			'targets'       => $display_targets,
 			'wrapper_class' => 'wu-bg-gray-100 wu--mt-3 wu--mb-6 wu-max-h-2',
 			'modal_class'   => '',
-		);
+		];
 
 		wu_get_template('broadcast/widget-targets', $args);
 
@@ -262,10 +262,10 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_new_broadcast_modal() {
+	public function render_add_new_broadcast_modal(): void {
 
-		$fields = array(
-			'type'             => array(
+		$fields = [
+			'type'             => [
 				'type'              => 'select-icon',
 				'title'             => __('Broadcast Type', 'wp-ultimo'),
 				'desc'              => __('Select the type of message you want to send.', 'wp-ultimo'),
@@ -273,171 +273,171 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				'tooltip'           => '',
 				'value'             => '',
 				'classes'           => 'wu-w-1/2',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model' => 'type',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 1',
-				),
-				'options'           => array(
-					'broadcast_notice' => array(
+				],
+				'options'           => [
+					'broadcast_notice' => [
 						'title'   => __('Message', 'wp-ultimo'),
 						'tooltip' => __('Display a message on your customers\' dashboard.', 'wp-ultimo'),
 						'icon'    => 'dashicons-before dashicons-excerpt-view',
-					),
-					'broadcast_email'  => array(
+					],
+					'broadcast_email'  => [
 						'title'   => __('Email', 'wp-ultimo'),
 						'tooltip' => __('Send an email to your customers.', 'wp-ultimo'),
 						'icon'    => 'dashicons-before dashicons-email',
-					),
-				),
-			),
-			'step_note'        => array(
+					],
+				],
+			],
+			'step_note'        => [
 				'type'              => 'note',
 				'desc'              => sprintf('<a href="#" class="wu-no-underline wu-mt-1 wu-uppercase wu-text-2xs wu-font-semibold wu-text-gray-600" v-show="step === 2" v-on:click.prevent="step = 1">%s</a>', __('&larr; Back to Type Selection', 'wp-ultimo')),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 2',
-				),
-			),
-			'target_customers' => array(
+				],
+			],
+			'target_customers' => [
 				'type'              => 'model',
 				'title'             => __('Target Customers', 'wp-ultimo'),
 				'desc'              => __('This broadcast will be sent to the user or users that are selected here. You can select more than one.', 'wp-ultimo'),
 				'placeholder'       => __('Search a customer...', 'wp-ultimo'),
 				'min'               => 1,
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model'           => 'target_customers',
 					'data-model'        => 'customer',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'display_name',
 					'data-search-field' => 'display_name',
 					'data-max-items'    => 10000,
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 2',
-				),
-			),
-			'target_products'  => array(
+				],
+			],
+			'target_products'  => [
 				'type'              => 'model',
 				'title'             => __('Target Product', 'wp-ultimo'),
 				'desc'              => __('This broadcast will be sent to the users that have this product. You can select more than one.', 'wp-ultimo'),
 				'placeholder'       => __('Search for a product..', 'wp-ultimo'),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model'           => 'target_products',
 					'data-model'        => 'product',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'name',
 					'data-search-field' => 'name',
 					'data-max-items'    => 99,
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 2',
-				),
-			),
-			'notice_type'      => array(
+				],
+			],
+			'notice_type'      => [
 				'title'             => __('Message Type', 'wp-ultimo'),
 				'desc'              => __('The color of the notice is based on the type.', 'wp-ultimo'),
 				'type'              => 'select',
 				'default'           => 'success',
-				'options'           => array(
+				'options'           => [
 					'success' => __('Success (green)', 'wp-ultimo'),
 					'info'    => __('Info (blue)', 'wp-ultimo'),
 					'warning' => __('Warning (orange)', 'wp-ultimo'),
 					'error'   => __('Error (red)', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => "step === 2 && require('type', 'broadcast_notice')",
 					'v-cloak' => 1,
-				),
-			),
-			'step_note_2'      => array(
+				],
+			],
+			'step_note_2'      => [
 				'type'              => 'note',
 				'desc'              => sprintf('<a href="#" class="wu-no-underline wu-mt-1 wu-uppercase wu-text-2xs wu-font-semibold wu-text-gray-600" v-show="step === 3" v-on:click.prevent="step = 2">%s</a>', __('&larr; Back to Target Selection', 'wp-ultimo')),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 3',
-				),
-			),
-			'subject'          => array(
+				],
+			],
+			'subject'          => [
 				'type'              => 'text',
 				'title'             => __('Message Subject', 'wp-ultimo'),
 				'desc'              => __('The title will appear above the main content in the notice or used as subject of the email.', 'wp-ultimo'),
 				'placeholder'       => __('Enter a title for your broadcast.', 'wp-ultimo'),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model' => 'subject',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 3',
-				),
-			),
-			'content'          => array(
+				],
+			],
+			'content'          => [
 				'id'                => 'content',
 				'title'             => __('Content', 'wp-ultimo'),
 				'desc'              => __('The main content of your broadcast.', 'wp-ultimo'),
 				'type'              => 'wp-editor',
-				'settings'          => array(
-					'tinymce' => array('toolbar1' => 'bold,italic,strikethrough,link,unlink,undo,redo,pastetext'),
-				),
-				'html_attr'         => array(
+				'settings'          => [
+					'tinymce' => ['toolbar1' => 'bold,italic,strikethrough,link,unlink,undo,redo,pastetext'],
+				],
+				'html_attr'         => [
 					'v-model' => 'content',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 3',
-				),
-			),
-			'submit_button'    => array(
+				],
+			],
+			'submit_button'    => [
 				'type'              => 'submit',
 				'title'             => __('Next Step &rarr;', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 1',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-bind:disabled'    => 'type === ""',
 					'v-on:click.prevent' => 'step = 2',
-				),
-			),
-			'submit_button_2'  => array(
+				],
+			],
+			'submit_button_2'  => [
 				'type'              => 'submit',
 				'title'             => __('Next Step &rarr;', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 2',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-bind:disabled'    => 'target_customers === "" && target_products === ""', // phpcs:ignore
 					'v-on:click.prevent' => 'step = 3',
-				),
-			),
-			'submit_button_3'  => array(
+				],
+			],
+			'submit_button_3'  => [
 				'type'              => 'submit',
 				'title'             => __('Send &rarr;', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-bind:disabled' => 'subject === ""',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 3',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_new_broadcast',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_new_broadcast',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'type'             => 'broadcast_notice',
 							'content'          => '',
 							'step'             => 1,
@@ -445,10 +445,10 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 							'target_customers' => '',
 							'target_products'  => '',
 							'subject'          => '',
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -460,7 +460,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_add_new_broadcast_modal() {
+	public function handle_add_new_broadcast_modal(): void {
 
 		$broadcast = Broadcast_Manager::get_instance();
 
@@ -483,10 +483,10 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Broadcast removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Broadcast', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -530,19 +530,19 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add Broadcast', 'wp-ultimo'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_broadcast_message'),
-			),
-			array(
+			],
+			[
 				'url'   => wu_network_admin_url('wp-ultimo-emails'),
 				'label' => __('System Emails'),
 				'icon'  => 'wu-mail',
-			),
-		);
+			],
+		];
 	}
 
 	/**

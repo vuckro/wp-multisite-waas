@@ -10,12 +10,12 @@
 
 	<?php
 	echo wu_render_empty_state(
-		array(
+		[
 			'message'                  => __('No notes yet.', 'wp-ultimo'),
 			'sub_message'              => __('Use the "Add new Note" to create the first one.', 'wp-ultimo'),
 			'link_url'                 => false,
 			'display_background_image' => false,
-		)
+		]
 	);
 	?>
 
@@ -44,10 +44,10 @@
 							20,
 							'identicon',
 							'',
-							array(
+							[
 								'force_display' => true,
 								'class'         => 'wu-rounded-full wu-mr-2',
-							)
+							]
 						)
 					);
 					?>
@@ -66,12 +66,12 @@
 					<?php if (current_user_can('delete_notes')) : ?>
 
 						<?php
-						$modal_atts = array(
+						$modal_atts = [
 							'object_id' => wu_request('id'),
 							'model'     => $model,
 							'note_id'   => $note->note_id,
 							'height'    => 306,
-						);
+						];
 						?>
 
 						<span class="wu-ml-2">

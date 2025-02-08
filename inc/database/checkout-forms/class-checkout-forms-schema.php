@@ -28,9 +28,9 @@ class Checkout_Forms_Schema extends Schema {
 	 * @access public
 	 * @var array
 	 */
-	public $columns = array(
+	public $columns = [
 
-		array(
+		[
 			'name'     => 'id',
 			'type'     => 'bigint',
 			'length'   => '20',
@@ -38,26 +38,26 @@ class Checkout_Forms_Schema extends Schema {
 			'extra'    => 'auto_increment',
 			'primary'  => true,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'name',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
 			'transition' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'slug',
 			'type'       => 'tinytext',
 			'default'    => '',
 			'searchable' => true,
 			'sortable'   => true,
 			'transition' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'active',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -65,31 +65,31 @@ class Checkout_Forms_Schema extends Schema {
 			'default'    => 1,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'settings',
 			'type'       => 'longtext',
 			'default'    => '',
 			'transition' => true,
 			'allow_null' => false,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'custom_css',
 			'type'       => 'longtext',
 			'default'    => '',
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'allowed_countries',
 			'type'       => 'text',
 			'default'    => '',
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_created',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -97,9 +97,9 @@ class Checkout_Forms_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_modified',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -107,7 +107,7 @@ class Checkout_Forms_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-	);
+	];
 }

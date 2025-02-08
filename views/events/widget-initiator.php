@@ -15,7 +15,7 @@
 
 		<?php if ($object->get_initiator() == 'manual') : ?>
 
-		<a href='<?php echo wu_network_admin_url('wp-ultimo-edit-customer', array('id' => $object->get_author_id())); ?>' class='wu-table-card wu-text-gray-700 wu-p-2 wu-flex wu-flex-grow wu-rounded wu-items-center wu-border wu-border-solid wu-border-gray-300 wu-no-underline'>
+		<a href='<?php echo wu_network_admin_url('wp-ultimo-edit-customer', ['id' => $object->get_author_id()]); ?>' class='wu-table-card wu-text-gray-700 wu-p-2 wu-flex wu-flex-grow wu-rounded wu-items-center wu-border wu-border-solid wu-border-gray-300 wu-no-underline'>
 
 			<div class="wu-flex wu-relative wu-h-7 wu-w-7 wu-rounded-full wu-ring-2 wu-ring-white wu-bg-gray-300 wu-items-center wu-justify-center wu-mr-3">
 
@@ -26,10 +26,10 @@
 				32,
 				'identicon',
 				'',
-				array(
+				[
 					'force_display' => true,
 					'class'         => 'wu-rounded-full',
-				)
+				]
 			);
 
 			echo $avatar;

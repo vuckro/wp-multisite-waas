@@ -104,12 +104,12 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'pricing_table_products'               => implode(',', array_keys(wu_get_plans_as_options())),
 			'pricing_table_template'               => 'list',
 			'force_different_durations'            => false,
 			'hide_pricing_table_when_pre_selected' => false,
-		);
+		];
 	}
 
 	/**
@@ -120,9 +120,9 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			// 'name',
-		);
+		];
 	}
 
 	/**
@@ -133,11 +133,11 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'pricing_table',
 			'name'     => __('Plan Selection', 'wp-ultimo'),
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -161,66 +161,66 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields = array();
+		$editor_fields = [];
 
-		$editor_fields['pricing_table_products'] = array(
+		$editor_fields['pricing_table_products'] = [
 			'type'        => 'model',
 			'title'       => __('Products', 'wp-ultimo'),
 			'placeholder' => __('e.g. Premium', 'wp-ultimo'),
 			'desc'        => __('Be sure to add the products in the order you want them to show up.', 'wp-ultimo'),
 			'tooltip'     => '',
 			'order'       => 20,
-			'html_attr'   => array(
+			'html_attr'   => [
 				'data-model'        => 'product',
 				'data-value-field'  => 'id',
 				'data-label-field'  => 'name',
 				'data-search-field' => 'name',
 				'data-include'      => implode(',', array_keys(wu_get_plans_as_options())),
 				'data-max-items'    => 999,
-			),
-		);
+			],
+		];
 
-		$editor_fields['force_different_durations'] = array(
+		$editor_fields['force_different_durations'] = [
 			'type'      => 'toggle',
 			'title'     => __('Force Different Durations', 'wp-ultimo'),
 			'desc'      => __('Check this option to force the display of plans with different recurring durations.', 'wp-ultimo'),
 			'tooltip'   => '',
 			'value'     => 0,
 			'order'     => 22,
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'force_different_durations',
-			),
-		);
+			],
+		];
 
-		$editor_fields['hide_pricing_table_when_pre_selected'] = array(
+		$editor_fields['hide_pricing_table_when_pre_selected'] = [
 			'type'      => 'toggle',
 			'title'     => __('Hide when Pre-Selected', 'wp-ultimo'),
 			'desc'      => __('Prevent customers from seeing this field when a plan was already selected via the URL.', 'wp-ultimo'),
 			'tooltip'   => __('If the pricing table field is the only field in the current step, the step will be skipped.', 'wp-ultimo'),
 			'value'     => 0,
 			'order'     => 24,
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'hide_pricing_table_when_pre_selected',
-			),
-		);
+			],
+		];
 
-		$editor_fields['pricing_table_template'] = array(
+		$editor_fields['pricing_table_template'] = [
 			'type'   => 'group',
 			'desc'   => Field_Templates_Manager::get_instance()->render_preview_block('pricing_table'),
 			'order'  => 26,
-			'fields' => array(
-				'pricing_table_template' => array(
+			'fields' => [
+				'pricing_table_template' => [
 					'type'            => 'select',
 					'title'           => __('Pricing Table Template', 'wp-ultimo'),
 					'placeholder'     => __('Select your Template', 'wp-ultimo'),
-					'options'         => array($this, 'get_pricing_table_templates'),
+					'options'         => [$this, 'get_pricing_table_templates'],
 					'wrapper_classes' => 'wu-flex-grow',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'pricing_table_template',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		// @todo: re-add developer notes.
 		// $editor_fields['_dev_note_develop_your_own_template_2'] = array(
@@ -245,7 +245,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if (wu_get_isset($attributes, 'pricing_table_template') === 'legacy') {
-			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
+			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons'], wu_get_version());
 
 			wp_add_inline_style('legacy-shortcodes', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
 		}
@@ -263,32 +263,32 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 		 * Hide when pre-selected.
 		 */
 		if (wu_should_hide_form_field($attributes)) {
-			return array();
+			return [];
 		}
 
-		$template_attributes = array(
+		$template_attributes = [
 			'products'                  => $products,
 			'name'                      => $attributes['name'],
 			'force_different_durations' => $attributes['force_different_durations'],
 			'classes'                   => wu_get_isset($attributes, 'element_classes', ''),
-		);
+		];
 
 		$template_class = Field_Templates_Manager::get_instance()->get_template_class('pricing_table', $attributes['pricing_table_template']);
 
 		$content = $template_class ? $template_class->render_container($template_attributes) : __('Template does not exist.', 'wp-ultimo');
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields[ $attributes['id'] ] = array(
+		$checkout_fields[ $attributes['id'] ] = [
 			'type'              => 'note',
 			'id'                => $attributes['id'],
 			'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 			'classes'           => wu_get_isset($attributes, 'element_classes', ''),
 			'desc'              => $content,
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'style' => $this->calculate_style_attr(),
-			),
-		);
+			],
+		];
 
 		return $checkout_fields;
 	}

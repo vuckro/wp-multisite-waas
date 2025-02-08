@@ -35,7 +35,7 @@ class Domain extends Rule {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fillableParams = array(); // phpcs:ignore
+	protected $fillableParams = []; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *

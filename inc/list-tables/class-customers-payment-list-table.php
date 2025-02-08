@@ -27,9 +27,9 @@ class Customers_Payment_List_Table extends Payment_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'responsive' => '',
-		);
+		];
 
 		return $columns;
 	}
@@ -42,39 +42,39 @@ class Customers_Payment_List_Table extends Payment_List_Table {
 	 * @param object $item The item being rendered.
 	 * @return void
 	 */
-	public function column_responsive($item) {
+	public function column_responsive($item): void {
 
 		echo wu_responsive_table_row(
-			array(
+			[
 				'id'     => $item->get_id(),
 				'title'  => $item->get_hash(),
 				'url'    => wu_network_admin_url(
 					'wp-ultimo-edit-payment',
-					array(
+					[
 						'id' => $item->get_id(),
-					)
+					]
 				),
 				'status' => $this->column_status($item),
-			),
-			array(
-				'total'   => array(
+			],
+			[
+				'total'   => [
 					'icon'  => 'dashicons-wu-shopping-bag1 wu-align-middle wu-mr-1',
 					'label' => __('Payment Total', 'wp-ultimo'),
 					'value' => wu_format_currency($item->get_total()),
-				),
-				'gateway' => array(
+				],
+				'gateway' => [
 					'icon'  => 'dashicons-wu-credit-card2 wu-align-middle wu-mr-1',
 					'label' => __('Gateway', 'wp-ultimo'),
 					'value' => wu_slug_to_name($item->get_gateway()),
-				),
-			),
-			array(
-				'date_created' => array(
+				],
+			],
+			[
+				'date_created' => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
 					'value' => sprintf(__('Created %s', 'wp-ultimo'), wu_human_time_diff(strtotime((string) $item->get_date_created()))),
-				),
-			)
+				],
+			]
 		);
 	}
 }

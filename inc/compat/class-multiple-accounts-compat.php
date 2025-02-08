@@ -49,10 +49,10 @@ class Multiple_Accounts_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		// Add the settings to enable or disable this feature.
-		add_action('wu_settings_login', array($this, 'add_settings'), 10);
+		add_action('wu_settings_login', [$this, 'add_settings'], 10);
 
 		if ($this->should_load()) {
 
@@ -60,28 +60,28 @@ class Multiple_Accounts_Compat {
 			$this->fix_object_cache_on_multiple_accounts();
 
 			// Unset user, if the current one is not part of the site.
-			add_action('plugins_loaded', array($this, 'maybe_unset_current_user'), -10);
+			add_action('plugins_loaded', [$this, 'maybe_unset_current_user'], -10);
 
 			// prevents woocommerce from adding customers to sites without our knowledge
-			add_action('woocommerce_process_login_errors', array($this, 'prevent_woo_from_adding_to_blog'), -10);
+			add_action('woocommerce_process_login_errors', [$this, 'prevent_woo_from_adding_to_blog'], -10);
 
 			// Add the filter to prevent email blocking
-			add_filter('email_exists', array($this, 'allow_duplicate_emails'), 10, 2);
+			add_filter('email_exists', [$this, 'allow_duplicate_emails'], 10, 2);
 
 			// Add the filter to prevent email blocking
-			add_filter('query', array($this, 'fix_user_query'), -999);
+			add_filter('query', [$this, 'fix_user_query'], -999);
 
 			// Action in the login to debug the login info
-			add_filter('authenticate', array($this, 'fix_login'), 50000, 3);
+			add_filter('authenticate', [$this, 'fix_login'], 50000, 3);
 
 			// Now we handle the password thing
-			add_action('init', array($this, 'handle_reset_password'), 2000);
+			add_action('init', [$this, 'handle_reset_password'], 2000);
 
 			// Now we add a custom column in that table to allow the admin to control them
-			add_filter('wpmu_users_columns', array($this, 'add_multiple_account_column'));
+			add_filter('wpmu_users_columns', [$this, 'add_multiple_account_column']);
 
 			// Adds the number of additional accounts.
-			add_filter('manage_users_custom_column', array($this, 'add_column_content'), 10, 3);
+			add_filter('manage_users_custom_column', [$this, 'add_column_content'], 10, 3);
 		}
 	}
 
@@ -95,9 +95,9 @@ class Multiple_Accounts_Compat {
 	 */
 	public function fix_object_cache_on_multiple_accounts(): void {
 
-		$to_remove = array(
+		$to_remove = [
 			'useremail',
-		);
+		];
 
 		if (function_exists('wp_cache_add_non_persistent_groups')) {
 			wp_cache_add_non_persistent_groups($to_remove);
@@ -118,7 +118,7 @@ class Multiple_Accounts_Compat {
 
 		$search = "\$db->get_row(\"SELECT * FROM $wpdb->users WHERE user_email";
 
-		if ( strpos($wpdb->func_call, $search) === 0) {
+		if ( str_starts_with($wpdb->func_call, $search)) {
 			$prefix = "SELECT * FROM $wpdb->users WHERE user_email";
 
 			$last = substr($query, strlen($prefix));
@@ -187,7 +187,7 @@ class Multiple_Accounts_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_unset_current_user() {
+	public function maybe_unset_current_user(): void {
 
 		global $current_user;
 
@@ -254,27 +254,27 @@ class Multiple_Accounts_Compat {
 	 *
 	 * @return void.
 	 */
-	public function add_settings() {
+	public function add_settings(): void {
 
 		wu_register_settings_field(
 			'login-and-registration',
 			'multiple_accounts_header',
-			array(
+			[
 				'title' => __('Multiple Accounts', 'wp-ultimo'),
 				'desc'  => __('Options related to the Multiple Accounts feature.', 'wp-ultimo'),
 				'type'  => 'header',
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'login-and-registration',
 			'enable_multiple_accounts',
-			array(
+			[
 				'title'   => __('Enable Multiple Accounts', 'wp-ultimo'),
 				'desc'    => __('Allow users to have accounts in different sites with the same email address. This is useful when running stores with WooCommerce and other plugins, for example.', 'wp-ultimo') . ' ' . sprintf('<a href="%s" target="_blank">%s</a>', wu_get_documentation_url('multiple-accounts'), __('Read More', 'wp-ultimo')),
 				'type'    => 'toggle',
 				'default' => 0,
-			)
+			]
 		);
 	}
 
@@ -303,7 +303,7 @@ class Multiple_Accounts_Compat {
 	 * @param int    $user_id The ID of the user.
 	 * @return void
 	 */
-	public function add_column_content($null, $column, $user_id) {
+	public function add_column_content($null, $column, $user_id): void {
 
 		if ($column === 'multiple_accounts') {
 
@@ -312,11 +312,11 @@ class Multiple_Accounts_Compat {
 
 			// Get all the accounts with the same email
 			$users = new \WP_User_Query(
-				array(
+				[
 					'blog_id' => 0,
 					'search'  => $user->user_email,
-					'fields'  => array('ID', 'user_login'),
-				)
+					'fields'  => ['ID', 'user_login'],
+				]
 			);
 
 			// translators: the %d is the account count for that email address.
@@ -334,7 +334,7 @@ class Multiple_Accounts_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_reset_password() {
+	public function handle_reset_password(): void {
 
 		// Only run in the right case
 		if (wu_request('action') === 'retrievepassword' || wu_request('wc_reset_password')) {
@@ -364,9 +364,9 @@ class Multiple_Accounts_Compat {
 		// Sets the right user to be returned;
 		$has_user = false;
 
-		$query = array(
+		$query = [
 			'search' => $email,
-		);
+		];
 
 		/**
 		 * When the user id is present, we use it
@@ -377,9 +377,9 @@ class Multiple_Accounts_Compat {
 		 * @since 2.0.11
 		 */
 		if ($user_id) {
-			$query['include'] = array(
+			$query['include'] = [
 				absint($user_id),
-			);
+			];
 		}
 
 		// Now we search for the correct user based on the password and the blog information
@@ -418,7 +418,7 @@ class Multiple_Accounts_Compat {
 		// Sets the right user to be returned;
 		$user = $this->get_right_user($username, $password);
 
-		return $user ? $user : null;
+		return $user ?: null;
 	}
 
 	/**
@@ -447,9 +447,9 @@ class Multiple_Accounts_Compat {
 
 		$args = array_slice(func_get_args(), 2);
 
-		$args = array_merge(array($capability), $args);
+		$args = array_merge([$capability], $args);
 
-		$can = call_user_func_array(\Closure::fromCallable(array($current_user, 'has_cap')), $args);
+		$can = call_user_func_array(\Closure::fromCallable([$current_user, 'has_cap']), $args);
 
 		if ($switched) {
 			restore_current_blog();
@@ -473,7 +473,7 @@ class Multiple_Accounts_Compat {
 
 		// $hash = wp_hash_password($password);
 		// Now we search for the correct user based on the password and the blog information
-		$users = new \WP_User_Query(array('search' => $email));
+		$users = new \WP_User_Query(['search' => $email]);
 
 		// Loop the results and check which one is in this group
 		foreach ($users->results as $user_with_email) {

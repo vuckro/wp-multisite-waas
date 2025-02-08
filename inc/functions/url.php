@@ -50,7 +50,7 @@ function wu_replace_scheme($url, $new_scheme = '') {
  * @param array  $query URL query parameters.
  * @return string
  */
-function wu_network_admin_url($path, $query = array()) {
+function wu_network_admin_url($path, $query = []) {
 
 	$path = sprintf('admin.php?page=%s', $path);
 
@@ -70,7 +70,7 @@ function wu_network_admin_url($path, $query = array()) {
  * @param null|string $scheme URL scheme. Follows the same rules as the scheme param of get_home_url.
  * @return string
  */
-function wu_ajax_url($when = null, $query_args = array(), $site_id = false, $scheme = null) {
+function wu_ajax_url($when = null, $query_args = [], $site_id = false, $scheme = null) {
 
 	if (empty($site_id)) {
 		$site_id = get_current_blog_id();
@@ -79,7 +79,7 @@ function wu_ajax_url($when = null, $query_args = array(), $site_id = false, $sch
 	$base_url = get_home_url($site_id, '', $scheme);
 
 	if ( ! is_array($query_args)) {
-		$query_args = array();
+		$query_args = [];
 	}
 
 	$query_args['wu-ajax'] = 1;

@@ -35,17 +35,17 @@ class SSO_Broker extends Broker {
 	 *
 	 * @param array<string,mixed> $params The params to be passed.
 	 */
-	public function getAttachUrl(array $params = array()): string {
+	public function getAttachUrl(array $params = []): string {
 
 		if ($this->getToken() === null) {
 			$this->generateToken();
 		}
 
-		$data = array(
+		$data = [
 			'broker'   => $this->broker,
 			'token'    => $this->getToken(),
 			'checksum' => $this->generateChecksum('attach'),
-		);
+		];
 
 		return add_query_arg($data + $params, $this->url);
 	}

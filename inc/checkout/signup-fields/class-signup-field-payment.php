@@ -109,9 +109,9 @@ class Signup_Field_Payment extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -122,9 +122,9 @@ class Signup_Field_Payment extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
-		);
+		];
 	}
 
 	/**
@@ -135,9 +135,9 @@ class Signup_Field_Payment extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id' => 'payment',
-		);
+		];
 	}
 
 	/**
@@ -148,7 +148,7 @@ class Signup_Field_Payment extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -161,24 +161,24 @@ class Signup_Field_Payment extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$fields = array(
-			'payment_template' => array(
+		$fields = [
+			'payment_template' => [
 				'type'    => 'text',
 				'id'      => 'payment_template',
 				'name'    => '',
 				'classes' => 'wu-hidden',
-			),
-			'payment'          => array(
+			],
+			'payment'          => [
 				'type'              => 'payment-methods',
 				'id'                => 'payment',
 				'name'              => $attributes['name'],
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			),
-		);
+				],
+			],
+		];
 
 		/*
 		 * Checks if we need to add the
@@ -187,22 +187,22 @@ class Signup_Field_Payment extends Base_Signup_Field {
 		if ( ! wu_get_setting('force_auto_renew', 1)) {
 			$auto_renewable_gateways = Gateway_Manager::get_instance()->get_auto_renewable_gateways();
 
-			$fields['auto_renew'] = array(
+			$fields['auto_renew'] = [
 				'type'              => 'toggle',
 				'id'                => 'auto_renew',
 				'name'              => __('Auto-renew', 'wp-ultimo'),
 				'tooltip'           => '',
 				'value'             => '1',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model'     => 'auto_renew',
 					'true-value'  => '1',
 					'false-value' => '0',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
 					'v-show'  => sprintf('%s.includes(gateway) && order.should_collect_payment && order.has_recurring', json_encode($auto_renewable_gateways)),
-				),
-			);
+				],
+			];
 		}
 
 		return $fields;

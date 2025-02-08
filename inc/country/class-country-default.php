@@ -52,19 +52,19 @@ class Country_Default extends Country {
 	 * @param array  $attributes The country attributes.
 	 * @return \WP_Ultimo\Country\Country
 	 */
-	public static function build($code, $name = null, $attributes = array()) {
+	public static function build($code, $name = null, $attributes = []) {
 
 		$instance = new self();
 
-		$instance->name = $name ? $name : wu_get_country_name($code);
+		$instance->name = $name ?: wu_get_country_name($code);
 
 		$instance->attributes = wp_parse_args(
 			$attributes,
-			array(
+			[
 				'country_code' => strtoupper($code),
 				'currency'     => strtoupper($code),
 				'phone_code'   => 00,
-			)
+			]
 		);
 
 		return $instance;

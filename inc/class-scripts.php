@@ -27,19 +27,19 @@ class Scripts {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('init', array($this, 'register_default_scripts'));
+		add_action('init', [$this, 'register_default_scripts']);
 
-		add_action('init', array($this, 'register_default_styles'));
+		add_action('init', [$this, 'register_default_styles']);
 
-		add_action('admin_init', array($this, 'enqueue_default_admin_styles'));
+		add_action('admin_init', [$this, 'enqueue_default_admin_styles']);
 
-		add_action('admin_init', array($this, 'enqueue_default_admin_scripts'));
+		add_action('admin_init', [$this, 'enqueue_default_admin_scripts']);
 
-		add_action('wp_ajax_wu_toggle_container', array($this, 'update_use_container'));
+		add_action('wp_ajax_wu_toggle_container', [$this, 'update_use_container']);
 
-		add_filter('admin_body_class', array($this, 'add_body_class_container_boxed'));
+		add_filter('admin_body_class', [$this, 'add_body_class_container_boxed']);
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Scripts {
 	 * @param array  $deps List of dependency scripts.
 	 * @return void
 	 */
-	public function register_script($handle, $src, $deps = array()) {
+	public function register_script($handle, $src, $deps = []): void {
 
 		wp_register_script($handle, $src, $deps, wu_get_version());
 	}
@@ -67,7 +67,7 @@ class Scripts {
 	 * @param array  $deps List of dependency scripts.
 	 * @return void
 	 */
-	public function register_style($handle, $src, $deps = array()) {
+	public function register_style($handle, $src, $deps = []): void {
 
 		wp_register_style($handle, $src, $deps, wu_get_version());
 	}
@@ -78,7 +78,7 @@ class Scripts {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_default_scripts() {
+	public function register_default_scripts(): void {
 		/*
 		 * Adds Vue JS
 		 */
@@ -97,48 +97,48 @@ class Scripts {
 		/*
 		 * Adds tipTip
 		 */
-		$this->register_script('wu-tiptip', wu_get_asset('lib/tiptip.js', 'js'), array('jquery-core'));
+		$this->register_script('wu-tiptip', wu_get_asset('lib/tiptip.js', 'js'), ['jquery-core']);
 
 		/*
 		 * Ajax list Table pagination
 		 */
-		$this->register_script('wu-ajax-list-table', wu_get_asset('list-tables.js', 'js'), array('jquery', 'wu-vue', 'underscore', 'wu-flatpicker'));
+		$this->register_script('wu-ajax-list-table', wu_get_asset('list-tables.js', 'js'), ['jquery', 'wu-vue', 'underscore', 'wu-flatpicker']);
 
 		/*
 		 * Adds jQueryBlockUI
 		 */
-		$this->register_script('wu-block-ui', wu_get_asset('lib/jquery.blockUI.js', 'js'), array('jquery-core'));
+		$this->register_script('wu-block-ui', wu_get_asset('lib/jquery.blockUI.js', 'js'), ['jquery-core']);
 
 		/*
 		 * Adds FontIconPicker
 		 */
-		$this->register_script('wu-fonticonpicker', wu_get_asset('lib/jquery.fonticonpicker.js', 'js'), array('jquery'));
+		$this->register_script('wu-fonticonpicker', wu_get_asset('lib/jquery.fonticonpicker.js', 'js'), ['jquery']);
 
 		/*
 		 * Adds Accounting.js
 		 */
-		$this->register_script('wu-accounting', wu_get_asset('lib/accounting.js', 'js'), array('jquery-core'));
+		$this->register_script('wu-accounting', wu_get_asset('lib/accounting.js', 'js'), ['jquery-core']);
 
 		/*
 		 * Adds Cookie Helpers
 		 */
-		$this->register_script('wu-cookie-helpers', wu_get_asset('cookie-helpers.js', 'js'), array('jquery-core'));
+		$this->register_script('wu-cookie-helpers', wu_get_asset('cookie-helpers.js', 'js'), ['jquery-core']);
 
 		/*
 		 * Adds Input Masking
 		 */
-		$this->register_script('wu-money-mask', wu_get_asset('lib/v-money.js', 'js'), array('wu-vue'));
-		$this->register_script('wu-input-mask', wu_get_asset('lib/vue-the-mask.js', 'js'), array('wu-vue'));
+		$this->register_script('wu-money-mask', wu_get_asset('lib/v-money.js', 'js'), ['wu-vue']);
+		$this->register_script('wu-input-mask', wu_get_asset('lib/vue-the-mask.js', 'js'), ['wu-vue']);
 
 		/*
 		 * Adds General Functions
 		 */
-		$this->register_script('wu-functions', wu_get_asset('functions.js', 'js'), array('jquery-core', 'wu-tiptip', 'wu-flatpicker', 'wu-block-ui', 'wu-accounting', 'clipboard', 'wp-hooks'));
+		$this->register_script('wu-functions', wu_get_asset('functions.js', 'js'), ['jquery-core', 'wu-tiptip', 'wu-flatpicker', 'wu-block-ui', 'wu-accounting', 'clipboard', 'wp-hooks']);
 
 		wp_localize_script(
 			'wu-functions',
 			'wu_settings',
-			array(
+			[
 				'currency'           => wu_get_setting('currency_symbol', 'USD'),
 				'currency_symbol'    => wu_get_currency_symbol(),
 				'currency_position'  => wu_get_setting('currency_position'),
@@ -147,13 +147,13 @@ class Scripts {
 				'precision'          => wu_get_setting('precision', 2),
 				'use_container'      => get_user_setting('wu_use_container', false),
 				'disable_image_zoom' => wu_get_setting('disable_image_zoom', false),
-			)
+			]
 		);
 
 		/*
 		 * Adds Fields & Components
 		 */
-		$this->register_script('wu-fields', wu_get_asset('fields.js', 'js'), array('jquery', 'wu-vue', 'wu-selectizer', 'wp-color-picker'));
+		$this->register_script('wu-fields', wu_get_asset('fields.js', 'js'), ['jquery', 'wu-vue', 'wu-selectizer', 'wp-color-picker']);
 
 		/*
 		 * Localize components
@@ -161,29 +161,29 @@ class Scripts {
 		wp_localize_script(
 			'wu-fields',
 			'wu_fields',
-			array(
-				'l10n' => array(
+			[
+				'l10n' => [
 					'image_picker_title'       => __('Select an Image.', 'wp-ultimo'),
 					'image_picker_button_text' => __('Use this image', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		/*
 		 * Adds Admin Script
 		 */
-		$this->register_script('wu-admin', wu_get_asset('admin.js', 'js'), array('jquery', 'wu-functions'));
+		$this->register_script('wu-admin', wu_get_asset('admin.js', 'js'), ['jquery', 'wu-functions']);
 
 		/*
 		 * Adds Vue Apps
 		 */
-		$this->register_script('wu-vue-apps', wu_get_asset('vue-apps.js', 'js'), array('wu-functions', 'wu-vue', 'wu-money-mask', 'wu-input-mask', 'wp-hooks'));
+		$this->register_script('wu-vue-apps', wu_get_asset('vue-apps.js', 'js'), ['wu-functions', 'wu-vue', 'wu-money-mask', 'wu-input-mask', 'wp-hooks']);
 
 		/*
 		 * Adds Selectizer
 		 */
-		$this->register_script('wu-selectize', wu_get_asset('lib/selectize.js', 'js'), array('jquery'));
-		$this->register_script('wu-selectizer', wu_get_asset('selectizer.js', 'js'), array('wu-selectize', 'underscore', 'wu-vue-apps'));
+		$this->register_script('wu-selectize', wu_get_asset('lib/selectize.js', 'js'), ['jquery']);
+		$this->register_script('wu-selectizer', wu_get_asset('selectizer.js', 'js'), ['wu-selectize', 'underscore', 'wu-vue-apps']);
 
 		/*
 		 * Localize selectizer
@@ -191,9 +191,9 @@ class Scripts {
 		wp_localize_script(
 			'wu-functions',
 			'wu_selectizer',
-			array(
+			[
 				'ajaxurl' => wu_ajax_url(),
-			)
+			]
 		);
 
 		/*
@@ -202,22 +202,22 @@ class Scripts {
 		wp_localize_script(
 			'wu-functions',
 			'wu_ticker',
-			array(
+			[
 			'server_clock_offset'          => (wu_get_current_time('timestamp') - time()) / 60 / 60, // phpcs:ignore
 			'moment_clock_timezone_name'   => wp_date('e'),
 			'moment_clock_timezone_offset' => wp_date('Z'),
-			)
+			]
 		);
 
 		/*
 		 * Adds our thickbox fork.
 		 */
-		$this->register_script('wubox', wu_get_asset('wubox.js', 'js'), array('wu-vue-apps'));
+		$this->register_script('wubox', wu_get_asset('wubox.js', 'js'), ['wu-vue-apps']);
 
 		wp_localize_script(
 			'wubox',
 			'wuboxL10n',
-			array(
+			[
 				'next'             => __('Next &gt;'),
 				'prev'             => __('&lt; Prev'),
 				'image'            => __('Image'),
@@ -225,7 +225,7 @@ class Scripts {
 				'close'            => __('Close'),
 				'noiframes'        => __('This feature requires inline frames. You have iframes disabled or your browser does not support them.'),
 				'loadingAnimation' => includes_url('js/thickbox/loadingAnimation.gif'),
-			)
+			]
 		);
 
 		/*
@@ -249,7 +249,7 @@ class Scripts {
 
 		$long_date_formats = array_map(
 			'wu_convert_php_date_format_to_moment_js_format',
-			array(
+			[
 				'LT'   => $time_format,
 				'LTS'  => str_replace(':i', ':i:s', (string) $time_format),
 				/* translators: the day/month/year date format used by WP Multisite WaaS. You can changed it to localize this date format to your language. the default value is d/m/Y, which is the format 31/12/2021. */
@@ -257,12 +257,12 @@ class Scripts {
 				'LL'   => $date_format,
 				'LLL'  => sprintf('%s %s', $date_format, $time_format),
 				'LLLL' => sprintf('%s %s', $date_format, $time_format),
-			)
+			]
 		);
 
 		// phpcs:disable
-		$strings = array(
-			'relativeTime' => array(
+		$strings = [
+			'relativeTime' => [
 				'future' => __('in %s', 'wp-ultimo'),
 				'past'   => __('%s ago', 'wp-ultimo'),
 				's'      => __('a few seconds', 'wp-ultimo'),
@@ -279,9 +279,9 @@ class Scripts {
 				'MM'     => __('%d months', 'wp-ultimo'),
 				'y'      => __('a year', 'wp-ultimo'),
 				'yy'     => __('%d years', 'wp-ultimo'),
-			),
+			],
 			'longDateFormat' => $long_date_formats,
-		);
+		];
 		// phpcs:enable
 
 		$inline_script = sprintf("moment.updateLocale( '%s', %s );", get_user_locale(), wp_json_encode($strings));
@@ -295,15 +295,15 @@ class Scripts {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_default_styles() {
+	public function register_default_styles(): void {
 
-		$this->register_style('wu-styling', wu_get_asset('framework.css', 'css'), array(), wu_get_version());
+		$this->register_style('wu-styling', wu_get_asset('framework.css', 'css'), []);
 
-		$this->register_style('wu-admin', wu_get_asset('admin.css', 'css'), array('wu-styling'), wu_get_version());
+		$this->register_style('wu-admin', wu_get_asset('admin.css', 'css'), ['wu-styling']);
 
-		$this->register_style('wu-checkout', wu_get_asset('checkout.css', 'css'), array(), wu_get_version());
+		$this->register_style('wu-checkout', wu_get_asset('checkout.css', 'css'), []);
 
-		$this->register_style('wu-flags', wu_get_asset('flags.css', 'css'), array(), wu_get_version());
+		$this->register_style('wu-flags', wu_get_asset('flags.css', 'css'), []);
 	}
 
 	/**
@@ -312,7 +312,7 @@ class Scripts {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_default_admin_styles() {
+	public function enqueue_default_admin_styles(): void {
 
 		wp_enqueue_style('wu-admin');
 	}
@@ -323,7 +323,7 @@ class Scripts {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_default_admin_scripts() {
+	public function enqueue_default_admin_scripts(): void {
 
 		wp_enqueue_script('wu-admin');
 	}
@@ -334,7 +334,7 @@ class Scripts {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function update_use_container() {
+	public function update_use_container(): void {
 
 		check_ajax_referer('wu_toggle_container', 'nonce');
 

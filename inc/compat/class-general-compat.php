@@ -29,7 +29,7 @@ class General_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		/**
 		 * Woocommerce
@@ -38,46 +38,46 @@ class General_Compat {
 	 *
 		 * @see https://wordpress.org/plugins/woocommerce/
 		 */
-		add_action('woocommerce_loaded', array($this, 'replace_wc_wpdb_table_fix'));
+		add_action('woocommerce_loaded', [$this, 'replace_wc_wpdb_table_fix']);
 
 		/**
 		 * WP Typography.
 	 *
 		 * @see https://de.wordpress.org/plugins/wp-typography/
 		 */
-		add_action('load-settings_page_wp-typography', array($this, 'add_wp_typography_warning_message'));
+		add_action('load-settings_page_wp-typography', [$this, 'add_wp_typography_warning_message']);
 
-		add_filter('typo_settings', array($this, 'fix_wp_typography'));
+		add_filter('typo_settings', [$this, 'fix_wp_typography']);
 
 		/**
 		 * Brizy Page Builder.
 		 *
 		 * @see https://wordpress.org/plugins/brizy/
 		 */
-		add_filter('wu_append_preview_parameter', array($this, 'fix_brizy_preview_url'));
+		add_filter('wu_append_preview_parameter', [$this, 'fix_brizy_preview_url']);
 
-		add_filter('wu_should_redirect_to_primary_domain', array($this, 'fix_brizy_editor_screen'));
+		add_filter('wu_should_redirect_to_primary_domain', [$this, 'fix_brizy_editor_screen']);
 
 		/**
 		 * Divi Page Builder.
 		 *
 		 * @see https://www.elegantthemes.com/
 		 */
-		add_filter('wu_should_redirect_to_primary_domain', array($this, 'fix_divi_editor_screen'));
+		add_filter('wu_should_redirect_to_primary_domain', [$this, 'fix_divi_editor_screen']);
 
 		/**
 		 * WP Hide Pro
 	 *
 		 * @see https://wp-hide.com/
 		 */
-		add_filter('wu_append_preview_parameter', array($this, 'fix_wp_hide_preview_url'));
+		add_filter('wu_append_preview_parameter', [$this, 'fix_wp_hide_preview_url']);
 
 		/**
 		 * Frontend Admin.
 		 *
 		 * @see https://wpfrontendadmin.com/
 		 */
-		add_filter('wp_frontend_admin/shortcode/admin_page_final_url', array($this, 'fix_frontend_admin_loading_url'), 10, 3);
+		add_filter('wp_frontend_admin/shortcode/admin_page_final_url', [$this, 'fix_frontend_admin_loading_url'], 10, 3);
 
 		/**
 		 * Oxygen Builder.
@@ -87,16 +87,16 @@ class General_Compat {
 		 *
 		 * @see https://oxygenbuilder.com/
 		 */
-		add_filter('wu_element_should_enqueue_scripts', array($this, 'maybe_parse_oxygen_content'), 10, 3);
+		add_filter('wu_element_should_enqueue_scripts', [$this, 'maybe_parse_oxygen_content'], 10, 3);
 
-		add_action('wu_template_previewer', array($this, 'prevent_oxygen_cleanup_on_template_previewer'));
+		add_action('wu_template_previewer', [$this, 'prevent_oxygen_cleanup_on_template_previewer']);
 
 		/**
 		 * WP Maintenance Mode. Adds SSO to WPMM, if enabled.
 		 *
 		 * @see https://wordpress.org/plugins/wp-maintenance-mode/
 		 */
-		add_filter('wu_sso_loaded_on_init', array($this, 'add_sso_to_maintenance_mode'));
+		add_filter('wu_sso_loaded_on_init', [$this, 'add_sso_to_maintenance_mode']);
 
 		/**
 		 * Avada Theme.
@@ -106,8 +106,8 @@ class General_Compat {
 		 *
 		 * @see https://themeforest.net/item/avada-responsive-multipurpose-theme/
 		 */
-		add_filter('wu_template_previewer_before', array($this, 'run_wp_on_template_previewer'));
-		add_filter('wu_domain_post_save', array($this, 'clear_avada_cache'));
+		add_filter('wu_template_previewer_before', [$this, 'run_wp_on_template_previewer']);
+		add_filter('wu_domain_post_save', [$this, 'clear_avada_cache']);
 
 		/**
 		 * FluentCRM Pro
@@ -116,7 +116,7 @@ class General_Compat {
 		 *
 		 * @see https://fluentcrm.com/
 		 */
-		add_action('wp_insert_site', array($this, 'fix_fluent_pro_site_duplication'));
+		add_action('wp_insert_site', [$this, 'fix_fluent_pro_site_duplication']);
 
 		/**
 		 * Rank Math (Free and Pro)
@@ -125,7 +125,7 @@ class General_Compat {
 		 *
 		 * @see https://rankmath.com/
 		 */
-		add_action('wp_initialize_site', array($this, 'fix_rank_math_site_creation'), 1);
+		add_action('wp_initialize_site', [$this, 'fix_rank_math_site_creation'], 1);
 
 		/**
 		 * WP E-Signature and WP E-Signature Business add-ons
@@ -134,7 +134,7 @@ class General_Compat {
 		 *
 		 * @see https://www.approveme.com/
 		 */
-		add_action('wp_initialize_site', array($this, 'fix_wp_e_signature_site_creation'), 1);
+		add_action('wp_initialize_site', [$this, 'fix_wp_e_signature_site_creation'], 1);
 
 		/**
 		 * KeyPress DSN Manager backwards compatibility.
@@ -161,7 +161,7 @@ class General_Compat {
 		 * @since 2.1.1
 		 * @see https://perfmatters.io/
 		 */
-		add_filter('wp_print_scripts', array($this, 'remove_perfmatters_checkout_dep'), 99);
+		add_filter('wp_print_scripts', [$this, 'remove_perfmatters_checkout_dep'], 99);
 
 		/**
 		 * Adds the setup preview for elements on DIVI.
@@ -189,20 +189,20 @@ class General_Compat {
 	 * @see https://wordpress.org/plugins/woocommerce/
 	 * @since 2.0.14
 	 */
-	public function replace_wc_wpdb_table_fix() {
+	public function replace_wc_wpdb_table_fix(): void {
 
 		global $wpdb;
 
-		remove_action('switch_blog', array(WC(), 'wpdb_table_fix'), 0);
+		remove_action('switch_blog', [WC(), 'wpdb_table_fix'], 0);
 
 		// List of tables without prefixes.
-		$tables = array(
+		$tables = [
 			'payment_tokenmeta'      => 'woocommerce_payment_tokenmeta',
 			'order_itemmeta'         => 'woocommerce_order_itemmeta',
 			'wc_product_meta_lookup' => 'wc_product_meta_lookup',
 			'wc_tax_rate_classes'    => 'wc_tax_rate_classes',
 			'wc_reserved_stock'      => 'wc_reserved_stock',
-		);
+		];
 
 		foreach ( $tables as $name => $table ) {
 			$wpdb->tables[] = $table;
@@ -250,7 +250,7 @@ class General_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_wp_typography_warning_message() {
+	public function add_wp_typography_warning_message(): void {
 
 		WP_Ultimo()->notices->add(__('WP Typography "Smart Quotes" replacement is not compatible with WP Multisite WaaS and will be automatically disabled.', 'wp-ultimo'), 'warning');
 	}
@@ -381,7 +381,7 @@ class General_Compat {
 	 * @since 2.0.4
 	 * @return void
 	 */
-	public function prevent_oxygen_cleanup_on_template_previewer() {
+	public function prevent_oxygen_cleanup_on_template_previewer(): void {
 
 		add_action(
 			'wp_head',
@@ -401,9 +401,9 @@ class General_Compat {
 	 * @param \WP_Ultimo\Domain_Mapping\SSO $sso The SSO class instance.
 	 * @return void
 	 */
-	public function add_sso_to_maintenance_mode($sso) {
+	public function add_sso_to_maintenance_mode($sso): void {
 
-		add_action('wpmm_head', array($sso, 'enqueue_script'));
+		add_action('wpmm_head', [$sso, 'enqueue_script']);
 	}
 
 	/**
@@ -412,7 +412,7 @@ class General_Compat {
 	 *
 	 * @since 2.0.11
 	 */
-	public function run_wp_on_template_previewer() {
+	public function run_wp_on_template_previewer(): void {
 
 		if (class_exists('Avada')) {
 			do_action('wp'); //phpcs:disable
@@ -427,7 +427,7 @@ class General_Compat {
 	 *
 	 * @since 2.0.11
 	 */
-	public function clear_avada_cache($data) {
+	public function clear_avada_cache($data): void {
 
 		switch_to_blog($data['blog_id']);
 
@@ -462,14 +462,14 @@ class General_Compat {
 	 *
 	 * @since 2.0.11
 	 */
-	public function fix_fluent_pro_site_duplication() {
+	public function fix_fluent_pro_site_duplication(): void {
 
 		$class_name = 'FluentCampaign\App\Hooks\Handlers\IntegrationHandler';
 
 		if (class_exists($class_name)) {
 
 			// Here we use this function due FluentCrm($class_name) returns an instance not working with remove_action
-			$this->hard_remove_action('set_user_role', array($class_name, 'maybeAutoAlterTags'), 11);
+			$this->hard_remove_action('set_user_role', [$class_name, 'maybeAutoAlterTags'], 11);
 
 		}
 
@@ -482,20 +482,20 @@ class General_Compat {
 	 *
 	 * @since 2.0.20
 	 */
-	public function fix_rank_math_site_creation() {
+	public function fix_rank_math_site_creation(): void {
 
-		$class_names = array(
+		$class_names = [
 			'RankMath\Installer',
 			'RankMathPro\Installer',
-		);
+		];
 
 		foreach ($class_names as $class_name) {
 
 			if (class_exists($class_name)) {
 
 				// HankMath does not provide a instance of the activation class
-				$this->hard_remove_action('wpmu_new_blog', array($class_name, 'activate_blog'), 10);
-				$this->hard_remove_action('wp_initialize_site', array($class_name, 'initialize_site'), 10);
+				$this->hard_remove_action('wpmu_new_blog', [$class_name, 'activate_blog'], 10);
+				$this->hard_remove_action('wp_initialize_site', [$class_name, 'initialize_site'], 10);
 
 			}
 
@@ -511,19 +511,19 @@ class General_Compat {
 	 *
 	 * @since 2.1
 	 */
-	public function fix_wp_e_signature_site_creation() {
+	public function fix_wp_e_signature_site_creation(): void {
 
-		$class_names = array(
+		$class_names = [
 			'ESIG_SAD',
 			'ESIG_SIF',
-		);
+		];
 
 		foreach ($class_names as $class_name) {
 
 			if (class_exists($class_name)) {
 
 				// WP E-Signature does not provide a instance of the activation class
-				$this->hard_remove_action('wpmu_new_blog', array($class_name, 'activate_new_site'), 10);
+				$this->hard_remove_action('wpmu_new_blog', [$class_name, 'activate_new_site'], 10);
 
 			}
 
@@ -541,7 +541,7 @@ class General_Compat {
 	 * @param int      $priority The The action priority.
 	 * @return void
 	 */
-	public function hard_remove_action($tag, $handler, $priority) {
+	public function hard_remove_action($tag, $handler, $priority): void {
 
 		global $wp_filter;
 
@@ -555,7 +555,7 @@ class General_Compat {
 
 		foreach($wp_filter[$tag][$priority] as $handler_key => $filter_handler) {
 
-			if(strpos((string) $handler_key, (string) $handler[1]) !== false && is_array($filter_handler['function']) && is_a($filter_handler['function'][0], $handler[0]) && $filter_handler['function'][1] === $handler[1]) {
+			if(str_contains((string) $handler_key, (string) $handler[1]) && is_array($filter_handler['function']) && is_a($filter_handler['function'][0], $handler[0]) && $filter_handler['function'][1] === $handler[1]) {
 
 				$handler_id = $handler_key;
 
@@ -579,7 +579,7 @@ class General_Compat {
 	 * @since 2.1.1
 	 * @return void
 	 */
-	public function remove_perfmatters_checkout_dep() {
+	public function remove_perfmatters_checkout_dep(): void {
 
 		if (is_main_site() || is_admin()) {
 

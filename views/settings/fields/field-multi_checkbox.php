@@ -15,7 +15,7 @@
 		$settings = wu_get_setting($field_slug);
 
 		if ($settings === false) {
-			$settings = isset($field['default']) ? $field['default'] : false;
+			$settings = $field['default'] ?? false;
 		}
 
 		/**
@@ -54,7 +54,7 @@
 		foreach ($field['options'] as $field_value => $field_name) :
 
 			// Check this setting
-			$this_settings = isset($settings[ $field_value ]) ? $settings[ $field_value ] : false;
+			$this_settings = $settings[ $field_value ] ?? false;
 
 			?>
 

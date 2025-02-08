@@ -32,7 +32,7 @@ class Toolkit {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $wp_hooks = array();
+	protected $wp_hooks = [];
 
 	/**
 	 * Listeners registered.
@@ -40,7 +40,7 @@ class Toolkit {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $listeners = array();
+	protected $listeners = [];
 
 	/**
 	 * Keeps track of number of listeners run.
@@ -72,15 +72,15 @@ class Toolkit {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->register_default_listeners();
 
 		$this->load_sandbox();
 
-		add_filter('qm/collectors', array($this, 'register_collector_overview'), 1, 2);
+		add_filter('qm/collectors', [$this, 'register_collector_overview'], 1, 2);
 
-		add_filter('qm/outputter/html', array($this, 'add_overview_panel'), 50, 2);
+		add_filter('qm/outputter/html', [$this, 'add_overview_panel'], 50, 2);
 	}
 
 	/**
@@ -95,7 +95,7 @@ class Toolkit {
 		 * In the case of an empty listener name (?development)
 		 * adds the listener link.
 		 */
-		$this->listen('index', array($this, 'render_listeners_menu'), 'init');
+		$this->listen('index', [$this, 'render_listeners_menu'], 'init');
 
 		/**
 		 * Saves the rest endpoints to the mpb data folder
@@ -103,9 +103,9 @@ class Toolkit {
 		 */
 		$this->listen('save-rest-arguments', '__return_false', 'wu_rest_get_endpoint_schema_use_cache');
 
-		$this->listen('save-rest-arguments', array($this, 'save_route_arguments'), 'wu_rest_register_routes_general');
+		$this->listen('save-rest-arguments', [$this, 'save_route_arguments'], 'wu_rest_register_routes_general');
 
-		$this->listen('save-rest-arguments', array($this, 'save_route_arguments'), 'wu_rest_register_routes_with_id');
+		$this->listen('save-rest-arguments', [$this, 'save_route_arguments'], 'wu_rest_register_routes_with_id');
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Toolkit {
 	 * @param \WP_Ultimo\Traits\Rest_Api $manager The model manager instance.
 	 * @return void
 	 */
-	public function save_route_arguments($routes, $path, $context, $manager) {
+	public function save_route_arguments($routes, $path, $context, $manager): void {
 
 		$class_name = str_replace('_', '-', strtolower($path));
 
@@ -182,9 +182,9 @@ class Toolkit {
 	 * @param array $configs The config constants.
 	 * @return void
 	 */
-	public function config($configs = array()) {
+	public function config($configs = []): void {
 
-		$allowed_configs = array(
+		$allowed_configs = [
 			'QM_DARK_MODE',
 			'QM_DB_EXPENSIVE',
 			'QM_DISABLED',
@@ -194,7 +194,7 @@ class Toolkit {
 			'QM_HIDE_SELF',
 			'QM_NO_JQUERY',
 			'QM_SHOW_ALL_HOOKS',
-		);
+		];
 
 		foreach ($configs as $constant_name => $constant_value) {
 			if (in_array($constant_name, $allowed_configs, true)) {
@@ -212,7 +212,7 @@ class Toolkit {
 	 * @param string|bool $should_die False to prevent it from dying, or a WordPress hook to wait before dying.
 	 * @return void
 	 */
-	public function die($should_die = true) {
+	public function die($should_die = true): void {
 
 		if ($should_die === true) {
 			$should_die = is_admin() ? 'admin_enqueue_scripts' : 'wp_enqueue_scripts';
@@ -230,7 +230,7 @@ class Toolkit {
 	 * @param array  $arguments The arguments passed to the WordPress hook.
 	 * @return mixed
 	 */
-	public function run_listener($wp_hook, $arguments = array()) {
+	public function run_listener($wp_hook, $arguments = []) {
 
 		$listener = wu_request(self::LISTENER_PARAM, 'no-dev-param');
 
@@ -275,7 +275,7 @@ class Toolkit {
 			add_action($wp_hook, fn(...$arguments) => $this->run_listener($wp_hook, $arguments), 0, 100);
 		}
 
-		add_action('shutdown', array($this, 'setup_query_monitor'));
+		add_action('shutdown', [$this, 'setup_query_monitor']);
 
 		if ($this->should_die) {
 			$this->dump_and_die(end($wp_hooks));
@@ -288,7 +288,7 @@ class Toolkit {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function setup_query_monitor() {
+	public function setup_query_monitor(): void {
 
 		if (class_exists('\QM_Dispatchers')) {
 			// phpcs:ignore
@@ -358,9 +358,9 @@ class Toolkit {
 		printf('<link rel="stylesheet" id="toolkit" href="%s" type="text/css" media="all">', wu_url('inc/development/assets/development.css'));
 
 		wp_print_styles(
-			array(
+			[
 				'wu-admin',
-			)
+			]
 		);
 
 		$dispatcher->manually_print_assets(); // phpcs:ignore
@@ -457,7 +457,7 @@ class Toolkit {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function render_listeners_menu() {
+	public function render_listeners_menu(): void {
 
 		/**
 		 * Make sure we display it only once.

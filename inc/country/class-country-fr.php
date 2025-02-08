@@ -54,11 +54,11 @@ class Country_FR extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'FR',
 		'currency'     => 'EUR',
 		'phone_code'   => 33,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -87,7 +87,7 @@ class Country_FR extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'10'  => __('Aube', 'wp-ultimo'),
 			'11'  => __('Aude', 'wp-ultimo'),
 			'12'  => __('Aveyron', 'wp-ultimo'),
@@ -211,6 +211,6 @@ class Country_FR extends Country {
 			'MF'  => __('Saint-Martin', 'wp-ultimo'),
 			'WF'  => __('Wallis and Futuna', 'wp-ultimo'),
 			'IDF' => __('Île-de-France', 'wp-ultimo'),
-		);
+		];
 	}
 }

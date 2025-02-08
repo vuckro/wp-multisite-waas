@@ -21,7 +21,7 @@
 
 	<div class="wu-w-2/3">
 
-		<input <?php echo $field->html_attr ? $field->get_html_attributes() : ''; ?>  <?php echo $field->disabled ? 'disabled="disabled"' : ''; ?> name="<?php echo esc_attr($field->id); ?>" type="<?php echo esc_attr($field->type); ?>" id="<?php echo esc_attr($field->id); ?>" class="regular-text" value="<?php echo wu_get_setting($field->id); ?>" placeholder="<?php echo $field->placeholder ? $field->placeholder : ''; ?>">
+		<input <?php echo $field->html_attr ? $field->get_html_attributes() : ''; ?>  <?php echo $field->disabled ? 'disabled="disabled"' : ''; ?> name="<?php echo esc_attr($field->id); ?>" type="<?php echo esc_attr($field->type); ?>" id="<?php echo esc_attr($field->id); ?>" class="regular-text" value="<?php echo wu_get_setting($field->id); ?>" placeholder="<?php echo $field->placeholder ?: ''; ?>">
 
 		<?php if (isset($field->append) && ! empty($field->append)) : ?>
 

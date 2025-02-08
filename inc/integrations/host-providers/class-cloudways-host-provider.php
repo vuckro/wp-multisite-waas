@@ -53,9 +53,9 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -63,12 +63,12 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WU_CLOUDWAYS_EMAIL',
 		'WU_CLOUDWAYS_API_KEY',
 		'WU_CLOUDWAYS_SERVER_ID',
 		'WU_CLOUDWAYS_APP_ID',
-	);
+	];
 
 	/**
 	 * Constants that maybe present on wp-config.php for this integration to work.
@@ -76,9 +76,9 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $optional_constants = array(
+	protected $optional_constants = [
 		'WU_CLOUDWAYS_EXTRA_DOMAINS',
-	);
+	];
 
 	/**
 	 * Runs on singleton instantiation.
@@ -86,12 +86,12 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.1.1
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
 		// Add the action to sync domains SSL.
-		add_action('wu_domain_manager_dns_propagation_finished', array($this, 'request_ssl'), 10, 0);
+		add_action('wu_domain_manager_dns_propagation_finished', [$this, 'request_ssl'], 10, 0);
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.1.1
 	 * @return void
 	 */
-	public function request_ssl() {
+	public function request_ssl(): void {
 		/**
 		 * If the integration is not active, bail.
 		 */
@@ -112,9 +112,9 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		$ssl_response = $this->send_cloudways_request(
 			'/security/lets_encrypt_install',
-			array(
+			[
 				'ssl_domains' => $this->get_valid_ssl_domains($all_domains),
-			)
+			]
 		);
 
 		if (is_wp_error($ssl_response)) {
@@ -132,7 +132,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 */
 	public function detect(): bool {
 
-		return strpos(ABSPATH, 'cloudways') !== false;
+		return str_contains(ABSPATH, 'cloudways');
 	}
 
 	/**
@@ -143,34 +143,34 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_fields() {
 
-		return array(
-			'WU_CLOUDWAYS_EMAIL'         => array(
+		return [
+			'WU_CLOUDWAYS_EMAIL'         => [
 				'title'       => __('Cloudways Account Email', 'wp-ultimo'),
 				'desc'        => __('Your Cloudways account email address.', 'wp-ultimo'),
 				'placeholder' => __('e.g. me@gmail.com', 'wp-ultimo'),
-			),
-			'WU_CLOUDWAYS_API_KEY'       => array(
+			],
+			'WU_CLOUDWAYS_API_KEY'       => [
 				'title'       => __('Cloudways API Key', 'wp-ultimo'),
 				'desc'        => __('The API Key retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. eYP0Jo3Fzzm5SOZCi5nLR0Mki2lbYZ', 'wp-ultimo'),
-			),
-			'WU_CLOUDWAYS_SERVER_ID'     => array(
+			],
+			'WU_CLOUDWAYS_SERVER_ID'     => [
 				'title'       => __('Cloudways Server ID', 'wp-ultimo'),
 				'desc'        => __('The Server ID retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. 11667', 'wp-ultimo'),
-			),
-			'WU_CLOUDWAYS_APP_ID'        => array(
+			],
+			'WU_CLOUDWAYS_APP_ID'        => [
 				'title'       => __('Cloudways App ID', 'wp-ultimo'),
 				'desc'        => __('The App ID retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. 940288', 'wp-ultimo'),
-			),
-			'WU_CLOUDWAYS_EXTRA_DOMAINS' => array(
+			],
+			'WU_CLOUDWAYS_EXTRA_DOMAINS' => [
 				'title'       => __('Cloudways Extra Domains', 'wp-ultimo'),
 				'tooltip'     => __('The Cloudways API is a bit strange in that it doesn’t offer a way to add or remove just one domain, only a way to update the whole domain list. That means that WP Multisite WaaS will replace all domains you might have there with the list of mapped domains of the network every time a new domain is added.', 'wp-ultimo'),
 				'desc'        => __('Comma-separated list of additional domains to add to Cloudways.', 'wp-ultimo'),
 				'placeholder' => __('e.g. *.test.com, test.com', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -181,7 +181,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		$this->sync_domains();
 	}
@@ -194,7 +194,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		$this->sync_domains();
 	}
@@ -231,15 +231,15 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	private function sync_domains() {
+	private function sync_domains(): void {
 
 		$all_domains = $this->get_domains();
 
 		$alias_response = $this->send_cloudways_request(
 			'/app/manage/aliases',
-			array(
+			[
 				'aliases' => $all_domains,
-			)
+			]
 		);
 
 		if (is_wp_error($alias_response)) {
@@ -260,7 +260,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 			array_map(
 				function ($domain) {
 
-					if (strncmp($domain, '*.', strlen('*.')) === 0) {
+					if (str_starts_with($domain, '*.')) {
 						$domain = str_replace('*.', '', $domain);
 					}
 
@@ -290,7 +290,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$domain_list = $this->get_domain_list();
 
 		foreach ($domain_list as $naked_domain) {
-			if (strncmp((string) $naked_domain, 'www.', strlen('www.')) !== 0 && strncmp((string) $naked_domain, '*.', strlen('*.')) !== 0) {
+			if (! str_starts_with((string) $naked_domain, 'www.') && ! str_starts_with((string) $naked_domain, '*.')) {
 				$domain_list[] = 'www.' . $naked_domain;
 			}
 		}
@@ -311,7 +311,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 */
 	private function check_domain_dns($domain_names, $network_ip) {
 
-		$valid_domains = array();
+		$valid_domains = [];
 
 		foreach ($domain_names as $domain_name) {
 			$response = wp_remote_get('https://dns.google/resolve?name=' . $domain_name);
@@ -343,9 +343,9 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
-		$response = $this->send_cloudways_request('/app/manage/fpm_setting', array(), 'GET');
+		$response = $this->send_cloudways_request('/app/manage/fpm_setting', [], 'GET');
 
 		if (is_wp_error($response) || wu_get_isset($response, 'error')) {
 			wp_send_json_error($response);
@@ -364,7 +364,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		global $wpdb;
 
-		$final_domain_list = array();
+		$final_domain_list = [];
 
 		// Prepare the query
 		$query = "SELECT domain FROM {$wpdb->base_prefix}wu_domain_mappings";
@@ -377,7 +377,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		foreach ($mappings as $domain) {
 			$final_domain_list[] = $domain;
 
-			if (strncmp((string) $domain, 'www.', strlen('www.')) !== 0) {
+			if (! str_starts_with((string) $domain, 'www.')) {
 				$final_domain_list[] = "www.$domain";
 			}
 		}
@@ -421,25 +421,25 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		if ( ! $token) {
 			$response = wp_remote_post(
 				'https://api.cloudways.com/api/v1/oauth/access_token',
-				array(
+				[
 					'blocking' => true,
 					'method'   => 'POST',
-					'headers'  => array(
+					'headers'  => [
 						'cache-control' => 'no-cache',
 						'content-type'  => 'application/x-www-form-urlencoded',
-					),
-					'body'     => array(
+					],
+					'body'     => [
 						'email'   => defined('WU_CLOUDWAYS_EMAIL') ? WU_CLOUDWAYS_EMAIL : '',
 						'api_key' => defined('WU_CLOUDWAYS_API_KEY') ? WU_CLOUDWAYS_API_KEY : '',
-					),
-				)
+					],
+				]
 			);
 
 			if ( ! is_wp_error($response)) {
 				$body = json_decode(wp_remote_retrieve_body($response), true);
 
 				if (isset($body['access_token'])) {
-					$expires_in = isset($body['expires_in']) ? $body['expires_in'] : 50 * MINUTE_IN_SECONDS;
+					$expires_in = $body['expires_in'] ?? 50 * MINUTE_IN_SECONDS;
 
 					set_site_transient('wu_cloudways_token', $body['access_token'], $expires_in);
 
@@ -461,7 +461,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @param string $method The HTTP verb.
 	 * @return object|\WP_Error
 	 */
-	protected function send_cloudways_request($endpoint, $data = array(), $method = 'POST'): object {
+	protected function send_cloudways_request($endpoint, $data = [], $method = 'POST'): object {
 
 		$token = $this->get_cloudways_access_token();
 
@@ -471,10 +471,10 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		if ($method === 'GET') {
 			$endpoint_url = add_query_arg(
-				array(
+				[
 					'server_id' => defined('WU_CLOUDWAYS_SERVER_ID') ? WU_CLOUDWAYS_SERVER_ID : '',
 					'app_id'    => defined('WU_CLOUDWAYS_APP_ID') ? WU_CLOUDWAYS_APP_ID : '',
-				),
+				],
 				$endpoint_url
 			);
 		} else {
@@ -486,17 +486,17 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		$response = wp_remote_post(
 			$endpoint_url,
-			array(
+			[
 				'blocking' => true,
 				'method'   => $method,
 				'timeout'  => 45,
 				'body'     => $data,
-				'headers'  => array(
+				'headers'  => [
 					'cache-control' => 'no-cache',
 					'content-type'  => 'application/x-www-form-urlencoded',
 					'authorization' => "Bearer $token",
-				),
-			)
+				],
+			]
 		);
 
 		if (is_wp_error($response)) {
@@ -514,7 +514,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function get_instructions() {
+	public function get_instructions(): void {
 
 		wu_get_template('wizards/host-integrations/cloudways-instructions');
 	}
@@ -538,6 +538,6 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_logo() {
 
-		return wu_get_asset('cloudways.png', 'img/hosts');
+		return wu_get_asset('cloudways.webp', 'img/hosts');
 	}
 }

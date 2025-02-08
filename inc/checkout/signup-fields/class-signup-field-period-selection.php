@@ -104,9 +104,9 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'period_selection_template' => 'clean',
-		);
+		];
 	}
 
 	/**
@@ -117,9 +117,9 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			// 'name',
-		);
+		];
 	}
 
 	/**
@@ -130,11 +130,11 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'period_selection',
 			'name'     => __('Plan Duration Switch', 'wp-ultimo'),
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -158,119 +158,119 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		$editor_fields = array();
+		$editor_fields = [];
 
-		$editor_fields['period_selection_template'] = array(
+		$editor_fields['period_selection_template'] = [
 			'type'   => 'group',
 			'order'  => 98.4,
 			'desc'   => Field_Templates_Manager::get_instance()->render_preview_block('period_selection'),
-			'fields' => array(
-				'period_selection_template' => array(
+			'fields' => [
+				'period_selection_template' => [
 					'type'            => 'select',
 					'title'           => __('Period Selector Template', 'wp-ultimo'),
 					'placeholder'     => __('Select your Template', 'wp-ultimo'),
-					'options'         => array($this, 'get_template_options'),
+					'options'         => [$this, 'get_template_options'],
 					'wrapper_classes' => 'wu-flex-grow',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model' => 'period_selection_template',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$editor_fields['period_options_header'] = array(
+		$editor_fields['period_options_header'] = [
 			'type'  => 'small-header',
 			'title' => __('Options', 'wp-ultimo'),
 			'desc'  => __('Add different options below. These need to match your product price variations.', 'wp-ultimo'),
 			'order' => 90,
-		);
+		];
 
-		$editor_fields['period_options_empty'] = array(
+		$editor_fields['period_options_empty'] = [
 			'type'              => 'note',
 			'desc'              => __('Add the first option using the button below.', 'wp-ultimo'),
 			'classes'           => 'wu-text-gray-600 wu-text-xs wu-text-center wu-w-full',
 			'wrapper_classes'   => 'wu-bg-gray-100 wu-items-end',
 			'order'             => 90.5,
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-if'    => 'period_options.length === 0',
 				'v-cloak' => '1',
-			),
-		);
+			],
+		];
 
-		$editor_fields['period_options'] = array(
+		$editor_fields['period_options'] = [
 			'type'              => 'group',
 			'tooltip'           => '',
 			'order'             => 91,
 			'wrapper_classes'   => 'wu-relative wu-bg-gray-100 wu-pb-2',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-if'    => 'period_options.length',
 				'v-for'   => '(period_option, index) in period_options',
 				'v-cloak' => '1',
-			),
-			'fields'            => array(
-				'period_options_remove'        => array(
+			],
+			'fields'            => [
+				'period_options_remove'        => [
 					'type'            => 'note',
 					'desc'            => sprintf('<a title="%s" class="wu-no-underline wu-inline-block wu-text-gray-600 wu-mt-2 wu-mr-2" href="#" @click.prevent="() => period_options.splice(index, 1)"><span class="dashicons-wu-squared-cross"></span></a>', __('Remove', 'wp-ultimo')),
 					'wrapper_classes' => 'wu-absolute wu-top-0 wu-right-0',
-				),
-				'period_options_duration'      => array(
+				],
+				'period_options_duration'      => [
 					'type'            => 'number',
 					'title'           => __('Duration', 'wp-ultimo'),
 					'placeholder'     => '',
 					'wrapper_classes' => 'wu-w-2/12',
 					'min'             => 1,
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model'     => 'period_option.duration',
 						'steps'       => 1,
 						'v-bind:name' => '"period_options[" + index + "][duration]"',
-					),
-				),
-				'period_options_duration_unit' => array(
+					],
+				],
+				'period_options_duration_unit' => [
 					'type'            => 'select',
 					'title'           => '&nbsp',
 					'placeholder'     => '',
 					'wrapper_classes' => 'wu-w-5/12 wu-mx-2',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model'     => 'period_option.duration_unit',
 						'v-bind:name' => '"period_options[" + index + "][duration_unit]"',
-					),
-					'options'         => array(
+					],
+					'options'         => [
 						'day'   => __('Days', 'wp-ultimo'),
 						'week'  => __('Weeks', 'wp-ultimo'),
 						'month' => __('Months', 'wp-ultimo'),
 						'year'  => __('Years', 'wp-ultimo'),
-					),
-				),
-				'period_options_label'         => array(
+					],
+				],
+				'period_options_label'         => [
 					'type'            => 'text',
 					'title'           => __('Label', 'wp-ultimo'),
 					'placeholder'     => __('e.g. Monthly', 'wp-ultimo'),
 					'wrapper_classes' => 'wu-w-5/12',
-					'html_attr'       => array(
+					'html_attr'       => [
 						'v-model'     => 'period_option.label',
 						'v-bind:name' => '"period_options[" + index + "][label]"',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$editor_fields['repeat'] = array(
+		$editor_fields['repeat'] = [
 			'order'             => 92,
 			'type'              => 'submit',
 			'title'             => __('+ Add option', 'wp-ultimo'),
 			'classes'           => 'wu-uppercase wu-text-2xs wu-text-blue-700 wu-border-none wu-bg-transparent wu-font-bold wu-text-right wu-w-full wu-cursor-pointer',
 			'wrapper_classes'   => 'wu-bg-gray-100 wu-items-end',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-cloak' => '1',
-			),
-			'html_attr'         => array(
+			],
+			'html_attr'         => [
 				'v-on:click.prevent' => '() => period_options.push({
 					duration: 1,
 					duration_unit: "month",
 					label: "",
 				})',
-			),
-		);
+			],
+		];
 
 		return $editor_fields;
 	}
@@ -286,39 +286,39 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if (wu_get_isset($attributes, 'period_selection_template') === 'legacy') {
-			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), array('wu-functions'), wu_get_version());
+			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], wu_get_version());
 
 			wp_enqueue_script('wu-legacy-signup');
 
-			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
+			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons'], wu_get_version());
 		}
 
 		$template_class = Field_Templates_Manager::get_instance()->get_template_class('period_selection', $attributes['period_selection_template']);
 
 		$content = $template_class ? $template_class->render_container($attributes) : __('Template does not exist.', 'wp-ultimo');
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields[ $attributes['id'] ] = array(
+		$checkout_fields[ $attributes['id'] ] = [
 			'type'            => 'note',
 			'id'              => $attributes['id'],
 			'wrapper_classes' => $attributes['element_classes'],
 			'desc'            => $content,
-		);
+		];
 
-		$checkout_fields['duration'] = array(
+		$checkout_fields['duration'] = [
 			'type'      => 'hidden',
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'duration',
-			),
-		);
+			],
+		];
 
-		$checkout_fields['duration_unit'] = array(
+		$checkout_fields['duration_unit'] = [
 			'type'      => 'hidden',
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'duration_unit',
-			),
-		);
+			],
+		];
 
 		return $checkout_fields;
 	}

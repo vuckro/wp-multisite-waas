@@ -33,7 +33,7 @@ function wu_get_checkout_form($checkout_form_id) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Checkout_Form[]
  */
-function wu_get_checkout_forms($query = array()) {
+function wu_get_checkout_forms($query = []) {
 
 	return \WP_Ultimo\Models\Checkout_Form::query($query);
 }
@@ -96,14 +96,14 @@ function wu_create_checkout_form($checkout_form_data) {
 
 	$checkout_form_data = wp_parse_args(
 		$checkout_form_data,
-		array(
+		[
 			'name'              => false,
 			'slug'              => false,
-			'settings'          => array(),
-			'allowed_countries' => array(),
+			'settings'          => [],
+			'allowed_countries' => [],
 			'date_created'      => wu_get_current_time('mysql', true),
 			'date_modified'     => wu_get_current_time('mysql', true),
-		)
+		]
 	);
 
 	$checkout_form = new Checkout_Form($checkout_form_data);
@@ -121,7 +121,7 @@ function wu_create_checkout_form($checkout_form_data) {
  */
 function wu_get_available_domain_options() {
 
-	$fields = array();
+	$fields = [];
 
 	$main_form = wu_get_checkout_form_by_slug('main-form');
 
@@ -129,9 +129,9 @@ function wu_get_available_domain_options() {
 		$fields = $main_form->get_all_fields_by_type('site_url');
 	} else {
 		$forms = wu_get_checkout_forms(
-			array(
+			[
 				'number' => 1,
-			)
+			]
 		);
 
 		if ($forms) {
@@ -139,11 +139,11 @@ function wu_get_available_domain_options() {
 		}
 	}
 
-	$domain_options = array();
+	$domain_options = [];
 
 	if ($fields) {
 		foreach ($fields as $field) {
-			$available_domains = isset($field['available_domains']) ? $field['available_domains'] : '';
+			$available_domains = $field['available_domains'] ?? '';
 
 			$field_domain_options = explode(PHP_EOL, (string) $available_domains);
 
@@ -167,7 +167,7 @@ function wu_is_form_field_pre_selected($field_slug) {
 
 	$checkout = Checkout::get_instance();
 
-	$pre_selected = $checkout->request_or_session('pre_selected', array());
+	$pre_selected = $checkout->request_or_session('pre_selected', []);
 
 	$from_request = stripslashes_deep(wu_get_isset($_GET, $field_slug)) || isset($pre_selected[ $field_slug ]);
 

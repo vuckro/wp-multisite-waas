@@ -27,7 +27,7 @@ class Event_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Events\\Event_Query';
+	protected $query_class = \WP_Ultimo\Database\Events\Event_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -37,11 +37,11 @@ class Event_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Event', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Events', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                       // does this table support ajax?
-			)
+			]
 		);
 	}
 
@@ -103,19 +103,19 @@ class Event_List_Table extends Base_List_Table {
 				32,
 				'identicon',
 				'',
-				array(
+				[
 					'force_display' => true,
 					'class'         => 'wu-rounded-full',
-				)
+				]
 			);
 
 			$display_name = $item->get_author_display_name();
 
 			$id = $item->get_author_id();
 
-			$url_atts = array(
+			$url_atts = [
 				'id' => $item->get_author_id(),
-			);
+			];
 
 			$initiator_link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -175,12 +175,12 @@ class Event_List_Table extends Base_List_Table {
 
 		$message = wp_trim_words($item->get_message(), 13);
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'model' => 'event',
-		);
+		];
 
-		$actions = array(
+		$actions = [
 			'view'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-view-event', $url_atts), __('View', 'wp-ultimo')),
 			'delete' => sprintf(
 				'<a title="%s" class="wubox" href="%s">%s</a>',
@@ -191,7 +191,7 @@ class Event_List_Table extends Base_List_Table {
 				),
 				__('Delete', 'wp-ultimo')
 			),
-		);
+		];
 
 		return $message . $this->row_actions($actions);
 	}
@@ -204,7 +204,7 @@ class Event_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'           => '<input type="checkbox" />',
 			'initiator'    => __('Initiator', 'wp-ultimo'),
 			'message'      => __('Event Message', 'wp-ultimo'),
@@ -212,7 +212,7 @@ class Event_List_Table extends Base_List_Table {
 			'object_type'  => __('Type', 'wp-ultimo'),
 			'date_created' => __('Created at', 'wp-ultimo'),
 			'id'           => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return apply_filters('wu_events_list_table_get_columns', $columns, $this);
 	}
@@ -223,25 +223,25 @@ class Event_List_Table extends Base_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(
-				'severity' => array(
+		return [
+			'filters'      => [
+				'severity' => [
 					'label'   => __('Severity', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						Event::SEVERITY_SUCCESS => __('Success', 'wp-ultimo'),
 						Event::SEVERITY_NEUTRAL => __('Neutral', 'wp-ultimo'),
 						Event::SEVERITY_INFO    => __('Info', 'wp-ultimo'),
 						Event::SEVERITY_WARNING => __('Warning', 'wp-ultimo'),
 						Event::SEVERITY_FATAL   => __('Fatal', 'wp-ultimo'),
-					),
-				),
-			),
-			'date_filters' => array(
-				'date_created' => array(
+					],
+				],
+			],
+			'date_filters' => [
+				'date_created' => [
 					'label'   => __('Created At', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

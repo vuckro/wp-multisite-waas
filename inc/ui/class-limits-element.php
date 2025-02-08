@@ -120,23 +120,23 @@ class Limits_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('Site Limits', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['columns'] = array(
+		$fields['columns'] = [
 			'type'    => 'number',
 			'title'   => __('Columns', 'wp-ultimo'),
 			'desc'    => __('How many columns to use.', 'wp-ultimo'),
@@ -144,7 +144,7 @@ class Limits_Element extends Base_Element {
 			'value'   => 1,
 			'min'     => 1,
 			'max'     => 10,
-		);
+		];
 
 		return $fields;
 	}
@@ -168,13 +168,13 @@ class Limits_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Account',
 			'Limits',
 			'Quotas',
-		);
+		];
 	}
 
 	/**
@@ -193,10 +193,10 @@ class Limits_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'columns' => 1,
 			'title'   => __('Site Limits', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -205,7 +205,7 @@ class Limits_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
@@ -220,7 +220,7 @@ class Limits_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 	}
@@ -241,9 +241,9 @@ class Limits_Element extends Base_Element {
 	public function output($atts, $content = null) {
 
 		$post_types = get_post_types(
-			array(
+			[
 				'public' => true,
-			),
+			],
 			'objects'
 		);
 

@@ -27,7 +27,7 @@ class State extends Rule {
 	 * @since 2.0.4
 	 * @var array
 	 */
-	protected $fillableParams = array('country'); // phpcs:ignore
+	protected $fillableParams = ['country']; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *

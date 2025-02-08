@@ -18,9 +18,9 @@
 	 * @since 1.8.2
 	 */
 	foreach ($page->get_title_links() as $action_link) :
-		$action_classes = isset($action_link['classes']) ? $action_link['classes'] : '';
+		$action_classes = $action_link['classes'] ?? '';
 
-		$attrs = isset($action_link['attrs']) ? $action_link['attrs'] : '';
+		$attrs = $action_link['attrs'] ?? '';
 
 		?>
 
@@ -133,9 +133,9 @@
 				wp_editor(
 					html_entity_decode($content),
 					'content',
-					array(
+					[
 						'height' => 500,
-					)
+					]
 				);
 				?>
 

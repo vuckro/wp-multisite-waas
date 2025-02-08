@@ -108,10 +108,10 @@ class Signup_Field_Discount_Code extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'placeholder' => '',
 			'default'     => '',
-		);
+		];
 	}
 
 	/**
@@ -122,11 +122,11 @@ class Signup_Field_Discount_Code extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
 			'placeholder',
 			'tooltip',
-		);
+		];
 	}
 
 	/**
@@ -137,9 +137,9 @@ class Signup_Field_Discount_Code extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id' => 'discount_code',
-		);
+		];
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Signup_Field_Discount_Code extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -163,19 +163,19 @@ class Signup_Field_Discount_Code extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields['discount_code_checkbox'] = array(
+		$checkout_fields['discount_code_checkbox'] = [
 			'id'        => 'discount_code',
 			'type'      => 'toggle',
 			'name'      => __('Have a coupon code?', 'wp-ultimo'),
 			'class'     => 'wu-w-auto',
-			'html_attr' => array(
+			'html_attr' => [
 				'v-model' => 'toggle_discount_code',
-			),
-		);
+			],
+		];
 
-		$checkout_fields['discount_code'] = array(
+		$checkout_fields['discount_code'] = [
 			'type'              => 'text',
 			'id'                => 'discount_code',
 			'name'              => $attributes['name'],
@@ -184,16 +184,16 @@ class Signup_Field_Discount_Code extends Base_Signup_Field {
 			'default'           => $attributes['default'],
 			'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 			'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-show' => 'toggle_discount_code',
 				'style'  => $this->calculate_style_attr(),
-			),
-			'html_attr'         => array(
+			],
+			'html_attr'         => [
 				'v-model.lazy'                => 'discount_code',
 				'v-init:discount_code'        => "'{$this->get_value()}'",
 				'v-init:toggle_discount_code' => ! empty($this->get_value()),
-			),
-		);
+			],
+		];
 
 		return $checkout_fields;
 	}

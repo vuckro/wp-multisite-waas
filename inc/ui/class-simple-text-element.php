@@ -121,24 +121,24 @@ class Simple_Text_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['simple_text'] = array(
+		$fields['simple_text'] = [
 			'type'        => 'textarea',
 			'title'       => __('Content', 'wp-ultimo'),
 			'placeholder' => __('E.g. Text, HTML or shortcode.', 'wp-ultimo'),
 			'desc'        => __('You can insert plain text, HTML or a shortcode in this block.', 'wp-ultimo'),
 			'tooltip'     => '',
-			'html_attr'   => array(
+			'html_attr'   => [
 				'rows' => 6,
-			),
-		);
+			],
+		];
 
 		return $fields;
 	}
@@ -149,7 +149,7 @@ class Simple_Text_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_enqueue_style('wu-admin');
 	}
@@ -173,14 +173,14 @@ class Simple_Text_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'text',
 			'simple text',
 			'shortcode',
 			'textarea',
-		);
+		];
 	}
 
 	/**
@@ -199,9 +199,9 @@ class Simple_Text_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'simple_text' => __('Text, HTML or shortcode.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**

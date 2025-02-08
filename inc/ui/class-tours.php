@@ -27,7 +27,7 @@ class Tours {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $tours = array();
+	protected $tours = [];
 
 	/**
 	 * Element construct.
@@ -36,11 +36,11 @@ class Tours {
 	 */
 	public function __construct() {
 
-		add_action('wp_ajax_wu_mark_tour_as_finished', array($this, 'mark_as_finished'));
+		add_action('wp_ajax_wu_mark_tour_as_finished', [$this, 'mark_as_finished']);
 
-		add_action('admin_enqueue_scripts', array($this, 'register_scripts'));
+		add_action('admin_enqueue_scripts', [$this, 'register_scripts']);
 
-		add_action('in_admin_footer', array($this, 'enqueue_scripts'));
+		add_action('in_admin_footer', [$this, 'enqueue_scripts']);
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Tours {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function mark_as_finished() {
+	public function mark_as_finished(): void {
 
 		check_ajax_referer('wu_tour_finished', 'nonce');
 
@@ -70,11 +70,11 @@ class Tours {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
-		WP_Ultimo()->scripts->register_script('wu-shepherd', wu_get_asset('lib/shepherd.js', 'js'), array());
+		WP_Ultimo()->scripts->register_script('wu-shepherd', wu_get_asset('lib/shepherd.js', 'js'), []);
 
-		WP_Ultimo()->scripts->register_script('wu-tours', wu_get_asset('tours.js', 'js'), array('wu-shepherd', 'underscore'));
+		WP_Ultimo()->scripts->register_script('wu-tours', wu_get_asset('tours.js', 'js'), ['wu-shepherd', 'underscore']);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Tours {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts(): void {
 
 		if ($this->has_tours()) {
 			wp_localize_script('wu-tours', 'wu_tours', $this->tours);
@@ -91,14 +91,14 @@ class Tours {
 			wp_localize_script(
 				'wu-tours',
 				'wu_tours_vars',
-				array(
+				[
 					'ajaxurl' => wu_ajax_url(),
 					'nonce'   => wp_create_nonce('wu_tour_finished'),
-					'i18n'    => array(
+					'i18n'    => [
 						'next'   => __('Next', 'wp-ultimo'),
 						'finish' => __('Close', 'wp-ultimo'),
-					),
-				)
+					],
+				]
 			);
 
 			wp_enqueue_script('wu-tours');
@@ -128,7 +128,7 @@ class Tours {
 	 * @param boolean $once Whether or not we will show this more than once.
 	 * @return void
 	 */
-	public function create_tour($id, $steps = array(), $once = true) {
+	public function create_tour($id, $steps = [], $once = true): void {
 
 		if (did_action('in_admin_header')) {
 			return;

@@ -76,9 +76,9 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_edit_webhooks',
-	);
+	];
 
 	/**
 	 * Registers the necessary scripts and styles for this admin page.
@@ -86,22 +86,22 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
-		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), array('jquery', 'wu-sweet-alert'));
+		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), ['jquery', 'wu-sweet-alert']);
 
 		wp_localize_script(
 			'wu-webhook-page',
 			'wu_webhook_page',
-			array(
-				'i18n' => array(
+			[
+				'i18n' => [
 					'error_title'   => __('Webhook Test', 'wp-ultimo'),
 					'error_message' => __('An error occurred when sending the test webhook, please try again.', 'wp-ultimo'),
 					'copied'        => __('Copied!', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		wp_enqueue_script('wu-webhook-page');
@@ -113,15 +113,15 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Delete Webhook - Confirmation modal
 		 */
 		add_filter(
 			'wu_data_json_success_delete_webhook_modal',
-			fn($data_json) => array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-webhooks', array('deleted' => 1)),
-			)
+			fn($data_json) => [
+				'redirect_url' => wu_network_admin_url('wp-ultimo-webhooks', ['deleted' => 1]),
+			]
 		);
 	}
 
@@ -131,55 +131,55 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
 		$this->add_fields_widget(
 			'domain-url',
-			array(
+			[
 				'title'    => __('Webhook URL', 'wp-ultimo'),
 				'position' => 'normal',
-				'fields'   => array(
-					'webhook_url' => array(
+				'fields'   => [
+					'webhook_url' => [
 						'type'        => 'url',
 						'title'       => __('Webhook URL', 'wp-ultimo'),
 						'desc'        => __('The URL where we will send the payload when the event triggers.', 'wp-ultimo'),
 						'placeholder' => __('https://example.com', 'wp-ultimo'),
 						'value'       => $this->get_object()->get_webhook_url(),
-					),
-					'actions'     => array(
+					],
+					'actions'     => [
 						'type'            => 'actions',
 						'tooltip'         => __('The event .', 'wp-ultimo'),
-						'actions'         => array(
-							'send_test_event' => array(
+						'actions'         => [
+							'send_test_event' => [
 								'title'        => __('Send Test Event', 'wp-ultimo'),
 								'action'       => 'wu_send_test_event',
 								'object_id'    => $this->get_object()->get_id(),
 								'loading_text' => 'Sending Test...',
-							),
-						),
-						'html_attr'       => array(
+							],
+						],
+						'html_attr'       => [
 							'data-page' => 'edit',
-						),
+						],
 						'wrapper_classes' => 'wu-items-left wu-justify-start',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
-		add_meta_box('wp-ultimo-payload', __('Event Payload', 'wp-ultimo'), array($this, 'output_default_widget_payload'), get_current_screen()->id, 'normal');
+		add_meta_box('wp-ultimo-payload', __('Event Payload', 'wp-ultimo'), [$this, 'output_default_widget_payload'], get_current_screen()->id, 'normal');
 
 		$this->add_list_table_widget(
 			'events',
-			array(
+			[
 				'title'        => __('Events', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'query_filter'),
-			)
+				'query_filter' => [$this, 'query_filter'],
+			]
 		);
 
-		$event_list = array();
+		$event_list = [];
 
 		foreach (wu_get_event_types() as $key => $value) {
 			$event_list[ $key ] = $value['name'];
@@ -187,42 +187,42 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'fields' => array(
-					'event' => array(
+			[
+				'fields' => [
+					'event' => [
 						'type'        => 'select',
 						'title'       => __('Event', 'wp-ultimo'),
 						'desc'        => __('The event that triggers this webhook.', 'wp-ultimo'),
 						'placeholder' => __('Select Event', 'wp-ultimo'),
 						'options'     => $event_list,
 						'value'       => $this->get_object()->get_event(),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$this->add_fields_widget(
 			'active',
-			array(
+			[
 				'title'  => __('Active', 'wp-ultimo'),
-				'fields' => array(
-					'active' => array(
+				'fields' => [
+					'active' => [
 						'type'    => 'toggle',
 						'title'   => __('Active', 'wp-ultimo'),
 						'tooltip' => __('Deactivate will end the event trigger for this webhook.', 'wp-ultimo'),
 						'desc'    => __('Use this option to manually enable or disable this webhook.', 'wp-ultimo'),
 						'value'   => $this->get_object()->is_active(),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$this->add_fields_widget(
 			'options',
-			array(
+			[
 				'title'  => __('Options', 'wp-ultimo'),
-				'fields' => array(
-					'integration' => array(
+				'fields' => [
+					'integration' => [
 						'edit'          => true,
 						'title'         => __('Integration', 'wp-ultimo'),
 						'type'          => 'text-edit',
@@ -230,8 +230,8 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 						'value'         => $this->get_object()->get_integration(),
 						'display_value' => ucwords((string) $this->get_object()->get_integration()),
 						'tooltip'       => __('Name of the service responsible for creating this webhook. If you are manually creating this webhook, use the value "manual".', 'wp-ultimo'),
-					),
-					'event_count' => array(
+					],
+					'event_count' => [
 						'title'         => __('Run Count', 'wp-ultimo'),
 						'type'          => 'text-edit',
 						'min'           => 0,
@@ -241,9 +241,9 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 						// translators: %d is the number of times that this webhook was triggered.
 						'display_value' => sprintf(__('This webhook was triggered %d time(s).', 'wp-ultimo'), $this->get_object()->get_event_count()),
 						'tooltip'       => __('The number of times that this webhook was triggered so far. It includes test runs.', 'wp-ultimo'),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 	}
 
@@ -253,7 +253,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output_default_widget_payload() {
+	public function output_default_widget_payload(): void {
 
 		$object_event_slug = $this->get_object()->get_event();
 
@@ -263,11 +263,11 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
 		wu_get_template(
 			'events/widget-payload',
-			array(
+			[
 				'title'        => __('Event Payload', 'wp-ultimo'),
 				'loading_text' => __('Loading Payload', 'wp-ultimo'),
 				'payload'      => $payload,
-			)
+			]
 		);
 	}
 
@@ -281,10 +281,10 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'webhook',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -319,7 +319,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -330,7 +330,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('Edit Webhook', 'wp-ultimo'),
 			'add_new_label'       => __('Add new Webhook', 'wp-ultimo'),
 			'updated_message'     => __('Webhook updated successfully!', 'wp-ultimo'),
@@ -340,7 +340,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Webhook', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -383,7 +383,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		$object = $this->get_object();
 
@@ -396,9 +396,9 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
 			return;
 		} else {
-			$array_params = array(
+			$array_params = [
 				'updated' => 1,
-			);
+			];
 
 			if ($this->edit === false) {
 				$array_params['id'] = $object->get_id();

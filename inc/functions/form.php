@@ -25,7 +25,7 @@ use WP_Ultimo\Managers\Form_Manager;
  * @param array  $atts Form attributes, check wp_parse_atts call below.
  * @return mixed
  */
-function wu_register_form($form_id, $atts = array()) {
+function wu_register_form($form_id, $atts = []) {
 
 	return Form_Manager::get_instance()->register_form($form_id, $atts);
 }
@@ -41,16 +41,16 @@ function wu_register_form($form_id, $atts = array()) {
  * @param boolean $inline If this form is has content.
  * @return string
  */
-function wu_get_form_url($form_id, $atts = array(), $inline = false) {
+function wu_get_form_url($form_id, $atts = [], $inline = false) {
 
 	if ($inline) {
 		$atts = wp_parse_args(
 			$atts,
-			array(
+			[
 				'inlineId' => $form_id,
 				'width'    => '400',
 				'height'   => '360',
-			)
+			]
 		);
 
 		// TB_inline?height=300&width=300&inlineId=wu-add-field

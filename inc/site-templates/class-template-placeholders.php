@@ -29,7 +29,7 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $placeholders_as_saved = array();
+	protected $placeholders_as_saved = [];
 
 	/**
 	 * Keeps an array of placeholder => value.
@@ -37,7 +37,7 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $placeholders = array();
+	protected $placeholders = [];
 
 	/**
 	 * Holds the placeholder tags.
@@ -45,7 +45,7 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $placeholder_keys = array();
+	protected $placeholder_keys = [];
 
 	/**
 	 * Holds the placeholder values.
@@ -53,7 +53,7 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $placeholder_values = array();
+	protected $placeholder_values = [];
 
 	/**
 	 * Loads the placeholders and adds the hooks.
@@ -61,19 +61,19 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->load_placeholders();
 
-		add_action('wp_ultimo_admin_pages', array($this, 'add_template_placeholders_admin_page'));
+		add_action('wp_ultimo_admin_pages', [$this, 'add_template_placeholders_admin_page']);
 
-		add_action('wp_ajax_wu_get_placeholders', array($this, 'serve_placeholders_via_ajax'));
+		add_action('wp_ajax_wu_get_placeholders', [$this, 'serve_placeholders_via_ajax']);
 
-		add_action('wp_ajax_wu_save_placeholders', array($this, 'save_placeholders'));
+		add_action('wp_ajax_wu_save_placeholders', [$this, 'save_placeholders']);
 
-		add_filter('the_content', array($this, 'placeholder_replacer'));
+		add_filter('the_content', [$this, 'placeholder_replacer']);
 
-		add_filter('the_title', array($this, 'placeholder_replacer'));
+		add_filter('the_title', [$this, 'placeholder_replacer']);
 	}
 
 	/**
@@ -86,9 +86,9 @@ class Template_Placeholders {
 
 		$placeholders = wu_get_option(
 			'template_placeholders',
-			array(
-				'placeholders' => array(),
-			)
+			[
+				'placeholders' => [],
+			]
 		);
 
 		$this->placeholders_as_saved = $placeholders;
@@ -98,7 +98,7 @@ class Template_Placeholders {
 		$tags   = array_column($placeholders, 'placeholder');
 		$values = array_column($placeholders, 'content');
 
-		$tags   = array_map(array($this, 'add_curly_braces'), $tags);
+		$tags   = array_map([$this, 'add_curly_braces'], $tags);
 		$values = array_map('nl2br', $values);
 
 		$this->placeholder_keys   = $tags;
@@ -143,7 +143,7 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function serve_placeholders_via_ajax() {
+	public function serve_placeholders_via_ajax(): void {
 
 		wp_send_json_success($this->placeholders_as_saved);
 	}
@@ -154,33 +154,33 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function save_placeholders() {
+	public function save_placeholders(): void {
 
 		if ( ! check_ajax_referer('wu_edit_placeholders_editing')) {
 			wp_send_json(
-				array(
+				[
 					'code'    => 'not-enough-permissions',
 					'message' => __('You don\'t have permission to alter placeholders.', 'wp-ultimo'),
-				)
+				]
 			);
 		}
 
 		$data = json_decode(file_get_contents('php://input'), true);
 
-		$placeholders = isset($data['placeholders']) ? $data['placeholders'] : array();
+		$placeholders = $data['placeholders'] ?? [];
 
 		wu_save_option(
 			'template_placeholders',
-			array(
+			[
 				'placeholders' => $placeholders,
-			)
+			]
 		);
 
 		wp_send_json(
-			array(
+			[
 				'code'    => 'success',
 				'message' => __('Placeholders successfully updated!', 'wp-ultimo'),
-			)
+			]
 		);
 	}
 
@@ -190,7 +190,7 @@ class Template_Placeholders {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_template_placeholders_admin_page() {
+	public function add_template_placeholders_admin_page(): void {
 
 		new \WP_Ultimo\Admin_Pages\Placeholders_Admin_Page();
 	}

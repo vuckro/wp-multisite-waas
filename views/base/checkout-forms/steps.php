@@ -47,9 +47,9 @@
 				<?php
 				echo wu_get_form_url(
 					'add_new_form_step',
-					array(
+					[
 						'checkout_form' => $checkout_form,
-					)
+					]
 				);
 				?>
 				"
@@ -173,10 +173,10 @@
 					<?php
 					echo wu_get_form_url(
 						'add_new_form_step',
-						array(
+						[
 							'checkout_form' => $checkout_form,
 							'step'          => '',
-						)
+						]
 					);
 					?>
 					=' + step.id"
@@ -195,11 +195,11 @@
 					<?php
 					echo wu_get_form_url(
 						'add_new_form_field',
-						array(
+						[
 							'checkout_form' => $checkout_form,
 							'width'         => 600,
 							'step'          => '',
-						)
+						]
 					);
 					?>
 					=' + step.id"
@@ -313,9 +313,9 @@
 				<?php
 				echo wu_get_form_url(
 					'add_new_form_step',
-					array(
+					[
 						'checkout_form' => $checkout_form,
-					)
+					]
 				);
 				?>
 				"

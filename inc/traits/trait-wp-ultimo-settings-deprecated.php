@@ -20,7 +20,7 @@ trait WP_Ultimo_Settings_Deprecated {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_legacy_scripts() {
+	public function handle_legacy_scripts(): void {
 		/*
 		* Mailchimp: Backwards compatibility.
 		*/
@@ -35,14 +35,14 @@ trait WP_Ultimo_Settings_Deprecated {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_legacy_filters() {
+	public function handle_legacy_filters(): void {
 
-		$legacy_settings = array();
+		$legacy_settings = [];
 
 		/*
 		* Fetch Extra Sections
 		*/
-		$sections = apply_filters_deprecated('wu_settings_sections', array(array()), '2.0.0', 'wu_register_settings_section()');
+		$sections = apply_filters_deprecated('wu_settings_sections', [[]], '2.0.0', 'wu_register_settings_section()');
 
 		foreach ($sections as $section_key => $section) {
 			if ($section_key === 'activation') {
@@ -53,7 +53,7 @@ trait WP_Ultimo_Settings_Deprecated {
 			$legacy_settings = array_merge($legacy_settings, $section['fields']);
 		}
 
-		$filters = array(
+		$filters = [
 			'wu_settings_section_general',
 			'wu_settings_section_network',
 			'wu_settings_section_domain_mapping',
@@ -62,25 +62,25 @@ trait WP_Ultimo_Settings_Deprecated {
 			'wu_settings_section_styling',
 			'wu_settings_section_tools',
 			'wu_settings_section_advanced',
-		);
+		];
 
 		foreach ($filters as $filter) {
 			$message = __('Adding setting sections directly via filters is no longer supported.');
 
-			$legacy_settings = apply_filters_deprecated($filter, array($legacy_settings), '2.0.0', 'wu_register_settings_field()', $message);
+			$legacy_settings = apply_filters_deprecated($filter, [$legacy_settings], '2.0.0', 'wu_register_settings_field()', $message);
 		}
 
 		if ($legacy_settings) {
 			$this->add_section(
 				'other',
-				array(
+				[
 					'title' => __('Other', 'wp-ultimo'),
 					'desc'  => __('Other', 'wp-ultimo'),
-				)
+				]
 			);
 
 			foreach ($legacy_settings as $setting_key => $setting) {
-				if (strpos((string) $setting_key, 'license_key_') !== false) {
+				if (str_contains((string) $setting_key, 'license_key_')) {
 					continue; // Remove old license key fields
 
 				}

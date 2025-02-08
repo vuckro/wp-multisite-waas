@@ -68,9 +68,9 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_customize_invoice_template',
-	);
+	];
 
 	/**
 	 * Overrides the original init to add the required ajax endpoints.
@@ -78,11 +78,11 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
-		add_action('wp_ajax_wu-preview-invoice', array($this, 'generate_invoice_preview'));
+		add_action('wp_ajax_wu-preview-invoice', [$this, 'generate_invoice_preview']);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function generate_invoice_preview() {
+	public function generate_invoice_preview(): void {
 
 		if ( ! current_user_can('wu_manage_invoice')) {
 			return;
@@ -119,11 +119,11 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		$url = get_admin_url(wu_get_main_site_id(), 'admin-ajax.php');
 
 		return add_query_arg(
-			array(
+			[
 				'action'            => 'wu-preview-invoice',
 				'customizer'        => 1,
 				'invoice-customize' => 1,
-			),
+			],
 			$url
 		);
 	}
@@ -134,20 +134,20 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$settings = Invoice::get_settings();
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'fields' => array(
-					'note' => array(
+			[
+				'fields' => [
+					'note' => [
 						'type' => 'note',
 						'desc' => __('Changes to this template will be applied to all PDF invoices generated after the change. <br><br>Existing PDF Invoices will not be affected unless explicitly re-generated', 'wp-ultimo'),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$custom_logo = wu_get_isset($settings, 'custom_logo');
@@ -156,139 +156,139 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$custom_logo_url = $custom_logo_args ? $custom_logo_args[0] : '';
 
-		$fields = array(
-			'tab'             => array(
+		$fields = [
+			'tab'             => [
 				'type'              => 'tab-select',
 				'wrapper_classes'   => '',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'tab',
-				),
-				'options'           => array(
+				],
+				'options'           => [
 					'general' => __('General', 'wp-ultimo'),
 					'colors'  => __('Colors', 'wp-ultimo'),
 					'images'  => __('Images', 'wp-ultimo'),
-				),
-			),
+				],
+			],
 
-			'paid_tag_text'   => array(
+			'paid_tag_text'   => [
 				'type'              => 'text',
 				'title'             => __('Paid Tag', 'wp-ultimo'),
 				'placeholder'       => __('e.g. Paid.', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'paid_tag_text', __('Paid', 'wp-ultimo')),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "general")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'paid_tag_text',
-				),
-			),
-			'font'            => array(
+				],
+			],
+			'font'            => [
 				'type'              => 'select',
 				'title'             => __('Font-Family', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'font', ''),
-				'options'           => array(
-					'DejaVuSansCondensed' => __('Sans-Serif', 'wp-ultimo'),
-					'FreeSerif'           => __('Serif', 'wp-ultimo'),
-					'FreeMono'            => __('Mono', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				'options'           => [
+					'DejaVuSansCondensed'  => __('Sans-Serif', 'wp-ultimo'),
+					'DejaVuSerifCondensed' => __('Serif', 'wp-ultimo'),
+					'FreeMono'             => __('Mono', 'wp-ultimo'),
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "general")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'font',
-				),
-			),
-			'footer_message'  => array(
+				],
+			],
+			'footer_message'  => [
 				'type'              => 'textarea',
 				'title'             => __('Footer Content', 'wp-ultimo'),
 				'placeholder'       => __('e.g. Extra Info about the Invoice.', 'wp-ultimo'),
 				'value'             => wu_get_isset($settings, 'footer_message', ''),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "general")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'footer_message',
-				),
-			),
+				],
+			],
 
-			'primary_color'   => array(
+			'primary_color'   => [
 				'type'              => 'color-picker',
 				'title'             => __('Primary Color', 'wp-ultimo'),
 				'value'             => '#00a1ff',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "colors")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'primary_color',
-				),
-			),
+				],
+			],
 
-			'use_custom_logo' => array(
+			'use_custom_logo' => [
 				'type'              => 'toggle',
 				'title'             => __('Use Custom Logo', 'wp-ultimo'),
 				'desc'              => __('You can set a different logo to be used on the invoice.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "images")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'use_custom_logo',
-				),
-			),
-			'custom_logo'     => array(
+				],
+			],
+			'custom_logo'     => [
 				'type'              => 'image',
 				'title'             => __('Custom Logo', 'wp-ultimo'),
 				'desc'              => __('This will be added to the top of the generated PDF.', 'wp-ultimo'),
 				'value'             => '',
 				'img'               => $custom_logo_url,
 				'stacked'           => true,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "images") && require("use_custom_logo", true)',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'custom_logo',
-				),
-			),
-		);
+				],
+			],
+		];
 
-		$settings = array(
+		$settings = [
 			'footer_message'  => wu_get_isset($settings, 'footer_message', ''),
 			'paid_tag_text'   => wu_get_isset($settings, 'paid_tag_text', __('Paid', 'wp-ultimo')),
 			'primary_color'   => wu_get_isset($settings, 'primary_color', '00a1ff'),
 			'use_custom_logo' => wu_get_isset($settings, 'use_custom_logo'),
 			'custom_logo'     => wu_get_isset($settings, 'custom_logo'),
 			'font'            => wu_get_isset($settings, 'font', 'DejaVuSansCondensed'),
-		);
+		];
 
 		$state = array_merge(
 			$settings,
-			array(
+			[
 				'tab'     => 'general',
 				'refresh' => true,
-			)
+			]
 		);
 
 		$this->add_fields_widget(
 			'customizer',
-			array(
+			[
 				'title'     => __('Customizer', 'wp-ultimo'),
 				'position'  => 'side',
 				'fields'    => $fields,
-				'html_attr' => array(
+				'html_attr' => [
 					'style'                    => 'margin-top: -6px;',
 					'data-wu-app'              => 'invoice_customizer',
 					'data-wu-customizer-panel' => true,
 					'data-state'               => json_encode($state),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -322,7 +322,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -333,7 +333,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'customize_label'   => __('Customize Invoice Template', 'wp-ultimo'),
 			'add_new_label'     => __('Customize Invoice Template', 'wp-ultimo'),
 			'edit_label'        => __('Edit Invoice Template', 'wp-ultimo'),
@@ -342,7 +342,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'title_description' => __('This name is used for internal reference only.', 'wp-ultimo'),
 			'save_button_label' => __('Save Invoice Template', 'wp-ultimo'),
 			'save_description'  => __('Save Invoice Template', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -351,7 +351,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		Invoice::save_settings($_POST);
 

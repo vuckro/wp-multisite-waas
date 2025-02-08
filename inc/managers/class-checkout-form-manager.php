@@ -41,7 +41,7 @@ class Checkout_Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Checkout_Form';
+	protected $model_class = \WP_Ultimo\Models\Checkout_Form::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -49,7 +49,7 @@ class Checkout_Form_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 

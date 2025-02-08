@@ -46,7 +46,7 @@ function wu_rest_get_endpoint_schema($class_name, $context = 'create', $force_ge
 
 	$from_cache = false;
 
-	$schema = array();
+	$schema = [];
 
 	$endpoint = wu_rest_get_endpoint_from_class_name($class_name);
 

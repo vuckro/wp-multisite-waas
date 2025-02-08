@@ -29,7 +29,7 @@ class Default_Content_Installer extends Base_Installer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		require_once wu_path('inc/functions/email.php');
 
@@ -143,9 +143,9 @@ class Default_Content_Installer extends Base_Installer {
 	 */
 	public function get_steps() {
 
-		$steps = array();
+		$steps = [];
 
-		$steps['create_template_site'] = array(
+		$steps['create_template_site'] = [
 			'done'        => $this->done_creating_template_site(),
 			'title'       => __('Create Example Template Site', 'wp-ultimo'),
 			'description' => __('This will create a template site on your network that you can use as a starting point.', 'wp-ultimo'),
@@ -153,9 +153,9 @@ class Default_Content_Installer extends Base_Installer {
 			'installing'  => __('Creating Template Site...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
-		$steps['create_products'] = array(
+		$steps['create_products'] = [
 			'done'        => $this->done_creating_products(),
 			'title'       => __('Create Example Products', 'wp-ultimo'),
 			'description' => __('This action will create example products (plans, packages, and services), so you have an starting point.', 'wp-ultimo'),
@@ -163,9 +163,9 @@ class Default_Content_Installer extends Base_Installer {
 			'installing'  => __('Creating Products...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
-		$steps['create_checkout'] = array(
+		$steps['create_checkout'] = [
 			'done'        => $this->done_creating_checkout_forms(),
 			'title'       => __('Create a Checkout Form', 'wp-ultimo'),
 			'description' => __('This action will create a single-step checkout form that your customers will use to place purchases, as well as the page that goes with it.', 'wp-ultimo'),
@@ -173,9 +173,9 @@ class Default_Content_Installer extends Base_Installer {
 			'installing'  => __('Creating Checkout Form and Registration Page...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
-		$steps['create_emails'] = array(
+		$steps['create_emails'] = [
 			'done'        => $this->done_creating_emails(),
 			'title'       => __('Create the System Emails', 'wp-ultimo'),
 			'description' => __('This action will create all emails sent by WP Multisite WaaS.', 'wp-ultimo'),
@@ -183,9 +183,9 @@ class Default_Content_Installer extends Base_Installer {
 			'installing'  => __('Creating System Emails...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
-		$steps['create_login_page'] = array(
+		$steps['create_login_page'] = [
 			'done'        => $this->done_creating_login_page(),
 			'title'       => __('Create Custom Login Page', 'wp-ultimo'),
 			'description' => __('This action will create a custom login page and replace the default one.', 'wp-ultimo'),
@@ -193,7 +193,7 @@ class Default_Content_Installer extends Base_Installer {
 			'installing'  => __('Creating Custom Login Page...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
 		return $steps;
 	}
@@ -207,16 +207,16 @@ class Default_Content_Installer extends Base_Installer {
 	 * @throws \Exception When a site with the /template path already exists.
 	 * @return void
 	 */
-	public function _install_create_template_site() {
+	public function _install_create_template_site(): void {
 
 		$d = wu_get_site_domain_and_path('template');
 
-		$template_site = array(
+		$template_site = [
 			'domain' => $d->domain,
 			'path'   => $d->path,
 			'title'  => __('Template Site', 'wp-ultimo'),
 			'type'   => 'site_template',
-		);
+		];
 
 		$status = wu_create_site($template_site);
 
@@ -238,24 +238,24 @@ class Default_Content_Installer extends Base_Installer {
 	 * @throws \Exception When the network already has products.
 	 * @return void
 	 */
-	public function _install_create_products() {
+	public function _install_create_products(): void {
 		/*
 		 * Saves Images
 		 */
-		$images = array(
-			'free'    => wu_get_asset('free.png', 'img/wizards'),
-			'premium' => wu_get_asset('premium.png', 'img/wizards'),
-			'seo'     => wu_get_asset('seo.png', 'img/wizards'),
-		);
+		$images = [
+			'free'    => wu_get_asset('free.webp', 'img/wizards'),
+			'premium' => wu_get_asset('premium.webp', 'img/wizards'),
+			'seo'     => wu_get_asset('seo.webp', 'img/wizards'),
+		];
 
-		$images = array_map(array('\\WP_Ultimo\\Helpers\\Screenshot', 'save_image_from_url'), $images);
+		$images = array_map([\WP_Ultimo\Helpers\Screenshot::class, 'save_image_from_url'], $images);
 
-		$products = array();
+		$products = [];
 
 		/*
 		 * Free Plan
 		 */
-		$products[] = array(
+		$products[] = [
 			'name'           => __('Free', 'wp-ultimo'),
 			'description'    => __('This is an example of a free plan.', 'wp-ultimo'),
 			'currency'       => wu_get_setting('currency_symbol', 'USD'),
@@ -270,12 +270,12 @@ class Default_Content_Installer extends Base_Installer {
 			'billing_cycles' => false,
 			'list_order'     => false,
 			'active'         => 1,
-		);
+		];
 
 		/*
 		 * Premium Plan
 		 */
-		$products[] = array(
+		$products[] = [
 			'name'           => __('Premium', 'wp-ultimo'),
 			'description'    => __('This is an example of a paid plan.', 'wp-ultimo'),
 			'currency'       => wu_get_setting('currency_symbol', 'USD'),
@@ -290,12 +290,12 @@ class Default_Content_Installer extends Base_Installer {
 			'billing_cycles' => false,
 			'list_order'     => false,
 			'active'         => 1,
-		);
+		];
 
 		/*
 		 * Service
 		 */
-		$products[] = array(
+		$products[] = [
 			'name'           => __('SEO Consulting', 'wp-ultimo'),
 			'description'    => __('This is an example of a service that you can create and charge customers for.', 'wp-ultimo'),
 			'currency'       => wu_get_setting('currency_symbol', 'USD'),
@@ -310,7 +310,7 @@ class Default_Content_Installer extends Base_Installer {
 			'billing_cycles' => false,
 			'list_order'     => false,
 			'active'         => 1,
-		);
+		];
 
 		foreach ($products as $product_data) {
 			$status = wu_create_product($product_data);
@@ -332,13 +332,13 @@ class Default_Content_Installer extends Base_Installer {
 	 * @throws \Exception When a checkout form is already present.
 	 * @return void
 	 */
-	public function _install_create_checkout() {
+	public function _install_create_checkout(): void {
 
-		$checkout_form = array(
+		$checkout_form = [
 			'name'     => __('Registration Form', 'wp-ultimo'),
 			'slug'     => 'main-form',
-			'settings' => array(),
-		);
+			'settings' => [],
+		];
 
 		$status = wu_create_checkout_form($checkout_form);
 
@@ -359,14 +359,14 @@ class Default_Content_Installer extends Base_Installer {
 		/*
 		 * Create the page on the main site.
 		 */
-		$post_details = array(
+		$post_details = [
 			'post_name'    => 'register',
 			'post_title'   => __('Register', 'wp-ultimo'),
 			'post_content' => sprintf($post_content, $status->get_slug()),
 			'post_status'  => 'publish',
 			'post_type'    => 'page',
 			'post_author'  => get_current_user_id(),
-		);
+		];
 
 		$page_id = wp_insert_post($post_details);
 
@@ -387,7 +387,7 @@ class Default_Content_Installer extends Base_Installer {
 	 * @throws \Exception When the content is already present.
 	 * @return void
 	 */
-	public function _install_create_emails() {
+	public function _install_create_emails(): void {
 
 		\WP_Ultimo\Managers\Email_Manager::get_instance()->create_all_system_emails();
 	}
@@ -399,7 +399,7 @@ class Default_Content_Installer extends Base_Installer {
 	 * @throws \Exception When the content is already present.
 	 * @return void
 	 */
-	public function _install_create_login_page() {
+	public function _install_create_login_page(): void {
 
 		$page_content = '
 		<!-- wp:shortcode -->
@@ -407,13 +407,13 @@ class Default_Content_Installer extends Base_Installer {
 		<!-- /wp:shortcode -->
 	  ';
 
-		$page_args = array(
+		$page_args = [
 			'post_title'   => __('Login', 'wp-ultimo'),
 			'post_content' => $page_content,
 			'post_status'  => 'publish',
 			'post_author'  => get_current_user_id(),
 			'post_type'    => 'page',
-		);
+		];
 
 		$page_id = wp_insert_post($page_args);
 

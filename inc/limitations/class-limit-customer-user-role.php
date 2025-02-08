@@ -35,10 +35,10 @@ class Limit_Customer_User_Role extends Limit {
 	 */
 	public static function default_state() {
 
-		return array(
+		return [
 			'enabled' => true,
 			'limit'   => 'default',
-		);
+		];
 	}
 
 	/**

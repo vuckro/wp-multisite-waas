@@ -9,9 +9,9 @@
 
 $setting = wu_get_setting($field_slug);
 
-$setting = is_array($setting) ? $setting : array();
+$setting = is_array($setting) ? $setting : [];
 
-$placeholder = isset($field['placeholder']) ? $field['placeholder'] : '';
+$placeholder = $field['placeholder'] ?? '';
 
 // WU_Scripts()->enqueue_select2();
 

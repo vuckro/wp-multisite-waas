@@ -35,7 +35,7 @@ class Unique extends Rule {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fillableParams = array('model', 'column', 'self_id'); // phpcs:ignore
+	protected $fillableParams = ['model', 'column', 'self_id']; // phpcs:ignore
 
 	/**
 	 * Performs the actual check.
@@ -47,10 +47,10 @@ class Unique extends Rule {
 	public function check($value): bool {
 
 		$this->requireParameters(
-			array(
+			[
 				'model',
 				'column',
-			)
+			]
 		);
 
 		$column  = $this->parameter('column');
@@ -62,17 +62,17 @@ class Unique extends Rule {
 				$callback = 'get_user_by';
 				break;
 			default:
-				$callback = array($model, 'get_by');
+				$callback = [$model, 'get_by'];
 				break;
 		}
 
 		// do query
 		$existing = call_user_func($callback, $column, $value);
 
-		$user_models = array(
+		$user_models = [
 			'\WP_User',
-			'\WP_Ultimo\Models\Customer',
-		);
+			\WP_Ultimo\Models\Customer::class,
+		];
 
 		/*
 		* Customize the error message for the customer.

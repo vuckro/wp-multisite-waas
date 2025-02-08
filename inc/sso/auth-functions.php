@@ -191,8 +191,8 @@ if ( !function_exists( 'auth_redirect' ) ) :
 		$secure = apply_filters( 'secure_auth_redirect', $secure );
 
 		// If https is required and request is http, redirect.
-		if ( $secure && ! is_ssl() && strpos((string) $_SERVER['REQUEST_URI'], 'wp-admin') !== false ) {
-			if ( strncmp((string) $_SERVER['REQUEST_URI'], 'http', strlen('http')) === 0 ) {
+		if ( $secure && ! is_ssl() && str_contains((string) $_SERVER['REQUEST_URI'], 'wp-admin') ) {
+			if ( str_starts_with((string) $_SERVER['REQUEST_URI'], 'http') ) {
 				wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
 				exit;
 			} else {
@@ -222,8 +222,8 @@ if ( !function_exists( 'auth_redirect' ) ) :
 			do_action( 'auth_redirect', $user_id );
 
 			// If the user wants ssl but the session is not ssl, redirect.
-			if ( ! $secure && get_user_option( 'use_ssl', $user_id ) && strpos((string) $_SERVER['REQUEST_URI'], 'wp-admin') !== false ) {
-				if ( strncmp((string) $_SERVER['REQUEST_URI'], 'http', strlen('http')) === 0 ) {
+			if ( ! $secure && get_user_option( 'use_ssl', $user_id ) && str_contains((string) $_SERVER['REQUEST_URI'], 'wp-admin') ) {
+				if ( str_starts_with((string) $_SERVER['REQUEST_URI'], 'http') ) {
 					wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
 					exit;
 				} else {

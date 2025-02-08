@@ -28,13 +28,13 @@ trait Rest_Api {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $enabled_rest_endpoints = array(
+	protected $enabled_rest_endpoints = [
 		'get_item',
 		'get_items',
 		'create_item',
 		'update_item',
 		'delete_item',
-	);
+	];
 
 	/**
 	 * Returns the base used right after the namespace.
@@ -54,14 +54,14 @@ trait Rest_Api {
 	 *
 	 * @since 2.0.0
 	 */
-	public function enable_rest_api() {
+	public function enable_rest_api(): void {
 
 		$is_enabled = \WP_Ultimo\API::get_instance()->is_api_enabled();
 
 		if ($is_enabled) {
-			add_action('rest_api_init', array($this, 'register_routes_general'));
+			add_action('rest_api_init', [$this, 'register_routes_general']);
 
-			add_action('rest_api_init', array($this, 'register_routes_with_id'));
+			add_action('rest_api_init', [$this, 'register_routes_with_id']);
 		}
 	}
 
@@ -71,27 +71,27 @@ trait Rest_Api {
 	 *
 	 * @since 2.0.0
 	 */
-	public function register_routes_general() {
+	public function register_routes_general(): void {
 
-		$routes = array();
+		$routes = [];
 
 		if (in_array('get_items', $this->enabled_rest_endpoints, true)) {
-			$routes = array(
-				array(
+			$routes = [
+				[
 					'methods'             => \WP_REST_Server::READABLE,
-					'callback'            => array($this, 'get_items_rest'),
-					'permission_callback' => array($this, 'get_items_permissions_check'),
-				),
-			);
+					'callback'            => [$this, 'get_items_rest'],
+					'permission_callback' => [$this, 'get_items_permissions_check'],
+				],
+			];
 		}
 
 		if (in_array('create_item', $this->enabled_rest_endpoints, true)) {
-			$routes[] = array(
+			$routes[] = [
 				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => array($this, 'create_item_rest'),
-				'permission_callback' => array($this, 'create_item_permissions_check'),
+				'callback'            => [$this, 'create_item_rest'],
+				'permission_callback' => [$this, 'create_item_permissions_check'],
 				'args'                => $this->get_arguments_schema(),
-			);
+			];
 		}
 
 		if ( ! empty($routes)) {
@@ -112,33 +112,33 @@ trait Rest_Api {
 	 *
 	 * @since 2.0.0
 	 */
-	public function register_routes_with_id() {
+	public function register_routes_with_id(): void {
 
-		$routes = array();
+		$routes = [];
 
 		if (in_array('get_item', $this->enabled_rest_endpoints, true)) {
-			$routes[] = array(
+			$routes[] = [
 				'methods'             => \WP_REST_Server::READABLE,
-				'callback'            => array($this, 'get_item_rest'),
-				'permission_callback' => array($this, 'get_item_permissions_check'),
-			);
+				'callback'            => [$this, 'get_item_rest'],
+				'permission_callback' => [$this, 'get_item_permissions_check'],
+			];
 		}
 
 		if (in_array('update_item', $this->enabled_rest_endpoints, true)) {
-			$routes[] = array(
+			$routes[] = [
 				'methods'             => \WP_REST_Server::EDITABLE,
-				'callback'            => array($this, 'update_item_rest'),
-				'permission_callback' => array($this, 'update_item_permissions_check'),
+				'callback'            => [$this, 'update_item_rest'],
+				'permission_callback' => [$this, 'update_item_permissions_check'],
 				'args'                => $this->get_arguments_schema(true),
-			);
+			];
 		}
 
 		if (in_array('delete_item', $this->enabled_rest_endpoints, true)) {
-			$routes[] = array(
+			$routes[] = [
 				'methods'             => \WP_REST_Server::DELETABLE,
-				'callback'            => array($this, 'delete_item_rest'),
-				'permission_callback' => array($this, 'delete_item_permissions_check'),
-			);
+				'callback'            => [$this, 'delete_item_rest'],
+				'permission_callback' => [$this, 'delete_item_permissions_check'],
+			];
 		}
 
 		if ( ! empty($routes)) {
@@ -165,7 +165,7 @@ trait Rest_Api {
 		$item = $this->model_class::get_by_id($request['id']);
 
 		if (empty($item)) {
-			return new \WP_Error("wu_rest_{$this->slug}_invalid_id", __('Item not found.', 'wp-ultimo'), array('status' => 404));
+			return new \WP_Error("wu_rest_{$this->slug}_invalid_id", __('Item not found.', 'wp-ultimo'), ['status' => 404]);
 		}
 
 		return rest_ensure_response($item);
@@ -196,7 +196,7 @@ trait Rest_Api {
 
 		$body = json_decode($request->get_body(), true);
 
-		$model_name = (new $this->model_class(array()))->model;
+		$model_name = (new $this->model_class([]))->model;
 
 		$saver_function = "wu_create_{$model_name}";
 
@@ -215,7 +215,7 @@ trait Rest_Api {
 		}
 
 		if ( ! $saved) {
-			return new \WP_Error("wu_rest_{$this->slug}", __('Something went wrong (Code 1).', 'wp-ultimo'), array('status' => 400));
+			return new \WP_Error("wu_rest_{$this->slug}", __('Something went wrong (Code 1).', 'wp-ultimo'), ['status' => 400]);
 		}
 
 		return rest_ensure_response($item);
@@ -235,12 +235,12 @@ trait Rest_Api {
 		$item = $this->model_class::get_by_id($id);
 
 		if (empty($item)) {
-			return new \WP_Error("wu_rest_{$this->slug}_invalid_id", __('Item not found.', 'wp-ultimo'), array('status' => 404));
+			return new \WP_Error("wu_rest_{$this->slug}_invalid_id", __('Item not found.', 'wp-ultimo'), ['status' => 404]);
 		}
 
 		$params = array_filter(
 			json_decode($request->get_body(), true),
-			array($this, 'is_not_credential_key'),
+			[$this, 'is_not_credential_key'],
 			ARRAY_FILTER_USE_KEY
 		);
 
@@ -250,7 +250,7 @@ trait Rest_Api {
 			if ($param === 'meta') {
 				$item->update_meta_batch($value);
 			} elseif (method_exists($item, $set_method)) {
-				call_user_func(array($item, $set_method), $value);
+				call_user_func([$item, $set_method], $value);
 			} else {
 				$error_message = sprintf(
 					/* translators: 1. Object class name; 2. Set method name */
@@ -262,7 +262,7 @@ trait Rest_Api {
 				return new \WP_Error(
 					"wu_rest_{$this->slug}_invalid_set_method",
 					$error_message,
-					array('status' => 400)
+					['status' => 400]
 				);
 			}
 		}
@@ -292,7 +292,7 @@ trait Rest_Api {
 		$item = $this->model_class::get_by_id($request['id']);
 
 		if (empty($item)) {
-			return new \WP_Error("wu_rest_{$this->slug}_invalid_id", __('Item not found.', 'wp-ultimo'), array('status' => 404));
+			return new \WP_Error("wu_rest_{$this->slug}_invalid_id", __('Item not found.', 'wp-ultimo'), ['status' => 404]);
 		}
 
 		$result = $item->delete();
@@ -440,12 +440,12 @@ trait Rest_Api {
 	 */
 	private function is_not_credential_key($value) {
 
-		$credentials_keys = array(
+		$credentials_keys = [
 			'api_key',
 			'api_secret',
 			'api-key',
 			'api-secret',
-		);
+		];
 
 		return ! in_array($value, $credentials_keys, true);
 	}
@@ -460,15 +460,15 @@ trait Rest_Api {
 	 */
 	private function is_not_id_key($value) {
 
-		$arr = array(
+		$arr = [
 			'id',
-		);
+		];
 
 		if ($this->slug === 'site') {
-			$arr = array(
+			$arr = [
 				'id',
 				'blog_id',
-			);
+			];
 		}
 
 		return ! in_array($value, $arr, true);
@@ -486,7 +486,7 @@ trait Rest_Api {
 
 		$schema = wu_rest_get_endpoint_schema($this->model_class, $edit ? 'update' : 'create', true);
 
-		$args = array_filter($schema, array($this, 'is_not_id_key'), ARRAY_FILTER_USE_KEY);
+		$args = array_filter($schema, [$this, 'is_not_id_key'], ARRAY_FILTER_USE_KEY);
 
 		return $this->filter_schema_arguments($args);
 	}
@@ -521,12 +521,12 @@ trait Rest_Api {
 
 		$remove_status = apply_filters(
 			"wu_api_{$this->slug}_remove_status",
-			array(
+			[
 				'broadcast',
 				'membership',
 				'product',
 				'payment',
-			)
+			]
 		);
 
 		if ( ! in_array($this->slug, $remove_status, true) && isset($args['status'])) {
@@ -535,12 +535,12 @@ trait Rest_Api {
 
 		$remove_slug = apply_filters(
 			"wu_api_{$this->slug}_remove_slug",
-			array(
+			[
 				'broadcast',
 				'product',
 				'checkout_form',
 				'event',
-			)
+			]
 		);
 
 		if ( ! in_array($this->slug, $remove_slug, true) && isset($args['slug'])) {

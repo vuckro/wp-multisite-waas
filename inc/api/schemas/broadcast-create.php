@@ -18,76 +18,76 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'migrated_from_id' => array(
+return [
+	'migrated_from_id' => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'notice_type'      => array(
+	],
+	'notice_type'      => [
 		'description' => __('Can be info, success, warning or error.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-		'enum'        => array(
+		'enum'        => [
 			'info',
 			'success',
 			'warning',
 			'error',
-		),
-	),
-	'name'             => array(
+		],
+	],
+	'name'             => [
 		'description' => __('This broadcast name, which is used as broadcast title as well.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'type'             => array(
+	],
+	'type'             => [
 		'description' => __('The type being set.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'status'           => array(
+	],
+	'status'           => [
 		'description' => __('The status being set.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'author_id'        => array(
+	],
+	'author_id'        => [
 		'description' => __('The author ID.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'title'            => array(
+	],
+	'title'            => [
 		'description' => __('Post title.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'content'          => array(
+	],
+	'content'          => [
 		'description' => __('Post content.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'excerpt'          => array(
+	],
+	'excerpt'          => [
 		'description' => __('Post excerpt.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_created'     => array(
+	],
+	'date_created'     => [
 		'description' => __('Post creation date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'    => array(
+	],
+	'date_modified'    => [
 		'description' => __('Post last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'slug'             => array(
+	],
+	'slug'             => [
 		'description' => __('The slug.', 'wp-ultimo'),
 		'type'        => 'mixed',
 		'required'    => false,
-	),
-	'skip_validation'  => array(
+	],
+	'skip_validation'  => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

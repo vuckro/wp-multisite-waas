@@ -29,13 +29,13 @@ class Elementor_Compat {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_duplicate_site', array($this, 'regenerate_css'));
+		add_action('wu_duplicate_site', [$this, 'regenerate_css']);
 
-		add_filter('wu_should_redirect_to_primary_domain', array($this, 'maybe_prevent_redirection'));
+		add_filter('wu_should_redirect_to_primary_domain', [$this, 'maybe_prevent_redirection']);
 
-		add_action('elementor/widget/shortcode/skins_init', array($this, 'maybe_setup_preview'));
+		add_action('elementor/widget/shortcode/skins_init', [$this, 'maybe_setup_preview']);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Elementor_Compat {
 	 * @param array $site Info about the duplicated site.
 	 * @return void
 	 */
-	public function regenerate_css($site) {
+	public function regenerate_css($site): void {
 
 		if ( ! class_exists('\Elementor\Plugin')) {
 			return;
@@ -85,12 +85,12 @@ class Elementor_Compat {
 	 * @since 2.0.5
 	 * @return void
 	 */
-	public function maybe_setup_preview() {
+	public function maybe_setup_preview(): void {
 
-		$elementor_actions = array(
+		$elementor_actions = [
 			'elementor',
 			'elementor_ajax',
-		);
+		];
 
 		if (in_array(wu_request('action'), $elementor_actions, true)) {
 			wu_element_setup_preview();

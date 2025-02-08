@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
  * @param array $state_array The array to convert.
  * @return string
  */
-function wu_convert_to_state($state_array = array()) {
+function wu_convert_to_state($state_array = []) {
 
 	$object = (object) $state_array; // Force object to prevent issues with Vue.
 
@@ -35,20 +35,20 @@ function wu_convert_to_state($state_array = array()) {
 function wu_remove_empty_p($content): ?string {
 
 	$content = preg_replace(
-		array(
+		[
 			'#<p>\s*<(div|aside|section|article|header|footer)#',
 			'#</(div|aside|section|article|header|footer)>\s*</p>#',
 			'#</(div|aside|section|article|header|footer)>\s*<br ?/?>#',
 			'#<(div|aside|section|article|header|footer)(.*?)>\s*</p>#',
 			'#<p>\s*</(div|aside|section|article|header|footer)#',
-		),
-		array(
+		],
+		[
 			'<$1',
 			'</$1>',
 			'</$1>',
 			'<$1$2>',
 			'</$1',
-		),
+		],
 		$content
 	);
 
@@ -73,7 +73,7 @@ function wu_remove_empty_p($content): ?string {
  *
  * @param array $attributes The list of attributes.
  */
-function wu_array_to_html_attrs($attributes = array()): string {
+function wu_array_to_html_attrs($attributes = []): string {
 
 	$attributes = array_map(fn($key, $value) => $key . '="' . htmlspecialchars((string) $value) . '"', array_keys($attributes), $attributes);
 
@@ -148,9 +148,9 @@ function wu_preview_image($image_url, $label = false): string {
  */
 function wu_get_icons_list() {
 
-	$all_icons = array();
+	$all_icons = [];
 
-	$all_icons['WP Ultimo Icons'] = array(
+	$all_icons['WP Ultimo Icons'] = [
 		'dashicons-wu-add_task',
 		'dashicons-wu-address',
 		'dashicons-wu-add-to-list',
@@ -487,9 +487,9 @@ function wu_get_icons_list() {
 		'dashicons-wu-wallet',
 		'dashicons-wu-warning',
 		'dashicons-wu-wp-ultimo',
-	);
+	];
 
-	$all_icons['Dashicons'] = array(
+	$all_icons['Dashicons'] = [
 		'dashicons-before dashicons-admin-appearance',
 		'dashicons-before dashicons-admin-collapse',
 		'dashicons-before dashicons-admin-comments',
@@ -744,7 +744,7 @@ function wu_get_icons_list() {
 		'dashicons-before dashicons-wordpress',
 		'dashicons-before dashicons-yes-alt',
 		'dashicons-before dashicons-yes',
-	);
+	];
 
 	return apply_filters('wu_icons_list', $all_icons);
 }

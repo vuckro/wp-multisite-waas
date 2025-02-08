@@ -43,7 +43,7 @@ class Webhook_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Webhook';
+	protected $model_class = \WP_Ultimo\Models\Webhook::class;
 
 	/**
 	 * Holds the list of available events for webhooks.
@@ -51,7 +51,7 @@ class Webhook_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $events = array();
+	protected $events = [];
 
 	/**
 	 * Holds the list of all webhooks.
@@ -59,7 +59,7 @@ class Webhook_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $webhooks = array();
+	protected $webhooks = [];
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -67,15 +67,15 @@ class Webhook_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
 		$this->enable_wp_cli();
 
-		add_action('init', array($this, 'register_webhook_listeners'));
+		add_action('init', [$this, 'register_webhook_listeners']);
 
-		add_action('wp_ajax_wu_send_test_event', array($this, 'send_test_event'));
+		add_action('wp_ajax_wu_send_test_event', [$this, 'send_test_event']);
 	}
 
 	/**
@@ -84,10 +84,10 @@ class Webhook_Manager extends Base_Manager {
 	 * @todo This needs to have a switch, allowing us to turn it on and off.
 	 * @return void.
 	 */
-	public function register_webhook_listeners() {
+	public function register_webhook_listeners(): void {
 
 		foreach (wu_get_event_types() as $key => $event) {
-			add_action('wu_event_' . $key, array($this, 'send_webhooks'));
+			add_action('wu_event_' . $key, [$this, 'send_webhooks']);
 		}
 	}
 
@@ -99,7 +99,7 @@ class Webhook_Manager extends Base_Manager {
 	 * @param array $args with events slug and payload.
 	 * @return void
 	 */
-	public function send_webhooks($args) {
+	public function send_webhooks($args): void {
 
 		$webhooks = Webhook::get_all();
 
@@ -131,19 +131,17 @@ class Webhook_Manager extends Base_Manager {
 
 		$request = wp_remote_post(
 			$webhook->get_webhook_url(),
-			array(
+			[
 				'method'      => 'POST',
 				'timeout'     => 45,
 				'redirection' => 5,
-				'headers'     => array(
+				'headers'     => [
 					'Content-Type' => 'application/json',
-				),
-				'cookies'     => array(),
+				],
+				'cookies'     => [],
 				'body'        => wp_json_encode($data),
 				'blocking'    => $blocking,
-			),
-			current_filter(),
-			$webhook
+			]
 		);
 
 		if (is_wp_error($request)) {
@@ -193,34 +191,34 @@ class Webhook_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function send_test_event() {
+	public function send_test_event(): void {
 
 		if ( ! current_user_can('manage_network')) {
 			wp_send_json(
-				array(
+				[
 					'response' => __('You do not have enough permissions to send a test event.', 'wp-ultimo'),
 					'webhooks' => Webhook::get_items_as_array(),
-				)
+				]
 			);
 		}
 
 		$event = wu_get_event_type($_POST['webhook_event']);
 
-		$webhook_data = array(
+		$webhook_data = [
 			'webhook_url' => $_POST['webhook_url'],
 			'event'       => $_POST['webhook_event'],
 			'active'      => true,
-		);
+		];
 
 		$webhook = new Webhook($webhook_data);
 
 		$response = $this->send_webhook($webhook, wu_maybe_lazy_load_payload($event['payload']), true, false);
 
 		wp_send_json(
-			array(
+			[
 				'response' => htmlentities2($response),
 				'id'       => wu_request('webhook_id'),
-			)
+			]
 		);
 	}
 
@@ -229,7 +227,7 @@ class Webhook_Manager extends Base_Manager {
 	 *
 	 * @return void.
 	 */
-	public function serve_logs() {
+	public function serve_logs(): void {
 
 		echo '<style>
 			body {
@@ -263,7 +261,7 @@ class Webhook_Manager extends Base_Manager {
 
 				$line = str_replace(' - ', ' </strong> - ', $line);
 
-				$matches = array();
+				$matches = [];
 
 				$line = str_replace('\'', '\\\'', $line);
 				$line = preg_replace('~(\{(?:[^{}]|(?R))*\})~', '<pre><script>document.write(JSON.stringify(JSON.parse(\'${1}\'), null, 2));</script></pre>', $line);
@@ -301,14 +299,14 @@ class Webhook_Manager extends Base_Manager {
 			$message .= sprintf('Got error: %s', $response);
 		}
 
-		$event_data = array(
+		$event_data = [
 			'object_id'   => $id,
 			'object_type' => $this->slug,
 			'slug'        => $event_name,
-			'payload'     => array(
+			'payload'     => [
 				'message' => $message,
-			),
-		);
+			],
+		];
 
 		wu_create_event($event_data);
 	}

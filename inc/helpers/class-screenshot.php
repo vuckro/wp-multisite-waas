@@ -60,9 +60,9 @@ class Screenshot {
 
 		$response = wp_remote_get(
 			$url,
-			array(
+			[
 				'timeout' => 50,
-			)
+			]
 		);
 
 		if (wp_remote_retrieve_response_code($response) !== 200) {
@@ -80,7 +80,7 @@ class Screenshot {
 		/*
 		 * Check if the results contain a PNG header.
 		 */
-		if (strncmp($response['body'], "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a", strlen("\x89\x50\x4e\x47\x0d\x0a\x1a\x0a")) !== 0) {
+		if (! str_starts_with($response['body'], "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a")) {
 			wu_log_add('screenshot-generator', $log_prefix . __('Result is not a PNG file.', 'wp-ultimo'), LogLevel::ERROR);
 
 			return false;
@@ -100,13 +100,13 @@ class Screenshot {
 		$attachment_title = sanitize_file_name(pathinfo($file_name, PATHINFO_FILENAME));
 		$wp_upload_dir    = wp_upload_dir();
 
-		$post_info = array(
+		$post_info = [
 			'guid'           => $wp_upload_dir['url'] . '/' . $file_name,
 			'post_mime_type' => $file_type['type'],
 			'post_title'     => $attachment_title,
 			'post_content'   => '',
 			'post_status'    => 'inherit',
-		);
+		];
 
 		// Create the attachment
 		$attach_id = wp_insert_attachment($post_info, $file_path);

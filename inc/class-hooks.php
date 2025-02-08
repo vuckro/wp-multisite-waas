@@ -30,22 +30,22 @@ class Hooks {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function init() {
+	public static function init(): void {
 
 		/**
 	 * Runs on WP Multisite WaaS activation
 	 */
-		register_activation_hook(WP_ULTIMO_PLUGIN_FILE, array('WP_Ultimo\Hooks', 'on_activation'));
+		register_activation_hook(WP_ULTIMO_PLUGIN_FILE, [self::class, 'on_activation']);
 
 		/**
 		 * Runs on WP Multisite WaaS deactivation
 		 */
-		register_deactivation_hook(WP_ULTIMO_PLUGIN_FILE, array('WP_Ultimo\Hooks', 'on_deactivation'));
+		register_deactivation_hook(WP_ULTIMO_PLUGIN_FILE, [self::class, 'on_deactivation']);
 
 		/**
 		 * Runs the activation hook.
 		 */
-		add_action('plugins_loaded', array('WP_Ultimo\Hooks', 'on_activation_do'), 1);
+		add_action('plugins_loaded', [self::class, 'on_activation_do'], 1);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Hooks {
 	 * @since 1.9.6 It now uses hook-based approach, it is up to each sub-class to attach their own routines.
 	 * @since 1.2.0
 	 */
-	public static function on_activation() {
+	public static function on_activation(): void {
 
 		wu_log_add('wp-ultimo-core', __('Activating WP Multisite WaaS...', 'wp-ultimo'));
 
@@ -70,7 +70,7 @@ class Hooks {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public static function on_activation_do() {
+	public static function on_activation_do(): void {
 
 		if (get_network_option(null, 'wu_activation') === 'yes' && wu_request('activate')) {
 
@@ -98,7 +98,7 @@ class Hooks {
 	 * @since 1.9.6 It now uses hook-based approach, it is up to each sub-class to attach their own routines.
 	 * @since 1.2.0
 	 */
-	public static function on_deactivation() {
+	public static function on_deactivation(): void {
 
 		wu_log_add('wp-ultimo-core', __('Deactivating WP Multisite WaaS...', 'wp-ultimo'));
 

@@ -61,7 +61,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.7
 	 * @var array
 	 */
-	protected $other_ids = array();
+	protected $other_ids = [];
 
 	/**
 	 * The order cart object.
@@ -165,7 +165,7 @@ abstract class Base_Gateway {
 	 * @param \WP_Ultimo\Checkout\Cart $order The order.
 	 * @return void
 	 */
-	public function set_order($order) {
+	public function set_order($order): void {
 
 		if ($order === null) {
 			return;
@@ -643,16 +643,16 @@ abstract class Base_Gateway {
 		$return_url = is_admin() ? admin_url('admin.php') : $this->return_url;
 
 		$return_url = remove_query_arg(
-			array(
+			[
 				'wu-confirm',
 				'token',
 				'PayerID',
-			),
+			],
 			$return_url
 		);
 
 		if (is_admin()) {
-			$args = array('page' => 'account');
+			$args = ['page' => 'account'];
 
 			if ($this->order) {
 				$args['updated'] = $this->order->get_cart_type();
@@ -661,10 +661,10 @@ abstract class Base_Gateway {
 			$return_url = add_query_arg($args, $return_url);
 		} else {
 			$return_url = add_query_arg(
-				array(
+				[
 					'payment' => $this->payment->get_hash(),
 					'status'  => 'done',
-				),
+				],
 				$return_url
 			);
 		}
@@ -696,9 +696,9 @@ abstract class Base_Gateway {
 		}
 
 		return add_query_arg(
-			array(
+			[
 				'payment' => $this->payment->get_hash(),
-			),
+			],
 			$this->cancel_url
 		);
 	}
@@ -716,10 +716,10 @@ abstract class Base_Gateway {
 		}
 
 		return add_query_arg(
-			array(
+			[
 				'payment'    => $this->payment->get_hash(),
 				'wu-confirm' => $this->get_id(),
-			),
+			],
 			$this->confirm_url
 		);
 	}
@@ -744,7 +744,7 @@ abstract class Base_Gateway {
 	 * @param \WP_Ultimo\Models\Payment $payment The payment.
 	 * @return void
 	 */
-	public function set_payment($payment) {
+	public function set_payment($payment): void {
 
 		$this->payment = $payment;
 	}
@@ -756,7 +756,7 @@ abstract class Base_Gateway {
 	 * @param \WP_Ultimo\Models\Membership $membership The membership.
 	 * @return void
 	 */
-	public function set_membership($membership) {
+	public function set_membership($membership): void {
 
 		$this->membership = $membership;
 	}
@@ -768,7 +768,7 @@ abstract class Base_Gateway {
 	 * @param \WP_Ultimo\Models\Payment $customer The customer.
 	 * @return void
 	 */
-	public function set_customer($customer) {
+	public function set_customer($customer): void {
 
 		$this->customer = $customer;
 	}
@@ -782,7 +782,7 @@ abstract class Base_Gateway {
 	 * @param \WP_Ultimo\Models\Membership $membership The membership object.
 	 * @return void
 	 */
-	public function trigger_payment_processed($payment, $membership = null) {
+	public function trigger_payment_processed($payment, $membership = null): void {
 
 		if ($membership === null) {
 			$membership = $payment->get_membership();
@@ -829,7 +829,7 @@ abstract class Base_Gateway {
 	 */
 	public function get_all_ids() {
 
-		$all_ids = array_merge(array($this->get_id()), (array) $this->other_ids);
+		$all_ids = array_merge([$this->get_id()], (array) $this->other_ids);
 
 		return array_unique($all_ids);
 	}

@@ -35,7 +35,7 @@ class Broadcast extends Post_Base_Model {
 	 * @access public
 	 * @var mixed
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Broadcasts\\Broadcast_Query';
+	protected $query_class = \WP_Ultimo\Database\Broadcasts\Broadcast_Query::class;
 
 	/**
 	 * Post type.
@@ -51,7 +51,7 @@ class Broadcast extends Post_Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $allowed_types = array('broadcast_email', 'broadcast_notice');
+	protected $allowed_types = ['broadcast_email', 'broadcast_notice'];
 
 	/**
 	 * Set the allowed status to prevent saving wrong status.
@@ -59,7 +59,7 @@ class Broadcast extends Post_Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $allowed_status = array('publish', 'draft');
+	protected $allowed_status = ['publish', 'draft'];
 
 	/**
 	 * Broadcast status.
@@ -107,14 +107,14 @@ class Broadcast extends Post_Base_Model {
 	 */
 	public function validation_rules() {
 
-		return array(
+		return [
 			'notice_type' => 'in:info,success,warning,error',
 			'status'      => 'default:publish',
 			'name'        => 'default:title',
 			'title'       => 'required|min:2',
 			'content'     => 'required|min:3',
 			'type'        => 'required|in:broadcast_email,broadcast_notice|default:broadcast_notice',
-		);
+		];
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Broadcast extends Post_Base_Model {
 	 * @param int $migrated_from_id The ID of the original 1.X model that was used to generate this item on migration.
 	 * @return void
 	 */
-	public function set_migrated_from_id($migrated_from_id) {
+	public function set_migrated_from_id($migrated_from_id): void {
 
 		$this->meta['migrated_from_id'] = $migrated_from_id;
 
@@ -202,7 +202,7 @@ class Broadcast extends Post_Base_Model {
 	 * @param string $message_targets The targets for this broadcast.
 	 * @return void
 	 */
-	public function set_message_targets($message_targets) {
+	public function set_message_targets($message_targets): void {
 
 		$this->meta['message_targets'] = $message_targets;
 	}
@@ -216,7 +216,7 @@ class Broadcast extends Post_Base_Model {
 	 * @options info,success,warning,error
 	 * @return void
 	 */
-	public function set_notice_type($notice_type) {
+	public function set_notice_type($notice_type): void {
 
 		$this->meta['notice_type'] = $notice_type;
 
@@ -231,7 +231,7 @@ class Broadcast extends Post_Base_Model {
 	 * @param string $name This broadcast name, which is used as broadcast title as well.
 	 * @return void
 	 */
-	public function set_name($name) {
+	public function set_name($name): void {
 
 		$this->set_title($name);
 	}

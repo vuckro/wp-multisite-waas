@@ -60,9 +60,9 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_customize_invoice_template',
-	);
+	];
 
 	/**
 	 * Returns the preview URL. This is then added to the iframe.
@@ -75,10 +75,10 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 		$url = get_site_url(null);
 
 		return add_query_arg(
-			array(
+			[
 				'customizer' => 1,
 				Template_Previewer::get_instance()->get_preview_parameter() => 1,
-			),
+			],
 			$url
 		);
 	}
@@ -89,27 +89,27 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'fields' => array(
-					'preview_url_parameter' => array(
+			[
+				'fields' => [
+					'preview_url_parameter' => [
 						'type'  => 'text',
 						'title' => __('URL Parameter', 'wp-ultimo'),
 						'desc'  => __('This is the URL parameter WP Multisite WaaS will use to generate the template preview URLs.', 'wp-ultimo'),
 						'value' => Template_Previewer::get_instance()->get_setting('preview_url_parameter', 'template-preview'),
-					),
-					'enabled'               => array(
+					],
+					'enabled'               => [
 						'type'      => 'toggle',
 						'title'     => __('Active', 'wp-ultimo'),
 						'desc'      => __('If your site templates are not loading, you can disable the top-bar using this setting.', 'wp-ultimo'),
 						'value'     => Template_Previewer::get_instance()->get_setting('enabled', true),
-						'html_attr' => array(),
-					),
-				),
-			)
+						'html_attr' => [],
+					],
+				],
+			]
 		);
 
 		$custom_logo_id = Template_Previewer::get_instance()->get_setting('custom_logo');
@@ -118,124 +118,124 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$custom_logo = $custom_logo ? $custom_logo[0] : false;
 
-		$fields = array(
-			'tab'                         => array(
+		$fields = [
+			'tab'                         => [
 				'type'              => 'tab-select',
 				'wrapper_classes'   => '',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'tab',
-				),
-				'options'           => array(
+				],
+				'options'           => [
 					'general' => __('General', 'wp-ultimo'),
 					'colors'  => __('Colors', 'wp-ultimo'),
 					'images'  => __('Images', 'wp-ultimo'),
-				),
-			),
+				],
+			],
 
-			'display_responsive_controls' => array(
+			'display_responsive_controls' => [
 				'type'              => 'toggle',
 				'title'             => __('Show Responsive Controls', 'wp-ultimo'),
 				'desc'              => __('Toggle to show or hide the responsive controls.', 'wp-ultimo'),
 				'value'             => true,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "general")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'display_responsive_controls',
-				),
-			),
-			'button_text'                 => array(
+				],
+			],
+			'button_text'                 => [
 				'type'              => 'text',
 				'title'             => __('Button Text', 'wp-ultimo'),
 				'value'             => __('Use this Template', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "general")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model.lazy' => 'button_text',
-				),
-			),
+				],
+			],
 
-			'bg_color'                    => array(
+			'bg_color'                    => [
 				'type'              => 'color-picker',
 				'title'             => __('Background Color', 'wp-ultimo'),
 				'desc'              => __('Choose the background color for the top-bar.', 'wp-ultimo'),
 				'value'             => '#f9f9f9',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "colors")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'bg_color',
-				),
-			),
-			'button_bg_color'             => array(
+				],
+			],
+			'button_bg_color'             => [
 				'type'              => 'color-picker',
 				'title'             => __('Button BG Color', 'wp-ultimo'),
 				'desc'              => __('Pick the background color for the button.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "colors")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'button_bg_color',
-				),
-			),
+				],
+			],
 
-			'use_custom_logo'             => array(
+			'use_custom_logo'             => [
 				'type'              => 'toggle',
 				'title'             => __('Use Custom Logo', 'wp-ultimo'),
 				'desc'              => __('You can set a different logo to be used on the top-bar.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "images")',
 					'v-cloak' => 1,
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'use_custom_logo',
-				),
-			),
-			'custom_logo'                 => array(
+				],
+			],
+			'custom_logo'                 => [
 				'type'              => 'image',
 				'stacked'           => true,
 				'title'             => __('Custom Logo', 'wp-ultimo'),
 				'desc'              => __('The logo is displayed on the preview page top-bar.', 'wp-ultimo'),
 				'value'             => $custom_logo_id,
 				'img'               => $custom_logo,
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'require("tab", "images") && require("use_custom_logo", true)',
 					'v-cloak' => 1,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$settings = Template_Previewer::get_instance()->get_settings();
 
 		$state = array_merge(
 			$settings,
-			array(
+			[
 				'tab'     => 'general',
 				'refresh' => true,
-			)
+			]
 		);
 
 		$this->add_fields_widget(
 			'customizer',
-			array(
+			[
 				'title'     => __('Customizer', 'wp-ultimo'),
 				'position'  => 'side',
 				'fields'    => $fields,
-				'html_attr' => array(
+				'html_attr' => [
 					'style'                    => 'margin-top: -6px;',
 					'data-wu-app'              => 'site_template_customizer',
 					'data-wu-customizer-panel' => true,
 					'data-state'               => json_encode($state),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -269,7 +269,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -280,7 +280,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'customize_label'   => __('Customize Template Previewer', 'wp-ultimo'),
 			'add_new_label'     => __('Customize Template Previewer', 'wp-ultimo'),
 			'edit_label'        => __('Edit Template Previewer', 'wp-ultimo'),
@@ -289,7 +289,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 			'title_description' => __('This name is used for internal reference only.', 'wp-ultimo'),
 			'save_button_label' => __('Save Changes', 'wp-ultimo'),
 			'save_description'  => '',
-		);
+		];
 	}
 
 	/**
@@ -298,13 +298,13 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		$settings = Template_Previewer::get_instance()->save_settings($_POST);
 
-		$array_params = array(
+		$array_params = [
 			'updated' => 1,
-		);
+		];
 
 		$url = add_query_arg($array_params);
 

@@ -30,7 +30,7 @@ abstract class Enum {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	static $options = array();
+	static $options = [];
 	/**
 	 * @var string
 	 */
@@ -69,7 +69,7 @@ abstract class Enum {
 	 */
 	protected function icon_classes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -223,10 +223,10 @@ abstract class Enum {
 	public function exists_or_default($array, $key, $default = '') {
 
 		if (empty($default)) {
-			$default = isset($array[ static::__default ]) ? $array[ static::__default ] : '';
+			$default = $array[ static::__default ] ?? '';
 		}
 
-		return isset($array[ $key ]) ? $array[ $key ] : $default;
+		return $array[ $key ] ?? $default;
 	}
 
 	/**

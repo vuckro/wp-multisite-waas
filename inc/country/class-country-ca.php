@@ -54,11 +54,11 @@ class Country_CA extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'CA',
 		'currency'     => 'CAD',
 		'phone_code'   => 1,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -87,7 +87,7 @@ class Country_CA extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AB' => __('Alberta', 'wp-ultimo'),
 			'BC' => __('British Columbia', 'wp-ultimo'),
 			'MB' => __('Manitoba', 'wp-ultimo'),
@@ -101,6 +101,6 @@ class Country_CA extends Country {
 			'QC' => __('Quebec', 'wp-ultimo'),
 			'SK' => __('Saskatchewan', 'wp-ultimo'),
 			'YT' => __('Yukon', 'wp-ultimo'),
-		);
+		];
 	}
 }

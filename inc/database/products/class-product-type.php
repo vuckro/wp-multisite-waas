@@ -38,11 +38,11 @@ class Product_Type extends Enum {
 	 */
 	protected function classes() {
 
-		return array(
+		return [
 			static::PLAN    => 'wu-bg-green-200 wu-text-green-700',
 			static::PACKAGE => 'wu-bg-gray-200 wu-text-blue-700',
 			static::SERVICE => 'wu-bg-yellow-200 wu-text-yellow-700',
-		);
+		];
 	}
 
 	/**
@@ -53,10 +53,10 @@ class Product_Type extends Enum {
 	 */
 	protected function labels() {
 
-		return array(
+		return [
 			static::PLAN    => __('Plan', 'wp-ultimo'),
 			static::PACKAGE => __('Package', 'wp-ultimo'),
 			static::SERVICE => __('Service', 'wp-ultimo'),
-		);
+		];
 	}
 }

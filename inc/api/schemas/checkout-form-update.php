@@ -18,75 +18,75 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'slug'                => array(
+return [
+	'slug'                => [
 		'description' => __('The checkout form slug. It needs to be unique and preferably make it clear what it is about. E.g. my_checkout_form.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'name'                => array(
+	],
+	'name'                => [
 		'description' => __('Your checkout form name, which is used as checkout form title as well.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'active'              => array(
+	],
+	'active'              => [
 		'description' => __('Set this checkout form as active (true), which means available to be used, or inactive (false).', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'custom_css'          => array(
+	],
+	'custom_css'          => [
 		'description' => __('Custom CSS code for the checkout form.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'settings'            => array(
+	],
+	'settings'            => [
 		'description' => __('The checkout form settings and configurations.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'allowed_countries'   => array(
+	],
+	'allowed_countries'   => [
 		'description' => __('The allowed countries that can access this checkout.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'thank_you_page_id'   => array(
+	],
+	'thank_you_page_id'   => [
 		'description' => __('The thank you page ID. This page is shown after a successful purchase.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'conversion_snippets' => array(
+	],
+	'conversion_snippets' => [
 		'description' => __('Snippets to run on thank you page.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'template'            => array(
+	],
+	'template'            => [
 		'description' => __("Template mode. Can be either 'blank', 'single-step' or 'multi-step'.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-		'enum'        => array(
+		'enum'        => [
 			'blank',
 			'single-step',
 			'multi-step',
-		),
-	),
-	'date_created'        => array(
+		],
+	],
+	'date_created'        => [
 		'description' => __('Model creation date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'       => array(
+	],
+	'date_modified'       => [
 		'description' => __('Model last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'migrated_from_id'    => array(
+	],
+	'migrated_from_id'    => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'     => array(
+	],
+	'skip_validation'     => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

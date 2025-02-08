@@ -56,7 +56,7 @@ class Free_Gateway extends Base_Gateway {
 	 * @param string                       $type The checkout type. Can be 'new', 'retry', 'upgrade', 'downgrade', 'addon'.
 	 * @return void
 	 */
-	public function process_checkout($payment, $membership, $customer, $cart, $type) {
+	public function process_checkout($payment, $membership, $customer, $cart, $type): void {
 
 		$membership_status = $membership->get_status();
 

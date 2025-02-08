@@ -57,7 +57,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @var array
 	 */
-	public $action_links = array();
+	public $action_links = [];
 
 	/**
 	 * Holds the page title
@@ -159,9 +159,9 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Creates the page with the necessary hooks.
@@ -173,9 +173,9 @@ abstract class Base_Admin_Page {
 		 * Adds the page to all the necessary admin panels.
 		 */
 		foreach ($this->supported_panels as $panel => $capability) {
-			add_action($panel, array($this, 'add_menu_page'));
+			add_action($panel, [$this, 'add_menu_page']);
 
-			add_action($panel, array($this, 'fix_subdomain_name'), 100);
+			add_action($panel, [$this, 'fix_subdomain_name'], 100);
 		}
 
 		/*
@@ -186,7 +186,7 @@ abstract class Base_Admin_Page {
 		/*
 		 * Add forms
 		 */
-		add_action('plugins_loaded', array($this, 'register_forms'));
+		add_action('plugins_loaded', [$this, 'register_forms']);
 
 		/**
 		 * Allow plugin developers to run additional things when pages are registered.
@@ -236,7 +236,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function fix_subdomain_name() {
+	public function fix_subdomain_name(): void {
 
 		global $submenu;
 
@@ -271,7 +271,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function install_hooks() {
+	public function install_hooks(): void {
 
 		/**
 		 * Get the action links
@@ -309,9 +309,9 @@ abstract class Base_Admin_Page {
 		/**
 		 * Fixes menu highlights when necessary.
 		 */
-		add_filter('parent_file', array($this, 'fix_menu_highlight'), 99);
+		add_filter('parent_file', [$this, 'fix_menu_highlight'], 99);
 
-		add_filter('submenu_file', array($this, 'fix_menu_highlight'), 99);
+		add_filter('submenu_file', [$this, 'fix_menu_highlight'], 99);
 	}
 
 	/**
@@ -335,7 +335,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	final public function display() {
+	final public function display(): void {
 
 		/**
 		 * 'Hack-y' solution for the customer facing title problem... but good enough for now.
@@ -411,7 +411,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function add_menu_page() {
+	public function add_menu_page(): void {
 
 		/**
 		 * Create the admin page or sub-page
@@ -441,7 +441,7 @@ abstract class Base_Admin_Page {
 			$this->get_menu_label(),
 			$this->get_capability(),
 			$this->id,
-			array($this, 'display'),
+			[$this, 'display'],
 			$this->menu_icon,
 			$this->position
 		);
@@ -465,7 +465,7 @@ abstract class Base_Admin_Page {
 			$this->get_menu_label(),
 			$this->get_capability(),
 			$this->id,
-			array($this, 'display')
+			[$this, 'display']
 		);
 	}
 
@@ -475,14 +475,14 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_branding() {
+	public function add_branding(): void {
 
 		if (apply_filters('wp_ultimo_remove_branding', false) === false) {
-			add_action('in_admin_header', array($this, 'brand_header'));
+			add_action('in_admin_header', [$this, 'brand_header']);
 
-			add_action('wu_header_right', array($this, 'add_container_toggle'));
+			add_action('wu_header_right', [$this, 'add_container_toggle']);
 
-			add_action('in_admin_footer', array($this, 'brand_footer'));
+			add_action('in_admin_footer', [$this, 'brand_footer']);
 
 			add_filter('admin_footer_text', '__return_empty_string', 1000);
 
@@ -496,13 +496,13 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_container_toggle() {
+	public function add_container_toggle(): void {
 
 		wu_get_template(
 			'ui/container-toggle',
-			array(
+			[
 				'page' => $this,
-			)
+			]
 		);
 	}
 
@@ -512,13 +512,13 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function brand_header() {
+	public function brand_header(): void {
 
 		wu_get_template(
 			'ui/branding/header',
-			array(
+			[
 				'page' => $this,
-			)
+			]
 		);
 	}
 
@@ -528,13 +528,13 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function brand_footer() {
+	public function brand_footer(): void {
 
 		wu_get_template(
 			'ui/branding/footer',
-			array(
+			[
 				'page' => $this,
-			)
+			]
 		);
 	}
 
@@ -544,7 +544,7 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_admin_body_classes() {
+	public function add_admin_body_classes(): void {
 
 		add_action(
 			'admin_body_class',
@@ -579,28 +579,28 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	final public function enqueue_default_hooks() {
+	final public function enqueue_default_hooks(): void {
 
 		if ($this->page_hook) {
-			add_action("load-$this->page_hook", array($this, 'install_hooks'));
+			add_action("load-$this->page_hook", [$this, 'install_hooks']);
 
-			add_action("load-$this->page_hook", array($this, 'page_loaded'));
+			add_action("load-$this->page_hook", [$this, 'page_loaded']);
 
-			add_action("load-$this->page_hook", array($this, 'hooks'));
+			add_action("load-$this->page_hook", [$this, 'hooks']);
 
-			add_action("load-$this->page_hook", array($this, 'register_scripts'), 10);
+			add_action("load-$this->page_hook", [$this, 'register_scripts'], 10);
 
-			add_action("load-$this->page_hook", array($this, 'screen_options'), 10);
+			add_action("load-$this->page_hook", [$this, 'screen_options'], 10);
 
-			add_action("load-$this->page_hook", array($this, 'register_widgets'), 20);
+			add_action("load-$this->page_hook", [$this, 'register_widgets'], 20);
 
-			add_action("load-$this->page_hook", array($this, 'add_admin_body_classes'), 20);
+			add_action("load-$this->page_hook", [$this, 'add_admin_body_classes'], 20);
 
 			/*
 			 * Add the page to WP Multisite WaaS branding (aka top-bar and footer)
 			 */
 			if (is_network_admin()) {
-				add_action("load-$this->page_hook", array($this, 'add_branding'));
+				add_action("load-$this->page_hook", [$this, 'add_branding']);
 			}
 
 			/**
@@ -622,11 +622,11 @@ abstract class Base_Admin_Page {
 	public function get_title_links() {
 
 		if (wu_get_documentation_url($this->get_id(), false)) {
-			$this->action_links[] = array(
+			$this->action_links[] = [
 				'url'   => wu_get_documentation_url($this->get_id()),
 				'label' => __('Documentation'),
 				'icon'  => 'wu-open-book',
-			);
+			];
 		}
 
 		/**
@@ -647,7 +647,7 @@ abstract class Base_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**

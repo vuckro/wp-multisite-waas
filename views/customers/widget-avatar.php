@@ -13,11 +13,11 @@
 	<?php
 	echo get_avatar_url(
 		$user->ID,
-		array(
+		[
 			'force_display' => true,
 			'size'          => 300,
 			'default'       => 'identicon',
-		)
+		]
 	);
 	?>
 	');">
@@ -32,10 +32,10 @@
 			86,
 			'identicon',
 			'',
-			array(
+			[
 				'force_display' => true,
 				'class'         => 'wu-rounded-full wu-border wu-border-solid wu-border-gray-300 wu-relative',
-			)
+			]
 		);
 		?>
 

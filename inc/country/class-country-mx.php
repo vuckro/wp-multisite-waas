@@ -73,11 +73,11 @@ class Country_MX extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'MX',
 		'currency'     => 'MXN',
 		'phone_code'   => 52,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -106,7 +106,7 @@ class Country_MX extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AGU'  => __('Aguascalientes', 'wp-ultimo'),
 			'BCN'  => __('Baja California', 'wp-ultimo'),
 			'BCS'  => __('Baja California Sur', 'wp-ultimo'),
@@ -139,6 +139,6 @@ class Country_MX extends Country {
 			'VER'  => __('Veracruz de Ignacio de la Llave', 'wp-ultimo'),
 			'YUC'  => __('Yucatán', 'wp-ultimo'),
 			'ZAC'  => __('Zacatecas', 'wp-ultimo'),
-		);
+		];
 	}
 }

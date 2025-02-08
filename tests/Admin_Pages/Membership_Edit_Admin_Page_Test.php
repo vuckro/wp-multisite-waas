@@ -33,7 +33,7 @@ class Membership_Edit_Admin_Page_Test extends WP_UnitTestCase {
 		$this->swap_time = strtotime('+100 days');
 
 		$this->membership = current($faker->get_fake_data_generated('memberships'));
-		$cart             = new Cart(array());
+		$cart             = new Cart([]);
 		$this->membership->schedule_swap($cart, gmdate('Y-m-d H:i:s', $this->swap_time));
 		// Mock Membership_Edit_Admin_Page with dependencies and methods.
 		$this->membership_edit_admin_page = new Membership_Edit_Admin_Page();
@@ -43,7 +43,7 @@ class Membership_Edit_Admin_Page_Test extends WP_UnitTestCase {
 	/**
 	 * Tests that page_loaded calls add_swap_notices.
 	 */
-	public function test_page_loaded_calls_add_swap_notices() {
+	public function test_page_loaded_calls_add_swap_notices(): void {
 		$_REQUEST['id'] = $this->membership->get_id();
 		$this->membership_edit_admin_page->page_loaded();
 

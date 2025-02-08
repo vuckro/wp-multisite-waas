@@ -27,11 +27,11 @@ if ( ! defined('ABSPATH')) {
 
 	<?php
 
-	$prices = array(
+	$prices = [
 		1  => __('Monthly', 'wp-ultimo'),
 		3  => __('Quarterly', 'wp-ultimo'),
 		12 => __('Yearly', 'wp-ultimo'),
-	);
+	];
 
 	$first = true;
 

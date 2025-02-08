@@ -28,9 +28,9 @@ class Domains_Schema extends Schema {
 	 * @access public
 	 * @var array
 	 */
-	public $columns = array(
+	public $columns = [
 
-		array(
+		[
 			'name'     => 'id',
 			'type'     => 'bigint',
 			'length'   => '20',
@@ -38,27 +38,27 @@ class Domains_Schema extends Schema {
 			'extra'    => 'auto_increment',
 			'primary'  => true,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'blog_id',
 			'type'       => 'bigint',
 			'length'     => '20',
 			'unsigned'   => true,
-			'aliases'    => array('site_id', 'site'),
+			'aliases'    => ['site_id', 'site'],
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'domain',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
 			'transition' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'active',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -66,9 +66,9 @@ class Domains_Schema extends Schema {
 			'default'    => 1,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'primary_domain',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -76,9 +76,9 @@ class Domains_Schema extends Schema {
 			'default'    => 0,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'secure',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -86,17 +86,17 @@ class Domains_Schema extends Schema {
 			'default'    => 0,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'stage',
 			'type'       => 'enum(\'checking-dns\', \'checking-ssl-cert\', \'done-without-ssl\', \'done\', \'failed\')',
 			'default'    => 'checking-dns',
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_created',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -104,9 +104,9 @@ class Domains_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_modified',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -114,7 +114,7 @@ class Domains_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-	);
+	];
 }

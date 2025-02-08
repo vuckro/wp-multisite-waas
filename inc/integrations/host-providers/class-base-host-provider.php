@@ -49,7 +49,7 @@ abstract class Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array();
+	protected $supports = [];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -58,7 +58,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array();
+	protected $constants = [];
 
 	/**
 	 * Constants that are optional on wp-config.php.
@@ -66,7 +66,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $optional_constants = array();
+	protected $optional_constants = [];
 
 	/**
 	 * Runs on singleton instantiation.
@@ -74,11 +74,11 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_filter('wu_domain_manager_get_integrations', array($this, 'self_register'));
+		add_filter('wu_domain_manager_get_integrations', [$this, 'self_register']);
 
-		add_action('init', array($this, 'add_to_integration_list'));
+		add_action('init', [$this, 'add_to_integration_list']);
 	}
 
 	/**
@@ -131,7 +131,7 @@ abstract class Base_Host_Provider {
 	 */
 	final public function self_register($integrations) {
 
-		$integrations[ $this->get_id() ] = get_called_class();
+		$integrations[ $this->get_id() ] = static::class;
 
 		return $integrations;
 	}
@@ -144,7 +144,7 @@ abstract class Base_Host_Provider {
 	 */
 	protected function get_enabled_list() {
 
-		return get_network_option(null, 'wu_host_integrations_enabled', array());
+		return get_network_option(null, 'wu_host_integrations_enabled', []);
 	}
 
 	/**
@@ -196,7 +196,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_to_integration_list() {
+	public function add_to_integration_list(): void {
 
 		$slug = $this->get_id();
 
@@ -204,9 +204,9 @@ abstract class Base_Host_Provider {
 
 		$url = wu_network_admin_url(
 			'wp-ultimo-hosting-integration-wizard',
-			array(
+			[
 				'integration' => $slug,
-			)
+			]
 		);
 
 		$html .= sprintf('<a href="%s" class="button-primary">%s</a>', $url, __('Configuration', 'wp-ultimo'));
@@ -222,11 +222,11 @@ abstract class Base_Host_Provider {
 		wu_register_settings_field(
 			'integrations',
 			"integration_{$slug}",
-			array(
+			[
 				'type'  => 'note',
 				'title' => $title,
 				'desc'  => $html,
-			)
+			]
 		);
 	}
 
@@ -236,7 +236,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function alert_provider_detected() {
+	public function alert_provider_detected(): void {
 
 		if (WP_Ultimo()->is_loaded() === false) {
 			return;
@@ -247,18 +247,18 @@ abstract class Base_Host_Provider {
 
 		$slug = $this->get_id();
 
-		$actions = array(
-			'activate' => array(
+		$actions = [
+			'activate' => [
 				// translators: %s is the integration name.
 				'title' => sprintf(__('Activate %s', 'wp-ultimo'), $this->get_title()),
 				'url'   => wu_network_admin_url(
 					'wp-ultimo-hosting-integration-wizard',
-					array(
+					[
 						'integration' => $slug,
-					)
+					]
 				),
-			),
-		);
+			],
+		];
 
 		WP_Ultimo()->notices->add($message, 'info', 'network-admin', "should-enable-{$slug}-integration", $actions);
 	}
@@ -269,7 +269,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function alert_provider_not_setup() {
+	public function alert_provider_not_setup(): void {
 
 		if (WP_Ultimo()->is_loaded() === false) {
 			return;
@@ -280,19 +280,19 @@ abstract class Base_Host_Provider {
 
 		$slug = $this->get_id();
 
-		$actions = array(
-			'activate' => array(
+		$actions = [
+			'activate' => [
 				// translators: %s is the integration name
 				'title' => sprintf(__('Setup %s', 'wp-ultimo'), $this->get_title()),
 				'url'   => wu_network_admin_url(
 					'wp-ultimo-hosting-integration-wizard',
-					array(
+					[
 						'integration' => $slug,
 						'tab'         => 'config',
-					)
+					]
 				),
-			),
-		);
+			],
+		];
 
 		WP_Ultimo()->notices->add($message, 'warning', 'network-admin', "should-setup-{$slug}-integration", $actions);
 	}
@@ -305,7 +305,7 @@ abstract class Base_Host_Provider {
 	 */
 	public function get_fields() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -348,26 +348,26 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_hooks() {
+	public function register_hooks(): void {
 		/*
 		 * Hooks the event that is triggered when a new domain is added.
 		 */
-		add_action('wu_add_domain', array($this, 'on_add_domain'), 10, 2);
+		add_action('wu_add_domain', [$this, 'on_add_domain'], 10, 2);
 
 		/*
 		 * Hooks the event that is triggered when a domain is deleted.
 		 */
-		add_action('wu_remove_domain', array($this, 'on_remove_domain'), 10, 2);
+		add_action('wu_remove_domain', [$this, 'on_remove_domain'], 10, 2);
 
 		/*
 		 * Hooks the event that is triggered when a sub-domain is added.
 		 */
-		add_action('wu_add_subdomain', array($this, 'on_add_subdomain'), 10, 2);
+		add_action('wu_add_subdomain', [$this, 'on_add_subdomain'], 10, 2);
 
 		/*
 		 * Hooks the event that is triggered when a sub-domain is added.
 		 */
-		add_action('wu_remove_subdomain', array($this, 'on_remove_subdomain'), 10, 2);
+		add_action('wu_remove_subdomain', [$this, 'on_remove_subdomain'], 10, 2);
 
 		/*
 		 * Add additional hooks.
@@ -412,7 +412,7 @@ abstract class Base_Host_Provider {
 		$all_set = true;
 
 		foreach ($this->constants as $constant) {
-			$constants = is_array($constant) ? $constant : array($constant);
+			$constants = is_array($constant) ? $constant : [$constant];
 
 			$current = false;
 
@@ -445,10 +445,10 @@ abstract class Base_Host_Provider {
 	 */
 	public function get_missing_constants() {
 
-		$missing_constants = array();
+		$missing_constants = [];
 
 		foreach ($this->constants as $constant) {
-			$constants = is_array($constant) ? $constant : array($constant);
+			$constants = is_array($constant) ? $constant : [$constant];
 
 			$current = false;
 
@@ -474,10 +474,10 @@ abstract class Base_Host_Provider {
 	 */
 	public function get_all_constants() {
 
-		$constants = array();
+		$constants = [];
 
 		foreach ($this->constants as $constant) {
-			$current = is_array($constant) ? $constant : array($constant);
+			$current = is_array($constant) ? $constant : [$constant];
 
 			$constants = array_merge($constants, $current);
 		}
@@ -493,7 +493,7 @@ abstract class Base_Host_Provider {
 	 * @param array $constant_values Key => Value of the necessary constants.
 	 * @return void
 	 */
-	public function setup_constants($constant_values) {
+	public function setup_constants($constant_values): void {
 		/*
 		 * Important: This step is crucial, as it makes sure we clean up undesired constants.
 		 * Removing this can allow insertion of arbitrary constants onto the wp-config.pp file
@@ -523,9 +523,9 @@ abstract class Base_Host_Provider {
 		/*
 		 * Initializes the array with an opening comment.
 		 */
-		$content = array(
+		$content = [
 			sprintf('// WP Multisite WaaS - Domain Mapping - %s', $this->get_title()),
-		);
+		];
 
 		/*
 		 * Important: This step is crucial, as it makes sure we clean up undesired constants.
@@ -557,13 +557,13 @@ abstract class Base_Host_Provider {
 	 */
 	public function get_explainer_lines() {
 
-		$explainer_lines = array(
-			'will'     => array(
+		$explainer_lines = [
+			'will'     => [
 				// translators: %s is the name of the integration e.g. RunCloud
 				'send_domains' => sprintf(__('Send API calls to %s servers with domain names added to this network', 'wp-ultimo'), $this->get_title()),
-			),
-			'will_not' => array(),
-		);
+			],
+			'will_not' => [],
+		];
 
 		if ($this->supports('autossl')) {
 
@@ -630,9 +630,9 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
-		wp_send_json_success(array());
+		wp_send_json_success([]);
 	}
 
 	/**

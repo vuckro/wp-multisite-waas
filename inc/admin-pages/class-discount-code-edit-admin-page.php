@@ -77,9 +77,9 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_edit_discount_codes',
-	);
+	];
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -87,150 +87,150 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
 		$this->add_fields_widget(
 			'description',
-			array(
+			[
 				'title'    => __('Description', 'wp-ultimo'),
 				'position' => 'normal',
-				'fields'   => array(
-					'description' => array(
+				'fields'   => [
+					'description' => [
 						'type'        => 'textarea',
 						'title'       => __('Description', 'wp-ultimo'),
 						'placeholder' => __('Tell your customers what this product is about.', 'wp-ultimo'),
 						'value'       => $this->get_object()->get_description(),
-						'html_attr'   => array(
+						'html_attr'   => [
 							'rows' => 3,
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 
 		$tz_note = sprintf('The site timezone is <code>%s</code>. The current time is <code>%s</code>', date_i18n('e'), date_i18n('r'));
 
-		$options = array(
-			'general'  => array(
+		$options = [
+			'general'  => [
 				'title'  => __('Limit Uses', 'wp-ultimo'),
 				'icon'   => 'dashicons-wu-lock',
 				'desc'   => __('Rules and limitations to the applicability of this discount code.', 'wp-ultimo'),
-				'fields' => array(
-					'uses'     => array(
+				'fields' => [
+					'uses'     => [
 						'title'         => __('Uses', 'wp-ultimo'),
 						'type'          => 'text-display',
 						// translators: %d is the number of times the coupon was used.
 						'display_value' => sprintf(__('This discount code was used %d times.', 'wp-ultimo'), $this->get_object()->get_uses()),
 						'tooltip'       => __('The number of times that this discount code was used so far.', 'wp-ultimo'),
-					),
-					'max_uses' => array(
+					],
+					'max_uses' => [
 						'title'       => __('Max Uses', 'wp-ultimo'),
 						'desc'        => __('Use this option to set a limit on how many times this discount code can be used. Leave blank or 0 for unlimited uses.', 'wp-ultimo'),
 						'type'        => 'number',
 						'min'         => 0,
 						'placeholder' => 0,
 						'value'       => $this->get_object()->has_max_uses() ? $this->get_object()->get_max_uses() : __('Unlimited', 'wp-ultimo'),
-					),
-				),
-			),
-			'time'     => array(
+					],
+				],
+			],
+			'time'     => [
 				'title'  => __('Start & Expiration Dates', 'wp-ultimo'),
 				'desc'   => __('Define a start and end date for this discount code. Useful when running campaigns for a pre-determined period.', 'wp-ultimo'),
 				'icon'   => 'dashicons-wu-calendar',
-				'state'  => array(
+				'state'  => [
 					'enable_date_start'      => $this->get_object()->get_date_start(),
 					'enable_date_expiration' => $this->get_object()->get_date_expiration(),
-				),
-				'fields' => array(
-					'enable_date_start'      => array(
+				],
+				'fields' => [
+					'enable_date_start'      => [
 						'type'      => 'toggle',
 						'title'     => __('Enable Start Date', 'wp-ultimo'),
 						'desc'      => __('Allows you to set a start date for this coupon code.', 'wp-ultimo'),
 						'value'     => 1,
-						'html_attr' => array(
+						'html_attr' => [
 							'v-model' => 'enable_date_start',
-						),
-					),
-					'date_start'             => array(
+						],
+					],
+					'date_start'             => [
 						'title'             => __('Start Date', 'wp-ultimo'),
 						'desc'              => __('The discount code will only be good to be used after this date.', 'wp-ultimo') . ' ' . $tz_note,
 						'type'              => 'text',
 						'date'              => true,
 						'value'             => $this->edit ? $this->get_object()->get_date_start() : __('No date', 'wp-ultimo'),
 						'placeholder'       => 'E.g. 2020-04-04 12:00:00',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => 1,
 							'v-show'  => 'enable_date_start',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'v-bind:name'     => 'enable_date_start ? "date_start" : ""',
 							'wu-datepicker'   => 'true',
 							'data-format'     => 'Y-m-d H:i:S',
 							'data-allow-time' => 'true',
-						),
-					),
-					'enable_date_expiration' => array(
+						],
+					],
+					'enable_date_expiration' => [
 						'type'      => 'toggle',
 						'title'     => __('Enable Expiration Date', 'wp-ultimo'),
 						'desc'      => __('Allows you to set an expiration date for this coupon code.', 'wp-ultimo'),
 						'value'     => 1,
-						'html_attr' => array(
+						'html_attr' => [
 							'v-model' => 'enable_date_expiration',
-						),
-					),
-					'date_expiration'        => array(
+						],
+					],
+					'date_expiration'        => [
 						'title'             => __('Expiration Date', 'wp-ultimo'),
 						'desc'              => __('The discount code will expire after this date.', 'wp-ultimo') . ' ' . $tz_note,
 						'type'              => 'text',
 						'date'              => true,
 						'value'             => $this->edit ? $this->get_object()->get_date_expiration() : __('Never Expires', 'wp-ultimo'),
 						'placeholder'       => 'E.g. 2020-04-04 12:00:00',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => 1,
 							'v-show'  => 'enable_date_expiration',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'v-bind:name'     => 'enable_date_expiration ? "date_expiration" : ""',
 							'wu-datepicker'   => 'true',
 							'data-format'     => 'Y-m-d H:i:S',
 							'data-allow-time' => 'true',
-						),
-					),
-				),
-			),
-			'products' => array(
+						],
+					],
+				],
+			],
+			'products' => [
 				'title'  => __('Limit Products', 'wp-ultimo'),
 				'desc'   => __('Determine if you want this discount code to apply to all discountable products or not.', 'wp-ultimo'),
 				'icon'   => 'dashicons-wu-price-tag',
-				'state'  => array(
+				'state'  => [
 					'limit_products' => $this->get_object()->get_limit_products(),
-				),
+				],
 				'fields' => array_merge(
-					array(
-						'limit_products' => array(
+					[
+						'limit_products' => [
 							'type'      => 'toggle',
 							'title'     => __('Select Products', 'wp-ultimo'),
 							'desc'      => __('Manually select to which products this discount code should be applicable.', 'wp-ultimo'),
 							'value'     => 1,
-							'html_attr' => array(
+							'html_attr' => [
 								'v-model' => 'limit_products',
-							),
-						),
-					),
+							],
+						],
+					],
 					$this->get_product_field_list()
 				),
-			),
-		);
+			],
+		];
 
 		$this->add_tabs_widget(
 			'options',
-			array(
+			[
 				'title'    => __('Advanced Options', 'wp-ultimo'),
 				'position' => 'normal',
 				'sections' => apply_filters('wu_discount_code_options_sections', $options, $this->get_object()),
-			)
+			]
 		);
 
 		/*
@@ -240,151 +240,151 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$this->add_list_table_widget(
 			'events',
-			array(
+			[
 				'title'        => __('Events', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'query_filter'),
-			)
+				'query_filter' => [$this, 'query_filter'],
+			]
 		);
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'html_attr' => array(
+			[
+				'html_attr' => [
 					'data-wu-app' => 'save_discount_code',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'apply_to_setup_fee' => $this->get_object()->get_setup_fee_value() > 0,
 							'code'               => $this->get_object()->get_code(),
 							'type'               => $this->get_object()->get_type(),
 							'value'              => $this->get_object()->get_value(),
 							'setup_fee_type'     => $this->get_object()->get_setup_fee_type(),
 							'setup_fee_value'    => $this->get_object()->get_setup_fee_value(),
-						)
+						]
 					),
-				),
-				'fields'    => array(
-					'code'                  => array(
+				],
+				'fields'    => [
+					'code'                  => [
 						'title'             => __('Coupon Code', 'wp-ultimo'),
 						'type'              => 'text',
 						'placeholder'       => __('E.g. XMAS10OFF', 'wp-ultimo'),
 						'desc'              => __('The actual code your customers will enter during checkout.', 'wp-ultimo'),
 						'value'             => $this->get_object()->get_code(),
 						'tooltip'           => '',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'v-on:input'   => 'code = $event.target.value.toUpperCase().replace(/[^A-Z0-9-_]+/g, "")',
 							'v-bind:value' => 'code',
-						),
-					),
-					'value_group'           => array(
+						],
+					],
+					'value_group'           => [
 						'type'              => 'group',
 						'title'             => __('Discount', 'wp-ultimo'),
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-						'fields'            => array(
-							'type'  => array(
+						],
+						'fields'            => [
+							'type'  => [
 								'type'            => 'select',
 								'value'           => $this->get_object()->get_type(),
 								'placeholder'     => '',
 								'wrapper_classes' => 'wu-w-2/3',
-								'options'         => array(
+								'options'         => [
 									'percentage' => __('Percentage (%)', 'wp-ultimo'),
 									// translators: %s is the currency symbol. e.g. $
 									'absolute'   => sprintf(__('Absolute (%s)', 'wp-ultimo'), wu_get_currency_symbol()),
-								),
-								'html_attr'       => array(
+								],
+								'html_attr'       => [
 									'v-model' => 'type',
-								),
-							),
-							'value' => array(
+								],
+							],
+							'value' => [
 								'type'            => 'number',
 								'value'           => $this->get_object()->get_value(),
 								'placeholder'     => '',
 								'wrapper_classes' => 'wu-ml-2 wu-w-1/3',
-								'html_attr'       => array(
+								'html_attr'       => [
 									'min'        => 0,
 									'v-bind:max' => "type === 'percentage' ? 100 : 999999999",
 									'step'       => 'any',
-								),
-							),
-						),
-					),
-					'apply_to_renewals'     => array(
+								],
+							],
+						],
+					],
+					'apply_to_renewals'     => [
 						'type'              => 'toggle',
 						'title'             => __('Apply to Renewals', 'wp-ultimo'),
 						'desc'              => __('By default, discounts are only applied to the first payment.', 'wp-ultimo'),
 						'value'             => $this->get_object()->should_apply_to_renewals(),
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-					),
-					'apply_to_setup_fee'    => array(
+						],
+					],
+					'apply_to_setup_fee'    => [
 						'type'              => 'toggle',
 						'title'             => __('Setup Fee Discount', 'wp-ultimo'),
 						'desc'              => __('Also set a discount for setup fee?', 'wp-ultimo'),
 						'value'             => $this->get_object()->get_setup_fee_value() > 0,
-						'html_attr'         => array(
+						'html_attr'         => [
 							'v-model' => 'apply_to_setup_fee',
-						),
-						'wrapper_html_attr' => array(
+						],
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-					),
-					'setup_fee_value_group' => array(
+						],
+					],
+					'setup_fee_value_group' => [
 						'type'              => 'group',
 						'title'             => __('Setup Fee Discount', 'wp-ultimo'),
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-show'  => 'apply_to_setup_fee',
 							'v-cloak' => '1',
-						),
-						'fields'            => array(
-							'setup_fee_type'  => array(
+						],
+						'fields'            => [
+							'setup_fee_type'  => [
 								'type'            => 'select',
 								'value'           => $this->get_object()->get_setup_fee_type(),
 								'placeholder'     => '',
 								'wrapper_classes' => 'wu-w-2/3',
-								'options'         => array(
+								'options'         => [
 									'percentage' => __('Percentage (%)', 'wp-ultimo'),
 									// translators: %s is the currency symbol. e.g $
 									'absolute'   => sprintf(__('Absolute (%s)', 'wp-ultimo'), wu_get_currency_symbol()),
-								),
-								'html_attr'       => array(
+								],
+								'html_attr'       => [
 									'v-model' => 'setup_fee_type',
-								),
-							),
-							'setup_fee_value' => array(
+								],
+							],
+							'setup_fee_value' => [
 								'type'            => 'number',
 								'value'           => $this->get_object()->get_setup_fee_value(),
 								'placeholder'     => '',
 								'wrapper_classes' => 'wu-ml-2 wu-w-1/3',
-								'html_attr'       => array(
+								'html_attr'       => [
 									'min'        => 0,
 									'v-bind:max' => "setup_fee_type === 'percentage' ? 100 : 999999999",
-								),
-							),
-						),
-					),
-				),
-			)
+								],
+							],
+						],
+					],
+				],
+			]
 		);
 
 		$this->add_fields_widget(
 			'active',
-			array(
+			[
 				'title'  => __('Active', 'wp-ultimo'),
-				'fields' => array(
-					'active' => array(
+				'fields' => [
+					'active' => [
 						'type'  => 'toggle',
 						'title' => __('Active', 'wp-ultimo'),
 						'desc'  => __('Use this option to manually enable or disable this discount code for new sign-ups.', 'wp-ultimo'),
 						'value' => $this->get_object()->is_active(),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 	}
 
@@ -396,48 +396,48 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	protected function get_product_field_list() {
 
-		$fields = array();
+		$fields = [];
 
 		foreach (wu_get_products() as $product) {
 			$product_id = $product->get_id();
 
-			$fields[ "allowed_products_{$product_id}" ] = array(
+			$fields[ "allowed_products_{$product_id}" ] = [
 				'type'              => 'toggle',
 				'title'             => $product->get_name(),
 				'desc'              => __('Make applicable to this product.', 'wp-ultimo'),
 				'tooltip'           => '',
 				'wrapper_classes'   => '',
-				'html_attr'         => array(
+				'html_attr'         => [
 					':name'    => "'allowed_products[]'",
 					':checked' => json_encode(!$this->get_object()->get_limit_products() || in_array($product_id, $this->get_object()->get_allowed_products())), // phpcs:ignore
 					':value'   => $product_id,
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
 					'v-show'  => 'limit_products',
-				),
-			);
+				],
+			];
 
 			// TODO: this is a hack-y fix. Needs to be re-implemented.
-			$fields['allowed_products_none'] = array(
+			$fields['allowed_products_none'] = [
 				'type'      => 'hidden',
 				'value'     => '__none',
-				'html_attr' => array(
+				'html_attr' => [
 					':name' => "'allowed_products[]'",
-				),
-			);
+				],
+			];
 		}
 
 		if (empty($fields)) {
-			$fields['allowed_products_no_products'] = array(
+			$fields['allowed_products_no_products'] = [
 				'type'              => 'note',
 				'title'             => '',
 				'desc'              => __('You do not have any products at this moment.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak' => 1,
 					'v-show'  => 'limit_products',
-				),
-			);
+				],
+			];
 		}
 
 		return $fields;
@@ -449,11 +449,11 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_legacy_options() {
+	public function handle_legacy_options(): void {
 
 		global $wp_filter;
 
-		$tabs = array(__('Legacy Add-ons', 'wp-ultimo'));
+		$tabs = [__('Legacy Add-ons', 'wp-ultimo')];
 
 		if ( ! isset($wp_filter['wp_ultimo_coupon_advanced_options'])) {
 			return;
@@ -463,40 +463,40 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$priorities = $wp_filter['wp_ultimo_coupon_advanced_options']->callbacks;
 
-		$fields = array(
-			'heading' => array(
+		$fields = [
+			'heading' => [
 				'type'  => 'header',
 				'title' => __('Legacy Options', 'wp-ultimo'),
 				// translators: %s is the comma-separated list of legacy add-ons.
 				'desc'  => sprintf(__('Options for %s, and others.', 'wp-ultimo'), implode(', ', $tabs)),
-			),
-		);
+			],
+		];
 
 		foreach ($priorities as $priority => $callbacks) {
 			foreach ($callbacks as $id => $callable) {
-				$fields[ $id ] = array(
+				$fields[ $id ] = [
 					'type'    => 'html',
 					'classes' => 'wu--mt-2',
 					'content' => function () use ($callable) {
 
 						call_user_func($callable['function'], $this->get_object());
 					},
-				);
+				];
 			}
 		}
 
 		$this->add_fields_widget(
 			'legacy-options',
-			array(
+			[
 				'title'                 => __('Legacy Options', 'wp-ultimo'),
 				'position'              => 'normal',
 				'fields'                => $fields,
 				'classes'               => 'wu-legacy-options-panel',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'style' => 'margin-top: -5px;',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -506,16 +506,16 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Delete Discount code - Confirmation modal
 		 */
 
 		add_filter(
 			'wu_data_json_success_delete_discount_code_modal',
-			fn($data_json) => array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-discount-codes', array('deleted' => 1)),
-			)
+			fn($data_json) => [
+				'redirect_url' => wu_network_admin_url('wp-ultimo-discount-codes', ['deleted' => 1]),
+			]
 		);
 	}
 
@@ -529,10 +529,10 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'discount_code',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -567,7 +567,7 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -578,7 +578,7 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('Edit Discount Code', 'wp-ultimo'),
 			'add_new_label'       => __('Add new Discount Code', 'wp-ultimo'),
 			'updated_message'     => __('Discount Code updated successfully!', 'wp-ultimo'),
@@ -588,7 +588,7 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Discount Code', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -639,7 +639,7 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 		/*
 		 * Set the recurring value to zero if the toggle is disabled.
 		 */

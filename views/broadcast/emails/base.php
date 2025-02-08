@@ -91,7 +91,7 @@ if ( ! defined('ABSPATH')) {
 								<td style=" text-align: center;">
 									<p style="font-family: <?php echo $template_settings['footer_font']; ?>; font-size: 12px; line-height: 1.6m; color: <?php echo $template_settings['footer_color']; ?>; font-weight: normal; margin: 0 0 10px; padding: 0; text-align: <?php echo $template_settings['footer_align']; ?>">
 										<strong><?php echo wu_get_setting('company_name'); ?></strong><br>
-							<?php echo nl2br(wu_get_setting('company_address', array())); ?>
+							<?php echo nl2br(wu_get_setting('company_address', [])); ?>
 									</p>
 								</td>
 							</tr>

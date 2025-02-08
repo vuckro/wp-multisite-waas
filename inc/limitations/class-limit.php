@@ -123,7 +123,7 @@ abstract class Limit implements \JsonSerializable {
 	 * @param array $data The module data.
 	 * @return void
 	 */
-	public function setup($data) {
+	public function setup($data): void {
 
 		if ( ! is_array($data)) {
 			$data = (array) $data;
@@ -147,10 +147,10 @@ abstract class Limit implements \JsonSerializable {
 
 		$data = wp_parse_args(
 			$data,
-			array(
+			[
 				'limit'   => null,
 				'enabled' => $this->enabled_default_value,
-			)
+			]
 		);
 
 		$this->limit   = is_array($data['limit']) ? (object) $data['limit'] : $data['limit'];
@@ -299,7 +299,7 @@ abstract class Limit implements \JsonSerializable {
 	 */
 	public function handle_enabled() {
 
-		$module = wu_get_isset($_POST['modules'], $this->id, array());
+		$module = wu_get_isset($_POST['modules'], $this->id, []);
 
 		return (bool) wu_get_isset($module, 'enabled', false);
 	}
@@ -325,7 +325,7 @@ abstract class Limit implements \JsonSerializable {
 	 */
 	public function handle_limit() {
 
-		$module = wu_get_isset($_POST['modules'], $this->id, array());
+		$module = wu_get_isset($_POST['modules'], $this->id, []);
 
 		return wu_get_isset($module, 'limit', null);
 	}
@@ -338,9 +338,9 @@ abstract class Limit implements \JsonSerializable {
 	 */
 	public static function default_state() {
 
-		return array(
+		return [
 			'enabled' => false,
 			'limit'   => null,
-		);
+		];
 	}
 }

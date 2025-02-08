@@ -39,7 +39,7 @@ class Limit_Post_Types extends Limit_Subtype {
 		/*
 		 * Calculate post count based on all different status
 		 */
-		$post_count = $this->get_post_count($post_type);
+		$post_count = static::get_post_count($post_type);
 
 		// Get the allowed quota
 		$quota = $this->{$post_type}->number;
@@ -70,7 +70,7 @@ class Limit_Post_Types extends Limit_Subtype {
 
 		$post_count = wp_count_posts($post_type);
 
-		$statuses = $post_type === 'attachment' ? array('inherit') : array('publish', 'private');
+		$statuses = $post_type === 'attachment' ? ['inherit'] : ['publish', 'private'];
 
 		/**
 		 * Allow plugin developers to change which post status should be counted

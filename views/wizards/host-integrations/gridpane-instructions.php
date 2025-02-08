@@ -14,7 +14,7 @@
 </p>
 
 <div class="">
-	<img class="wu-w-full" src="<?php echo wu_get_asset('gridpane-1.png', 'img/hosts'); ?>">
+	<img class="wu-w-full" src="<?php echo wu_get_asset('gridpane-1.webp', 'img/hosts'); ?>">
 </div>
 
 <p class="wu-text-sm">
@@ -24,7 +24,7 @@
 </p>
 
 <div class="">
-	<img class="wu-w-full" src="<?php echo wu_get_asset('gridpane-2.png', 'img/hosts'); ?>">
+	<img class="wu-w-full" src="<?php echo wu_get_asset('gridpane-2.webp', 'img/hosts'); ?>">
 </div>
 
 <p class="wu-text-sm">

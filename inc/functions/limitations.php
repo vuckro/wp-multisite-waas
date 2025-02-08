@@ -55,7 +55,7 @@ defined('ABSPATH') || exit;
 function wu_has_product($product_slug, $blocking = false, $site_id = '') {
 
 	if ( ! is_array($product_slug)) {
-		$product_slug = array($product_slug);
+		$product_slug = [$product_slug];
 	}
 
 	if (empty($site_id)) {
@@ -152,10 +152,10 @@ function wu_generate_upgrade_to_unlock_url($args) {
 
 	$args = wp_parse_args(
 		$args,
-		array(
+		[
 			'module' => false,
 			'type'   => false,
-		)
+		]
 	);
 
 	$membership = wu_get_current_site()->get_membership();
@@ -190,18 +190,18 @@ function wu_generate_upgrade_to_unlock_button($title, $args) {
 
 	$args = wp_parse_args(
 		$args,
-		array(
+		[
 			'module'  => false,
 			'type'    => false,
 			'classes' => '',
-		)
+		]
 	);
 
 	$url = wu_generate_upgrade_to_unlock_url(
-		array(
+		[
 			'module' => $args['module'],
 			'type'   => $args['type'],
-		)
+		]
 	);
 
 	$element = sprintf(
@@ -230,13 +230,13 @@ function wu_async_activate_plugins($site_id, $plugins, $network_wide = false, $s
 
 	wu_enqueue_async_action(
 		'wu_async_handle_plugins',
-		array(
+		[
 			'action'       => 'activate',
 			'site_id'      => $site_id,
 			'plugins'      => $plugins,
 			'network_wide' => $network_wide,
 			'silent'       => $silent,
-		)
+		]
 	);
 }
 
@@ -255,13 +255,13 @@ function wu_async_deactivate_plugins($site_id, $plugins, $network_wide = false, 
 
 	wu_enqueue_async_action(
 		'wu_async_handle_plugins',
-		array(
+		[
 			'action'       => 'deactivate',
 			'site_id'      => $site_id,
 			'plugins'      => $plugins,
 			'network_wide' => $network_wide,
 			'silent'       => $silent,
-		)
+		]
 	);
 }
 
@@ -278,9 +278,9 @@ function wu_async_switch_theme($site_id, $theme_stylesheet) {
 
 	wu_enqueue_async_action(
 		'wu_async_switch_theme',
-		array(
+		[
 			'site_id'          => $site_id,
 			'theme_stylesheet' => $theme_stylesheet,
-		)
+		]
 	);
 }

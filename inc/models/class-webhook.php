@@ -99,7 +99,7 @@ class Webhook extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Webhooks\\Webhook_Query';
+	protected $query_class = \WP_Ultimo\Database\Webhooks\Webhook_Query::class;
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -113,7 +113,7 @@ class Webhook extends Base_Model {
 	 */
 	public function validation_rules() {
 
-		return array(
+		return [
 			'name'             => 'required|min:2',
 			'webhook_url'      => 'required|url:http,https',
 			'event'            => 'required',
@@ -122,7 +122,7 @@ class Webhook extends Base_Model {
 			'hidden'           => 'default:0',
 			'integration'      => 'required|min:2',
 			'date_last_failed' => 'default:',
-		);
+		];
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Webhook extends Base_Model {
 	 *
 	 * @param string $name Webhook name, which is used as product title as well.
 	 */
-	public function set_name($name) {
+	public function set_name($name): void {
 
 		$this->name = $name;
 	}
@@ -160,7 +160,7 @@ class Webhook extends Base_Model {
 	 *
 	 * @param string $webhook_url The URL used for the webhook call.
 	 */
-	public function set_webhook_url($webhook_url) {
+	public function set_webhook_url($webhook_url): void {
 
 		$this->webhook_url = $webhook_url;
 	}
@@ -180,7 +180,7 @@ class Webhook extends Base_Model {
 	 *
 	 * @param string $event The event that needs to be fired for this webhook to be sent.
 	 */
-	public function set_event($event) {
+	public function set_event($event): void {
 
 		$this->event = $event;
 	}
@@ -200,7 +200,7 @@ class Webhook extends Base_Model {
 	 *
 	 * @param int $event_count How many times this webhook was sent.
 	 */
-	public function set_event_count($event_count) {
+	public function set_event_count($event_count): void {
 
 		$this->event_count = $event_count;
 	}
@@ -224,7 +224,7 @@ class Webhook extends Base_Model {
 	 * @param boolean $active Set this webhook as active (true), which means available will fire when the event occur, or inactive (false).
 	 * @return void
 	 */
-	public function set_active($active) {
+	public function set_active($active): void {
 
 		$this->active = (bool) wu_string_to_bool($active);
 	}
@@ -244,7 +244,7 @@ class Webhook extends Base_Model {
 	 *
 	 * @param boolean $hidden Is this webhook hidden.
 	 */
-	public function set_hidden($hidden) {
+	public function set_hidden($hidden): void {
 
 		$this->hidden = $hidden;
 	}
@@ -288,7 +288,7 @@ class Webhook extends Base_Model {
 	 * @param string $date_created Date when this was created.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -298,7 +298,7 @@ class Webhook extends Base_Model {
 	 *
 	 * @param string $integration The integration that created this webhook.
 	 */
-	public function set_integration($integration) {
+	public function set_integration($integration): void {
 
 		$this->integration = $integration;
 	}

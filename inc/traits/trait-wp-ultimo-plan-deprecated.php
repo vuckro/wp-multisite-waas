@@ -58,17 +58,17 @@ trait WP_Ultimo_Plan_Deprecated {
 				$value = $this->get_feature_list();
 				break;
 			case 'quotas':
-				$value = array(
+				$value = [
 					// 'sites'  => 300,
 					'upload' => 1024 * 1024 * 1024,
 					'visits' => 300,
-				);
+				];
 				break;
 			case 'post':
-				$value = (object) array(
+				$value = (object) [
 					'ID'         => $this->get_id(),
 					'post_title' => $this->get_name(),
-				);
+				];
 				break;
 			default:
 				$value = $this->get_meta('wpu_' . $key, false, true);
@@ -107,7 +107,7 @@ trait WP_Ultimo_Plan_Deprecated {
 	 * @param array $featured_plan Feature list for pricing tables.
 	 * @return void
 	 */
-	public function set_featured_plan($featured_plan) {
+	public function set_featured_plan($featured_plan): void {
 
 		$this->meta['featured_plan'] = $featured_plan;
 	}
@@ -134,7 +134,7 @@ trait WP_Ultimo_Plan_Deprecated {
 	 */
 	public function get_pricing_table_lines() {
 
-		$pricing_table_lines = array();
+		$pricing_table_lines = [];
 
 		/*
 		 * Setup Fee
@@ -155,7 +155,7 @@ trait WP_Ultimo_Plan_Deprecated {
 		 * Post Type Lines
 		 * Gets the post type lines to be displayed on the pricing table options
 		 */
-		$post_types = get_post_types(array('public' => true), 'objects');
+		$post_types = get_post_types(['public' => true], 'objects');
 		$post_types = apply_filters('wu_get_post_types', $post_types);
 
 		foreach ($post_types as $pt_slug => $post_type) {
@@ -233,7 +233,7 @@ trait WP_Ultimo_Plan_Deprecated {
 		$trial_days_plan = $this->get_trial_duration();
 
 		if ($trial_days > 0 || $trial_days_plan) {
-			$trial_days = $trial_days_plan ? $trial_days_plan : $trial_days;
+			$trial_days = $trial_days_plan ?: $trial_days;
 
 			$pricing_table_lines['wu_product_trial'] = ! $this->is_free() ? sprintf(__('%s day <strong>Free Trial</strong>', 'wp-ultimo'), $trial_days) : '-';
 		}
@@ -297,7 +297,7 @@ trait WP_Ultimo_Plan_Deprecated {
 		/*
 		 * @since  1.3.3 Only Show elements allowed on the plan settings
 		 */
-		$elements = array();
+		$elements = [];
 
 		if ( ! $elements) {
 			return true;
@@ -347,13 +347,13 @@ trait WP_Ultimo_Plan_Deprecated {
 			$quotas,
 			fn($quota_name) => ! in_array(
 				$quota_name,
-				array(
+				[
 					'sites',
 					'attachment',
 					'upload',
 					'users',
 					'visits',
-				),
+				],
 				true
 			),
 			ARRAY_FILTER_USE_KEY

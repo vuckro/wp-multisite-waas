@@ -40,7 +40,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
 		parent::hooks();
 
@@ -65,53 +65,53 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function settings() {
+	public function settings(): void {
 
 		$error_message_wrap = '<span class="wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-mt-3 wu-mb-0 wu-block wu-text-xs">%s</span>';
 
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_header',
-			array(
+			[
 				'title'           => __('Stripe', 'wp-ultimo'),
 				'desc'            => __('Use the settings section below to configure Stripe as a payment method.', 'wp-ultimo'),
 				'type'            => 'header',
 				'show_as_submenu' => true,
-				'require'         => array(
+				'require'         => [
 					'active_gateways' => 'stripe',
-				),
-			)
+				],
+			]
 		);
 
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_public_title',
-			array(
+			[
 				'title'   => __('Stripe Public Name', 'wp-ultimo'),
 				'tooltip' => __('The name to display on the payment method selection field. By default, "Credit Card" is used.', 'wp-ultimo'),
 				'type'    => 'text',
 				'default' => __('Credit Card', 'wp-ultimo'),
-				'require' => array(
+				'require' => [
 					'active_gateways' => 'stripe',
-				),
-			)
+				],
+			]
 		);
 
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_sandbox_mode',
-			array(
+			[
 				'title'     => __('Stripe Sandbox Mode', 'wp-ultimo'),
 				'desc'      => __('Toggle this to put Stripe on sandbox mode. This is useful for testing and making sure Stripe is correctly setup to handle your payments.', 'wp-ultimo'),
 				'type'      => 'toggle',
 				'default'   => 1,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'stripe_sandbox_mode',
-				),
-				'require'   => array(
+				],
+				'require'   => [
 					'active_gateways' => 'stripe',
-				),
-			)
+				],
+			]
 		);
 
 		$pk_test_status = wu_get_setting('stripe_test_pk_key_status', '');
@@ -119,7 +119,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_test_pk_key',
-			array(
+			[
 				'title'       => __('Stripe Test Publishable Key', 'wp-ultimo'),
 				'desc'        => ! empty($pk_test_status) ? sprintf($error_message_wrap, $pk_test_status) : '',
 				'tooltip'     => __('Make sure you are placing the TEST keys, not the live ones.', 'wp-ultimo'),
@@ -127,11 +127,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				'type'        => 'text',
 				'default'     => '',
 				'capability'  => 'manage_api_keys',
-				'require'     => array(
+				'require'     => [
 					'active_gateways'     => 'stripe',
 					'stripe_sandbox_mode' => 1,
-				),
-			)
+				],
+			]
 		);
 
 		$sk_test_status = wu_get_setting('stripe_test_sk_key_status', '');
@@ -139,7 +139,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_test_sk_key',
-			array(
+			[
 				'title'       => __('Stripe Test Secret Key', 'wp-ultimo'),
 				'desc'        => ! empty($sk_test_status) ? sprintf($error_message_wrap, $sk_test_status) : '',
 				'tooltip'     => __('Make sure you are placing the TEST keys, not the live ones.', 'wp-ultimo'),
@@ -147,11 +147,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				'type'        => 'text',
 				'default'     => '',
 				'capability'  => 'manage_api_keys',
-				'require'     => array(
+				'require'     => [
 					'active_gateways'     => 'stripe',
 					'stripe_sandbox_mode' => 1,
-				),
-			)
+				],
+			]
 		);
 
 		$pk_status = wu_get_setting('stripe_live_pk_key_status', '');
@@ -159,7 +159,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_live_pk_key',
-			array(
+			[
 				'title'       => __('Stripe Live Publishable Key', 'wp-ultimo'),
 				'desc'        => ! empty($pk_status) ? sprintf($error_message_wrap, $pk_status) : '',
 				'tooltip'     => __('Make sure you are placing the LIVE keys, not the test ones.', 'wp-ultimo'),
@@ -167,11 +167,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				'type'        => 'text',
 				'default'     => '',
 				'capability'  => 'manage_api_keys',
-				'require'     => array(
+				'require'     => [
 					'active_gateways'     => 'stripe',
 					'stripe_sandbox_mode' => 0,
-				),
-			)
+				],
+			]
 		);
 
 		$sk_status = wu_get_setting('stripe_live_sk_key_status', '');
@@ -179,7 +179,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_live_sk_key',
-			array(
+			[
 				'title'       => __('Stripe Live Secret Key', 'wp-ultimo'),
 				'desc'        => ! empty($sk_status) ? sprintf($error_message_wrap, $sk_status) : '',
 				'tooltip'     => __('Make sure you are placing the LIVE keys, not the test ones.', 'wp-ultimo'),
@@ -187,11 +187,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				'type'        => 'text',
 				'default'     => '',
 				'capability'  => 'manage_api_keys',
-				'require'     => array(
+				'require'     => [
 					'active_gateways'     => 'stripe',
 					'stripe_sandbox_mode' => 0,
-				),
-			)
+				],
+			]
 		);
 
 		$webhook_message = sprintf('<span class="wu-p-2 wu-bg-blue-100 wu-text-blue-600 wu-rounded wu-mt-3 wu-mb-0 wu-block wu-text-xs">%s</span>', __('Whenever you change your Stripe settings, WP Multisite WaaS will automatically check the webhook URLs on your Stripe account to make sure we get notified about changes in subscriptions and payments.', 'wp-ultimo'));
@@ -199,7 +199,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		wu_register_settings_field(
 			'payment-gateways',
 			'stripe_webhook_listener_explanation',
-			array(
+			[
 				'title'           => __('Webhook Listener URL', 'wp-ultimo'),
 				'desc'            => $webhook_message,
 				'tooltip'         => __('This is the URL Stripe should send webhook calls to.', 'wp-ultimo'),
@@ -207,10 +207,10 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				'copy'            => true,
 				'default'         => $this->get_webhook_listener_url(),
 				'wrapper_classes' => '',
-				'require'         => array(
+				'require'         => [
 					'active_gateways' => 'stripe',
-				),
-			)
+				],
+			]
 		);
 
 		parent::settings();
@@ -279,11 +279,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 
 		$this->membership->save();
 
-		$intent_args = array(
+		$intent_args = [
 			'customer'    => $s_customer->id,
 			'metadata'    => $this->get_customer_metadata(),
 			'description' => $this->order->get_cart_descriptor(),
-		);
+		];
 
 		/*
 		 * Maybe use an existing payment method.
@@ -299,7 +299,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 * This should also be filterable, to allow support
 		 * for Stripe Connect in the future.
 		 */
-		$intent_options = array();
+		$intent_options = [];
 
 		/*
 		 * Tries to retrieve an existing intent id,
@@ -325,7 +325,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			 * payment attached to the membership. Those start with a pi_
 			 * id.
 			 */
-			if ( ! empty($payment_intent_id) && strncmp((string) $payment_intent_id, 'pi_', strlen('pi_')) === 0) {
+			if ( ! empty($payment_intent_id) && str_starts_with((string) $payment_intent_id, 'pi_')) {
 				$existing_intent = Stripe\PaymentIntent::retrieve($payment_intent_id);
 
 				/*
@@ -334,7 +334,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				* when we set up a subscription without a
 				* initial amount.
 				*/
-			} elseif ( ! empty($payment_intent_id) && strncmp((string) $payment_intent_id, 'seti_', strlen('seti_')) === 0) {
+			} elseif ( ! empty($payment_intent_id) && str_starts_with((string) $payment_intent_id, 'seti_')) {
 				$existing_intent = Stripe\SetupIntent::retrieve($payment_intent_id);
 			}
 
@@ -355,13 +355,13 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			if ($this->order->get_total() && $this->order->has_trial() === false) {
 				$intent_args = wp_parse_args(
 					$intent_args,
-					array(
+					[
 						'amount'              => $this->order->get_total() * wu_stripe_get_currency_multiplier(),
 						'confirmation_method' => 'automatic',
 						'setup_future_usage'  => 'off_session',
 						'currency'            => strtolower((string) wu_get_setting('currency_symbol', 'USD')),
 						'confirm'             => false,
-					)
+					]
 				);
 
 				/**
@@ -390,7 +390,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 					$intent_options['idempotency_key'] = wu_stripe_generate_idempotency_key($idempotency_args);
 
 					// Unset some options we can't update.
-					$unset_args = array('confirmation_method', 'confirm');
+					$unset_args = ['confirmation_method', 'confirm'];
 
 					foreach ($unset_args as $unset_arg) {
 						if (isset($intent_args[ $unset_arg ])) {
@@ -413,9 +413,9 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				 */
 				$intent_args = wp_parse_args(
 					$intent_args,
-					array(
+					[
 						'usage' => 'off_session',
-					)
+					]
 				);
 
 				if (empty($existing_intent) || 'setup_intent' !== $existing_intent->object) {
@@ -463,10 +463,10 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 * Using this info, we'll be able to process
 		 * the Stripe payment on the next step: process_checkout
 		 */
-		return array(
+		return [
 			'stripe_client_secret' => sanitize_text_field($intent->client_secret),
 			'stripe_intent_type'   => sanitize_text_field($intent->object),
-		);
+		];
 	}
 
 	/**
@@ -487,7 +487,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 	 *
 	 * @return void
 	 */
-	public function process_checkout($payment, $membership, $customer, $cart, $type) {
+	public function process_checkout($payment, $membership, $customer, $cart, $type): void {
 		/*
 		 * Here's the general idea
 		 * of how the Stripe integration works.
@@ -529,7 +529,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 * Get the correct intent
 		 * type depending on the intent ID
 		 */
-		if (strncmp((string) $payment_intent_id, 'seti_', strlen('seti_')) === 0) {
+		if (str_starts_with((string) $payment_intent_id, 'seti_')) {
 			$is_setup_intent = true;
 
 			$payment_intent = Stripe\SetupIntent::retrieve($payment_intent_id);
@@ -557,15 +557,15 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 */
 		Stripe\Customer::update(
 			$s_customer->id,
-			array(
+			[
 				'address'     => $this->convert_to_stripe_address($customer->get_billing_address()),
 				'description' => sanitize_text_field($description),
-				'metadata'    => array(
+				'metadata'    => [
 					'email'       => $customer->get_email_address(),
 					'user_id'     => $customer->get_user_id(),
 					'customer_id' => $customer->get_id(),
-				),
-			)
+				],
+			]
 		);
 
 		/*
@@ -609,7 +609,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			$membership->set_gateway_customer_id($s_customer->id);
 			$membership->set_gateway_subscription_id($subscription->id);
 			$membership->add_to_times_billed(1);
-			$membership->should_auto_renew(true);
+			$membership->should_auto_renew();
 
 			if ($type !== 'downgrade') {
 				$membership_status = $cart->has_trial() ? Membership_Status::TRIALING : Membership_Status::ACTIVE;
@@ -641,37 +641,37 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 	 */
 	public function fields(): string {
 
-		$fields = array();
+		$fields = [];
 
 		$card_options = $this->get_saved_card_options();
 
 		if ($card_options) {
 			$card_options['add-new'] = __('Add new card', 'wp-ultimo');
 
-			$fields = array(
-				'payment_method' => array(
+			$fields = [
+				'payment_method' => [
 					'type'      => 'radio',
 					'title'     => __('Saved Payment Methods', 'wp-ultimo'),
 					'value'     => wu_request('payment_method'),
 					'options'   => $card_options,
-					'html_attr' => array(
+					'html_attr' => [
 						'v-model' => 'payment_method',
-					),
-				),
-			);
+					],
+				],
+			];
 		}
 
 		$stripe_form = new \WP_Ultimo\UI\Form(
 			'billing-address-fields',
 			$fields,
-			array(
+			[
 				'views'     => 'checkout/fields',
-				'variables' => array(
-					'step' => (object) array(
+				'variables' => [
+					'step' => (object) [
 						'classes' => '',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		ob_start();
@@ -712,19 +712,19 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 	 */
 	public function payment_methods() {
 
-		$fields = array();
+		$fields = [];
 
 		$card_options = $this->get_saved_card_options();
 
 		if ($card_options) {
 			foreach ($card_options as $payment_method => $card) {
-				$fields = array(
-					"payment_method_{$payment_method}" => array(
+				$fields = [
+					"payment_method_{$payment_method}" => [
 						'type'          => 'text-display',
 						'title'         => __('Saved Cards', 'wp-ultimo'),
 						'display_value' => $card,
-					),
-				);
+					],
+				];
 			}
 		}
 
@@ -745,7 +745,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		$customer = wu_get_current_customer();
 
 		if ( ! $customer) {
-			return array();
+			return [];
 		}
 
 		$customer_id = $customer->get_id();
@@ -760,14 +760,14 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				return $existing_payment_methods[ $customer_id ];
 			}
 
-			$customer_payment_methods = array();
+			$customer_payment_methods = [];
 
 			$stripe_customer_id = \WP_Ultimo\Models\Membership::query(
-				array(
+				[
 					'customer_id' => $customer_id,
 					'search'      => 'cus_*',
-					'fields'      => array('gateway_customer_id'),
-				)
+					'fields'      => ['gateway_customer_id'],
+				]
 			);
 
 			$stripe_customer_id = current(array_column($stripe_customer_id, 'gateway_customer_id'));
@@ -778,10 +778,10 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			$this->setup_api_keys();
 
 			$payment_methods = Stripe\PaymentMethod::all(
-				array(
+				[
 					'customer' => $stripe_customer_id,
 					'type'     => 'card',
-				)
+				]
 			);
 
 			foreach ($payment_methods->data as $payment_method) {
@@ -792,7 +792,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 
 			return $existing_payment_methods[ $customer_id ];
 		} catch (\Throwable $exception) {
-			return array();
+			return [];
 		}
 	}
 }

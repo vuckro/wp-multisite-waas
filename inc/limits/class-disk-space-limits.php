@@ -45,11 +45,11 @@ class Disk_Space_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_filter('site_option_upload_space_check_disabled', array($this, 'upload_space_check_disabled'));
+		add_filter('site_option_upload_space_check_disabled', [$this, 'upload_space_check_disabled']);
 
-		add_filter('get_space_allowed', array($this, 'apply_disk_space_limitations'));
+		add_filter('get_space_allowed', [$this, 'apply_disk_space_limitations']);
 	}
 
 	/**

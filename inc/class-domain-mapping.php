@@ -45,9 +45,9 @@ class Domain_Mapping {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		if ($this->should_skip_checks()) {
+		if (static::should_skip_checks()) {
 			$this->startup();
 		} else {
 			$this->maybe_startup();
@@ -71,7 +71,7 @@ class Domain_Mapping {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_startup() {
+	public function maybe_startup(): void {
 		/*
 		 * Don't run during installation...
 		 */
@@ -104,7 +104,7 @@ class Domain_Mapping {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function startup() {
+	public function startup(): void {
 		/*
 		 * Adds the necessary tables to the $wpdb global.
 		 */
@@ -115,22 +115,22 @@ class Domain_Mapping {
 		}
 
 		// Ensure cache is shared
-		wp_cache_add_global_groups(array('domain_mappings', 'network_mappings'));
+		wp_cache_add_global_groups(['domain_mappings', 'network_mappings']);
 
 		/*
 		 * Check if the URL being accessed right now is a mapped domain
 		 */
-		add_filter('pre_get_site_by_path', array($this, 'check_domain_mapping'), 10, 2);
+		add_filter('pre_get_site_by_path', [$this, 'check_domain_mapping'], 10, 2);
 
 		/*
 		 * When a site gets delete, clean up the mapped domains
 		 */
-		add_action('wp_delete_site', array($this, 'clear_mappings_on_delete'));
+		add_action('wp_delete_site', [$this, 'clear_mappings_on_delete']);
 
 		/*
 		 * Adds the filters that will change the URLs when a mapped domains is in use
 		 */
-		add_action('ms_loaded', array($this, 'register_mapped_filters'), 11);
+		add_action('ms_loaded', [$this, 'register_mapped_filters'], 11);
 
 		// add_action('allowed_http_origin', array($this, 'add_mapped_domains_as_allowed_origins'));
 
@@ -138,7 +138,7 @@ class Domain_Mapping {
 		 * On WP Multisite WaaS 1.X builds we used Mercator. The Mercator actions and filters are now deprecated.
 		 */
 		if (has_action('mercator_load')) {
-			do_action_deprecated('mercator_load', array(), '2.0.0', 'wu_domain_mapping_load');
+			do_action_deprecated('mercator_load', [], '2.0.0', 'wu_domain_mapping_load');
 		}
 
 		add_action(
@@ -146,12 +146,12 @@ class Domain_Mapping {
 			function ($list, $site_id): array {
 
 				$domains = wu_get_domains(
-					array(
+					[
 						'active'        => true,
 						'blog_id'       => $site_id,
 						'stage__not_in' => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
 						'fields'        => 'domain',
-					)
+					]
 				);
 
 				return array_merge($list, $domains);
@@ -231,7 +231,7 @@ class Domain_Mapping {
 	 */
 	public function get_www_and_nowww_versions($domain) {
 
-		if (strncmp($domain, 'www.', strlen('www.')) === 0) {
+		if (str_starts_with($domain, 'www.')) {
 			$www   = $domain;
 			$nowww = substr($domain, 4);
 		} else {
@@ -239,7 +239,7 @@ class Domain_Mapping {
 			$www   = 'www.' . $domain;
 		}
 
-		return array($nowww, $www);
+		return [$nowww, $www];
 	}
 	/**
 	 * Checks if we have a site associated with the domain being accessed
@@ -269,11 +269,11 @@ class Domain_Mapping {
 		}
 
 		if (has_filter('mercator.use_mapping')) {
-			$deprecated_args = array(
+			$deprecated_args = [
 				$mapping->is_active(),
 				$mapping,
 				$domain,
-			);
+			];
 
 			$is_active = apply_filters_deprecated('mercator.use_mapping', $deprecated_args, '2.0.0', 'wu_use_domain_mapping');
 		}
@@ -339,7 +339,7 @@ class Domain_Mapping {
 	 *
 	 * @param WP_Site $site Site being deleted.
 	 */
-	public function clear_mappings_on_delete($site) {
+	public function clear_mappings_on_delete($site): void {
 
 		$mappings = Domain::get_by_site($site->blog_id);
 
@@ -366,7 +366,7 @@ class Domain_Mapping {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_mapped_filters() {
+	public function register_mapped_filters(): void {
 
 		$current_site = $GLOBALS['current_blog'];
 
@@ -393,27 +393,27 @@ class Domain_Mapping {
 
 		$this->current_mapping = $mapping;
 
-		add_filter('site_url', array($this, 'mangle_url'), -10, 4);
-		add_filter('home_url', array($this, 'mangle_url'), -10, 4);
+		add_filter('site_url', [$this, 'mangle_url'], -10, 4);
+		add_filter('home_url', [$this, 'mangle_url'], -10, 4);
 
-		add_filter('theme_file_uri', array($this, 'mangle_url'));
-		add_filter('stylesheet_directory_uri', array($this, 'mangle_url'));
-		add_filter('template_directory_uri', array($this, 'mangle_url'));
-		add_filter('plugins_url', array($this, 'mangle_url'), -10, 3);
+		add_filter('theme_file_uri', [$this, 'mangle_url']);
+		add_filter('stylesheet_directory_uri', [$this, 'mangle_url']);
+		add_filter('template_directory_uri', [$this, 'mangle_url']);
+		add_filter('plugins_url', [$this, 'mangle_url'], -10, 3);
 
-		add_filter('autoptimize_filter_base_replace_cdn', array($this, 'mangle_url'), 8); // @since 1.8.2 - Fix for Autoptimizer
+		add_filter('autoptimize_filter_base_replace_cdn', [$this, 'mangle_url'], 8); // @since 1.8.2 - Fix for Autoptimizer
 
 		// Fix srcset
-		add_filter('wp_calculate_image_srcset', array($this, 'fix_srcset')); // @since 1.5.5
+		add_filter('wp_calculate_image_srcset', [$this, 'fix_srcset']); // @since 1.5.5
 
 		// If on network site, also filter network urls
 		if (is_main_site()) {
-			add_filter('network_site_url', array($this, 'mangle_url'), -10, 3);
-			add_filter('network_home_url', array($this, 'mangle_url'), -10, 3);
+			add_filter('network_site_url', [$this, 'mangle_url'], -10, 3);
+			add_filter('network_home_url', [$this, 'mangle_url'], -10, 3);
 		}
 
-		add_filter('jetpack_sync_home_url', array($this, 'mangle_url'));
-		add_filter('jetpack_sync_site_url', array($this, 'mangle_url'));
+		add_filter('jetpack_sync_home_url', [$this, 'mangle_url']);
+		add_filter('jetpack_sync_site_url', [$this, 'mangle_url']);
 
 		/**
 		 * Some plugins will save URL before the mapping was active
@@ -431,7 +431,7 @@ class Domain_Mapping {
 		 * @param self  This object.
 		 * @return void
 		 */
-		do_action('wu_domain_mapping_register_filters', array($this, 'mangle_url'), $this);
+		do_action('wu_domain_mapping_register_filters', [$this, 'mangle_url'], $this);
 	}
 
 	/**
@@ -442,7 +442,7 @@ class Domain_Mapping {
 	 * @param string|array $hooks List of hooks to apply the callback to.
 	 * @return void
 	 */
-	public static function apply_mapping_to_url($hooks) {
+	public static function apply_mapping_to_url($hooks): void {
 
 		add_action(
 			'wu_domain_mapping_register_filters',

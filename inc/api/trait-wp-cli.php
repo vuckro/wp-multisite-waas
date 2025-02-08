@@ -28,7 +28,7 @@ trait WP_CLI {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $wp_cli_enabled_sub_commands = array();
+	protected $wp_cli_enabled_sub_commands = [];
 
 	/**
 	 * Returns the base used right after the root.
@@ -48,7 +48,7 @@ trait WP_CLI {
 	 *
 	 * @since 2.0.0
 	 */
-	public function enable_wp_cli() {
+	public function enable_wp_cli(): void {
 
 		if ( ! defined('WP_CLI')) {
 			return;
@@ -62,9 +62,9 @@ trait WP_CLI {
 			\WP_CLI::add_command(
 				"{$wp_cli_root} {$this->get_wp_cli_command_base()} {$sub_command}",
 				$sub_command_data['callback'],
-				array(
+				[
 					'synopsis' => $sub_command_data['synopsis'],
-				)
+				]
 			);
 		}
 	}
@@ -72,25 +72,25 @@ trait WP_CLI {
 	/**
 	 * Set wP-CLI Sub-command enabled for this entity.
 	 */
-	public function set_wp_cli_enabled_sub_commands() {
+	public function set_wp_cli_enabled_sub_commands(): void {
 
-		$sub_commands = array(
-			'get'    => array(
-				'callback' => array($this, 'wp_cli_get_item'),
-			),
-			'list'   => array(
-				'callback' => array($this, 'wp_cli_get_items'),
-			),
-			'create' => array(
-				'callback' => array($this, 'wp_cli_create_item'),
-			),
-			'update' => array(
-				'callback' => array($this, 'wp_cli_update_item'),
-			),
-			'delete' => array(
-				'callback' => array($this, 'wp_cli_delete_item'),
-			),
-		);
+		$sub_commands = [
+			'get'    => [
+				'callback' => [$this, 'wp_cli_get_item'],
+			],
+			'list'   => [
+				'callback' => [$this, 'wp_cli_get_items'],
+			],
+			'create' => [
+				'callback' => [$this, 'wp_cli_create_item'],
+			],
+			'update' => [
+				'callback' => [$this, 'wp_cli_update_item'],
+			],
+			'delete' => [
+				'callback' => [$this, 'wp_cli_delete_item'],
+			],
+		];
 
 		$params = array_merge($this->wp_cli_get_fields(), $this->wp_cli_extra_parameters());
 
@@ -101,42 +101,42 @@ trait WP_CLI {
 		 */
 		$params_to_remove = apply_filters(
 			'wu_cli_params_to_remove',
-			array(
+			[
 				'id',
 				'model',
-			)
+			]
 		);
 
 		$params = array_filter($params, fn($param) => ! in_array($param, $params_to_remove, true));
 
 		foreach ($sub_commands as $sub_command => &$sub_command_data) {
-			$sub_command_data['synopsis'] = array();
+			$sub_command_data['synopsis'] = [];
 
-			if (in_array($sub_command, array('get', 'update', 'delete'), true)) {
-				$sub_command_data['synopsis'][] = array(
+			if (in_array($sub_command, ['get', 'update', 'delete'], true)) {
+				$sub_command_data['synopsis'][] = [
 					'name'        => 'id',
 					'type'        => 'positional',
 					'description' => __('The id for the resource.', 'wp-ultimo'),
 					'optional'    => false,
-				);
+				];
 			}
 
-			if (in_array($sub_command, array('list', 'update', 'create'), true)) {
+			if (in_array($sub_command, ['list', 'update', 'create'], true)) {
 				$explanation_list = wu_rest_get_endpoint_schema($this->model_class, 'update');
 
 				foreach ($params as $name) {
-					$explanation = wu_get_isset($explanation_list, $name, array());
+					$explanation = wu_get_isset($explanation_list, $name, []);
 
 					$type = wu_get_isset($explanation, 'type', 'assoc');
 
-					$field = array(
+					$field = [
 						'name'        => $name,
 						'description' => wu_get_isset($explanation, 'description', __('No description found.', 'wp-ultimo')),
 						'optional'    => ! wu_get_isset($explanation, 'required'),
 						'type'        => 'assoc',
-					);
+					];
 
-					$options = wu_get_isset($explanation, 'options', array());
+					$options = wu_get_isset($explanation, 'options', []);
 
 					if ($options) {
 						$field['options'] = $options;
@@ -146,39 +146,39 @@ trait WP_CLI {
 				}
 			}
 
-			if (in_array($sub_command, array('create', 'update'), true)) {
-				$sub_command_data['synopsis'][] = array(
+			if (in_array($sub_command, ['create', 'update'], true)) {
+				$sub_command_data['synopsis'][] = [
 					'name'        => 'porcelain',
 					'type'        => 'flag',
 					'description' => __('Output just the id when the operation is successful.', 'wp-ultimo'),
 					'optional'    => true,
-				);
+				];
 			}
 
-			if (in_array($sub_command, array('list', 'get'), true)) {
-				$sub_command_data['synopsis'][] = array(
+			if (in_array($sub_command, ['list', 'get'], true)) {
+				$sub_command_data['synopsis'][] = [
 					'name'        => 'format',
 					'type'        => 'assoc',
 					'description' => __('Render response in a particular format.', 'wp-ultimo'),
 					'optional'    => true,
 					'default'     => 'table',
-					'options'     => array(
+					'options'     => [
 						'table',
 						'json',
 						'csv',
 						'ids',
 						'yaml',
 						'count',
-					),
-				);
+					],
+				];
 
-				$sub_command_data['synopsis'][] = array(
+				$sub_command_data['synopsis'][] = [
 					'name'        => 'fields',
 					'type'        => 'assoc',
 					'description' => __('Limit response to specific fields. Defaults to id, name', 'wp-ultimo'),
 					'optional'    => true,
-					'options'     => array_merge(array('id'), $params),
-				);
+					'options'     => array_merge(['id'], $params),
+				];
 			}
 		}
 
@@ -233,7 +233,7 @@ trait WP_CLI {
 	 * @param array $args        Positional arguments passed. ID expected.
 	 * @param array $array_assoc Assoc arguments passed.
 	 */
-	public function wp_cli_get_item($args, $array_assoc) {
+	public function wp_cli_get_item($args, $array_assoc): void {
 
 		$item = $this->model_class::get_by_id($args[0]);
 
@@ -256,7 +256,7 @@ trait WP_CLI {
 	 * @param array $args        Positional arguments passed. ID expected.
 	 * @param array $array_assoc Assoc arguments passed.
 	 */
-	public function wp_cli_get_items($args, $array_assoc) {
+	public function wp_cli_get_items($args, $array_assoc): void {
 
 		$fields = (! empty($array_assoc['fields'])) ? $array_assoc['fields'] : $this->wp_cli_get_fields();
 
@@ -277,7 +277,7 @@ trait WP_CLI {
 	 * @param array $args        Positional arguments passed. ID expected.
 	 * @param array $array_assoc Assoc arguments passed.
 	 */
-	public function wp_cli_create_item($args, $array_assoc) {
+	public function wp_cli_create_item($args, $array_assoc): void {
 
 		$item = new $this->model_class($array_assoc);
 
@@ -306,7 +306,7 @@ trait WP_CLI {
 	 * @param array $args        Positional arguments passed. ID expected.
 	 * @param array $array_assoc Assoc arguments passed.
 	 */
-	public function wp_cli_update_item($args, $array_assoc) {
+	public function wp_cli_update_item($args, $array_assoc): void {
 
 		$item = $this->model_class::get_by_id($args[0]);
 
@@ -330,7 +330,7 @@ trait WP_CLI {
 			if ($param === 'meta') {
 				$item->update_meta_batch($value);
 			} elseif (method_exists($item, $set_method)) {
-				call_user_func(array($item, $set_method), $value);
+				call_user_func([$item, $set_method], $value);
 			} else {
 				$error_message = sprintf(
 					/* translators: 1. Object class name; 2. Set method name */
@@ -367,7 +367,7 @@ trait WP_CLI {
 	 *
 	 * @param array $args Positional arguments passed. ID expected.
 	 */
-	public function wp_cli_delete_item($args) {
+	public function wp_cli_delete_item($args): void {
 
 		$item = $this->model_class::get_by_id($args[0]);
 

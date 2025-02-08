@@ -108,10 +108,10 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'enable_go_back_button' => false,
 			'back_button_label'     => __('&larr; Go Back', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -122,10 +122,10 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'name',
-		);
+		];
 	}
 
 	/**
@@ -136,7 +136,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -147,29 +147,29 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'enable_go_back_button' => array(
+		return [
+			'enable_go_back_button' => [
 				'type'      => 'toggle',
 				'title'     => __('Add "Go Back" button', 'wp-ultimo'),
 				'desc'      => __('Enable this option to add a "Go Back" button. Useful for multi-step checkout forms.', 'wp-ultimo'),
 				'tooltip'   => '',
 				'value'     => 0,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'enable_go_back_button',
-				),
-			),
-			'back_button_label'     => array(
+				],
+			],
+			'back_button_label'     => [
 				'type'              => 'text',
 				'title'             => __('"Go Back" Button Label', 'wp-ultimo'),
 				'desc'              => __('Value to be used as the "Go Back" label.', 'wp-ultimo'),
 				'placeholder'       => __('e.g. &larr; Go Back', 'wp-ultimo'),
 				'value'             => __('&larr; Go Back', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-cloak' => '1',
 					'v-show'  => 'enable_go_back_button',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -184,24 +184,24 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 
 		$uniqid = uniqid();
 
-		$fields = array();
+		$fields = [];
 
-		$fields[ $attributes['id'] . '_errors' ] = array(
+		$fields[ $attributes['id'] . '_errors' ] = [
 			'type'              => 'html',
 			'wrapper_classes'   => 'wu_submit_button_errors wu-clear-both',
 			'content'           => '<span v-cloak class="wu-block wu-bg-red-100 wu-p-2 wu-mb-4" v-html="get_errors().join(' . esc_js(json_encode('<br>')) . ')"></span>',
-			'wrapper_html_attr' => array(
+			'wrapper_html_attr' => [
 				'v-if' => 'get_errors()',
-			),
-		);
+			],
+		];
 
-		$fields[ $attributes['id'] . '_group' ] = array(
+		$fields[ $attributes['id'] . '_group' ] = [
 			'type'            => 'group',
 			'raw'             => true,
-			'default'         => array(),
+			'default'         => [],
 			'wrapper_classes' => '',
-			'fields'          => array(),
-		);
+			'fields'          => [],
+		];
 
 		$button_wrapper_classes = 'wu_submit_button';
 
@@ -211,29 +211,29 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 			$is_first_step = isset($steps[0]) && $steps[0]['id'] === $attributes['step'];
 
 			if ( ! $is_first_step) {
-				$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] . '_go_back' ] = array(
+				$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] . '_go_back' ] = [
 					'type'            => 'html',
 					'wrapper_classes' => 'md:wu-w-1/2 wu-box-border wu-float-left wu--mt-4',
 					'id'              => $attributes['id'] . '_go_back',
 					'content'         => sprintf('<a href="#" class="button wu-go-back" v-on:click.prevent="go_back()">%s</a>', $attributes['back_button_label']),
-				);
+				];
 
 				$button_wrapper_classes .= ' md:wu-w-1/2 wu-box-border wu-float-left wu-text-right';
 			}
 		}
 
-		$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] ] = array(
+		$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] ] = [
 			'type'            => 'submit',
 			'wrapper_classes' => trim($button_wrapper_classes . ' ' . wu_get_isset($attributes, 'wrapper_element_classes', '')),
 			'classes'         => trim('button button-primary btn-primary' . ' ' . wu_get_isset($attributes, 'element_classes', '')),
 			'id'              => $attributes['id'],
 			'name'            => $attributes['name'],
-		);
+		];
 
 		if ($attributes['enable_go_back_button']) {
-			$fields[ $attributes['id'] . '_clear' ] = array(
+			$fields[ $attributes['id'] . '_clear' ] = [
 				'type' => 'clear',
-			);
+			];
 		}
 
 		return $fields;

@@ -172,7 +172,7 @@ class Payment extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Payments\\Payment_Query';
+	protected $query_class = \WP_Ultimo\Database\Payments\Payment_Query::class;
 
 	/**
 	 * Adds magic methods to return formatted values automatically.
@@ -188,7 +188,7 @@ class Payment extends Base_Model {
 
 		$method_key = str_replace('_formatted', '', $name);
 
-		if (strpos($name, '_formatted') !== false && method_exists($this, $method_key)) {
+		if (str_contains($name, '_formatted') && method_exists($this, $method_key)) {
 			return wu_format_currency($this->{"$method_key"}(), $this->get_currency());
 		}
 
@@ -213,7 +213,7 @@ class Payment extends Base_Model {
 
 		$payment_types = $payment_types->get_allowed_list(true);
 
-		return array(
+		return [
 			'customer_id'                 => 'required|integer|exists:\WP_Ultimo\Models\Customer,id',
 			'membership_id'               => 'required|integer|exists:\WP_Ultimo\Models\Membership,id',
 			'parent_id'                   => 'integer|default:',
@@ -229,7 +229,7 @@ class Payment extends Base_Model {
 			'discount_total'              => 'integer',
 			'invoice_number'              => 'default:',
 			'cancel_membership_on_refund' => 'boolean|default:0',
-		);
+		];
 	}
 
 	/**
@@ -262,7 +262,7 @@ class Payment extends Base_Model {
 	 * @param int $customer_id The ID of the customer attached to this payment.
 	 * @return void
 	 */
-	public function set_customer_id($customer_id) {
+	public function set_customer_id($customer_id): void {
 
 		$this->customer_id = absint($customer_id);
 	}
@@ -296,7 +296,7 @@ class Payment extends Base_Model {
 	 * @param int $membership_id The ID of the membership attached to this payment.
 	 * @return void
 	 */
-	public function set_membership_id($membership_id) {
+	public function set_membership_id($membership_id): void {
 
 		$this->membership_id = $membership_id;
 	}
@@ -319,7 +319,7 @@ class Payment extends Base_Model {
 	 * @param int $parent_id The ID from another payment that this payment is related to.
 	 * @return void
 	 */
-	public function set_parent_id($parent_id) {
+	public function set_parent_id($parent_id): void {
 
 		$this->parent_id = $parent_id;
 	}
@@ -343,7 +343,7 @@ class Payment extends Base_Model {
 	 * @param string $currency The currency of this payment. It's a 3-letter code. E.g. 'USD'.
 	 * @return void
 	 */
-	public function set_currency($currency) {
+	public function set_currency($currency): void {
 
 		$this->currency = $currency;
 	}
@@ -366,7 +366,7 @@ class Payment extends Base_Model {
 	 * @param float $subtotal Value before taxes, discounts, fees and other changes.
 	 * @return void
 	 */
-	public function set_subtotal($subtotal) {
+	public function set_subtotal($subtotal): void {
 
 		$this->subtotal = $subtotal;
 	}
@@ -435,7 +435,7 @@ class Payment extends Base_Model {
 	 * @param string $discount_code Discount code used.
 	 * @return void
 	 */
-	public function set_discount_code($discount_code) {
+	public function set_discount_code($discount_code): void {
 
 		$this->discount_code = $discount_code;
 	}
@@ -458,7 +458,7 @@ class Payment extends Base_Model {
 	 * @param float $total This takes into account fees, discounts and credits.
 	 * @return void
 	 */
-	public function set_total($total) {
+	public function set_total($total): void {
 
 		$this->total = $total;
 	}
@@ -508,7 +508,7 @@ class Payment extends Base_Model {
 	 * @options \WP_Ultimo\Database\Payments\Payment_Status
 	 * @return void
 	 */
-	public function set_status($status) {
+	public function set_status($status): void {
 
 		$this->status = $status;
 	}
@@ -531,7 +531,7 @@ class Payment extends Base_Model {
 	 * @param string $gateway ID of the gateway being used on this payment.
 	 * @return void
 	 */
-	public function set_gateway($gateway) {
+	public function set_gateway($gateway): void {
 
 		$this->gateway = $gateway;
 	}
@@ -613,7 +613,7 @@ class Payment extends Base_Model {
 	 * @param Line_Item[] $line_items THe line items.
 	 * @return void
 	 */
-	public function set_line_items(array $line_items) {
+	public function set_line_items(array $line_items): void {
 
 		$line_items = array_filter($line_items);
 
@@ -630,7 +630,7 @@ class Payment extends Base_Model {
 	 * @param Line_Item $line_item The line item.
 	 * @return void
 	 */
-	public function add_line_item($line_item) {
+	public function add_line_item($line_item): void {
 
 		$line_items = $this->get_line_items();
 
@@ -655,7 +655,7 @@ class Payment extends Base_Model {
 
 		$line_items = $this->get_line_items();
 
-		$tax_brackets = array();
+		$tax_brackets = [];
 
 		foreach ($line_items as $line_item) {
 			$tax_bracket = $line_item->get_tax_rate();
@@ -711,12 +711,12 @@ class Payment extends Base_Model {
 		}
 
 		$this->attributes(
-			array(
+			[
 				'tax_total'    => $tax_total,
 				'subtotal'     => $sub_total,
 				'refund_total' => $refund_total,
 				'total'        => $total,
-			)
+			]
 		);
 
 		return $this;
@@ -732,10 +732,10 @@ class Payment extends Base_Model {
 
 		$payable_statuses = apply_filters(
 			'wu_payment_payable_statuses',
-			array(
+			[
 				Payment_Status::PENDING,
 				Payment_Status::FAILED,
-			)
+			]
 		);
 
 		return $this->get_total() > 0 && in_array($this->get_status(), $payable_statuses, true);
@@ -756,9 +756,9 @@ class Payment extends Base_Model {
 		$slug = $this->get_hash();
 
 		return add_query_arg(
-			array(
+			[
 				'payment' => $slug,
-			),
+			],
 			wu_get_registration_url()
 		);
 	}
@@ -781,7 +781,7 @@ class Payment extends Base_Model {
 	 * @param int $product_id The ID of the product of this payment.
 	 * @return void
 	 */
-	public function set_product_id($product_id) {
+	public function set_product_id($product_id): void {
 
 		$this->product_id = $product_id;
 	}
@@ -794,11 +794,11 @@ class Payment extends Base_Model {
 	 */
 	public function get_invoice_url() {
 
-		$url_atts = array(
+		$url_atts = [
 			'action'    => 'invoice',
 			'reference' => $this->get_hash(),
 			'key'       => wp_create_nonce('see_invoice'),
-		);
+		];
 
 		return add_query_arg($url_atts, get_site_url(wu_get_main_site_id()));
 	}
@@ -821,7 +821,7 @@ class Payment extends Base_Model {
 	 * @param string $gateway_payment_id The ID of the payment on the gateway, if it exists.
 	 * @return void
 	 */
-	public function set_gateway_payment_id($gateway_payment_id) {
+	public function set_gateway_payment_id($gateway_payment_id): void {
 
 		$this->gateway_payment_id = $gateway_payment_id;
 	}
@@ -863,7 +863,7 @@ class Payment extends Base_Model {
 	 * @param integer $discount_total The total value of the discounts applied to this payment.
 	 * @return void
 	 */
-	public function set_discount_total($discount_total) {
+	public function set_discount_total($discount_total): void {
 
 		$this->discount_total = (float) $discount_total;
 	}
@@ -909,23 +909,23 @@ class Payment extends Base_Model {
 
 		$prefix = wu_get_setting('invoice_prefix', '');
 
-		$search = array(
+		$search = [
 			'%YEAR%',
 			'%MONTH%',
 			'%DAY%',
 			'%%YEAR%%',
 			'%%MONTH%%',
 			'%%DAY%%',
-		);
+		];
 
-		$replace = array(
+		$replace = [
 			gmdate('Y'),
 			gmdate('m'),
 			gmdate('d'),
 			gmdate('Y'),
 			gmdate('m'),
 			gmdate('d'),
-		);
+		];
 
 		$prefix = str_replace($search, $replace, (string) $prefix);
 
@@ -939,7 +939,7 @@ class Payment extends Base_Model {
 	 * @param int $invoice_number Sequential invoice number assigned to this payment.
 	 * @return void
 	 */
-	public function set_invoice_number($invoice_number) {
+	public function set_invoice_number($invoice_number): void {
 
 		$this->meta['wu_invoice_number'] = $invoice_number;
 
@@ -994,7 +994,7 @@ class Payment extends Base_Model {
 	 * @param bool $cancel_membership_on_refund Holds if we need to cancel the membership on refund.
 	 * @return void
 	 */
-	public function set_cancel_membership_on_refund($cancel_membership_on_refund) {
+	public function set_cancel_membership_on_refund($cancel_membership_on_refund): void {
 
 		$this->meta['wu_cancel_membership_on_refund'] = $cancel_membership_on_refund;
 
@@ -1065,7 +1065,7 @@ class Payment extends Base_Model {
 		// translators: %s is the date of processing.
 		$description = sprintf(__('Processed on %s', 'wp-ultimo'), $formatted_value);
 
-		$line_item_data = array(
+		$line_item_data = [
 			'type'         => 'refund',
 			'hash'         => uniqid(),
 			'title'        => $title,
@@ -1074,7 +1074,7 @@ class Payment extends Base_Model {
 			'taxable'      => false,
 			'unit_price'   => -$amount,
 			'quantity'     => 1,
-		);
+		];
 
 		$refund_line_item = new Line_Item($line_item_data);
 

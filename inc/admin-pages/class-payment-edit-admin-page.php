@@ -77,9 +77,9 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_edit_payments',
-	);
+	];
 
 	/**
 	 * Registers the necessary scripts and styles for this admin page.
@@ -87,7 +87,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.4
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
@@ -100,17 +100,17 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Edit/Add Line Item
 		 */
 		wu_register_form(
 			'edit_line_item',
-			array(
-				'render'     => array($this, 'render_edit_line_item_modal'),
-				'handler'    => array($this, 'handle_edit_line_item_modal'),
+			[
+				'render'     => [$this, 'render_edit_line_item_modal'],
+				'handler'    => [$this, 'handle_edit_line_item_modal'],
 				'capability' => 'wu_edit_payments',
-			)
+			]
 		);
 
 		/*
@@ -118,11 +118,11 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		 */
 		wu_register_form(
 			'delete_line_item',
-			array(
-				'render'     => array($this, 'render_delete_line_item_modal'),
-				'handler'    => array($this, 'handle_delete_line_item_modal'),
+			[
+				'render'     => [$this, 'render_delete_line_item_modal'],
+				'handler'    => [$this, 'handle_delete_line_item_modal'],
 				'capability' => 'wu_delete_payments',
-			)
+			]
 		);
 
 		/*
@@ -130,11 +130,11 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		 */
 		wu_register_form(
 			'refund_payment',
-			array(
-				'render'     => array($this, 'render_refund_payment_modal'),
-				'handler'    => array($this, 'handle_refund_payment_modal'),
+			[
+				'render'     => [$this, 'render_refund_payment_modal'],
+				'handler'    => [$this, 'handle_refund_payment_modal'],
 				'capability' => 'wu_refund_payments',
-			)
+			]
 		);
 
 		/*
@@ -142,9 +142,9 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		 */
 		add_filter(
 			'wu_data_json_success_delete_payment_modal',
-			fn($data_json) => array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-payments', array('deleted' => 1)),
-			)
+			fn($data_json) => [
+				'redirect_url' => wu_network_admin_url('wp-ultimo-payments', ['deleted' => 1]),
+			]
 		);
 	}
 
@@ -154,7 +154,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_delete_line_item_modal() {
+	public function render_delete_line_item_modal(): void {
 
 		$payment = wu_get_payment(wu_request('id'));
 
@@ -164,51 +164,51 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			return;
 		}
 
-		$fields = array(
-			'confirm'       => array(
+		$fields = [
+			'confirm'       => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Deletion', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_button' => array(
+				],
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Delete', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-			'id'            => array(
+				],
+			],
+			'id'            => [
 				'type'  => 'hidden',
 				'value' => $payment->get_id(),
-			),
-			'line_item_id'  => array(
+			],
+			'line_item_id'  => [
 				'type'  => 'hidden',
 				'value' => $line_item->get_id(),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'total-actions',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'true',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -220,7 +220,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_delete_line_item_modal() {
+	public function handle_delete_line_item_modal(): void {
 
 		$payment = wu_get_payment(wu_request('id'));
 
@@ -243,9 +243,9 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-			)
+			]
 		);
 	}
 
@@ -255,7 +255,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	function render_refund_payment_modal() {
+	function render_refund_payment_modal(): void {
 
 		$payment = wu_get_payment(wu_request('id'));
 
@@ -263,110 +263,110 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			return;
 		}
 
-		$fields = array(
-			'_amount'                   => array(
+		$fields = [
+			'_amount'                   => [
 				'type'              => 'text',
 				'title'             => __('Refund Amount', 'wp-ultimo'),
 				'placeholder'       => __('Refund Amount', 'wp-ultimo'),
 				'money'             => true,
 				'min'               => 0,
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model'    => 'amount',
 					'step'       => '0.01',
 					'v-bind:max' => 'total',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 1',
-				),
-			),
-			'amount'                    => array(
+				],
+			],
+			'amount'                    => [
 				'type'      => 'hidden',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'amount',
-				),
-			),
-			'cancel_membership'         => array(
+				],
+			],
+			'cancel_membership'         => [
 				'type'              => 'toggle',
 				'title'             => __('Cancel Related Membership?', 'wp-ultimo'),
 				'desc'              => __('Checking this option will cancel the membership as well.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 1',
-				),
-			),
-			'refund_not_immediate_note' => array(
+				],
+			],
+			'refund_not_immediate_note' => [
 				'type'              => 'note',
 				'desc'              => __('Confirming the refund might not immediately change the status of the payment, as each gateway handles refunds differently and WP Multisite WaaS relies on the gateway reporting a successful refund before changing the status.', 'wp-ultimo'),
 				'classes'           => 'wu-p-2 wu-bg-yellow-200 wu-text-yellow-700 wu-rounded wu-w-full',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'step === 2',
 					'v-cloak' => '1',
-				),
-			),
-			'confirm'                   => array(
+				],
+			],
+			'confirm'                   => [
 				'type'              => 'toggle',
 				'title'             => __('Confirm Refund', 'wp-ultimo'),
 				'desc'              => __('This action can not be undone.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 2',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'submit_button'             => array(
+				],
+			],
+			'submit_button'             => [
 				'type'              => 'submit',
 				'title'             => __('Next Step', 'wp-ultimo'),
 				'placeholder'       => __('Next Step', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 1',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-bind:disabled'    => 'amount <= 0 || amount > total',
 					'v-on:click.prevent' => 'step = 2',
-				),
-			),
-			'submit_button_2'           => array(
+				],
+			],
+			'submit_button_2'           => [
 				'type'              => 'submit',
 				'title'             => __('Issue Refund', 'wp-ultimo'),
 				'placeholder'       => __('Issue Refund', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-bind:disabled' => '!confirmed',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'step === 2',
-				),
-			),
-			'id'                        => array(
+				],
+			],
+			'id'                        => [
 				'type'  => 'hidden',
 				'value' => $payment->get_id(),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'total-actions',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'refund',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'step'      => 1,
 							'confirmed' => false,
 							'total'     => round($payment->get_total(), 2),
 							'amount'    => round($payment->get_total(), 2),
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -378,7 +378,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_refund_payment_modal() {
+	public function handle_refund_payment_modal(): void {
 
 		$amount = wu_to_float(wu_request('amount'));
 
@@ -438,15 +438,15 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			 * Done! Redirect back.
 			 */
 			wp_send_json_success(
-				array(
+				[
 					'redirect_url' => wu_network_admin_url(
 						'wp-ultimo-edit-payment',
-						array(
+						[
 							'id'      => $payment->get_id(),
 							'updated' => 1,
-						)
+						]
 					),
-				)
+				]
 			);
 		}
 
@@ -498,15 +498,15 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		 * Done! Redirect back.
 		 */
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					'wp-ultimo-edit-payment',
-					array(
+					[
 						'id'      => $payment->get_id(),
 						'updated' => 1,
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -516,14 +516,14 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return mixed
 	 */
-	public function handle_edit_line_item_modal() {
+	public function handle_edit_line_item_modal(): void {
 
 		$payment = wu_get_payment(wu_request('payment_id'));
 
 		$line_item = wu_get_line_item(wu_request('line_item_id'), $payment->get_id());
 
 		if ( ! $line_item) {
-			$line_item = new \WP_Ultimo\Checkout\Line_Item(array());
+			$line_item = new \WP_Ultimo\Checkout\Line_Item([]);
 		}
 
 		/*
@@ -550,7 +550,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			 * Constructs the arguments
 			 * for the product line item.
 			 */
-			$atts = array(
+			$atts = [
 				'product'     => $product,
 				'quantity'    => wu_request('quantity', 1),
 				'unit_price'  => wu_to_float(wu_request('unit_price')),
@@ -559,7 +559,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 				'tax_rate'    => wu_request('tax_rate', 0),
 				'tax_type'    => wu_request('tax_type', 'percentage'),
 				'tax_label'   => wu_request('tax_label', ''),
-			);
+			];
 		} else {
 
 			/**
@@ -570,11 +570,11 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			 */
 			$allowed_types = apply_filters(
 				'wu_allowed_line_item_types',
-				array(
+				[
 					'fee',
 					'refund',
 					'credit',
-				)
+				]
 			);
 
 			if ( ! in_array($type, $allowed_types, true)) {
@@ -586,7 +586,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			/*
 			 * Set the new attributes
 			 */
-			$atts = array(
+			$atts = [
 				'quantity'    => 1,
 				'title'       => wu_request('title', ''),
 				'description' => wu_request('description', '--'),
@@ -594,7 +594,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 				'tax_rate'    => 0,
 				'tax_type'    => 'percentage',
 				'tax_label'   => '',
-			);
+			];
 		}
 
 		$line_item->attributes($atts);
@@ -618,9 +618,9 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-			)
+			]
 		);
 	}
 
@@ -630,7 +630,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_edit_line_item_modal() {
+	public function render_edit_line_item_modal(): void {
 		/*
 		 * Get the payment line item.
 		 */
@@ -641,102 +641,102 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			 * If that doesn't work,
 			 * we start a new line.
 			 */
-			$line_item = new \WP_Ultimo\Checkout\Line_Item(array());
+			$line_item = new \WP_Ultimo\Checkout\Line_Item([]);
 		}
 
-		$fields = array(
-			'tab'                => array(
+		$fields = [
+			'tab'                => [
 				'type'      => 'tab-select',
-				'options'   => array(
+				'options'   => [
 					'type' => __('Type', 'wp-ultimo'),
 					'info' => __('Additional Info', 'wp-ultimo'),
 					'tax'  => __('Tax Info', 'wp-ultimo'),
-				),
-				'html_attr' => array(
+				],
+				'html_attr' => [
 					'v-model' => 'tab',
-				),
-			),
-			'type'               => array(
+				],
+			],
+			'type'               => [
 				'type'              => 'select',
 				'title'             => __('Line Item Type', 'wp-ultimo'),
 				'desc'              => __('Select the line item type.', 'wp-ultimo'),
-				'options'           => array(
+				'options'           => [
 					'product' => __('Product', 'wp-ultimo'),
 					'refund'  => __('Refund', 'wp-ultimo'),
 					'fee'     => __('Fee', 'wp-ultimo'),
 					'credit'  => __('Credit', 'wp-ultimo'),
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'tab === "type"',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'type',
-				),
-			),
-			'product_id'         => array(
+				],
+			],
+			'product_id'         => [
 				'type'              => 'model',
 				'title'             => __('Product', 'wp-ultimo'),
 				'desc'              => __('Product associated with this line item.', 'wp-ultimo'),
 				'placeholder'       => __('Search Products', 'wp-ultimo'),
 				'value'             => $line_item->get_product_id(),
 				'tooltip'           => '',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'type === "product" && tab === "type"',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'data-model'        => 'product',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'name',
 					'data-search-field' => 'name',
 					'data-max-items'    => 1,
 					'data-selected'     => $line_item->get_product() ? json_encode($line_item->get_product()->to_search_results()) : '',
-				),
-			),
-			'title'              => array(
+				],
+			],
+			'title'              => [
 				'type'              => 'text',
 				'title'             => __('Line Item Title', 'wp-ultimo'),
 				'placeholder'       => __('E.g. Extra Charge', 'wp-ultimo'),
 				'desc'              => __('This is used when generating invoices.', 'wp-ultimo'),
 				'value'             => $line_item->get_title(),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'tab === "info"',
-				),
-			),
-			'description'        => array(
+				],
+			],
+			'description'        => [
 				'type'              => 'textarea',
 				'title'             => __('Line Item Description', 'wp-ultimo'),
 				'placeholder'       => __('E.g. This service was done to improve performance.', 'wp-ultimo'),
 				'desc'              => __('This is used when generating invoices.', 'wp-ultimo'),
 				'value'             => $line_item->get_description(),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'rows' => 4,
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show' => 'tab === "info"',
-				),
-			),
-			'quantity'           => array(
+				],
+			],
+			'quantity'           => [
 				'type'              => 'number',
 				'title'             => __('Quantity', 'wp-ultimo'),
 				'desc'              => __('Item quantity.', 'wp-ultimo'),
 				'value'             => $line_item->get_quantity(),
 				'placeholder'       => __('E.g. 1', 'wp-ultimo'),
 				'wrapper_classes'   => 'wu-w-1/2',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'type === "product" && tab === "type"',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'min'      => 1,
 					'required' => 'required',
-				),
-			),
-			'unit_price'         => array(
+				],
+			],
+			'unit_price'         => [
 				'type'      => 'hidden',
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'unit_price',
-				),
-			),
-			'_unit_price'        => array(
+				],
+			],
+			'_unit_price'        => [
 				'type'              => 'text',
 				'title'             => __('Unit Price', 'wp-ultimo'),
 				'desc'              => __('Item unit price. This is multiplied by the quantity to calculate the sub-total.', 'wp-ultimo'),
@@ -745,16 +745,16 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 				'value'             => $line_item->get_unit_price(),
 				'money'             => true,
 				'wrapper_classes'   => 'wu-w-1/2',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if' => 'type === "product" && tab === "type"',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'required' => 'required',
 					'step'     => '0.01',
 					'v-model'  => 'unit_price',
-				),
-			),
-			'_unit_price_amount' => array(
+				],
+			],
+			'_unit_price_amount' => [
 				'type'              => 'text',
 				'title'             => __('Amount', 'wp-ultimo'),
 				'desc'              => __('Refund, credit or fee amount.', 'wp-ultimo'),
@@ -763,105 +763,105 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 				'value'             => $line_item->get_unit_price(),
 				'money'             => true,
 				'wrapper_classes'   => 'wu-w-1/2',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if' => 'type !== "product" && tab === "type"',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'required' => 'required',
 					'step'     => '0.01',
 					'v-model'  => 'unit_price',
-				),
-			),
-			'taxable'            => array(
+				],
+			],
+			'taxable'            => [
 				'type'              => 'toggle',
 				'title'             => __('Is Taxable?', 'wp-ultimo'),
 				'desc'              => __('Checking this box will toggle the tax controls.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-bind:class' => 'type !== "product" ? "wu-opacity-50" : ""',
 					'v-show'       => 'tab === "tax"',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model'         => 'taxable',
 					'v-bind:disabled' => 'type !== "product"',
-				),
-			),
-			'tax_label'          => array(
+				],
+			],
+			'tax_label'          => [
 				'type'              => 'text',
 				'title'             => __('Tax Label', 'wp-ultimo'),
 				'placeholder'       => __('E.g. ES VAT', 'wp-ultimo'),
 				'desc'              => __('Tax description. This is shown on invoices to end customers.', 'wp-ultimo'),
 				'value'             => $line_item->get_tax_label(),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'taxable &&  tab === "tax"',
-				),
-			),
-			'tax_rate_group'     => array(
+				],
+			],
+			'tax_rate_group'     => [
 				'type'              => 'group',
 				'title'             => __('Tax Rate', 'wp-ultimo'),
 				'desc'              => __('Tax rate and type to apply to this item.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => 'taxable && tab === "tax"',
-				),
-				'fields'            => array(
-					'tax_rate' => array(
+				],
+				'fields'            => [
+					'tax_rate' => [
 						'type'            => 'number',
 						'value'           => $line_item->get_tax_rate(),
 						'placeholder'     => '',
 						'wrapper_classes' => 'wu-mr-2 wu-w-1/3',
-						'html_attr'       => array(
+						'html_attr'       => [
 							'required' => 'required',
 							'step'     => '0.01',
-						),
-					),
-					'tax_type' => array(
+						],
+					],
+					'tax_type' => [
 						'type'            => 'select',
 						'value'           => $line_item->get_tax_type(),
 						'placeholder'     => '',
 						'wrapper_classes' => 'wu-w-2/3',
-						'options'         => array(
+						'options'         => [
 							'percentage' => __('Percentage (%)', 'wp-ultimo'),
 							'absolute'   => __('Flat Rate ($)', 'wp-ultimo'),
-						),
-					),
-				),
-			),
-			'submit_button'      => array(
+						],
+					],
+				],
+			],
+			'submit_button'      => [
 				'type'            => 'submit',
 				'title'           => __('Save', 'wp-ultimo'),
 				'placeholder'     => __('Save', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'wu-w-full button button-primary',
 				'wrapper_classes' => 'wu-items-end',
-			),
-			'line_item_id'       => array(
+			],
+			'line_item_id'       => [
 				'type'  => 'hidden',
 				'value' => $line_item->get_id(),
-			),
-			'payment_id'         => array(
+			],
+			'payment_id'         => [
 				'type'  => 'hidden',
 				'value' => wu_request('id'),
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'edit_line_item',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'edit_line_item',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'tab'        => 'type',
 							'type'       => $line_item->get_type(),
 							'taxable'    => $line_item->get_tax_rate() > 0,
 							'unit_price' => $line_item->get_unit_price(),
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -875,42 +875,42 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function display_payment_actions() {
 
-		$actions = array();
+		$actions = [];
 
 		$is_refundable = in_array($this->get_object()->get_status(), wu_get_refundable_payment_types(), true);
 
 		if ($is_refundable) {
-			$actions['refund_payment'] = array(
+			$actions['refund_payment'] = [
 				'label'        => __('Refund Payment', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-ccw wu-align-text-bottom',
 				'classes'      => 'button wubox',
 				'href'         => wu_get_form_url(
 					'refund_payment',
-					array(
+					[
 						'id' => $this->get_object()->get_id(),
-					)
+					]
 				),
-			);
+			];
 		}
 
-		$actions['add_line_item'] = array(
+		$actions['add_line_item'] = [
 			'label'        => __('Add Line Item', 'wp-ultimo'),
 			'icon_classes' => 'dashicons-wu-circle-with-plus wu-align-text-bottom',
 			'classes'      => 'button wubox',
 			'href'         => wu_get_form_url(
 				'edit_line_item',
-				array(
+				[
 					'id' => $this->get_object()->get_id(),
-				)
+				]
 			),
-		);
+		];
 
 		return wu_get_template_contents(
 			'payments/line-item-actions',
-			array(
+			[
 				'payment' => $this->get_object(),
 				'actions' => $actions,
-			)
+			]
 		);
 	}
 
@@ -920,16 +920,16 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function display_tax_breakthrough() {
+	public function display_tax_breakthrough(): void {
 
 		$tax_breakthrough = $this->get_object()->get_tax_breakthrough();
 
 		wu_get_template(
 			'payments/tax-details',
-			array(
+			[
 				'tax_breakthrough' => $tax_breakthrough,
 				'payment'          => $this->get_object(),
-			)
+			]
 		);
 	}
 
@@ -939,7 +939,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		parent::register_widgets();
 
@@ -951,91 +951,91 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$this->add_fields_widget(
 			'at_a_glance',
-			array(
+			[
 				'title'                 => __('At a Glance', 'wp-ultimo'),
 				'position'              => 'normal',
 				'classes'               => 'wu-overflow-hidden wu-widget-inset',
 				'field_wrapper_classes' => 'wu-w-1/3 wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t-0 wu-border-l-0 wu-border-r wu-border-b-0 wu-border-gray-300 wu-border-solid wu-float-left wu-relative',
-				'fields'                => array(
-					'status' => array(
+				'fields'                => [
+					'status' => [
 						'type'          => 'text-display',
 						'title'         => __('Payment Status', 'wp-ultimo'),
 						'display_value' => $tag,
 						'tooltip'       => '',
-					),
-					'hash'   => array(
+					],
+					'hash'   => [
 						'copy'          => true,
 						'type'          => 'text-display',
 						'title'         => __('Reference ID', 'wp-ultimo'),
 						'display_value' => $this->get_object()->get_hash(),
-					),
-					'total'  => array(
+					],
+					'total'  => [
 						'type'            => 'text-display',
 						'title'           => __('Total', 'wp-ultimo'),
 						'display_value'   => wu_format_currency($this->get_object()->get_total(), $this->get_object()->get_currency()),
 						'wrapper_classes' => 'sm:wu-border-r-0',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$this->add_list_table_widget(
 			'line-items',
-			array(
+			[
 				'title'        => __('Line Items', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Payment_Line_Item_List_Table(),
 				'position'     => 'normal',
-				'query_filter' => array($this, 'payments_query_filter'),
+				'query_filter' => [$this, 'payments_query_filter'],
 				'after'        => $this->display_payment_actions(),
-			)
+			]
 		);
 
 		$this->add_widget(
 			'tax-rates',
-			array(
+			[
 				'title'    => __('Tax Rate Breakthrough', 'wp-ultimo'),
 				'position' => 'normal',
-				'display'  => array($this, 'display_tax_breakthrough'),
-			)
+				'display'  => [$this, 'display_tax_breakthrough'],
+			]
 		);
 
 		$this->add_tabs_widget(
 			'options',
-			array(
+			[
 				'title'    => __('Payment Options', 'wp-ultimo'),
 				'position' => 'normal',
-				'sections' => apply_filters('wu_payments_options_sections', array(), $this->get_object()),
-			)
+				'sections' => apply_filters('wu_payments_options_sections', [], $this->get_object()),
+			]
 		);
 
 		$this->add_list_table_widget(
 			'events',
-			array(
+			[
 				'title'        => __('Events', 'wp-ultimo'),
 				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'events_query_filter'),
-			)
+				'query_filter' => [$this, 'events_query_filter'],
+			]
 		);
 
 		$membership = $this->get_object()->get_membership();
 
 		$this->add_save_widget(
 			'save',
-			array(
-				'html_attr' => array(
+			[
+				'html_attr' => [
 					'data-wu-app' => 'payment_save',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'status'            => $this->get_object()->get_status(),
 							'original_status'   => $this->get_object()->get_status(),
 							'membership_id'     => $membership ? $this->get_object()->get_membership_id() : '',
 							'membership_status' => $membership ? $membership->get_status() : 'active',
 							'gateway'           => $this->get_object()->get_gateway(),
-						)
+						]
 					),
-				),
-				'fields'    => array(
-					'status'                   => array(
+				],
+				'fields'    => [
+					'status'                   => [
 						'type'              => 'select',
 						'title'             => __('Status', 'wp-ultimo'),
 						'placeholder'       => __('Status', 'wp-ultimo'),
@@ -1043,43 +1043,43 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 						'value'             => $this->get_object()->get_status(),
 						'options'           => Payment_Status::to_array(),
 						'tooltip'           => '',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-						'html_attr'         => array(
+						],
+						'html_attr'         => [
 							'v-model' => 'status',
-						),
-					),
-					'confirm_membership'       => array(
+						],
+					],
+					'confirm_membership'       => [
 						'type'              => 'toggle',
 						'title'             => __('Activate Membership?', 'wp-ultimo'),
 						'desc'              => __('This payment belongs to a pending membership. If you toggle this option, this change in status will also apply to the membership. If any sites are pending, they are also going to be published automatically.', 'wp-ultimo'),
 						'value'             => 0,
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-if'    => 'status !== original_status && status === "completed" && membership_status === "pending"',
 							'v-cloak' => '1',
-						),
-					),
-					'membership_id'            => array(
+						],
+					],
+					'membership_id'            => [
 						'type'              => 'model',
 						'title'             => __('Membership', 'wp-ultimo'),
 						'desc'              => __('The membership associated with this payment.', 'wp-ultimo'),
 						'value'             => $this->get_object()->get_membership_id(),
 						'tooltip'           => '',
-						'html_attr'         => array(
+						'html_attr'         => [
 							'v-model'          => 'membership_id',
-							'data-base-link'   => wu_network_admin_url('wp-ultimo-edit-membership', array('id' => '')),
+							'data-base-link'   => wu_network_admin_url('wp-ultimo-edit-membership', ['id' => '']),
 							'data-model'       => 'membership',
 							'data-value-field' => 'id',
 							'data-label-field' => 'reference_code',
 							'data-max-items'   => 1,
 							'data-selected'    => $this->get_object()->get_membership() ? json_encode($this->get_object()->get_membership()->to_search_results()) : '',
-						),
-						'wrapper_html_attr' => array(
+						],
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-					),
-					'gateway'                  => array(
+						],
+					],
+					'gateway'                  => [
 						'type'              => 'text',
 						'title'             => __('Gateway', 'wp-ultimo'),
 						'placeholder'       => __('e.g. stripe', 'wp-ultimo'),
@@ -1087,15 +1087,15 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 						'desc'              => __('Payment gateway used to process the payment.', 'wp-ultimo'),
 						'value'             => $this->get_object()->get_gateway(),
 						'wrapper_classes'   => 'wu-w-full',
-						'html_attr'         => array(
+						'html_attr'         => [
 							'v-on:input'   => 'gateway = $event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, "")',
 							'v-bind:value' => 'gateway',
-						),
-						'wrapper_html_attr' => array(
+						],
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
-						),
-					),
-					'gateway_payment_id_group' => array(
+						],
+					],
+					'gateway_payment_id_group' => [
 						'type'              => 'group',
 						'desc'              => function (): string {
 
@@ -1113,12 +1113,12 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 
 							return '';
 						},
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-cloak' => '1',
 							'v-show'  => 'gateway',
-						),
-						'fields'            => array(
-							'gateway_payment_id' => array(
+						],
+						'fields'            => [
+							'gateway_payment_id' => [
 								'type'              => 'text',
 								'title'             => __('Gateway Payment ID', 'wp-ultimo'),
 								'placeholder'       => __('e.g. EX897540987913', 'wp-ultimo'),
@@ -1126,12 +1126,12 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 								'tooltip'           => __('This will usually be set automatically by the payment gateway.', 'wp-ultimo'),
 								'value'             => $this->get_object()->get_gateway_payment_id(),
 								'wrapper_classes'   => 'wu-w-full',
-								'html_attr'         => array(),
-								'wrapper_html_attr' => array(),
-							),
-						),
-					),
-					'invoice_number'           => array(
+								'html_attr'         => [],
+								'wrapper_html_attr' => [],
+							],
+						],
+					],
+					'invoice_number'           => [
 						'type'              => 'number',
 						'min'               => 0,
 						'title'             => __('Invoice Number', 'wp-ultimo'),
@@ -1140,13 +1140,13 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 						'desc'              => __('The invoice number for this particular payment.', 'wp-ultimo'),
 						'value'             => $this->get_object()->get_saved_invoice_number(),
 						'wrapper_classes'   => 'wu-w-full',
-						'wrapper_html_attr' => array(
+						'wrapper_html_attr' => [
 							'v-show'  => json_encode(wu_get_setting('invoice_numbering_scheme', 'reference_code') === 'sequential_number'),
 							'v-cloak' => '1',
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 	}
 
@@ -1180,23 +1180,23 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function action_links() {
 
-		$actions = array();
+		$actions = [];
 
 		$payment = $this->get_object();
 
 		if ($payment) {
-			$actions[] = array(
+			$actions[] = [
 				'url'   => $payment->get_invoice_url(),
 				'label' => __('Generate Invoice', 'wp-ultimo'),
 				'icon'  => 'wu-attachment',
-			);
+			];
 
 			if ($payment->is_payable()) {
-				$actions[] = array(
+				$actions[] = [
 					'url'   => $payment->get_payment_url(),
 					'label' => __('Payment URL', 'wp-ultimo'),
 					'icon'  => 'wu-credit-card',
-				);
+				];
 			}
 		}
 
@@ -1211,7 +1211,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('Edit Payment', 'wp-ultimo'),
 			'add_new_label'       => __('Add new Payment', 'wp-ultimo'),
 			'updated_message'     => __('Payment updated with success!', 'wp-ultimo'),
@@ -1221,7 +1221,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			'save_description'    => '',
 			'delete_button_label' => __('Delete Payment', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -1234,10 +1234,10 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function events_query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'object_type' => 'payment',
 			'object_id'   => absint($this->get_object()->get_id()),
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -1252,10 +1252,10 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function payments_query_filter($args) {
 
-		$extra_args = array(
+		$extra_args = [
 			'parent'     => absint($this->get_object()->get_id()),
 			'parent__in' => false,
-		);
+		];
 
 		return array_merge($args, $extra_args);
 	}
@@ -1309,7 +1309,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		$this->get_object()->recalculate_totals()->save();
 

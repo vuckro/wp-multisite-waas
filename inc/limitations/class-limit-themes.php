@@ -52,12 +52,12 @@ class Limit_Themes extends Limit {
 
 		$theme = (object) $this->{$value_to_check};
 
-		$types = array(
+		$types = [
 			'visible'       => $theme->visibility === 'visible',
 			'hidden'        => $theme->visibility === 'hidden',
 			'available'     => $theme->behavior === 'available',
 			'not_available' => $theme->behavior === 'not_available',
-		);
+		];
 
 		return wu_get_isset($types, $type, false);
 	}
@@ -87,10 +87,10 @@ class Limit_Themes extends Limit {
 	 */
 	public function get_default_permissions($type) {
 
-		return array(
+		return [
 			'visibility' => 'visible',
 			'behavior'   => 'available',
-		);
+		];
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Limit_Themes extends Limit {
 	 */
 	public function exists($theme_name) {
 
-		$results = wu_get_isset($this->get_limit(), $theme_name, array());
+		$results = wu_get_isset($this->get_limit(), $theme_name, []);
 
 		return wu_get_isset($results, 'visibility', 'not-set') !== 'not-set' || wu_get_isset($results, 'behavior', 'not-set') !== 'not-set';
 	}
@@ -131,7 +131,7 @@ class Limit_Themes extends Limit {
 
 		$limits = $this->get_limit();
 
-		$available = array();
+		$available = [];
 
 		foreach ($limits as $theme_slug => $theme_settings) {
 			$theme_settings = (object) $theme_settings;

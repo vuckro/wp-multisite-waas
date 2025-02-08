@@ -26,18 +26,18 @@ class Tax {
 	 *
 	 * @since 1.9.0
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('init', array($this, 'add_settings'));
+		add_action('init', [$this, 'add_settings']);
 
-		add_action('wu_page_wp-ultimo-settings_load', array($this, 'add_sidebar_widget'));
+		add_action('wu_page_wp-ultimo-settings_load', [$this, 'add_sidebar_widget']);
 
 		if ($this->is_enabled()) {
-			add_action('wp_ultimo_admin_pages', array($this, 'add_admin_page'));
+			add_action('wp_ultimo_admin_pages', [$this, 'add_admin_page']);
 
-			add_action('wp_ajax_wu_get_tax_rates', array($this, 'serve_taxes_rates_via_ajax'));
+			add_action('wp_ajax_wu_get_tax_rates', [$this, 'serve_taxes_rates_via_ajax']);
 
-			add_action('wp_ajax_wu_save_tax_rates', array($this, 'save_taxes_rates'));
+			add_action('wp_ajax_wu_save_tax_rates', [$this, 'save_taxes_rates']);
 
 			add_action(
 				'wu_before_search_models',
@@ -61,24 +61,24 @@ class Tax {
 
 					$query = wu_request(
 						'query',
-						array(
+						[
 							'search' => 'searching....',
-						)
+						]
 					);
 
 					$s = trim((string) wu_get_isset($query, 'search', 'searching...'), '*');
 
-					$filtered = array();
+					$filtered = [];
 
 					if ( ! empty($s)) {
 						$filtered = \Arrch\Arrch::find(
 							$results,
-							array(
+							[
 								'sort_key' => 'name',
-								'where'    => array(
-									array(array('slug', 'name'), '~', $s),
-								),
-							)
+								'where'    => [
+									[['slug', 'name'], '~', $s],
+								],
+							]
 						);
 					}
 
@@ -96,41 +96,41 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_settings() {
+	public function add_settings(): void {
 
 		wu_register_settings_section(
 			'taxes',
-			array(
+			[
 				'title' => __('Taxes', 'wp-ultimo'),
 				'desc'  => __('Taxes', 'wp-ultimo'),
 				'icon'  => 'dashicons-wu-percent',
 				'order' => 55,
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'taxes',
 			'enable_taxes',
-			array(
+			[
 				'title'   => __('Enable Taxes', 'wp-ultimo'),
 				'desc'    => __('Enable this option to be able to collect sales taxes on your network payments.', 'wp-ultimo'),
 				'type'    => 'toggle',
 				'default' => 0,
-			)
+			]
 		);
 
 		wu_register_settings_field(
 			'taxes',
 			'inclusive_tax',
-			array(
+			[
 				'title'   => __('Inclusive Tax', 'wp-ultimo'),
 				'desc'    => __('Enable this option if your prices include taxes. In that case, WP Multisite WaaS will calculate the included tax instead of adding taxes to the price.', 'wp-ultimo'),
 				'type'    => 'toggle',
 				'default' => 0,
-				'require' => array(
+				'require' => [
 					'enable_taxes' => 1,
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -140,14 +140,14 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_sidebar_widget() {
+	public function add_sidebar_widget(): void {
 
 		wu_register_settings_side_panel(
 			'taxes',
-			array(
+			[
 				'title'  => __('Tax Rates', 'wp-ultimo'),
-				'render' => array($this, 'render_taxes_side_panel'),
-			)
+				'render' => [$this, 'render_taxes_side_panel'],
+			]
 		);
 	}
 
@@ -170,7 +170,7 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_admin_page() {
+	public function add_admin_page(): void {
 
 		new \WP_Ultimo\Admin_Pages\Tax_Rates_Admin_Page();
 	}
@@ -185,9 +185,9 @@ class Tax {
 
 		return apply_filters(
 			'wu_get_tax_rate_types',
-			array(
+			[
 				'regular' => __('Regular', 'wp-ultimo'),
-			)
+			]
 		);
 	}
 
@@ -199,7 +199,7 @@ class Tax {
 	 */
 	public function get_tax_rate_defaults() {
 
-		$defaults = array(
+		$defaults = [
 			'id'         => uniqid(),
 			'title'      => __('Tax Rate', 'wp-ultimo'),
 			'country'    => '',
@@ -210,7 +210,7 @@ class Tax {
 			'priority'   => 10,
 			'compound'   => false,
 			'type'       => 'regular',
-		);
+		];
 
 		return apply_filters('wu_get_tax_rate_defaults', $defaults);
 	}
@@ -227,12 +227,12 @@ class Tax {
 
 		$tax_rates_categories = wu_get_option(
 			'tax_rates',
-			array(
-				'default' => array(
+			[
+				'default' => [
 					'name'  => __('Default', 'wp-ultimo'),
-					'rates' => array(),
-				),
-			)
+					'rates' => [],
+				],
+			]
 		);
 
 		if ( ! isset($tax_rates_categories['default'])) {
@@ -241,7 +241,7 @@ class Tax {
 			 */
 			$default = array_shift($tax_rates_categories);
 
-			$tax_rates_categories = array_merge(array('default' => $default), $tax_rates_categories);
+			$tax_rates_categories = array_merge(['default' => $default], $tax_rates_categories);
 		}
 
 		foreach ($tax_rates_categories as &$tax_rate_category) {
@@ -269,9 +269,9 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function serve_taxes_rates_via_ajax() {
+	public function serve_taxes_rates_via_ajax(): void {
 
-		$tax_rates = array();
+		$tax_rates = [];
 
 		if (current_user_can('read_tax_rates')) {
 			$tax_rates = $this->get_tax_rates(true);
@@ -286,31 +286,31 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function save_taxes_rates() {
+	public function save_taxes_rates(): void {
 
 		if ( ! check_ajax_referer('wu_tax_editing')) {
 			wp_send_json(
-				array(
+				[
 					'code'    => 'not-enough-permissions',
 					'message' => __('You don\'t have permission to alter tax rates', 'wp-ultimo'),
-				)
+				]
 			);
 		}
 
 		$data = json_decode(file_get_contents('php://input'), true);
 
-		$tax_rates = isset($data['tax_rates']) ? $data['tax_rates'] : false;
+		$tax_rates = $data['tax_rates'] ?? false;
 
 		if ( ! $tax_rates) {
 			wp_send_json(
-				array(
+				[
 					'code'    => 'tax-rates-not-found',
 					'message' => __('No tax rates present in the request', 'wp-ultimo'),
-				)
+				]
 			);
 		}
 
-		$treated_tax_rates = array();
+		$treated_tax_rates = [];
 
 		foreach ($tax_rates as $tax_rate_slug => $tax_rate) {
 			if ( ! isset($tax_rate['rates'])) {
@@ -335,11 +335,11 @@ class Tax {
 		wu_save_option('tax_rates', $treated_tax_rates);
 
 		wp_send_json(
-			array(
+			[
 				'code'         => 'success',
 				'message'      => __('Tax Rates successfully updated!', 'wp-ultimo'),
 				'tax_category' => strtolower(sanitize_title(wu_get_isset($data, 'tax_category', 'default'))),
-			)
+			]
 		);
 	}
 
@@ -349,7 +349,7 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_taxes_side_panel() {
+	public function render_taxes_side_panel(): void {
 		?>
 
 		<div id="wu-taxes-side-panel" class="wu-widget-inset">
@@ -361,7 +361,7 @@ class Tax {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Manage Tax Rates', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/invoices.png'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Manage Tax Rates', 'wp-ultimo'); ?>" src="<?php echo wu_get_asset('sidebar/invoices.webp'); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">

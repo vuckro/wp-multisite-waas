@@ -18,65 +18,65 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'name'             => array(
+return [
+	'name'             => [
 		'description' => __('Webhook name, which is used as product title as well.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'webhook_url'      => array(
+	],
+	'webhook_url'      => [
 		'description' => __('The URL used for the webhook call.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'event'            => array(
+	],
+	'event'            => [
 		'description' => __('The event that needs to be fired for this webhook to be sent.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'event_count'      => array(
+	],
+	'event_count'      => [
 		'description' => __('How many times this webhook was sent.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'active'           => array(
+	],
+	'active'           => [
 		'description' => __('Set this webhook as active (true), which means available will fire when the event occur, or inactive (false).', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'hidden'           => array(
+	],
+	'hidden'           => [
 		'description' => __('Is this webhook hidden.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'date_created'     => array(
+	],
+	'date_created'     => [
 		'description' => __('Date when this was created.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'integration'      => array(
+	],
+	'integration'      => [
 		'description' => __('The integration that created this webhook.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'date_last_failed' => array(
+	],
+	'date_last_failed' => [
 		'description' => __('The date when this webhook last fail.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'    => array(
+	],
+	'date_modified'    => [
 		'description' => __('Model last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'migrated_from_id' => array(
+	],
+	'migrated_from_id' => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'  => array(
+	],
+	'skip_validation'  => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

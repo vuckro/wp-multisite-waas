@@ -122,11 +122,11 @@ class Country_TR extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'TR',
 		'currency'     => 'TRY',
 		'phone_code'   => 90,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -155,7 +155,7 @@ class Country_TR extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'10' => __('Balıkesir', 'wp-ultimo'),
 			'11' => __('Bilecik', 'wp-ultimo'),
 			'12' => __('Bingöl', 'wp-ultimo'),
@@ -237,6 +237,6 @@ class Country_TR extends Country {
 			'08' => __('Artvin', 'wp-ultimo'),
 			'09' => __('Aydın', 'wp-ultimo'),
 			'04' => __('Ağrı', 'wp-ultimo'),
-		);
+		];
 	}
 }

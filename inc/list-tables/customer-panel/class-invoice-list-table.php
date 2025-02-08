@@ -29,12 +29,12 @@ class Invoice_List_Table extends Parent_Payment_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'hash'         => __('Code', 'wp-ultimo'),
 			'status'       => __('Status', 'wp-ultimo'),
 			'total'        => __('Total', 'wp-ultimo'),
 			'date_created' => __('Created at', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -49,6 +49,6 @@ class Invoice_List_Table extends Parent_Payment_List_Table {
 	 */
 	public function bulk_actions($which = '') {
 
-		return array();
+		return [];
 	}
 }

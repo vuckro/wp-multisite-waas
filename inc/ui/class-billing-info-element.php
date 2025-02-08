@@ -84,17 +84,17 @@ class Billing_Info_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
 		wu_register_form(
 			'update_billing_address',
-			array(
-				'render'     => array($this, 'render_update_billing_address'),
-				'handler'    => array($this, 'handle_update_billing_address'),
+			[
+				'render'     => [$this, 'render_update_billing_address'],
+				'handler'    => [$this, 'handle_update_billing_address'],
 				'capability' => 'exist',
-			)
+			]
 		);
 	}
 
@@ -104,7 +104,7 @@ class Billing_Info_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		add_wubox();
 	}
@@ -159,21 +159,21 @@ class Billing_Info_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('Billing Address', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
 		return $fields;
 	}
@@ -197,13 +197,13 @@ class Billing_Info_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Billing Information',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -222,9 +222,9 @@ class Billing_Info_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title' => __('Billing Address', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -233,7 +233,7 @@ class Billing_Info_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
@@ -250,7 +250,7 @@ class Billing_Info_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 
@@ -278,10 +278,10 @@ class Billing_Info_Element extends Base_Element {
 
 		$atts['update_billing_address_link'] = wu_get_form_url(
 			'update_billing_address',
-			array(
+			[
 				'membership' => $this->membership->get_hash(),
 				'width'      => 500,
-			)
+			]
 		);
 
 		return wu_get_template_contents('dashboard-widgets/billing-info', $atts);
@@ -320,45 +320,45 @@ class Billing_Info_Element extends Base_Element {
 
 		$billing_address = $membership->get_billing_address();
 
-		$fields = array();
+		$fields = [];
 
-		$fields['billing-title'] = array(
+		$fields['billing-title'] = [
 			'type'            => 'header',
 			'order'           => 1,
 			'title'           => __('Your Address', 'wp-ultimo'),
 			'desc'            => __('Enter your billing address here. This info will be used on your invoices.', 'wp-ultimo'),
 			'wrapper_classes' => 'wu-col-span-2',
-		);
+		];
 
 		$billing_fields = $this->apply_placeholders($billing_address->get_fields());
 
 		$fields = array_merge($fields, $billing_fields);
 
-		$fields['submit'] = array(
+		$fields['submit'] = [
 			'type'            => 'submit',
 			'title'           => __('Save Changes', 'wp-ultimo'),
 			'value'           => 'save',
 			'classes'         => 'button button-primary wu-w-full',
 			'wrapper_classes' => 'wu-col-span-2',
-		);
+		];
 
-		$fields['membership'] = array(
+		$fields['membership'] = [
 			'type'  => 'hidden',
 			'value' => wu_request('membership'),
-		);
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'edit_site',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-grid-cols-2 wu-grid',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid wu-grid-col-span-2',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'edit_site',
 					'data-state'  => wu_convert_to_state(),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -370,7 +370,7 @@ class Billing_Info_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_update_billing_address() {
+	public function handle_update_billing_address(): void {
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
@@ -399,9 +399,9 @@ class Billing_Info_Element extends Base_Element {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => add_query_arg('updated', (int) $saved, $_SERVER['HTTP_REFERER']),
-			)
+			]
 		);
 	}
 }

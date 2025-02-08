@@ -26,11 +26,11 @@ class Helper {
 	 *
 	 * @var array
 	 */
-	static $providers = array(
+	static $providers = [
 		'https://ipv4.canihazip.com/s',
 		'https://ipv4.icanhazip.com/',
 		'https://api.ipify.org/',
-	);
+	];
 
 	/**
 	 * Static-only class.
@@ -72,7 +72,7 @@ class Helper {
 	 */
 	public static function get_local_network_ip() {
 
-		return isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : false;
+		return $_SERVER['SERVER_ADDR'] ?? false;
 	}
 
 	/**
@@ -104,9 +104,9 @@ class Helper {
 			foreach ( self::$providers as $provider_url ) {
 				$response = wp_remote_get(
 					$provider_url,
-					array(
+					[
 						'timeout' => 5,
-					)
+					]
 				);
 
 				if ( ! is_wp_error($response) ) {
@@ -154,16 +154,16 @@ class Helper {
 		}
 
 		// Add 'https://' if not already present to use SSL context properly.
-		$domain = strpos($domain, 'https://') === 0 ? $domain : 'https://' . $domain;
+		$domain = str_starts_with($domain, 'https://') ? $domain : 'https://' . $domain;
 
 		try {
 			// Create SSL context to fetch the certificate.
 			$context = stream_context_create(
-				array(
-					'ssl' => array(
+				[
+					'ssl' => [
 						'capture_peer_cert' => true,
-					),
-				)
+					],
+				]
 			);
 
 			// Open a stream to the domain over SSL.
@@ -212,7 +212,7 @@ class Helper {
 							$is_valid = true;
 						} else {
 							foreach ($alt_names_array as $alt_name) {
-								if ( strpos($alt_name, '*.') === 0 && str_ends_with($host, substr($alt_name, 1))) {
+								if ( str_starts_with($alt_name, '*.') && str_ends_with($host, substr($alt_name, 1))) {
 									$is_valid = true;
 									break;
 								}

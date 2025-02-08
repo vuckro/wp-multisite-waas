@@ -31,7 +31,7 @@
 
 		<tbody class="wu-align-baseline">
 
-		<?php foreach ($membership->get_payments(array('number' => ! empty($limit) ? $limit : null)) as $payment) : ?>
+		<?php foreach ($membership->get_payments(['number' => ! empty($limit) ? $limit : null]) as $payment) : ?>
 
 			<!-- Invoice Item -->
 			<tr>
@@ -50,39 +50,39 @@
 					esc_attr__('Download Invoice', 'wp-ultimo')
 				);
 
-				$payment_column = $payment->get_status() === 'pending' ? array(
-					'pay_now' => array(
-						'url'   => add_query_arg(array('payment' => $payment->get_hash()), wu_get_registration_url()),
+				$payment_column = $payment->get_status() === 'pending' ? [
+					'pay_now' => [
+						'url'   => add_query_arg(['payment' => $payment->get_hash()], wu_get_registration_url()),
 						'icon'  => 'dashicons-wu-credit-card wu-align-middle wu-mr-1',
 						'label' => __('Go to payment', 'wp-ultimo'),
 						'value' => __('Pay Now', 'wp-ultimo'),
-					),
-				) : array();
+					],
+				] : [];
 
 				echo wu_responsive_table_row(
-					array(
+					[
 						'url'    => false,
 						'title'  => $payment->get_invoice_number() . $download_link,
 						'status' => wu_format_currency($payment->get_total(), $payment->get_currency()),
-					),
+					],
 					array_merge(
-						array(
-							'status' => array(
+						[
+							'status' => [
 								'url'   => false,
 								'icon'  => wu_get_payment_icon_classes($payment->get_status()) . ' wu-mr-1',
 								'value' => $payment->get_status_label(),
-							),
-						),
+							],
+						],
 						$payment_column
 					),
-					array(
-						'date_created' => array(
+					[
+						'date_created' => [
 							'url'   => false,
 							'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 							'label' => '',
 							'value' => $payment->get_formatted_date('date_created'),
-						),
-					)
+						],
+					]
 				);
 
 				?>

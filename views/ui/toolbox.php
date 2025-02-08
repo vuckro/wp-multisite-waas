@@ -24,7 +24,7 @@
 
 		<li class="wu-inline-block wu-m-0 wu-p-0 wu-px-2">
 
-		<a href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-edit-site', array('id' => $current_site->get_id()))); ?>"
+		<a href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-edit-site', ['id' => $current_site->get_id()])); ?>"
 			class="wu-inline-block wu-uppercase wu-text-gray-600 wu-no-underline">
 			<span title="<?php esc_attr_e('Current Site', 'wp-ultimo'); ?>"
 			class="dashicons-wu-browser wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>
@@ -39,7 +39,7 @@
 
 		<li class="wu-inline-block wu-m-0 wu-p-0 wu-px-2">
 
-			<a href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-edit-customer', array('id' => $customer->get_id()))); ?>"
+			<a href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-edit-customer', ['id' => $customer->get_id()])); ?>"
 			class="wu-inline-block wu-uppercase wu-text-gray-600 wu-no-underline">
 			<span title="<?php esc_attr_e('Current Site', 'wp-ultimo'); ?>"
 				class="dashicons-wu-user wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>
@@ -56,7 +56,7 @@
 
 		<li class="wu-inline-block wu-m-0 wu-p-0 wu-px-2">
 
-			<a href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-edit-membership', array('id' => $membership->get_id()))); ?>"
+			<a href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-edit-membership', ['id' => $membership->get_id()])); ?>"
 			class="wu-inline-block wu-uppercase wu-text-gray-600 wu-no-underline">
 			<span title="<?php esc_attr_e('Current Site', 'wp-ultimo'); ?>"
 				class="dashicons-wu-circular-graph wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>

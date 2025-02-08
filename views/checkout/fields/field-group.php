@@ -18,9 +18,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-title',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>
@@ -34,15 +34,15 @@
 	$form = new \WP_Ultimo\UI\Form(
 		$field->id,
 		$field->fields,
-		array(
+		[
 			'views'                 => 'checkout/fields',
 			'classes'               => 'wu-flex wu-my-1',
 			'field_wrapper_classes' => 'wu-bg-transparent',
 			'wrap_tag'              => 'span',
-			'step'                  => (object) array(
+			'step'                  => (object) [
 				'classes' => '',
-			),
-		)
+			],
+		]
 	);
 
 	$form->render();
@@ -54,9 +54,9 @@
 	 */
 	wu_get_template(
 		'checkout/fields/partials/field-errors',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>

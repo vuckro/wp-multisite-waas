@@ -63,7 +63,7 @@ class WU_Settings {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'WP_Ultimo()->settings->save_settings()');
 
-		return WP_Ultimo()->settings->save_settings(array(), $reset);
+		return WP_Ultimo()->settings->save_settings([], $reset);
 	}
 
 	/**
@@ -145,7 +145,7 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $attributes = array();
+	protected $attributes = [];
 
 	/**
 	 * Deprecated: Creates the page with the necessary hooks
@@ -156,13 +156,13 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 	 * @param boolean $network If this is a network page.
 	 * @param array   $atts The page attributes.
 	 */
-	public function __construct($network = true, $atts = array()) {
+	public function __construct($network = true, $atts = []) {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_send_mail()');
 
 		$this->attributes = wp_parse_args(
 			$atts,
-			array(
+			[
 				'badge_count'   => 0,
 				'position'      => 10,
 				'submenu_title' => false,
@@ -173,7 +173,7 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 				'menu_icon'     => 'dashicons-menu',
 				'title'         => __('Admin Page', 'wp-ultimo'),
 				'menu_title'    => __('Admin Page', 'wp-ultimo'),
-			)
+			]
 		);
 
 		/*
@@ -266,19 +266,19 @@ class WU_Mail {
 	 * @param  array  $bcc Bcc.
 	 * @return boolean
 	 */
-	public function send_mail($to, $subject, $content, $html = true, $shortcodes = array(), $attachments = array(), $bcc = '') {
+	public function send_mail($to, $subject, $content, $html = true, $shortcodes = [], $attachments = [], $bcc = '') {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_send_mail()');
 
-		$from = array(
+		$from = [
 			'name'  => wu_get_setting('from_name'),
 			'email' => wu_get_setting('from_email'),
-		);
+		];
 
 		/*
 		 * Constructs the backwards compatible array.
 		 */
-		$args = array(
+		$args = [
 			'payload'     => $shortcodes,
 			'subject'     => $subject,
 			'content'     => $content,
@@ -287,7 +287,7 @@ class WU_Mail {
 			'attachments' => $attachments,
 			'type'        => $html ? 'html' : 'plain',
 			'bcc'         => $bcc,
-		);
+		];
 
 		return wu_send_mail($from, $to, $args);
 	}
@@ -303,7 +303,7 @@ class WU_Mail {
 	 * @param  array  $attachments Attachments.
 	 * @return void
 	 */
-	public function send_template($slug, $to, $shortcodes, $attachments = array()) {
+	public function send_template($slug, $to, $shortcodes, $attachments = []): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 	}
@@ -317,7 +317,7 @@ class WU_Mail {
 	 * @param  string $args Array with the arguments.
 	 * @return void
 	 */
-	public function register_template($slug, $args) {
+	public function register_template($slug, $args): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 	}
@@ -413,7 +413,7 @@ class WU_Multi_Network {
 	 */
 	public static function __callStatic($method_name, $args) {
 
-		_deprecated_function(__CLASS__ . "::$method_name()", '2.0.0');
+		_deprecated_function(self::class . "::$method_name()", '2.0.0');
 
 		return false;
 	}
@@ -437,9 +437,9 @@ class WU_Help_Pointers {
 	 * @since 2.0.0
 	 * @param array $pntrs The pointers to add.
 	 */
-	public function __construct($pntrs = array()) {
+	public function __construct($pntrs = []) {
 
-		_deprecated_function(__CLASS__, '2.0.0');
+		_deprecated_function(self::class, '2.0.0');
 	}
 }
 
@@ -524,7 +524,7 @@ class WU_Util {
 	 * @param array   $args Arguments to pass down to wp_die.
 	 * @return void
 	 */
-	public static function wp_die($message, $title, $redirect = false, $time = 5000, $args = array()) {
+	public static function wp_die($message, $title, $redirect = false, $time = 5000, $args = []): void {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wp_die()');
 
@@ -542,7 +542,7 @@ class WU_Util {
 	 * @param boolean $arguments Deprecated argument.
 	 * @return void
 	 */
-	public static function display_alert($title, $message, $type = 'success', $arguments = false) {
+	public static function display_alert($title, $message, $type = 'success', $arguments = false): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 	}
@@ -558,14 +558,14 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_customers() w/ count = true');
 
 		$signups = wu_get_customers(
-			array(
+			[
 				'count'      => true,
-				'date_query' => array(
+				'date_query' => [
 					'column'    => 'date_registered',
 					'after'     => 'today',
 					'inclusive' => true,
-				),
-			)
+				],
+			]
 		);
 
 		return $signups;
@@ -610,7 +610,7 @@ class WU_Util {
 	 * @param array  $data Data to save. First column being the headers.
 	 * @return void
 	 */
-	public static function generate_csv($file_name, $data = array()) {
+	public static function generate_csv($file_name, $data = []): void {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_generate_csv()');
 
@@ -662,7 +662,7 @@ class WU_Logger {
 			$alternative = 'wu_log_clear';
 		}
 
-		_deprecated_function(__CLASS__ . "::$method_name()", '2.0.0', "$alternative()");
+		_deprecated_function(self::class . "::$method_name()", '2.0.0', "$alternative()");
 
 		return call_user_func_array($alternative, $args);
 	}
@@ -713,7 +713,7 @@ class WU_Site extends \WP_Ultimo\Models\Site {
 	 */
 	public function __construct($object = null) {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site');
+		_deprecated_function(self::class, '2.0.0', \WP_Ultimo\Models\Site::class);
 
 		if (is_numeric($object)) {
 			$object = wu_get_site($object);
@@ -743,7 +743,7 @@ class WU_Site_Template extends \WP_Ultimo\Models\Site {
 	 */
 	public function __construct($object = null) {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site');
+		_deprecated_function(self::class, '2.0.0', \WP_Ultimo\Models\Site::class);
 
 		if (is_numeric($object)) {
 			$object = wu_get_site($object);
@@ -771,7 +771,7 @@ class WU_Site_Owner {
 	 */
 	public function __construct() {
 
-		_deprecated_function(__CLASS__, '2.0.0');
+		_deprecated_function(self::class, '2.0.0');
 	}
 }
 
@@ -793,7 +793,7 @@ trait WU_Deprecated_Model {
 	public function __set($key, $value) {
 
 		if (method_exists($this, "set_$key")) {
-			call_user_func(array($this, "set_$key"), $value);
+			call_user_func([$this, "set_$key"], $value);
 		}
 
 		$this->{$key} = $value;
@@ -811,7 +811,7 @@ trait WU_Deprecated_Model {
 	public function __get($key) {
 
 		if (method_exists($this, "get_$key")) {
-			return call_user_func(array($this, "get_$key"));
+			return call_user_func([$this, "get_$key"]);
 		}
 
 		return false;
@@ -846,7 +846,7 @@ class WU_Coupon extends \WP_Ultimo\Models\Discount_Code {
 	 */
 	public function __construct($object = null) {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Discount_Code');
+		_deprecated_function(self::class, '2.0.0', \WP_Ultimo\Models\Discount_Code::class);
 
 		if (is_numeric($object)) {
 			$object = wu_get_discount_code($object);
@@ -871,7 +871,7 @@ class WU_Coupon extends \WP_Ultimo\Models\Discount_Code {
 	 * @param string $key The key to set.
 	 * @param mixed  $value The value to set.
 	 */
-	public function after_set($key, $value) {
+	public function after_set($key, $value): void {
 
 		if ($key === 'title') {
 			$this->set_code($value);
@@ -901,7 +901,7 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 	 */
 	public function __construct($object = null) {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Product');
+		_deprecated_function(self::class, '2.0.0', \WP_Ultimo\Models\Product::class);
 
 		if (is_numeric($object)) {
 			$object = wu_get_product($object);
@@ -936,7 +936,7 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 		}
 
 		if (method_exists($this, "get_$key")) {
-			return call_user_func(array($this, "get_$key"));
+			return call_user_func([$this, "get_$key"]);
 		}
 
 		return $this->get_meta('wpu_' . $key, false);
@@ -950,7 +950,7 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 	 * @param string $key The key to set.
 	 * @param mixed  $value The value to set.
 	 */
-	public function after_set($key, $value) {
+	public function after_set($key, $value): void {
 
 		if ($key === 'price_1') {
 			$this->set_amount($value);
@@ -976,7 +976,7 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 	 */
 	public function __construct($object = null) {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Membership');
+		_deprecated_function(self::class, '2.0.0', \WP_Ultimo\Models\Membership::class);
 
 		if (is_numeric($object)) {
 			$object = wu_get_membership($object);
@@ -1005,7 +1005,7 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 	 * @deprecated 2.0.0
 	 * @param null $coupon_code Deprecated Argument.
 	 */
-	public function apply_coupon_code($coupon_code = null) {
+	public function apply_coupon_code($coupon_code = null): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 	}
@@ -1015,7 +1015,7 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 	 *
 	 * @deprecated 2.0.0
 	 */
-	public function get_price_after_coupon_code() {
+	public function get_price_after_coupon_code(): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 	}
@@ -1033,7 +1033,7 @@ class WU_Signup extends \WP_Ultimo\Checkout\Legacy_Checkout {
 	 */
 	public function __construct() {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Checkout\Legacy_Checkout');
+		_deprecated_function(self::class, '2.0.0', \WP_Ultimo\Checkout\Legacy_Checkout::class);
 	}
 }
 
@@ -1067,9 +1067,9 @@ class WU_Site_Hooks {
 	 */
 	public static function get_available_templates($include_wp = true) {
 
-		_deprecated_function(__CLASS__, '2.0.0');
+		_deprecated_function(self::class, '2.0.0');
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -1091,15 +1091,15 @@ class WU_Site_Hooks {
 
 		global $current_site;
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Helpers\Site_Duplicator::duplicate_site()');
+		_deprecated_function(self::class, '2.0.0', '\WP_Ultimo\Helpers\Site_Duplicator::duplicate_site()');
 
-		$arguments = array(
+		$arguments = [
 			'email'      => $email,
 			'path'       => $domain,
 			'copy_files' => $copy_files,
-			'domain'     => $site_domain ? $site_domain : $current_site->domain,
+			'domain'     => $site_domain ?: $current_site->domain,
 			'user_id'    => $user_id,
-		);
+		];
 
 		return \WP_Ultimo\Helpers\Site_Duplicator::duplicate_site($site_to_duplicate, $title, $arguments);
 	}
@@ -1114,7 +1114,7 @@ class WU_Site_Hooks {
 	 */
 	public static function get_template_preview_url($site_id = '') {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site::get_featured_image()');
+		_deprecated_function(self::class, '2.0.0', '\WP_Ultimo\Models\Site::get_featured_image()');
 
 		$site = wu_get_site($site_id);
 
@@ -1143,7 +1143,7 @@ class WU_Transactions {
 	 */
 	public static function get_current_time($type = 'mysql') {
 
-		_deprecated_function(__CLASS__, '2.0.0', 'wu_date()');
+		_deprecated_function(self::class, '2.0.0', 'wu_date()');
 
 		$date = new \DateTime();
 

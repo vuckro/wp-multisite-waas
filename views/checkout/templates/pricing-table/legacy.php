@@ -13,7 +13,7 @@
  * @param string $label The field label.
  */
 
-$products_to_reduce = array_merge(array(false), $products);
+$products_to_reduce = array_merge([false], $products);
 
 $first_recurring_product = array_reduce(
 	$products_to_reduce,
@@ -195,7 +195,7 @@ if ($first_recurring_product !== null) {
 					 * Price display.
 					 */
 
-					$symbol_left = in_array(wu_get_setting('currency_position', '%s%v'), array('%s%v', '%s %v'));
+					$symbol_left = in_array(wu_get_setting('currency_position', '%s%v'), ['%s%v', '%s %v']);
 
 				?>
 
@@ -222,7 +222,7 @@ if ($first_recurring_product !== null) {
 				</span>
 
 				<?php
-				foreach (array(3, 12) as $freq) :
+				foreach ([3, 12] as $freq) :
 					$price_variation = $product->get_price_variation($freq, 'month');
 
 					if ( ! $price_variation) {
@@ -303,10 +303,10 @@ if ($first_recurring_product !== null) {
 				 *
 				 * Display quarterly and Annually plans, to be hidden.
 				 */
-				$prices_total = array(
+				$prices_total = [
 					3  => __('every 3 months', 'wp-ultimo'),
 					12 => __('yearly', 'wp-ultimo'),
-				);
+				];
 
 				foreach ($prices_total as $freq => $string) {
 					$price_variation = $product->get_price_variation($freq, 'month');

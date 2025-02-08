@@ -59,7 +59,7 @@ class Invoice {
 	 * @param \WP_Ultimo\Checkout\Cart $payment The payment.
 	 * @param array                    $atts Attributes to make available on template.
 	 */
-	public function __construct($payment, $atts = array()) {
+	public function __construct($payment, $atts = []) {
 
 		$this->set_payment($payment);
 
@@ -80,7 +80,7 @@ class Invoice {
 	 */
 	public function __get($key) {
 
-		return isset($this->attributes[ $key ]) ? $this->attributes[ $key ] : '';
+		return $this->attributes[ $key ] ?? '';
 	}
 
 	/**
@@ -89,20 +89,20 @@ class Invoice {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	private function pdf_setup() {
+	private function pdf_setup(): void {
 
 		$this->printer = new Mpdf(
-			array(
+			[
 				'mode'             => '+aCJK',
 				'autoScriptToLang' => true,
 				'autoLangToFont'   => true,
 				'tempDir'          => get_temp_dir(),
-			)
+			]
 		);
 
 		$this->printer->setDefaultFont($this->font);
 
-		$this->printer->SetProtection(array('print'));
+		$this->printer->SetProtection(['print']);
 
 		$this->printer->SetTitle(__('Invoice', 'wp-ultimo'));
 
@@ -133,7 +133,7 @@ class Invoice {
 	 * @param boolean $file_name The name of the file. Should include the .pdf extension.
 	 * @return void
 	 */
-	public function save_file($file_name) {
+	public function save_file($file_name): void {
 
 		$file_name = self::get_folder() . $file_name;
 
@@ -146,7 +146,7 @@ class Invoice {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function print_file() {
+	public function print_file(): void {
 
 		$this->pdf();
 	}
@@ -167,7 +167,7 @@ class Invoice {
 
 		$atts['membership'] = $this->payment->get_membership();
 
-		$atts['billing_address'] = $atts['membership'] ? $atts['membership']->get_billing_address()->to_array() : array();
+		$atts['billing_address'] = $atts['membership'] ? $atts['membership']->get_billing_address()->to_array() : [];
 
 		return wu_get_template_contents('invoice/template', $atts);
 	}
@@ -215,7 +215,7 @@ class Invoice {
 	 * @param mixed $payment The Order object to add to the invoice.
 	 * @return void
 	 */
-	public function set_payment($payment) {
+	public function set_payment($payment): void {
 
 		$this->payment = $payment;
 	}
@@ -238,11 +238,11 @@ class Invoice {
 	 * @param mixed $attributes The list of attributes to add to the invoice.
 	 * @return void
 	 */
-	public function set_attributes($attributes) {
+	public function set_attributes($attributes): void {
 
 		$attributes = wp_parse_args(
 			$attributes,
-			array(
+			[
 				'company_name'    => wu_get_setting('company_name'),
 				'company_address' => wu_get_setting('company_address'),
 				'primary_color'   => '#675645',
@@ -252,7 +252,7 @@ class Invoice {
 				'custom_logo'     => false,
 				'footer_message'  => '',
 				'paid_tag_text'   => __('Paid', 'wp-ultimo'),
-			)
+			]
 		);
 
 		$this->attributes = $attributes;
@@ -277,7 +277,7 @@ class Invoice {
 	 */
 	public static function get_settings() {
 
-		return wu_get_option(self::KEY, array());
+		return wu_get_option(self::KEY, []);
 	}
 
 	/**

@@ -29,7 +29,7 @@ class Visits_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		if ((bool) wu_get_setting('enable_visits_limiting', true) === false || is_main_site()) {
 			return; // Feature not active, bail.
@@ -40,11 +40,11 @@ class Visits_Manager {
 		 * Due to how caching plugins work, we need to count visits via ajax.
 		 * This adds the ajax endpoint that performs the counting.
 		 */
-		add_action('wp_ajax_nopriv_wu_count_visits', array($this, 'count_visits'), 10, 2);
+		add_action('wp_ajax_nopriv_wu_count_visits', [$this, 'count_visits'], 10, 2);
 
-		add_action('wp_enqueue_scripts', array($this, 'enqueue_visit_counter_script'));
+		add_action('wp_enqueue_scripts', [$this, 'enqueue_visit_counter_script']);
 
-		add_action('template_redirect', array($this, 'maybe_lock_site'));
+		add_action('template_redirect', [$this, 'maybe_lock_site']);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Visits_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_lock_site() {
+	public function maybe_lock_site(): void {
 
 		$site = wu_get_current_site();
 
@@ -86,7 +86,7 @@ class Visits_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function count_visits() {
+	public function count_visits(): void {
 
 		if (is_main_site() && is_admin()) {
 			return; // bail on main site.
@@ -126,22 +126,22 @@ class Visits_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_visit_counter_script() {
+	public function enqueue_visit_counter_script(): void {
 
 		if (is_user_logged_in()) {
 			return; // bail if user is logged in.
 
 		}
 
-		wp_register_script('wu-visits-counter', wu_get_asset('visits-counter.js', 'js'), array(), wu_get_version());
+		wp_register_script('wu-visits-counter', wu_get_asset('visits-counter.js', 'js'), [], wu_get_version());
 
 		wp_localize_script(
 			'wu-visits-counter',
 			'wu_visits_counter',
-			array(
+			[
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'code'    => wp_create_nonce('wu-visit-counter'),
-			)
+			]
 		);
 
 		wp_enqueue_script('wu-visits-counter');

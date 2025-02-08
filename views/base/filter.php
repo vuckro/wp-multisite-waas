@@ -75,7 +75,7 @@
 
 			<input
 				name='s' id="s"
-				value="<?php echo esc_attr(isset($_REQUEST['s']) ? $_REQUEST['s'] : ''); ?>"
+				value="<?php echo esc_attr($_REQUEST['s'] ?? ''); ?>"
 				placeholder="<?php echo esc_attr($search_label); ?>"
 				type="search"
 				aria-describedby="live-search-desc"

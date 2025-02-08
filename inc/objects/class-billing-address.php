@@ -25,7 +25,7 @@ class Billing_Address {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $attributes = array();
+	protected $attributes = [];
 
 	/**
 	 * Initializes the object.
@@ -34,7 +34,7 @@ class Billing_Address {
 	 *
 	 * @param array $data Array of key => values billing address fields.
 	 */
-	public function __construct($data = array()) {
+	public function __construct($data = []) {
 
 		$this->attributes($data);
 	}
@@ -47,7 +47,7 @@ class Billing_Address {
 	 * @param array $data Array of key => values billing address fields.
 	 * @return void
 	 */
-	public function attributes($data) {
+	public function attributes($data): void {
 
 		$allowed_attributes = array_keys(self::fields());
 
@@ -154,7 +154,7 @@ class Billing_Address {
 	 */
 	public function to_array($labels = false) {
 
-		$address_array = array();
+		$address_array = [];
 
 		$fields = self::fields();
 
@@ -217,7 +217,7 @@ class Billing_Address {
 	 */
 	public static function fields($zip_only = false, $checkout_form = false) {
 
-		$fields = array();
+		$fields = [];
 
 		$countries = wu_get_countries_as_options();
 
@@ -235,37 +235,37 @@ class Billing_Address {
 			}
 		}
 
-		$fields['company_name'] = array(
+		$fields['company_name'] = [
 			'type'                => 'text',
 			'title'               => __('Company Name', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. Google (optional)', 'wp-ultimo'),
 			'wrapper_classes'     => 'sm:wu-col-span-1',
-		);
+		];
 
-		$fields['billing_email'] = array(
+		$fields['billing_email'] = [
 			'type'                => 'text',
 			'title'               => __('Billing Email', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. john@company.com', 'wp-ultimo'),
 			'wrapper_classes'     => 'sm:wu-col-span-1',
 			'required'            => true,
-		);
+		];
 
-		$fields['billing_address_line_1'] = array(
+		$fields['billing_address_line_1'] = [
 			'type'                => 'text',
 			'title'               => __('Address Line 1', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. 555 1st Avenue', 'wp-ultimo'),
 			'wrapper_classes'     => 'wu-col-span-2',
 			'required'            => true,
-		);
+		];
 
-		$fields['billing_address_line_2'] = array(
+		$fields['billing_address_line_2'] = [
 			'type'                => 'text',
 			'title'               => __('Address Line 2', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. Apartment 10a', 'wp-ultimo'),
 			'wrapper_classes'     => 'wu-col-span-2',
-		);
+		];
 
-		$fields['billing_country'] = array(
+		$fields['billing_country'] = [
 			'type'                => 'select',
 			'title'               => __('Country', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. US', 'wp-ultimo'),
@@ -273,37 +273,37 @@ class Billing_Address {
 			'value'               => ' ',
 			'options'             => $countries,
 			'required'            => true,
-		);
+		];
 
-		$fields['billing_state'] = array(
+		$fields['billing_state'] = [
 			'type'                => 'text',
 			'title'               => __('State / Province', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. NY', 'wp-ultimo'),
 			'wrapper_classes'     => 'sm:wu-col-span-1',
-		);
+		];
 
-		$fields['billing_city'] = array(
+		$fields['billing_city'] = [
 			'type'                => 'text',
 			'title'               => __('City / Town', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. New York City', 'wp-ultimo'),
 			'wrapper_classes'     => 'sm:wu-col-span-1',
-		);
+		];
 
-		$fields['billing_zip_code'] = array(
+		$fields['billing_zip_code'] = [
 			'type'                => 'text',
 			'title'               => __('ZIP / Postal Code', 'wp-ultimo'),
 			'default_placeholder' => __('E.g. 10009', 'wp-ultimo'),
 			'wrapper_classes'     => 'sm:wu-col-span-1',
 			'required'            => true,
-		);
+		];
 
 		$fields = wu_set_order_from_index($fields); // Adds missing order attributes
 
 		if ($zip_only) {
-			$fields = array(
+			$fields = [
 				'billing_zip_code' => $fields['billing_zip_code'],
 				'billing_country'  => $fields['billing_country'],
-			);
+			];
 		}
 
 		/**
@@ -331,18 +331,18 @@ class Billing_Address {
 	 */
 	public static function fields_for_rest($zip_only = false) {
 
-		$fields_for_rest = array();
+		$fields_for_rest = [];
 
 		foreach (self::fields($zip_only) as $field_key => $field) {
 			$options = wu_get_isset($field, 'options', false);
 
 			$enum = is_callable($options) ? call_user_func($options) : false;
 
-			$fields_for_rest[ $field_key ] = array(
+			$fields_for_rest[ $field_key ] = [
 				'description' => wu_get_isset($field, 'title', false) . '. ' . wu_get_isset($field, 'default_placeholder', false),
 				'type'        => 'string',
 				'required'    => wu_get_isset($field, 'required', false),
-			);
+			];
 
 			if ($enum) {
 				$fields_for_rest[ $field_key ]['enum'] = array_keys($enum);

@@ -71,9 +71,9 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Is this an old install migrating.
@@ -119,29 +119,29 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 			$this->menu_icon = 'dashicons-wu-wp-ultimo';
 
-			add_action('admin_enqueue_scripts', array($this, 'register_scripts'));
+			add_action('admin_enqueue_scripts', [$this, 'register_scripts']);
 		}
 
 		parent::__construct();
 
-		add_action('admin_action_download_migration_logs', array($this, 'download_migration_logs'));
+		add_action('admin_action_download_migration_logs', [$this, 'download_migration_logs']);
 
 		/*
 		 * Serve the installers
 		 */
-		add_action('wp_ajax_wu_setup_install', array($this, 'setup_install'));
+		add_action('wp_ajax_wu_setup_install', [$this, 'setup_install']);
 
 		/*
 		 * Load installers
 		 */
-		add_action('wu_handle_ajax_installers', array(Core_Installer::get_instance(), 'handle'), 10, 3);
-		add_action('wu_handle_ajax_installers', array(Default_Content_Installer::get_instance(), 'handle'), 10, 3);
-		add_action('wu_handle_ajax_installers', array(Migrator::get_instance(), 'handle'), 10, 3);
+		add_action('wu_handle_ajax_installers', [Core_Installer::get_instance(), 'handle'], 10, 3);
+		add_action('wu_handle_ajax_installers', [Default_Content_Installer::get_instance(), 'handle'], 10, 3);
+		add_action('wu_handle_ajax_installers', [Migrator::get_instance(), 'handle'], 10, 3);
 
 		/*
 		 * Redirect on activation
 		 */
-		add_action('wu_activation', array($this, 'redirect_to_wizard'));
+		add_action('wu_activation', [$this, 'redirect_to_wizard']);
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	public function download_migration_logs() {
+	public function download_migration_logs(): void {
 
 		check_admin_referer('download_migration_logs', 'nonce');
 
@@ -177,7 +177,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		parent::page_loaded();
 
@@ -205,7 +205,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function set_settings() {
+	public function set_settings(): void {
 
 		WP_Ultimo()->settings->default_sections();
 	}
@@ -216,7 +216,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function redirect_to_wizard() {
+	public function redirect_to_wizard(): void {
 
 		if ( ! \WP_Ultimo\Requirements::run_setup() && wu_request('page') !== 'wp-ultimo-setup') {
 			wp_redirect(wu_network_admin_url('wp-ultimo-setup'));
@@ -231,7 +231,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_install() {
+	public function setup_install(): void {
 
 		global $wpdb;
 
@@ -279,7 +279,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_logo() {
 
-		return wu_get_asset('logo.png', 'img');
+		return wu_get_asset('logo.webp', 'img');
 	}
 
 	/**
@@ -312,45 +312,45 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_sections() {
 
-		$sections = array(
-			'welcome'      => array(
+		$sections = [
+			'welcome'      => [
 				'title'       => __('Welcome', 'wp-ultimo'),
 				'description' => implode(
 					'<br><br>',
-					array(
+					[
 						__('...and thanks for choosing WP Multisite WaaS!', 'wp-ultimo'),
 						__('This quick setup wizard will make sure your server is correctly setup, help you configure your new network, and migrate data from previous WP Multisite WaaS versions if necessary.', 'wp-ultimo'),
 						__('You will also have the option of importing default content. It should take 10 minutes or less!', 'wp-ultimo'),
-					)
+					]
 				),
 				'next_label'  => __('Get Started &rarr;', 'wp-ultimo'),
 				'back'        => false,
-			),
-			'checks'       => array(
+			],
+			'checks'       => [
 				'title'       => __('Pre-install Checks', 'wp-ultimo'),
 				'description' => __('Now it is time to see if this machine has what it takes to run WP Multisite WaaS well!', 'wp-ultimo'),
 				'next_label'  => \WP_Ultimo\Requirements::met() ? __('Go to the Next Step &rarr;', 'wp-ultimo') : __('Check Again', 'wp-ultimo'),
-				'handler'     => array($this, 'handle_checks'),
+				'handler'     => [$this, 'handle_checks'],
 				'back'        => false,
-				'fields'      => array(
-					'requirements' => array(
+				'fields'      => [
+					'requirements' => [
 						'type' => 'note',
-						'desc' => array($this, 'renders_requirements_table'),
-					),
-				),
-			),
-			'installation' => array(
+						'desc' => [$this, 'renders_requirements_table'],
+					],
+				],
+			],
+			'installation' => [
 				'title'       => __('Installation', 'wp-ultimo'),
 				'description' => __('Now, let\'s update your database and install the Sunrise.php file, which are necessary for the correct functioning of WP Multisite WaaS.', 'wp-ultimo'),
 				'next_label'  => Core_Installer::get_instance()->all_done() ? __('Go to the Next Step &rarr;', 'wp-ultimo') : __('Install', 'wp-ultimo'),
-				'fields'      => array(
-					'terms' => array(
+				'fields'      => [
+					'terms' => [
 						'type' => 'note',
 						'desc' => fn() => $this->render_installation_steps(Core_Installer::get_instance()->get_steps(), false),
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		/*
 		 * In case of migrations, add different sections.
@@ -374,19 +374,19 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				$description = __('It seems that you were running WP Multisite WaaS 1.X on this network. This migrator will convert the data from the old version to the new one.', 'wp-ultimo') . '<br><br>' . __('First, let\'s run a test migration to see if we can spot any potential errors.', 'wp-ultimo');
 			}
 
-			$fields = array(
-				'migration' => array(
+			$fields = [
+				'migration' => [
 					'type' => 'note',
 					'desc' => fn() => $this->render_installation_steps(Migrator::get_instance()->get_steps(), false),
-				),
-			);
+				],
+			];
 
 			if ($errors) {
 				$subject = 'Errors on migrating my network';
 
 				$user = wp_get_current_user();
 
-				$message_lines = array(
+				$message_lines = [
 					'Hi there,',
 					sprintf('My name is %s.', $user->display_name),
 					'I tried to migrate my network from version 1 to version 2, but was not able to do it successfully...',
@@ -394,7 +394,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 					sprintf('```%s%s%s```', PHP_EOL, implode(PHP_EOL, $errors), PHP_EOL),
 					sprintf('```%s%s%s```', PHP_EOL, $back_traces ? implode(PHP_EOL, $back_traces) : 'No backtraces found.', PHP_EOL),
 					'Kind regards.',
-				);
+				];
 
 				$message = implode(PHP_EOL . PHP_EOL, $message_lines);
 
@@ -410,10 +410,10 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 					'<br><a href="%2$s" class="wu-no-underline wu-text-red-500 wu-font-bold"><span class="dashicons-wu-download wu-mr-2"></span>%1$s</a>',
 					__('Download migration error log', 'wp-ultimo'),
 					add_query_arg(
-						array(
+						[
 							'action' => 'download_migration_logs',
 							'nonce'  => wp_create_nonce('download_migration_logs'),
-						),
+						],
 						network_admin_url('admin.php')
 					)
 				);
@@ -422,11 +422,11 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 					'<br><a href="%2$s" class="wu-no-underline wu-text-red-500 wu-font-bold"><span class="dashicons-wu-back-in-time wu-mr-2"></span>%1$s</a>',
 					__('Rollback to version 1.10.13', 'wp-ultimo'),
 					add_query_arg(
-						array(
+						[
 							'page'    => 'wp-ultimo-rollback',
 							'version' => '1.10.13',
 							'type'    => 'select-version',
-						),
+						],
 						network_admin_url('admin.php')
 					)
 				);
@@ -434,57 +434,57 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				$error_list .= implode('<br>', $errors);
 
 				$fields = array_merge(
-					array(
-						'errors' => array(
+					[
+						'errors' => [
 							'type'    => 'note',
 							'classes' => 'wu-flex-grow',
 							'desc'    => function () use ($error_list) {
 
 								/** Reset errors */
-								Migrator::get_instance()->session->set('errors', array());
+								Migrator::get_instance()->session->set('errors', []);
 
 								return sprintf('<div class="wu-mt-0 wu-p-4 wu-bg-red-100 wu-border wu-border-solid wu-border-red-200 wu-rounded-sm wu-text-red-500">%s</div>', $error_list);
 							},
-						),
-					),
+						],
+					],
 					$fields
 				);
 			}
 
-			$sections['migration'] = array(
+			$sections['migration'] = [
 				'title'       => __('Migration', 'wp-ultimo'),
 				'description' => $description,
 				'next_label'  => $next_label,
 				'skip'        => false,
 				'next'        => $next,
-				'handler'     => array($this, 'handle_migration'),
+				'handler'     => [$this, 'handle_migration'],
 				'fields'      => $fields,
-			);
+			];
 		} else {
-			$sections['your-company'] = array(
+			$sections['your-company'] = [
 				'title'       => __('Your Company', 'wp-ultimo'),
 				'description' => __('Before we move on, let\'s configure the basic settings of your network, shall we?', 'wp-ultimo'),
-				'handler'     => array($this, 'handle_save_settings'),
-				'fields'      => array($this, 'get_general_settings'),
-			);
+				'handler'     => [$this, 'handle_save_settings'],
+				'fields'      => [$this, 'get_general_settings'],
+			];
 
-			$sections['defaults'] = array(
+			$sections['defaults'] = [
 				'title'       => __('Default Content', 'wp-ultimo'),
 				'description' => __('Starting from scratch can be scarry, specially when first starting out. In this step, you can create default content to have a starting point for your network. Everything can be customized later.', 'wp-ultimo'),
 				'next_label'  => Default_Content_Installer::get_instance()->all_done() ? __('Go to the Next Step &rarr;', 'wp-ultimo') : __('Install', 'wp-ultimo'),
-				'fields'      => array(
-					'terms' => array(
+				'fields'      => [
+					'terms' => [
 						'type' => 'note',
 						'desc' => fn() => $this->render_installation_steps(Default_Content_Installer::get_instance()->get_steps()),
-					),
-				),
-			);
+					],
+				],
+			];
 		}
 
-		$sections['done'] = array(
+		$sections['done'] = [
 			'title' => __('Ready!', 'wp-ultimo'),
-			'view'  => array($this, 'section_ready'),
-		);
+			'view'  => [$this, 'section_ready'],
+		];
 
 		/**
 		 * Allow developers to add additional setup wizard steps.
@@ -514,23 +514,23 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		/*
 		 * Unset a couple of undesired settings
 		 */
-		$fields_to_unset = array(
+		$fields_to_unset = [
 			'error_reporting_header',
 			'enable_error_reporting',
 			'advanced_header',
 			'uninstall_wipe_tables',
-		);
+		];
 
 		foreach ($fields_to_unset as $field_to_unset) {
 			unset($general_fields[ $field_to_unset ]);
 		}
 
 		// Adds a fake first field to bypass some styling issues with the top-border
-		$fake_field = array(
-			array(
+		$fake_field = [
+			[
 				'type' => 'hidden',
-			),
-		);
+			],
+		];
 
 		$fields = array_merge($fake_field, $general_fields);
 
@@ -549,9 +549,9 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		 */
 		$payment_fields = \WP_Ultimo\Settings::get_instance()->get_section('payment-gateways')['fields'];
 
-		$fields_to_unset = array(
+		$fields_to_unset = [
 			'main_header',
-		);
+		];
 
 		foreach ($fields_to_unset as $field_to_unset) {
 			unset($payment_fields[ $field_to_unset ]);
@@ -578,21 +578,21 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		wp_localize_script(
 			'wu-setup-wizard',
 			'wu_setup_settings',
-			array(
+			[
 				'dry_run'               => wu_request('dry-run', true),
 				'generic_error_message' => __('A server error happened while processing this item.', 'wp-ultimo'),
-			)
+			]
 		);
 
 		wp_enqueue_script('wu-setup-wizard');
 
 		return wu_get_template_contents(
 			'wizards/setup/installation_steps',
-			array(
+			[
 				'page'   => $this,
 				'steps'  => $steps,
 				'checks' => $checks,
-			)
+			]
 		);
 	}
 
@@ -617,8 +617,8 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		global $wp_version;
 
-		$requirements = array(
-			'php'       => array(
+		$requirements = [
+			'php'       => [
 				'name'                => __('PHP', 'wp-ultimo'),
 				'help'                => wu_get_documentation_url('wp-ultimo-requirements'),
 				'required_version'    => \WP_Ultimo\Requirements::$php_version,
@@ -626,8 +626,8 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				'installed_version'   => phpversion(),
 				'pass_requirements'   => version_compare(phpversion(), \WP_Ultimo\Requirements::$php_version, '>='),
 				'pass_recommendation' => version_compare(phpversion(), \WP_Ultimo\Requirements::$php_recommended_version, '>='),
-			),
-			'wordpress' => array(
+			],
+			'wordpress' => [
 				'name'                => __('WordPress', 'wp-ultimo'),
 				'help'                => wu_get_documentation_url('wp-ultimo-requirements'),
 				'required_version'    => \WP_Ultimo\Requirements::$wp_version,
@@ -635,36 +635,36 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				'installed_version'   => $wp_version,
 				'pass_requirements'   => version_compare(phpversion(), \WP_Ultimo\Requirements::$wp_version, '>='),
 				'pass_recommendation' => version_compare(phpversion(), \WP_Ultimo\Requirements::$wp_recommended_version, '>='),
-			),
-		);
+			],
+		];
 
-		$plugin_requirements = array(
-			'multisite' => array(
+		$plugin_requirements = [
+			'multisite' => [
 				'name'              => __('WordPress Multisite', 'wp-ultimo'),
 				'help'              => wu_get_documentation_url('wp-ultimo-requirements'),
 				'condition'         => __('Installed & Activated', 'wp-ultimo'),
 				'pass_requirements' => is_multisite(),
-			),
-			'wp-ultimo' => array(
+			],
+			'wp-ultimo' => [
 				'name'              => __('WP Multisite WaaS', 'wp-ultimo'),
 				'help'              => wu_get_documentation_url('wp-ultimo-requirements'),
 				'condition'         => apply_filters('wp_ultimo_skip_network_active_check', false) ? __('Bypassed via filter', 'wp-ultimo') : __('Network Activated', 'wp-ultimo'),
 				'pass_requirements' => \WP_Ultimo\Requirements::is_network_active(),
-			),
-			'wp-cron'   => array(
+			],
+			'wp-cron'   => [
 				'name'              => __('WordPress Cron', 'wp-ultimo'),
 				'help'              => wu_get_documentation_url('wp-ultimo-requirements'),
 				'condition'         => __('Activated', 'wp-ultimo'),
 				'pass_requirements' => \WP_Ultimo\Requirements::check_wp_cron(),
-			),
-		);
+			],
+		];
 
 		return wu_get_template_contents(
 			'wizards/setup/requirements_table',
-			array(
+			[
 				'requirements'        => $requirements,
 				'plugin_requirements' => $plugin_requirements,
-			)
+			]
 		);
 	}
 
@@ -674,7 +674,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_ready() {
+	public function section_ready(): void {
 
 		update_network_option(null, 'wu_setup_finished', true);
 
@@ -689,18 +689,18 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		wu_enqueue_async_action(
 			'wu_async_take_screenshot',
-			array(
+			[
 				'site_id' => wu_get_main_site_id(),
-			),
+			],
 			'site'
 		);
 
 		wu_get_template(
 			'wizards/setup/ready',
-			array(
+			[
 				'screen' => get_current_screen(),
 				'page'   => $this,
-			)
+			]
 		);
 	}
 
@@ -710,7 +710,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_checks() {
+	public function handle_checks(): void {
 
 		if (\WP_Ultimo\Requirements::met() === false) {
 			wp_redirect(add_query_arg());
@@ -729,7 +729,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save_settings() {
+	public function handle_save_settings(): void {
 
 		$this->set_settings();
 
@@ -758,7 +758,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_migration() {
+	public function handle_migration(): void {
 
 		$dry_run = wu_request('dry-run', true);
 
@@ -783,7 +783,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_configuration() {
+	public function handle_configuration(): void {
 
 		if ($_POST['submit'] === '1') {
 			$this->integration->setup_constants($_POST);
@@ -803,17 +803,17 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function section_test() {
+	public function section_test(): void {
 
 		wp_enqueue_script('wu-vue');
 
 		wu_get_template(
 			'wizards/host-integrations/test',
-			array(
+			[
 				'screen'      => get_current_screen(),
 				'page'        => $this,
 				'integration' => $this->integration,
-			)
+			]
 		);
 	}
 
@@ -823,12 +823,12 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		if (WP_Ultimo()->is_loaded() === false) {
 			wp_enqueue_style('wu-styling', wu_get_asset('framework.css', 'css'), false, wu_get_version());
 
-			wp_enqueue_style('wu-admin', wu_get_asset('admin.css', 'css'), array('wu-styling'), wu_get_version());
+			wp_enqueue_style('wu-admin', wu_get_asset('admin.css', 'css'), ['wu-styling'], wu_get_version());
 
 			/*
 			* Adds tipTip
@@ -838,9 +838,9 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			/*
 			* Adds jQueryBlockUI
 			*/
-			wp_enqueue_script('wu-block-ui', wu_get_asset('lib/jquery.blockUI.js', 'js'), array('jquery'));
+			wp_enqueue_script('wu-block-ui', wu_get_asset('lib/jquery.blockUI.js', 'js'), ['jquery']);
 
-			wp_register_script('wu-fields', wu_get_asset('fields.js', 'js'), array('jquery'));
+			wp_register_script('wu-fields', wu_get_asset('fields.js', 'js'), ['jquery']);
 
 			/*
 			* Localize components
@@ -848,22 +848,22 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			wp_localize_script(
 				'wu-fields',
 				'wu_fields',
-				array(
-					'l10n' => array(
+				[
+					'l10n' => [
 						'image_picker_title'       => __('Select an Image.', 'wp-ultimo'),
 						'image_picker_button_text' => __('Use this image', 'wp-ultimo'),
-					),
-				)
+					],
+				]
 			);
 
-			wp_register_script('wu-functions', wu_get_asset('functions.js', 'js'), array('jquery'));
+			wp_register_script('wu-functions', wu_get_asset('functions.js', 'js'), ['jquery']);
 
-			wp_register_script('wubox', wu_get_asset('wubox.js', 'js'), array('wu-functions'));
+			wp_register_script('wubox', wu_get_asset('wubox.js', 'js'), ['wu-functions']);
 
 			wp_localize_script(
 				'wubox',
 				'wuboxL10n',
-				array(
+				[
 					'next'             => __('Next &gt;'),
 					'prev'             => __('&lt; Prev'),
 					'image'            => __('Image'),
@@ -871,17 +871,17 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 					'close'            => __('Close'),
 					'noiframes'        => __('This feature requires inline frames. You have iframes disabled or your browser does not support them.'),
 					'loadingAnimation' => includes_url('js/thickbox/loadingAnimation.gif'),
-				)
+				]
 			);
 
 			wp_add_inline_script('wu-setup-wizard-polyfill', 'document.addEventListener("DOMContentLoaded", () => wu_initialize_imagepicker());', 'after');
 		}
 
-		wp_enqueue_script('wu-setup-wizard-polyfill', wu_get_asset('setup-wizard-polyfill.js', 'js'), array('jquery', 'wu-fields', 'wu-functions', 'wubox'), wu_get_version());
+		wp_enqueue_script('wu-setup-wizard-polyfill', wu_get_asset('setup-wizard-polyfill.js', 'js'), ['jquery', 'wu-fields', 'wu-functions', 'wubox'], wu_get_version());
 
 		wp_enqueue_media();
 
-		wp_register_script('wu-setup-wizard', wu_get_asset('setup-wizard.js', 'js'), array('jquery'), wu_get_version());
+		wp_register_script('wu-setup-wizard', wu_get_asset('setup-wizard.js', 'js'), ['jquery'], wu_get_version());
 
 		wp_add_inline_style(
 			'wu-admin',
@@ -891,7 +891,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			background: url("%s") right bottom no-repeat;
 			background-size: 90%%;
 		}',
-				wu_get_asset('bg-setup.png', 'img')
+				wu_get_asset('bg-setup.webp', 'img')
 			)
 		);
 	}

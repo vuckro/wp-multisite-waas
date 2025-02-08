@@ -30,9 +30,9 @@ class Overview extends \QM_Output_Html {
 
 		parent::__construct($collector);
 
-		add_filter('qm/output/menus', array($this, 'admin_menu'), 1000);
+		add_filter('qm/output/menus', [$this, 'admin_menu'], 1000);
 
-		add_filter('qm/output/panel_menus', array($this, 'panel_menu'), 1000);
+		add_filter('qm/output/panel_menus', [$this, 'panel_menu'], 1000);
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Overview extends \QM_Output_Html {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		$data = $this->collector->get_data();
 
@@ -102,14 +102,14 @@ class Overview extends \QM_Output_Html {
 	 */
 	public function panel_menu(array $menu) {
 
-		$new_menu = array(
+		$new_menu = [
 			'wp-ultimo' => $this->menu(
-				array(
+				[
 					'title' => esc_html__('WP Multisite WaaS', 'wp-ultimo'),
 					'id'    => 'wp-ultimo',
-				)
+				]
 			),
-		);
+		];
 
 		return $new_menu + $menu;
 	}

@@ -20,10 +20,10 @@ function wu_drop_tables() {
 
 	$tables = apply_filters('wu_drop_tables', \WP_Ultimo\Loaders\Table_Loader::get_instance()->get_tables());
 
-	$except = array(
+	$except = [
 		'blogs',
 		'blogmeta',
-	);
+	];
 
 	$except = apply_filters('wu_drop_tables_except', $except);
 

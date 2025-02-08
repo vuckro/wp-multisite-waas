@@ -42,7 +42,7 @@ $wu_mu_sunrise = defined('WPMU_PLUGIN_DIR')
  * @since 2.0.0.3 Sunrise Version.
  */
 
-foreach (array($wu_sunrise, $wu_mu_sunrise) as $wu_sunrise_file) {
+foreach ([$wu_sunrise, $wu_mu_sunrise] as $wu_sunrise_file) {
 	if (file_exists($wu_sunrise_file)) {
 		if ($wu_sunrise_file === $wu_mu_sunrise) {
 

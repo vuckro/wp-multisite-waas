@@ -41,14 +41,14 @@ class Site_Type extends Enum {
 	 */
 	protected function classes() {
 
-		return array(
+		return [
 			static::REGULAR        => 'wu-bg-gray-700 wu-text-gray-200',
 			static::SITE_TEMPLATE  => 'wu-bg-yellow-200 wu-text-yellow-700',
 			static::CUSTOMER_OWNED => 'wu-bg-green-200 wu-text-green-700',
 			static::PENDING        => 'wu-bg-purple-200 wu-text-purple-700',
 			static::EXTERNAL       => 'wu-bg-blue-200 wu-text-blue-700',
 			static::MAIN           => 'wu-bg-pink-200 wu-text-pink-700',
-		);
+		];
 	}
 
 	/**
@@ -59,12 +59,12 @@ class Site_Type extends Enum {
 	 */
 	protected function labels() {
 
-		return array(
+		return [
 			static::REGULAR        => __('Regular Site', 'wp-ultimo'),
 			static::SITE_TEMPLATE  => __('Site Template', 'wp-ultimo'),
 			static::CUSTOMER_OWNED => __('Customer-Owned', 'wp-ultimo'),
 			static::PENDING        => __('Pending', 'wp-ultimo'),
 			static::MAIN           => __('Main Site', 'wp-ultimo'),
-		);
+		];
 	}
 }

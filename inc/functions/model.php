@@ -37,10 +37,10 @@ function wu_cast_model_to_array($model) {
  */
 function wu_models_to_options($models, $label_field = 'name') {
 
-	$options_list = array();
+	$options_list = [];
 
 	foreach ($models as $model) {
-		$options_list[ $model->get_id() ] = call_user_func(array($model, "get_{$label_field}"));
+		$options_list[ $model->get_id() ] = call_user_func([$model, "get_{$label_field}"]);
 	}
 
 	return $options_list;
@@ -56,7 +56,7 @@ function wu_models_to_options($models, $label_field = 'name') {
  */
 function wu_model_get_schema($class_name) {
 
-	$schema = array();
+	$schema = [];
 
 	if (method_exists($class_name, 'get_schema')) {
 		$schema = $class_name::get_schema();
@@ -75,13 +75,13 @@ function wu_model_get_schema($class_name) {
  */
 function wu_model_get_required_fields($class_name) {
 
-	$required_fields = array();
+	$required_fields = [];
 
 	if (method_exists($class_name, 'validation_rules')) {
 		$validation_rules = (new $class_name())->validation_rules();
 
 		foreach ($validation_rules as $field => $validation_rule) {
-			if (strpos((string) $validation_rule, 'required|') !== false || $validation_rule === 'required') {
+			if (str_contains((string) $validation_rule, 'required|') || $validation_rule === 'required') {
 				$required_fields[] = $field;
 			}
 		}

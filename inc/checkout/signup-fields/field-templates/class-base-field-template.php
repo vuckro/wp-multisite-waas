@@ -32,7 +32,7 @@ class Base_Field_Template {
 	/**
 	 * @var array
 	 */
-	protected $attributes = array();
+	protected $attributes = [];
 
 	/**
 	 * Field Template Constructor
@@ -41,7 +41,7 @@ class Base_Field_Template {
 	 *
 	 * @param array $attributes The attributes passed to the field.
 	 */
-	public function __construct($attributes = array()) {
+	public function __construct($attributes = []) {
 		$this->attributes = $attributes;
 	}
 

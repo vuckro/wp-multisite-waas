@@ -34,7 +34,7 @@ function wu_reflection_parse_object_arguments($class_name) {
 
 	$doc_block_factory = DocBlockFactory::createInstance();
 
-	$arguments = array();
+	$arguments = [];
 
 	/**
 	 * Tries to fetch the database schema, if one exists.
@@ -55,11 +55,11 @@ function wu_reflection_parse_object_arguments($class_name) {
 		$param = $doc_block->getTagsByName('param');
 
 		if (isset($param[0]) && is_object($param[0])) {
-			$arguments[ $column['name'] ] = array(
+			$arguments[ $column['name'] ] = [
 				'description' => (string) $param[0]->getDescription(),
 				'type'        => (string) $param[0]->getType(),
 				'required'    => false, // Actual value set later
-			);
+			];
 
 			if ($db_schema) {
 				$db_column = wu_array_find_first_by($db_schema, 'name', $column['name']);
@@ -78,7 +78,7 @@ function wu_reflection_parse_object_arguments($class_name) {
 			if (isset($option[0])) {
 				$description = (string) $option[0]->getDescription();
 
-				if (strpos($description, '\\WP_Ultimo\\') !== false) {
+				if (str_contains($description, '\\WP_Ultimo\\')) {
 					$enum_options = new $description();
 
 					$arguments[ $column['name'] ]['enum'] = array_map('strtolower', array_keys(array_flip($enum_options->get_options())));
@@ -103,17 +103,17 @@ function wu_reflection_parse_object_arguments($class_name) {
  */
 function wu_reflection_parse_arguments_from_setters($class_name, $return_schema = true) {
 
-	$arguments = array();
+	$arguments = [];
 
 	foreach (get_class_methods($class_name) as $setter_name) {
 		if (preg_match('/^set_/', $setter_name)) {
 			$argument = str_replace('set_', '', $setter_name);
 
 			if ($return_schema) {
-				$arguments[] = array(
+				$arguments[] = [
 					'name' => $argument,
 					'type' => '',
-				);
+				];
 			} else {
 				$arguments[] = $argument;
 			}

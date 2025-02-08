@@ -76,7 +76,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 		/*
 		 * Load sections to memory.
 		 */
@@ -99,14 +99,14 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	final public function process_save() {
+	final public function process_save(): void {
 
 		$saving_tag = sprintf('saving_%s', $this->get_current_section());
 
 		if (isset($_REQUEST[ $saving_tag ])) {
 			check_admin_referer($saving_tag, '_wpultimo_nonce');
 
-			$handler = isset($this->current_section['handler']) ? $this->current_section['handler'] : array($this, 'default_handler');
+			$handler = $this->current_section['handler'] ?? [$this, 'default_handler'];
 
 			/*
 			 * Calls the saving function
@@ -123,7 +123,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'        => __('Edit Object', 'wp-ultimo'),
 			'add_new_label'     => __('Add New Object', 'wp-ultimo'),
 			'updated_message'   => __('Object updated with success!', 'wp-ultimo'),
@@ -131,7 +131,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 			'title_description' => '',
 			'save_button_label' => __('Save', 'wp-ultimo'),
 			'save_description'  => '',
-		);
+		];
 	}
 
 	/**
@@ -144,7 +144,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$screen = get_current_screen();
 
@@ -152,7 +152,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 			return;
 		}
 
-		add_meta_box('wp-ultimo-wizard-body', wu_get_isset($this->current_section, 'title', __('Section', 'wp-ultimo')), array($this, 'output_default_widget_body'), $screen->id, 'normal', null);
+		add_meta_box('wp-ultimo-wizard-body', wu_get_isset($this->current_section, 'title', __('Section', 'wp-ultimo')), [$this, 'output_default_widget_body'], $screen->id, 'normal', null);
 	}
 
 	/**
@@ -161,11 +161,11 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output_default_widget_body() {
+	public function output_default_widget_body(): void {
 
 		echo '<div class="wu-p-4">';
 
-		$view = isset($this->current_section['view']) ? $this->current_section['view'] : array($this, 'default_view');
+		$view = $this->current_section['view'] ?? [$this, 'default_view'];
 
 			/*
 			 * Calls the view function.
@@ -192,13 +192,13 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/wizard',
-			array(
+			[
 				'screen'               => get_current_screen(),
 				'page'                 => $this,
 				'logo'                 => $this->get_logo(),
@@ -208,7 +208,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 				'classes'              => 'wu-w-full wu-mx-auto sm:wu-w-11/12 xl:wu-w-8/12 wu-mt-8 sm:wu-max-w-screen-lg',
 				'clickable_navigation' => $this->clickable_navigation,
 				'form_id'              => $this->form_id,
-			)
+			]
 		);
 	}
 
@@ -297,7 +297,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function default_handler() {
+	public function default_handler(): void {
 
 		wp_redirect($this->get_next_section_link());
 
@@ -310,22 +310,22 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function default_view() {
+	public function default_view(): void {
 
 		$section = wp_parse_args(
 			$this->current_section,
-			array(
+			[
 				'title'       => '',
 				'description' => '',
 				'content'     => '',
-				'fields'      => array(),
+				'fields'      => [],
 				'next_label'  => __('Continue &rarr;', 'wp-ultimo'),
 				'back_label'  => __('&larr; Go Back', 'wp-ultimo'),
 				'skip_label'  => __('Skip this Step', 'wp-ultimo'),
 				'back'        => false,
 				'skip'        => false,
 				'next'        => true,
-			)
+			]
 		);
 
 		/*
@@ -339,11 +339,11 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 			$form = new \WP_Ultimo\UI\Form(
 				$this->get_current_section(),
 				$section['fields'],
-				array(
+				[
 					'views'                 => 'admin-pages/fields',
 					'classes'               => 'wu-widget-list wu-striped wu-m-0 wu-mt-2 wu--mb-6 wu--mx-6',
 					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-px-6 wu-py-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				)
+				]
 			);
 
 			ob_start();
@@ -357,9 +357,9 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 			'wizards/setup/default',
 			array_merge(
 				$section,
-				array(
+				[
 					'page' => $this,
-				)
+				]
 			)
 		);
 	}
@@ -370,15 +370,15 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_submit_box() {
+	public function render_submit_box(): void {
 
 		wu_get_template(
 			'base/wizard/submit-box',
-			array(
+			[
 				'screen' => get_current_screen(),
 				'page'   => $this,
 				'labels' => $this->get_labels(),
-			)
+			]
 		);
 	}
 

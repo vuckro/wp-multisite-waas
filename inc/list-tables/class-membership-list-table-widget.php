@@ -27,7 +27,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Memberships\\Membership_Query';
+	protected $query_class = \WP_Ultimo\Database\Memberships\Membership_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -37,11 +37,11 @@ class Membership_List_Table_Widget extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Membership', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Memberships', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                         // does this table support ajax?
-			)
+			]
 		);
 	}
 
@@ -59,14 +59,14 @@ class Membership_List_Table_Widget extends Base_List_Table {
 
 		$query_class = new $this->query_class();
 
-		$query_args = array(
+		$query_args = [
 			'number'  => 5,
 			'offset'  => 1,
 			'orderby' => wu_request('orderby', 'date_created'),
 			'order'   => wu_request('order', 'DESC'),
 			'search'  => wu_request('s', false),
 			'count'   => $count,
-		);
+		];
 
 		/**
 		 * Accounts for hashes
@@ -121,16 +121,16 @@ class Membership_List_Table_Widget extends Base_List_Table {
 	 */
 	public function column_hash($item): string {
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $item->get_id(),
-		);
+		];
 
 		$code = sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-membership', $url_atts), $item->get_hash());
 
-		$actions = array(
+		$actions = [
 			'edit'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-membership', $url_atts), __('Edit', 'wp-ultimo')),
 			'delete' => sprintf('<a href="%s">%s</a>', '', __('Delete', 'wp-ultimo')),
-		);
+		];
 
 		$html = "<span class='wu-font-mono'><strong>{$code}</strong></span>";
 
@@ -219,19 +219,19 @@ class Membership_List_Table_Widget extends Base_List_Table {
 			</div>";
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'id' => $customer->get_id(),
-		);
+		];
 
 		$avatar = get_avatar(
 			$customer->get_user_id(),
 			32,
 			'identicon',
 			'',
-			array(
+			[
 				'force_display' => true,
 				'class'         => 'wu-rounded-full wu-mr-2',
-			)
+			]
 		);
 
 		$display_name = $customer->get_display_name();
@@ -260,12 +260,12 @@ class Membership_List_Table_Widget extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'hash'     => __('Ref.', 'wp-ultimo'),
 			'status'   => __('Status', 'wp-ultimo'),
 			'customer' => __('Customer', 'wp-ultimo'),
 			'amount'   => __('Price', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}

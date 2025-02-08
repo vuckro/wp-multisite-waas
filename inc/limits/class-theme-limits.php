@@ -27,7 +27,7 @@ class Theme_Limits {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $themes_not_available = array();
+	protected $themes_not_available = [];
 
 	/**
 	 * Keep a cache of the results as the check is costly.
@@ -51,7 +51,7 @@ class Theme_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		/**
 		 * We need to bail if we're inside the WP CLI context and the
@@ -68,7 +68,7 @@ class Theme_Limits {
 			return;
 		}
 
-		add_action('wu_sunrise_loaded', array($this, 'load_limitations'));
+		add_action('wu_sunrise_loaded', [$this, 'load_limitations']);
 	}
 
 	/**
@@ -77,24 +77,24 @@ class Theme_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_limitations() {
+	public function load_limitations(): void {
 
 		if (wu_get_current_site()->has_limitations()) {
-			add_filter('stylesheet', array($this, 'force_active_theme_stylesheet'));
+			add_filter('stylesheet', [$this, 'force_active_theme_stylesheet']);
 
-			add_filter('template', array($this, 'force_active_theme_template'));
+			add_filter('template', [$this, 'force_active_theme_template']);
 
-			add_filter('allowed_themes', array($this, 'add_extra_available_themes'));
+			add_filter('allowed_themes', [$this, 'add_extra_available_themes']);
 
-			add_filter('site_allowed_themes', array($this, 'add_extra_available_themes'));
+			add_filter('site_allowed_themes', [$this, 'add_extra_available_themes']);
 
-			add_filter('wp_prepare_themes_for_js', array($this, 'maybe_remove_activate_button'));
+			add_filter('wp_prepare_themes_for_js', [$this, 'maybe_remove_activate_button']);
 
-			add_action('admin_enqueue_scripts', array($this, 'hacky_remove_activate_button'));
+			add_action('admin_enqueue_scripts', [$this, 'hacky_remove_activate_button']);
 
-			add_action('admin_footer-themes.php', array($this, 'modify_backbone_template'));
+			add_action('admin_footer-themes.php', [$this, 'modify_backbone_template']);
 
-			add_action('customize_changeset_save_data', array($this, 'prevent_theme_activation_on_customizer'), 99, 2);
+			add_action('customize_changeset_save_data', [$this, 'prevent_theme_activation_on_customizer'], 99, 2);
 		}
 	}
 
@@ -124,10 +124,10 @@ class Theme_Limits {
 		$theme_limitations = wu_get_current_site()->get_limitations()->themes;
 
 		if ($theme_limitations->allowed($new_theme, 'not_available')) {
-			$response = array(
+			$response = [
 				'code'    => 'not-available',
 				'message' => __('This theme is not available on your current plan.', 'wp-ultimo'),
-			);
+			];
 
 			wp_send_json($response, 'not-available');
 
@@ -149,7 +149,7 @@ class Theme_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hacky_remove_activate_button() {
+	public function hacky_remove_activate_button(): void {
 
 		global $pagenow;
 
@@ -169,20 +169,20 @@ class Theme_Limits {
 
 		$upgrade_button = wu_generate_upgrade_to_unlock_button(
 			__('Upgrade to unlock', 'wp-ultimo'),
-			array(
+			[
 				'module'  => 'themes',
 				'type'    => 'EXTENSION',
 				'classes' => 'button',
-			)
+			]
 		);
 
 		wp_localize_script(
 			'theme',
 			'wu_theme_settings',
-			array(
+			[
 				'themes_not_available' => $this->themes_not_available,
 				'replacement_message'  => $upgrade_button,
-			)
+			]
 		);
 	}
 
@@ -192,7 +192,7 @@ class Theme_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function modify_backbone_template() { // phpcs:disable ?>
+	public function modify_backbone_template(): void { // phpcs:disable ?>
 
 		<script type="text/javascript">
 
@@ -266,7 +266,7 @@ class Theme_Limits {
 
 		$forced_stylesheet = $this->get_forced_theme_stylesheet();
 
-		return $forced_stylesheet ? $forced_stylesheet : $stylesheet;
+		return $forced_stylesheet ?: $stylesheet;
 	}
 
 	/**
@@ -285,7 +285,7 @@ class Theme_Limits {
 
 		$forced_template = $this->get_forced_theme_template();
 
-		return $forced_template ? $forced_template : $template;
+		return $forced_template ?: $template;
 	}
 
 	/**

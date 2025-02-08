@@ -33,7 +33,7 @@ class Async_Calls {
 	 *
 	 * @var array
 	 */
-	static $registry = array();
+	static $registry = [];
 
 	/**
 	 * Registers a new listener.
@@ -45,12 +45,12 @@ class Async_Calls {
 	 * @param mixed    ...$args Arguments to be passed to the callback.
 	 * @return void
 	 */
-	public static function register_listener($id, $callable, ...$args) {
+	public static function register_listener($id, $callable, ...$args): void {
 
-		self::$registry[ $id ] = array(
+		self::$registry[ $id ] = [
 			'callable' => $callable,
 			'args'     => $args,
-		);
+		];
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Async_Calls {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	public static function install_listeners() {
+	public static function install_listeners(): void {
 
 		foreach (self::$registry as $id => $listener) {
 			add_action(
@@ -105,23 +105,23 @@ class Async_Calls {
 	 * @param array  $args Additional arguments to be passed.
 	 * @return array The list of paginates URLs to call.
 	 */
-	public static function build_url_list($id, $total, $chunk_size, $args = array()) {
+	public static function build_url_list($id, $total, $chunk_size, $args = []) {
 
 		$pages = ceil($total / $chunk_size);
 
-		$urls = array();
+		$urls = [];
 
 		for ($i = 1; $i <= $pages; $i++) {
 			$urls[] = self::build_base_url(
 				$id,
 				array_merge(
 					$args,
-					array(
+					[
 						'action'   => "wu_async_call_listener_$id",
 						'parallel' => 1,
 						'page'     => $i,
 						'per_page' => $chunk_size,
-					)
+					]
 				)
 			);
 		}
@@ -162,7 +162,7 @@ class Async_Calls {
 	 * @param integer $parallel_threads The number of parallel threads to be run.
 	 * @return true|\WP_Error
 	 */
-	public static function run($id, $args, $total, $chunk_size = 10, $parallel_threads = 3) {
+	public static function run($id, $args, $total, $chunk_size = 10, $parallel_threads = 3): void {
 
 		$client = self::get_client();
 
@@ -171,7 +171,7 @@ class Async_Calls {
 		$coroutine = \Amp\call(
 			static function () use ($id, $total, $chunk_size, $parallel_threads, $client, $urls) {
 
-				$results = array();
+				$results = [];
 
 				$chunker = new LocalSemaphore($parallel_threads);
 

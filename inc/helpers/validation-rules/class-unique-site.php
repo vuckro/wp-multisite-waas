@@ -35,7 +35,7 @@ class Unique_Site extends Rule {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fillableParams = array('self_id'); // phpcs:ignore
+	protected $fillableParams = ['self_id']; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *
@@ -45,7 +45,7 @@ class Unique_Site extends Rule {
 	 */
     public function check($value) : bool { // phpcs:ignore
 
-		$this->requireParameters(array());
+		$this->requireParameters([]);
 
 		$self_id = $this->parameter('self_id');
 

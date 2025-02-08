@@ -105,29 +105,29 @@ class Payment_Methods_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['password_strength'] = array(
+		$fields['password_strength'] = [
 			'type'    => 'toggle',
 			'title'   => __('Password Strength Meter', 'wp-ultimo'),
 			'desc'    => __('Set this customer as a VIP.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
-		$fields['apply_styles'] = array(
+		$fields['apply_styles'] = [
 			'type'    => 'toggle',
 			'title'   => __('Apply Styles', 'wp-ultimo'),
 			'desc'    => __('Set this customer as a VIP.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
 		return $fields;
 	}
@@ -151,13 +151,13 @@ class Payment_Methods_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Payment Methods',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Payment_Methods_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array();
+		return [];
 	}
 
 	/**

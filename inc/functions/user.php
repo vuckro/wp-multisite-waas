@@ -22,7 +22,7 @@ function wu_get_roles_as_options($add_default_option = false) {
 		require_once ABSPATH . 'wp-admin/includes/user.php';
 	}
 
-	$roles = array();
+	$roles = [];
 
 	if ($add_default_option) {
 		$roles['default'] = __('Use WP Multisite WaaS default', 'wp-ultimo');

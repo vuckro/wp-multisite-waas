@@ -28,18 +28,18 @@
 		$form = new \WP_Ultimo\UI\Form(
 			"checkout-{$step_name}",
 			$final_fields,
-			array(
+			[
 				'title'                 => $display_title ? $step['name'] : '',
 				'views'                 => 'checkout/fields',
 				'classes'               => wu_get_isset($step, 'classes', '') . ' wu-grid wu-grid-cols-2 wu-gap-4',
 				'field_wrapper_classes' => 'wu-col-span-2',
-				'html_attr'             => array(
-					'id' => wu_get_isset($step, 'element_id') ? wu_get_isset($step, 'element_id') : "wu-step-{$step_name}",
-				),
-				'variables'             => array(
+				'html_attr'             => [
+					'id' => wu_get_isset($step, 'element_id') ?: "wu-step-{$step_name}",
+				],
+				'variables'             => [
 					'step' => (object) $step,
-				),
-			)
+				],
+			]
 		);
 
 		/**

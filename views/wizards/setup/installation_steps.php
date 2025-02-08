@@ -21,7 +21,7 @@
 
 		<tr 
 			<?php echo ! $default['done'] ? 'data-content="' . esc_attr($slug) . '"' : ''; ?>
-			<?php echo wu_array_to_html_attrs(wu_get_isset($default, 'html_attr', array())); ?>
+			<?php echo wu_array_to_html_attrs(wu_get_isset($default, 'html_attr', [])); ?>
 		>
 
 			<?php if ($checks) : ?>
@@ -44,7 +44,7 @@
 			<?php if ($default['done']) : ?>
 			<td class="status">
 				<span class="wu-text-green-600">
-				<?php echo isset($default['completed']) ? $default['completed'] : __('Completed!', 'wp-ultimo'); ?>
+				<?php echo $default['completed'] ?? __('Completed!', 'wp-ultimo'); ?>
 				</span>
 			</td>
 			<?php else : ?>

@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
  * @param  array  $data Content.
  * @return void
  */
-function wu_generate_csv($file_name, $data = array()) {
+function wu_generate_csv($file_name, $data = []) {
 
 	$fp = fopen('php://output', 'w');
 

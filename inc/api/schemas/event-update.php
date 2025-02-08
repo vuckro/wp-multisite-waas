@@ -18,59 +18,59 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'severity'         => array(
+return [
+	'severity'         => [
 		'description' => __('Severity of the problem.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'date_created'     => array(
+	],
+	'date_created'     => [
 		'description' => __('Date when the event was created.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'payload'          => array(
+	],
+	'payload'          => [
 		'description' => __('Payload of the event.', 'wp-ultimo'),
 		'type'        => 'object',
 		'required'    => false,
-	),
-	'initiator'        => array(
+	],
+	'initiator'        => [
 		'description' => __('The type of user responsible for initiating the event. There are two options: Manual and System. By default, the event is saved as manual.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-		'enum'        => array(
+		'enum'        => [
 			'system',
 			'manual',
-		),
-	),
-	'object_type'      => array(
+		],
+	],
+	'object_type'      => [
 		'description' => __("The type of object related to this event. It's usually the model name.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'slug'             => array(
+	],
+	'slug'             => [
 		'description' => __('The event slug. It needs to be unique and preferably make it clear what it is about. Example: account_created is about creating an account.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'object_id'        => array(
+	],
+	'object_id'        => [
 		'description' => __('The ID of the related objects.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'date_modified'    => array(
+	],
+	'date_modified'    => [
 		'description' => __('Model last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'migrated_from_id' => array(
+	],
+	'migrated_from_id' => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'  => array(
+	],
+	'skip_validation'  => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

@@ -50,9 +50,9 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_webhooks',
-	);
+	];
 
 	/**
 	 * Registers the necessary scripts and styles for this admin page.
@@ -60,22 +60,22 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
-		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), array('jquery', 'wu-sweet-alert'));
+		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), ['jquery', 'wu-sweet-alert']);
 
 		wp_localize_script(
 			'wu-webhook-page',
 			'wu_webhook_page',
-			array(
-				'i18n' => array(
+			[
+				'i18n' => [
 					'error_title'   => __('Webhook Test', 'wp-ultimo'),
 					'error_message' => __('An error occurred when sending the test webhook, please try again.', 'wp-ultimo'),
 					'copied'        => __('Copied!', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		wp_enqueue_script('wu-webhook-page');
@@ -87,17 +87,17 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add new webhook.
 		 */
 		wu_register_form(
 			'add_new_webhook_modal',
-			array(
-				'render'     => array($this, 'render_add_new_webhook_modal'),
-				'handler'    => array($this, 'handle_add_new_webhook_modal'),
+			[
+				'render'     => [$this, 'render_add_new_webhook_modal'],
+				'handler'    => [$this, 'handle_add_new_webhook_modal'],
 				'capability' => 'wu_edit_webhooks',
-			)
+			]
 		);
 	}
 
@@ -107,63 +107,63 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	function render_add_new_webhook_modal() {
+	function render_add_new_webhook_modal(): void {
 
 		$events = wu_get_event_types();
 
-		$event_options = array();
+		$event_options = [];
 
 		foreach ($events as $slug => $event) {
 			$event_options[ $slug ] = $event['name'];
 		}
 
-		$fields = array(
-			'name'          => array(
+		$fields = [
+			'name'          => [
 				'type'        => 'text',
 				'title'       => __('Webhook Name', 'wp-ultimo'),
 				'desc'        => __('A name to easily identify your webhook.', 'wp-ultimo'),
 				'placeholder' => __('E.g. Zapier Integration', 'wp-ultimo'),
-			),
-			'event'         => array(
+			],
+			'event'         => [
 				'title'   => __('Event', 'wp-ultimo'),
 				'type'    => 'select',
 				'desc'    => __('The event that will trigger the webhook.', 'wp-ultimo'),
 				'options' => $event_options,
-			),
-			'webhook_url'   => array(
+			],
+			'webhook_url'   => [
 				'type'        => 'url',
 				'title'       => __('Webhook Url', 'wp-ultimo'),
 				'desc'        => __('The url of your webhook.', 'wp-ultimo'),
 				'placeholder' => __('E.g. https://example.com/', 'wp-ultimo'),
-			),
-			'submit_button' => array(
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Add New Webhook', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					// 'v-bind:disabled' => '!confirmed',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'edit_line_item',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'edit_line_item',
 					'data-state'  => json_encode(
-						array(
+						[
 							'event' => '',
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -175,7 +175,7 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_add_new_webhook_modal() {
+	public function handle_add_new_webhook_modal(): void {
 
 		$status = wu_create_webhook($_POST);
 
@@ -183,14 +183,14 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 			wp_send_json_error($status);
 		} else {
 			wp_send_json_success(
-				array(
+				[
 					'redirect_url' => wu_network_admin_url(
 						'wp-ultimo-edit-webhook',
-						array(
+						[
 							'id' => $status->get_id(),
-						)
+						]
 					),
-				)
+				]
 			);
 		}
 	}
@@ -211,10 +211,10 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Webhook removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Webhook', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -258,14 +258,14 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add New Webhook', 'wp-ultimo'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_webhook_modal'),
-			),
-		);
+			],
+		];
 	}
 
 

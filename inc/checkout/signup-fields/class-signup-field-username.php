@@ -122,9 +122,9 @@ class Signup_Field_Username extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'auto_generate_username' => false,
-		);
+		];
 	}
 
 	/**
@@ -135,11 +135,11 @@ class Signup_Field_Username extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
 			'placeholder',
 			'tooltip',
-		);
+		];
 	}
 
 	/**
@@ -150,10 +150,10 @@ class Signup_Field_Username extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'username',
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -164,18 +164,18 @@ class Signup_Field_Username extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'auto_generate_username' => array(
+		return [
+			'auto_generate_username' => [
 				'type'      => 'toggle',
 				'title'     => __('Auto-generate', 'wp-ultimo'),
 				'desc'      => __('Check this option to auto-generate this field based on the email address of the customer.', 'wp-ultimo'),
 				'tooltip'   => '',
 				'value'     => 0,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'auto_generate_username',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -191,26 +191,26 @@ class Signup_Field_Username extends Base_Signup_Field {
 		 * Logged in user, bail.
 		 */
 		if (is_user_logged_in()) {
-			return array();
+			return [];
 		}
 
 		if (isset($attributes['auto_generate_username']) && $attributes['auto_generate_username']) {
-			return array(
-				'auto_generate_username' => array(
+			return [
+				'auto_generate_username' => [
 					'type'  => 'hidden',
 					'id'    => 'auto_generate_username',
 					'value' => 'email',
-				),
-				'username'               => array(
+				],
+				'username'               => [
 					'type'  => 'hidden',
 					'id'    => 'username',
 					'value' => uniqid(),
-				),
-			);
+				],
+			];
 		}
 
-		return array(
-			'username' => array(
+		return [
+			'username' => [
 				'type'              => 'text',
 				'id'                => 'username',
 				'name'              => $attributes['name'],
@@ -220,15 +220,15 @@ class Signup_Field_Username extends Base_Signup_Field {
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
 				'required'          => true,
 				'value'             => $this->get_value(),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model'         => 'username',
 					'v-init:username' => "'{$this->get_value()}'",
 					'autocomplete'    => 'username',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

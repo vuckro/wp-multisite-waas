@@ -32,7 +32,7 @@ function wu_get_domain($domain_id) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Domain[]
  */
-function wu_get_domains($query = array()) {
+function wu_get_domains($query = []) {
 
 	return \WP_Ultimo\Models\Domain::query($query);
 }
@@ -62,7 +62,7 @@ function wu_create_domain($domain_data) {
 
 	$domain_data = wp_parse_args(
 		$domain_data,
-		array(
+		[
 			'blog_id'        => false,
 			'domain'         => false,
 			'active'         => true,
@@ -71,7 +71,7 @@ function wu_create_domain($domain_data) {
 			'stage'          => 'checking-dns',
 			'date_created'   => wu_get_current_time('mysql', true),
 			'date_modified'  => wu_get_current_time('mysql', true),
-		)
+		]
 	);
 
 	$domain = new Domain($domain_data);
@@ -85,7 +85,7 @@ function wu_create_domain($domain_data) {
 	/*
 	 * Add the processing.
 	 */
-	wu_enqueue_async_action('wu_async_process_domain_stage', array('domain_id' => $domain->get_id()), 'domain');
+	wu_enqueue_async_action('wu_async_process_domain_stage', ['domain_id' => $domain->get_id()], 'domain');
 
 	return $domain;
 }

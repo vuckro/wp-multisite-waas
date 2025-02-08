@@ -66,9 +66,9 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.24
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Overrides original construct method.
@@ -93,7 +93,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_logo() {
 
-		return wu_get_asset('logo.png', 'img');
+		return wu_get_asset('logo.webp', 'img');
 	}
 
 	/**
@@ -126,13 +126,13 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function get_sections() {
 
-		return array(
-			'alert' => array(
+		return [
+			'alert' => [
 				'title'   => __('Alert!', 'wp-ultimo'),
-				'view'    => array($this, 'section_alert'),
-				'handler' => array($this, 'handle_proceed'),
-			),
-		);
+				'view'    => [$this, 'section_alert'],
+				'handler' => [$this, 'handle_proceed'],
+			],
+		];
 	}
 
 	/**
@@ -141,14 +141,14 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.24
 	 * @return void
 	 */
-	public function section_alert() {
+	public function section_alert(): void {
 
 		wu_get_template(
 			'wizards/setup/alert',
-			array(
+			[
 				'screen' => get_current_screen(),
 				'page'   => $this,
-			)
+			]
 		);
 	}
 
@@ -158,7 +158,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.24
 	 * @return void
 	 */
-	public function handle_proceed() {
+	public function handle_proceed(): void {
 
 		delete_network_option(null, 'wu_setup_finished');
 		delete_network_option(null, 'wu_is_migration_done');

@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
  * @param mixed  $default The default value.
  * @return mixed
  */
-function wu_get_option($option_name = 'settings', $default = array()) {
+function wu_get_option($option_name = 'settings', $default = []) {
 
 	$option_value = get_network_option(null, wu_slugify($option_name), $default);
 

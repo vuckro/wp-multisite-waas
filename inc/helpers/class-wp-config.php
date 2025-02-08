@@ -59,7 +59,7 @@ class WP_Config {
 
 			return file_put_contents($config_path, implode('', $config), LOCK_EX);
 		} else {
-			list($value, $line) = $line;
+			[$value, $line] = $line;
 
 			if ($value !== true) {
 				$config[ $line ] = $content . PHP_EOL;
@@ -84,7 +84,7 @@ class WP_Config {
 	public function inject_contents($content_array, $line, $value) {
 
 		if ( ! is_array($value)) {
-			$value = array($value);
+			$value = [$value];
 		}
 
 		array_splice($content_array, $line, 0, $value);
@@ -142,12 +142,12 @@ class WP_Config {
 		 */
 		$patterns = apply_filters(
 			'wu_wp_config_reference_hook_line_patterns',
-			array(
+			[
 				'/^\$table_prefix\s*=\s*[\'|\"]' . $wpdb->prefix . '[\'|\"]/' => 0,
 				'/^( ){0,}\$table_prefix\s*=.*[\'|\"]' . $wpdb->prefix . '[\'|\"]/' => 0,
 				'/(\/\* That\'s all, stop editing! Happy publishing\. \*\/)/' => -2,
 				'/<\?php/' => 0,
-			)
+			]
 		);
 
 		$line = 1;
@@ -219,7 +219,7 @@ class WP_Config {
 
 		foreach ($config as $k => $line) {
 			if (preg_match($pattern, (string) $line, $matches)) {
-				return array(trim($matches[1]), $k);
+				return [trim($matches[1]), $k];
 			}
 		}
 

@@ -18,7 +18,7 @@
 	 * @since 1.8.2
 	 */
 	foreach ($page->get_title_links() as $action_link) :
-		$action_classes = isset($action_link['classes']) ? $action_link['classes'] : '';
+		$action_classes = $action_link['classes'] ?? '';
 
 		?>
 

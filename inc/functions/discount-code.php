@@ -44,7 +44,7 @@ function wu_get_discount_code($discount_code_id) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Discount_Code[]
  */
-function wu_get_discount_codes($query = array()) {
+function wu_get_discount_codes($query = []) {
 
 	return \WP_Ultimo\Models\Discount_Code::query($query);
 }
@@ -87,7 +87,7 @@ function wu_create_discount_code($discount_code_data) {
 
 	$discount_code_data = wp_parse_args(
 		$discount_code_data,
-		array(
+		[
 			'max_uses'        => true,
 			'name'            => false,
 			'code'            => false,
@@ -99,7 +99,7 @@ function wu_create_discount_code($discount_code_data) {
 			'date_created'    => wu_get_current_time('mysql', true),
 			'date_modified'   => wu_get_current_time('mysql', true),
 			'skip_validation' => false,
-		)
+		]
 	);
 
 	$discount_code = new Discount_Code($discount_code_data);

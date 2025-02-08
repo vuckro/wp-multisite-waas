@@ -15,10 +15,10 @@
 		<?php
 		echo get_avatar_url(
 			$item->get_user_id(),
-			array(
+			[
 				'default' => 'identicon',
 				'size'    => 320,
-			)
+			]
 		);
 		?>
 		)"
@@ -33,10 +33,10 @@
 			92,
 			'identicon',
 			'',
-			array(
+			[
 				'force_display' => true,
 				'class'         => 'wu-rounded-full wu-border wu-border-solid wu-border-gray-300 wu-bg-white',
-			)
+			]
 		);
 		?>
 	</div>
@@ -101,7 +101,7 @@
 			<?php
 			if ( ! empty($item->get_memberships())) {
 				?>
-				<a  href="<?php echo wu_network_admin_url('wp-ultimo-memberships', array('customer_id' => $item->get_id())); ?>">
+				<a  href="<?php echo wu_network_admin_url('wp-ultimo-memberships', ['customer_id' => $item->get_id()]); ?>">
 				<?php _e('View', 'wp-ultimo'); ?>
 				</a>
 				<?php
@@ -124,9 +124,9 @@
 
 					$url_switch_to = sprintf('<a title="%s" class="%s" href="%s">%s</a>', __('Switch To', 'wp-ultimo'), $is_modal_switch_to, \WP_Ultimo\User_Switching::get_instance()->render($item->get_user_id()), __('Switch To', 'wp-ultimo'));
 
-					$actions = array(
+					$actions = [
 						'switch-to' => $item->get_user_id() !== get_current_user_id() ? $url_switch_to : __('None', 'wp-ultimo'),
-					);
+					];
 
 					echo implode('<br />', $actions);
 
@@ -144,7 +144,7 @@
 			<?php _e('Select Customer', 'wp-ultimo'); ?>
 		</label>
 
-		<a href="<?php echo wu_network_admin_url('wp-ultimo-edit-customer', array('id' => $item->get_id())); ?>" class="button button-primary">
+		<a href="<?php echo wu_network_admin_url('wp-ultimo-edit-customer', ['id' => $item->get_id()]); ?>" class="button button-primary">
 			<?php _e('Manage', 'wp-ultimo'); ?>
 		</a>
 	</div>

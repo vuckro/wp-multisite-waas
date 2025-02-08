@@ -122,10 +122,10 @@ class Signup_Field_Password extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'password_confirm_field' => false,
 			'password_confirm_label' => __('Confirm Password', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -136,11 +136,11 @@ class Signup_Field_Password extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
 			'placeholder',
 			'tooltip',
-		);
+		];
 	}
 
 	/**
@@ -151,10 +151,10 @@ class Signup_Field_Password extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'password',
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -165,20 +165,20 @@ class Signup_Field_Password extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'password_strength_meter' => array(
+		return [
+			'password_strength_meter' => [
 				'type'  => 'toggle',
 				'title' => __('Display Password Strength Meter', 'wp-ultimo'),
 				'desc'  => __('Adds a password strength meter below the password field. Enabling this option also enforces passwords to be strong.', 'wp-ultimo'),
 				'value' => 1,
-			),
-			'password_confirm_field'  => array(
+			],
+			'password_confirm_field'  => [
 				'type'  => 'toggle',
 				'title' => __('Display Password Confirm Field', 'wp-ultimo'),
 				'desc'  => __('Adds a "Confirm your Password" field below the default password field to reduce the chance or making a mistake.', 'wp-ultimo'),
 				'value' => 1,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -194,12 +194,12 @@ class Signup_Field_Password extends Base_Signup_Field {
 		 * Logged in user, bail.
 		 */
 		if (is_user_logged_in()) {
-			return array();
+			return [];
 		}
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields['password'] = array(
+		$checkout_fields['password'] = [
 			'type'              => 'password',
 			'id'                => 'password',
 			'name'              => $attributes['name'],
@@ -209,16 +209,16 @@ class Signup_Field_Password extends Base_Signup_Field {
 			'required'          => true,
 			'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 			'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-			'html_attr'         => array(
+			'html_attr'         => [
 				'autocomplete' => 'new-password',
-			),
-			'wrapper_html_attr' => array(
+			],
+			'wrapper_html_attr' => [
 				'style' => $this->calculate_style_attr(),
-			),
-		);
+			],
+		];
 
 		if ($attributes['password_confirm_field']) {
-			$checkout_fields['password_conf'] = array(
+			$checkout_fields['password_conf'] = [
 				'type'              => 'password',
 				'id'                => 'password_conf',
 				'name'              => $attributes['password_confirm_label'],
@@ -228,13 +228,13 @@ class Signup_Field_Password extends Base_Signup_Field {
 				'required'          => true,
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'autocomplete' => 'new-password',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			);
+				],
+			];
 		}
 
 		return $checkout_fields;

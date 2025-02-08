@@ -25,7 +25,7 @@ class Broadcast_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Broadcasts\\Broadcast_Query';
+	protected $query_class = \WP_Ultimo\Database\Broadcasts\Broadcast_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -35,15 +35,15 @@ class Broadcast_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Broadcast', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Broadcasts', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                          // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_get_form_url('add_new_broadcast_message'),
 					'classes' => 'wubox',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -113,16 +113,16 @@ class Broadcast_List_Table extends Base_List_Table {
 
 		$content = wp_trim_words(wp_strip_all_tags($item->get_content()), 7);
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'slug'  => $item->get_slug(),
 			'model' => 'broadcast',
-		);
+		];
 
-		$actions = array(
+		$actions = [
 			'edit'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-broadcast', $url_atts), __('Edit', 'wp-ultimo')),
 			'delete' => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Delete', 'wp-ultimo'), wu_get_form_url('delete_modal', $url_atts), __('Delete', 'wp-ultimo')),
-		);
+		];
 
 		return $title . $content . $this->row_actions($actions);
 	}
@@ -160,9 +160,9 @@ class Broadcast_List_Table extends Base_List_Table {
 			case 1:
 				$customer = array_pop($targets);
 
-				$url_atts = array(
+				$url_atts = [
 					'id' => $customer->get_id(),
-				);
+				];
 
 				$customer_link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -171,10 +171,10 @@ class Broadcast_List_Table extends Base_List_Table {
 					32,
 					'identicon',
 					'',
-					array(
+					[
 						'force_display' => true,
 						'class'         => 'wu-rounded-full wu-border-solid wu-border-1 wu-border-white hover:wu-border-gray-400',
-					)
+					]
 				);
 
 				$display_name = $customer->get_display_name();
@@ -206,14 +206,14 @@ class Broadcast_List_Table extends Base_List_Table {
 						32,
 						'identicon',
 						'',
-						array(
+						[
 							'class' => 'wu-rounded-full wu-border-solid wu-border-1 wu-border-white hover:wu-border-gray-400',
-						)
+						]
 					);
 
-					$url_atts = array(
+					$url_atts = [
 						'id' => $customer->get_id(),
-					);
+					];
 
 					$customer_link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
@@ -221,13 +221,13 @@ class Broadcast_List_Table extends Base_List_Table {
 				}
 
 				if ($targets_count < 7) {
-					$modal_atts = array(
+					$modal_atts = [
 						'action'      => 'wu_modal_targets_display',
 						'object_id'   => $item->get_id(),
 						'width'       => '400',
 						'height'      => '360',
 						'target_type' => 'customers',
-					);
+					];
 
 					$html .= sprintf(
 						'<div class="wu-inline-block wu-mr-2">
@@ -244,13 +244,13 @@ class Broadcast_List_Table extends Base_List_Table {
 					return $html;
 				}
 
-				$modal_atts = array(
+				$modal_atts = [
 					'action'      => 'wu_modal_targets_display',
 					'object_id'   => $item->get_id(),
 					'width'       => '400',
 					'height'      => '360',
 					'target_type' => 'customers',
-				);
+				];
 
 				$html .= sprintf(
 					'<div class="wu-inline-block wu-ml-4">
@@ -326,9 +326,9 @@ class Broadcast_List_Table extends Base_List_Table {
 
 				$description = sprintf(__('%s customer(s) targeted.', 'wp-ultimo'), $customer_count);
 
-				$url_atts = array(
+				$url_atts = [
 					'id' => $product->get_id(),
-				);
+				];
 
 				$product_link = wu_network_admin_url('wp-ultimo-edit-product', $url_atts);
 
@@ -349,9 +349,9 @@ class Broadcast_List_Table extends Base_List_Table {
 		$html = '<div class="wu-p-2 wu-mr-1 wu-flex wu-rounded wu-items-center wu-border wu-border-solid wu-border-gray-300 wu-bg-gray-100 wu-relative wu-overflow-hidden">';
 
 		foreach ($products as $product) {
-			$url_atts = array(
+			$url_atts = [
 				'id' => $product->get_id(),
-			);
+			];
 
 			$product_link = wu_network_admin_url('wp-ultimo-edit-product', $url_atts);
 
@@ -371,13 +371,13 @@ class Broadcast_List_Table extends Base_List_Table {
 		}
 
 		if ($product_count > 1 && $product_count < 5) {
-			$modal_atts = array(
+			$modal_atts = [
 				'action'      => 'wu_modal_targets_display',
 				'object_id'   => $item->get_id(),
 				'width'       => '400',
 				'height'      => '360',
 				'target_type' => 'products',
-			);
+			];
 
 			$html .= sprintf(
 				'<div class="wu-inline-block wu-ml-4">
@@ -393,13 +393,13 @@ class Broadcast_List_Table extends Base_List_Table {
 			return $html;
 		}
 
-		$modal_atts = array(
+		$modal_atts = [
 			'action'      => 'wu_modal_targets_display',
 			'object_id'   => $item->get_id(),
 			'width'       => '400',
 			'height'      => '360',
 			'target_type' => 'products',
-		);
+		];
 
 		$html .= sprintf('<div class="wu-inline-block wu-ml-4"><a href="%s" title="%s" class="wubox"><span class="wu-pl-2 wu-uppercase wu-text-xs wu-font-bold"> %s %s</span></a></div>', wu_get_form_url('view_broadcast_targets', $modal_atts), __('Targets', 'wp-ultimo'), $product_count, __('Targets', 'wp-ultimo'));
 
@@ -416,7 +416,7 @@ class Broadcast_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'               => '<input type="checkbox" />',
 			'type'             => __('Type', 'wp-ultimo'),
 			'the_content'      => __('Content', 'wp-ultimo'),
@@ -424,7 +424,7 @@ class Broadcast_List_Table extends Base_List_Table {
 			'target_products'  => __('Target Products', 'wp-ultimo'),
 			'date_created'     => __('Date', 'wp-ultimo'),
 			'id'               => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -435,32 +435,32 @@ class Broadcast_List_Table extends Base_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(
-				'type'   => array(
+		return [
+			'filters'      => [
+				'type'   => [
 					'label'   => __('Broadcast Type', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						'broadcast_notice' => __('Email', 'wp-ultimo'),
 						'broadcast_email'  => __('Notices', 'wp-ultimo'),
-					),
-				),
-				'status' => array(
+					],
+				],
+				'status' => [
 					'label'   => __('Notice Type', 'wp-ultimo'),
-					'options' => array(
+					'options' => [
 						'info'    => __('Info - Blue', 'wp-ultimo'),
 						'success' => __('Success - Green', 'wp-ultimo'),
 						'warning' => __('Warning - Yellow', 'wp-ultimo'),
 						'error'   => __('Error - Red', 'wp-ultimo'),
-					),
-				),
-			),
-			'date_filters' => array(
-				'date_created' => array(
+					],
+				],
+			],
+			'date_filters' => [
+				'date_created' => [
 					'label'   => __('Date', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -469,7 +469,7 @@ class Broadcast_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 	}
@@ -482,25 +482,25 @@ class Broadcast_List_Table extends Base_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all'              => array(
+		return [
+			'all'              => [
 				'field' => 'status',
 				'url'   => add_query_arg('type', 'all'),
 				'label' => __('All Broadcasts', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'broadcast_email'  => array(
+			],
+			'broadcast_email'  => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'broadcast_email'),
 				'label' => __('Emails', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'broadcast_notice' => array(
+			],
+			'broadcast_notice' => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'broadcast_notice'),
 				'label' => __('Notices', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 }

@@ -7,7 +7,7 @@
 
 $is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 
-$notes = array();
+$notes = [];
 
 if ($is_trial_setup) {
 	$desc = $membership->get_recurring_description();
@@ -24,7 +24,7 @@ $should_auto_renew = ! empty($original_cart) ? $original_cart->should_auto_renew
 $recurring_total = $membership->get_amount();
 
 if ($membership->is_recurring() && $should_auto_renew) {
-	$payment_total = $payment->get_total() ? $payment->get_total() : $membership->get_initial_amount();
+	$payment_total = $payment->get_total() ?: $membership->get_initial_amount();
 
 	$desc = $membership->get_recurring_description();
 

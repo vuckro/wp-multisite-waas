@@ -30,9 +30,9 @@ class Site_List_Table extends Parent_Site_List_Table {
 
 		parent::__construct();
 
-		$this->modes = array(
+		$this->modes = [
 			'grid' => __('Grid View'),
-		);
+		];
 
 		$this->current_mode = 'grid';
 	}
@@ -45,7 +45,7 @@ class Site_List_Table extends Parent_Site_List_Table {
 	 */
 	public function get_columns() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -55,10 +55,10 @@ class Site_List_Table extends Parent_Site_List_Table {
 	 */
 	public function get_filters(): array {
 
-		return array(
-			'filters'      => array(),
-			'date_filters' => array(),
-		);
+		return [
+			'filters'      => [],
+			'date_filters' => [],
+		];
 	}
 
 	/**
@@ -69,14 +69,14 @@ class Site_List_Table extends Parent_Site_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all' => array(
+		return [
+			'all' => [
 				'field' => 'type',
 				'url'   => add_query_arg('type', 'all'),
 				'label' => __('Your Sites', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -90,21 +90,21 @@ class Site_List_Table extends Parent_Site_List_Table {
 		$customer = wu_get_current_customer();
 
 		if ( ! $customer) {
-			return array(
-				'blog_id__in' => array('null_id'), // pass absurd value to make sure the query returns nothing.
-			);
+			return [
+				'blog_id__in' => ['null_id'], // pass absurd value to make sure the query returns nothing.
+			];
 		}
 
 		$fields = parent::get_extra_fields();
 
-		$fields = array(
-			'meta_query' => array(
-				'customer_id' => array(
+		$fields = [
+			'meta_query' => [
+				'customer_id' => [
 					'key'   => 'wu_customer_id',
 					'value' => $customer->get_id(),
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return $fields;
 	}

@@ -52,10 +52,10 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'no-instructions',
 		'no-config',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -63,9 +63,9 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
-		array('WPE_API', 'WPE_APIKEY'),
-	);
+	protected $constants = [
+		['WPE_API', 'WPE_APIKEY'],
+	];
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -86,7 +86,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_dependencies() {
+	public function load_dependencies(): void {
 
 		// if WP Engine is not defined, then return
 		if ( ! defined('WPE_PLUGIN_DIR') || ! is_readable(WPE_PLUGIN_DIR . '/class-wpeapi.php')) {
@@ -104,7 +104,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		$api = new \WPE_API();
 
@@ -123,7 +123,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		$api = new \WPE_API();
 
@@ -144,7 +144,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {
+	public function on_add_subdomain($subdomain, $site_id): void {
 
 		$this->on_add_domain($subdomain, $site_id);
 	}
@@ -159,7 +159,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {
+	public function on_remove_subdomain($subdomain, $site_id): void {
 
 		$this->on_remove_domain($subdomain, $site_id);
 	}
@@ -196,7 +196,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
 		$api = new \WPE_API();
 

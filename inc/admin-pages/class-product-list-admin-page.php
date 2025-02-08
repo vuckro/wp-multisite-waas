@@ -50,9 +50,9 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_products',
-	);
+	];
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -70,10 +70,10 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Product removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Product', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -117,13 +117,13 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'url'   => wu_network_admin_url('wp-ultimo-edit-product'),
 				'label' => __('Add Product'),
 				'icon'  => 'wu-circle-with-plus',
-			),
-		);
+			],
+		];
 	}
 
 	/**

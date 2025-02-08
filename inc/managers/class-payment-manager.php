@@ -45,7 +45,7 @@ class Payment_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $model_class = '\\WP_Ultimo\\Models\\Payment';
+	protected $model_class = \WP_Ultimo\Models\Payment::class;
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -53,7 +53,7 @@ class Payment_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		$this->enable_rest_api();
 
@@ -67,25 +67,25 @@ class Payment_Manager extends Base_Manager {
 				Event_Manager::register_model_events(
 					'payment',
 					__('Payment', 'wp-ultimo'),
-					array('created', 'updated')
+					['created', 'updated']
 				);
 			}
 		);
-		add_action('wp_login', array($this, 'check_pending_payments'), 10);
+		add_action('wp_login', [$this, 'check_pending_payments'], 10);
 
-		add_action('wp_enqueue_scripts', array($this, 'show_pending_payments'), 10);
+		add_action('wp_enqueue_scripts', [$this, 'show_pending_payments'], 10);
 
-		add_action('admin_enqueue_scripts', array($this, 'show_pending_payments'), 10);
+		add_action('admin_enqueue_scripts', [$this, 'show_pending_payments'], 10);
 
-		add_action('init', array($this, 'invoice_viewer'));
+		add_action('init', [$this, 'invoice_viewer']);
 
-		add_action('wu_async_transfer_payment', array($this, 'async_transfer_payment'), 10, 2);
+		add_action('wu_async_transfer_payment', [$this, 'async_transfer_payment'], 10, 2);
 
-		add_action('wu_async_delete_payment', array($this, 'async_delete_payment'), 10);
+		add_action('wu_async_delete_payment', [$this, 'async_delete_payment'], 10);
 
-		add_action('wu_gateway_payment_processed', array($this, 'handle_payment_success'), 10, 3);
+		add_action('wu_gateway_payment_processed', [$this, 'handle_payment_success'], 10, 3);
 
-		add_action('wu_transition_payment_status', array($this, 'transition_payment_status'), 10, 3);
+		add_action('wu_transition_payment_status', [$this, 'transition_payment_status'], 10, 3);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Payment_Manager extends Base_Manager {
 	 * @param \WP_Ultimo\Gateways\Base_Gateway $gateway The gateway.
 	 * @return void
 	 */
-	public function handle_payment_success($payment, $membership, $gateway) {
+	public function handle_payment_success($payment, $membership, $gateway): void {
 
 		$payload = array_merge(
 			wu_generate_event_payload('payment', $payment),
@@ -115,7 +115,7 @@ class Payment_Manager extends Base_Manager {
 	 * @param \WP_User|string $user The WordPress user instance or user login.
 	 * @return void
 	 */
-	public function check_pending_payments($user) {
+	public function check_pending_payments($user): void {
 
 		if ( ! is_main_site()) {
 			return;
@@ -151,7 +151,7 @@ class Payment_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function show_pending_payments() {
+	public function show_pending_payments(): void {
 
 		if ( ! is_user_logged_in()) {
 			return;
@@ -183,15 +183,15 @@ class Payment_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 
 		if (function_exists('wu_register_form')) {
 			wu_register_form(
 				'pending_payments',
-				array(
-					'render'     => array($this, 'render_pending_payments'),
+				[
+					'render'     => [$this, 'render_pending_payments'],
 					'capability' => 'exist',
-				)
+				]
 			);
 		}
 	}
@@ -201,7 +201,7 @@ class Payment_Manager extends Base_Manager {
 	 *
 	 * @return void
 	 */
-	public function render_pending_payments() {
+	public function render_pending_payments(): void {
 
 		if ( ! is_user_logged_in()) {
 			return;
@@ -215,7 +215,7 @@ class Payment_Manager extends Base_Manager {
 			return;
 		}
 
-		$pending_payments = array();
+		$pending_payments = [];
 
 		foreach ($customer->get_memberships() as $membership) {
 			$pending_payment = $membership->get_last_pending_payment();
@@ -238,14 +238,14 @@ class Payment_Manager extends Base_Manager {
 		 */
 		$message = apply_filters('wu_pending_payment_message', $message, $customer, $pending_payments);
 
-		$fields = array(
-			'alert_text' => array(
+		$fields = [
+			'alert_text' => [
 				'type'            => 'note',
 				'desc'            => $message,
 				'classes'         => '',
 				'wrapper_classes' => '',
-			),
-		);
+			],
+		];
 
 		foreach ($pending_payments as $payment) {
 			$slug = $payment->get_hash();
@@ -256,21 +256,21 @@ class Payment_Manager extends Base_Manager {
 
 			$title = $slug;
 
-			$fields[] = array(
+			$fields[] = [
 				'type'  => 'note',
 				'title' => $title,
 				'desc'  => $html,
-			);
+			];
 		}
 
 		$form = new \WP_Ultimo\UI\Form(
 			'pending-payments',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			)
+			]
 		);
 
 		$form->render();
@@ -283,7 +283,7 @@ class Payment_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function invoice_viewer() {
+	public function invoice_viewer(): void {
 
 		if (wu_request('action') === 'invoice' && wu_request('reference') && wu_request('key')) {
 			/*
@@ -414,9 +414,9 @@ class Payment_Manager extends Base_Manager {
 	 */
 	public function transition_payment_status($old_status, $new_status, $payment_id) {
 
-		$completable_statuses = array(
+		$completable_statuses = [
 			'completed',
-		);
+		];
 
 		if ( ! in_array($new_status, $completable_statuses, true)) {
 			return;

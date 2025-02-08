@@ -28,9 +28,9 @@ class Webhooks_Schema extends Schema {
 	 * @access public
 	 * @var array
 	 */
-	public $columns = array(
+	public $columns = [
 
-		array(
+		[
 			'name'     => 'id',
 			'type'     => 'bigint',
 			'length'   => '20',
@@ -38,48 +38,48 @@ class Webhooks_Schema extends Schema {
 			'extra'    => 'auto_increment',
 			'primary'  => true,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'migrated_from_id',
 			'type'       => 'bigint',
 			'length'     => '20',
 			'unsigned'   => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'name',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'webhook_url',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'event',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'event_count',
 			'type'     => 'int',
 			'length'   => '10',
 			'default'  => 0,
 			'sortable' => true,
-			'aliases'  => array('sent_events_count'),
-		),
+			'aliases'  => ['sent_events_count'],
+		],
 
-		array(
+		[
 			'name'       => 'active',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -87,9 +87,9 @@ class Webhooks_Schema extends Schema {
 			'default'    => 1,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'hidden',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -97,31 +97,31 @@ class Webhooks_Schema extends Schema {
 			'default'    => 0,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'integration',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_last_failed',
 			'type'       => 'datetime',
 			'date_query' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_created',
 			'type'       => 'datetime',
 			'created'    => true,
 			'date_query' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_modified',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -129,7 +129,7 @@ class Webhooks_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-	);
+	];
 }

@@ -27,9 +27,9 @@ class Sites_Domain_List_Table extends Domain_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'responsive' => '',
-		);
+		];
 
 		return $columns;
 	}
@@ -42,40 +42,40 @@ class Sites_Domain_List_Table extends Domain_List_Table {
 	 * @param object $item The item being rendered.
 	 * @return void
 	 */
-	public function column_responsive($item) {
+	public function column_responsive($item): void {
 
 		echo wu_responsive_table_row(
-			array(
+			[
 				'id'     => $item->get_id(),
 				'title'  => strtolower((string) $item->get_domain()),
 				'url'    => wu_network_admin_url(
 					'wp-ultimo-edit-domain',
-					array(
+					[
 						'id' => $item->get_id(),
-					)
+					]
 				),
 				'status' => $this->column_stage($item),
-			),
-			array(
-				'primary' => array(
+			],
+			[
+				'primary' => [
 					'icon'  => $item->is_primary_domain() ? 'dashicons-wu-filter_1 wu-align-text-bottom wu-mr-1' : 'dashicons-wu-plus-square wu-align-text-bottom wu-mr-1',
 					'label' => '',
 					'value' => $item->is_primary_domain() ? __('Primary', 'wp-ultimo') : __('Alias', 'wp-ultimo'),
-				),
-				'secure'  => array(
+				],
+				'secure'  => [
 					'wrapper_classes' => $item->is_secure() ? 'wu-text-green-500' : '',
 					'icon'            => $item->is_secure() ? 'dashicons-wu-lock1 wu-align-text-bottom wu-mr-1' : 'dashicons-wu-lock1 wu-align-text-bottom wu-mr-1',
 					'label'           => '',
 					'value'           => $item->is_secure() ? __('Secure (HTTPS)', 'wp-ultimo') : __('Not Secure (HTTP)', 'wp-ultimo'),
-				),
-			),
-			array(
-				'date_created' => array(
+				],
+			],
+			[
+				'date_created' => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
 					'value' => sprintf(__('Created %s', 'wp-ultimo'), wu_human_time_diff(strtotime((string) $item->get_date_created()))),
-				),
-			)
+				],
+			]
 		);
 	}
 }

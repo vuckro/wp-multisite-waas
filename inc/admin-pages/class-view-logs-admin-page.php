@@ -68,9 +68,9 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'manage_network',
-	);
+	];
 
 	/**
 	 * Allow child classes to add further initializations.
@@ -78,9 +78,9 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wp_ajax_wu_handle_view_logs', array($this, 'handle_view_logs'));
+		add_action('wp_ajax_wu_handle_view_logs', [$this, 'handle_view_logs']);
 	}
 
 	/**
@@ -89,20 +89,20 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
-		\WP_Ultimo\Scripts::get_instance()->register_script('wu-view-log', wu_get_asset('view-logs.js', 'js'), array('jquery'));
+		\WP_Ultimo\Scripts::get_instance()->register_script('wu-view-log', wu_get_asset('view-logs.js', 'js'), ['jquery']);
 
 		wp_localize_script(
 			'wu-view-log',
 			'wu_view_logs',
-			array(
-				'i18n' => array(
+			[
+				'i18n' => [
 					'copied' => __('Copied!', 'wp-ultimo'),
-				),
-			)
+				],
+			]
 		);
 
 		wp_enqueue_script('wu-view-log');
@@ -144,9 +144,9 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 		$logs_list = list_files(
 			Logger::get_logs_folder(),
 			2,
-			array(
+			[
 				'index.html',
-			)
+			]
 		);
 
 		$logs_list = array_combine(array_values($logs_list), array_map(fn($file) => str_replace(Logger::get_logs_folder(), '', (string) $file), $logs_list));
@@ -176,12 +176,12 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 
 		$contents = $file && file_exists($file) ? file_get_contents($file) : $default_content;
 
-		$response = array(
+		$response = [
 			'file'      => $file,
 			'file_name' => $file_name,
 			'contents'  => $contents,
 			'logs_list' => $logs_list,
-		);
+		];
 
 		if (wp_doing_ajax()) {
 			wp_send_json_success($response);
@@ -196,50 +196,50 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		$info = $this->handle_view_logs();
 
-		add_meta_box('wp-ultimo-log-contents', __('Log Contents', 'wp-ultimo'), array($this, 'output_default_widget_payload'), get_current_screen()->id, 'normal', null, $info);
+		add_meta_box('wp-ultimo-log-contents', __('Log Contents', 'wp-ultimo'), [$this, 'output_default_widget_payload'], get_current_screen()->id, 'normal', null, $info);
 
 		$this->add_fields_widget(
 			'file-selector',
-			array(
+			[
 				'title'  => __('Log Files', 'wp-ultimo'),
-				'fields' => array(
-					'log_file' => array(
+				'fields' => [
+					'log_file' => [
 						'type'        => 'select',
 						'title'       => __('Select Log File', 'wp-ultimo'),
 						'placeholder' => __('Select Log File', 'wp-ultimo'),
 						'value'       => wu_request('file'),
 						'tooltip'     => '',
 						'options'     => $info['logs_list'],
-					),
-					'download' => array(
+					],
+					'download' => [
 						'type'    => 'submit',
 						'title'   => __('Download Log', 'wp-ultimo'),
 						'value'   => 'download',
 						'classes' => 'button button-primary wu-w-full',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$this->add_fields_widget(
 			'info',
-			array(
+			[
 				'title'    => __('Timestamps', 'wp-ultimo'),
 				'position' => 'side',
-				'fields'   => array(
-					'date_modified' => array(
+				'fields'   => [
+					'date_modified' => [
 						'title'         => __('Last Modified at', 'wp-ultimo'),
 						'type'          => 'text-edit',
 						'date'          => true,
 						'value'         => date_i18n('Y-m-d H:i:s', filemtime($info['file'])),
 						'display_value' => date_i18n('Y-m-d H:i:s', filemtime($info['file'])),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 	}
 
@@ -252,15 +252,15 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @param array $data Arguments passed by add_meta_box.
 	 * @return void
 	 */
-	public function output_default_widget_payload($unused, $data) {
+	public function output_default_widget_payload($unused, $data): void {
 
 		wu_get_template(
 			'events/widget-payload',
-			array(
+			[
 				'title'        => __('Event Payload', 'wp-ultimo'),
 				'loading_text' => __('Loading Payload', 'wp-ultimo'),
 				'payload'      => $data['args']['contents'],
-			)
+			]
 		);
 	}
 
@@ -272,14 +272,14 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'edit_label'          => __('View Log', 'wp-ultimo'),
 			'add_new_label'       => __('View Log', 'wp-ultimo'),
 			'title_placeholder'   => __('Enter Customer', 'wp-ultimo'),
 			'title_description'   => __('Viewing file: ', 'wp-ultimo'),
 			'delete_button_label' => __('Delete Log File', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -290,7 +290,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_object() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -299,7 +299,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		/**
 		 * Get the action links
@@ -318,7 +318,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_save() {
+	public function handle_save(): void {
 
 		$action = wu_request('submit_button', 'none');
 

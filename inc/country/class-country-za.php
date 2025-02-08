@@ -50,11 +50,11 @@ class Country_ZA extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'ZA',
 		'currency'     => 'ZAR',
 		'phone_code'   => 27,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -83,7 +83,7 @@ class Country_ZA extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'EC'  => __('Eastern Cape', 'wp-ultimo'),
 			'FS'  => __('Free State', 'wp-ultimo'),
 			'GP'  => __('Gauteng', 'wp-ultimo'),
@@ -93,6 +93,6 @@ class Country_ZA extends Country {
 			'NW'  => __('North West', 'wp-ultimo'),
 			'NC'  => __('Northern Cape', 'wp-ultimo'),
 			'WC'  => __('Western Cape', 'wp-ultimo'),
-		);
+		];
 	}
 }

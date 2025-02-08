@@ -28,7 +28,7 @@ class Post_Type_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		/**
 		 * Emulated post types.
@@ -36,7 +36,7 @@ class Post_Type_Limits {
 		 * @since 2.0.6
 		 */
 		if (is_main_site() && is_network_admin()) {
-			add_action('init', array($this, 'register_emulated_post_types'), 999);
+			add_action('init', [$this, 'register_emulated_post_types'], 999);
 		}
 
 		/**
@@ -57,15 +57,15 @@ class Post_Type_Limits {
 			return;
 		}
 
-		add_action('load-post-new.php', array($this, 'limit_posts'));
+		add_action('load-post-new.php', [$this, 'limit_posts']);
 
-		add_filter('wp_handle_upload', array($this, 'limit_media'));
+		add_filter('wp_handle_upload', [$this, 'limit_media']);
 
-		add_filter('media_upload_tabs', array($this, 'limit_tabs'));
+		add_filter('media_upload_tabs', [$this, 'limit_tabs']);
 
-		add_action('current_screen', array($this, 'limit_restoring'), 10);
+		add_action('current_screen', [$this, 'limit_restoring'], 10);
 
-		add_filter('wp_insert_post_data', array($this, 'limit_draft_publishing'), 10, 2);
+		add_filter('wp_insert_post_data', [$this, 'limit_draft_publishing'], 10, 2);
 	}
 
 	/**
@@ -74,9 +74,9 @@ class Post_Type_Limits {
 	 * @since 2.0.6
 	 * @return void
 	 */
-	public function register_emulated_post_types() {
+	public function register_emulated_post_types(): void {
 
-		$emulated_post_types = wu_get_setting('emulated_post_types', array());
+		$emulated_post_types = wu_get_setting('emulated_post_types', []);
 
 		if (is_array($emulated_post_types) && ! empty($emulated_post_types)) {
 			foreach ($emulated_post_types as $pt) {
@@ -90,7 +90,7 @@ class Post_Type_Limits {
 
 				register_post_type(
 					$pt->post_type,
-					array(
+					[
 						'label'               => $pt->label,
 						'exclude_from_search' => true,
 						'public'              => true,
@@ -98,7 +98,7 @@ class Post_Type_Limits {
 						'has_archive'         => false,
 						'can_export'          => false,
 						'delete_with_user'    => false,
-					)
+					]
 				);
 			}
 		}
@@ -110,7 +110,7 @@ class Post_Type_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function limit_restoring() {
+	public function limit_restoring(): void {
 
 		if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'untrash') {
 			$this->limit_posts();
@@ -123,7 +123,7 @@ class Post_Type_Limits {
 	 * @since 1.0.0
 	 * @since 1.5.4 Checks for blocked post types
 	 */
-	public function limit_posts() {
+	public function limit_posts(): void {
 
 		if (is_main_site()) {
 			return;
@@ -135,7 +135,7 @@ class Post_Type_Limits {
 			$upgrade_message = __('Your plan does not support this post type.', 'wp-ultimo');
 
 			// translators: %s is the URL.
-			wp_die($upgrade_message, __('Limit Reached', 'wp-ultimo'), array('back_link' => true));
+			wp_die($upgrade_message, __('Limit Reached', 'wp-ultimo'), ['back_link' => true]);
 		}
 
 		// Check if that is more than our limit
@@ -143,7 +143,7 @@ class Post_Type_Limits {
 			$upgrade_message = __('You reached your plan\'s post limit.', 'wp-ultimo');
 
 			// translators: %s is the URL
-			wp_die($upgrade_message, __('Limit Reached', 'wp-ultimo'), array('back_link' => true));
+			wp_die($upgrade_message, __('Limit Reached', 'wp-ultimo'), ['back_link' => true]);
 		}
 	}
 
@@ -174,7 +174,7 @@ class Post_Type_Limits {
 			return $data;
 		}
 
-		$post_type = isset($data['post_type']) ? $data['post_type'] : 'post';
+		$post_type = $data['post_type'] ?? 'post';
 
 		$post_type_limits = wu_get_current_site()->get_limitations()->post_types;
 

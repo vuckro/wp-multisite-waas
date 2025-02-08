@@ -50,11 +50,11 @@ final class Payments_Table extends Table {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = array(
+	protected $upgrades = [
 		'2.0.1-revision.20210417' => 20_210_417,
 		'2.0.1-revision.20210607' => 20_210_607,
 		'2.0.1-revision.20230601' => 20_230_601,
-	);
+	];
 
 	/**
 	 * Payments constructor.
@@ -75,7 +75,7 @@ final class Payments_Table extends Table {
 	 * @since  2.0.0
 	 * @return void
 	 */
-	protected function set_schema() {
+	protected function set_schema(): void {
 
 		$this->schema = "id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			status varchar(20) NOT NULL DEFAULT 'pending',
@@ -162,10 +162,10 @@ final class Payments_Table extends Table {
 	 */
 	protected function __20230601(): bool {
 
-		$null_columns = array(
+		$null_columns = [
 			'date_created',
 			'date_modified',
-		);
+		];
 
 		foreach ($null_columns as $column) {
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";

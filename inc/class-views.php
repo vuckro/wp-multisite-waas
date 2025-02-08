@@ -26,9 +26,9 @@ class Views {
 	 *
 	 * @since 1.9.0
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_filter('wu_view_override', array($this, 'view_override'), 10, 3);
+		add_filter('wu_view_override', [$this, 'view_override'], 10, 3);
 	}
 
 	/**
@@ -93,6 +93,6 @@ class Views {
 
 		$found = $this->custom_locate_template("wp-ultimo/$view.php");
 
-		return $found ? $found : $original_path;
+		return $found ?: $original_path;
 	}
 }

@@ -23,7 +23,7 @@
 </p>
 
 <div class="">
-	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-1.png', 'img/hosts'); ?>">
+	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-1.webp', 'img/hosts'); ?>">
 </div>
 
 <p class="wu-text-center"><i><?php _e('Settings Page Link', 'wp-ultimo'); ?></i></p>
@@ -31,12 +31,12 @@
 <p class="wu-text-sm"><?php _e('On the new page, click in the', 'wp-ultimo'); ?><b> <?php _e('API Key', 'wp-ultimo'); ?> </b> <?php _e('menu item on the left', 'wp-ultimo'); ?>.</p>
 
 <div class="">
-	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-2.png', 'img/hosts'); ?>">
+	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-2.webp', 'img/hosts'); ?>">
 </div>
 <p class="wu-text-center"><i><?php _e('API Key page link', 'wp-ultimo'); ?></i></p>
 <p class="wu-text-sm"> <?php _e('Copy the', 'wp-ultimo'); ?> <b> <?php _e('API Key and Secret values', 'wp-ultimo'); ?> </b>, <?php _e('we will need them in the next steps', 'wp-ultimo'); ?>. <b> <?php _e('Make sure the RunCloud API toggle is turned ON', 'wp-ultimo'); ?>, </b> <?php _e('otherwise RunCloud won’t accept WP Multisite WaaS API calls', 'wp-ultimo'); ?>.</p>
 <div class="">
-	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-3.png', 'img/hosts'); ?>">
+	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-3.webp', 'img/hosts'); ?>">
 </div>
 <p class="wu-text-center"><i><?php _e('Copy the API Key and API Secret values', 'wp-ultimo'); ?></i></p>
 
@@ -45,7 +45,7 @@
 </h3>
 <p class="wu-text-sm"><?php _e('To find what are the server and app ids for your application, navigate to your web application manage page inside the RunCloud panel. Once you are there, you’ll be able to extract the values from the URL', 'wp-ultimo'); ?>.</p>
 <div class="">
-	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-4.png', 'img/hosts'); ?>">
+	<img class="wu-w-full" src="<?php echo wu_get_asset('runcloud-4.webp', 'img/hosts'); ?>">
 </div>
 <p class="wu-text-center"><i><?php _e('Server ID is the first one, the second one is App ID.', 'wp-ultimo'); ?></i></p>
 <p class="wu-text-sm"><?php _e('Save the Server and APP id values as they will be necessary in the next step', 'wp-ultimo'); ?>.</p>

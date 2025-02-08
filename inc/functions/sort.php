@@ -55,7 +55,7 @@ function wu_set_order_from_index($list, $order_key = 'order') {
 
 	foreach ($list as &$item) {
 		if (isset($item[ $order_key ]) === false) {
-			$index = $index ? $index : 1; // phpcs:ignore
+			$index = $index ?: 1; // phpcs:ignore
 
 			$item[ $order_key ] = $index * 10;
 

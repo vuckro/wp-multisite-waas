@@ -52,9 +52,9 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_payments',
-	);
+	];
 
 	/**
 	 * Register ajax forms that we use for payments.
@@ -62,17 +62,17 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Edit/Add Line Item
 		 */
 		wu_register_form(
 			'add_new_payment',
-			array(
-				'render'     => array($this, 'render_add_new_payment_modal'),
-				'handler'    => array($this, 'handle_add_new_payment_modal'),
+			[
+				'render'     => [$this, 'render_add_new_payment_modal'],
+				'handler'    => [$this, 'handle_add_new_payment_modal'],
 				'capability' => 'wu_edit_payments',
-			)
+			]
 		);
 	}
 
@@ -82,25 +82,25 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_add_new_payment_modal() {
+	public function render_add_new_payment_modal(): void {
 
-		$fields = array(
-			'products'       => array(
+		$fields = [
+			'products'       => [
 				'type'        => 'model',
 				'title'       => __('Products', 'wp-ultimo'),
 				'placeholder' => __('Search Products...', 'wp-ultimo'),
 				'desc'        => __('Each product will be added as a line item.', 'wp-ultimo'),
 				'value'       => '',
 				'tooltip'     => '',
-				'html_attr'   => array(
+				'html_attr'   => [
 					'data-model'        => 'product',
 					'data-value-field'  => 'id',
 					'data-label-field'  => 'name',
 					'data-search-field' => 'name',
 					'data-max-items'    => 10,
-				),
-			),
-			'status'         => array(
+				],
+			],
+			'status'         => [
 				'type'        => 'select',
 				'title'       => __('Status', 'wp-ultimo'),
 				'placeholder' => __('Status', 'wp-ultimo'),
@@ -108,54 +108,54 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 				'value'       => Payment_Status::COMPLETED,
 				'options'     => Payment_Status::to_array(),
 				'tooltip'     => '',
-			),
-			'membership_id'  => array(
+			],
+			'membership_id'  => [
 				'type'        => 'model',
 				'title'       => __('Membership', 'wp-ultimo'),
 				'placeholder' => __('Search Membership...', 'wp-ultimo'),
 				'desc'        => __('The membership associated with this payment.', 'wp-ultimo'),
 				'value'       => '',
 				'tooltip'     => '',
-				'html_attr'   => array(
+				'html_attr'   => [
 					'data-model'       => 'membership',
 					'data-value-field' => 'id',
 					'data-label-field' => 'reference_code',
 					'data-max-items'   => 1,
 					'data-selected'    => '',
-				),
-			),
-			'add_setup_fees' => array(
+				],
+			],
+			'add_setup_fees' => [
 				'type'  => 'toggle',
 				'title' => __('Include Setup Fees', 'wp-ultimo'),
 				'desc'  => __('Checking this box will include setup fees attached to the selected products as well.', 'wp-ultimo'),
 				'value' => 1,
-			),
-			'submit_button'  => array(
+			],
+			'submit_button'  => [
 				'type'            => 'submit',
 				'title'           => __('Add Payment', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'wu-w-full button button-primary',
 				'wrapper_classes' => 'wu-items-end',
-			),
-		);
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_payment',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_payment',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'taxable' => 0,
 							'type'    => 'product',
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -178,19 +178,19 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 		}
 
 		$cart = new \WP_Ultimo\Checkout\Cart(
-			array(
+			[
 				'products'  => explode(',', (string) wu_request('products')),
 				'cart_type' => wu_request('add_setup_fees') ? 'new' : 'renewal',
-			)
+			]
 		);
 
 		$payment_data = array_merge(
 			$cart->to_payment_data(),
-			array(
+			[
 				'status'        => wu_request('status'),
 				'membership_id' => $membership->get_id(),
 				'customer_id'   => $membership->get_customer_id(),
-			)
+			]
 		);
 
 		$payment = wu_create_payment($payment_data);
@@ -200,14 +200,14 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_network_admin_url(
 					'wp-ultimo-edit-payment',
-					array(
+					[
 						'id' => $payment->get_id(),
-					)
+					]
 				),
-			)
+			]
 		);
 	}
 
@@ -227,10 +227,10 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Payment removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Payment', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -274,14 +274,14 @@ class Payment_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'label'   => __('Add Payment', 'wp-ultimo'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_payment'),
-			),
-		);
+			],
+		];
 	}
 
 	/**

@@ -42,9 +42,9 @@ class Template_Previewer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wp_ultimo_load', array($this, 'hooks'));
+		add_action('wp_ultimo_load', [$this, 'hooks']);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Template_Previewer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {
+	public function hooks(): void {
 
 		if ($this->is_preview()) {
 			/*
@@ -65,19 +65,19 @@ class Template_Previewer {
 
 			add_filter('wu_is_toolbox_enabled', '__return_false');
 
-			add_filter('home_url', array($this, 'append_preview_parameter'), 9999, 4);
+			add_filter('home_url', [$this, 'append_preview_parameter'], 9999, 4);
 
-			add_action('send_headers', array($this, 'send_cross_origin_headers'), 1000);
+			add_action('send_headers', [$this, 'send_cross_origin_headers'], 1000);
 
 			return;
 		}
 
 		if ($this->is_template_previewer()) {
-			add_action('init', array($this, 'template_previewer'));
+			add_action('init', [$this, 'template_previewer']);
 
-			add_action('wp_enqueue_scripts', array($this, 'register_scripts'));
+			add_action('wp_enqueue_scripts', [$this, 'register_scripts']);
 
-			add_action('wp_print_styles', array($this, 'remove_unnecessary_styles'), 0);
+			add_action('wp_print_styles', [$this, 'remove_unnecessary_styles'], 0);
 
 			/**
 			 * Runs when inside the template previewer context.
@@ -95,7 +95,7 @@ class Template_Previewer {
 	 * @since 2.0.9
 	 * @return void
 	 */
-	public function send_cross_origin_headers() {
+	public function send_cross_origin_headers(): void {
 
 		global $current_site;
 
@@ -112,7 +112,7 @@ class Template_Previewer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		global $current_site;
 
@@ -122,31 +122,31 @@ class Template_Previewer {
 		$button_bg_color  = wu_color($settings['button_bg_color']);
 		$button_bg_darker = wu_color($button_bg_color->darken(4));
 
-		wp_register_script('wu-template-previewer', wu_get_asset('template-previewer.js', 'js'), array(), wu_get_version());
+		wp_register_script('wu-template-previewer', wu_get_asset('template-previewer.js', 'js'), [], wu_get_version());
 
 		wp_localize_script(
 			'wu-template-previewer',
 			'wu_template_previewer',
-			array(
+			[
 				'domain'           => str_replace('www.', '', (string) $current_site->domain),
 				'current_template' => wu_request($this->get_preview_parameter(), false),
 				'current_url'      => wu_get_current_url(),
 				'query_parameter'  => $this->get_preview_parameter(),
-			)
+			]
 		);
 
 		wp_enqueue_script('wu-template-previewer');
 
-		wp_enqueue_style('wu-template-previewer', wu_get_asset('template-previewer.css', 'css'), array(), wu_get_version());
+		wp_enqueue_style('wu-template-previewer', wu_get_asset('template-previewer.css', 'css'), [], wu_get_version());
 
 		wp_add_inline_style(
 			'wu-template-previewer',
 			wu_get_template_contents(
 				'dynamic-styles/template-previewer',
-				array(
+				[
 					'bg_color'        => $bg_color,
 					'button_bg_color' => $button_bg_color,
-				)
+				]
 			)
 		);
 
@@ -159,15 +159,15 @@ class Template_Previewer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function remove_unnecessary_styles() {
+	public function remove_unnecessary_styles(): void {
 
 		global $wp_styles;
 
-		$wp_styles->queue = array(
+		$wp_styles->queue = [
 			'wu-admin',
 			'wu-template-previewer',
 			'dashicons',
-		);
+		];
 	}
 
 	/**
@@ -184,11 +184,11 @@ class Template_Previewer {
 	 */
 	public function append_preview_parameter($url, $path, $orig_scheme, $blog_id) {
 
-		$allowed_schemes = array(
+		$allowed_schemes = [
 			null,
 			'http',
 			'https',
-		);
+		];
 
 		if (in_array($orig_scheme, $allowed_schemes, true) === false) {
 			return $url;
@@ -211,9 +211,9 @@ class Template_Previewer {
 	 */
 	public function get_preview_url($site_id) {
 
-		$args = array(
+		$args = [
 			$this->get_preview_parameter() => $site_id,
-		);
+		];
 
 		if (wu_request('open')) {
 			$args['open'] = 1;
@@ -228,7 +228,7 @@ class Template_Previewer {
 	 * @since 1.5.5
 	 * @return void
 	 */
-	public function template_previewer() {
+	public function template_previewer(): void {
 
 		global $current_site;
 
@@ -243,18 +243,18 @@ class Template_Previewer {
 			wp_die(__('This template is not available', 'wp-ultimo'));
 		}
 
-		$categories = array();
+		$categories = [];
 
 		$settings = $this->get_settings();
 
-		$render_parameters = array(
+		$render_parameters = [
 			'current_site'      => $current_site,
 			'categories'        => $categories,
 			'selected_template' => $selected_template,
 			'tp'                => $this,
-		);
+		];
 
-		$products_ids = isset($_COOKIE['wu_selected_products']) ? explode(',', (string) $_COOKIE['wu_selected_products']) : array();
+		$products_ids = isset($_COOKIE['wu_selected_products']) ? explode(',', (string) $_COOKIE['wu_selected_products']) : [];
 
 		$products = array_map('wu_get_product', $products_ids);
 
@@ -264,9 +264,9 @@ class Template_Previewer {
 		if ( ! empty($products)) {
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
-			list($plan, $additional_products) = wu_segregate_products($products);
+			[$plan, $additional_products] = wu_segregate_products($products);
 
-			$products = array_merge(array($plan), $additional_products);
+			$products = array_merge([$plan], $additional_products);
 
 			foreach ($products as $product) {
 				$limits = $limits->merge($product->get_limitations());
@@ -356,7 +356,7 @@ class Template_Previewer {
 		$initial_pagenow    = $GLOBALS['pagenow'] ?? '';
 		$GLOBALS['pagenow'] = '';
 
-		$default_settings = array(
+		$default_settings = [
 			'bg_color'                    => '#f9f9f9',
 			'button_bg_color'             => '#00a1ff',
 			'logo_url'                    => wu_get_network_logo(),
@@ -366,9 +366,9 @@ class Template_Previewer {
 			'use_custom_logo'             => false,
 			'custom_logo'                 => false,
 			'enabled'                     => true,
-		);
+		];
 
-		$saved_settings = wu_get_option(self::KEY, array());
+		$saved_settings = wu_get_option(self::KEY, []);
 
 		$default_settings = array_merge($default_settings, $saved_settings);
 

@@ -60,14 +60,14 @@ function wu_get_membership_by_hash($hash) {
  * @param array $query Query arguments.
  * @return Membership[]
  */
-function wu_get_memberships($query = array()) {
+function wu_get_memberships($query = []) {
 
 	if ( ! empty($query['search'])) {
 		$customer_ids = wu_get_customers(
-			array(
+			[
 				'search' => $query['search'],
 				'fields' => 'ids',
-			)
+			]
 		);
 
 		if ( ! empty($customer_ids)) {
@@ -93,7 +93,7 @@ function wu_create_membership($membership_data) {
 	* Shortcode atts clean the array from not-allowed keys, so we don't need to worry much.
 	*/
 	$membership_data = shortcode_atts(
-		array(
+		[
 			'customer_id'             => false,
 			'user_id'                 => false,
 			'migrated_from_id'        => 0,
@@ -122,7 +122,7 @@ function wu_create_membership($membership_data) {
 			'date_modified'           => wu_get_current_time('mysql', true),
 			'date_expiration'         => wu_get_current_time('mysql', true),
 			'skip_validation'         => false,
-		),
+		],
 		$membership_data
 	);
 
@@ -184,16 +184,16 @@ function wu_get_membership_customers($product_id) {
  * @param boolean $amount The amount. Increases accuracy.
  * @return \WP_Ultimo\Models\Membership|false
  */
-function wu_get_membership_by_customer_gateway_id($customer_gateway_id, $allowed_gateways = array(), $amount = false) {
+function wu_get_membership_by_customer_gateway_id($customer_gateway_id, $allowed_gateways = [], $amount = false) {
 
-	$search_data = array(
+	$search_data = [
 		'gateway__in'             => $allowed_gateways,
 		'number'                  => 1,
-		'gateway_customer_id__in' => array($customer_gateway_id),
-		'status__in'              => array('pending'),
+		'gateway_customer_id__in' => [$customer_gateway_id],
+		'status__in'              => ['pending'],
 		'orderby'                 => 'id',
 		'order'                   => 'DESC',
-	);
+	];
 
 	if ( ! empty($amount)) {
 		$search_data['initial_amount'] = $amount;
@@ -222,13 +222,13 @@ function wu_get_membership_product_price($membership, $product_id, $quantity, $o
 
 	// Create a Cart with this product
 	$cart = new Cart(
-		array(
+		[
 			'duration'      => $membership->get_duration(),
 			'duration_unit' => $membership->get_duration_unit(),
 			'country'       => $address->billing_country,
 			'state'         => $address->billing_state,
 			'city'          => $address->billing_city,
-		)
+		]
 	);
 
 	$discount_code = $membership->get_discount_code();
@@ -245,11 +245,11 @@ function wu_get_membership_product_price($membership, $product_id, $quantity, $o
 
 	$payment_data = array_merge(
 		$cart->to_payment_data(),
-		array(
+		[
 			'customer_id'   => $membership->get_customer_id(),
 			'membership_id' => $membership->get_id(),
 			'gateway'       => $membership->get_gateway(),
-		)
+		]
 	);
 
 	// create a temporary payment to see the price.
@@ -301,11 +301,11 @@ function wu_membership_create_new_payment($membership, $should_cancel_pending_pa
 
 	$payment_data = array_merge(
 		$cart->to_payment_data(),
-		array(
+		[
 			'customer_id'   => $membership->get_customer_id(),
 			'membership_id' => $membership->get_id(),
 			'gateway'       => $membership->get_gateway(),
-		)
+		]
 	);
 
 	// We will save the payment after we recalculate the totals.
@@ -347,13 +347,13 @@ function wu_get_membership_new_cart($membership) {
 	$address = $membership->get_billing_address();
 
 	$cart = new Cart(
-		array(
+		[
 			'duration'      => $membership->get_duration(),
 			'duration_unit' => $membership->get_duration_unit(),
 			'country'       => $address->billing_country,
 			'state'         => $address->billing_state,
 			'city'          => $address->billing_city,
-		)
+		]
 	);
 
 	$discount_code = $membership->get_discount_code();
@@ -371,7 +371,7 @@ function wu_get_membership_new_cart($membership) {
 	if (round(abs($difference), wu_currency_decimal_filter()) > 0) {
 		$type_translate = $difference < 0 ? __('credit', 'wp-ultimo') : __('debit', 'wp-ultimo');
 
-		$line_item_params = array(
+		$line_item_params = [
 			'hash'          => 'ADJUSTMENT',
 			'type'          => $difference < 0 ? 'credit' : 'fee',
 			// translators: %s is the type of adjustment (credit or debit).
@@ -384,7 +384,7 @@ function wu_get_membership_new_cart($membership) {
 			'quantity'      => 1,
 			'duration'      => $membership->get_duration(),
 			'duration_unit' => $membership->get_duration_unit(),
-		);
+		];
 
 		$adjustment_line_item = new \WP_Ultimo\Checkout\Line_Item($line_item_params);
 
@@ -398,7 +398,7 @@ function wu_get_membership_new_cart($membership) {
 		$difference     = $membership->get_initial_amount() - $cart->get_total();
 		$type_translate = $difference < 0 ? __('credit', 'wp-ultimo') : __('debit', 'wp-ultimo');
 
-		$line_item_params = array(
+		$line_item_params = [
 			'hash'         => 'INITADJUSTMENT',
 			'type'         => $difference < 0 ? 'credit' : 'fee',
 			// translators: %s is the type of adjustment (credit or debit).
@@ -409,7 +409,7 @@ function wu_get_membership_new_cart($membership) {
 			'taxable'      => false,
 			'recurring'    => false,
 			'quantity'     => 1,
-		);
+		];
 
 		$adjustment_line_item = new \WP_Ultimo\Checkout\Line_Item($line_item_params);
 
@@ -440,9 +440,9 @@ function wu_get_membership_update_url($membership) {
 
 	if ($url) {
 		return add_query_arg(
-			array(
+			[
 				'membership' => $membership_hash,
-			),
+			],
 			$url
 		);
 	}
@@ -455,10 +455,10 @@ function wu_get_membership_update_url($membership) {
 
 	if (count($sites) > 0) {
 		return add_query_arg(
-			array(
+			[
 				'page'       => 'wu-checkout',
 				'membership' => $membership_hash,
-			),
+			],
 			get_admin_url($sites[0]->get_id())
 		);
 	}
@@ -467,10 +467,10 @@ function wu_get_membership_update_url($membership) {
 	$url = $checkout_pages->get_page_url('register');
 
 	return add_query_arg(
-		array(
+		[
 			'membership' => $membership_hash,
 			'wu_form'    => 'wu-checkout',
-		),
+		],
 		$url
 	);
 }

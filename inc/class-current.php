@@ -75,21 +75,21 @@ class Current {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		/*
 		 * Add rewrite rules
 		 */
-		add_action('init', array($this, 'add_rewrite_rules'));
-		add_filter('query_vars', array($this, 'add_query_vars'));
+		add_action('init', [$this, 'add_rewrite_rules']);
+		add_filter('query_vars', [$this, 'add_query_vars']);
 
-		add_action('wu_after_save_settings', array($this, 'flush_rewrite_rules_on_update'));
-		add_action('wu_core_update', array($this, 'flush_rewrite_rules_on_update'));
+		add_action('wu_after_save_settings', [$this, 'flush_rewrite_rules_on_update']);
+		add_action('wu_core_update', [$this, 'flush_rewrite_rules_on_update']);
 
 		/*
 		 * Instantiate the currents.
 		 */
-		add_action('init', array($this, 'load_currents'));
-		add_action('wp', array($this, 'load_currents'));
+		add_action('init', [$this, 'load_currents']);
+		add_action('wp', [$this, 'load_currents']);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Current {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function flush_rewrite_rules_on_update() {
+	public function flush_rewrite_rules_on_update(): void {
 
 		flush_rewrite_rules();
 	}
@@ -111,7 +111,7 @@ class Current {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_rewrite_rules() {
+	public function add_rewrite_rules(): void {
 
 		$site_url_param = self::param_key('site');
 
@@ -159,11 +159,11 @@ class Current {
 	 */
 	public static function param_key($type = 'site') {
 
-		$params = array(
+		$params = [
 			'site'       => apply_filters('wu_current_get_site_param', 'site'),
 			'customer'   => apply_filters('wu_current_get_customer_param', 'customer'),
 			'membership' => apply_filters('wu_current_get_membership_param', 'membership'),
-		);
+		];
 
 		return wu_get_isset($params, $type, $type);
 	}
@@ -190,7 +190,7 @@ class Current {
 			/*
 			 * Check if the current URL already has a site parameter and remove it.
 			 */
-			if (strpos($current_url, '/' . $url_param . '/') !== false) {
+			if (str_contains($current_url, '/' . $url_param . '/')) {
 				$current_url = preg_replace('/\/' . $url_param . '\/(.+)/', '/', $current_url);
 			}
 
@@ -220,7 +220,7 @@ class Current {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_currents() {
+	public function load_currents(): void {
 
 		$site = false;
 
@@ -316,7 +316,7 @@ class Current {
 	 * @param \WP_Ultimo\Models\Site $site The current site instance.
 	 * @return void
 	 */
-	public function set_site($site) {
+	public function set_site($site): void {
 
 		/**
 		 * Allow developers to modify the default behavior and set
@@ -362,7 +362,7 @@ class Current {
 	 * @param \WP_Ultimo\Models\Customer $customer The current customer instance.
 	 * @return void
 	 */
-	public function set_customer($customer) {
+	public function set_customer($customer): void {
 
 		/**
 		 * Allow developers to modify the default behavior and set
@@ -397,7 +397,7 @@ class Current {
 	 * @param \WP_Ultimo\Models\Membership $membership The current membership instance.
 	 * @return void
 	 */
-	public function set_membership($membership) {
+	public function set_membership($membership): void {
 
 		/**
 		 * Allow developers to modify the default behavior and set

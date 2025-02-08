@@ -77,11 +77,11 @@ class Country_IN extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'IN',
 		'currency'     => 'INR',
 		'phone_code'   => 91,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -110,7 +110,7 @@ class Country_IN extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AN' => __('Andaman and Nicobar Islands', 'wp-ultimo'),
 			'AP' => __('Andhra Pradesh', 'wp-ultimo'),
 			'AR' => __('Arunachal Pradesh', 'wp-ultimo'),
@@ -147,6 +147,6 @@ class Country_IN extends Country {
 			'UP' => __('Uttar Pradesh', 'wp-ultimo'),
 			'UT' => __('Uttarakhand', 'wp-ultimo'),
 			'WB' => __('West Bengal', 'wp-ultimo'),
-		);
+		];
 	}
 }

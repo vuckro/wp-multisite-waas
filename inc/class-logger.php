@@ -51,7 +51,7 @@ class Logger extends AbstractLogger {
 	 * @param string|\WP_Error $message Log message to write.
 	 * @param string           $log_level Log level to write.
 	 */
-	public static function add($handle, $message, $log_level = LogLevel::INFO) {
+	public static function add($handle, $message, $log_level = LogLevel::INFO): void {
 
 		$allowed_log_level = wu_get_setting('error_logging_level', 'default');
 
@@ -67,7 +67,7 @@ class Logger extends AbstractLogger {
 			 */
 			$reporting_level = error_reporting();
 
-			$psr_log_levels = array(
+			$psr_log_levels = [
 				E_ERROR             => LogLevel::ERROR,
 				E_WARNING           => LogLevel::WARNING,
 				E_PARSE             => LogLevel::ERROR,
@@ -83,9 +83,9 @@ class Logger extends AbstractLogger {
 				E_RECOVERABLE_ERROR => LogLevel::ERROR,
 				E_DEPRECATED        => LogLevel::NOTICE,
 				E_USER_DEPRECATED   => LogLevel::NOTICE,
-			);
+			];
 
-			$current_log_levels = array();
+			$current_log_levels = [];
 
 			foreach ($psr_log_levels as $php_level => $psr_level) {
 				if ($reporting_level & $php_level) {
@@ -127,7 +127,7 @@ class Logger extends AbstractLogger {
 		$file = self::get_logs_folder() . "/$handle.log";
 
 		if ( ! file_exists($file)) {
-			return array();
+			return [];
 		}
 
 		// read file
@@ -150,7 +150,7 @@ class Logger extends AbstractLogger {
 	 *
 	 * @param mixed $handle Name of the log file to clear.
 	 */
-	public static function clear($handle) {
+	public static function clear($handle): void {
 
 		$file = self::get_logs_folder() . "/$handle.log";
 
@@ -195,7 +195,7 @@ class Logger extends AbstractLogger {
 	 *
 	 * @param string $log_file The log file path.
 	 */
-	public function set_log_file($log_file) {
+	public function set_log_file($log_file): void {
 
 		$this->log_file = $log_file;
 	}
@@ -211,7 +211,7 @@ class Logger extends AbstractLogger {
 	 *
 	 * @return void
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 
 		if ( ! $this->is_valid_log_level($level) ) {
 			return;
@@ -231,7 +231,7 @@ class Logger extends AbstractLogger {
 	 */
 	protected function is_valid_log_level($level): bool {
 
-		$valid_log_levels = array(
+		$valid_log_levels = [
 			LogLevel::EMERGENCY,
 			LogLevel::ALERT,
 			LogLevel::CRITICAL,
@@ -240,7 +240,7 @@ class Logger extends AbstractLogger {
 			LogLevel::NOTICE,
 			LogLevel::INFO,
 			LogLevel::DEBUG,
-		);
+		];
 
 		return in_array($level, $valid_log_levels, true);
 	}
@@ -255,7 +255,7 @@ class Logger extends AbstractLogger {
 	 * @param array  $context The context of the message.
 	 * @return string
 	 */
-	protected function format_message($level, $message, $context = array()) {
+	protected function format_message($level, $message, $context = []) {
 
 		$date = new \DateTime();
 

@@ -53,10 +53,10 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
 		'no-instructions',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -64,11 +64,11 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WU_CPANEL_USERNAME',
 		'WU_CPANEL_PASSWORD',
 		'WU_CPANEL_HOST',
-	);
+	];
 
 	/**
 	 * Constants that are optional on wp-config.php.
@@ -76,10 +76,10 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $optional_constants = array(
+	protected $optional_constants = [
 		'WU_CPANEL_PORT',
 		'WU_CPANEL_ROOT_DIR',
-	);
+	];
 
 	/**
 	 * Holds the API object.
@@ -110,31 +110,31 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_fields() {
 
-		return array(
-			'WU_CPANEL_USERNAME' => array(
+		return [
+			'WU_CPANEL_USERNAME' => [
 				'title'       => __('cPanel Username', 'wp-ultimo'),
 				'placeholder' => __('e.g. username', 'wp-ultimo'),
-			),
-			'WU_CPANEL_PASSWORD' => array(
+			],
+			'WU_CPANEL_PASSWORD' => [
 				'type'        => 'password',
 				'title'       => __('cPanel Password', 'wp-ultimo'),
 				'placeholder' => __('password', 'wp-ultimo'),
-			),
-			'WU_CPANEL_HOST'     => array(
+			],
+			'WU_CPANEL_HOST'     => [
 				'title'       => __('cPanel Host', 'wp-ultimo'),
 				'placeholder' => __('e.g. yourdomain.com', 'wp-ultimo'),
-			),
-			'WU_CPANEL_PORT'     => array(
+			],
+			'WU_CPANEL_PORT'     => [
 				'title'       => __('cPanel Port', 'wp-ultimo'),
 				'placeholder' => __('Defaults to 2083', 'wp-ultimo'),
 				'value'       => 2083,
-			),
-			'WU_CPANEL_ROOT_DIR' => array(
+			],
+			'WU_CPANEL_ROOT_DIR' => [
 				'title'       => __('Root Directory', 'wp-ultimo'),
 				'placeholder' => __('Defaults to /public_html', 'wp-ultimo'),
 				'value'       => '/public_html',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -145,7 +145,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		// Root Directory
 		$root_dir = defined('WU_CPANEL_ROOT_DIR') && WU_CPANEL_ROOT_DIR ? WU_CPANEL_ROOT_DIR : '/public_html';
@@ -154,11 +154,11 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 		$results = $this->load_api()->api2(
 			'AddonDomain',
 			'addaddondomain',
-			array(
+			[
 				'dir'       => $root_dir,
 				'newdomain' => $domain,
 				'subdomain' => $this->get_subdomain($domain),
-			)
+			]
 		);
 
 		$this->log_calls($results);
@@ -172,16 +172,16 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		// Send Request
 		$results = $this->load_api()->api2(
 			'AddonDomain',
 			'deladdondomain',
-			array(
+			[
 				'domain'    => $domain,
 				'subdomain' => $this->get_subdomain($domain) . '_' . $this->get_site_url(),
-			)
+			]
 		);
 
 		$this->log_calls($results);
@@ -197,7 +197,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {
+	public function on_add_subdomain($subdomain, $site_id): void {
 
 		// Root Directory
 		$root_dir = defined('WU_CPANEL_ROOT_DIR') && WU_CPANEL_ROOT_DIR ? WU_CPANEL_ROOT_DIR : '/public_html';
@@ -210,11 +210,11 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 		$results = $this->load_api()->api2(
 			'SubDomain',
 			'addsubdomain',
-			array(
+			[
 				'dir'        => $root_dir,
 				'domain'     => $subdomain,
 				'rootdomain' => $rootdomain,
-			)
+			]
 		);
 
 		// Check the results
@@ -282,7 +282,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 			return array_shift($domain_parts);
 		}
 
-		$subdomain = str_replace(array('.', '/'), '', $domain);
+		$subdomain = str_replace(['.', '/'], '', $domain);
 
 		return $subdomain;
 	}
@@ -333,9 +333,9 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
-		$results = $this->load_api()->api2('Cron', 'fetchcron', array());
+		$results = $this->load_api()->api2('Cron', 'fetchcron', []);
 
 		$this->log_calls($results);
 
@@ -356,12 +356,12 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_explainer_lines() {
 
-		$explainer_lines = array(
-			'will'     => array(
+		$explainer_lines = [
+			'will'     => [
 				'send_domains' => __('Add a new Addon Domain on cPanel whenever a new domain mapping gets created on your network', 'wp-ultimo'),
-			),
-			'will_not' => array(),
-		);
+			],
+			'will_not' => [],
+		];
 
 		if (is_subdomain_install()) {
 			$explainer_lines['will']['send_sub_domains'] = __('Add a new SubDomain on cPanel whenever a new site gets created on your network', 'wp-ultimo');

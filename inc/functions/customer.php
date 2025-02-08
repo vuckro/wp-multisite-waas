@@ -57,16 +57,16 @@ function wu_get_customer_by_hash($hash) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Customer[]
  */
-function wu_get_customers($query = array()) {
+function wu_get_customers($query = []) {
 
 	if ( ! empty($query['search'])) {
 		$user_ids = get_users(
-			array(
+			[
 				'blog_id' => 0,
 				'number'  => -1,
 				'search'  => '*' . $query['search'] . '*',
 				'fields'  => 'ids',
-			)
+			]
 		);
 
 		if ( ! empty($user_ids)) {
@@ -120,7 +120,7 @@ function wu_create_customer($customer_data) {
 
 	$customer_data = wp_parse_args(
 		$customer_data,
-		array(
+		[
 			'user_id'            => false,
 			'email'              => false,
 			'username'           => false,
@@ -128,13 +128,13 @@ function wu_create_customer($customer_data) {
 			'vip'                => false,
 			'ip'                 => false,
 			'email_verification' => 'none',
-			'meta'               => array(),
+			'meta'               => [],
 			'date_registered'    => wu_get_current_time('mysql', true),
 			'date_modified'      => wu_get_current_time('mysql', true),
 			'last_login'         => wu_get_current_time('mysql', true),
 			'signup_form'        => 'by-admin',
-			'billing_address'    => array(),
-		)
+			'billing_address'    => [],
+		]
 	);
 
 	$user = get_user_by('email', $customer_data['email']);
@@ -166,7 +166,7 @@ function wu_create_customer($customer_data) {
 	}
 
 	$customer = new Customer(
-		array(
+		[
 			'user_id'            => $user_id,
 			'email_verification' => $customer_data['email_verification'],
 			'meta'               => $customer_data['meta'],
@@ -175,7 +175,7 @@ function wu_create_customer($customer_data) {
 			'billing_address'    => $customer_data['billing_address'],
 			'last_login'         => $customer_data['last_login'],
 			'type'               => 'customer',
-		)
+		]
 	);
 
 	$saved = $customer->save();
@@ -196,11 +196,11 @@ function wu_create_customer($customer_data) {
  */
 function wu_get_customer_meta_types($form_slugs = false) {
 
-	$meta_keys = array();
+	$meta_keys = [];
 
-	$query = array(
+	$query = [
 		'number' => 99999,
-	);
+	];
 
 	if (is_array($form_slugs)) {
 		$query['slug__in'] = (array) $form_slugs;
@@ -212,7 +212,7 @@ function wu_get_customer_meta_types($form_slugs = false) {
 		$customer_meta_fields = $form->get_all_meta_fields('customer_meta');
 
 		foreach ($customer_meta_fields as $customer_meta_field) {
-			$meta_keys[ $customer_meta_field['id'] ] = array(
+			$meta_keys[ $customer_meta_field['id'] ] = [
 				'type'        => $customer_meta_field['type'],
 				'title'       => $customer_meta_field['name'],
 				'description' => wu_get_isset($customer_meta_field, 'description', ''),
@@ -220,11 +220,11 @@ function wu_get_customer_meta_types($form_slugs = false) {
 				'default'     => wu_get_isset($customer_meta_field, 'default', ''),
 				'id'          => wu_get_isset($customer_meta_field, 'id', ''),
 				'step'        => wu_get_isset($customer_meta_field, 'step', ''),
-				'options'     => wu_get_isset($customer_meta_field, 'options', array()),
+				'options'     => wu_get_isset($customer_meta_field, 'options', []),
 				'form'        => $form->get_slug(),
 				'value'       => '',
 				'exists'      => false,
-			);
+			];
 		}
 	}
 
@@ -243,12 +243,12 @@ function wu_get_customer_meta_types($form_slugs = false) {
  */
 function wu_get_all_customer_meta($customer_id, $include_unset = true) {
 
-	$all_meta = array();
+	$all_meta = [];
 
 	$customer = wu_get_customer($customer_id);
 
 	if ($include_unset) {
-		$form_slugs = $customer ? array($customer->get_signup_form()) : false;
+		$form_slugs = $customer ? [$customer->get_signup_form()] : false;
 
 		$all_meta = array_merge($all_meta, wu_get_customer_meta_types($form_slugs));
 	}
@@ -323,16 +323,16 @@ function wu_update_customer_meta($customer_id, $key, $value, $type = null, $titl
 	}
 
 	if ($type) {
-		$custom_keys = $customer->get_meta('wu_custom_meta_keys', array());
+		$custom_keys = $customer->get_meta('wu_custom_meta_keys', []);
 
 		$custom_keys = array_merge(
 			$custom_keys,
-			array(
-				$key => array(
+			[
+				$key => [
 					'type'  => $type,
 					'title' => $title,
-				),
-			)
+				],
+			]
 		);
 
 		$customer->update_meta('wu_custom_meta_keys', $custom_keys);
@@ -358,7 +358,7 @@ function wu_delete_customer_meta($customer_id, $meta_key) {
 		return false;
 	}
 
-	$custom_keys = $customer->get_meta('wu_custom_meta_keys', array());
+	$custom_keys = $customer->get_meta('wu_custom_meta_keys', []);
 
 	if (isset($custom_keys[ $meta_key ])) {
 		unset($custom_keys[ $meta_key ]);
@@ -378,15 +378,15 @@ function wu_delete_customer_meta($customer_id, $meta_key) {
  * @param array $allowed_gateways The list of allowed gateways to search.
  * @return string
  */
-function wu_get_customer_gateway_id($customer_id, $allowed_gateways = array()) {
+function wu_get_customer_gateway_id($customer_id, $allowed_gateways = []) {
 
 	$memberships = wu_get_memberships(
-		array(
+		[
 			'customer_id'                 => absint($customer_id),
 			'gateway__in'                 => $allowed_gateways,
 			'number'                      => 1,
-			'gateway_customer_id__not_in' => array(''),
-		)
+			'gateway_customer_id__not_in' => [''],
+		]
 	);
 
 	return ! empty($memberships) ? $memberships[0]->get_gateway_customer_id() : '';
@@ -406,9 +406,9 @@ function wu_get_customer_gateway_id($customer_id, $allowed_gateways = array()) {
  * @param string $suffix Append string to username to make it unique.
  * @return string Generated username.
  */
-function wu_username_from_email($email, $new_user_args = array(), $suffix = '') {
+function wu_username_from_email($email, $new_user_args = [], $suffix = '') {
 
-	$username_parts = array();
+	$username_parts = [];
 
 	if (isset($new_user_args['first_name'])) {
 		$username_parts[] = sanitize_user($new_user_args['first_name'], true);
@@ -426,13 +426,13 @@ function wu_username_from_email($email, $new_user_args = array(), $suffix = '') 
 		$email_parts    = explode('@', $email);
 		$email_username = $email_parts[0];
 
-		$common_emails = array(
+		$common_emails = [
 			'sales',
 			'hello',
 			'mail',
 			'contact',
 			'info',
-		);
+		];
 
 		// Exclude common prefixes.
 		if (in_array($email_username, $common_emails, true)) {
@@ -450,11 +450,11 @@ function wu_username_from_email($email, $new_user_args = array(), $suffix = '') 
 		$username .= $suffix;
 	}
 
-	$illegal_logins = (array) apply_filters('illegal_user_logins', array()); // phpcs:ignore
+	$illegal_logins = (array) apply_filters('illegal_user_logins', []); // phpcs:ignore
 
 	// Stop illegal logins and generate a new random username.
 	if (in_array(strtolower($username), array_map('strtolower', $illegal_logins), true)) {
-		$new_args = array();
+		$new_args = [];
 
 		/**
 		 * Filter generated customer username.

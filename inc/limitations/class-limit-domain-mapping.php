@@ -51,7 +51,7 @@ class Limit_Domain_Mapping extends Limit {
 	 * @param array $data The module data.
 	 * @return void
 	 */
-	public function setup($data) {
+	public function setup($data): void {
 
 		parent::setup($data);
 
@@ -99,9 +99,9 @@ class Limit_Domain_Mapping extends Limit {
 	 */
 	public function get_default_permissions($type) {
 
-		return array(
+		return [
 			'behavior' => 'available',
-		);
+		];
 	}
 
 	/**
@@ -112,10 +112,10 @@ class Limit_Domain_Mapping extends Limit {
 	 */
 	public static function default_state() {
 
-		return array(
+		return [
 			'enabled' => true,
 			'limit'   => null,
 			'mode'    => 'default',
-		);
+		];
 	}
 }

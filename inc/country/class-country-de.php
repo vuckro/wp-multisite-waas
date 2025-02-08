@@ -57,11 +57,11 @@ class Country_DE extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'DE',
 		'currency'     => 'EUR',
 		'phone_code'   => 49,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -90,7 +90,7 @@ class Country_DE extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'BW' => __('Baden-Württemberg', 'wp-ultimo'),
 			'BY' => __('Bavaria', 'wp-ultimo'),
 			'BE' => __('Berlin', 'wp-ultimo'),
@@ -107,6 +107,6 @@ class Country_DE extends Country {
 			'ST' => __('Saxony-Anhalt', 'wp-ultimo'),
 			'SH' => __('Schleswig-Holstein', 'wp-ultimo'),
 			'TH' => __('Thuringia', 'wp-ultimo'),
-		);
+		];
 	}
 }

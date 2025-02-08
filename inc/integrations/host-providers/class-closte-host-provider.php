@@ -51,11 +51,11 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
 		'no-instructions',
 		'no-config',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -63,9 +63,9 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'CLOSTE_CLIENT_API_KEY',
-	);
+	];
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -88,14 +88,14 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		$this->send_closte_api_request(
 			'/adddomainalias',
-			array(
+			[
 				'domain'   => $domain,
-				'wildcard' => strncmp($domain, '*.', strlen('*.')) === 0,
-			)
+				'wildcard' => str_starts_with($domain, '*.'),
+			]
 		);
 	}
 
@@ -107,14 +107,14 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		$this->send_closte_api_request(
 			'/deletedomainalias',
-			array(
+			[
 				'domain'   => $domain,
-				'wildcard' => strncmp($domain, '*.', strlen('*.')) === 0,
-			)
+				'wildcard' => str_starts_with($domain, '*.'),
+			]
 		);
 	}
 
@@ -150,15 +150,15 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
-		$response = $this->send_closte_api_request('/adddomainalias', array());
+		$response = $this->send_closte_api_request('/adddomainalias', []);
 
 		if (wu_get_isset($response, 'error') === 'Invalid or empty domain: ') {
 			wp_send_json_success(
-				array(
+				[
 					'message' => __('Access Authorized'),
-				)
+				]
 			);
 		}
 
@@ -178,23 +178,23 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	public function send_closte_api_request($endpoint, $data) {
 
 		if (defined('CLOSTE_CLIENT_API_KEY') === false) {
-			return (object) array(
+			return (object) [
 				'success' => false,
 				'error'   => 'Closte API Key not found.',
-			);
+			];
 		}
 
-		$post_fields = array(
+		$post_fields = [
 			'blocking' => true,
 			'timeout'  => 45,
 			'method'   => 'POST',
 			'body'     => array_merge(
-				array(
+				[
 					'apikey' => CLOSTE_CLIENT_API_KEY,
-				),
+				],
 				$data
 			),
-		);
+		];
 
 		$response = wp_remote_post('https://app.closte.com/api/client' . $endpoint, $post_fields);
 
@@ -207,10 +207,10 @@ class Closte_Host_Provider extends Base_Host_Provider {
 				return $body;
 			}
 
-			return (object) array(
+			return (object) [
 				'success' => false,
 				'error'   => 'unknown',
-			);
+			];
 		}
 
 		return $response;

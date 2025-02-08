@@ -93,11 +93,11 @@ class Country_US extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'US',
 		'currency'     => 'USD',
 		'phone_code'   => 1,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -126,7 +126,7 @@ class Country_US extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'AL'    => __('Alabama', 'wp-ultimo'),
 			'AK'    => __('Alaska', 'wp-ultimo'),
 			'AS'    => __('American Samoa', 'wp-ultimo'),
@@ -193,6 +193,6 @@ class Country_US extends Country {
 			'WV'    => __('West Virginia', 'wp-ultimo'),
 			'WI'    => __('Wisconsin', 'wp-ultimo'),
 			'WY'    => __('Wyoming', 'wp-ultimo'),
-		);
+		];
 	}
 }

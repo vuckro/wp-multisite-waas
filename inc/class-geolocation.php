@@ -45,20 +45,20 @@ class Geolocation {
     /**
      * API endpoints for looking up user IP address.
      */
-    private static array $ip_lookup_apis = array(
+    private static array $ip_lookup_apis = [
         'ipify'             => 'http://api.ipify.org/',
         'ipecho'            => 'http://ipecho.net/plain',
         'ident'             => 'http://ident.me',
         'whatismyipaddress' => 'http://bot.whatismyipaddress.com',
-    );
+    ];
 
     /**
      * API endpoints for geolocating an IP address
      */
-    private static array $geoip_apis = array(
+    private static array $geoip_apis = [
         'ipinfo.io'  => 'https://ipinfo.io/%s/json',
         'ip-api.com' => 'http://ip-api.com/json/%s',
-    );
+    ];
 
     /**
      * Check if server supports MaxMind GeoLite2 Reader.
@@ -76,7 +76,7 @@ class Geolocation {
      * @param string $current_settings Current geolocation settings.
      */
     private static function is_geolocation_enabled($current_settings ): bool {
-        return in_array( $current_settings, array( 'geolocation', 'geolocation_ajax' ), true );
+        return in_array( $current_settings, [ 'geolocation', 'geolocation_ajax' ], true );
     }
 
 
@@ -99,17 +99,17 @@ class Geolocation {
     /**
      * Hook in geolocation functionality.
      */
-    public static function init() {
+    public static function init(): void {
         if ( self::supports_geolite2() ) {
             // Only download the database from MaxMind if the geolocation function is enabled, or a plugin specifically requests it.
             if ( self::is_geolocation_enabled( get_option( 'wu_default_customer_address' ) ) || apply_filters( 'wu_geolocation_update_database_periodically', false ) ) {
-                add_action( 'wu_geoip_updater', array( __CLASS__, 'update_database' ) );
+                add_action( 'wu_geoip_updater', [ self::class, 'update_database' ] );
             }
 
             // Trigger database update when settings are changed to enable geolocation.
-            add_filter( 'pre_update_option_wu_default_customer_address', array( __CLASS__, 'maybe_update_database' ), 10, 2 );
+            add_filter( 'pre_update_option_wu_default_customer_address', [ self::class, 'maybe_update_database' ], 10, 2 );
         } else {
-            add_filter( 'pre_option_wu_default_customer_address', array( __CLASS__, 'disable_geolocation_on_legacy_php' ) );
+            add_filter( 'pre_option_wu_default_customer_address', [ self::class, 'disable_geolocation_on_legacy_php' ] );
         }
     }
 
@@ -171,7 +171,7 @@ class Geolocation {
 
             foreach ( $ip_lookup_services_keys as $service_name ) {
                 $service_endpoint = $ip_lookup_services[ $service_name ];
-                $response         = wp_safe_remote_get( $service_endpoint, array( 'timeout' => 2 ) );
+                $response         = wp_safe_remote_get( $service_endpoint, [ 'timeout' => 2 ] );
 
                 if ( !is_wp_error( $response ) && rest_is_ip_address( $response['body'] ) ) {
                     $external_ip_address = apply_filters( 'wu_geolocation_ip_lookup_api_response', ( $response['body'] ), $service_name );
@@ -209,7 +209,7 @@ class Geolocation {
                 // VIP Go has a variable available also.
                 $country_code = strtoupper( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_COUNTRY_CODE'] ) ) ); // WPCS: input var ok, CSRF ok.
             } else {
-                $ip_address = $ip_address ? $ip_address : self::get_ip_address();
+                $ip_address = $ip_address ?: self::get_ip_address();
                 $database   = self::get_local_database_path();
 
                 if ( self::supports_geolite2() && file_exists( $database ) ) {
@@ -227,11 +227,11 @@ class Geolocation {
             }
         }
 
-        return array(
+        return [
             'ip'      => $ip_address,
             'country' => $country_code,
             'state'   => '',
-        );
+        ];
     }
 
 
@@ -251,11 +251,11 @@ class Geolocation {
      *
      * Extract files with PharData. Tool built into PHP since 5.3.
      */
-    public static function update_database() {
+    public static function update_database(): void {
         $logger = wc_get_logger();
 
         if ( !self::supports_geolite2() ) {
-            $logger->notice( 'Requires PHP 5.4 to be able to download MaxMind GeoLite2 database', array( 'source' => 'geolocation' ) );
+            $logger->notice( 'Requires PHP 5.4 to be able to download MaxMind GeoLite2 database', [ 'source' => 'geolocation' ] );
             return;
         }
 
@@ -283,7 +283,7 @@ class Geolocation {
                 $wp_filesystem->move( trailingslashit( dirname( $tmp_database_path ) ) . $file_path, $target_database_path, true );
                 $wp_filesystem->delete( trailingslashit( dirname( $tmp_database_path ) ) . $file->current()->getFileName() );
             } catch ( Exception $e ) {
-                $logger->notice( $e->getMessage(), array( 'source' => 'geolocation' ) );
+                $logger->notice( $e->getMessage(), [ 'source' => 'geolocation' ] );
 
                 // Reschedule download of DB.
                 wp_clear_scheduled_hook( 'wu_geoip_updater' );
@@ -294,7 +294,7 @@ class Geolocation {
         } else {
             $logger->notice(
                 'Unable to download GeoIP Database: ' . $tmp_database_path->get_error_message(),
-                array( 'source' => 'geolocation' )
+                [ 'source' => 'geolocation' ]
             );
         }
     }
@@ -346,17 +346,17 @@ class Geolocation {
 
             foreach ( $geoip_services_keys as $service_name ) {
                 $service_endpoint = $geoip_services[ $service_name ];
-                $response         = wp_safe_remote_get( sprintf( $service_endpoint, $ip_address ), array( 'timeout' => 2 ) );
+                $response         = wp_safe_remote_get( sprintf( $service_endpoint, $ip_address ), [ 'timeout' => 2 ] );
 
                 if ( !is_wp_error( $response ) && $response['body'] ) {
                     switch ( $service_name ) {
                         case 'ipinfo.io':
                             $data         = json_decode( $response['body'] );
-                            $country_code = isset( $data->country ) ? $data->country : '';
+                            $country_code = $data->country ?? '';
                             break;
                         case 'ip-api.com':
                             $data         = json_decode( $response['body'] );
-                            $country_code = isset( $data->countryCode ) ? $data->countryCode : ''; // @codingStandardsIgnoreLine
+                            $country_code = $data->countryCode ?? ''; // @codingStandardsIgnoreLine
                             break;
                         default:
                             $country_code = apply_filters( 'wu_geolocation_geoip_response_' . $service_name, '', $response['body'] );

@@ -28,9 +28,9 @@ class Posts_Schema extends Schema {
 	 * @access public
 	 * @var array
 	 */
-	public $columns = array(
+	public $columns = [
 
-		array(
+		[
 			'name'     => 'id',
 			'type'     => 'bigint',
 			'length'   => '20',
@@ -38,51 +38,51 @@ class Posts_Schema extends Schema {
 			'extra'    => 'auto_increment',
 			'primary'  => true,
 			'sortable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'     => 'author_id',
 			'type'     => 'bigint',
 			'length'   => '20',
 			'unsigned' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'type',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'slug',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'title',
 			'type'       => 'varchar',
 			'searchable' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'content',
 			'type'       => 'longtext',
 			'default'    => '',
 			'searchable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'excerpt',
 			'type'       => 'longtext',
 			'default'    => '',
 			'searchable' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'list_order',
 			'type'       => 'tinyint',
 			'length'     => '4',
@@ -90,17 +90,17 @@ class Posts_Schema extends Schema {
 			'default'    => 10,
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'status',
 			'type'       => 'varchar', // An "enum" here would possibly limit custom post status.
 			'default'    => 'draft',
 			'transition' => true,
 			'sortable'   => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_created',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -108,9 +108,9 @@ class Posts_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-		array(
+		[
 			'name'       => 'date_modified',
 			'type'       => 'datetime',
 			'default'    => null,
@@ -118,7 +118,7 @@ class Posts_Schema extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 			'allow_null' => true,
-		),
+		],
 
-	);
+	];
 }

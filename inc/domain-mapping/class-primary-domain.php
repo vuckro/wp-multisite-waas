@@ -29,9 +29,9 @@ class Primary_Domain {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_domain_mapping_load', array($this, 'add_hooks'), -20);
+		add_action('wu_domain_mapping_load', [$this, 'add_hooks'], -20);
 	}
 
 	/**
@@ -40,13 +40,13 @@ class Primary_Domain {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_hooks() {
+	public function add_hooks(): void {
 
-		add_action('template_redirect', array($this, 'redirect_to_primary_domain'));
+		add_action('template_redirect', [$this, 'redirect_to_primary_domain']);
 
-		add_action('admin_init', array($this, 'maybe_redirect_to_mapped_or_network_domain'));
+		add_action('admin_init', [$this, 'maybe_redirect_to_mapped_or_network_domain']);
 
-		add_action('login_init', array($this, 'maybe_redirect_to_mapped_or_network_domain'));
+		add_action('login_init', [$this, 'maybe_redirect_to_mapped_or_network_domain']);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Primary_Domain {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function redirect_to_primary_domain() {
+	public function redirect_to_primary_domain(): void {
 
 		$should_redirect = true;
 
@@ -85,12 +85,12 @@ class Primary_Domain {
 		}
 
 		$domains = wu_get_domains(
-			array(
+			[
 				'blog_id'        => get_current_blog_id(),
 				'primary_domain' => 1,
 				'active'         => 1,
-				'domain__not_in' => array($_SERVER['HTTP_HOST']),
-			)
+				'domain__not_in' => [$_SERVER['HTTP_HOST']],
+			]
 		);
 
 		if (empty($domains)) {
@@ -116,7 +116,7 @@ class Primary_Domain {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function maybe_redirect_to_mapped_or_network_domain() {
+	public function maybe_redirect_to_mapped_or_network_domain(): void {
 
 		if ($_SERVER['REQUEST_METHOD'] !== 'GET' || wp_doing_ajax()) {
 			return;
@@ -151,7 +151,7 @@ class Primary_Domain {
 
 		$mapped_url_to_compare = $mapped_url['host'];
 
-		$query_args = array();
+		$query_args = [];
 
 		if (wu_get_isset($current_url, 'query')) {
 			wp_parse_str($current_url['query'], $query_args);

@@ -52,9 +52,9 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'network_admin_menu' => 'wu_read_events',
-	);
+	];
 
 	/**
 	 * Instantiate the necessary hooks.
@@ -62,9 +62,9 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('init', array($this, 'set_badge_count'));
+		add_action('init', [$this, 'set_badge_count']);
 	}
 
 	/**
@@ -73,11 +73,11 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		parent::page_loaded();
 
-		add_action('in_admin_header', array($this, 'count_seen_events'));
+		add_action('in_admin_header', [$this, 'count_seen_events']);
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function set_badge_count() {
+	public function set_badge_count(): void {
 
 		global $wpdb;
 
@@ -119,19 +119,19 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function count_seen_events() {
+	public function count_seen_events(): void {
 
 		$user_id = get_current_user_id();
 
 		delete_site_transient("wu_{$user_id}_unseen_events_count");
 
 		$last_event = wu_get_events(
-			array(
+			[
 				'orderby' => 'id',
 				'fields'  => 'ids',
 				'order'   => 'DESC',
 				'number'  => 1,
-			)
+			]
 		);
 
 		if ( ! empty($last_event)) {
@@ -159,10 +159,10 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Event removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Event', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -206,13 +206,13 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function action_links() {
 
-		return array(
-			array(
+		return [
+			[
 				'url'   => wu_network_admin_url('wp-ultimo-view-logs'),
 				'label' => __('View Logs'),
 				'icon'  => 'dashicons dashicons-editor-ol',
-			),
-		);
+			],
+		];
 	}
 
 	/**

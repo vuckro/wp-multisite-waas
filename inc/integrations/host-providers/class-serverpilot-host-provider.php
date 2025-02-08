@@ -52,9 +52,9 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -62,11 +62,11 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WU_SERVER_PILOT_CLIENT_ID',
 		'WU_SERVER_PILOT_API_KEY',
 		'WU_SERVER_PILOT_APP_ID',
-	);
+	];
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -89,23 +89,23 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_fields() {
 
-		return array(
-			'WU_SERVER_PILOT_CLIENT_ID' => array(
+		return [
+			'WU_SERVER_PILOT_CLIENT_ID' => [
 				'title'       => __('ServerPilot Client ID', 'wp-ultimo'),
 				'desc'        => __('Your ServerPilot Client ID.', 'wp-ultimo'),
 				'placeholder' => __('e.g. cid_lSmjevkdoSOpasYVqm', 'wp-ultimo'),
-			),
-			'WU_SERVER_PILOT_API_KEY'   => array(
+			],
+			'WU_SERVER_PILOT_API_KEY'   => [
 				'title'       => __('ServerPilot API Key', 'wp-ultimo'),
 				'desc'        => __('The API Key retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. eYP0Jo3Fzzm5SOZCi5nLR0Mki2lbYZ', 'wp-ultimo'),
-			),
-			'WU_SERVER_PILOT_APP_ID'    => array(
+			],
+			'WU_SERVER_PILOT_APP_ID'    => [
 				'title'       => __('ServerPilot App ID', 'wp-ultimo'),
 				'desc'        => __('The App ID retrieved in the previous step.', 'wp-ultimo'),
 				'placeholder' => __('e.g. 940288', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -116,16 +116,16 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_domain($domain, $site_id) {
+	public function on_add_domain($domain, $site_id): void {
 
 		$current_domain_list = $this->get_server_pilot_domains();
 
 		if ($current_domain_list && is_array($current_domain_list)) {
 			$this->send_server_pilot_api_request(
 				'',
-				array(
-					'domains' => array_merge($current_domain_list, array($domain, 'www.' . $domain)),
-				)
+				[
+					'domains' => array_merge($current_domain_list, [$domain, 'www.' . $domain]),
+				]
 			);
 
 			/**
@@ -143,7 +143,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_domain($domain, $site_id) {
+	public function on_remove_domain($domain, $site_id): void {
 
 		$current_domain_list = $this->get_server_pilot_domains();
 
@@ -156,9 +156,9 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 
 			$this->send_server_pilot_api_request(
 				'',
-				array(
+				[
 					'domains' => $current_domain_list,
-				)
+				]
 			);
 		}
 	}
@@ -173,16 +173,16 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {
+	public function on_add_subdomain($subdomain, $site_id): void {
 
 		$current_domain_list = $this->get_server_pilot_domains();
 
 		if ($current_domain_list && is_array($current_domain_list)) {
 			$this->send_server_pilot_api_request(
 				'',
-				array(
-					'domains' => array_merge($current_domain_list, array($subdomain)),
-				)
+				[
+					'domains' => array_merge($current_domain_list, [$subdomain]),
+				]
 			);
 
 			/**
@@ -213,18 +213,18 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @param  string $method   HTTP Method: POST, GET, PUT, etc.
 	 * @return object
 	 */
-	public function send_server_pilot_api_request($endpoint, $data = array(), $method = 'POST') {
+	public function send_server_pilot_api_request($endpoint, $data = [], $method = 'POST') {
 
-		$post_fields = array(
+		$post_fields = [
 			'timeout'  => 45,
 			'blocking' => true,
 			'method'   => $method,
-			'body'     => $data ? json_encode($data) : array(),
-			'headers'  => array(
+			'body'     => $data ? json_encode($data) : [],
+			'headers'  => [
 				'Authorization' => 'Basic ' . base64_encode(WU_SERVER_PILOT_CLIENT_ID . ':' . WU_SERVER_PILOT_API_KEY),
 				'Content-Type'  => 'application/json',
-			),
-		);
+			],
+		];
 
 		$response = wp_remote_request('https://api.serverpilot.io/v1/apps/' . WU_SERVER_PILOT_APP_ID . $endpoint, $post_fields);
 
@@ -249,9 +249,9 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 
 		return $this->send_server_pilot_api_request(
 			'/ssl',
-			array(
+			[
 				'auto' => true,
-			)
+			]
 		);
 	}
 
@@ -263,7 +263,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_server_pilot_domains() {
 
-		$app_info = $this->send_server_pilot_api_request('', array(), 'GET');
+		$app_info = $this->send_server_pilot_api_request('', [], 'GET');
 
 		if (isset($app_info['data']['domains'])) {
 			return $app_info['data']['domains'];
@@ -285,9 +285,9 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
-		$response = $this->send_server_pilot_api_request('', array(), 'GET');
+		$response = $this->send_server_pilot_api_request('', [], 'GET');
 
 		if (is_wp_error($response) || wu_get_isset($response, 'error')) {
 			wp_send_json_error($response);
@@ -302,7 +302,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @since 2.1.2
 	 * @return void
 	 */
-	public function get_instructions() {
+	public function get_instructions(): void {
 
 		wu_get_template('wizards/host-integrations/serverpilot-instructions');
 	}

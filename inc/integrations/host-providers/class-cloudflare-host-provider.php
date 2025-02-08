@@ -52,9 +52,9 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @var array
 	 * @since 2.0.0
 	 */
-	protected $supports = array(
+	protected $supports = [
 		'autossl',
-	);
+	];
 
 	/**
 	 * Constants that need to be present on wp-config.php for this integration to work.
@@ -62,10 +62,10 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $constants = array(
+	protected $constants = [
 		'WU_CLOUDFLARE_API_KEY',
 		'WU_CLOUDFLARE_ZONE_ID',
-	);
+	];
 
 	/**
 	 * Add Cloudflare own DNS entries to the comparison table.
@@ -78,7 +78,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 */
 	public function add_cloudflare_dns_entries($dns_records, $domain) {
 
-		$zone_ids = array();
+		$zone_ids = [];
 
 		$default_zone_id = defined('WU_CLOUDFLARE_ZONE_ID') && WU_CLOUDFLARE_ZONE_ID ? WU_CLOUDFLARE_ZONE_ID : false;
 
@@ -89,10 +89,10 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 		$cloudflare_zones = $this->cloudflare_api_call(
 			'client/v4/zones',
 			'GET',
-			array(
+			[
 				'name'   => $domain,
 				'status' => 'active',
-			)
+			]
 		);
 
 		foreach ($cloudflare_zones->result as $zone) {
@@ -108,11 +108,11 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 			$dns_entries = $this->cloudflare_api_call(
 				"client/v4/zones/$zone_id/dns_records/",
 				'GET',
-				array(
+				[
 					'name'  => $domain,
 					'match' => 'any',
 					'type'  => 'A,AAAA,CNAME',
-				)
+				]
 			);
 
 			if ( ! empty($dns_entries->result)) {
@@ -121,13 +121,13 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 				$not_proxied_tag = sprintf('<span class="wu-bg-gray-700 wu-text-white wu-p-1 wu-rounded wu-text-3xs wu-uppercase wu-ml-2 wu-font-bold" %s>%s</span>', wu_tooltip_text(__('Not Proxied', 'wp-ultimo')), __('Cloudflare', 'wp-ultimo'));
 
 				foreach ($dns_entries->result as $entry) {
-					$dns_records[] = array(
+					$dns_records[] = [
 						'ttl'  => $entry->ttl,
 						'data' => $entry->content,
 						'type' => $entry->type,
 						'host' => $entry->name,
 						'tag'  => $entry->proxied ? $proxied_tag : $not_proxied_tag,
-					);
+					];
 				}
 			}
 		}
@@ -160,16 +160,16 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_fields() {
 
-		return array(
-			'WU_CLOUDFLARE_ZONE_ID' => array(
+		return [
+			'WU_CLOUDFLARE_ZONE_ID' => [
 				'title'       => __('Zone ID', 'wp-ultimo'),
 				'placeholder' => __('e.g. 644c7705723d62e31f700bb798219c75', 'wp-ultimo'),
-			),
-			'WU_CLOUDFLARE_API_KEY' => array(
+			],
+			'WU_CLOUDFLARE_API_KEY' => [
 				'title'       => __('API Key', 'wp-ultimo'),
 				'placeholder' => __('e.g. xKGbxxVDpdcUv9dUzRf4i4ngv0QNf1wCtbehiec_o', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function test_connection() {
+	public function test_connection(): void {
 
 		$results = $this->cloudflare_api_call('client/v4/user/tokens/verify');
 
@@ -195,9 +195,9 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	public function additional_hooks() {
+	public function additional_hooks(): void {
 
-		add_filter('wu_domain_dns_get_record', array($this, 'add_cloudflare_dns_entries'), 10, 2);
+		add_filter('wu_domain_dns_get_record', [$this, 'add_cloudflare_dns_entries'], 10, 2);
 	}
 
 	/**
@@ -230,7 +230,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {
+	public function on_add_subdomain($subdomain, $site_id): void {
 
 		global $current_site;
 
@@ -240,7 +240,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 			return;
 		}
 
-		if (strpos($subdomain, (string) $current_site->domain) === false) {
+		if (! str_contains($subdomain, (string) $current_site->domain)) {
 			return; // Not a sub-domain of the main domain.
 
 		}
@@ -253,12 +253,12 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 
 		$should_add_www = apply_filters('wu_cloudflare_should_add_www', true, $subdomain, $site_id);
 
-		$domains_to_send = array($subdomain);
+		$domains_to_send = [$subdomain];
 
 		/**
 		 * Adds the www version, if necessary.
 		 */
-		if (strncmp($subdomain, 'www.', strlen('www.')) !== 0 && $should_add_www) {
+		if (! str_starts_with($subdomain, 'www.') && $should_add_www) {
 			$domains_to_send[] = 'www.' . $subdomain;
 		}
 
@@ -267,13 +267,13 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 
 			$data = apply_filters(
 				'wu_cloudflare_on_add_domain_data',
-				array(
+				[
 					'type'    => 'CNAME',
 					'name'    => $subdomain,
 					'content' => '@',
 					'proxied' => $should_proxy,
 					'ttl'     => 1,
-				),
+				],
 				$subdomain,
 				$site_id
 			);
@@ -300,7 +300,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {
+	public function on_remove_subdomain($subdomain, $site_id): void {
 
 		global $current_site;
 
@@ -310,7 +310,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 			return;
 		}
 
-		if (strpos($subdomain, (string) $current_site->domain) === false) {
+		if (! str_contains($subdomain, (string) $current_site->domain)) {
 			return; // Not a sub-domain of the main domain.
 
 		}
@@ -326,19 +326,19 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 		/**
 		 * Created the list that we should remove.
 		 */
-		$domains_to_remove = array(
+		$domains_to_remove = [
 			$original_subdomain,
 			'www.' . $original_subdomain,
-		);
+		];
 
 		foreach ($domains_to_remove as $original_subdomain) {
 			$dns_entries = $this->cloudflare_api_call(
 				"client/v4/zones/$zone_id/dns_records/",
 				'GET',
-				array(
+				[
 					'name' => $original_subdomain,
 					'type' => 'CNAME',
-				)
+				]
 			);
 
 			if ( ! $dns_entries->result) {
@@ -368,7 +368,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @param array  $data The date to send.
 	 * @return object|\WP_Error
 	 */
-	protected function cloudflare_api_call($endpoint = 'client/v4/user/tokens/verify', $method = 'GET', $data = array()): object {
+	protected function cloudflare_api_call($endpoint = 'client/v4/user/tokens/verify', $method = 'GET', $data = []): object {
 
 		$api_url = 'https://api.cloudflare.com/';
 
@@ -376,15 +376,15 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 
 		$response = wp_remote_request(
 			$endpoint_url,
-			array(
+			[
 				'method'      => $method,
 				'body'        => $method === 'GET' ? $data : wp_json_encode($data),
 				'data_format' => 'body',
-				'headers'     => array(
+				'headers'     => [
 					'Authorization' => sprintf('Bearer %s', defined('WU_CLOUDFLARE_API_KEY') ? WU_CLOUDFLARE_API_KEY : ''),
 					'Content-Type'  => 'application/json',
-				),
-			)
+				],
+			]
 		);
 
 		if ( ! is_wp_error($response)) {
@@ -408,7 +408,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function get_instructions() {
+	public function get_instructions(): void {
 
 		wu_get_template('wizards/host-integrations/cloudflare-instructions');
 	}
@@ -443,10 +443,10 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_explainer_lines() {
 
-		$explainer_lines = array(
-			'will'     => array(),
-			'will_not' => array(),
-		);
+		$explainer_lines = [
+			'will'     => [],
+			'will_not' => [],
+		];
 
 		if (is_subdomain_install()) {
 			$explainer_lines['will']['send_sub_domains'] = __('Add a new proxied subdomain to the configured CloudFlare zone whenever a new site gets created', 'wp-ultimo');

@@ -121,29 +121,29 @@ class Invoices_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('Invoices', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
-		$fields['limit'] = array(
+		$fields['limit'] = [
 			'type'    => 'int',
 			'title'   => __('Limit', 'wp-ultimo'),
 			'value'   => 10,
 			'desc'    => __('Limit the number of invoices to show.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
 		return $fields;
 	}
@@ -167,13 +167,13 @@ class Invoices_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Invoices',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -192,10 +192,10 @@ class Invoices_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title' => __('Invoices', 'wp-ultimo'),
 			'limit' => 0,
-		);
+		];
 	}
 
 	/**
@@ -204,7 +204,7 @@ class Invoices_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		wp_enqueue_script('wu-ajax-list-table');
 	}
@@ -215,7 +215,7 @@ class Invoices_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function dependencies() {
+	public function dependencies(): void {
 
 		if ( ! function_exists('convert_to_screen')) {
 			require_once ABSPATH . 'wp-admin/includes/template.php';
@@ -237,7 +237,7 @@ class Invoices_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
@@ -254,7 +254,7 @@ class Invoices_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->membership = wu_mock_membership();
 	}

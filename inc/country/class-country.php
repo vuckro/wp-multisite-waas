@@ -30,7 +30,7 @@ abstract class Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array();
+	protected $attributes = [];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -98,7 +98,7 @@ abstract class Country {
 
 		$options = $this->get_states();
 
-		$placeholder_option = array();
+		$placeholder_option = [];
 
 		if ($placeholder !== false && $options) {
 			$division_name = $this->get_administrative_division_name();
@@ -121,13 +121,13 @@ abstract class Country {
 	public function get_cities($state_code = '') {
 
 		if (empty($state_code)) {
-			return array();
+			return [];
 		}
 
 		$repository_file = wu_path("inc/country/{$this->country_code}/{$state_code}.php");
 
 		if (file_exists($repository_file) === false) {
-			return array();
+			return [];
 		}
 
 		$cities = include $repository_file;
@@ -159,7 +159,7 @@ abstract class Country {
 
 		$options = $this->get_cities($state_code);
 
-		$placeholder_option = array();
+		$placeholder_option = [];
 
 		if ($placeholder !== false && $options) {
 			$placeholder_option[''] = $placeholder !== '' ? $placeholder : __('Select your city', 'wp-ultimo');
@@ -178,7 +178,7 @@ abstract class Country {
 	 */
 	protected function states() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -216,7 +216,7 @@ abstract class Country {
 	 */
 	public function get_administrative_division_name($state_code = null, $ucwords = false) {
 
-		$denominations = array(
+		$denominations = [
 			'province'             => __('province', 'wp-ultimo'),
 			'state'                => __('state', 'wp-ultimo'),
 			'territory'            => __('territory', 'wp-ultimo'),
@@ -229,7 +229,7 @@ abstract class Country {
 			'county'               => __('county', 'wp-ultimo'),
 			'division'             => __('division', 'wp-ultimo'),
 			'unknown'              => __('state / province', 'wp-ultimo'),
-		);
+		];
 
 		$name = wu_get_isset($denominations, $this->state_type, $denominations['unknown']);
 

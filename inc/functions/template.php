@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
  * @param string|false $default_view View to be used if the view passed is not found. Used as fallback.
  * @return void
  */
-function wu_get_template($view, $args = array(), $default_view = false) {
+function wu_get_template($view, $args = [], $default_view = false) {
 
 	/**
 	 * Allow plugin developers to add extra variable to the render context globally.
@@ -49,12 +49,12 @@ function wu_get_template($view, $args = array(), $default_view = false) {
 	 */
 	$replaceable_views = apply_filters(
 		'wu_view_override_replaceable_views',
-		array(
+		[
 			'signup',
 			'emails',
 			'forms',
 			'checkout',
-		)
+		]
 	);
 
 	/*
@@ -81,7 +81,7 @@ function wu_get_template($view, $args = array(), $default_view = false) {
  * @param string|false $default_view View to be used if the view passed is not found. Used as fallback.
  * @return string
  */
-function wu_get_template_contents($view, $args = array(), $default_view = false) {
+function wu_get_template_contents($view, $args = [], $default_view = false) {
 
 	ob_start();
 

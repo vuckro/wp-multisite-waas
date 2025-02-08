@@ -28,7 +28,7 @@ class User_Switching {
 	 */
 	public function __construct() {
 
-		add_action('plugins_loaded', array($this, 'register_forms'));
+		add_action('plugins_loaded', [$this, 'register_forms']);
 	}
 	/**
 	 * Check if Plugin User Switching is activated
@@ -47,13 +47,13 @@ class User_Switching {
 	 *
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 
 		wu_register_form(
 			'install_user_switching',
-			array(
-				'render' => array($this, 'render_install_user_switching'),
-			)
+			[
+				'render' => [$this, 'render_install_user_switching'],
+			]
 		);
 	}
 
@@ -64,42 +64,42 @@ class User_Switching {
 	 *
 	 * @return void
 	 */
-	public function render_install_user_switching() {
+	public function render_install_user_switching(): void {
 
-		$fields = array(
-			'title' => array(
+		$fields = [
+			'title' => [
 				'type'          => 'text-display',
 				'title'         => '',
 				'display_value' => __('This feature requires the plugin <strong>User Switching</strong> to be installed and active.', 'wp-ultimo'),
 				'tooltip'       => '',
-			),
-			'link'  => array(
+			],
+			'link'  => [
 				'type'            => 'link',
 				'display_value'   => __('Install User Switching', 'wp-ultimo'),
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end wu-text-center wu-bg-gray-100',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'href' => add_query_arg(
-						array(
+						[
 							's'    => 'user-switching',
 							'tab'  => 'search',
 							'type' => 'tag',
-						),
+						],
 						network_admin_url('plugin-install.php')
 					),
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'install_user_switching',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(),
-			)
+				'html_attr'             => [],
+			]
 		);
 
 		$form->render();

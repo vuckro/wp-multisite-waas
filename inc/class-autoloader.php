@@ -40,7 +40,7 @@ class Autoloader {
 	 * @deprecated 2.3.5
 	 * @return void
 	 */
-	public static function init() {
+	public static function init(): void {
 		// do nothing now. Composer autoloader does the work.
 	}
 

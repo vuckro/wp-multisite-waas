@@ -114,13 +114,13 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 
 		global $current_site;
 
-		return array(
+		return [
 			'auto_generate_site_url'    => false,
 			'display_url_preview'       => true,
 			'enable_domain_selection'   => false,
 			'display_field_attachments' => true,
 			'available_domains'         => $current_site->domain . PHP_EOL,
-		);
+		];
 	}
 
 	/**
@@ -131,11 +131,11 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'name',
 			'placeholder',
 			'tooltip',
-		);
+		];
 	}
 
 	/**
@@ -146,10 +146,10 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array(
+		return [
 			'id'       => 'site_url',
 			'required' => true,
-		);
+		];
 	}
 
 	/**
@@ -162,19 +162,19 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 
 		global $current_site;
 
-		return array(
-			'auto_generate_site_url'    => array(
+		return [
+			'auto_generate_site_url'    => [
 				'order'     => 12,
 				'type'      => 'toggle',
 				'title'     => __('Auto-generate', 'wp-ultimo'),
 				'desc'      => __('Check this option to auto-generate this field based on the username of the customer.', 'wp-ultimo'),
 				'tooltip'   => '',
 				'value'     => 0,
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'auto_generate_site_url',
-				),
-			),
-			'display_field_attachments' => array(
+				],
+			],
+			'display_field_attachments' => [
 				'order'             => 18,
 				'type'              => 'toggle',
 				'title'             => __('Display URL field attachments', 'wp-ultimo'),
@@ -182,14 +182,14 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'tooltip'           => '',
 				'value'             => 1,
 				'tab'               => 'content',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => '!auto_generate_site_url',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'display_field_attachments',
-				),
-			),
-			'display_url_preview'       => array(
+				],
+			],
+			'display_url_preview'       => [
 				'order'             => 19,
 				'type'              => 'toggle',
 				'title'             => __('Display URL preview block', 'wp-ultimo'),
@@ -197,14 +197,14 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'tooltip'           => '',
 				'value'             => 1,
 				'tab'               => 'content',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => '!auto_generate_site_url',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'display_url_preview',
-				),
-			),
-			'enable_domain_selection'   => array(
+				],
+			],
+			'enable_domain_selection'   => [
 				'order'             => 20,
 				'type'              => 'toggle',
 				'title'             => __('Enable Domain Selection', 'wp-ultimo'),
@@ -212,15 +212,15 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'tooltip'           => '',
 				'value'             => 0,
 				'tab'               => 'content',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => '!auto_generate_site_url',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'v-model' => 'enable_domain_selection',
 					'rows'    => 5,
-				),
-			),
-			'available_domains'         => array(
+				],
+			],
+			'available_domains'         => [
 				'order'             => 30,
 				'type'              => 'textarea',
 				'title'             => __('Available Domains', 'wp-ultimo'),
@@ -228,14 +228,14 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'desc'              => __('Enter one domain option per line.', 'wp-ultimo'),
 				'value'             => $current_site->domain . PHP_EOL,
 				'tab'               => 'content',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show' => '!auto_generate_site_url && enable_domain_selection',
-				),
-				'html_attr'         => array(
+				],
+				'html_attr'         => [
 					'rows' => 4,
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -246,10 +246,10 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	 */
 	public function get_url_preview_templates() {
 
-		$templates = array(
+		$templates = [
 			'legacy/signup/steps/step-domain-url-preview' => __('New URL Preview', 'wp-ultimo'),
 			// 'legacy/signup/steps/step-domain-url-preview' => __('Legacy Template', 'wp-ultimo'),
-		);
+		];
 
 		return apply_filters('wu_get_pricing_table_templates', $templates);
 	}
@@ -267,23 +267,23 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 		 * If we should auto-generate, add as hidden.
 		 */
 		if ($attributes['auto_generate_site_url']) {
-			return array(
-				'auto_generate_site_url' => array(
+			return [
+				'auto_generate_site_url' => [
 					'type'  => 'hidden',
 					'id'    => 'auto_generate_site_url',
 					'value' => 'username',
-				),
-				'site_url'               => array(
+				],
+				'site_url'               => [
 					'type'  => 'hidden',
 					'id'    => 'site_url',
 					'value' => uniqid(),
-				),
-			);
+				],
+			];
 		}
 
-		$checkout_fields = array();
+		$checkout_fields = [];
 
-		$checkout_fields['site_url'] = array(
+		$checkout_fields['site_url'] = [
 			'type'            => 'text',
 			'id'              => 'site_url',
 			'wrapper_classes' => 'wu-flex-grow wu-my-0',
@@ -294,40 +294,40 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 			'required'        => true,
 			'wrapper_classes' => wu_get_isset($attributes, 'wrapper_element_classes', 'wu-my-1'),
 			'classes'         => wu_get_isset($attributes, 'element_classes', ''),
-			'html_attr'       => array(
+			'html_attr'       => [
 				'autocomplete' => 'off',
 				'v-on:input'   => 'site_url = $event.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, "")',
 				'v-bind:value' => 'site_url',
-			),
-		);
+			],
+		];
 
 		if ($attributes['display_field_attachments']) {
 			$checkout_fields['site_url']['classes'] .= ' xs:wu-rounded-none';
 
 			$checkout_fields['site_url']['prefix'] = ' ';
 
-			$checkout_fields['site_url']['prefix_html_attr'] = array(
+			$checkout_fields['site_url']['prefix_html_attr'] = [
 				'class'   => 'wu-flex wu-items-center wu-px-3 wu-mt-1 sm:wu-mb-1 wu-border-box wu-font-mono wu-justify-center sm:wu-border-r-0',
 				'style'   => 'background-color: rgba(0, 0, 0, 0.008); border: 1px solid #eee; margin-right: -1px; font-size: 90%;',
 				'v-html'  => 'is_subdomain ? "https://" : "https://" + site_domain + "/"',
 				'v-cloak' => 1,
-			);
+			];
 
 			$checkout_fields['site_url']['suffix'] = ' ';
 
-			$checkout_fields['site_url']['suffix_html_attr'] = array(
+			$checkout_fields['site_url']['suffix_html_attr'] = [
 				'class'   => 'wu-flex wu-items-center wu-px-3 sm:wu-mt-1 wu-mb-1 wu-border-box wu-font-mono wu-justify-center sm:wu-border-l-0',
 				'style'   => 'background-color: rgba(0, 0, 0, 0.008); border: 1px solid #eee; margin-left: -1px; font-size: 90%;',
 				'v-html'  => '"." + site_domain',
 				'v-cloak' => 1,
 				'v-show'  => 'is_subdomain',
-			);
+			];
 		}
 
 		if ($attributes['available_domains'] && $attributes['enable_domain_selection']) {
 			$options = $this->get_domain_options($attributes['available_domains']);
 
-			$checkout_fields['site_domain'] = array(
+			$checkout_fields['site_domain'] = [
 				'name'              => __('Domain', 'wp-ultimo'),
 				'options'           => $options,
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
@@ -337,27 +337,27 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'id'                => 'site_domain',
 				'type'              => 'select',
 				'classes'           => 'input',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model' => 'site_domain',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			);
+				],
+			];
 		}
 
 		if ($attributes['display_url_preview']) {
 			$content = wu_get_template_contents('legacy/signup/steps/step-domain-url-preview');
 
-			$checkout_fields['site_url_preview'] = array(
+			$checkout_fields['site_url_preview'] = [
 				'type'              => 'note',
 				'desc'              => $content,
 				'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
 				'classes'           => wu_get_isset($attributes, 'element_classes', ''),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'style' => $this->calculate_style_attr(),
-				),
-			);
+				],
+			];
 		}
 
 		return $checkout_fields;

@@ -12,28 +12,28 @@
 
 <?php
 
-$data    = array();
+$data    = [];
 $slug    = 'signup_forms';
-$headers = array(
+$headers = [
 	__('Checkout Form', 'wp-ultimo'),
 	__('Signups', 'wp-ultimo'),
-);
+];
 
 foreach ($forms as $form) {
-	$line = array(
+	$line = [
 		$form->signup_form,
 		$form->count,
-	);
+	];
 
 	$data[] = $line;
 } // end foreach;
 
 $page->render_csv_button(
-	array(
+	[
 		'headers' => $headers,
 		'data'    => $data,
 		'slug'    => $slug,
-	)
+	]
 );
 
 ?>

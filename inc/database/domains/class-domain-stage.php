@@ -40,13 +40,13 @@ class Domain_Stage extends Enum {
 	 */
 	protected function classes() {
 
-		return array(
+		return [
 			static::FAILED           => 'wu-bg-red-200 wu-text-red-700',
 			static::CHECKING_DNS     => 'wu-bg-blue-200 wu-text-blue-700',
 			static::CHECKING_SSL     => 'wu-bg-yellow-200 wu-text-yellow-700',
 			static::DONE             => 'wu-bg-green-200 wu-text-green-700',
 			static::DONE_WITHOUT_SSL => 'wu-bg-gray-800 wu-text-white',
-		);
+		];
 	}
 
 	/**
@@ -57,12 +57,12 @@ class Domain_Stage extends Enum {
 	 */
 	protected function labels() {
 
-		return array(
+		return [
 			static::FAILED           => __('DNS Failed', 'wp-ultimo'),
 			static::CHECKING_DNS     => __('Checking DNS', 'wp-ultimo'),
 			static::CHECKING_SSL     => __('Checking SSL', 'wp-ultimo'),
 			static::DONE             => __('Ready', 'wp-ultimo'),
 			static::DONE_WITHOUT_SSL => __('Ready (without SSL)', 'wp-ultimo'),
-		);
+		];
 	}
 }

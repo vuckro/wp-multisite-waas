@@ -18,182 +18,182 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'featured_image_id'   => array(
+return [
+	'featured_image_id'   => [
 		'description' => __('The ID of the feature image of the product.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'slug'                => array(
+	],
+	'slug'                => [
 		'description' => __('The product slug. It needs to be unique and preferably make it clear what it is about. Example: my_new_product.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'name'                => array(
+	],
+	'name'                => [
 		'description' => __('Your product name, which is used as product title as well.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'description'         => array(
+	],
+	'description'         => [
 		'description' => __('A description for the product, usually a short text.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'currency'            => array(
+	],
+	'currency'            => [
 		'description' => __("The currency that this product accepts. It's a 3-letter code. E.g. 'USD'.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-	),
-	'pricing_type'        => array(
+	],
+	'pricing_type'        => [
 		'description' => __("The pricing type can be 'free', 'paid' or 'contact_us'.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-		'enum'        => array(
+		'enum'        => [
 			'free',
 			'paid',
 			'contact_us',
-		),
-	),
-	'trial_duration'      => array(
+		],
+	],
+	'trial_duration'      => [
 		'description' => __('The duration of the trial period of this product, if the product has one.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'trial_duration_unit' => array(
+	],
+	'trial_duration_unit' => [
 		'description' => __('The unit of the trial duration amount. Can be day, week, month or year.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-		'enum'        => array(
+		'enum'        => [
 			'day',
 			'week',
 			'month',
 			'year',
-		),
-	),
-	'duration'            => array(
+		],
+	],
+	'duration'            => [
 		'description' => __('Time interval between charges.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'duration_unit'       => array(
+	],
+	'duration_unit'       => [
 		'description' => __('Time interval unit between charges.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-		'enum'        => array(
+		'enum'        => [
 			'day',
 			'month',
 			'week',
 			'year',
-		),
-	),
-	'amount'              => array(
+		],
+	],
+	'amount'              => [
 		'description' => __('The value of this product. E.g. 19.99.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'setup_fee'           => array(
+	],
+	'setup_fee'           => [
 		'description' => __('The setup fee value, if the product has one. E.g. 159.99.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'active'              => array(
+	],
+	'active'              => [
 		'description' => __('Set this product as active (true), which means available to be used, or inactive (false).', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'type'                => array(
+	],
+	'type'                => [
 		'description' => __("The default product types are 'product', 'service' and 'package'. More types can be add using the product type filter.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
-		'enum'        => array(
+		'enum'        => [
 			'plan',
 			'service',
 			'package',
-		),
-	),
-	'parent_id'           => array(
+		],
+	],
+	'parent_id'           => [
 		'description' => __('The ID from another Product that this product is related to.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'recurring'           => array(
+	],
+	'recurring'           => [
 		'description' => __('Set this product as a recurring one (true), which means the customer paid a defined amount each period of time, or not recurring (false).', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'billing_cycles'      => array(
+	],
+	'billing_cycles'      => [
 		'description' => __('The number of times we should charge this product.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'date_created'        => array(
+	],
+	'date_created'        => [
 		'description' => __('Date when this was created.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'       => array(
+	],
+	'date_modified'       => [
 		'description' => __('Date when this was last modified.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'taxable'             => array(
+	],
+	'taxable'             => [
 		'description' => __('Set this product as a taxable one (true), which means tax rules are applied to, or not taxable (false).', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'tax_category'        => array(
+	],
+	'tax_category'        => [
 		'description' => __('Category of taxes applied to this product. You need to set this if taxable is set to true.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'contact_us_label'    => array(
+	],
+	'contact_us_label'    => [
 		'description' => __("If the product is the 'contact_us' type, it will need a label for the contact us button.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'contact_us_link'     => array(
+	],
+	'contact_us_link'     => [
 		'description' => __('The url where the contact us button will lead to.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'feature_list'        => array(
+	],
+	'feature_list'        => [
 		'description' => __('A list (array) of features of the product.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'customer_role'       => array(
+	],
+	'customer_role'       => [
 		'description' => __('The customer role of this product.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'available_addons'    => array(
+	],
+	'available_addons'    => [
 		'description' => __('The available addons of this product.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'group'               => array(
+	],
+	'group'               => [
 		'description' => __('The group of this product, if has any.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'legacy_options'      => array(
+	],
+	'legacy_options'      => [
 		'description' => __('If the legacy options are enabled.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'migrated_from_id'    => array(
+	],
+	'migrated_from_id'    => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'     => array(
+	],
+	'skip_validation'     => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'featured_plan'       => array(
+	],
+	'featured_plan'       => [
 		'description' => __('Feature list for pricing tables.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-);
+	],
+];

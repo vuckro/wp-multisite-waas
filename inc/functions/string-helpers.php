@@ -34,7 +34,7 @@ function wu_string_to_bool($string) {
  */
 function wu_slug_to_name($slug) {
 
-	$slug = str_replace(array('-', '_'), ' ', $slug);
+	$slug = str_replace(['-', '_'], ' ', $slug);
 
 	return ucwords($slug);
 }

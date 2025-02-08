@@ -60,7 +60,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $addon_products = array();
+	protected $addon_products = [];
 
 	/**
 	 * Currency for this membership. 3-letter currency code.
@@ -290,7 +290,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.10
 	 * @var array
 	 */
-	protected $_compiled_product_list = array();
+	protected $_compiled_product_list = [];
 
 	/**
 	 * Keep original gateway info.
@@ -302,7 +302,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.15
 	 * @var array
 	 */
-	protected $_gateway_info = array();
+	protected $_gateway_info = [];
 
 	/**
 	 * Query Class to the static query methods.
@@ -310,7 +310,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Memberships\\Membership_Query';
+	protected $query_class = \WP_Ultimo\Database\Memberships\Membership_Query::class;
 
 	/**
 	 * Constructs the object via the constructor arguments
@@ -323,11 +323,11 @@ class Membership extends Base_Model {
 
 		parent::__construct($object);
 
-		$this->_gateway_info = array(
+		$this->_gateway_info = [
 			'gateway'                 => $this->get_gateway(),
 			'gateway_customer_id'     => $this->get_gateway_customer_id(),
 			'gateway_subscription_id' => $this->get_gateway_subscription_id(),
-		);
+		];
 
 		if (did_action('plugins_loaded')) {
 			$this->_compiled_product_list = $this->get_all_products();
@@ -352,7 +352,7 @@ class Membership extends Base_Model {
 
 		$membership_status = $membership_status->get_allowed_list(true);
 
-		return array(
+		return [
 			'customer_id'         => 'required|integer|exists:\WP_Ultimo\Models\Customer,id',
 			'user_id'             => 'integer',
 			'plan_id'             => 'required|integer|exists:\WP_Ultimo\Models\Product,id',
@@ -371,7 +371,7 @@ class Membership extends Base_Model {
 			'signup_method'       => 'default:',
 			'disabled'            => 'default:0',
 			'recurring'           => 'default:0',
-		);
+		];
 	}
 
 	/**
@@ -404,7 +404,7 @@ class Membership extends Base_Model {
 	 * @param int $customer_id The ID of the customer attached to this membership.
 	 * @return void
 	 */
-	public function set_customer_id($customer_id) {
+	public function set_customer_id($customer_id): void {
 
 		$this->customer_id = absint($customer_id);
 	}
@@ -452,7 +452,7 @@ class Membership extends Base_Model {
 	 * @param int $user_id The user ID attached to this membership.
 	 * @return void
 	 */
-	public function set_user_id($user_id) {
+	public function set_user_id($user_id): void {
 
 		$this->user_id = absint($user_id);
 	}
@@ -482,7 +482,7 @@ class Membership extends Base_Model {
 		if ($plan && ($plan->get_duration() !== $this->get_duration() || $plan->get_duration_unit() !== $this->get_duration_unit())) {
 			$variation = $plan->get_as_variation($this->get_duration(), $this->get_duration_unit());
 
-			$plan = ($variation ? $variation : null) ?? $plan;
+			$plan = ($variation ?: null) ?? $plan;
 		}
 
 		return $plan;
@@ -495,7 +495,7 @@ class Membership extends Base_Model {
 	 * @param int $plan_id The plan ID associated with the membership.
 	 * @return void
 	 */
-	public function set_plan_id($plan_id) {
+	public function set_plan_id($plan_id): void {
 
 		$this->plan_id = absint($plan_id);
 	}
@@ -553,7 +553,7 @@ class Membership extends Base_Model {
 	 * @param integer $quantity The quantity.
 	 * @return void
 	 */
-	public function add_product($product_id, $quantity = 1) {
+	public function add_product($product_id, $quantity = 1): void {
 
 		$has_product = wu_get_isset($this->addon_products, $product_id);
 
@@ -577,7 +577,7 @@ class Membership extends Base_Model {
 	 * @param integer $quantity The quantity to remove.
 	 * @return void
 	 */
-	public function remove_product($product_id, $quantity = 1) {
+	public function remove_product($product_id, $quantity = 1): void {
 
 		$has_product = wu_get_isset($this->addon_products, $product_id);
 
@@ -598,9 +598,9 @@ class Membership extends Base_Model {
 	 */
 	public function get_addon_products() {
 
-		$products = array();
+		$products = [];
 
-		$this->addon_products = is_array($this->addon_products) ? $this->addon_products : array();
+		$this->addon_products = is_array($this->addon_products) ? $this->addon_products : [];
 
 		foreach ($this->addon_products as $product_id => $quantity) {
 			$product = wu_get_product($product_id);
@@ -609,10 +609,10 @@ class Membership extends Base_Model {
 				continue;
 			}
 
-			$products[] = array(
+			$products[] = [
 				'quantity' => $quantity,
 				'product'  => $product,
-			);
+			];
 		}
 
 		return $products;
@@ -626,12 +626,12 @@ class Membership extends Base_Model {
 	 */
 	public function get_all_products() {
 
-		$products = array(
-			array(
+		$products = [
+			[
 				'quantity' => 1,
 				'product'  => $this->get_plan(),
-			),
-		);
+			],
+		];
 
 		return array_merge($products, $this->get_addon_products());
 	}
@@ -643,7 +643,7 @@ class Membership extends Base_Model {
 	 * @param mixed $addon_products Additional products related to this membership. Services, Packages or other types of products.
 	 * @return void
 	 */
-	public function set_addon_products($addon_products) {
+	public function set_addon_products($addon_products): void {
 
 		$this->addon_products = maybe_unserialize($addon_products);
 	}
@@ -673,7 +673,7 @@ class Membership extends Base_Model {
 		}
 
 		// clear the current addons.
-		$this->addon_products = array();
+		$this->addon_products = [];
 
 		/*
 		 * We'll do that based on the line items,
@@ -761,9 +761,9 @@ class Membership extends Base_Model {
 		 */
 		wu_unschedule_action(
 			'wu_async_membership_swap',
-			array(
+			[
 				'membership_id' => $this->get_id(),
-			),
+			],
 			'membership'
 		);
 
@@ -773,9 +773,9 @@ class Membership extends Base_Model {
 		return wu_schedule_single_action(
 			$date_instance->format('U'),
 			'wu_async_membership_swap',
-			array(
+			[
 				'membership_id' => $this->get_id(),
-			),
+			],
 			'membership'
 		);
 	}
@@ -798,10 +798,10 @@ class Membership extends Base_Model {
 			return false;
 		}
 
-		return (object) array(
+		return (object) [
 			'order'          => $order,
 			'scheduled_date' => $scheduled_date,
-		);
+		];
 	}
 
 	/**
@@ -810,7 +810,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function delete_scheduled_swap() {
+	public function delete_scheduled_swap(): void {
 
 		$this->delete_meta('wu_swap_order');
 
@@ -861,7 +861,7 @@ class Membership extends Base_Model {
 	 */
 	public function get_price_description(): string {
 
-		$pricing = array();
+		$pricing = [];
 
 		if ($this->is_recurring()) {
 			$duration = $this->get_duration();
@@ -919,7 +919,7 @@ class Membership extends Base_Model {
 	 * @param string $currency The currency that this membership. It's a 3-letter code. E.g. 'USD'.
 	 * @return void
 	 */
-	public function set_currency($currency) {
+	public function set_currency($currency): void {
 
 		$this->currency = $currency;
 	}
@@ -939,7 +939,7 @@ class Membership extends Base_Model {
 	 *
 	 * @param int $duration The interval period between a charge. Only the interval amount, the unit will be defined in another property.
 	 */
-	public function set_duration($duration) {
+	public function set_duration($duration): void {
 
 		$this->duration = absint($duration);
 	}
@@ -959,7 +959,7 @@ class Membership extends Base_Model {
 	 *
 	 * @param string $duration_unit The duration amount type. Can be 'day', 'week', 'month' or 'year'.
 	 */
-	public function set_duration_unit($duration_unit) {
+	public function set_duration_unit($duration_unit): void {
 
 		$this->duration_unit = $duration_unit;
 	}
@@ -1000,7 +1000,7 @@ class Membership extends Base_Model {
 	 *
 	 * @param float $amount The product amount.
 	 */
-	public function set_amount($amount) {
+	public function set_amount($amount): void {
 
 		$this->amount = wu_to_float($amount);
 	}
@@ -1020,7 +1020,7 @@ class Membership extends Base_Model {
 	 *
 	 * @param float $initial_amount The initial amount charged for this membership, including the setup fee.
 	 */
-	public function set_initial_amount($initial_amount) {
+	public function set_initial_amount($initial_amount): void {
 
 		$this->initial_amount = wu_to_float($initial_amount);
 	}
@@ -1043,7 +1043,7 @@ class Membership extends Base_Model {
 	 * @param string $date_created Date of creation of this membership.
 	 * @return void
 	 */
-	public function set_date_created($date_created) {
+	public function set_date_created($date_created): void {
 
 		$this->date_created = $date_created;
 	}
@@ -1066,7 +1066,7 @@ class Membership extends Base_Model {
 	 * @param string $date_activated Date when this membership was activated.
 	 * @return void
 	 */
-	public function set_date_activated($date_activated) {
+	public function set_date_activated($date_activated): void {
 
 		$this->date_activated = $date_activated;
 	}
@@ -1089,7 +1089,7 @@ class Membership extends Base_Model {
 	 * @param string $date_trial_end Date when the trial period ends, if this membership has or had a trial period.
 	 * @return void
 	 */
-	public function set_date_trial_end($date_trial_end) {
+	public function set_date_trial_end($date_trial_end): void {
 
 		$this->date_trial_end = $date_trial_end;
 	}
@@ -1112,7 +1112,7 @@ class Membership extends Base_Model {
 	 * @param string $date_renewed Date when the membership was cancelled.
 	 * @return void
 	 */
-	public function set_date_renewed($date_renewed) {
+	public function set_date_renewed($date_renewed): void {
 
 		$this->date_renewed = $date_renewed;
 	}
@@ -1135,7 +1135,7 @@ class Membership extends Base_Model {
 	 * @param string $date_cancellation Date when the membership was cancelled.
 	 * @return void
 	 */
-	public function set_date_cancellation($date_cancellation) {
+	public function set_date_cancellation($date_cancellation): void {
 
 		$this->date_cancellation = $date_cancellation;
 	}
@@ -1166,7 +1166,7 @@ class Membership extends Base_Model {
 	 * @param string $reason The reason to cancel the membership.
 	 * @return void
 	 */
-	public function set_cancellation_reason($reason) {
+	public function set_cancellation_reason($reason): void {
 
 		$this->meta['cancellation_reason'] = $reason;
 		$this->cancellation_reason         = $reason;
@@ -1190,7 +1190,7 @@ class Membership extends Base_Model {
 	 * @param string $date_expiration Date when the membership will expiry.
 	 * @return void
 	 */
-	public function set_date_expiration($date_expiration) {
+	public function set_date_expiration($date_expiration): void {
 
 		$this->date_expiration = $date_expiration;
 	}
@@ -1233,7 +1233,7 @@ class Membership extends Base_Model {
 				$expire_timestamp = strtotime('+' . $this->get_duration() . ' ' . $this->get_duration_unit() . ' 23:59:59', $base_timestamp);
 			}
 
-			$extension_days = array('29', '30', '31');
+			$extension_days = ['29', '30', '31'];
 
 			if (in_array(gmdate('j', $expire_timestamp), $extension_days, true) && 'month' === $this->get_duration_unit()) {
 				$month = gmdate('n', $expire_timestamp);
@@ -1289,7 +1289,7 @@ class Membership extends Base_Model {
 	 * @param string $date_payment_plan_completed Change of the payment completion for the plan value.
 	 * @return void
 	 */
-	public function set_date_payment_plan_completed($date_payment_plan_completed) {
+	public function set_date_payment_plan_completed($date_payment_plan_completed): void {
 
 		$this->date_payment_plan_completed = $date_payment_plan_completed;
 	}
@@ -1325,7 +1325,7 @@ class Membership extends Base_Model {
 	 * @param bool $auto_renew If this membership should auto-renewal.
 	 * @return void
 	 */
-	public function set_auto_renew($auto_renew) {
+	public function set_auto_renew($auto_renew): void {
 
 		$this->auto_renew = (bool) $auto_renew;
 	}
@@ -1344,12 +1344,12 @@ class Membership extends Base_Model {
 		// Get discount code from original payment for compatibility
 		if (empty($this->discount_code) && ! $this->get_meta('verified_payment_discount')) {
 			$original_payment = wu_get_payments(
-				array(
+				[
 					'number'        => 1,
 					'membership_id' => $this->get_id(),
 					'orderby'       => 'id',
 					'order'         => 'ASC',
-				)
+				]
 			);
 
 			if (isset($original_payment[0])) {
@@ -1375,7 +1375,7 @@ class Membership extends Base_Model {
 	 * @param string|WP_Ultimo\Models\Discount_Code $discount_code Discount code object.
 	 * @return void
 	 */
-	public function set_discount_code($discount_code) {
+	public function set_discount_code($discount_code): void {
 
 		if (is_a($discount_code, '\WP_Ultimo\Models\Discount_Code')) {
 			$this->meta['discount_code'] = $discount_code;
@@ -1412,7 +1412,7 @@ class Membership extends Base_Model {
 	 * @param int $times_billed Amount of times this membership got billed.
 	 * @return void
 	 */
-	public function set_times_billed($times_billed) {
+	public function set_times_billed($times_billed): void {
 
 		$this->times_billed = $times_billed;
 	}
@@ -1481,7 +1481,7 @@ class Membership extends Base_Model {
 	 * @param int $billing_cycles Maximum times we should charge this membership.
 	 * @return void
 	 */
-	public function set_billing_cycles($billing_cycles) {
+	public function set_billing_cycles($billing_cycles): void {
 
 		$this->billing_cycles = $billing_cycles;
 	}
@@ -1516,10 +1516,10 @@ class Membership extends Base_Model {
 	 */
 	public function is_active() {
 
-		$active_statuses = array(
+		$active_statuses = [
 			Membership_Status::ACTIVE,
 			Membership_Status::ON_HOLD,
-		);
+		];
 
 		$active = in_array($this->status, $active_statuses, true);
 
@@ -1545,7 +1545,7 @@ class Membership extends Base_Model {
 	 * @options \WP_Ultimo\Database\Payments\Payment_Status
 	 * @return void
 	 */
-	public function set_status($status) {
+	public function set_status($status): void {
 
 		$this->status = $status;
 	}
@@ -1594,7 +1594,7 @@ class Membership extends Base_Model {
 	 * @param string $gateway_customer_id The ID of the customer on the payment gateway database.
 	 * @return void
 	 */
-	public function set_gateway_customer_id($gateway_customer_id) {
+	public function set_gateway_customer_id($gateway_customer_id): void {
 
 		$this->gateway_customer_id = $gateway_customer_id;
 	}
@@ -1617,7 +1617,7 @@ class Membership extends Base_Model {
 	 * @param string $gateway_subscription_id The ID of the subscription on the payment gateway database.
 	 * @return void
 	 */
-	public function set_gateway_subscription_id($gateway_subscription_id) {
+	public function set_gateway_subscription_id($gateway_subscription_id): void {
 
 		$this->gateway_subscription_id = $gateway_subscription_id;
 	}
@@ -1640,7 +1640,7 @@ class Membership extends Base_Model {
 	 * @param string $gateway ID of the gateway being used on this subscription.
 	 * @return void
 	 */
-	public function set_gateway($gateway) {
+	public function set_gateway($gateway): void {
 
 		$this->gateway = $gateway;
 	}
@@ -1663,7 +1663,7 @@ class Membership extends Base_Model {
 	 * @param string $signup_method Signup method used to create this membership.
 	 * @return void
 	 */
-	public function set_signup_method($signup_method) {
+	public function set_signup_method($signup_method): void {
 
 		$this->signup_method = $signup_method;
 	}
@@ -1686,7 +1686,7 @@ class Membership extends Base_Model {
 	 * @param int $upgraded_from Plan that this membership upgraded from.
 	 * @return void
 	 */
-	public function set_upgraded_from($upgraded_from) {
+	public function set_upgraded_from($upgraded_from): void {
 
 		$this->upgraded_from = $upgraded_from;
 	}
@@ -1709,7 +1709,7 @@ class Membership extends Base_Model {
 	 * @param string $date_modified Date this membership was last modified.
 	 * @return void
 	 */
-	public function set_date_modified($date_modified) {
+	public function set_date_modified($date_modified): void {
 
 		$this->date_modified = $date_modified;
 	}
@@ -1732,7 +1732,7 @@ class Membership extends Base_Model {
 	 * @param bool $disabled If this membership is a disabled one.
 	 * @return void
 	 */
-	public function set_disabled($disabled) {
+	public function set_disabled($disabled): void {
 
 		$this->disabled = (bool) $disabled;
 	}
@@ -1744,13 +1744,13 @@ class Membership extends Base_Model {
 	 * @param array $query Query arguments.
 	 * @return array
 	 */
-	public function get_payments($query = array()) {
+	public function get_payments($query = []) {
 
 		$query = array_merge(
 			$query,
-			array(
+			[
 				'membership_id' => $this->get_id(),
-			)
+			]
 		);
 
 		return wu_get_payments($query);
@@ -1764,14 +1764,14 @@ class Membership extends Base_Model {
 	public function get_last_pending_payment() {
 
 		$payments = wu_get_payments(
-			array(
+			[
 				'membership_id'      => $this->get_id(),
 				'status'             => 'pending',
 				'number'             => 1,
 				'orderby'            => 'id',
 				'order'              => 'DESC',
 				'gateway_payment_id' => '',
-			)
+			]
 		);
 
 		return ! empty($payments) ? array_pop($payments) : false;
@@ -1786,14 +1786,14 @@ class Membership extends Base_Model {
 	public function get_published_sites() {
 
 		$sites = Site::query(
-			array(
-				'meta_query' => array(
-					'customer_id' => array(
+			[
+				'meta_query' => [
+					'customer_id' => [
 						'key'   => 'wu_membership_id',
 						'value' => $this->get_id(),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		return $sites;
@@ -1809,14 +1809,14 @@ class Membership extends Base_Model {
 	public function get_sites($include_pending = true) {
 
 		$sites = Site::query(
-			array(
-				'meta_query' => array(
-					'customer_id' => array(
+			[
+				'meta_query' => [
+					'customer_id' => [
 						'key'   => 'wu_membership_id',
 						'value' => $this->get_id(),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		$pending_site = $include_pending ? $this->get_pending_site() : false;
@@ -1844,13 +1844,13 @@ class Membership extends Base_Model {
 
 		$site_info = wp_parse_args(
 			$site_info,
-			array(
+			[
 				'title'         => '',
 				'domain'        => $current_site->domain,
 				'path'          => '',
-				'transient'     => array(),
+				'transient'     => [],
 				'is_publishing' => false,
-			)
+			]
 		);
 
 		$site = new \WP_Ultimo\Models\Site($site_info);
@@ -1887,7 +1887,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function publish_pending_site_async() {
+	public function publish_pending_site_async(): void {
 		/*
 		 * If the force sync setting is on, fallback to the sync version.
 		 */
@@ -1899,11 +1899,11 @@ class Membership extends Base_Model {
 
 		// We first try to generate the site through request to start earlier as possible.
 		$rest_path = add_query_arg(
-			array(
+			[
 				'action'        => 'wu_publish_pending_site',
 				'_ajax_nonce'   => wp_create_nonce('wu_publish_pending_site'),
 				'membership_id' => $this->get_id(),
-			),
+			],
 			admin_url('admin-ajax.php')
 		);
 
@@ -1912,23 +1912,23 @@ class Membership extends Base_Model {
 
 			wp_remote_request(
 				$rest_path,
-				array(
+				[
 					'sslverify' => false,
-				)
+				]
 			);
 		} elseif (ignore_user_abort(true) !== ignore_user_abort(false)) {
 			// We do not have fastcgi but can make the request continue without listening
 
 			wp_remote_request(
 				$rest_path,
-				array(
+				[
 					'sslverify' => false,
 					'blocking'  => false,
-				)
+				]
 			);
 		}
 
-		wu_enqueue_async_action('wu_async_publish_pending_site', array('membership_id' => $this->get_id()), 'membership');
+		wu_enqueue_async_action('wu_async_publish_pending_site', ['membership_id' => $this->get_id()], 'membership');
 	}
 
 	/**
@@ -2039,7 +2039,7 @@ class Membership extends Base_Model {
 	 * @param boolean $recurring If this membership is recurring (true), which means the customer paid a defined amount each period of time, or not recurring (false).
 	 * @return void
 	 */
-	public function set_recurring($recurring) {
+	public function set_recurring($recurring): void {
 
 		$this->recurring = (bool) $recurring;
 	}
@@ -2199,7 +2199,7 @@ class Membership extends Base_Model {
 	 * @param string $reason Reason for cancellation.
 	 * @return void
 	 */
-	public function cancel($reason = '') {
+	public function cancel($reason = ''): void {
 
 		if ($this->get_status() === Membership_Status::CANCELLED) {
 			return; // Already cancelled
@@ -2298,9 +2298,9 @@ class Membership extends Base_Model {
 	 */
 	public function limitations_to_merge() {
 
-		$limitations_to_merge = array();
+		$limitations_to_merge = [];
 
-		$product_ids = array($this->get_plan_id());
+		$product_ids = [$this->get_plan_id()];
 
 		$product_ids = array_merge($this->get_addon_ids(), $product_ids);
 
@@ -2357,11 +2357,11 @@ class Membership extends Base_Model {
 
 		$has_change = false;
 
-		$current_gateway = array(
+		$current_gateway = [
 			'gateway'                 => $this->get_gateway(),
 			'gateway_customer_id'     => $this->get_gateway_customer_id(),
 			'gateway_subscription_id' => $this->get_gateway_subscription_id(),
-		);
+		];
 
 		foreach ($this->_gateway_info as $key => $value) {
 			if ($value !== $current_gateway[ $key ]) {
@@ -2433,9 +2433,9 @@ class Membership extends Base_Model {
 		if ($this->has_product_changes()) {
 			wu_enqueue_async_action(
 				'wu_async_after_membership_update_products',
-				array(
+				[
 					'membership_id' => $this->get_id(),
-				),
+				],
 				'membership'
 			);
 		}

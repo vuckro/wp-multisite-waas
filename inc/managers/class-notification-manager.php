@@ -37,12 +37,12 @@ class Notification_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wp_ultimo_load', array($this, 'add_settings'));
+		add_action('wp_ultimo_load', [$this, 'add_settings']);
 
 		if (is_admin() && ! is_network_admin()) {
-			add_action('admin_init', array($this, 'hide_notifications_subsites'));
+			add_action('admin_init', [$this, 'hide_notifications_subsites']);
 		}
 	}
 
@@ -52,7 +52,7 @@ class Notification_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hide_notifications_subsites() {
+	public function hide_notifications_subsites(): void {
 
 		if ( ! wu_get_setting('hide_notifications_subsites')) {
 			return;
@@ -65,19 +65,19 @@ class Notification_Manager {
 		 */
 		$this->backwards_compatibility_list = apply_filters(
 			'wu_hide_notifications_exclude_list',
-			array(
+			[
 				'inject_admin_head_ads',
-			)
+			]
 		);
 
-		$cleaner = array($this, 'clear_callback_list');
+		$cleaner = [$this, 'clear_callback_list'];
 
 		if (wu_get_isset($wp_filter, 'admin_notices')) {
-			$wp_filter['admin_notices']->callbacks = array_filter($wp_filter['admin_notices']->callbacks, $cleaner === null ? fn($v, $k): bool => ! empty($v) : $cleaner, $cleaner === null ? ARRAY_FILTER_USE_BOTH : 0);
+			$wp_filter['admin_notices']->callbacks = array_filter($wp_filter['admin_notices']->callbacks, $cleaner ?? fn($v, $k): bool => ! empty($v), $cleaner === null ? ARRAY_FILTER_USE_BOTH : 0);
 		}
 
 		if (wu_get_isset($wp_filter, 'all_admin_notices')) {
-			$wp_filter['all_admin_notices']->callbacks = array_filter($wp_filter['all_admin_notices']->callbacks, $cleaner === null ? fn($v, $k): bool => ! empty($v) : $cleaner, $cleaner === null ? ARRAY_FILTER_USE_BOTH : 0);
+			$wp_filter['all_admin_notices']->callbacks = array_filter($wp_filter['all_admin_notices']->callbacks, $cleaner ?? fn($v, $k): bool => ! empty($v), $cleaner === null ? ARRAY_FILTER_USE_BOTH : 0);
 		}
 	}
 
@@ -99,7 +99,7 @@ class Notification_Manager {
 
 		foreach ($keys as $key) {
 			foreach ($this->backwards_compatibility_list as $key_to_keep) {
-				if (strpos($key, (string) $key_to_keep) !== false) {
+				if (str_contains($key, (string) $key_to_keep)) {
 					return true;
 				}
 			}
@@ -115,18 +115,18 @@ class Notification_Manager {
 	 *
 	 * @return void
 	 */
-	public function add_settings() {
+	public function add_settings(): void {
 
 		wu_register_settings_field(
 			'sites',
 			'hide_notifications_subsites',
-			array(
+			[
 				'title'   => __('Hide Admin Notices on Sites', 'wp-ultimo'),
 				'desc'    => __('Hide all admin notices on network sites, except for WP Multisite WaaS broadcasts.', 'wp-ultimo'),
 				'type'    => 'toggle',
 				'default' => 0,
 				'order'   => 25,
-			)
+			]
 		);
 	}
 }

@@ -25,7 +25,7 @@ class Note {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $attributes = array();
+	protected $attributes = [];
 
 	/**
 	 * Initializes the object.
@@ -34,7 +34,7 @@ class Note {
 	 *
 	 * @param array $data Array of key => values note fields.
 	 */
-	public function __construct($data = array()) {
+	public function __construct($data = []) {
 
 		$this->attributes($data);
 	}
@@ -47,7 +47,7 @@ class Note {
 	 * @param array $data Array of key => values note fields.
 	 * @return void
 	 */
-	public function attributes($data) {
+	public function attributes($data): void {
 
 		$allowed_attributes = array_keys(self::fields());
 
@@ -122,7 +122,7 @@ class Note {
 	 */
 	protected function validation_rules() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -154,7 +154,7 @@ class Note {
 	 */
 	public function to_array($labels = false) {
 
-		$address_array = array();
+		$address_array = [];
 
 		$fields = self::fields();
 
@@ -190,22 +190,22 @@ class Note {
 	 */
 	public static function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['text'] = array(
+		$fields['text'] = [
 			'type'  => 'text',
 			'title' => __('Text', 'wp-ultimo'),
-		);
+		];
 
-		$fields['author_id'] = array(
+		$fields['author_id'] = [
 			'type'  => 'number',
 			'title' => __('Author ID', 'wp-ultimo'),
-		);
+		];
 
-		$fields['note_id'] = array(
+		$fields['note_id'] = [
 			'type'  => 'text',
 			'title' => __('Note ID', 'wp-ultimo'),
-		);
+		];
 
 		uasort($fields, 'wu_sort_by_order');
 

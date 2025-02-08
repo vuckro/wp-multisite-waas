@@ -31,7 +31,7 @@ class Field_Templates_Manager extends Base_Manager {
 	 * @since 2.2.0
 	 * @var array
 	 */
-	protected $holders = array();
+	protected $holders = [];
 
 	/**
 	 * Initialize the managers with the necessary hooks.
@@ -39,11 +39,11 @@ class Field_Templates_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_ajax_nopriv_wu_render_field_template', array($this, 'serve_field_template'));
+		add_action('wu_ajax_nopriv_wu_render_field_template', [$this, 'serve_field_template']);
 
-		add_action('wu_ajax_wu_render_field_template', array($this, 'serve_field_template'));
+		add_action('wu_ajax_wu_render_field_template', [$this, 'serve_field_template']);
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Field_Templates_Manager extends Base_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function serve_field_template() {
+	public function serve_field_template(): void {
 
 		$template = wu_replace_dashes(wu_request('template'));
 
@@ -69,9 +69,9 @@ class Field_Templates_Manager extends Base_Manager {
 		$attributes = apply_filters("wu_{$key}_render_attributes", wu_request('attributes'));
 
 		wp_send_json_success(
-			array(
+			[
 				'html' => $template_class->render($attributes),
-			)
+			]
 		);
 	}
 
@@ -88,55 +88,55 @@ class Field_Templates_Manager extends Base_Manager {
 	 */
 	public function get_field_templates() {
 
-		$field_templates = array();
+		$field_templates = [];
 
 		/*
 		 * Adds default template selection templates.
 		 */
-		$field_templates['template_selection'] = array(
-			'clean'   => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Template_Selection\\Clean_Template_Selection_Field_Template',
-			'minimal' => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Template_Selection\\Minimal_Template_Selection_Field_Template',
-			'legacy'  => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Template_Selection\\Legacy_Template_Selection_Field_Template',
-		);
+		$field_templates['template_selection'] = [
+			'clean'   => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Template_Selection\Clean_Template_Selection_Field_Template::class,
+			'minimal' => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Template_Selection\Minimal_Template_Selection_Field_Template::class,
+			'legacy'  => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Template_Selection\Legacy_Template_Selection_Field_Template::class,
+		];
 
 		/*
 		 * Adds the default period selector templates.
 		 */
-		$field_templates['period_selection'] = array(
-			'clean'  => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Period_Selection\\Clean_Period_Selection_Field_Template',
-			'legacy' => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Period_Selection\\Legacy_Period_Selection_Field_Template',
-		);
+		$field_templates['period_selection'] = [
+			'clean'  => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Period_Selection\Clean_Period_Selection_Field_Template::class,
+			'legacy' => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Period_Selection\Legacy_Period_Selection_Field_Template::class,
+		];
 
 		/*
 		* Adds the default pricing table templates.
 		*/
-		$field_templates['pricing_table'] = array(
-			'list'   => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Pricing_Table\\List_Pricing_Table_Field_Template',
-			'legacy' => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Pricing_Table\\Legacy_Pricing_Table_Field_Template',
-		);
+		$field_templates['pricing_table'] = [
+			'list'   => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Pricing_Table\List_Pricing_Table_Field_Template::class,
+			'legacy' => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Pricing_Table\Legacy_Pricing_Table_Field_Template::class,
+		];
 
 		/*
 		 * Adds the default order-bump templates.
 		 */
-		$field_templates['order_bump'] = array(
-			'simple' => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Order_Bump\\Simple_Order_Bump_Field_Template',
-		);
+		$field_templates['order_bump'] = [
+			'simple' => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Order_Bump\Simple_Order_Bump_Field_Template::class,
+		];
 
 		/*
 		 * Adds the default order-summary templates.
 		 */
-		$field_templates['order_summary'] = array(
-			'clean' => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Order_Summary\\Clean_Order_Summary_Field_Template',
-		);
+		$field_templates['order_summary'] = [
+			'clean' => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Order_Summary\Clean_Order_Summary_Field_Template::class,
+		];
 
 		/*
 		 * Adds the default order-summary templates.
 		 */
-		$field_templates['steps'] = array(
-			'clean'   => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Steps\\Clean_Steps_Field_Template',
-			'minimal' => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Steps\\Minimal_Steps_Field_Template',
-			'legacy'  => '\\WP_Ultimo\\Checkout\\Signup_Fields\\Field_Templates\\Steps\\Legacy_Steps_Field_Template',
-		);
+		$field_templates['steps'] = [
+			'clean'   => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Steps\Clean_Steps_Field_Template::class,
+			'minimal' => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Steps\Minimal_Steps_Field_Template::class,
+			'legacy'  => \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Steps\Legacy_Steps_Field_Template::class,
+		];
 
 		/*
 		 * Allow developers to add new field templates
@@ -167,7 +167,7 @@ class Field_Templates_Manager extends Base_Manager {
 	 */
 	public function get_templates($field_type) {
 
-		return wu_get_isset($this->get_field_templates(), $field_type, array());
+		return wu_get_isset($this->get_field_templates(), $field_type, []);
 	}
 
 	/**
@@ -198,7 +198,7 @@ class Field_Templates_Manager extends Base_Manager {
 
 		$templates = $this->get_instantiated_field_types($field_type);
 
-		$options = array();
+		$options = [];
 
 		foreach ($templates as $template_id => $template) {
 			$options[ $template_id ] = $template->get_title();
@@ -219,15 +219,15 @@ class Field_Templates_Manager extends Base_Manager {
 
 		$templates = $this->get_instantiated_field_types($field_type);
 
-		$options = array();
+		$options = [];
 
 		foreach ($templates as $template_id => $template) {
-			$options[ $template_id ] = array(
+			$options[ $template_id ] = [
 				'id'          => $template_id,
 				'title'       => $template->get_title(),
 				'description' => $template->get_description(),
 				'preview'     => $template->get_preview(),
-			);
+			];
 		}
 
 		return $options;
@@ -258,7 +258,7 @@ class Field_Templates_Manager extends Base_Manager {
 		$holder_name = "instantiated_{$field_type}_templates";
 
 		if ( ! isset($this->holders[ $holder_name ]) || $this->holders[ $holder_name ] === null) {
-			$this->holders[ $holder_name ] = array_map(array($this, 'instantiate_field_template'), $this->get_templates($field_type));
+			$this->holders[ $holder_name ] = array_map([$this, 'instantiate_field_template'], $this->get_templates($field_type));
 		}
 
 		return $this->holders[ $holder_name ];

@@ -39,9 +39,9 @@ class Site_Customer_List_Table extends Customer_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'responsive' => '',
-		);
+		];
 
 		return $columns;
 	}
@@ -54,7 +54,7 @@ class Site_Customer_List_Table extends Customer_List_Table {
 	 * @param object $item The item being rendered.
 	 * @return void
 	 */
-	public function column_responsive($item) {
+	public function column_responsive($item): void {
 
 		$last_login = sprintf(__('Last login %s', 'wp-ultimo'), wu_human_time_diff(strtotime((string) $item->get_last_login())));
 
@@ -63,46 +63,46 @@ class Site_Customer_List_Table extends Customer_List_Table {
 		}
 
 		echo wu_responsive_table_row(
-			array(
+			[
 				'id'     => $item->get_id(),
 				'title'  => $item->get_display_name(),
 				'url'    => wu_network_admin_url(
 					'wp-ultimo-edit-customer',
-					array(
+					[
 						'id' => $item->get_id(),
-					)
+					]
 				),
 				'image'  => get_avatar(
 					$item->get_user_id(),
 					36,
 					'identicon',
 					'',
-					array(
+					[
 						'force_display' => true,
 						'class'         => 'wu-rounded-full',
-					)
+					]
 				),
 				'status' => $this->column_status($item),
-			),
-			array(
-				'total' => array(
+			],
+			[
+				'total' => [
 					'icon'  => 'dashicons-wu-at-sign wu-align-middle wu-mr-1',
 					'label' => __('Email Address', 'wp-ultimo'),
 					'value' => $item->get_email_address(),
-				),
-			),
-			array(
-				'date_expiration' => array(
+				],
+			],
+			[
+				'date_expiration' => [
 					'icon'  => $item->is_online() === false ? 'dashicons-wu-calendar1 wu-align-middle wu-mr-1' : '',
 					'label' => __('Last Login', 'wp-ultimo'),
 					'value' => $last_login,
-				),
-				'date_created'    => array(
+				],
+				'date_created'    => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
 					'value' => sprintf(__('Registered %s', 'wp-ultimo'), wu_human_time_diff(strtotime((string) $item->get_date_registered()))),
-				),
-			)
+				],
+			]
 		);
 	}
 }

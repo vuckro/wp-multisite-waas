@@ -66,10 +66,10 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $supported_panels = array(
+	protected $supported_panels = [
 		'user_admin_menu' => 'read',
 		'admin_menu'      => 'read',
-	);
+	];
 
 	/**
 	 * Should we hide admin notices on this page?
@@ -115,7 +115,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		do_action('wu_checkout_scripts', null, null);
 	}
@@ -126,7 +126,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		do_action('wu_setup_checkout', null);
 
@@ -141,12 +141,12 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	 */
 	public function get_sections() {
 
-		$sections = array(
-			'plan' => array(
+		$sections = [
+			'plan' => [
 				'title' => __('Change Membership', 'wp-ultimo'),
-				'view'  => array($this, 'display_checkout_form'),
-			),
-		);
+				'view'  => [$this, 'display_checkout_form'],
+			],
+		];
 
 		return $sections;
 	}
@@ -157,17 +157,17 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/centered',
-			array(
+			[
 				'screen'  => get_current_screen(),
 				'page'    => $this,
 				'content' => do_shortcode('[wu_checkout slug="wu-checkout"]'),
-			)
+			]
 		);
 	}
 
@@ -177,7 +177,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {
+	public function register_widgets(): void {
 
 		\WP_Ultimo\UI\Current_Membership_Element::get_instance()->as_metabox(get_current_screen()->id);
 

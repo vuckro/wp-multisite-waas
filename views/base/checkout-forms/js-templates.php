@@ -86,10 +86,10 @@
 							<?php
 							echo wu_get_form_url(
 								'add_new_form_field',
-								array(
+								[
 									'checkout_form' => $checkout_form,
 									'step'          => '',
-								)
+								]
 							);
 							?>
 							=' + step_name + '&field=' + field.id"

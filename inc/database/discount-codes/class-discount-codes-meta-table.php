@@ -64,7 +64,7 @@ final class Discount_Codes_Meta_Table extends Table {
 	 * @since  2.0.0
 	 * @return void
 	 */
-	protected function set_schema() {
+	protected function set_schema(): void {
 
 		$max_index_length = 191;
 

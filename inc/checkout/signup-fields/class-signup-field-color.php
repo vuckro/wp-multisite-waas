@@ -108,9 +108,9 @@ class Signup_Field_Color extends Base_Signup_Field {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'',
-		);
+		];
 	}
 
 	/**
@@ -121,14 +121,14 @@ class Signup_Field_Color extends Base_Signup_Field {
 	 */
 	public function default_fields() {
 
-		return array(
+		return [
 			'id',
 			'name',
 			'placeholder',
 			'tooltip',
 			'required',
 			'save_as',
-		);
+		];
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Signup_Field_Color extends Base_Signup_Field {
 	 */
 	public function force_attributes() {
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -150,14 +150,14 @@ class Signup_Field_Color extends Base_Signup_Field {
 	 */
 	public function get_fields() {
 
-		return array(
-			'default_value' => array(
+		return [
+			'default_value' => [
 				'type'  => 'color-picker',
 				'order' => 12,
 				'title' => __('Default Color', 'wp-ultimo'),
 				'desc'  => __('Set the default value for this color field.', 'wp-ultimo'),
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -170,8 +170,8 @@ class Signup_Field_Color extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		return array(
-			$attributes['id'] => array(
+		return [
+			$attributes['id'] => [
 				'type'            => 'color',
 				'id'              => $attributes['id'],
 				'name'            => $attributes['name'],
@@ -182,10 +182,10 @@ class Signup_Field_Color extends Base_Signup_Field {
 				'wrapper_classes' => $attributes['element_classes'],
 				'classes'         => 'wu-rounded',
 				'value'           => $this->get_value(),
-				'html_attr'       => array(
+				'html_attr'       => [
 					'style' => 'width: 50px !important',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

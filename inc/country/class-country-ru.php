@@ -124,11 +124,11 @@ class Country_RU extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'RU',
 		'currency'     => 'RUB',
 		'phone_code'   => 7,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -157,7 +157,7 @@ class Country_RU extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'ALT'   => __('Altai Krai', 'wp-ultimo'),
 			'AL'    => __('Altai Republic', 'wp-ultimo'),
 			'AMU'   => __('Amur Oblast', 'wp-ultimo'),
@@ -242,6 +242,6 @@ class Country_RU extends Country {
 			'YAN'   => __('Yamalo-Nenets Autonomous Okrug', 'wp-ultimo'),
 			'YAR'   => __('Yaroslavl Oblast', 'wp-ultimo'),
 			'ZAB'   => __('Zabaykalsky Krai', 'wp-ultimo'),
-		);
+		];
 	}
 }

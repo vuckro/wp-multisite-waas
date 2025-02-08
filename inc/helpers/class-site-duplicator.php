@@ -46,7 +46,7 @@ class Site_Duplicator {
 	 * @param array  $args List of duplication parameters, check Site_Duplicator::process_duplication for reference.
 	 * @return int|\WP_Error ID of the newly created site or error.
 	 */
-	public static function duplicate_site($from_site_id, $title, $args = array()) {
+	public static function duplicate_site($from_site_id, $title, $args = []) {
 
 		$args['from_site_id'] = $from_site_id;
 		$args['title']        = $title;
@@ -81,7 +81,7 @@ class Site_Duplicator {
 	 * @param array $args List of duplication parameters, check Site_Duplicator::process_duplication for reference.
 	 * @return int|false ID of the created site.
 	 */
-	public static function override_site($from_site_id, $to_site_id, $args = array()) {
+	public static function override_site($from_site_id, $to_site_id, $args = []) {
 
 		$to_site = wu_get_site($to_site_id);
 
@@ -93,14 +93,14 @@ class Site_Duplicator {
 
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'email'        => $to_site_customer->get_email_address(),
 				'title'        => $to_site->get_title(),
 				'path'         => $to_site->get_path(),
 				'from_site_id' => $from_site_id,
 				'to_site_id'   => $to_site_id,
 				'meta'         => $to_site->meta,
-			)
+			]
 		);
 
 		$duplicate_site_id = self::process_duplication($args);
@@ -164,7 +164,7 @@ class Site_Duplicator {
 
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'email'        => '',    // Required arguments.
 				'title'        => '',    // Required arguments.
 				'path'         => '/',   // Required arguments.
@@ -175,9 +175,9 @@ class Site_Duplicator {
 				'domain'       => $current_site->domain,
 				'copy_files'   => wu_get_setting('copy_media', true),
 				'network_id'   => get_current_network_id(),
-				'meta'         => array(),
+				'meta'         => [],
 				'user_id'      => 0,
-			)
+			]
 		);
 
 		// Checks
@@ -198,7 +198,7 @@ class Site_Duplicator {
 		}
 
 		if ( ! $args->to_site_id) {
-			$meta = array_merge($args->meta, array('public' => $args->public));
+			$meta = array_merge($args->meta, ['public' => $args->public]);
 
 			$args->to_site_id = wpmu_create_blog($args->domain, $args->path, $args->title, $user_id, $meta, $args->network_id);
 
@@ -244,9 +244,9 @@ class Site_Duplicator {
 		 */
 		do_action(
 			'wu_duplicate_site',
-			array(
+			[
 				'site_id' => $args->to_site_id,
-			)
+			]
 		);
 
 		return $args->to_site_id;

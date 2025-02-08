@@ -9,7 +9,7 @@
 
 	<div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
 
-	<?php if (in_array($payment->get_status(), array('completed'))) : ?>
+	<?php if (in_array($payment->get_status(), ['completed'])) : ?>
 
 		<!-- Thank You -->
 		<div id="wu-thank-you-message-block">

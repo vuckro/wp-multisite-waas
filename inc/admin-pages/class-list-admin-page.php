@@ -40,7 +40,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @var array
 	 */
-	protected $labels = array();
+	protected $labels = [];
 
 	/**
 	 * Holds the WP_List_Table instance to be used on the list
@@ -56,7 +56,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function page_loaded() {
+	public function page_loaded(): void {
 
 		/**
 		 * Loads the list table
@@ -90,14 +90,14 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		/**
 		 * Runs the parent init functions
 		 */
 		parent::init();
 
-		add_filter('set-screen-option', array($this, 'save_screen_option'), 8, 3);
+		add_filter('set-screen-option', [$this, 'save_screen_option'], 8, 3);
 	}
 
 	/**
@@ -106,7 +106,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function process_single_action() {
+	public function process_single_action(): void {
 
 		if ($this->table) {
 			$this->table->process_single_action();
@@ -121,10 +121,10 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_labels() {
 
-		return array(
+		return [
 			'deleted_message' => __('Object removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Object', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -133,7 +133,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		parent::register_scripts();
 
@@ -152,18 +152,18 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {
+	public function output(): void {
 
 		/**
 		 * Renders the base list page layout, with the columns and everything else =)
 		 */
 		wu_get_template(
 			'base/list',
-			array(
+			[
 				'page'    => $this,
 				'table'   => $this->get_table(),
 				'classes' => $this->table->get_filters() ? 'wu-advanced-filters' : 'wu-no-advanced-filters',
-			)
+			]
 		);
 	}
 
@@ -184,14 +184,14 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function screen_options() {
+	public function screen_options(): void {
 
 		if ($this->table) {
-			$args = array(
+			$args = [
 				'default' => 20,
 				'label'   => $this->table->get_per_page_option_label(),
 				'option'  => $this->table->get_per_page_option_name(),
-			);
+			];
 
 			add_screen_option('per_page', $args);
 		}

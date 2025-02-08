@@ -35,7 +35,7 @@ class Price_Variations extends Rule {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fillableParams = array('duration', 'duration_unit'); // phpcs:ignore
+	protected $fillableParams = ['duration', 'duration_unit']; // phpcs:ignore
   /**
    * Performs the actual check.
    *
@@ -75,12 +75,12 @@ class Price_Variations extends Rule {
        */
       $unit = wu_get_isset($price_variation, 'duration_unit', false);
 
-      $allowed_units = array(
+      $allowed_units = [
         'day',
         'week',
         'month',
         'year',
-      );
+      ];
 
       if (!in_array($unit, $allowed_units, true)) {
 

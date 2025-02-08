@@ -132,21 +132,21 @@ class Domain_Mapping_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['title'] = array(
+		$fields['title'] = [
 			'type'    => 'text',
 			'title'   => __('Title', 'wp-ultimo'),
 			'value'   => __('Domains', 'wp-ultimo'),
 			'desc'    => __('Leave blank to hide the title completely.', 'wp-ultimo'),
 			'tooltip' => '',
-		);
+		];
 
 		return $fields;
 	}
@@ -170,11 +170,11 @@ class Domain_Mapping_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Domain',
-		);
+		];
 	}
 
 	/**
@@ -193,9 +193,9 @@ class Domain_Mapping_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'title' => __('Domains', 'wp-ultimo'),
-		);
+		];
 	}
 
 	/**
@@ -204,7 +204,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
@@ -226,7 +226,7 @@ class Domain_Mapping_Element extends Base_Element {
 			$this->set_display(false);
 		}
 
-		add_action('plugins_loaded', array($this, 'register_forms'));
+		add_action('plugins_loaded', [$this, 'register_forms']);
 	}
 
 	/**
@@ -235,7 +235,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		add_wubox();
 	}
@@ -246,35 +246,35 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {
+	public function register_forms(): void {
 		/*
 		 * Add new Domain
 		 */
 		wu_register_form(
 			'user_add_new_domain',
-			array(
-				'render'     => array($this, 'render_user_add_new_domain_modal'),
-				'handler'    => array($this, 'handle_user_add_new_domain_modal'),
+			[
+				'render'     => [$this, 'render_user_add_new_domain_modal'],
+				'handler'    => [$this, 'handle_user_add_new_domain_modal'],
 				'capability' => 'exist',
-			)
+			]
 		);
 
 		wu_register_form(
 			'user_make_domain_primary',
-			array(
-				'render'     => array($this, 'render_user_make_domain_primary_modal'),
-				'handler'    => array($this, 'handle_user_make_domain_primary_modal'),
+			[
+				'render'     => [$this, 'render_user_make_domain_primary_modal'],
+				'handler'    => [$this, 'handle_user_make_domain_primary_modal'],
 				'capability' => 'exist',
-			)
+			]
 		);
 
 		wu_register_form(
 			'user_delete_domain_modal',
-			array(
-				'render'     => array($this, 'render_user_delete_domain_modal'),
-				'handler'    => array($this, 'handle_user_delete_domain_modal'),
+			[
+				'render'     => [$this, 'render_user_delete_domain_modal'],
+				'handler'    => [$this, 'handle_user_delete_domain_modal'],
 				'capability' => 'exist',
-			)
+			]
 		);
 	}
 
@@ -284,107 +284,107 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_user_add_new_domain_modal() {
+	public function render_user_add_new_domain_modal(): void {
 
 		$instructions = \WP_Ultimo\Managers\Domain_Manager::get_instance()->get_domain_mapping_instructions();
 
-		$fields = array(
-			'instructions_note' => array(
+		$fields = [
+			'instructions_note' => [
 				'type'              => 'note',
 				'desc'              => sprintf('<a href="#" class="wu-no-underline" v-on:click.prevent="ready = false">%s</a>', __('&larr; Back to the Instructions', 'wp-ultimo')),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => 'ready',
 					'v-cloak' => '1',
-				),
-			),
-			'instructions'      => array(
+				],
+			],
+			'instructions'      => [
 				'type'              => 'text-display',
 				'copy'              => false,
 				'title'             => __('Instructions', 'wp-ultimo'),
 				'tooltip'           => '',
 				'display_value'     => sprintf('<div class="wu--mt-2 wu--mb-2">%s</div>', wpautop($instructions)),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => '!ready',
 					'v-cloak' => 1,
-				),
-			),
-			'ready'             => array(
+				],
+			],
+			'ready'             => [
 				'type'              => 'submit',
 				'title'             => __('Next Step &rarr;', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-on:click.prevent' => 'ready = true',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => '!ready',
 					'v-cloak' => 1,
-				),
-			),
-			'current_site'      => array(
+				],
+			],
+			'current_site'      => [
 				'type'  => 'hidden',
 				'value' => wu_request('current_site'),
-			),
-			'domain'            => array(
+			],
+			'domain'            => [
 				'type'              => 'text',
 				'title'             => __('Domain', 'wp-ultimo'),
 				'placeholder'       => __('mydomain.com', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'ready',
 					'v-cloak' => 1,
-				),
-			),
-			'primary_domain'    => array(
+				],
+			],
+			'primary_domain'    => [
 				'type'              => 'toggle',
 				'title'             => __('Primary Domain', 'wp-ultimo'),
 				'desc'              => __('Check to set this domain as the primary', 'wp-ultimo'),
-				'html_attr'         => array(
+				'html_attr'         => [
 					'v-model' => 'primary_domain',
-				),
-				'wrapper_html_attr' => array(
+				],
+				'wrapper_html_attr' => [
 					'v-show'  => 'ready',
 					'v-cloak' => 1,
-				),
-			),
-			'primary_note'      => array(
+				],
+			],
+			'primary_note'      => [
 				'type'              => 'note',
 				'desc'              => __('By making this the primary domain, we will convert the previous primary domain for this site, if one exists, into an alias domain.', 'wp-ultimo'),
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-if'    => "require('primary_domain', true) && ready",
 					'v-cloak' => 1,
-				),
-			),
-			'submit_button_new' => array(
+				],
+			],
+			'submit_button_new' => [
 				'type'              => 'submit',
 				'title'             => __('Add Domain', 'wp-ultimo'),
 				'value'             => 'save',
 				'classes'           => 'button button-primary wu-w-full',
 				'wrapper_classes'   => 'wu-items-end',
-				'wrapper_html_attr' => array(
+				'wrapper_html_attr' => [
 					'v-show'  => 'ready',
 					'v-cloak' => 1,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'add_new_domain',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'add_new_domain',
 					'data-state'  => json_encode(
-						array(
+						[
 							'ready'          => 0,
 							'primary_domain' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -396,7 +396,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_user_add_new_domain_modal() {
+	public function handle_user_add_new_domain_modal(): void {
 
 		$current_user_id = get_current_user_id();
 
@@ -416,11 +416,11 @@ class Domain_Mapping_Element extends Base_Element {
 		* Tries to create the domain
 		*/
 		$domain = wu_create_domain(
-			array(
+			[
 				'domain'         => wu_request('domain'),
 				'blog_id'        => absint($current_site_id),
 				'primary_domain' => (bool) wu_request('primary_domain'),
-			)
+			]
 		);
 
 		if (is_wp_error($domain)) {
@@ -429,21 +429,21 @@ class Domain_Mapping_Element extends Base_Element {
 
 		if (wu_request('primary_domain')) {
 			$old_primary_domains = wu_get_domains(
-				array(
+				[
 					'primary_domain' => true,
 					'blog_id'        => $current_site_id,
-					'id__not_in'     => array($domain->get_id()),
+					'id__not_in'     => [$domain->get_id()],
 					'fields'         => 'ids',
-				)
+				]
 			);
 
 			/*
 			 * Trigger async action to update the old primary domains.
 			 */
-			do_action_ref_array('wu_async_remove_old_primary_domains', array($old_primary_domains));
+			do_action_ref_array('wu_async_remove_old_primary_domains', [$old_primary_domains]);
 		}
 
-		wu_enqueue_async_action('wu_async_process_domain_stage', array('domain_id' => $domain->get_id()), 'domain');
+		wu_enqueue_async_action('wu_async_process_domain_stage', ['domain_id' => $domain->get_id()], 'domain');
 
 		/**
 		 * Triggers when a new domain mapping is added.
@@ -451,9 +451,9 @@ class Domain_Mapping_Element extends Base_Element {
 		do_action('wu_domain_created', $domain, $domain->get_site(), $domain->get_site()->get_membership());
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_get_current_url(),
-			)
+			]
 		);
 
 		exit;
@@ -465,50 +465,50 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_user_delete_domain_modal() {
+	public function render_user_delete_domain_modal(): void {
 
-		$fields = array(
-			'confirm'       => array(
+		$fields = [
+			'confirm'       => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Deletion', 'wp-ultimo'),
 				'desc'      => __('This action can not be undone.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'domain_id'     => array(
+				],
+			],
+			'domain_id'     => [
 				'type'  => 'hidden',
 				'value' => wu_request('domain_id'),
-			),
-			'submit_button' => array(
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Delete', 'wp-ultimo'),
 				'placeholder'     => __('Delete', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'user_delete_domain_modal',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'user_delete_domain_modal',
 					'data-state'  => json_encode(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -520,7 +520,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_user_delete_domain_modal() {
+	public function handle_user_delete_domain_modal(): void {
 
 		if (wu_request('user_id')) {
 			$customer = wu_get_customer_by_user_id(wu_request('user_id'));
@@ -537,9 +537,9 @@ class Domain_Mapping_Element extends Base_Element {
 		}
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => wu_get_current_url(),
-			)
+			]
 		);
 	}
 
@@ -549,50 +549,50 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_user_make_domain_primary_modal() {
+	public function render_user_make_domain_primary_modal(): void {
 
-		$fields = array(
-			'confirm'       => array(
+		$fields = [
+			'confirm'       => [
 				'type'      => 'toggle',
 				'title'     => __('Confirm Action', 'wp-ultimo'),
 				'desc'      => __('This action will also convert the previous primary domain (if any) to an alias to prevent unexpected behavior.', 'wp-ultimo'),
-				'html_attr' => array(
+				'html_attr' => [
 					'v-model' => 'confirmed',
-				),
-			),
-			'domain_id'     => array(
+				],
+			],
+			'domain_id'     => [
 				'type'  => 'hidden',
 				'value' => wu_request('domain_id'),
-			),
-			'submit_button' => array(
+			],
+			'submit_button' => [
 				'type'            => 'submit',
 				'title'           => __('Make it Primary', 'wp-ultimo'),
 				'placeholder'     => __('Make it Primary', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!confirmed',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$form = new \WP_Ultimo\UI\Form(
 			'user_delete_domain_modal',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'user_delete_domain_modal',
 					'data-state'  => json_encode(
-						array(
+						[
 							'confirmed' => false,
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -604,7 +604,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_user_make_domain_primary_modal() {
+	public function handle_user_make_domain_primary_modal(): void {
 
 		$current_site = wu_request('current_site');
 
@@ -622,23 +622,23 @@ class Domain_Mapping_Element extends Base_Element {
 			}
 
 			$old_primary_domains = wu_get_domains(
-				array(
+				[
 					'primary_domain' => true,
 					'blog_id'        => $domain->get_blog_id(),
-					'id__not_in'     => array($domain->get_id()),
+					'id__not_in'     => [$domain->get_id()],
 					'fields'         => 'ids',
-				)
+				]
 			);
 
 			/*
 			 * Trigger async action to update the old primary domains.
 			 */
-			do_action_ref_array('wu_async_remove_old_primary_domains', array($old_primary_domains));
+			do_action_ref_array('wu_async_remove_old_primary_domains', [$old_primary_domains]);
 
 			wp_send_json_success(
-				array(
+				[
 					'redirect_url' => is_main_site() ? wu_get_current_url() : get_admin_url($current_site),
-				)
+				]
 			);
 		}
 
@@ -651,7 +651,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
@@ -673,7 +673,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 
@@ -698,14 +698,14 @@ class Domain_Mapping_Element extends Base_Element {
 		$current_site = $this->site;
 
 		$all_domains = wu_get_domains(
-			array(
+			[
 				'blog_id' => $current_site->get_id(),
 				'orderby' => 'primary_domain',
 				'order'   => 'DESC',
-			)
+			]
 		);
 
-		$domains = array();
+		$domains = [];
 
 		foreach ($all_domains as $key => $domain) {
 			$stage = new Domain_Stage($domain->get_stage());
@@ -720,15 +720,15 @@ class Domain_Mapping_Element extends Base_Element {
 				$secure_message = __('Domain secured with HTTPS', 'wp-ultimo');
 			}
 
-			$url_atts = array(
+			$url_atts = [
 				'current_site' => $current_site->get_id(),
 				'domain_id'    => $domain->get_id(),
-			);
+			];
 
 			$delete_url  = wu_get_form_url('user_delete_domain_modal', $url_atts);
 			$primary_url = wu_get_form_url('user_make_domain_primary', $url_atts);
 
-			$domains[ $key ] = array(
+			$domains[ $key ] = [
 				'id'             => $domain->get_id(),
 				'domain_object'  => $domain,
 				'domain'         => $domain->get_domain(),
@@ -739,22 +739,22 @@ class Domain_Mapping_Element extends Base_Element {
 				'secure_message' => $secure_message,
 				'delete_link'    => $delete_url,
 				'primary_link'   => $primary_url,
-			);
+			];
 		}
 
-		$url_atts = array(
+		$url_atts = [
 			'current_site' => $current_site->get_ID(),
-		);
+		];
 
-		$other_atts = array(
+		$other_atts = [
 			'domains' => $domains,
-			'modal'   => array(
+			'modal'   => [
 				'label'   => __('Add Domain', 'wp-ultimo'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('user_add_new_domain', $url_atts),
-			),
-		);
+			],
+		];
 
 		$atts = array_merge($other_atts, $atts);
 

@@ -19,7 +19,7 @@ defined('ABSPATH') || exit;
  */
 function wu_extract_number($str) {
 
-	$matches = array();
+	$matches = [];
 
 	preg_match_all('/\d+/', $str, $matches);
 

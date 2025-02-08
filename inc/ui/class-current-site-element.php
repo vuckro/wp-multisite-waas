@@ -84,17 +84,17 @@ class Current_Site_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		parent::init();
 
 		wu_register_form(
 			'edit_site',
-			array(
-				'render'     => array($this, 'render_edit_site'),
-				'handler'    => array($this, 'handle_edit_site'),
+			[
+				'render'     => [$this, 'render_edit_site'],
+				'handler'    => [$this, 'handle_edit_site'],
 				'capability' => 'exist',
-			)
+			]
 		);
 	}
 
@@ -148,61 +148,61 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function fields() {
 
-		$fields = array();
+		$fields = [];
 
-		$fields['header'] = array(
+		$fields['header'] = [
 			'title' => __('General', 'wp-ultimo'),
 			'desc'  => __('General', 'wp-ultimo'),
 			'type'  => 'header',
-		);
+		];
 
-		$fields['display_breadcrumbs'] = array(
+		$fields['display_breadcrumbs'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Breadcrumbs?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the breadcrumbs block.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
 		$pages = get_pages(
-			array(
-				'exclude' => array(get_the_ID()),
-			)
+			[
+				'exclude' => [get_the_ID()],
+			]
 		);
 
-		$pages = $pages ? $pages : array();
+		$pages = $pages ?: [];
 
-		$pages_list = array(0 => __('Current Page', 'wp-ultimo'));
+		$pages_list = [0 => __('Current Page', 'wp-ultimo')];
 
 		foreach ($pages as $page) {
 			$pages_list[ $page->ID ] = $page->post_title;
 		}
 
-		$fields['breadcrumbs_my_sites_page'] = array(
+		$fields['breadcrumbs_my_sites_page'] = [
 			'type'    => 'select',
 			'title'   => __('My Sites Page', 'wp-ultimo'),
 			'value'   => 0,
 			'desc'    => __('The page with the customer sites list.', 'wp-ultimo'),
 			'options' => $pages_list,
-		);
+		];
 
-		$fields['display_description'] = array(
+		$fields['display_description'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Site Description?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the site description on the element.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 0,
-		);
+		];
 
-		$fields['display_image'] = array(
+		$fields['display_image'] = [
 			'type'    => 'toggle',
 			'title'   => __('Display Site Screenshot?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the site screenshots on the element.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
-		$fields['screenshot_size'] = array(
+		$fields['screenshot_size'] = [
 			'type'     => 'number',
 			'title'    => __('Screenshot Size', 'wp-ultimo'),
 			'desc'     => '',
@@ -210,33 +210,33 @@ class Current_Site_Element extends Base_Element {
 			'value'    => 200,
 			'min'      => 100,
 			'max'      => 400,
-			'required' => array(
+			'required' => [
 				'display_image' => 1,
-			),
-		);
+			],
+		];
 
-		$fields['screenshot_position'] = array(
+		$fields['screenshot_position'] = [
 			'type'     => 'select',
 			'title'    => __('Screenshot Position', 'wp-ultimo'),
-			'options'  => array(
+			'options'  => [
 				'right' => __('Right', 'wp-ultimo'),
 				'left'  => __('Left', 'wp-ultimo'),
-			),
+			],
 			'desc'     => '',
 			'tooltip'  => '',
 			'value'    => 'right',
-			'required' => array(
+			'required' => [
 				'display_image' => 1,
-			),
-		);
+			],
+		];
 
-		$fields['show_admin_link'] = array(
+		$fields['show_admin_link'] = [
 			'type'    => 'toggle',
 			'title'   => __('Show Admin Link?', 'wp-ultimo'),
 			'desc'    => __('Toggle to show/hide the WP admin link on the element.', 'wp-ultimo'),
 			'tooltip' => '',
 			'value'   => 1,
-		);
+		];
 
 		return $fields;
 	}
@@ -260,13 +260,13 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function keywords() {
 
-		return array(
+		return [
 			'WP Ultimo',
 			'WP Multisite WaaS',
 			'Site',
 			'Form',
 			'Cart',
-		);
+		];
 	}
 
 	/**
@@ -285,7 +285,7 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		return array(
+		return [
 			'display_image'             => 1,
 			'display_breadcrumbs'       => 1,
 			'display_description'       => 0,
@@ -293,7 +293,7 @@ class Current_Site_Element extends Base_Element {
 			'screenshot_position'       => 'right',
 			'breadcrumbs_my_sites_page' => 0,
 			'show_admin_link'           => 1,
-		);
+		];
 	}
 
 	/**
@@ -302,7 +302,7 @@ class Current_Site_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
@@ -321,7 +321,7 @@ class Current_Site_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {
+	public function setup_preview(): void {
 
 		$this->site = wu_mock_site();
 
@@ -334,7 +334,7 @@ class Current_Site_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_scripts(): void {
 
 		add_wubox();
 	}
@@ -354,33 +354,33 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		$actions = array(
-			'visit_site' => array(
+		$actions = [
+			'visit_site' => [
 				'label'        => __('Visit Site', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-browser wu-align-text-bottom',
 				'classes'      => '',
 				'href'         => $this->site->get_active_site_url(),
-			),
-			'edit_site'  => array(
+			],
+			'edit_site'  => [
 				'label'        => __('Edit Site', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-edit wu-align-text-bottom',
 				'classes'      => 'wubox',
 				'href'         => wu_get_form_url(
 					'edit_site',
-					array(
+					[
 						'site' => $this->site->get_hash(),
-					)
+					]
 				),
-			),
-		);
+			],
+		];
 
 		if ($atts['show_admin_link']) {
-			$actions['site_admin'] = array(
+			$actions['site_admin'] = [
 				'label'        => __('Admin Panel', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-grid wu-align-text-bottom',
 				'classes'      => '',
 				'href'         => get_admin_url($this->site->get_id()),
-			);
+			];
 		}
 
 		$atts['actions'] = apply_filters('wu_current_site_actions', $actions, $this->site);
@@ -410,59 +410,59 @@ class Current_Site_Element extends Base_Element {
 			return '';
 		}
 
-		$fields = array(
-			'site_title'       => array(
+		$fields = [
+			'site_title'       => [
 				'type'        => 'text',
 				'title'       => __('Site Title', 'wp-ultimo'),
 				'placeholder' => __('e.g. My Awesome Site', 'wp-ultimo'),
 				'value'       => $site->get_title(),
-				'html_attr'   => array(
+				'html_attr'   => [
 					'v-model' => 'site_title',
-				),
-			),
-			'site_description' => array(
+				],
+			],
+			'site_description' => [
 				'type'        => 'textarea',
 				'title'       => __('Site Description', 'wp-ultimo'),
 				'placeholder' => __('e.g. My Awesome Site description.', 'wp-ultimo'),
 				'value'       => $site->get_description(),
-				'html_attr'   => array(
+				'html_attr'   => [
 					'rows' => 5,
-				),
-			),
-			'site'             => array(
+				],
+			],
+			'site'             => [
 				'type'  => 'hidden',
 				'value' => wu_request('site'),
-			),
-			'submit_button'    => array(
+			],
+			'submit_button'    => [
 				'type'            => 'submit',
 				'title'           => __('Save Changes', 'wp-ultimo'),
 				'value'           => 'save',
 				'classes'         => 'button button-primary wu-w-full',
 				'wrapper_classes' => 'wu-items-end',
-				'html_attr'       => array(
+				'html_attr'       => [
 					'v-bind:disabled' => '!site_title.length',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$fields = apply_filters('wu_form_edit_site', $fields, $this);
 
 		$form = new \WP_Ultimo\UI\Form(
 			'edit_site',
 			$fields,
-			array(
+			[
 				'views'                 => 'admin-pages/fields',
 				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				'html_attr'             => array(
+				'html_attr'             => [
 					'data-wu-app' => 'edit_site',
 					'data-state'  => wu_convert_to_state(
-						array(
+						[
 							'site_title' => $site->get_title(),
-						)
+						]
 					),
-				),
-			)
+				],
+			]
 		);
 
 		$form->render();
@@ -474,7 +474,7 @@ class Current_Site_Element extends Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function handle_edit_site() {
+	public function handle_edit_site(): void {
 
 		$site = wu_get_site_by_hash(wu_request('site'));
 
@@ -497,9 +497,9 @@ class Current_Site_Element extends Base_Element {
 		$status_desc = update_blog_option($site->get_id(), 'blogdescription', wu_request('site_description'));
 
 		wp_send_json_success(
-			array(
+			[
 				'redirect_url' => add_query_arg('updated', (int) $status, $_SERVER['HTTP_REFERER']),
-			)
+			]
 		);
 	}
 }

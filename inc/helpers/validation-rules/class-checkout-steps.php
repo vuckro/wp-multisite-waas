@@ -36,7 +36,7 @@ class Checkout_Steps extends Rule {
 	 * @since 2.0.0
 	 * @var array
 	 */
-	protected $fillableParams = array(); // phpcs:ignore
+	protected $fillableParams = []; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *
@@ -90,11 +90,11 @@ class Checkout_Steps extends Rule {
 		 */
 		$submittable_field_types = apply_filters(
 			'wu_checkout_step_validation_submittable_field_types',
-			array(
+			[
 				'submit_button',
 				'pricing_table',
 				'template_selection',
-			)
+			]
 		);
 
 		/**
@@ -103,11 +103,11 @@ class Checkout_Steps extends Rule {
 		foreach ($value as $step) {
 			$found_submittable_field_types = \Arrch\Arrch::find(
 				$step['fields'],
-				array(
-					'where' => array(
-						array('type', $submittable_field_types),
-					),
-				)
+				[
+					'where' => [
+						['type', $submittable_field_types],
+					],
+				]
 			);
 
 			if (empty($found_submittable_field_types)) {

@@ -54,7 +54,7 @@ if (!function_exists('validate_user_form')) {
  * @param array $attributes
  * @return void
  */
-function wu_create_html_attributes_from_array($attributes = array()) {
+function wu_create_html_attributes_from_array($attributes = []) {
 
 	$output = '';
 
@@ -80,7 +80,7 @@ function wu_create_html_attributes_from_array($attributes = array()) {
  * @param string $option_label
  * @return void
  */
-function wu_print_signup_field_option($option_value, $option_label, $field = array()) { ?>
+function wu_print_signup_field_option($option_value, $option_label, $field = []) { ?>
 
   <option <?php selected(isset($field['default']) && $field['default'] == $option_value); ?> value="<?php echo $option_value; ?>"><?php echo $option_label; ?></option>
 
@@ -94,7 +94,7 @@ function wu_print_signup_field_option($option_value, $option_label, $field = arr
  * @param array $options
  * @return void
  */
-function wu_print_signup_field_options($options, $field = array()) {
+function wu_print_signup_field_options($options, $field = []) {
 
 	foreach ($options as $option_value => $option_label) {
 
@@ -246,7 +246,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
     <p <?php echo $wrapper_attributes; ?> id="<?php echo $field_slug; ?>-field" <?php echo $wrapper_attributes; ?> style="<?php echo $display ? '' : 'display: none'; ?>" >
 
       <label for="<?php echo $field_slug; ?>"><?php echo $field['name']; ?> <?php echo wu_tooltip($field['tooltip']); ?><br>
-      <input <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> type="<?php echo $field['type']; ?>" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo isset($results[$field_slug]) ? $results[$field_slug] : ''; ?>" size="20"></label>
+      <input <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> type="<?php echo $field['type']; ?>" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo $results[$field_slug] ?? ''; ?>" size="20"></label>
 
 
 			<?php
@@ -273,13 +273,13 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
 				$suffix = WP_Ultimo()->min;
 
-				wp_enqueue_script('wu-password-verify', WP_Ultimo()->get_asset("wu-password-verify$suffix.js", 'js'), array('jquery'), true);
+				wp_enqueue_script('wu-password-verify', WP_Ultimo()->get_asset("wu-password-verify$suffix.js", 'js'), ['jquery'], true);
 
 				?>
 
       <span class="password-input-wrapper" style="display: block;">
         <label for="<?php echo $field_slug; ?>"><?php echo $field['name']; ?> <?php echo wu_tooltip($field['tooltip']); ?><br>
-        <input <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> type="<?php echo $field['type']; ?>" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo isset($results[$field_slug]) ? $results[$field_slug] : ''; ?>"  data-reveal="1" data-pw="<?php echo esc_attr( wp_generate_password( 16 ) ); ?>" class="input" size="20" autocomplete="off" aria-describedby="pass-strength-result" />
+        <input <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> type="<?php echo $field['type']; ?>" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo $results[$field_slug] ?? ''; ?>"  data-reveal="1" data-pw="<?php echo esc_attr( wp_generate_password( 16 ) ); ?>" class="input" size="20" autocomplete="off" aria-describedby="pass-strength-result" />
       </span>
 
       <span style="display: block; margin-top: -16px; opacity: 1; height: 36px;" id="pass-strength-result" class="hide-if-no-js" aria-live="polite"><?php _e( 'Strength indicator' ); ?></span>
@@ -296,7 +296,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 			<?php else : ?>
 
       <label for="<?php echo $field_slug; ?>"><?php echo $field['name']; ?> <?php echo wu_tooltip($field['tooltip']); ?><br>
-      <input <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> type="<?php echo $field['type']; ?>" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo isset($results[$field_slug]) ? $results[$field_slug] : ''; ?>" size="20"></label>
+      <input <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> type="<?php echo $field['type']; ?>" name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo $results[$field_slug] ?? ''; ?>" size="20"></label>
 
     <?php endif; ?>
 
@@ -356,7 +356,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
       <label for="<?php echo $field_slug; ?>"><?php echo $field['name']; ?> <?php echo wu_tooltip($field['tooltip']); ?><br>
 
-      <select <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo isset($results[$field_slug]) ? $results[$field_slug] : ''; ?>">
+      <select <?php echo $attributes; ?> <?php echo isset($field['required']) && $field['required'] ? 'required' : ''; ?> name="<?php echo $field_slug; ?>" id="<?php echo $field_slug; ?>" class="input" value="<?php echo $results[$field_slug] ?? ''; ?>">
 
 			<?php wu_print_signup_field_options($field['options'], $field); ?>
 
@@ -424,7 +424,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
  * @param array $user_meta
  * @return int|bool
  */
-function wu_create_user(array $user_data, array $plan_data, array $user_meta = array()) {
+function wu_create_user(array $user_data, array $plan_data, array $user_meta = []) {
 
 	return WU_Signup()->create_user($user_data, $plan_data, $user_meta);
 
@@ -442,7 +442,7 @@ function wu_create_user(array $user_data, array $plan_data, array $user_meta = a
  * @param array   $site_meta
  * @return void
  */
-function wu_create_site_legacy($user_id, array $site_data, $template_id = false, $site_meta = array()) {
+function wu_create_site_legacy($user_id, array $site_data, $template_id = false, $site_meta = []) {
 
 	return WU_Signup()->create_site($user_id, $site_data, $template_id, $site_meta);
 

@@ -21,7 +21,7 @@ trait WP_Ultimo_Deprecated {
 	 * @param string $term Returns a string based on the term and this plugin slug.
 	 * @return void
 	 */
-	public function slugfy($term) {
+	public function slugfy($term): void {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_slugify($term)');
 
@@ -34,7 +34,7 @@ trait WP_Ultimo_Deprecated {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_page_to_branding() {
+	public function add_page_to_branding(): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 	}
@@ -49,7 +49,7 @@ trait WP_Ultimo_Deprecated {
 	 * @param boolean $vars Key => Value pairs to be made available as local variables inside the view scope.
 	 * @return void
 	 */
-	public function render($view, $vars = false) {
+	public function render($view, $vars = false): void {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_template()');
 
@@ -82,7 +82,7 @@ trait WP_Ultimo_Deprecated {
 	 * @param boolean $network Where to display, network admin or normal admin.
 	 * @return void
 	 */
-	public function add_message($message, $type = 'success', $network = false) {
+	public function add_message($message, $type = 'success', $network = false): void {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'WP_Ultimo()->notices->add()');
 
@@ -117,12 +117,12 @@ trait WP_Ultimo_Deprecated {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function enqueue_select2() {
+	public function enqueue_select2(): void {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 
 		wp_enqueue_style('wu-select2css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.css', false, '1.0', 'all');
 
-		wp_enqueue_script('wu-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.js', array('jquery'), '1.0', true);
+		wp_enqueue_script('wu-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.js', ['jquery'], '1.0', true);
 	}
 }

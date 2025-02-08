@@ -20,106 +20,106 @@ use WP_Ultimo\Database\Payments\Payment_Status;
  *
  * @since 2.0.11
  */
-return array(
-	'customer_id'                 => array(
+return [
+	'customer_id'                 => [
 		'description' => __('The ID of the customer attached to this payment.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => true,
-	),
-	'membership_id'               => array(
+	],
+	'membership_id'               => [
 		'description' => __('The ID of the membership attached to this payment.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => true,
-	),
-	'parent_id'                   => array(
+	],
+	'parent_id'                   => [
 		'description' => __('The ID from another payment that this payment is related to.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'currency'                    => array(
+	],
+	'currency'                    => [
 		'description' => __("The currency of this payment. It's a 3-letter code. E.g. 'USD'.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'subtotal'                    => array(
+	],
+	'subtotal'                    => [
 		'description' => __('Value before taxes, discounts, fees and other changes.', 'wp-ultimo'),
 		'type'        => 'number',
 		'required'    => true,
-	),
-	'refund_total'                => array(
+	],
+	'refund_total'                => [
 		'description' => __('Total amount refunded.', 'wp-ultimo'),
 		'type'        => 'number',
 		'required'    => false,
-	),
-	'tax_total'                   => array(
+	],
+	'tax_total'                   => [
 		'description' => __('The amount, in currency, of the tax.', 'wp-ultimo'),
 		'type'        => 'number',
 		'required'    => false,
-	),
-	'discount_code'               => array(
+	],
+	'discount_code'               => [
 		'description' => __('Discount code used.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'total'                       => array(
+	],
+	'total'                       => [
 		'description' => __('This takes into account fees, discounts and credits.', 'wp-ultimo'),
 		'type'        => 'number',
 		'required'    => true,
-	),
-	'status'                      => array(
+	],
+	'status'                      => [
 		'description' => __("The payment status: Can be 'pending', 'completed', 'refunded', 'partially-refunded', 'partially-paid', 'failed', 'cancelled' or other values added by third-party add-ons.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => true,
 		'enum'        => Payment_Status::get_allowed_list(),
-	),
-	'gateway'                     => array(
+	],
+	'gateway'                     => [
 		'description' => __('ID of the gateway being used on this payment.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'product_id'                  => array(
+	],
+	'product_id'                  => [
 		'description' => __('The ID of the product of this payment.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'gateway_payment_id'          => array(
+	],
+	'gateway_payment_id'          => [
 		'description' => __('The ID of the payment on the gateway, if it exists.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'discount_total'              => array(
+	],
+	'discount_total'              => [
 		'description' => __('The total value of the discounts applied to this payment.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'invoice_number'              => array(
+	],
+	'invoice_number'              => [
 		'description' => __('Sequential invoice number assigned to this payment.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'cancel_membership_on_refund' => array(
+	],
+	'cancel_membership_on_refund' => [
 		'description' => __('Holds if we need to cancel the membership on refund.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'date_created'                => array(
+	],
+	'date_created'                => [
 		'description' => __('Model creation date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'               => array(
+	],
+	'date_modified'               => [
 		'description' => __('Model last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'migrated_from_id'            => array(
+	],
+	'migrated_from_id'            => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'             => array(
+	],
+	'skip_validation'             => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

@@ -69,7 +69,7 @@ function wu_get_isset($array, $key, $default = false) {
 		$array = (array) $array;
 	}
 
-	return isset($array[ $key ]) ? $array[ $key ] : $default;
+	return $array[ $key ] ?? $default;
 }
 
 /**
@@ -251,7 +251,7 @@ function wu_get_function_caller($depth = 1) {
 
 	$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $depth + 1);
 
-	$caller = isset($backtrace[ $depth ]['function']) ? $backtrace[ $depth ]['function'] : null;
+	$caller = $backtrace[ $depth ]['function'] ?? null;
 
 	return $caller;
 }

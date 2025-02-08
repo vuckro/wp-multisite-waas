@@ -33,9 +33,9 @@ class Register_Endpoint {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('wu_register_rest_routes', array($this, 'register_route'));
+		add_action('wu_register_rest_routes', [$this, 'register_route']);
 	}
 
 	/**
@@ -46,29 +46,29 @@ class Register_Endpoint {
 	 * @param \WP_Ultimo\API $api The API main singleton.
 	 * @return void
 	 */
-	public function register_route($api) {
+	public function register_route($api): void {
 
 		$namespace = $api->get_namespace();
 
 		register_rest_route(
 			$namespace,
 			'/register',
-			array(
+			[
 				'methods'             => \WP_REST_Server::READABLE,
-				'callback'            => array($this, 'handle_get'),
-				'permission_callback' => \Closure::fromCallable(array($api, 'check_authorization')),
-			)
+				'callback'            => [$this, 'handle_get'],
+				'permission_callback' => \Closure::fromCallable([$api, 'check_authorization']),
+			]
 		);
 
 		register_rest_route(
 			$namespace,
 			'/register',
-			array(
+			[
 				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => array($this, 'handle_endpoint'),
-				'permission_callback' => \Closure::fromCallable(array($api, 'check_authorization')),
+				'callback'            => [$this, 'handle_endpoint'],
+				'permission_callback' => \Closure::fromCallable([$api, 'check_authorization']),
 				'args'                => $this->get_rest_args(),
-			)
+			]
 		);
 	}
 
@@ -82,9 +82,9 @@ class Register_Endpoint {
 	 */
 	public function handle_get($request) {
 
-		return array(
+		return [
 			'registration_status' => wu_get_setting('enable_registration', true) ? 'open' : 'closed',
-		);
+		];
 	}
 
 	/**
@@ -109,9 +109,9 @@ class Register_Endpoint {
 
 		if (is_wp_error($validation_errors)) {
 			$validation_errors->add_data(
-				array(
+				[
 					'status' => 400,
-				)
+				]
 			);
 
 			return $validation_errors;
@@ -129,10 +129,10 @@ class Register_Endpoint {
 			$customer->update_last_login(true, true);
 
 			$customer->add_note(
-				array(
+				[
 					'text'      => __('Created via REST API', 'wp-ultimo'),
 					'author_id' => $customer->get_user_id(),
-				)
+				]
 			);
 
 			/*
@@ -140,12 +140,12 @@ class Register_Endpoint {
 			 */
 			$payment_method = wp_parse_args(
 				wu_get_isset($params, 'payment_method'),
-				array(
+				[
 					'gateway'                 => '',
 					'gateway_customer_id'     => '',
 					'gateway_subscription_id' => '',
 					'gateway_payment_id'      => '',
-				)
+				]
 			);
 
 			/*
@@ -155,9 +155,9 @@ class Register_Endpoint {
 
 			$cart_params = wp_parse_args(
 				$cart_params,
-				array(
+				[
 					'type' => 'new',
-				)
+				]
 			);
 
 			$cart = new Cart($cart_params);
@@ -171,9 +171,9 @@ class Register_Endpoint {
 					__('Products are required.', 'wp-ultimo'),
 					array_merge(
 						(array) $cart->done(),
-						array(
+						[
 							'status' => 400,
-						)
+						]
 					)
 				);
 			}
@@ -188,9 +188,9 @@ class Register_Endpoint {
 				wu_get_isset(
 					$params,
 					'membership',
-					array(
+					[
 						'status' => Membership_Status::PENDING,
-					)
+					]
 				)
 			);
 
@@ -214,10 +214,10 @@ class Register_Endpoint {
 			}
 
 			$membership->add_note(
-				array(
+				[
 					'text'      => __('Created via REST API', 'wp-ultimo'),
 					'author_id' => $customer->get_user_id(),
-				)
+				]
 			);
 
 			$payment_data = $cart->to_payment_data();
@@ -227,9 +227,9 @@ class Register_Endpoint {
 				wu_get_isset(
 					$params,
 					'payment',
-					array(
+					[
 						'status' => Payment_Status::PENDING,
-					)
+					]
 				)
 			);
 
@@ -252,10 +252,10 @@ class Register_Endpoint {
 			}
 
 			$payment->add_note(
-				array(
+				[
 					'text'      => __('Created via REST API', 'wp-ultimo'),
 					'author_id' => $customer->get_user_id(),
-				)
+				]
 			);
 
 			$site = false;
@@ -301,7 +301,7 @@ class Register_Endpoint {
 		} catch (\Throwable $e) {
 			$wpdb->query('ROLLBACK');
 
-			return new \WP_Error('registration_error', $e->getMessage(), array('status' => 500));
+			return new \WP_Error('registration_error', $e->getMessage(), ['status' => 500]);
 		}
 
 		$wpdb->query('COMMIT');
@@ -309,12 +309,12 @@ class Register_Endpoint {
 		/*
 		 * We have everything we need now.
 		 */
-		return array(
+		return [
 			'membership' => $membership->to_array(),
 			'customer'   => $customer->to_array(),
 			'payment'    => $payment->to_array(),
-			'site'       => $site ? $site : array('id' => 0),
-		);
+			'site'       => $site ?: ['id' => 0],
+		];
 	}
 
 	/**
@@ -331,203 +331,203 @@ class Register_Endpoint {
 		 */
 		$billing_address_fields = Billing_Address::fields_for_rest(false);
 
-		$customer_args = array(
-			'customer_id' => array(
+		$customer_args = [
+			'customer_id' => [
 				'description' => __('The customer ID, if the customer already exists. If you also need to create a customer/wp user, use the "customer" property.', 'wp-ultimo'),
 				'type'        => 'integer',
-			),
-			'customer'    => array(
+			],
+			'customer'    => [
 				'description' => __('Customer data. Needs to be present when customer id is not.', 'wp-ultimo'),
 				'type'        => 'object',
-				'properties'  => array(
-					'user_id'         => array(
+				'properties'  => [
+					'user_id'         => [
 						'description' => __('Existing WordPress user id to attach this customer to. If you also need to create a WordPress user, pass the properties "username", "password", and "email".', 'wp-ultimo'),
 						'type'        => 'integer',
-					),
-					'username'        => array(
+					],
+					'username'        => [
 						'description' => __('The customer username. This is used to create the WordPress user.', 'wp-ultimo'),
 						'type'        => 'string',
 						'minLength'   => 4,
-					),
-					'password'        => array(
+					],
+					'password'        => [
 						'description' => __('The customer password. This is used to create the WordPress user. Note that no validation is performed here to enforce strength.', 'wp-ultimo'),
 						'type'        => 'string',
 						'minLength'   => 6,
-					),
-					'email'           => array(
+					],
+					'email'           => [
 						'description' => __('The customer email address. This is used to create the WordPress user.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'email',
-					),
-					'billing_address' => array(
+					],
+					'billing_address' => [
 						'type'       => 'object',
 						'properties' => $billing_address_fields,
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$membership_args = array(
-			'membership' => array(
+		$membership_args = [
+			'membership' => [
 				'description' => __('The membership data is automatically generated based on the cart info passed (e.g. products) but can be overridden with this property.', 'wp-ultimo'),
 				'type'        => 'object',
-				'properties'  => array(
-					'status'                      => array(
+				'properties'  => [
+					'status'                      => [
 						'description' => __('The membership status.', 'wp-ultimo'),
 						'type'        => 'string',
 						'enum'        => array_values(Membership_Status::get_allowed_list()),
 						'default'     => Membership_Status::PENDING,
-					),
-					'date_expiration'             => array(
+					],
+					'date_expiration'             => [
 						'description' => __('The membership expiration date. Must be a valid PHP date format.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'date-time',
-					),
-					'date_trial_end'              => array(
+					],
+					'date_trial_end'              => [
 						'description' => __('The membership trial end date. Must be a valid PHP date format.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'date-time',
-					),
-					'date_activated'              => array(
+					],
+					'date_activated'              => [
 						'description' => __('The membership activation date. Must be a valid PHP date format.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'date-time',
-					),
-					'date_renewed'                => array(
+					],
+					'date_renewed'                => [
 						'description' => __('The membership last renewed date. Must be a valid PHP date format.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'date-time',
-					),
-					'date_cancellation'           => array(
+					],
+					'date_cancellation'           => [
 						'description' => __('The membership cancellation date. Must be a valid PHP date format.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'date-time',
-					),
-					'date_payment_plan_completed' => array(
+					],
+					'date_payment_plan_completed' => [
 						'description' => __('The membership completion date. Used when the membership is limited to a limited number of billing cycles. Must be a valid PHP date format.', 'wp-ultimo'),
 						'type'        => 'string',
 						'format'      => 'date-time',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$payment_args = array(
-			'payment'        => array(
+		$payment_args = [
+			'payment'        => [
 				'description' => __('The payment data is automatically generated based on the cart info passed (e.g. products) but can be overridden with this property.', 'wp-ultimo'),
 				'type'        => 'object',
-				'properties'  => array(
-					'status' => array(
+				'properties'  => [
+					'status' => [
 						'description' => __('The payment status.', 'wp-ultimo'),
 						'type'        => 'string',
 						'enum'        => array_values(Payment_Status::get_allowed_list()),
 						'default'     => Payment_Status::PENDING,
-					),
-				),
-			),
-			'payment_method' => array(
+					],
+				],
+			],
+			'payment_method' => [
 				'description' => __('Payment method information. Useful when using the REST API to integrate other payment methods.', 'wp-ultimo'),
 				'type'        => 'object',
-				'properties'  => array(
-					'gateway'                 => array(
+				'properties'  => [
+					'gateway'                 => [
 						'description' => __('The gateway name. E.g. stripe.', 'wp-ultimo'),
 						'type'        => 'string',
-					),
-					'gateway_customer_id'     => array(
+					],
+					'gateway_customer_id'     => [
 						'description' => __('The customer ID on the gateway system.', 'wp-ultimo'),
 						'type'        => 'string',
-					),
-					'gateway_subscription_id' => array(
+					],
+					'gateway_subscription_id' => [
 						'description' => __('The subscription ID on the gateway system.', 'wp-ultimo'),
 						'type'        => 'string',
-					),
-					'gateway_payment_id'      => array(
+					],
+					'gateway_payment_id'      => [
 						'description' => __('The payment ID on the gateway system.', 'wp-ultimo'),
 						'type'        => 'string',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$site_args = array(
-			'site' => array(
+		$site_args = [
+			'site' => [
 				'type'       => 'object',
-				'properties' => array(
-					'site_url'    => array(
+				'properties' => [
+					'site_url'    => [
 						'type'        => 'string',
 						'description' => __('The site subdomain or subdirectory (depending on your Multisite install). This would be "test" in "test.your-network.com".', 'wp-ultimo'),
 						'minLength'   => 4,
 						'required'    => true,
-					),
-					'site_title'  => array(
+					],
+					'site_title'  => [
 						'type'        => 'string',
 						'description' => __('The site title. E.g. My Amazing Site', 'wp-ultimo'),
 						'minLength'   => 4,
 						'required'    => true,
-					),
-					'publish'     => array(
+					],
+					'publish'     => [
 						'description' => __('If we should publish this site regardless of membership/payment status. Sites are created as pending by default, and are only published when a payment is received or the status of the membership changes to "active". This flag allows you to bypass the pending state.', 'wp-ultimo'),
 						'type'        => 'boolean',
 						'default'     => false,
-					),
-					'template_id' => array(
+					],
+					'template_id' => [
 						'description' => __('The template ID we should copy when creating this site. If left empty, the value dictated by the products will be used.', 'wp-ultimo'),
 						'type'        => 'integer',
-					),
-					'site_meta'   => array(
+					],
+					'site_meta'   => [
 						'description' => __('An associative array of key values to be saved as site_meta.', 'wp-ultimo'),
 						'type'        => 'object',
-					),
-					'site_option' => array(
+					],
+					'site_option' => [
 						'description' => __('An associative array of key values to be saved as site_options. Useful for changing plugin settings and other site configurations.', 'wp-ultimo'),
 						'type'        => 'object',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
-		$cart_args = array(
-			'products'      => array(
+		$cart_args = [
+			'products'      => [
 				'description' => __('The products to be added to this membership. Takes an array of product ids or slugs.', 'wp-ultimo'),
 				'uniqueItems' => true,
 				'type'        => 'array',
-			),
-			'duration'      => array(
+			],
+			'duration'      => [
 				'description' => __('The membership duration.', 'wp-ultimo'),
 				'type'        => 'integer',
 				'required'    => false,
-			),
-			'duration_unit' => array(
+			],
+			'duration_unit' => [
 				'description' => __('The membership duration unit.', 'wp-ultimo'),
 				'type'        => 'string',
 				'default'     => 'month',
-				'enum'        => array(
+				'enum'        => [
 					'day',
 					'week',
 					'month',
 					'year',
-				),
-			),
-			'discount_code' => array(
+				],
+			],
+			'discount_code' => [
 				'description' => __('A discount code. E.g. PROMO10.', 'wp-ultimo'),
 				'type'        => 'string',
-			),
-			'auto_renew'    => array(
+			],
+			'auto_renew'    => [
 				'description' => __('The membership auto-renew status. Useful when integrating with other payment options via this REST API.', 'wp-ultimo'),
 				'type'        => 'boolean',
 				'default'     => false,
 				'required'    => true,
-			),
-			'country'       => array(
+			],
+			'country'       => [
 				'description' => __('The customer country. Used to calculate taxes and check if registration is allowed for that country.', 'wp-ultimo'),
 				'type'        => 'string',
 				'default'     => '',
-			),
-			'currency'      => array(
+			],
+			'currency'      => [
 				'description' => __('The currency to be used.', 'wp-ultimo'),
 				'type'        => 'string',
-			),
-		);
+			],
+		];
 
 		$args = array_merge($customer_args, $membership_args, $cart_args, $payment_args, $site_args);
 
@@ -616,13 +616,13 @@ class Register_Endpoint {
 		 * the site on WordPress.
 		 */
 		$transient = array_merge(
-			wu_get_isset($site_data, 'site_meta', array()),
-			wu_get_isset($site_data, 'site_option', array())
+			wu_get_isset($site_data, 'site_meta', []),
+			wu_get_isset($site_data, 'site_option', [])
 		);
 
 		$template_id = apply_filters('wu_checkout_template_id', (int) wu_get_isset($site_data, 'template_id'), $membership, $this);
 
-		$site_data = array(
+		$site_data = [
 			'domain'         => $d->domain,
 			'path'           => $d->path,
 			'title'          => wu_get_isset($site_data, 'site_title'),
@@ -630,10 +630,10 @@ class Register_Endpoint {
 			'customer_id'    => $membership->get_customer()->get_id(),
 			'membership_id'  => $membership->get_id(),
 			'transient'      => $transient,
-			'signup_meta'    => wu_get_isset($site_data, 'site_meta', array()),
-			'signup_options' => wu_get_isset($site_data, 'site_option', array()),
+			'signup_meta'    => wu_get_isset($site_data, 'site_meta', []),
+			'signup_options' => wu_get_isset($site_data, 'site_option', []),
 			'type'           => Site_Type::CUSTOMER_OWNED,
-		);
+		];
 
 		$membership->create_pending_site($site_data);
 
@@ -664,7 +664,7 @@ class Register_Endpoint {
 	 */
 	public function validation_rules() {
 
-		return array(
+		return [
 			'customer_id'       => 'required_without:customer',
 			'customer'          => 'required_without:customer_id',
 			'customer.username' => 'required_without_all:customer_id,customer.user_id',
@@ -673,7 +673,7 @@ class Register_Endpoint {
 			'customer.user_id'  => 'required_without_all:customer_id,customer.username,customer.password,customer.email',
 			'site.site_url'     => 'required_with:site|alpha_num|min:4|lowercase|unique_site',
 			'site.site_title'   => 'required_with:site|min:4',
-		);
+		];
 	}
 	/**
 	 * Validates the rules and make sure we only save models when necessary.

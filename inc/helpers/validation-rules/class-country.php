@@ -27,7 +27,7 @@ class Country extends Rule {
 	 * @since 2.0.4
 	 * @var array
 	 */
-	protected $fillableParams = array(); // phpcs:ignore
+	protected $fillableParams = []; // phpcs:ignore
 	/**
 	 * Performs the actual check.
 	 *

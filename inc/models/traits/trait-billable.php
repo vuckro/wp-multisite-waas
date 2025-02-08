@@ -60,7 +60,7 @@ trait Billable {
 	 * @param array|\WP_Ultimo\Objects\Billing_Address $billing_address The billing address.
 	 * @return void
 	 */
-	public function set_billing_address($billing_address) {
+	public function set_billing_address($billing_address): void {
 
 		if (is_array($billing_address)) {
 			$billing_address = new Billing_Address($billing_address);

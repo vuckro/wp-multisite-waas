@@ -29,7 +29,7 @@ class Core_Installer extends Base_Installer {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		add_filter(
 			'wu_core_installer_install_sunrise',
@@ -64,9 +64,9 @@ class Core_Installer extends Base_Installer {
 
 		$has_tables_installed = \WP_Ultimo\Loaders\Table_Loader::get_instance()->is_installed();
 
-		$steps = array();
+		$steps = [];
 
-		$steps['database_tables'] = array(
+		$steps['database_tables'] = [
 			'done'        => $has_tables_installed,
 			'title'       => __('Create Database Tables', 'wp-ultimo'),
 			'description' => __('WP Multisite WaaS uses custom tables for performance reasons. We need to create those tables and make sure they are setup properly before we can activate the plugin.', 'wp-ultimo'),
@@ -74,9 +74,9 @@ class Core_Installer extends Base_Installer {
 			'installing'  => __('Creating default tables...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
-		$steps['sunrise'] = array(
+		$steps['sunrise'] = [
 			'done'        => defined('SUNRISE') && SUNRISE && defined('WP_ULTIMO_SUNRISE_VERSION'),
 			'title'       => __('Install <code>sunrise.php</code> File', 'wp-ultimo'),
 			'description' => __('We need to add our own sunrise.php file to the wp-content folder in order to be able to control access to sites and plugins before anything else happens on WordPress. ', 'wp-ultimo'),
@@ -84,7 +84,7 @@ class Core_Installer extends Base_Installer {
 			'installing'  => __('Installing sunrise file...', 'wp-ultimo'),
 			'success'     => __('Success!', 'wp-ultimo'),
 			'help'        => wu_get_documentation_url('installation-errors'),
-		);
+		];
 
 		return $steps;
 	}
@@ -96,17 +96,17 @@ class Core_Installer extends Base_Installer {
 	 * @throws \Exception When an error occurs during the creation.
 	 * @return void
 	 */
-	public function _install_database_tables() {
+	public function _install_database_tables(): void {
 
 		$tables = \WP_Ultimo\Loaders\Table_Loader::get_instance()->get_tables();
 
 		foreach ($tables as $table_name => $table) {
 
 			// Exclude native WP tables, as they already exist.
-			$exclude_list = array(
+			$exclude_list = [
 				'site_table',
 				'sitemeta_table',
-			);
+			];
 
 			if (in_array($table_name, $exclude_list, true)) {
 				continue;
@@ -131,7 +131,7 @@ class Core_Installer extends Base_Installer {
 	 * @throws \Exception When sunrise copying fails.
 	 * @return void
 	 */
-	public function _install_sunrise() {
+	public function _install_sunrise(): void {
 
 		$copy = \WP_Ultimo\Sunrise::try_upgrade();
 

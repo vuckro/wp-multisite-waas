@@ -45,11 +45,11 @@ class Country_GB extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'GB',
 		'currency'     => 'GBP',
 		'phone_code'   => 44,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -78,7 +78,7 @@ class Country_GB extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'ABE'   => __('Aberdeen', 'wp-ultimo'),
 			'ABD'   => __('Aberdeenshire', 'wp-ultimo'),
 			'ANS'   => __('Angus', 'wp-ultimo'),
@@ -326,6 +326,6 @@ class Country_GB extends Country {
 			'WOK'   => __('Wokingham', 'wp-ultimo'),
 			'WOR'   => __('Worcestershire', 'wp-ultimo'),
 			'WRX'   => __('Wrexham County Borough', 'wp-ultimo'),
-		);
+		];
 	}
 }

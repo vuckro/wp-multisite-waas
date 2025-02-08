@@ -18,9 +18,9 @@
 	 */
 	wu_get_template(
 		'admin-pages/fields/partials/field-title',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>
@@ -36,9 +36,9 @@
 	 */
 	wu_get_template(
 		'admin-pages/fields/partials/field-description',
-		array(
+		[
 			'field' => $field,
-		)
+		]
 	);
 
 	?>

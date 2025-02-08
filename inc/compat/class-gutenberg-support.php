@@ -47,10 +47,10 @@ class Gutenberg_Support {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
 		if ($this->should_load()) {
-			add_action('admin_enqueue_scripts', array($this, 'add_scripts'));
+			add_action('admin_enqueue_scripts', [$this, 'add_scripts']);
 		}
 	}
 
@@ -60,9 +60,9 @@ class Gutenberg_Support {
 	 * @since 1.9.14
 	 * @return void
 	 */
-	public function add_scripts() {
+	public function add_scripts(): void {
 
-		wp_register_script('wu-gutenberg-support', wu_get_asset('gutenberg-support.js', 'js'), array('jquery'), wu_get_version(), true);
+		wp_register_script('wu-gutenberg-support', wu_get_asset('gutenberg-support.js', 'js'), ['jquery'], wu_get_version(), true);
 
 		// translators: the placeholder is replaced with the network name.
 		$preview_message = apply_filters('wu_gutenberg_support_preview_message', sprintf(__('<strong>%s</strong> is generating the preview...', 'wp-ultimo'), get_network_option(null, 'site_name')));
@@ -70,10 +70,10 @@ class Gutenberg_Support {
 		wp_localize_script(
 			'wu-gutenberg-support',
 			'wu_gutenberg',
-			array(
+			[
 				'logo'                => esc_url(wu_get_network_logo()),
 				'replacement_message' => $preview_message,
-			)
+			]
 		);
 
 		wp_enqueue_script('wu-gutenberg-support');

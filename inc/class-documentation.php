@@ -43,9 +43,9 @@ class Documentation {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		$links = array();
+		$links = [];
 
 		// WP Multisite WaaS Dashboard
 		$links['wp-ultimo'] = 'https://help.wpultimo.com/en/articles/4803213-understanding-the-wp-ultimo-dashboard';
@@ -133,7 +133,7 @@ class Documentation {
 	 * @param string $link The documentation link.
 	 * @return void
 	 */
-	public function register_link($slug, $link) {
+	public function register_link($slug, $link): void {
 
 		$this->links[ $slug ] = $link;
 	}

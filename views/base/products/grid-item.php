@@ -64,7 +64,7 @@
 			<?php _e('Select Site', 'wp-ultimo'); ?>
 		</label> -->
 
-		<a href="<?php echo wu_network_admin_url('wp-ultimo-edit-product', array('id' => $item->get_id())); ?>" class="button button-primary">
+		<a href="<?php echo wu_network_admin_url('wp-ultimo-edit-product', ['id' => $item->get_id()]); ?>" class="button button-primary">
 			<?php _e('Read More', 'wp-ultimo'); ?>
 		</a>
 

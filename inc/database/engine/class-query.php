@@ -42,7 +42,7 @@ class Query extends \BerlinDB\Database\Query {
 	 * @since 2.1.2
 	 * @var array
 	 */
-	protected static $added_globals = array();
+	protected static $added_globals = [];
 
 	/**
 	 * Plural version for a group of items.
@@ -69,12 +69,12 @@ class Query extends \BerlinDB\Database\Query {
 	 * @param string|array $query Optional. An array or string of Query parameters.
 	 * @return void
 	 */
-	public function __construct($query = array()) {
+	public function __construct($query = []) {
 
 		$cache_group = $this->apply_prefix($this->cache_group, '-');
 
 		if ($this->global_cache && ! in_array($cache_group, self::$added_globals, true)) {
-			wp_cache_add_global_groups(array($cache_group));
+			wp_cache_add_global_groups([$cache_group]);
 
 			self::$added_globals[] = $cache_group;
 		}

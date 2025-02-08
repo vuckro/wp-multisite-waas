@@ -53,15 +53,15 @@ function wu_get_site_by_hash($hash) {
  * @param array $query Query arguments.
  * @return \WP_Ultimo\Models\Site[]
  */
-function wu_get_sites($query = array()) {
+function wu_get_sites($query = []) {
 
 	if ( ! empty($query['search'])) {
 		$domain_ids = wu_get_domains(
-			array(
+			[
 				'number' => -1,
 				'search' => '*' . $query['search'] . '*',
-				'fields' => array('blog_id'),
-			)
+				'fields' => ['blog_id'],
+			]
 		);
 
 		$domain_ids = array_column($domain_ids, 'blog_id');
@@ -84,13 +84,13 @@ function wu_get_sites($query = array()) {
  * @param array $query Query arguments.
  * @return array
  */
-function wu_get_site_templates($query = array()) {
+function wu_get_site_templates($query = []) {
 
 	$query = wp_parse_args(
 		$query,
-		array(
+		[
 			'number' => 9999, // By default, we try to get ALL available templates.
-		)
+		]
 	);
 
 	return \WP_Ultimo\Models\Site::get_all_by_type('site_template', $query);
@@ -108,7 +108,7 @@ function wu_handle_site_domain($domain) {
 
 	global $current_site;
 
-	if (strpos($domain, 'http') === false) {
+	if (! str_contains($domain, 'http')) {
 		$domain = "https://{$domain}";
 	}
 
@@ -130,7 +130,7 @@ function wu_create_site($site_data) {
 
 	$site_data = wp_parse_args(
 		$site_data,
-		array(
+		[
 			'domain'                => $current_site->domain,
 			'path'                  => '/',
 			'title'                 => false,
@@ -139,7 +139,7 @@ function wu_create_site($site_data) {
 			'featured_image_id'     => 0,
 			'duplication_arguments' => false,
 			'public'                => true,
-		)
+		]
 	);
 
 	$site = new \WP_Ultimo\Models\Site($site_data);
@@ -166,7 +166,7 @@ function wu_get_site_domain_and_path($path_or_subdomain = '/', $base_domain = fa
 
 	$path_or_subdomain = trim($path_or_subdomain, '/');
 
-	$domain = $base_domain ? $base_domain : $current_site->domain;
+	$domain = $base_domain ?: $current_site->domain;
 
 	$d = new \stdClass();
 

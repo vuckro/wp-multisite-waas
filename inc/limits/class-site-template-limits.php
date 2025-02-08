@@ -30,9 +30,9 @@ class Site_Template_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 
-		add_action('plugins_loaded', array($this, 'setup'));
+		add_action('plugins_loaded', [$this, 'setup']);
 	}
 
 	/**
@@ -41,13 +41,13 @@ class Site_Template_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {
+	public function setup(): void {
 
-		add_filter('wu_template_selection_render_attributes', array($this, 'maybe_filter_template_selection_options'));
+		add_filter('wu_template_selection_render_attributes', [$this, 'maybe_filter_template_selection_options']);
 
-		add_filter('wu_checkout_template_id', array($this, 'maybe_force_template_selection'), 10, 2);
+		add_filter('wu_checkout_template_id', [$this, 'maybe_force_template_selection'], 10, 2);
 
-		add_filter('wu_cart_get_extra_params', array($this, 'maybe_force_template_selection_on_cart'), 10, 2);
+		add_filter('wu_cart_get_extra_params', [$this, 'maybe_force_template_selection_on_cart'], 10, 2);
 	}
 
 	/**
@@ -62,16 +62,16 @@ class Site_Template_Limits {
 
 		$attributes['should_display'] = true;
 
-		$products = array_map('wu_get_product', wu_get_isset($attributes, 'products', array()));
+		$products = array_map('wu_get_product', wu_get_isset($attributes, 'products', []));
 
 		$products = array_filter($products);
 
 		if ( ! empty($products)) {
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
-			list($plan, $additional_products) = wu_segregate_products($products);
+			[$plan, $additional_products] = wu_segregate_products($products);
 
-			$products = array_merge(array($plan), $additional_products);
+			$products = array_merge([$plan], $additional_products);
 
 			foreach ($products as $product) {
 				$limits = $limits->merge($product->get_limitations());
@@ -127,9 +127,9 @@ class Site_Template_Limits {
 
 		$products = $cart->get_all_products();
 
-		list($plan, $additional_products) = wu_segregate_products($products);
+		[$plan, $additional_products] = wu_segregate_products($products);
 
-		$products = array_merge(array($plan), $additional_products);
+		$products = array_merge([$plan], $additional_products);
 
 		$products = array_filter($products);
 
@@ -162,9 +162,9 @@ class Site_Template_Limits {
 		if ( ! empty($products)) {
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
-			list($plan, $additional_products) = wu_segregate_products($products);
+			[$plan, $additional_products] = wu_segregate_products($products);
 
-			$products = array_merge(array($plan), $additional_products);
+			$products = array_merge([$plan], $additional_products);
 
 			foreach ($products as $product) {
 				$limits = $limits->merge($product->get_limitations());

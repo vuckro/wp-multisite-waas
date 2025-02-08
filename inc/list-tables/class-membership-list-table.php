@@ -25,7 +25,7 @@ class Membership_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $query_class = '\\WP_Ultimo\\Database\\Memberships\\Membership_Query';
+	protected $query_class = \WP_Ultimo\Database\Memberships\Membership_Query::class;
 
 	/**
 	 * Initializes the table.
@@ -35,15 +35,15 @@ class Membership_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __('Membership', 'wp-ultimo'),  // singular name of the listed records
 				'plural'   => __('Memberships', 'wp-ultimo'), // plural name of the listed records
 				'ajax'     => true,                           // does this table support ajax?
-				'add_new'  => array(
+				'add_new'  => [
 					'url'     => wu_get_form_url('add_new_membership'),
 					'classes' => 'wubox',
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -74,14 +74,14 @@ class Membership_List_Table extends Base_List_Table {
 	 */
 	public function column_hash($item) {
 
-		$url_atts = array(
+		$url_atts = [
 			'id'    => $item->get_id(),
 			'model' => 'membership',
-		);
+		];
 
 		$code = sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-membership', $url_atts), $item->get_hash());
 
-		$actions = array(
+		$actions = [
 			'edit'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-membership', $url_atts), __('Edit', 'wp-ultimo')),
 			'delete' => sprintf(
 				'<a title="%s" class="wubox" href="%s">%s</a>',
@@ -92,7 +92,7 @@ class Membership_List_Table extends Base_List_Table {
 				),
 				__('Delete', 'wp-ultimo')
 			),
-		);
+		];
 
 		$html = "<span class='wu-font-mono'><strong>{$code}</strong></span>";
 
@@ -170,7 +170,7 @@ class Membership_List_Table extends Base_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = array(
+		$columns = [
 			'cb'              => '<input type="checkbox" />',
 			'hash'            => wu_tooltip(__('Reference Code', 'wp-ultimo'), 'dashicons-wu-hash wu-text-xs'),
 			'status'          => __('Status', 'wp-ultimo'),
@@ -181,7 +181,7 @@ class Membership_List_Table extends Base_List_Table {
 			'date_created'    => __('Created at', 'wp-ultimo'),
 			'date_expiration' => __('Expiration', 'wp-ultimo'),
 			'id'              => __('ID', 'wp-ultimo'),
-		);
+		];
 
 		return $columns;
 	}
@@ -226,45 +226,45 @@ class Membership_List_Table extends Base_List_Table {
 
 		$membership_status = new \WP_Ultimo\Database\Memberships\Membership_Status();
 
-		return array(
-			'filters'      => array(
+		return [
+			'filters'      => [
 
 				/**
 				 * Status
 				 */
-				'status' => array(
+				'status' => [
 					'label'   => __('Status', 'wp-ultimo'),
 					'options' => $membership_status::to_array(),
-				),
+				],
 
-			),
-			'date_filters' => array(
+			],
+			'date_filters' => [
 
 				/**
 				 * Created At
 				 */
-				'date_created'    => array(
+				'date_created'    => [
 					'label'   => __('Created At', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
-				),
+				],
 
 				/**
 				 * Expiration Date
 				 */
-				'date_expiration' => array(
+				'date_expiration' => [
 					'label'   => __('Expiration Date', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
-				),
+				],
 
 				/**
 				 * Renewal Date
 				 */
-				'date_renewed'    => array(
+				'date_renewed'    => [
 					'label'   => __('Renewal Date', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -275,49 +275,49 @@ class Membership_List_Table extends Base_List_Table {
 	 */
 	public function get_views() {
 
-		return array(
-			'all'       => array(
+		return [
+			'all'       => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'all'),
 				'label' => __('All Memberships', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'active'    => array(
+			],
+			'active'    => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'active'),
 				'label' => __('Active', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'trialing'  => array(
+			],
+			'trialing'  => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'trialing'),
 				'label' => __('Trialing', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'pending'   => array(
+			],
+			'pending'   => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'pending'),
 				'label' => __('Pending', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'on-hold'   => array(
+			],
+			'on-hold'   => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'on-hold'),
 				'label' => __('On Hold', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'expired'   => array(
+			],
+			'expired'   => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'expired'),
 				'label' => __('Expired', 'wp-ultimo'),
 				'count' => 0,
-			),
-			'cancelled' => array(
+			],
+			'cancelled' => [
 				'field' => 'status',
 				'url'   => add_query_arg('status', 'cancelled'),
 				'label' => __('Cancelled', 'wp-ultimo'),
 				'count' => 0,
-			),
-		);
+			],
+		];
 	}
 }

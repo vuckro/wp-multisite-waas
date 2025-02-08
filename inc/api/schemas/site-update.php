@@ -18,148 +18,148 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-return array(
-	'categories'        => array(
+return [
+	'categories'        => [
 		'description' => __('The categories this site belongs to.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'featured_image_id' => array(
+	],
+	'featured_image_id' => [
 		'description' => __('The ID of the feature image of the site.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'site_id'           => array(
+	],
+	'site_id'           => [
 		'description' => __('The network ID for this site.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'title'             => array(
+	],
+	'title'             => [
 		'description' => __('The site title.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'name'              => array(
+	],
+	'name'              => [
 		'description' => __('The site name.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'description'       => array(
+	],
+	'description'       => [
 		'description' => __('A description for the site, usually a short text.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'domain'            => array(
+	],
+	'domain'            => [
 		'description' => __("The site domain. You don't need to put http or https in front of your domain in this field. e.g: example.com.", 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'path'              => array(
+	],
+	'path'              => [
 		'description' => __('Path of the site. Used when in sub-directory mode.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'registered'        => array(
+	],
+	'registered'        => [
 		'description' => __('Date when the site was registered.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'last_updated'      => array(
+	],
+	'last_updated'      => [
 		'description' => __('Date of the last update on this site.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'active'            => array(
+	],
+	'active'            => [
 		'description' => __('Holds the ID of the customer that owns this site.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'public'            => array(
+	],
+	'public'            => [
 		'description' => __('Set true if this site is a public one, false if not.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'archived'          => array(
+	],
+	'archived'          => [
 		'description' => __('Is this an archived site.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'mature'            => array(
+	],
+	'mature'            => [
 		'description' => __('Is this a site with mature content.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'spam'              => array(
+	],
+	'spam'              => [
 		'description' => __('Is this an spam site.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'deleted'           => array(
+	],
+	'deleted'           => [
 		'description' => __('Is this site deleted.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-	'lang_id'           => array(
+	],
+	'lang_id'           => [
 		'description' => __('The ID of the language being used on this site.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'customer_id'       => array(
+	],
+	'customer_id'       => [
 		'description' => __('The ID of the customer that owns this site.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'membership_id'     => array(
+	],
+	'membership_id'     => [
 		'description' => __('The ID of the membership associated with this site, if any.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'template_id'       => array(
+	],
+	'template_id'       => [
 		'description' => __('The ID of the templated used to create this site.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'type'              => array(
+	],
+	'type'              => [
 		'description' => __('The type of this particular site. Can be default, site_template, customer_owned, pending, external, main or other values added by third-party add-ons.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-		'enum'        => array(
+		'enum'        => [
 			'default',
 			'site_template',
 			'customer_owned',
 			'pending',
 			'external',
 			'main',
-		),
-	),
-	'signup_options'    => array(
+		],
+	],
+	'signup_options'    => [
 		'description' => __('Keeps signup options for the site.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'signup_meta'       => array(
+	],
+	'signup_meta'       => [
 		'description' => __('Keeps signup meta for the site.', 'wp-ultimo'),
 		'type'        => 'array',
 		'required'    => false,
-	),
-	'date_created'      => array(
+	],
+	'date_created'      => [
 		'description' => __('Model creation date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'date_modified'     => array(
+	],
+	'date_modified'     => [
 		'description' => __('Model last modification date.', 'wp-ultimo'),
 		'type'        => 'string',
 		'required'    => false,
-	),
-	'migrated_from_id'  => array(
+	],
+	'migrated_from_id'  => [
 		'description' => __('The ID of the original 1.X model that was used to generate this item on migration.', 'wp-ultimo'),
 		'type'        => 'integer',
 		'required'    => false,
-	),
-	'skip_validation'   => array(
+	],
+	'skip_validation'   => [
 		'description' => __('Set true to have field information validation bypassed when saving this event.', 'wp-ultimo'),
 		'type'        => 'boolean',
 		'required'    => false,
-	),
-);
+	],
+];

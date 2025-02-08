@@ -53,7 +53,7 @@ trait WP_Ultimo_Site_Deprecated {
 	 */
 	public function get_subscription() {
 
-		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site::get_membership()');
+		_deprecated_function(self::class, '2.0.0', '\WP_Ultimo\Models\Site::get_membership()');
 
 		return $this->get_membership();
 	}

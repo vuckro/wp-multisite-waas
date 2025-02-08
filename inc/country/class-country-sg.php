@@ -43,11 +43,11 @@ class Country_SG extends Country {
 	 * @since 2.0.11
 	 * @var array
 	 */
-	protected $attributes = array(
+	protected $attributes = [
 		'country_code' => 'SG',
 		'currency'     => 'SGD',
 		'phone_code'   => 65,
-	);
+	];
 
 	/**
 	 * The type of nomenclature used to refer to the country sub-divisions.
@@ -76,12 +76,12 @@ class Country_SG extends Country {
 	 */
 	protected function states() {
 
-		return array(
+		return [
 			'01' => __('Central Singapore Community Development Council', 'wp-ultimo'),
 			'02' => __('North East Community Development Council', 'wp-ultimo'),
 			'03' => __('North West Community Development Council', 'wp-ultimo'),
 			'04' => __('South East Community Development Council', 'wp-ultimo'),
 			'05' => __('South West Community Development Council', 'wp-ultimo'),
-		);
+		];
 	}
 }
