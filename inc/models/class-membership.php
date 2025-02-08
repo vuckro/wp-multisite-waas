@@ -1150,9 +1150,9 @@ class Membership extends Base_Model {
 
 		if ($this->get_status() !== Membership_Status::CANCELLED) {
 			return '';
-		}))
+		}
 
-		if ($this->cancellation_reason === null) {
+		if (null === $this->cancellation_reason) {
 			$this->cancellation_reason = $this->get_meta('cancellation_reason');
 		}
 
