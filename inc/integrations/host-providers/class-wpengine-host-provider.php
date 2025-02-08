@@ -78,8 +78,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	public function detect() {
 
 		return (defined('WPE_APIKEY') && WPE_APIKEY) || (defined('WPE_API') && WPE_API);
-
-	} // end detect;
+	}
 
 	/**
 	 * Can be used to load dependencies.
@@ -90,15 +89,12 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	public function load_dependencies() {
 
 		// if WP Engine is not defined, then return
-		if (!defined('WPE_PLUGIN_DIR') || !is_readable(WPE_PLUGIN_DIR . '/class-wpeapi.php')) {
-
+		if ( ! defined('WPE_PLUGIN_DIR') || ! is_readable(WPE_PLUGIN_DIR . '/class-wpeapi.php')) {
 			return;
-
-		} // end if;
+		}
 
 		include_once WPE_PLUGIN_DIR . '/class-wpeapi.php';
-
-	} // end load_dependencies;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -117,8 +113,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 		$api->set_arg('domain', $domain);
 
 		$api->get();
-
-	} // end on_add_domain;
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -137,8 +132,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 		$api->set_arg('domain', $domain);
 
 		$api->get();
-
-	} // end on_remove_domain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -153,8 +147,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	public function on_add_subdomain($subdomain, $site_id) {
 
 		$this->on_add_domain($subdomain, $site_id);
-
-	} // end on_add_subdomain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -169,8 +162,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	public function on_remove_subdomain($subdomain, $site_id) {
 
 		$this->on_remove_domain($subdomain, $site_id);
-
-	} // end on_remove_subdomain;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -185,8 +177,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 		$description .= '<br><br><b>' . __('We recommend to enter in contact with WP Engine support to ask for a Wildcard domain if you are using a subdomain install.', 'wp-ultimo') . '</b>';
 
 		return $description;
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -197,8 +188,7 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('wpengine.svg', 'img/hosts');
-
-	} // end get_logo;
+	}
 
 	/**
 	 * Tests the connection with the WP Engine API.
@@ -215,15 +205,9 @@ class WPEngine_Host_Provider extends Base_Host_Provider {
 		$results = $api->get();
 
 		if (is_wp_error($results)) {
-
 			wp_send_json_error($results->get_error_message());
-
 		} else {
-
 			wp_send_json_success($results);
-
-		} // end if;
-
-	} // end test_connection;
-
-} // end class WPEngine_Host_Provider;
+		}
+	}
+}

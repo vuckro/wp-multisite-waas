@@ -47,8 +47,7 @@ class Sender {
 		$args = wp_parse_args($args, $default_args);
 
 		return $args;
-
-	} // end parse_args;
+	}
 
 	/**
 	 * Send an email to one or more users.
@@ -62,25 +61,23 @@ class Sender {
 	 */
 	public static function send_mail($from = array(), $to = array(), $args = array()) {
 
-		if (!$from) {
-
+		if ( ! $from) {
 			$from = array(
 				'email' => wu_get_setting('from_email'),
 				'name'  => wu_get_setting('from_name'),
 			);
+		}
 
-		} // end if;
-
-		$args = Sender::parse_args($args);
+		$args = self::parse_args($args);
 
 		/*
 		 * First, replace shortcodes.
 		 */
 		$payload = wu_get_isset($args, 'payload', array());
 
-		$subject = Sender::process_shortcodes(wu_get_isset($args, 'subject', ''), $payload);
+		$subject = self::process_shortcodes(wu_get_isset($args, 'subject', ''), $payload);
 
-		$content = Sender::process_shortcodes(wu_get_isset($args, 'content', ''), $payload);
+		$content = self::process_shortcodes(wu_get_isset($args, 'content', ''), $payload);
 
 		/*
 		 * Content type and template
@@ -88,7 +85,6 @@ class Sender {
 		$headers = array();
 
 		if (wu_get_isset($args, 'style', 'html') === 'html') {
-
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
 			$default_settings = \WP_Ultimo\Admin_Pages\Email_Template_Customize_Admin_Page::get_default_settings();
@@ -97,23 +93,24 @@ class Sender {
 
 			$template_settings = wp_parse_args($template_settings, $default_settings);
 
-			$template = wu_get_template_contents('broadcast/emails/base', array(
-				'site_name'         => get_network_option(null, 'site_name'),
-				'site_url'          => get_site_url(wu_get_main_site_id()),
-				'logo_url'          => wu_get_network_logo(),
-				'is_editor'         => false,
-				'subject'           => $subject,
-				'content'           => $content,
-				'template_settings' => $template_settings,
-			));
-
+			$template = wu_get_template_contents(
+				'broadcast/emails/base',
+				array(
+					'site_name'         => get_network_option(null, 'site_name'),
+					'site_url'          => get_site_url(wu_get_main_site_id()),
+					'logo_url'          => wu_get_network_logo(),
+					'is_editor'         => false,
+					'subject'           => $subject,
+					'content'           => $content,
+					'template_settings' => $template_settings,
+				)
+			);
 		} else {
-
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
 			$template = nl2br(strip_tags($content, '<p><a><br>')); // by default, set the plain email content.
 
-		} // end if;
+		}
 
 		$bcc = '';
 
@@ -121,7 +118,6 @@ class Sender {
 		 * Build the recipients list.
 		 */
 		if (count($to) > 1) {
-
 			$to = array_map(fn($item) => wu_format_email_string(wu_get_isset($item, 'email'), wu_get_isset($item, 'name')), $to);
 
 			/*
@@ -132,36 +128,33 @@ class Sender {
 			 * emails sent out.
 			 */
 			if (apply_filters('wu_sender_recipients_strategy', 'bcc') === 'bcc') {
-
 				$main_to = $to[0];
 
 				unset($to[0]);
 
-				$bcc_array = array_map(function($item) {
+				$bcc_array = array_map(
+					function ($item) {
 
-					$email = is_array($item) ? $item['email'] : $item;
+						$email = is_array($item) ? $item['email'] : $item;
 
-					preg_match('/<([^>]+)>/', $email, $matches);
+						preg_match('/<([^>]+)>/', $email, $matches);
 
-					return !empty($matches[1]) ? $matches[1] : $email;
-
-				}, $to);
+						return ! empty($matches[1]) ? $matches[1] : $email;
+					},
+					$to
+				);
 
 				$bcc = implode(', ', array_filter($bcc_array));
 
 				$headers[] = "Bcc: $bcc";
 
 				$to = $main_to;
-
-			} // end if;
-
+			}
 		} else {
-
 			$to = array(
-				wu_format_email_string(wu_get_isset($to[0], 'email'), wu_get_isset($to[0], 'name'))
+				wu_format_email_string(wu_get_isset($to[0], 'email'), wu_get_isset($to[0], 'name')),
 			);
-
-		} // end if;
+		}
 
 		/*
 		 * Build From
@@ -184,12 +177,11 @@ class Sender {
 		// 'attachments' => $attachments,
 		// ));
 
-		// } // end if;
+		// }
 
 		// Send the actual email
 		return wp_mail($to, $subject, $template, $headers, $attachments);
-
-	} // end send_mail;
+	}
 
 	/**
 	 * Change the shortcodes for values in the content.
@@ -203,10 +195,8 @@ class Sender {
 	public static function process_shortcodes($content, $payload = array()) {
 
 		if (empty($payload)) {
-
 			return $content;
-
-		} // end if;
+		}
 
 		$match = array();
 
@@ -215,15 +205,11 @@ class Sender {
 		$shortcodes = shortcode_atts(array_flip($match[1]), $payload);
 
 		foreach ($shortcodes as $shortcode_key => $shortcode_value) {
-
 			$shortcode_str = '{{' . $shortcode_key . '}}';
 
 			$content = str_replace($shortcode_str, nl2br((string) $shortcode_value), $content);
-
-		} // end foreach;
+		}
 
 		return $content;
-
-	} // end process_shortcodes;
-
-} // end class Sender;
+	}
+}

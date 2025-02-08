@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Admin_Pages;
 
-use \WP_Ultimo\UI\Template_Previewer;
+use WP_Ultimo\UI\Template_Previewer;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -74,12 +74,14 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$url = get_site_url(null);
 
-		return add_query_arg(array(
-			'customizer' => 1,
-			Template_Previewer::get_instance()->get_preview_parameter() => 1,
-		), $url);
-
-	} // end get_preview_url;
+		return add_query_arg(
+			array(
+				'customizer' => 1,
+				Template_Previewer::get_instance()->get_preview_parameter() => 1,
+			),
+			$url
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -89,24 +91,26 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function register_widgets() {
 
-		$this->add_save_widget('save', array(
-			'fields' => array(
-				'preview_url_parameter' => array(
-					'type'  => 'text',
-					'title' => __('URL Parameter', 'wp-ultimo'),
-					'desc'  => __('This is the URL parameter WP Multisite WaaS will use to generate the template preview URLs.', 'wp-ultimo'),
-					'value' => Template_Previewer::get_instance()->get_setting('preview_url_parameter', 'template-preview'),
-				),
-				'enabled'               => array(
-					'type'      => 'toggle',
-					'title'     => __('Active', 'wp-ultimo'),
-					'desc'      => __('If your site templates are not loading, you can disable the top-bar using this setting.', 'wp-ultimo'),
-					'value'     => Template_Previewer::get_instance()->get_setting('enabled', true),
-					'html_attr' => array(
+		$this->add_save_widget(
+			'save',
+			array(
+				'fields' => array(
+					'preview_url_parameter' => array(
+						'type'  => 'text',
+						'title' => __('URL Parameter', 'wp-ultimo'),
+						'desc'  => __('This is the URL parameter WP Multisite WaaS will use to generate the template preview URLs.', 'wp-ultimo'),
+						'value' => Template_Previewer::get_instance()->get_setting('preview_url_parameter', 'template-preview'),
+					),
+					'enabled'               => array(
+						'type'      => 'toggle',
+						'title'     => __('Active', 'wp-ultimo'),
+						'desc'      => __('If your site templates are not loading, you can disable the top-bar using this setting.', 'wp-ultimo'),
+						'value'     => Template_Previewer::get_instance()->get_setting('enabled', true),
+						'html_attr' => array(),
 					),
 				),
-			),
-		));
+			)
+		);
 
 		$custom_logo_id = Template_Previewer::get_instance()->get_setting('custom_logo');
 
@@ -211,24 +215,29 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$settings = Template_Previewer::get_instance()->get_settings();
 
-		$state = array_merge($settings, array(
-			'tab'     => 'general',
-			'refresh' => true,
-		));
+		$state = array_merge(
+			$settings,
+			array(
+				'tab'     => 'general',
+				'refresh' => true,
+			)
+		);
 
-		$this->add_fields_widget('customizer', array(
-			'title'     => __('Customizer', 'wp-ultimo'),
-			'position'  => 'side',
-			'fields'    => $fields,
-			'html_attr' => array(
-				'style'                    => 'margin-top: -6px;',
-				'data-wu-app'              => 'site_template_customizer',
-				'data-wu-customizer-panel' => true,
-				'data-state'               => json_encode($state),
-			),
-		));
-
-	} // end register_widgets;
+		$this->add_fields_widget(
+			'customizer',
+			array(
+				'title'     => __('Customizer', 'wp-ultimo'),
+				'position'  => 'side',
+				'fields'    => $fields,
+				'html_attr' => array(
+					'style'                    => 'margin-top: -6px;',
+					'data-wu-app'              => 'site_template_customizer',
+					'data-wu-customizer-panel' => true,
+					'data-state'               => json_encode($state),
+				),
+			)
+		);
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -239,8 +248,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_title() {
 
 		return __('Customize Template Previewer', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -251,8 +259,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Customize Template Previewer', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -263,8 +270,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function action_links() {
 
 		return array();
-
-	} // end action_links;
+	}
 
 	/**
 	 * Returns the labels to be used on the admin page.
@@ -284,8 +290,7 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 			'save_button_label' => __('Save Changes', 'wp-ultimo'),
 			'save_description'  => '',
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Should implement the processes necessary to save the changes made to the object.
@@ -306,7 +311,5 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 		wp_redirect($url);
 
 		exit;
-
-	} // end handle_save;
-
-} // end class Template_Previewer_Customize_Admin_Page;
+	}
+}

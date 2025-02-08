@@ -104,8 +104,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	public function get_title() {
 
 		return __('Switch Template', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -116,8 +115,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	public function get_menu_title() {
 
 		return __('Switch Template', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Registers the necessary scripts.
@@ -128,8 +126,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	public function register_scripts() {
 
 		do_action('wu_template_switching_admin_page_scripts', null, null);
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Overrides the page loaded method.
@@ -142,8 +139,7 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 		do_action('wu_template_switching_admin_page', null);
 
 		parent::page_loaded();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Displays the content of the activation section.
@@ -155,16 +151,18 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/centered', array(
-			'screen'  => get_current_screen(),
-			'page'    => $this,
-			'content' => '',
-			'labels'  => array(
-				'updated_message' => __('Template switched successfully!', 'wp-ultimo')
+		wu_get_template(
+			'base/centered',
+			array(
+				'screen'  => get_current_screen(),
+				'page'    => $this,
+				'content' => '',
+				'labels'  => array(
+					'updated_message' => __('Template switched successfully!', 'wp-ultimo'),
+				),
 			)
-		));
-
-	} // end output;
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -175,7 +173,5 @@ class Template_Switching_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer
 	public function register_widgets() {
 
 		\WP_Ultimo\UI\Template_Switching_Element::get_instance()->as_metabox(get_current_screen()->id);
-
-	} // end register_widgets;
-
-} // end class Template_Switching_Admin_Page;
+	}
+}

@@ -244,8 +244,7 @@ class Table_Loader {
 		 */
 		$this->checkout_form_table     = new \WP_Ultimo\Database\Checkout_Forms\Checkout_Forms_Table();
 		$this->checkout_formmeta_table = new \WP_Ultimo\Database\Checkout_Forms\Checkout_Forms_Meta_Table();
-
-	} // end init;
+	}
 
 	/**
 	 * Returns all the table objects.
@@ -256,8 +255,7 @@ class Table_Loader {
 	public function get_tables() {
 
 		return get_object_vars($this);
-
-	} // end get_tables;
+	}
 
 	/**
 	 * Checks if we have all the tables installed.
@@ -272,17 +270,11 @@ class Table_Loader {
 		$tables = $this->get_tables();
 
 		foreach ($tables as $table) {
-
-			if (!$table->exists()) {
-
+			if ( ! $table->exists()) {
 				$all_installed = false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $all_installed;
-
-	} // end is_installed;
-
-} // end class Table_Loader;
+	}
+}

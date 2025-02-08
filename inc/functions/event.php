@@ -9,8 +9,8 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Managers\Event_Manager;
-use \WP_Ultimo\Models\Event;
+use WP_Ultimo\Managers\Event_Manager;
+use WP_Ultimo\Models\Event;
 
 /**
  * Add a new event to the System.
@@ -24,8 +24,7 @@ use \WP_Ultimo\Models\Event;
 function wu_do_event($slug, $payload) {
 
 	return Event_Manager::get_instance()->do_event($slug, $payload);
-
-} // end wu_do_event;
+}
 
 /**
  * Register a new event globally in order to set the params.
@@ -39,8 +38,7 @@ function wu_do_event($slug, $payload) {
 function wu_register_event_type($slug, $args) {
 
 	return Event_Manager::get_instance()->register_event($slug, $args);
-
-} // end wu_register_event_type;
+}
 
 /**
  * Gets all th events registered in the system
@@ -52,8 +50,7 @@ function wu_register_event_type($slug, $args) {
 function wu_get_event_types() {
 
 	return Event_Manager::get_instance()->get_events();
-
-} // end wu_get_event_types;
+}
 
 /**
  * Get the available event types as a key => label array.
@@ -67,14 +64,11 @@ function wu_get_event_types_as_options() {
 	$event_types = Event_Manager::get_instance()->get_events();
 
 	foreach ($event_types as $event_type_key => &$event_type) {
-
 		$event_type = $event_type['name'];
-
-	} // end foreach;
+	}
 
 	return $event_types;
-
-} // end wu_get_event_types_as_options;
+}
 
 /**
  * Gets all th events registered in the system.
@@ -87,8 +81,7 @@ function wu_get_event_types_as_options() {
 function wu_get_event_type($slug) {
 
 	return Event_Manager::get_instance()->get_event($slug);
-
-} // end wu_get_event_type;
+}
 
 /**
  * Queries events.
@@ -101,8 +94,7 @@ function wu_get_event_type($slug) {
 function wu_get_events($query = array()) {
 
 	return \WP_Ultimo\Models\Event::query($query);
-
-} // end wu_get_events;
+}
 /**
  * Gets a event on the ID.
  *
@@ -114,8 +106,7 @@ function wu_get_events($query = array()) {
 function wu_get_event($event_id) {
 
 	return \WP_Ultimo\Models\Event::get_by_id($event_id);
-
-} // end wu_get_event;
+}
 /**
  * Returns a event based on slug.
  *
@@ -127,8 +118,7 @@ function wu_get_event($event_id) {
 function wu_get_event_by_slug($event_slug) {
 
 	return \WP_Ultimo\Models\Event::get_by('slug', $event_slug);
-
-} // end wu_get_event_by_slug;
+}
 /**
  * Creates a new event.
  *
@@ -143,27 +133,29 @@ function wu_create_event($event_data) {
 
 	$author_id = function_exists('get_current_user_id') ? get_current_user_id() : 0;
 
-	$event_data = wp_parse_args($event_data, array(
-		'severity'     => Event::SEVERITY_NEUTRAL,
-		'initiator'    => 'system',
-		'author_id'    => $author_id,
-		'object_type'  => 'network',
-		'object_id'    => 0,
-		'date_created' => wu_get_current_time('mysql', true),
-		'payload'      => array(
-			'key'       => 'None',
-			'old_value' => 'None',
-			'new_value' => 'None',
-		),
-	));
+	$event_data = wp_parse_args(
+		$event_data,
+		array(
+			'severity'     => Event::SEVERITY_NEUTRAL,
+			'initiator'    => 'system',
+			'author_id'    => $author_id,
+			'object_type'  => 'network',
+			'object_id'    => 0,
+			'date_created' => wu_get_current_time('mysql', true),
+			'payload'      => array(
+				'key'       => 'None',
+				'old_value' => 'None',
+				'new_value' => 'None',
+			),
+		)
+	);
 
 	$event = new Event($event_data);
 
 	$saved = $event->save();
 
 	return is_wp_error($saved) ? $saved : $event;
-
-} // end wu_create_event;
+}
 
 /**
  * Generates payload arrays for events.
@@ -180,10 +172,8 @@ function wu_generate_event_payload($model_name, $model = false): array {
 
 	$payload = array();
 
-	if (!$model) {
-
+	if ( ! $model) {
 		switch ($model_name) {
-
 			case 'product':
 				$model = wu_mock_product();
 				break;
@@ -202,19 +192,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			case 'domain':
 				$model = wu_mock_domain();
 				break;
+		}
 
-		} // end switch;
-
-		if (!$model) {
-
+		if ( ! $model) {
 			return array();
-
-		} // end if;
-
-	} // end if;
+		}
+	}
 
 	if ($model_name === 'customer') {
-
 		$payload = $model->to_search_results();
 
 		$payload = array(
@@ -225,13 +210,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'customer_email_verification' => $payload['email_verification'],
 			'customer_avatar'             => $payload['avatar'],
 			'customer_billing_address'    => $payload['billing_address'],
-			'customer_manage_url'         => wu_network_admin_url('wp-ultimo-edit-customer', array(
-				'id' => $model->get_id(),
-			)),
+			'customer_manage_url'         => wu_network_admin_url(
+				'wp-ultimo-edit-customer',
+				array(
+					'id' => $model->get_id(),
+				)
+			),
 		);
-
 	} elseif ($model_name === 'membership') {
-
 		$payload = $model->to_search_results();
 
 		$p = $payload;
@@ -248,13 +234,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'membership_description'        => $p['formatted_price'],
 			'membership_gateway'            => $p['gateway'],
 			'membership_date_expiration'    => $p['date_expiration'],
-			'membership_manage_url'         => wu_network_admin_url('wp-ultimo-edit-membership', array(
-				'id' => $model->get_id(),
-			)),
+			'membership_manage_url'         => wu_network_admin_url(
+				'wp-ultimo-edit-membership',
+				array(
+					'id' => $model->get_id(),
+				)
+			),
 		);
-
 	} elseif ($model_name === 'product') {
-
 		$payload = $model->to_search_results();
 
 		$payload = array(
@@ -266,13 +253,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'product_currency'      => $payload['currency'],
 			'product_description'   => $payload['formatted_price'],
 			'product_image'         => $payload['image'],
-			'product_manage_url'    => wu_network_admin_url('wp-ultimo-edit-payment', array(
-				'id' => $model->get_id(),
-			)),
+			'product_manage_url'    => wu_network_admin_url(
+				'wp-ultimo-edit-payment',
+				array(
+					'id' => $model->get_id(),
+				)
+			),
 		);
-
 	} elseif ($model_name === 'payment') {
-
 		$payload = $model->to_search_results();
 
 		$payload = array(
@@ -290,13 +278,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'payment_date_created'   => $payload['date_created'],
 			'payment_gateway'        => $payload['gateway'],
 			'payment_invoice_url'    => $model->get_invoice_url(),
-			'payment_manage_url'     => wu_network_admin_url('wp-ultimo-edit-payment', array(
-				'id' => $model->get_id(),
-			)),
+			'payment_manage_url'     => wu_network_admin_url(
+				'wp-ultimo-edit-payment',
+				array(
+					'id' => $model->get_id(),
+				)
+			),
 		);
-
 	} elseif ($model_name === 'site') {
-
 		$payload = $model->to_search_results();
 
 		$payload = array(
@@ -305,13 +294,14 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'site_description' => $payload['description'],
 			'site_url'         => $payload['siteurl'],
 			'site_admin_url'   => get_admin_url($model->get_id()),
-			'site_manage_url'  => wu_network_admin_url('wp-ultimo-edit-site', array(
-				'id' => $model->get_id(),
-			)),
+			'site_manage_url'  => wu_network_admin_url(
+				'wp-ultimo-edit-site',
+				array(
+					'id' => $model->get_id(),
+				)
+			),
 		);
-
 	} elseif ($model_name === 'domain') {
-
 		$payload = $model->to_search_results();
 
 		$payload = array(
@@ -323,16 +313,17 @@ function wu_generate_event_payload($model_name, $model = false): array {
 			'domain_primary'      => var_export(wu_string_to_bool($payload['primary_domain']), true),
 			'domain_secure'       => var_export(wu_string_to_bool($payload['secure']), true),
 			'domain_date_created' => $payload['date_created'],
-			'domain_manage_url'   => wu_network_admin_url('wp-ultimo-edit-domain', array(
-				'id' => $model->get_id(),
-			)),
+			'domain_manage_url'   => wu_network_admin_url(
+				'wp-ultimo-edit-domain',
+				array(
+					'id' => $model->get_id(),
+				)
+			),
 		);
-
-	} // end if;
+	}
 
 	return $payload;
-
-} // end wu_generate_event_payload;
+}
 
 /**
  * Checks if the payload is a callable or if it's ready to use.
@@ -345,10 +336,8 @@ function wu_generate_event_payload($model_name, $model = false): array {
 function wu_maybe_lazy_load_payload($payload) {
 
 	if (is_callable($payload)) {
-
 		$payload = (array) call_user_func($payload);
-
-	} // end if;
+	}
 
 	/*
 	 * Adds the version number for control purposes.
@@ -356,5 +345,4 @@ function wu_maybe_lazy_load_payload($payload) {
 	$payload['wu_version'] = wu_get_version();
 
 	return $payload;
-
-} // end wu_maybe_lazy_load_payload;
+}

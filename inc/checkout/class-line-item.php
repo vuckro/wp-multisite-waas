@@ -12,8 +12,8 @@ namespace WP_Ultimo\Checkout;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Payments\Payment_Status;
-use \WP_Ultimo\Models\Product;
+use WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Models\Product;
 
 /**
  * Creates an cart with the parameters of the purchase being placed.
@@ -291,12 +291,11 @@ class Line_Item implements \JsonSerializable {
 
 		$this->attributes($atts);
 
-    /*
-     * Refresh totals.
-     */
+		/*
+		* Refresh totals.
+		*/
 		$this->recalculate_totals();
-
-	}  // end __construct;
+	}
 
 	/**
 	 * Loops through allowed fields and loads them.
@@ -308,44 +307,35 @@ class Line_Item implements \JsonSerializable {
 	 */
 	public function attributes($data) {
 		/*
-     * Set type first to allow for overriding the other parameters.
-     */
+		* Set type first to allow for overriding the other parameters.
+		*/
 		$type = wu_get_isset($data, 'type');
 
 		if ($type) {
-
 			$this->set_type($data['type']);
+		}
 
-		} // end if;
-
-    /*
-     * Set product first to allow for overriding the other parameters.
-     */
+		/*
+		* Set product first to allow for overriding the other parameters.
+		*/
 		$product = wu_get_isset($data, 'product');
 
 		if ($product) {
-
 			$this->set_product($data['product']);
 
 			unset($data['product']);
-
-		} // end if;
+		}
 
 		$allowed_attributes = array_keys(get_object_vars($this));
 
 		foreach ($data as $key => $value) {
-
 			if (in_array($key, $allowed_attributes, true)) {
-
 				$this->{$key} = $value;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$this->id = 'LN_' . strtoupper($this->type) . '_' . $this->hash;
-
-	} // end attributes;
+	}
 
 	/**
 	 * Get the value of id
@@ -356,8 +346,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_id() {
 
 		return $this->id;
-
-	} // end get_id;
+	}
 
 	/**
 	 * Get the value of type
@@ -368,8 +357,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_type() {
 
 		return $this->type;
-
-	} // end get_type;
+	}
 
 	/**
 	 * Set the value of type.
@@ -383,42 +371,34 @@ class Line_Item implements \JsonSerializable {
 	public function set_type($type) {
 
 		$this->type = $type;
-
-	} // end set_type;
- /**
-  * Get product associated with this line item.
-  *
-  * @since 2.0.0
-  * @return \WP_Ultimo\Models\Product|false
-  */
- public function get_product() {
+	}
+	/**
+	 * Get product associated with this line item.
+	 *
+	 * @since 2.0.0
+	 * @return \WP_Ultimo\Models\Product|false
+	 */
+	public function get_product() {
 
 		$product = wu_get_product($this->product_id);
 
-		if (!$product) {
-
+		if ( ! $product) {
 			return false;
-
-		} // end if;
+		}
 
 		if ($product->is_recurring() && ($this->duration_unit !== $product->get_duration_unit() || $this->duration !== $product->get_duration())) {
-
 			$product_variation = $product->get_as_variation($this->duration, $this->duration_unit);
 
 			/*
 			 * Checks if the variation exists before re-setting the product.
 			 */
 			if ($product_variation) {
-
 				$product = $product_variation;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $product;
-
-	} // end get_product;
+	}
 
 	/**
 	 * Set product associated with this line item.
@@ -452,8 +432,7 @@ class Line_Item implements \JsonSerializable {
 		$this->tax_category = $product->get_tax_category();
 
 		$this->discountable = true;
-
-	} // end set_product;
+	}
 
 	/**
 	 * Calculate the taxes value based on the tax_amount and tax_type.
@@ -465,8 +444,7 @@ class Line_Item implements \JsonSerializable {
 	public function calculate_taxes($sub_total) {
 
 		return wu_get_tax_amount($sub_total, $this->get_tax_rate(), $this->get_tax_type(), false, $this->get_tax_inclusive());
-
-	} // end calculate_taxes;
+	}
 
 	/**
 	 * Calculate the discounts value based on the discount_amount and discount_type.
@@ -478,8 +456,7 @@ class Line_Item implements \JsonSerializable {
 	public function calculate_discounts($sub_total) {
 
 		return wu_get_tax_amount($sub_total, $this->get_discount_rate(), $this->get_discount_type(), false);
-
-	} // end calculate_discounts;
+	}
 
 	/**
 	 * Recalculate payment totals.
@@ -496,30 +473,23 @@ class Line_Item implements \JsonSerializable {
 		$discounted_subtotal = $sub_total - $discounts;
 
 		if ($sub_total > 0 && $discounted_subtotal < 0) {
-
 			$discounted_subtotal = 0;
 
 			$discounts = $sub_total;
-
-		} // end if;
+		}
 
 		$taxes = $this->calculate_taxes($discounted_subtotal);
 
 		if ($this->get_tax_inclusive()) {
-
 			$total = $this->is_tax_exempt() ? $discounted_subtotal - $taxes : $discounted_subtotal;
-
 		} else {
-
 			$total = $this->is_tax_exempt() ? $discounted_subtotal : $discounted_subtotal + $taxes; // tax exclusive
 
-		} // end if;
+		}
 
 		if ($this->is_tax_exempt()) {
-
 			$taxes = 0;
-
-		} // end if;
+		}
 
 		$totals = array(
 			'subtotal'       => $sub_total,
@@ -531,8 +501,7 @@ class Line_Item implements \JsonSerializable {
 		$this->attributes($totals);
 
 		return $this;
-
-	} // end recalculate_totals;
+	}
 
 	/**
 	 * Get quantity of the given product.
@@ -543,8 +512,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_quantity() {
 
 		return $this->quantity;
-
-	} // end get_quantity;
+	}
 
 	/**
 	 * Set quantity of the given product.
@@ -556,8 +524,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_quantity($quantity) {
 
 		$this->quantity = $quantity;
-
-	} // end set_quantity;
+	}
 
 	/**
 	 * Get unit price of the product.
@@ -568,8 +535,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_unit_price() {
 
 		return $this->unit_price;
-
-	} // end get_unit_price;
+	}
 
 	/**
 	 * Set unit price of the product.
@@ -581,8 +547,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_unit_price($unit_price) {
 
 		$this->unit_price = $unit_price;
-
-	} // end set_unit_price;
+	}
 
 	/**
 	 * Get tax amount, absolute or percentage.
@@ -593,8 +558,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_tax_rate() {
 
 		return $this->tax_rate;
-
-	} // end get_tax_rate;
+	}
 
 	/**
 	 * Set tax amount, absolute or percentage.
@@ -606,8 +570,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_rate($tax_rate) {
 
 		$this->tax_rate = $tax_rate;
-
-	} // end set_tax_rate;
+	}
 
 	/**
 	 * Get type of the tax, percentage or absolute.
@@ -618,8 +581,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_tax_type() {
 
 		return $this->tax_type;
-
-	} // end get_tax_type;
+	}
 
 	/**
 	 * Set type of the tax, percentage or absolute.
@@ -631,8 +593,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_type($tax_type) {
 
 		$this->tax_type = $tax_type;
-
-	} // end set_tax_type;
+	}
 
 	/**
 	 * Get if tax are included in the price or not.
@@ -643,8 +604,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_tax_inclusive() {
 
 		return (bool) $this->tax_inclusive;
-
-	} // end get_tax_inclusive;
+	}
 
 	/**
 	 * Set if tax are included in the price or not.
@@ -656,8 +616,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_inclusive($tax_inclusive) {
 
 		$this->tax_inclusive = $tax_inclusive;
-
-	} // end set_tax_inclusive;
+	}
 
 	/**
 	 * Get if the line item is tax exempt ot not.
@@ -668,8 +627,7 @@ class Line_Item implements \JsonSerializable {
 	public function is_tax_exempt() {
 
 		return $this->tax_exempt;
-
-	} // end is_tax_exempt;
+	}
 
 	/**
 	 * Set if the line item is tax exempt ot not.
@@ -681,8 +639,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_exempt($tax_exempt) {
 
 		$this->tax_exempt = $tax_exempt;
-
-	} // end set_tax_exempt;
+	}
 
 	/**
 	 * Get the amount, in currency, of the tax.
@@ -693,8 +650,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_tax_total() {
 
 		return $this->tax_total;
-
-	} // end get_tax_total;
+	}
 
 	/**
 	 * Set the amount, in currency, of the tax.
@@ -706,8 +662,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_total($tax_total) {
 
 		$this->tax_total = $tax_total;
-
-	} // end set_tax_total;
+	}
 
 	/**
 	 * Get the value of total
@@ -718,8 +673,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_total() {
 
 		return $this->total;
-
-	} // end get_total;
+	}
 
 	/**
 	 * Set the value of total.
@@ -731,8 +685,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_total($total) {
 
 		$this->total = $total;
-
-	} // end set_total;
+	}
 
 	/**
 	 * Get the value of recurring.
@@ -743,8 +696,7 @@ class Line_Item implements \JsonSerializable {
 	public function is_recurring() {
 
 		return $this->recurring;
-
-	}  // end is_recurring;
+	}
 
 	/**
 	 * Set the value of recurring.
@@ -756,8 +708,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_recurring($recurring) {
 
 		$this->recurring = $recurring;
-
-	} // end set_recurring;
+	}
 
 	/**
 	 * Get value before taxes, discounts, fees and etc.
@@ -768,8 +719,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_subtotal() {
 
 		return $this->subtotal;
-
-	} // end get_subtotal;
+	}
 
 	/**
 	 * Set value before taxes, discounts, fees and etc.
@@ -781,8 +731,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_subtotal($subtotal) {
 
 		$this->subtotal = $subtotal;
-
-	} // end set_subtotal;
+	}
 
 	/**
 	 * Get the value of duration
@@ -793,8 +742,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_duration() {
 
 		return $this->duration;
-
-	} // end get_duration;
+	}
 
 	/**
 	 * Set the value of duration.
@@ -806,8 +754,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_duration($duration) {
 
 		$this->duration = $duration;
-
-	} // end set_duration;
+	}
 
 	/**
 	 * Get the value of duration_unit.
@@ -818,8 +765,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_duration_unit() {
 
 		return $this->duration_unit;
-
-	} // end get_duration_unit;
+	}
 
 	/**
 	 * Set the value of duration_unit.
@@ -831,8 +777,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_duration_unit($duration_unit) {
 
 		$this->duration_unit = $duration_unit;
-
-	} // end set_duration_unit;
+	}
 
 	/**
 	 * Get the value of billing_cycles.
@@ -843,8 +788,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_billing_cycles() {
 
 		return $this->billing_cycles;
-
-	} // end get_billing_cycles;
+	}
 
 	/**
 	 * Set the value of billing_cycles.
@@ -856,8 +800,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_billing_cycles($billing_cycles) {
 
 		$this->billing_cycles = $billing_cycles;
-
-	} // end set_billing_cycles;
+	}
 
 	/**
 	 * Get the value of discount_total.
@@ -868,8 +811,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_discount_total() {
 
 		return $this->discount_total;
-
-	} // end get_discount_total;
+	}
 
 	/**
 	 * Set the value of discount_total.
@@ -881,8 +823,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_discount_total($discount_total) {
 
 		$this->discount_total = $discount_total;
-
-	} // end set_discount_total;
+	}
 
 	/**
 	 * Get the value of tax_category.
@@ -893,8 +834,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_tax_category() {
 
 		return $this->tax_category;
-
-	} // end get_tax_category;
+	}
 
 	/**
 	 * Set the value of tax_category.
@@ -906,8 +846,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_category($tax_category) {
 
 		$this->tax_category = $tax_category;
-
-	} // end set_tax_category;
+	}
 
 	/**
 	 * Get the value of discountable.
@@ -918,8 +857,7 @@ class Line_Item implements \JsonSerializable {
 	public function is_discountable() {
 
 		return $this->discountable;
-
-	}  // end is_discountable;
+	}
 
 	/**
 	 * Set the value of discountable.
@@ -931,8 +869,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_discountable($discountable) {
 
 		$this->discountable = $discountable;
-
-	} // end set_discountable;
+	}
 
 	/**
 	 * Get the value of taxable.
@@ -943,8 +880,7 @@ class Line_Item implements \JsonSerializable {
 	public function is_taxable() {
 
 		return $this->taxable;
-
-	} // end is_taxable;
+	}
 
 	/**
 	 * Set the value of taxable.
@@ -956,8 +892,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_taxable($taxable) {
 
 		$this->taxable = $taxable;
-
-	} // end set_taxable;
+	}
 
 	/**
 	 * Get the value of discount_rate.
@@ -968,8 +903,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_discount_rate() {
 
 		return $this->discount_rate;
-
-	} // end get_discount_rate;
+	}
 
 	/**
 	 * Set the value of discount_rate.
@@ -981,8 +915,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_discount_rate($discount_rate) {
 
 		$this->discount_rate = $discount_rate;
-
-	} // end set_discount_rate;
+	}
 
 	/**
 	 * Get the value of discount_type.
@@ -993,8 +926,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_discount_type() {
 
 		return $this->discount_type;
-
-	} // end get_discount_type;
+	}
 
 	/**
 	 * Set the value of discount_type.
@@ -1006,8 +938,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_discount_type($discount_type) {
 
 		$this->discount_type = $discount_type;
-
-	} // end set_discount_type;
+	}
 
 	/**
 	 * Get discount Label.
@@ -1018,8 +949,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_discount_label() {
 
 		return $this->discount_label;
-
-	} // end get_discount_label;
+	}
 
 	/**
 	 * Set discount Label.
@@ -1031,8 +961,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_discount_label($discount_label) {
 
 		$this->discount_label = $discount_label;
-
-	} // end set_discount_label;
+	}
 
 	/**
 	 * Get if we should apply discount to renewals.
@@ -1043,8 +972,7 @@ class Line_Item implements \JsonSerializable {
 	public function should_apply_discount_to_renewals() {
 
 		return $this->apply_discount_to_renewals;
-
-	} // end should_apply_discount_to_renewals;
+	}
 
 	/**
 	 * Set if we should apply discount to renewals.
@@ -1056,8 +984,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_apply_discount_to_renewals($apply_discount_to_renewals) {
 
 		$this->apply_discount_to_renewals = $apply_discount_to_renewals;
-
-	} // end set_apply_discount_to_renewals;
+	}
 
 	/**
 	 * Get the value of product_id.
@@ -1068,8 +995,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_product_id() {
 
 		return $this->product_id;
-
-	} // end get_product_id;
+	}
 
 	/**
 	 * Set the value of product_id.
@@ -1081,8 +1007,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_product_id($product_id) {
 
 		$this->product_id = $product_id;
-
-	} // end set_product_id;
+	}
 
 	/**
 	 * Get the value of title
@@ -1093,8 +1018,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_title() {
 
 		return $this->title;
-
-	} // end get_title;
+	}
 
 	/**
 	 * Set the value of title.
@@ -1106,8 +1030,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_title($title) {
 
 		$this->title = $title;
-
-	} // end set_title;
+	}
 
 	/**
 	 * Get the value of description.
@@ -1118,8 +1041,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_description() {
 
 		return $this->description;
-
-	} // end get_description;
+	}
 
 	/**
 	 * Set the value of description.
@@ -1131,8 +1053,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_description($description) {
 
 		$this->description = $description;
-
-	} // end set_description;
+	}
 
 	/**
 	 * Get label of the tax applied.
@@ -1143,8 +1064,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_tax_label() {
 
 		return $this->tax_label;
-
-	} // end get_tax_label;
+	}
 
 	/**
 	 * Set label of the tax applied.
@@ -1156,8 +1076,7 @@ class Line_Item implements \JsonSerializable {
 	public function set_tax_label($tax_label) {
 
 		$this->tax_label = $tax_label;
-
-	} // end set_tax_label;
+	}
 
 	/**
 	 * Returns the amount recurring in a human-friendly way.
@@ -1167,11 +1086,9 @@ class Line_Item implements \JsonSerializable {
 	 */
 	public function get_recurring_description() {
 
-		if (!$this->is_recurring()) {
-
+		if ( ! $this->is_recurring()) {
 			return '';
-
-		} // end if;
+		}
 
 		$description = sprintf(
 			// translators: %1$s the duration, and %2$s the duration unit (day, week, month, etc)
@@ -1181,8 +1098,7 @@ class Line_Item implements \JsonSerializable {
 		);
 
 		return $description;
-
-	} // end get_recurring_description;
+	}
 
 	/**
 	 * Converts the line item to an array.
@@ -1197,8 +1113,7 @@ class Line_Item implements \JsonSerializable {
 		$array['recurring_description'] = $this->get_recurring_description();
 
 		return $array;
-
-	} // end to_array;
+	}
 
 	/**
 	 * Implements our on json_decode version of this object. Useful for use in vue.js.
@@ -1210,8 +1125,7 @@ class Line_Item implements \JsonSerializable {
 	public function jsonSerialize() {
 
 		return $this->to_array();
-
-	} // end jsonSerialize;
+	}
 
 	/**
 	 * Queries the database for Line Items across payments.
@@ -1225,11 +1139,14 @@ class Line_Item implements \JsonSerializable {
 
 		global $wpdb;
 
-		$query = wp_parse_args($query, array(
-			'number'         => 100,
-			'date_query'     => array(),
-			'payment_status' => false,
-		));
+		$query = wp_parse_args(
+			$query,
+			array(
+				'number'         => 100,
+				'date_query'     => array(),
+				'payment_status' => false,
+			)
+		);
 
 		$query['date_query']['column'] = 'p.date_created';
 
@@ -1241,11 +1158,9 @@ class Line_Item implements \JsonSerializable {
 
 		$status_query_sql = '';
 
-		if ($query['payment_status'] && (new Payment_Status)->is_valid($query['payment_status'])) {
-
+		if ($query['payment_status'] && (new Payment_Status())->is_valid($query['payment_status'])) {
 			$status_query_sql = "AND p.status = '{$query['payment_status']}'";
-
-		} // end if;
+		}
 
 		// phpcs:disable;
 		$query = $wpdb->prepare("
@@ -1266,26 +1181,25 @@ class Line_Item implements \JsonSerializable {
 		$results = $wpdb->get_results($query); // phpcs:ignore
 
 		foreach ($results as &$ln) {
-
 			$copy = $ln;
 
 			$line_items = $ln->line_items;
 
 			$ln = maybe_unserialize($line_items);
 
-			$ln = array_map(function($_ln) use ($copy) {
+			$ln = array_map(
+				function ($_ln) use ($copy) {
 
-				$_ln->date_created = $copy->date_created;
+					$_ln->date_created = $copy->date_created;
 
-				return $_ln;
-
-			}, $ln);
-
-		} // end foreach;
+					return $_ln;
+				},
+				$ln
+			);
+		}
 
 		return $results;
-
-	} // end get_line_items;
+	}
 
 	/**
 	 * Get the product slug, if any.
@@ -1296,8 +1210,7 @@ class Line_Item implements \JsonSerializable {
 	public function get_product_slug() {
 
 		return $this->product_slug;
-
-	} // end get_product_slug;
+	}
 
 	/**
 	 * Set the product slug.
@@ -1309,7 +1222,5 @@ class Line_Item implements \JsonSerializable {
 	public function set_product_slug($product_slug) {
 
 		$this->product_slug = $product_slug;
-
-	} // end set_product_slug;
-
-} // end class Line_Item;
+	}
+}

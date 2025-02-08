@@ -32,8 +32,7 @@ class Inside_Events_List_Table extends Event_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Renders the inside column responsive.
@@ -61,39 +60,44 @@ class Inside_Events_List_Table extends Event_List_Table {
 		$object_initiator = $item->get_initiator();
 
 		if ($object_initiator === 'system') {
-
 			$value = sprintf('<span class="dashicons-wu-wp-ultimo wu-align-middle wu-mr-1 wu-text-lg"></span><span class="wu-text-gray-600">%s</span>', __('Automatically processed by WP Multisite WaaS', 'wp-ultimo'));
-
 		} elseif ($object_initiator === 'manual') {
-
-			$avatar = get_avatar($item->get_author_id(), 16, 'identicon', '', array(
-				'force_display' => true,
-				'class'         => 'wu-rounded-full wu-mr-1 wu-align-text-bottom',
-			));
+			$avatar = get_avatar(
+				$item->get_author_id(),
+				16,
+				'identicon',
+				'',
+				array(
+					'force_display' => true,
+					'class'         => 'wu-rounded-full wu-mr-1 wu-align-text-bottom',
+				)
+			);
 
 			$display_name = $item->get_author_display_name();
 
 			$value = sprintf('<span class="wu-text-gray-600">%s%s</span>', $avatar, $display_name);
+		}
 
-		} // end if;
-
-		echo wu_responsive_table_row(array(
-			'id'     => '',
-			'title'  => sprintf('<span class="wu-font-normal">%s</span>', wp_trim_words($item->get_message(), 15)),
-			'url'    => wu_network_admin_url('wp-ultimo-view-event', array(
-				'id' => $item->get_id(),
-			)),
-			'status' => $value,
-		),
-		$first_row,
-		array(
-			'date_created' => array(
-				'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
-				'label' => '',
-				'value' => sprintf(__('Processed %s', 'wp-ultimo'), wu_human_time_diff($item->get_date_created(), '-1 day')),
+		echo wu_responsive_table_row(
+			array(
+				'id'     => '',
+				'title'  => sprintf('<span class="wu-font-normal">%s</span>', wp_trim_words($item->get_message(), 15)),
+				'url'    => wu_network_admin_url(
+					'wp-ultimo-view-event',
+					array(
+						'id' => $item->get_id(),
+					)
+				),
+				'status' => $value,
 			),
-		));
-
-	} // end column_responsive;
-
-} // end class Inside_Events_List_Table;
+			$first_row,
+			array(
+				'date_created' => array(
+					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
+					'label' => '',
+					'value' => sprintf(__('Processed %s', 'wp-ultimo'), wu_human_time_diff($item->get_date_created(), '-1 day')),
+				),
+			)
+		);
+	}
+}

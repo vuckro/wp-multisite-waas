@@ -24,7 +24,8 @@ defined('ABSPATH') || exit;
  */
 class Customer extends Base_Model {
 
-	use Traits\Billable, Traits\Notable;
+	use Traits\Billable;
+	use Traits\Notable;
 
 	/**
 	 * User ID of the associated user.
@@ -136,8 +137,7 @@ class Customer extends Base_Model {
 	public function save() {
 
 		return parent::save();
-
-	} // end save;
+	}
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -164,8 +164,7 @@ class Customer extends Base_Model {
 			'extra_information'  => 'default:',
 			'signup_form'        => 'default:',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get user ID of the associated user.
@@ -176,8 +175,7 @@ class Customer extends Base_Model {
 	public function get_user_id() {
 
 		return absint($this->user_id);
-
-	} // end get_user_id;
+	}
 
 	/**
 	 * Set user ID of the associated user.
@@ -189,8 +187,7 @@ class Customer extends Base_Model {
 	public function set_user_id($user_id) {
 
 		$this->user_id = $user_id;
-
-	} // end set_user_id;
+	}
 
 	/**
 	 * Returns the user associated with this customer.
@@ -201,8 +198,7 @@ class Customer extends Base_Model {
 	public function get_user() {
 
 		return get_user_by('id', $this->get_user_id());
-
-	} // end get_user;
+	}
 
 	/**
 	 * Returns the customer's display name.
@@ -215,14 +211,11 @@ class Customer extends Base_Model {
 		$user = $this->get_user();
 
 		if (empty($user)) {
-
 			return __('User Deleted', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return $user->display_name;
-
-	} // end get_display_name;
+	}
 
 	/**
 	 * Returns the default billing address.
@@ -235,13 +228,14 @@ class Customer extends Base_Model {
 	 */
 	public function get_default_billing_address() {
 
-		return new \WP_Ultimo\Objects\Billing_Address(array(
-			'company_name'    => $this->get_display_name(),
-			'billing_email'   => $this->get_email_address(),
-			'billing_country' => $this->get_meta('ip_country'),
-		));
-
-	} // end get_default_billing_address;
+		return new \WP_Ultimo\Objects\Billing_Address(
+			array(
+				'company_name'    => $this->get_display_name(),
+				'billing_email'   => $this->get_email_address(),
+				'billing_country' => $this->get_meta('ip_country'),
+			)
+		);
+	}
 
 	/**
 	 * Returns the customer country.
@@ -255,15 +249,12 @@ class Customer extends Base_Model {
 
 		$country = $billing_address->billing_country;
 
-		if (!$country) {
-
+		if ( ! $country) {
 			return $this->get_meta('ip_country');
-
-		} // end if;
+		}
 
 		return $country;
-
-	} // end get_country;
+	}
 
 	/**
 	 * Returns the customer's username.
@@ -276,14 +267,11 @@ class Customer extends Base_Model {
 		$user = $this->get_user();
 
 		if (empty($user)) {
-
 			return __('none', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return $user->user_login;
-
-	} // end get_username;
+	}
 
 	/**
 	 * Returns the customer's email address.
@@ -296,14 +284,11 @@ class Customer extends Base_Model {
 		$user = $this->get_user();
 
 		if (empty($user)) {
-
 			return __('none', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return $user->user_email;
-
-	} // end get_email_address;
+	}
 
 	/**
 	 * Get date when the customer was created.
@@ -315,8 +300,7 @@ class Customer extends Base_Model {
 	public function get_date_registered($formatted = true) {
 
 		return $this->date_registered;
-
-	} // end get_date_registered;
+	}
 
 	/**
 	 * Set date when the customer was created.
@@ -328,8 +312,7 @@ class Customer extends Base_Model {
 	public function set_date_registered($date_registered) {
 
 		$this->date_registered = $date_registered;
-
-	} // end set_date_registered;
+	}
 
 	/**
 	 * Get email verification status - either `none`, `pending`, or `verified`.
@@ -340,8 +323,7 @@ class Customer extends Base_Model {
 	public function get_email_verification() {
 
 		return $this->email_verification;
-
-	} // end get_email_verification;
+	}
 
 	/**
 	 * Set email verification status - either `none`, `pending`, or `verified`.
@@ -353,8 +335,7 @@ class Customer extends Base_Model {
 	public function set_email_verification($email_verification) {
 
 		$this->email_verification = $email_verification;
-
-	} // end set_email_verification;
+	}
 
 	/**
 	 * Get date this customer last logged in.
@@ -366,8 +347,7 @@ class Customer extends Base_Model {
 	public function get_last_login($formatted = true) {
 
 		return $this->last_login;
-
-	} // end get_last_login;
+	}
 
 	/**
 	 * Set date this customer last logged in.
@@ -379,8 +359,7 @@ class Customer extends Base_Model {
 	public function set_last_login($last_login) {
 
 		$this->last_login = $last_login;
-
-	} // end set_last_login;
+	}
 
 	/**
 	 * Get whether or not the customer has trialed before.
@@ -391,35 +370,30 @@ class Customer extends Base_Model {
 	public function has_trialed() {
 
 		if ((bool) $this->has_trialed) {
-
 			return true;
-
-		} // end if;
+		}
 
 		$this->has_trialed = $this->get_meta('wu_has_trialed');
 
-		if (!$this->has_trialed) {
+		if ( ! $this->has_trialed) {
+			$trial = wu_get_memberships(
+				array(
+					'customer_id'            => $this->get_id(),
+					'date_trial_end__not_in' => array(null, '0000-00-00 00:00:00'),
+					'fields'                 => 'ids',
+					'number'                 => 1,
+				)
+			);
 
-			$trial = wu_get_memberships(array(
-				'customer_id'            => $this->get_id(),
-				'date_trial_end__not_in' => array(null, '0000-00-00 00:00:00'),
-				'fields'                 => 'ids',
-				'number'                 => 1,
-			));
-
-			if (!empty($trial)) {
-
+			if ( ! empty($trial)) {
 				$this->update_meta('wu_has_trialed', true);
 
 				$this->has_trialed = true;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $this->has_trialed;
-
-	} // end has_trialed;
+	}
 
 	/**
 	 * Set whether or not the customer has trialed before.
@@ -433,8 +407,7 @@ class Customer extends Base_Model {
 		$this->meta['wu_has_trialed'] = $has_trialed;
 
 		$this->has_trialed = $has_trialed;
-
-	} // end set_has_trialed;
+	}
 
 	/**
 	 * Get if this customer is a VIP customer or not.
@@ -445,8 +418,7 @@ class Customer extends Base_Model {
 	public function is_vip() {
 
 		return (bool) $this->vip;
-
-	} // end is_vip;
+	}
 
 	/**
 	 * Set if this customer is a VIP customer or not.
@@ -458,8 +430,7 @@ class Customer extends Base_Model {
 	public function set_vip($vip) {
 
 		$this->vip = $vip;
-
-	} // end set_vip;
+	}
 
 	/**
 	 * Get list of IP addresses used by this customer.
@@ -470,20 +441,15 @@ class Customer extends Base_Model {
 	public function get_ips() {
 
 		if (empty($this->ips)) {
-
 			return array();
-
-		} // end if;
+		}
 
 		if (is_string($this->ips)) {
-
 			$this->ips = maybe_unserialize($this->ips);
-
-		} // end if;
+		}
 
 		return $this->ips;
-
-	} // end get_ips;
+	}
 
 	/**
 	 * Returns the last IP address recorded for the customer.
@@ -496,8 +462,7 @@ class Customer extends Base_Model {
 		$ips = $this->get_ips();
 
 		return array_pop($ips);
-
-	} // end get_last_ip;
+	}
 
 	/**
 	 * Set list of IP addresses used by this customer.
@@ -509,14 +474,11 @@ class Customer extends Base_Model {
 	public function set_ips($ips) {
 
 		if (is_string($ips)) {
-
 			$ips = maybe_unserialize(wp_unslash($ips));
-
-		} // end if;
+		}
 
 		$this->ips = $ips;
-
-	} // end set_ips;
+	}
 
 	/**
 	 * Adds a new IP to the IP list.
@@ -530,26 +492,21 @@ class Customer extends Base_Model {
 
 		$ips = $this->get_ips();
 
-		if (!is_array($ips)) {
-
+		if ( ! is_array($ips)) {
 			$ips = array();
-
-		} // end if;
+		}
 
 		/*
 		 * IP already exists.
 		 */
 		if (in_array($ip, $ips, true)) {
-
 			return;
-
-		} // end if;
+		}
 
 		$ips[] = sanitize_text_field($ip);
 
 		$this->set_ips($ips);
-
-	} // end add_ip;
+	}
 
 	/**
 	 * Updates the last login, as well as the ip and country if necessary.
@@ -562,28 +519,25 @@ class Customer extends Base_Model {
 	 */
 	public function update_last_login($update_ip = true, $update_country_and_state = false) {
 
-		$this->attributes(array(
-			'last_login' => wu_get_current_time('mysql', true),
-		));
+		$this->attributes(
+			array(
+				'last_login' => wu_get_current_time('mysql', true),
+			)
+		);
 
 		$geolocation = $update_ip || $update_country_and_state ? \WP_Ultimo\Geolocation::geolocate_ip('', true) : false;
 
 		if ($update_ip) {
-
 			$this->add_ip($geolocation['ip']);
-
-		} // end if;
+		}
 
 		if ($update_country_and_state) {
-
 			$this->update_meta('ip_country', $geolocation['country']);
 			$this->update_meta('ip_state', $geolocation['state']);
-
-		} // end if;
+		}
 
 		return $this->save();
-
-	} // end update_last_login;
+	}
 
 	/**
 	 * Get extra information.
@@ -594,16 +548,13 @@ class Customer extends Base_Model {
 	public function get_extra_information() {
 
 		if ($this->extra_information === null) {
-
 			$extra_information = (array) $this->get_meta('wu_customer_extra_information');
 
 			$this->extra_information = array_filter($extra_information);
-
-		} // end if;
+		}
 
 		return $this->extra_information;
-
-	} // end get_extra_information;
+	}
 
 	/**
 	 * Set featured extra information.
@@ -618,8 +569,7 @@ class Customer extends Base_Model {
 
 		$this->extra_information                     = $extra_information;
 		$this->meta['wu_customer_extra_information'] = $extra_information;
-
-	} // end set_extra_information;
+	}
 
 	/**
 	 * Returns the subscriptions attached to this customer.
@@ -629,11 +579,12 @@ class Customer extends Base_Model {
 	 */
 	public function get_memberships() {
 
-		return Membership::query(array(
-			'customer_id' => $this->get_id(),
-		));
-
-	} // end get_memberships;
+		return Membership::query(
+			array(
+				'customer_id' => $this->get_id(),
+			)
+		);
+	}
 
 	/**
 	 * Returns the sites attached to this customer.
@@ -657,8 +608,7 @@ class Customer extends Base_Model {
 		);
 
 		return Site::query($query_args);
-
-	} // end get_sites;
+	}
 
 	/**
 	 * Returns all pending sites associated with a customer.
@@ -673,20 +623,15 @@ class Customer extends Base_Model {
 		$memberships = $this->get_memberships();
 
 		foreach ($memberships as $membership) {
-
 			$pending_site = $membership->get_pending_site();
 
 			if ($pending_site) {
-
 				$pending_sites[] = $pending_site;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $pending_sites;
-
-	} // end get_pending_sites;
+	}
 
 	/**
 	 * The the primary site ID if available.
@@ -703,17 +648,14 @@ class Customer extends Base_Model {
 
 		$primary_site_id = get_user_option('primary_blog', $this->get_user_id());
 
-		if (!$primary_site_id) {
-
+		if ( ! $primary_site_id) {
 			$sites = $this->get_sites();
 
 			$primary_site_id = $sites ? $sites[0]->get_id() : wu_get_main_site_id();
-
-		} // end if;
+		}
 
 		return $primary_site_id;
-
-	} // end get_primary_site_id;
+	}
 
 	/**
 	 * Returns the payments attached to this customer.
@@ -723,11 +665,12 @@ class Customer extends Base_Model {
 	 */
 	public function get_payments() {
 
-		return Payment::query(array(
-			'customer_id' => $this->get_id(),
-		));
-
-	} // end get_payments;
+		return Payment::query(
+			array(
+				'customer_id' => $this->get_id(),
+			)
+		);
+	}
 
 	/**
 	 * By default, we just use the to_array method, but you can rewrite this.
@@ -740,32 +683,33 @@ class Customer extends Base_Model {
 		$user = get_userdata($this->get_user_id());
 
 		if (isset($this->_user)) {
-
 			$user = $this->_user; // Allows for injection, which is useful for mocking.
 
 			unset($this->_user);
-
-		} // end if;
+		}
 
 		$search_result = $this->to_array();
 
 		if ($user) {
-
-			$user->data->avatar = get_avatar($user->data->user_email, 40, 'identicon', '', array(
-				'force_display' => true,
-				'class'         => 'wu-rounded-full wu-mr-3',
-			));
+			$user->data->avatar = get_avatar(
+				$user->data->user_email,
+				40,
+				'identicon',
+				'',
+				array(
+					'force_display' => true,
+					'class'         => 'wu-rounded-full wu-mr-3',
+				)
+			);
 
 			$search_result = array_merge((array) $user->data, $search_result);
-
-		} // end if;
+		}
 
 		$search_result['billing_address_data'] = $this->get_billing_address()->to_array();
 		$search_result['billing_address']      = $this->get_billing_address()->to_string();
 
 		return $search_result;
-
-	} // end to_search_results;
+	}
 
 	/**
 	 * Get the customer type.
@@ -776,8 +720,7 @@ class Customer extends Base_Model {
 	public function get_type() {
 
 		return $this->type;
-
-	} // end get_type;
+	}
 
 	/**
 	 * Get the customer type.
@@ -790,8 +733,7 @@ class Customer extends Base_Model {
 	public function set_type($type) {
 
 		$this->type = $type;
-
-	} // end set_type;
+	}
 
 	/**
 	 * Gets the total grossed by the customer so far.
@@ -806,19 +748,16 @@ class Customer extends Base_Model {
 		static $sum;
 
 		if ($sum === null) {
-
 			$sum = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT SUM(total) FROM {$wpdb->base_prefix}wu_payments WHERE parent_id = 0 AND customer_id = %d",
 					$this->get_id()
 				)
 			);
-
-		} // end if;
+		}
 
 		return $sum;
-
-	} // end get_total_grossed;
+	}
 
 	/**
 	 * Get if the customer is online or not.
@@ -829,10 +768,8 @@ class Customer extends Base_Model {
 	public function is_online() {
 
 		if ($this->get_last_login() === '0000-00-00 00:00:00') {
-
 			return false;
-
-		} // end if;
+		}
 
 		$last_login_date = new \DateTime($this->get_last_login());
 		$now             = new \DateTime('now');
@@ -843,8 +780,7 @@ class Customer extends Base_Model {
 		$minutes_interval += $interval->i;
 
 		return $minutes_interval <= apply_filters('wu_is_online_minutes_interval', 3) ? true : false;
-
-	} // end is_online;
+	}
 
 	/**
 	 * Saves a verification key.
@@ -859,19 +795,17 @@ class Customer extends Base_Model {
 		$hash = \WP_Ultimo\Helpers\Hash::encode($seed, 'verification-key');
 
 		return $this->update_meta('wu_verification_key', $hash);
-
-	} // end generate_verification_key;
- /**
-  * Returns the saved verification key.
-  *
-  * @since 2.0.0
-  * @return string|bool
-  */
- public function get_verification_key() {
+	}
+	/**
+	 * Returns the saved verification key.
+	 *
+	 * @since 2.0.0
+	 * @return string|bool
+	 */
+	public function get_verification_key() {
 
 		return $this->get_meta('wu_verification_key', false);
-
-	} // end get_verification_key;
+	}
 
 	/**
 	 * Disabled the verification by setting the key to false.
@@ -882,30 +816,29 @@ class Customer extends Base_Model {
 	public function disable_verification_key() {
 
 		return $this->update_meta('wu_verification_key', false);
-
-	} // end disable_verification_key;
- /**
-  * Returns the link of the email verification endpoint.
-  *
-  * @since 2.0.0
-  * @return string|bool
-  */
- public function get_verification_url() {
+	}
+	/**
+	 * Returns the link of the email verification endpoint.
+	 *
+	 * @since 2.0.0
+	 * @return string|bool
+	 */
+	public function get_verification_url() {
 
 		$key = $this->get_verification_key();
 
-		if (!$key) {
-
+		if ( ! $key) {
 			return get_site_url(wu_get_main_site_id());
+		}
 
-		} // end if;
-
-		return add_query_arg(array(
-			'email-verification-key' => $key,
-			'customer'               => $this->get_hash(),
-		), get_site_url(wu_get_main_site_id()));
-
-	} // end get_verification_url;
+		return add_query_arg(
+			array(
+				'email-verification-key' => $key,
+				'customer'               => $this->get_hash(),
+			),
+			get_site_url(wu_get_main_site_id())
+		);
+	}
 
 	/**
 	 * Send verification email.
@@ -923,8 +856,7 @@ class Customer extends Base_Model {
 		);
 
 		wu_do_event('confirm_email_address', $payload);
-
-	} // end send_verification_email;
+	}
 
 	/**
 	 * Get the form used to signup.
@@ -935,8 +867,7 @@ class Customer extends Base_Model {
 	public function get_signup_form() {
 
 		return $this->signup_form;
-
-	} // end get_signup_form;
+	}
 
 	/**
 	 * Set the form used to signup.
@@ -948,7 +879,5 @@ class Customer extends Base_Model {
 	public function set_signup_form($signup_form) {
 
 		$this->signup_form = $signup_form;
-
-	} // end set_signup_form;
-
-} // end class Customer;
+	}
+}

@@ -128,10 +128,9 @@ class Event extends Base_Model {
 			'object_id'   => 'integer|default:0',
 			'author_id'   => 'integer|default:0',
 			'slug'        => 'required|alpha_dash',
-			'initiator'   => 'required|in:system,manual'
+			'initiator'   => 'required|in:system,manual',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get severity of the problem..
@@ -142,8 +141,7 @@ class Event extends Base_Model {
 	public function get_severity() {
 
 		return (int) $this->severity;
-
-	} // end get_severity;
+	}
 
 	/**
 	 * Returns the Label for a given severity level.
@@ -154,16 +152,15 @@ class Event extends Base_Model {
 	public function get_severity_label() {
 
 		$labels = array(
-			Event::SEVERITY_SUCCESS => __('Success', 'wp-ultimo'),
-			Event::SEVERITY_NEUTRAL => __('Neutral', 'wp-ultimo'),
-			Event::SEVERITY_INFO    => __('Info', 'wp-ultimo'),
-			Event::SEVERITY_WARNING => __('Warning', 'wp-ultimo'),
-			Event::SEVERITY_FATAL   => __('Fatal', 'wp-ultimo'),
+			self::SEVERITY_SUCCESS => __('Success', 'wp-ultimo'),
+			self::SEVERITY_NEUTRAL => __('Neutral', 'wp-ultimo'),
+			self::SEVERITY_INFO    => __('Info', 'wp-ultimo'),
+			self::SEVERITY_WARNING => __('Warning', 'wp-ultimo'),
+			self::SEVERITY_FATAL   => __('Fatal', 'wp-ultimo'),
 		);
 
-		return isset($labels[$this->get_severity()]) ? $labels[$this->get_severity()] : __('Note', 'wp-ultimo');
-
-	} // end get_severity_label;
+		return isset($labels[ $this->get_severity() ]) ? $labels[ $this->get_severity() ] : __('Note', 'wp-ultimo');
+	}
 
 	/**
 	 * Gets the classes for a given severity level.
@@ -174,16 +171,15 @@ class Event extends Base_Model {
 	public function get_severity_class() {
 
 		$classes = array(
-			Event::SEVERITY_SUCCESS => 'wu-bg-green-200 wu-text-green-700',
-			Event::SEVERITY_NEUTRAL => 'wu-bg-gray-200 wu-text-gray-700',
-			Event::SEVERITY_INFO    => 'wu-bg-blue-200 wu-text-blue-700',
-			Event::SEVERITY_WARNING => 'wu-bg-yellow-200 wu-text-yellow-700',
-			Event::SEVERITY_FATAL   => 'wu-bg-red-200 wu-text-red-700',
+			self::SEVERITY_SUCCESS => 'wu-bg-green-200 wu-text-green-700',
+			self::SEVERITY_NEUTRAL => 'wu-bg-gray-200 wu-text-gray-700',
+			self::SEVERITY_INFO    => 'wu-bg-blue-200 wu-text-blue-700',
+			self::SEVERITY_WARNING => 'wu-bg-yellow-200 wu-text-yellow-700',
+			self::SEVERITY_FATAL   => 'wu-bg-red-200 wu-text-red-700',
 		);
 
-		return isset($classes[$this->get_severity()]) ? $classes[$this->get_severity()] : '';
-
-	} // end get_severity_class;
+		return isset($classes[ $this->get_severity() ]) ? $classes[ $this->get_severity() ] : '';
+	}
 
 	/**
 	 * Set severity of the problem..
@@ -195,8 +191,7 @@ class Event extends Base_Model {
 	public function set_severity($severity) {
 
 		$this->severity = $severity;
-
-	} // end set_severity;
+	}
 
 	/**
 	 * Get date when the event was created..
@@ -207,8 +202,7 @@ class Event extends Base_Model {
 	public function get_date_created() {
 
 		return $this->date_created;
-
-	} // end get_date_created;
+	}
 
 	/**
 	 * Set date when the event was created..
@@ -220,8 +214,7 @@ class Event extends Base_Model {
 	public function set_date_created($date_created) {
 
 		$this->date_created = $date_created;
-
-	} // end set_date_created;
+	}
 
 	/**
 	 * Get payload of the event..
@@ -234,8 +227,7 @@ class Event extends Base_Model {
 		$payload = (array) maybe_unserialize(wp_unslash($this->payload));
 
 		return $payload;
-
-	} // end get_payload;
+	}
 
 	/**
 	 * Set payload of the event..
@@ -247,8 +239,7 @@ class Event extends Base_Model {
 	public function set_payload($payload) {
 
 		$this->payload = $payload;
-
-	} // end set_payload;
+	}
 
 	/**
 	 * Get message for the event.
@@ -261,8 +252,7 @@ class Event extends Base_Model {
 		$message = self::get_default_system_messages($this->slug);
 
 		return $this->interpolate_message($message, $this->get_payload());
-
-	} // end get_message;
+	}
 	/**
 	 * Interpolates the value of a message and its placeholders with the contents of the payload.
 	 *
@@ -278,16 +268,12 @@ class Event extends Base_Model {
 		$interpolation_keys = array();
 
 		foreach ($payload as $key => &$value) {
-
 			$interpolation_keys[] = "{{{$key}}}";
 
 			if (is_array($value)) {
-
 				$value = implode(' &rarr; ', wu_array_flatten($value));
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$interpolation = array_combine($interpolation_keys, $payload);
 
@@ -298,8 +284,7 @@ class Event extends Base_Model {
 		$interpolation['{{object_id}}'] = $this->object_id;
 
 		return strtr($message, $interpolation);
-
-	} // end interpolate_message;
+	}
 
 	/**
 	 * Returns the default system messages for events.
@@ -319,8 +304,7 @@ class Event extends Base_Model {
 		$default_messages = apply_filters('wu_get_default_system_messages', $default_messages);
 
 		return wu_get_isset($default_messages, $slug, __('No Message', 'wp-ultimo'));
-
-	} // end get_default_system_messages;
+	}
 
 
 	/**
@@ -332,8 +316,7 @@ class Event extends Base_Model {
 	public function get_initiator() {
 
 		return $this->initiator;
-
-	} // end get_initiator;
+	}
 
 	/**
 	 * Set by people (admins, customers), saved as 'manual'.
@@ -346,8 +329,7 @@ class Event extends Base_Model {
 	public function set_initiator($initiator) {
 
 		$this->initiator = $initiator;
-
-	} // end set_initiator;
+	}
 
 	/**
 	 * Get the author of the action, saved as the user_id.
@@ -358,8 +340,7 @@ class Event extends Base_Model {
 	public function get_author_id() {
 
 		return $this->author_id;
-
-	} // end get_author_id;
+	}
 
 	/**
 	 * Returns the user associated with this author.
@@ -370,18 +351,13 @@ class Event extends Base_Model {
 	public function get_author_user() {
 
 		if ($this->author_id) {
-
 			$user = get_user_by('id', $this->author_id);
 
 			if ($user) {
-
 				return $user;
-
-			} // end if;
-
-		} // end if;
-
-	} // end get_author_user;
+			}
+		}
+	}
 
 	/**
 	 * Returns the authors' display name.
@@ -394,12 +370,9 @@ class Event extends Base_Model {
 		$user = $this->get_author_user();
 
 		if ($user) {
-
 			return $user->display_name;
-
-		} // end if;
-
-	} // end get_author_display_name;
+		}
+	}
 
 	/**
 	 * Returns the authors' email address.
@@ -412,12 +385,9 @@ class Event extends Base_Model {
 		$user = $this->get_author_user();
 
 		if ($user) {
-
 			return $user->user_email;
-
-		} // end if;
-
-	} // end get_author_email_address;
+		}
+	}
 
 	/**
 	 * Set the author of the action, saved as the user_id.
@@ -429,8 +399,7 @@ class Event extends Base_Model {
 	public function set_author_id($author_id) {
 
 		$this->author_id = $author_id;
-
-	} // end set_author_id;
+	}
 
 	/**
 	 * Get the object of this event.
@@ -445,109 +414,91 @@ class Event extends Base_Model {
 		$function_name = "wu_get_{$object_type}";
 
 		if (function_exists($function_name)) {
-
 			return $function_name($this->get_object_id());
-
-		} // end if;
+		}
 
 		return false;
-
-	} // end get_object;
- /**
-  * Polyfill for the get_object method.
-  *
-  * @since 2.0.0
-  * @return false|object
-  */
- public function get_membership() {
+	}
+	/**
+	 * Polyfill for the get_object method.
+	 *
+	 * @since 2.0.0
+	 * @return false|object
+	 */
+	public function get_membership() {
 
 		$object_type = $this->get_object_type();
 
 		if ($object_type !== 'membership') {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $this->get_object();
-
-	} // end get_membership;
- /**
-  * Polyfill for the get_object method.
-  *
-  * @since 2.0.0
-  * @return false|object
-  */
- public function get_product() {
+	}
+	/**
+	 * Polyfill for the get_object method.
+	 *
+	 * @since 2.0.0
+	 * @return false|object
+	 */
+	public function get_product() {
 
 		$object_type = $this->get_object_type();
 
 		if ($object_type !== 'product') {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $this->get_object();
-
-	} // end get_product;
- /**
-  * Polyfill for the get_object method.
-  *
-  * @since 2.0.0
-  * @return false|object
-  */
- public function get_site() {
+	}
+	/**
+	 * Polyfill for the get_object method.
+	 *
+	 * @since 2.0.0
+	 * @return false|object
+	 */
+	public function get_site() {
 
 		$object_type = $this->get_object_type();
 
 		if ($object_type !== 'site') {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $this->get_object();
-
-	} // end get_site;
- /**
-  * Polyfill for the get_object method.
-  *
-  * @since 2.0.0
-  * @return false|object
-  */
- public function get_customer() {
+	}
+	/**
+	 * Polyfill for the get_object method.
+	 *
+	 * @since 2.0.0
+	 * @return false|object
+	 */
+	public function get_customer() {
 
 		$object_type = $this->get_object_type();
 
 		if ($object_type !== 'customer') {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $this->get_object();
-
-	} // end get_customer;
- /**
-  * Polyfill for the get_object method.
-  *
-  * @since 2.0.0
-  * @return false|object
-  */
- public function get_payment() {
+	}
+	/**
+	 * Polyfill for the get_object method.
+	 *
+	 * @since 2.0.0
+	 * @return false|object
+	 */
+	public function get_payment() {
 
 		$object_type = $this->get_object_type();
 
 		if ($object_type !== 'payment') {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $this->get_object();
-
-	} // end get_payment;
+	}
 
 	/**
 	 * Get the object type associated with this event.
@@ -558,8 +509,7 @@ class Event extends Base_Model {
 	public function get_object_type() {
 
 		return $this->object_type;
-
-	} // end get_object_type;
+	}
 
 	/**
 	 * Set the object type associated with this event.
@@ -571,8 +521,7 @@ class Event extends Base_Model {
 	public function set_object_type($object_type) {
 
 		$this->object_type = $object_type;
-
-	} // end set_object_type;
+	}
 
 	/**
 	 * Get the object type associated with this event.
@@ -583,8 +532,7 @@ class Event extends Base_Model {
 	public function get_slug() {
 
 		return $this->slug;
-
-	} // end get_slug;
+	}
 
 	/**
 	 * Set the object type associated with this event.
@@ -596,8 +544,7 @@ class Event extends Base_Model {
 	public function set_slug($slug) {
 
 		$this->slug = $slug;
-
-	} // end set_slug;
+	}
 
 	/**
 	 * Get iD of the related objects..
@@ -608,8 +555,7 @@ class Event extends Base_Model {
 	public function get_object_id() {
 
 		return $this->object_id;
-
-	} // end get_object_id;
+	}
 
 	/**
 	 * Set iD of the related objects.
@@ -621,8 +567,7 @@ class Event extends Base_Model {
 	public function set_object_id($object_id) {
 
 		$this->object_id = $object_id;
-
-	} // end set_object_id;
+	}
 
 	/**
 	 * Transform the object into an assoc array.
@@ -645,27 +590,25 @@ class Event extends Base_Model {
 		$array['author'] = array();
 
 		if ($this->get_initiator() === 'manual') {
-
 			$user = get_user_by('ID', $this->get_author_id());
 
 			if ($user) {
-
 				$array['author'] = (array) $user->data;
 
 				unset($array['author']['user_pass']);
 				unset($array['author']['user_activation_key']);
 
-				$array['author']['avatar'] = get_avatar_url($this->get_author_id(), array(
-					'default' => 'identicon',
-				));
-
-			} // end if;
-
-		} // end if;
+				$array['author']['avatar'] = get_avatar_url(
+					$this->get_author_id(),
+					array(
+						'default' => 'identicon',
+					)
+				);
+			}
+		}
 
 		return $array;
-
-	} // end to_array;
+	}
 
 	/**
 	 * Override to clear event count.
@@ -675,16 +618,12 @@ class Event extends Base_Model {
 	 */
 	public function save() {
 
-		if (!$this->exists() && function_exists('get_current_user_id')) {
-
+		if ( ! $this->exists() && function_exists('get_current_user_id')) {
 			$user_id = get_current_user_id();
 
 			delete_site_transient("wu_{$user_id}_unseen_events_count");
-
-		} // end if;
+		}
 
 		return parent::save();
-
-	} // end save;
-
-} // end class Event;
+	}
+}

@@ -18,8 +18,7 @@ defined('ABSPATH') || exit;
 function wu_get_current_site() {
 
 	return new \WP_Ultimo\Models\Site(get_blog_details());
-
-} // end wu_get_current_site;
+}
 
 /**
  * Returns the site object
@@ -32,8 +31,7 @@ function wu_get_current_site() {
 function wu_get_site($id) {
 
 	return \WP_Ultimo\Models\Site::get_by_id($id);
-
-} // end wu_get_site;
+}
 /**
  * Gets a site based on the hash.
  *
@@ -45,8 +43,7 @@ function wu_get_site($id) {
 function wu_get_site_by_hash($hash) {
 
 	return \WP_Ultimo\Models\Site::get_by_hash($hash);
-
-} // end wu_get_site_by_hash;
+}
 
 /**
  * Queries sites.
@@ -58,29 +55,26 @@ function wu_get_site_by_hash($hash) {
  */
 function wu_get_sites($query = array()) {
 
-	if (!empty($query['search'])) {
-
-		$domain_ids = wu_get_domains(array(
-			'number' => -1,
-			'search' => '*' . $query['search'] . '*',
-			'fields' => array('blog_id'),
-		));
+	if ( ! empty($query['search'])) {
+		$domain_ids = wu_get_domains(
+			array(
+				'number' => -1,
+				'search' => '*' . $query['search'] . '*',
+				'fields' => array('blog_id'),
+			)
+		);
 
 		$domain_ids = array_column($domain_ids, 'blog_id');
 
-		if (!empty($domain_ids)) {
-
+		if ( ! empty($domain_ids)) {
 			$query['blog_id__in'] = $domain_ids;
 
 			unset($query['search']);
-
-		} // end if;
-
-	} // end if;
+		}
+	}
 
 	return \WP_Ultimo\Models\Site::query($query);
-
-} // end wu_get_sites;
+}
 
 /**
  * Returns the list of Site Templates.
@@ -92,13 +86,15 @@ function wu_get_sites($query = array()) {
  */
 function wu_get_site_templates($query = array()) {
 
-	$query = wp_parse_args($query, array(
-		'number' => 9999, // By default, we try to get ALL available templates.
-	));
+	$query = wp_parse_args(
+		$query,
+		array(
+			'number' => 9999, // By default, we try to get ALL available templates.
+		)
+	);
 
 	return \WP_Ultimo\Models\Site::get_all_by_type('site_template', $query);
-
-} // end wu_get_site_templates;
+}
 
 /**
  * Parses a URL and breaks it into different parts
@@ -113,16 +109,13 @@ function wu_handle_site_domain($domain) {
 	global $current_site;
 
 	if (strpos($domain, 'http') === false) {
-
 		$domain = "https://{$domain}";
-
-	} // end if;
+	}
 
 	$parsed = parse_url($domain);
 
 	return (object) $parsed;
-
-} // end wu_handle_site_domain;
+}
 /**
  * Creates a new site.
  *
@@ -135,16 +128,19 @@ function wu_create_site($site_data) {
 
 	$current_site = get_current_site();
 
-	$site_data = wp_parse_args($site_data, array(
-		'domain'                => $current_site->domain,
-		'path'                  => '/',
-		'title'                 => false,
-		'type'                  => false,
-		'template_id'           => false,
-		'featured_image_id'     => 0,
-		'duplication_arguments' => false,
-		'public'                => true,
-	));
+	$site_data = wp_parse_args(
+		$site_data,
+		array(
+			'domain'                => $current_site->domain,
+			'path'                  => '/',
+			'title'                 => false,
+			'type'                  => false,
+			'template_id'           => false,
+			'featured_image_id'     => 0,
+			'duplication_arguments' => false,
+			'public'                => true,
+		)
+	);
 
 	$site = new \WP_Ultimo\Models\Site($site_data);
 
@@ -153,8 +149,7 @@ function wu_create_site($site_data) {
 	$saved = $site->save();
 
 	return is_wp_error($saved) ? $saved : $site;
-
-} // end wu_create_site;
+}
 
 /**
  * Returns the correct domain/path combination when creating a new site.
@@ -173,7 +168,7 @@ function wu_get_site_domain_and_path($path_or_subdomain = '/', $base_domain = fa
 
 	$domain = $base_domain ? $base_domain : $current_site->domain;
 
-	$d = new \stdClass;
+	$d = new \stdClass();
 
 	if (is_multisite() && is_subdomain_install()) {
 		/*
@@ -186,8 +181,7 @@ function wu_get_site_domain_and_path($path_or_subdomain = '/', $base_domain = fa
 		$d->path = '/';
 
 		return $d;
-
-	} // end if;
+	}
 
 	$d->domain = $domain;
 
@@ -205,5 +199,4 @@ function wu_get_site_domain_and_path($path_or_subdomain = '/', $base_domain = fa
 	 * @return object An object containing a domain and path keys.
 	 */
 	return apply_filters('wu_get_site_domain_and_path', $d, $path_or_subdomain);
-
-} // end wu_get_site_domain_and_path;
+}

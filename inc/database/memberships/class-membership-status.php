@@ -12,7 +12,7 @@ namespace WP_Ultimo\Database\Memberships;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Engine\Enum;
+use WP_Ultimo\Database\Engine\Enum;
 
 /**
  * Membership Status.
@@ -49,8 +49,7 @@ class Membership_Status extends Enum {
 			static::EXPIRED   => 'wu-bg-yellow-200 wu-text-yellow-700',
 			static::CANCELLED => 'wu-bg-red-200 wu-text-red-700',
 		);
-
-	} // end classes;
+	}
 
 	/**
 	 * Returns an array with values => labels.
@@ -68,7 +67,5 @@ class Membership_Status extends Enum {
 			static::EXPIRED   => __('Expired', 'wp-ultimo'),
 			static::CANCELLED => __('Cancelled', 'wp-ultimo'),
 		);
-
-	} // end labels;
-
-} // end class Membership_Status;
+	}
+}

@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Checkout_Form;
+use WP_Ultimo\Models\Checkout_Form;
 
 /**
  * WP Multisite WaaS Checkout Form Admin Page.
@@ -64,29 +64,31 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function register_widgets() {
 
-		\WP_Ultimo\UI\Tours::get_instance()->create_tour('checkout-form-list', array(
+		\WP_Ultimo\UI\Tours::get_instance()->create_tour(
+			'checkout-form-list',
 			array(
-				'id'    => 'checkout-form-list',
-				'title' => __('Checkout Forms', 'wp-ultimo'),
-				'text'  => array(
-					__('Checkout Forms are an easy and flexible way to experiment with different approaches when trying to convert new customers.', 'wp-ultimo'),
+				array(
+					'id'    => 'checkout-form-list',
+					'title' => __('Checkout Forms', 'wp-ultimo'),
+					'text'  => array(
+						__('Checkout Forms are an easy and flexible way to experiment with different approaches when trying to convert new customers.', 'wp-ultimo'),
+					),
 				),
-			),
-			array(
-				'id'       => 'default-form',
-				'title'    => __('Experiment!', 'wp-ultimo'),
-				'text'     => array(
-					__('You can create as many checkout forms as you want, with different fields, products on offer, etc.', 'wp-ultimo'),
-					__('Planning on running some sort of promotion? Why not create a custom landing page with a tailor-maid checkout form to go with? The possibilities are endless.', 'wp-ultimo'),
+				array(
+					'id'       => 'default-form',
+					'title'    => __('Experiment!', 'wp-ultimo'),
+					'text'     => array(
+						__('You can create as many checkout forms as you want, with different fields, products on offer, etc.', 'wp-ultimo'),
+						__('Planning on running some sort of promotion? Why not create a custom landing page with a tailor-maid checkout form to go with? The possibilities are endless.', 'wp-ultimo'),
+					),
+					'attachTo' => array(
+						'element' => '#wp-ultimo-wrap > h1 > a:first-child',
+						'on'      => 'right',
+					),
 				),
-				'attachTo' => array(
-					'element' => '#wp-ultimo-wrap > h1 > a:first-child',
-					'on'      => 'right',
-				),
-			),
-		));
-
-	} // end register_widgets;
+			)
+		);
+	}
 
 	/**
 	 * Register ajax forms to handle adding new checkout forms.
@@ -98,13 +100,15 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Add new Checkout Form
 		 */
-		wu_register_form('add_new_checkout_form', array(
-			'render'     => array($this, 'render_add_new_checkout_form_modal'),
-			'handler'    => array($this, 'handle_add_new_checkout_form_modal'),
-			'capability' => 'wu_edit_checkout_forms',
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'add_new_checkout_form',
+			array(
+				'render'     => array($this, 'render_add_new_checkout_form_modal'),
+				'handler'    => array($this, 'handle_add_new_checkout_form_modal'),
+				'capability' => 'wu_edit_checkout_forms',
+			)
+		);
+	}
 
 	/**
 	 * Renders the add new customer modal.
@@ -150,21 +154,26 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('add_new_checkout_form', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'add_checkout_form_field',
-				'data-state'  => json_encode(array(
-					'template' => 'single-step',
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_new_checkout_form',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'add_checkout_form_field',
+					'data-state'  => json_encode(
+						array(
+							'template' => 'single-step',
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_add_new_checkout_form_modal;
+	}
 
 	/**
 	 * Handles creation of a new memberships.
@@ -176,7 +185,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 
 		$template = wu_request('template');
 
-		$checkout_form = new \WP_Ultimo\Models\Checkout_Form;
+		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
 		$checkout_form->use_template($template);
 
@@ -189,20 +198,20 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 		$status = $checkout_form->save();
 
 		if (is_wp_error($status)) {
-
 			wp_send_json_error($status);
-
 		} else {
-
-			wp_send_json_success(array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-edit-checkout-form', array(
-					'id' => $checkout_form->get_id(),
-				))
-			));
-
-		} // end if;
-
-	} // end handle_add_new_checkout_form_modal;
+			wp_send_json_success(
+				array(
+					'redirect_url' => wu_network_admin_url(
+						'wp-ultimo-edit-checkout-form',
+						array(
+							'id' => $checkout_form->get_id(),
+						)
+					),
+				)
+			);
+		}
+	}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -216,8 +225,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Checkout Form removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Checkout Form', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -228,8 +236,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Checkout Forms', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -240,8 +247,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Checkout Forms', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -252,8 +258,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Checkout Forms', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -271,8 +276,7 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 				'url'     => wu_get_form_url('add_new_checkout_form'),
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -283,7 +287,5 @@ class Checkout_Form_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Checkout_Form_List_Table();
-
-	} // end table;
-
-} // end class Checkout_Form_List_Admin_Page;
+	}
+}

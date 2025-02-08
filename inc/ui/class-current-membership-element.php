@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\UI\Base_Element;
-use \WP_Ultimo\Checkout\Cart;
+use WP_Ultimo\UI\Base_Element;
+use WP_Ultimo\Checkout\Cart;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -73,18 +73,23 @@ class Current_Membership_Element extends Base_Element {
 
 		parent::init();
 
-		wu_register_form('see_product_details', array(
-			'render'     => array($this, 'render_product_details'),
-			'capability' => 'exist',
-		));
+		wu_register_form(
+			'see_product_details',
+			array(
+				'render'     => array($this, 'render_product_details'),
+				'capability' => 'exist',
+			)
+		);
 
-		wu_register_form('edit_membership_product_modal', array(
-			'render'     => array($this, 'render_edit_membership_product_modal'),
-			'handler'    => array($this, 'handle_edit_membership_product_modal'),
-			'capability' => 'exist',
-		));
-
-	} // end init;
+		wu_register_form(
+			'edit_membership_product_modal',
+			array(
+				'render'     => array($this, 'render_edit_membership_product_modal'),
+				'handler'    => array($this, 'handle_edit_membership_product_modal'),
+				'capability' => 'exist',
+			)
+		);
+	}
 
 	/**
 	 * Loads the required scripts.
@@ -95,8 +100,7 @@ class Current_Membership_Element extends Base_Element {
 	public function register_scripts() {
 
 		add_wubox();
-
-	} // end register_scripts;
+	}
 	/**
 	 * The icon of the UI element.
 	 * e.g. return fa fa-search
@@ -107,14 +111,11 @@ class Current_Membership_Element extends Base_Element {
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -129,8 +130,7 @@ class Current_Membership_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Membership', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -146,8 +146,7 @@ class Current_Membership_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -203,8 +202,7 @@ class Current_Membership_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -232,8 +230,7 @@ class Current_Membership_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -256,8 +253,7 @@ class Current_Membership_Element extends Base_Element {
 			'display_images' => 1,
 			'columns'        => 2,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -269,17 +265,14 @@ class Current_Membership_Element extends Base_Element {
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
-		if (!$this->membership) {
-
+		if ( ! $this->membership) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->plan = $this->membership ? $this->membership->get_plan() : false;
-
-	} // end setup;
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -292,8 +285,7 @@ class Current_Membership_Element extends Base_Element {
 		$this->membership = wu_mock_membership();
 
 		$this->plan = wu_mock_product();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -317,35 +309,33 @@ class Current_Membership_Element extends Base_Element {
 		$atts['pending_change'] = false;
 
 		if ($this->membership) {
-
 			$pending_swap_order = $this->membership->get_scheduled_swap();
 
 			$atts['pending_products'] = false;
 
 			if ($pending_swap_order) {
-
 				$atts['pending_change']      = $pending_swap_order->order->get_cart_descriptor();
 				$atts['pending_change_date'] = wu_date($pending_swap_order->scheduled_date)->format(get_option('date_format'));
 
 				$swap_membership = (clone $this->membership)->swap($pending_swap_order->order);
 
-				$pending_products = array_map(fn($product) => array(
-					'id'       => $product['product']->get_id(),
-					'quantity' => $product['quantity'],
-				), $swap_membership->get_all_products());
+				$pending_products = array_map(
+					fn($product) => array(
+						'id'       => $product['product']->get_id(),
+						'quantity' => $product['quantity'],
+					),
+					$swap_membership->get_all_products()
+				);
 
 				// add the id as key
 				$atts['pending_products'] = array_combine(array_column($pending_products, 'id'), $pending_products);
-
-			} // end if;
+			}
 
 			return wu_get_template_contents('dashboard-widgets/current-membership', $atts);
-
-		} // end if;
+		}
 
 		return '';
-
-	} // end output;
+	}
 
 	/**
 	 * Renders the product details modal window.
@@ -357,17 +347,14 @@ class Current_Membership_Element extends Base_Element {
 
 		$product = wu_get_product_by_slug(wu_request('product'));
 
-		if (!$product) {
-
+		if ( ! $product) {
 			return;
-
-		} // end if;
+		}
 
 		$atts['product'] = $product;
 
 		wu_get_template('dashboard-widgets/current-membership-product-details', $atts);
-
-	} // end render_product_details;
+	}
 
 	/**
 	 * Renders the add/edit line items form.
@@ -381,30 +368,23 @@ class Current_Membership_Element extends Base_Element {
 
 		$error = '';
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = __('Membership not selected.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$product = wu_get_product_by_slug(wu_request('product'));
 
-		if (!$product) {
-
+		if ( ! $product) {
 			$error = __('Product not selected.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (empty($error) && !is_super_admin() && (!$customer || $customer->get_id() !== $membership->get_customer_id())) {
-
+		if (empty($error) && ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
 			$error = __('You are not allowed to do this.', 'wp-ultimo');
+		}
 
-		} // end if;
-
-		if (!empty($error)) {
-
+		if ( ! empty($error)) {
 			$error_field = array(
 				'error_message' => array(
 					'type' => 'note',
@@ -412,17 +392,20 @@ class Current_Membership_Element extends Base_Element {
 				),
 			);
 
-			$form = new \WP_Ultimo\UI\Form('cancel_payment_method', $error_field, array(
-				'views'                 => 'admin-pages/fields',
-				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			));
+			$form = new \WP_Ultimo\UI\Form(
+				'cancel_payment_method',
+				$error_field,
+				array(
+					'views'                 => 'admin-pages/fields',
+					'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				)
+			);
 
 			$form->render();
 
 			return;
-
-		} // end if;
+		}
 
 		/**
 		 * If there is a scheduled swap, we need to swap the membership before
@@ -431,20 +414,16 @@ class Current_Membership_Element extends Base_Element {
 		$existing_swap = $membership->get_scheduled_swap();
 
 		if ($existing_swap) {
-
 			$membership = $membership->swap($existing_swap->order);
-
-		} // end if;
+		}
 
 		$gateway_message = false;
 
-		if (!empty($membership->get_gateway())) {
-
+		if ( ! empty($membership->get_gateway())) {
 			$gateway = wu_get_gateway($membership->get_gateway());
 
 			$gateway_message = $gateway ? $gateway->get_amount_update_message(true) : '';
-
-		} // end if;
+		}
 
 		$existing_quantity = array_filter($membership->get_addon_products(), fn($item) => $item['product']->get_id() === $product->get_id())[0]['quantity'];
 
@@ -499,27 +478,30 @@ class Current_Membership_Element extends Base_Element {
 			),
 		);
 
-		if (!$gateway_message) {
-
+		if ( ! $gateway_message) {
 			unset($fields['update_note']);
+		}
 
-		} // end if;
-
-		$form = new \WP_Ultimo\UI\Form('edit_membership_product', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'edit_membership_product',
-				'data-state'  => wu_convert_to_state(array(
-					'confirmed' => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'edit_membership_product',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'edit_membership_product',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'confirmed' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_edit_membership_product_modal;
+	}
 
 	/**
 	 * Handles the membership product remove.
@@ -529,43 +511,35 @@ class Current_Membership_Element extends Base_Element {
 	 */
 	public function handle_edit_membership_product_modal() {
 
-		if (!wu_request('confirm')) {
-
+		if ( ! wu_request('confirm')) {
 			$error = new \WP_Error('not-confirmed', __('Please confirm the cancellation.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('membership-not-found', __('Membership not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$product = wu_get_product_by_slug(wu_request('product'));
 
-		if (!$product) {
-
+		if ( ! $product) {
 			$error = new \WP_Error('product-not-found', __('Product not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!is_super_admin() && (!$customer || $customer->get_id() !== $membership->get_customer_id())) {
-
+		if ( ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
 			$error = __('You are not allowed to do this.', 'wp-ultimo');
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		// Get the existing quantity by filtering the products array.
 		$existing_quantity = array_filter($membership->get_addon_products(), fn($item) => $item['product']->get_id() === $product->get_id())[0]['quantity'];
@@ -579,12 +553,10 @@ class Current_Membership_Element extends Base_Element {
 		$existing_swap = $membership->get_scheduled_swap();
 
 		if ($existing_swap) {
-
 			$membership = $membership->swap($existing_swap->order);
 
 			$existing_quantity = array_filter($membership->get_addon_products(), fn($item) => $item['product']->get_id() === $product->get_id())[0]['quantity'];
-
-		} // end if;
+		}
 
 		$quantity = (int) wu_request('quantity', 1);
 		$quantity = $quantity > $existing_quantity ? $existing_quantity : $quantity;
@@ -594,20 +566,16 @@ class Current_Membership_Element extends Base_Element {
 		$value_to_remove = wu_get_membership_product_price($membership, $product->get_id(), $quantity);
 
 		if (is_wp_error($value_to_remove)) {
-
 			wp_send_json_error($value_to_remove);
-
-		} // end if;
+		}
 
 		$plan_price = wu_get_membership_product_price($membership, $membership->get_plan()->get_id(), 1);
 
 		// do not allow remove more than the plan price
 		if ($plan_price < $value_to_remove) {
-
 			$value_to_remove = $membership->get_amount() - $plan_price;
 			$value_to_remove = $value_to_remove < 0 ? 0 : $value_to_remove;
-
-		} // end if;
+		}
 
 		$membership->set_amount($membership->get_amount() - $value_to_remove);
 
@@ -626,24 +594,20 @@ class Current_Membership_Element extends Base_Element {
 
 		// Lets schedule this change as the customer already paid for this period.
 		if (is_wp_error($schedule_swap)) {
-
 			wp_send_json_error($schedule_swap);
-
-		} // end if;
+		}
 
 		// Now we trigger the gateway update so the customer is charged for the new amount.
 		$gateway = wu_get_gateway($membership->get_gateway());
 
 		if ($gateway) {
-
 			$gateway->process_membership_update($membership, $customer);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_edit_membership_product_modal;
-
-} // end class Current_Membership_Element;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
+}

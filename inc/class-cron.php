@@ -13,8 +13,8 @@
 
 namespace WP_Ultimo;
 
-use \WP_Ultimo\Database\Memberships\Membership_Status;
-use \WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Database\Payments\Payment_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -66,8 +66,7 @@ class Cron {
 		add_action('wu_membership_check', array($this, 'membership_expired_check'), 20);
 
 		add_action('wu_async_mark_membership_as_expired', array($this, 'async_mark_membership_as_expired'), 10);
-
-	} // end init;
+	}
 
 	/**
 	 * Creates the recurring schedules for WP Multisite WaaS.
@@ -82,34 +81,27 @@ class Cron {
 		 * Hourly check
 		 */
 		if (wu_next_scheduled_action('wu_hourly') === false) {
-
 			$next_hour = strtotime(gmdate('Y-m-d H:00:00', strtotime('+1 hour')));
 
 			wu_schedule_recurring_action($next_hour, HOUR_IN_SECONDS, 'wu_hourly', array(), 'wu_cron');
-
-		} // end if;
+		}
 
 		/*
 		 * Daily check
 		 */
 		if (wu_next_scheduled_action('wu_daily') === false) {
-
 			wu_schedule_recurring_action(strtotime('tomorrow'), DAY_IN_SECONDS, 'wu_daily', array(), 'wu_cron');
-
-		} // end if;
+		}
 
 		/*
 		 * Monthly check
 		 */
 		if (wu_next_scheduled_action('wu_monthly') === false) {
-
 			$next_month = strtotime(gmdate('Y-m-01 00:00:00', strtotime('+1 month')));
 
 			wu_schedule_recurring_action($next_month, MONTH_IN_SECONDS, 'wu_monthly', array(), 'wu_cron');
-
-		} // end if;
-
-	} // end create_schedules;
+		}
+	}
 
 	/**
 	 * Creates the default membership checking schedule.
@@ -126,12 +118,9 @@ class Cron {
 		$interval = apply_filters('wu_schedule_membership_check_interval', 1 * HOUR_IN_SECONDS);
 
 		if (wu_next_scheduled_action('wu_membership_check') === false) {
-
 			wu_schedule_recurring_action(time(), $interval, 'wu_membership_check', array(), 'wu_cron');
-
-		} // end if;
-
-	} // end schedule_membership_check;
+		}
+	}
 
 	/**
 	 * Checks if non-auto-renewable memberships need work.
@@ -144,23 +133,27 @@ class Cron {
 	 */
 	public function membership_renewal_check() {
 		/*
-     	 * Define how many days before we need to
+		 * Define how many days before we need to
 		 * create pending payments.
 		 */
 		$days_before_expiring = apply_filters('wu_membership_renewal_days_before_expiring', 3);
 
-		$query_params = apply_filters('wu_membership_renewal_check_query_params', array(
-			'auto_renew' => false,
-			'status__in' => array(
-				Membership_Status::ACTIVE,
+		$query_params = apply_filters(
+			'wu_membership_renewal_check_query_params',
+			array(
+				'auto_renew' => false,
+				'status__in' => array(
+					Membership_Status::ACTIVE,
+				),
+				'date_query' => array(
+					'column'    => 'date_expiration',
+					'before'    => "+{$days_before_expiring} days",
+					'after'     => 'yesterday',
+					'inclusive' => true,
+				),
 			),
-			'date_query' => array(
-				'column'    => 'date_expiration',
-				'before'    => "+{$days_before_expiring} days",
-				'after'     => 'yesterday',
-				'inclusive' => true,
-			),
-		), $days_before_expiring);
+			$days_before_expiring
+		);
 
 		$memberships = wu_get_memberships($query_params);
 
@@ -169,14 +162,15 @@ class Cron {
 		 * a new async call for each one.
 		 */
 		foreach ($memberships as $membership) {
-
-			wu_enqueue_async_action('wu_async_create_renewal_payment', array(
-				'membership_id' => $membership->get_id(),
-			), 'wu_cron_check');
-
-		} // end foreach;
-
-	} // end membership_renewal_check;
+			wu_enqueue_async_action(
+				'wu_async_create_renewal_payment',
+				array(
+					'membership_id' => $membership->get_id(),
+				),
+				'wu_cron_check'
+			);
+		}
+	}
 
 	/**
 	 * Checks if trialing memberships need work.
@@ -189,17 +183,20 @@ class Cron {
 	 */
 	public function membership_trial_check() {
 
-		$query_params = apply_filters('wu_membership_trial_check_query_params', array(
-			'auto_renew' => false,
-			'status__in' => array(
-				Membership_Status::TRIALING,
-			),
-			'date_query' => array(
-				'column'    => 'date_trial_end',
-				'before'    => '-3 hours',
-				'inclusive' => true,
-			),
-		));
+		$query_params = apply_filters(
+			'wu_membership_trial_check_query_params',
+			array(
+				'auto_renew' => false,
+				'status__in' => array(
+					Membership_Status::TRIALING,
+				),
+				'date_query' => array(
+					'column'    => 'date_trial_end',
+					'before'    => '-3 hours',
+					'inclusive' => true,
+				),
+			)
+		);
 
 		$memberships = wu_get_memberships($query_params);
 
@@ -208,15 +205,16 @@ class Cron {
 		 * a new async call for each one.
 		 */
 		foreach ($memberships as $membership) {
-
-			wu_enqueue_async_action('wu_async_create_renewal_payment', array(
-				'membership_id' => $membership->get_id(),
-				'trial'         => true,
-			), 'wu_cron_check');
-
-		} // end foreach;
-
-	} // end membership_trial_check;
+			wu_enqueue_async_action(
+				'wu_async_create_renewal_payment',
+				array(
+					'membership_id' => $membership->get_id(),
+					'trial'         => true,
+				),
+				'wu_cron_check'
+			);
+		}
+	}
 
 	/**
 	 * Creates the pending payment for a renewing membership.
@@ -232,10 +230,8 @@ class Cron {
 		$membership = wu_get_membership($membership_id);
 
 		if (empty($membership)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * List of things to do:
@@ -249,8 +245,7 @@ class Cron {
 		$pending_payment = $membership->get_last_pending_payment();
 
 		if (empty($pending_payment)) {
-
-			$new_payment = wu_membership_create_new_payment($membership, false, !$trial);
+			$new_payment = wu_membership_create_new_payment($membership, false, ! $trial);
 
 			/*
 			 * Update the membership status.
@@ -259,9 +254,12 @@ class Cron {
 
 			$saved = $membership->save();
 
-			$payment_url = add_query_arg(array(
-				'payment' => $new_payment->get_hash(),
-			), wu_get_registration_url());
+			$payment_url = add_query_arg(
+				array(
+					'payment' => $new_payment->get_hash(),
+				),
+				wu_get_registration_url()
+			);
 
 			$payload = array_merge(
 				array(
@@ -275,12 +273,10 @@ class Cron {
 			wu_do_event('renewal_payment_created', $payload);
 
 			return $saved;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end async_create_renewal_payment;
+	}
 
 	/**
 	 * Checks if any memberships need to be marked as expired.
@@ -295,19 +291,23 @@ class Cron {
 		 */
 		$grace_period_days = apply_filters('wu_membership_grace_period_days', 3);
 
-		$query_params = apply_filters('wu_membership_expired_check_query_params', array(
-			'auto_renew'              => false,
-			'status__in'              => array(
-				Membership_Status::ACTIVE,
-				Membership_Status::ON_HOLD,
+		$query_params = apply_filters(
+			'wu_membership_expired_check_query_params',
+			array(
+				'auto_renew'              => false,
+				'status__in'              => array(
+					Membership_Status::ACTIVE,
+					Membership_Status::ON_HOLD,
+				),
+				'date_expiration__not_in' => array(null, '0000-00-00 00:00:00'),
+				'date_query'              => array(
+					'column'    => 'date_expiration',
+					'before'    => "-{$grace_period_days} days",
+					'inclusive' => true,
+				),
 			),
-			'date_expiration__not_in' => array(null, '0000-00-00 00:00:00'),
-			'date_query'              => array(
-				'column'    => 'date_expiration',
-				'before'    => "-{$grace_period_days} days",
-				'inclusive' => true,
-			),
-		), $grace_period_days);
+			$grace_period_days
+		);
 
 		$memberships = wu_get_memberships($query_params);
 
@@ -316,14 +316,15 @@ class Cron {
 		 * a new async call for each one.
 		 */
 		foreach ($memberships as $membership) {
-
-			wu_enqueue_async_action('wu_async_mark_membership_as_expired', array(
-				'membership_id' => $membership->get_id(),
-			), 'wu_cron_check');
-
-		} // end foreach;
-
-	} // end membership_expired_check;
+			wu_enqueue_async_action(
+				'wu_async_mark_membership_as_expired',
+				array(
+					'membership_id' => $membership->get_id(),
+				),
+				'wu_cron_check'
+			);
+		}
+	}
 
 	/**
 	 * Marks expired memberships as such.
@@ -338,10 +339,8 @@ class Cron {
 		$membership = wu_get_membership($membership_id);
 
 		if (empty($membership)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Update the membership status.
@@ -356,7 +355,5 @@ class Cron {
 		$membership->set_skip_validation(true);
 
 		return $membership->save();
-
-	} // end async_mark_membership_as_expired;
-
-} // end class Cron;
+	}
+}

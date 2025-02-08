@@ -90,8 +90,7 @@ class Current {
 		 */
 		add_action('init', array($this, 'load_currents'));
 		add_action('wp', array($this, 'load_currents'));
-
-	} // end init;
+	}
 
 	/**
 	 * Flush rewrite rules to make sure any newly added ones get installed on update.
@@ -102,8 +101,7 @@ class Current {
 	public function flush_rewrite_rules_on_update() {
 
 		flush_rewrite_rules();
-
-	} // end flush_rewrite_rules_on_update;
+	}
 
 	/**
 	 * Adds a new rewrite rule to allow for pretty links.
@@ -124,16 +122,13 @@ class Current {
 		);
 
 		if (is_subdomain_install() === false) {
-
 			add_rewrite_rule(
 				"blog/(.?.+?)/{$site_url_param}/([0-9a-zA-Z]+)/?$",
 				'index.php?name=$matches[1]&site_hash=$matches[2]',
 				'top'
 			);
-
-		} // end if;
-
-	} // end add_rewrite_rules;
+		}
+	}
 
 	/**
 	 * Adds the necessary query vars to support pretty links.
@@ -153,8 +148,7 @@ class Current {
 		$query_vars[] = 'wu_preselected';
 
 		return $query_vars;
-
-	} // end add_query_vars;
+	}
 
 	/**
 	 * List of URL keys to set the current objects.
@@ -172,8 +166,7 @@ class Current {
 		);
 
 		return wu_get_isset($params, $type, $type);
-
-	} // end param_key;
+	}
 
 	/**
 	 * Returns the URL to manage a site/customer on the front-end or back end.
@@ -189,8 +182,7 @@ class Current {
 		// Uses hash instead of the ID.
 		$site_hash = \WP_Ultimo\Helpers\Hash::encode($id, $type);
 
-		if (!is_admin()) {
-
+		if ( ! is_admin()) {
 			$current_url = rtrim((string) wu_get_current_url(), '/');
 
 			$url_param = self::param_key($type);
@@ -199,20 +191,15 @@ class Current {
 			 * Check if the current URL already has a site parameter and remove it.
 			 */
 			if (strpos($current_url, '/' . $url_param . '/') !== false) {
-
 				$current_url = preg_replace('/\/' . $url_param . '\/(.+)/', '/', $current_url);
-
-			} // end if;
+			}
 
 			$pretty_url = $current_url . '/' . $url_param . '/' . $site_hash;
 
 			$manage_site_url = get_option('permalink_structure') ? $pretty_url : add_query_arg($url_param, $site_hash);
-
 		} else {
-
 			$manage_site_url = get_admin_url($id);
-
-		} // end if;
+		}
 
 		/**
 		 * Allow developers to modify the manage site URL parameters.
@@ -225,8 +212,7 @@ class Current {
 		 * @return string The modified manage URL.
 		 */
 		return apply_filters("wu_current_{$type}_get_manage_url", $manage_site_url, $id, $site_hash);
-
-	} // end get_manage_url;
+	}
 
 	/**
 	 * Loads the current site and makes it available.
@@ -241,7 +227,7 @@ class Current {
 		/**
 		 * On the front-end, we need to check for url overrides.
 		 */
-		if (!is_admin()) {
+		if ( ! is_admin()) {
 			/*
 			 * By default, we'll use the `site` parameter.
 			 */
@@ -252,31 +238,24 @@ class Current {
 			$site_from_url = wu_get_site_by_hash($site_hash);
 
 			if ($site_from_url) {
-
 				$this->site_set_via_request = true;
 
 				$site = $site_from_url;
-
-			} // end if;
-
+			}
 		} else {
-
 			$site = wu_get_current_site();
-
-		} // end if;
+		}
 
 		if ($site) {
-
 			$this->set_site($site);
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
 		/**
 		 * On the front-end, we need to check for url overrides.
 		 */
-		if (!is_admin()) {
+		if ( ! is_admin()) {
 			/*
 			 * By default, we'll use the `site` parameter.
 			 */
@@ -285,14 +264,11 @@ class Current {
 			$customer_from_url = wu_get_customer(wu_request($customer_url_param, 0));
 
 			if ($customer_from_url) {
-
 				$this->customer_set_via_request = true;
 
 				$customer = $customer_from_url;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		$this->set_customer($customer);
 
@@ -306,28 +282,21 @@ class Current {
 		$membership_hash = wu_request($membership_url_param, get_query_var('membership_hash'));
 
 		if ($membership_hash) {
-
 			$this->membership_set_via_request = true;
 
 			$membership = wu_get_membership_by_hash($membership_hash);
-
 		} elseif ($site) {
-
 			$membership = $site->get_membership();
+		}
 
-		} // end if;
-
-		if ($customer && !$membership) {
-
+		if ($customer && ! $membership) {
 			$memberships = (array) $customer->get_memberships();
 
 			$membership = wu_get_isset($memberships, 0, false);
-
-		} // end if;
+		}
 
 		$this->set_membership($membership);
-
-	} // end load_currents;
+	}
 
 	/**
 	 * Get the current site instance.
@@ -338,8 +307,7 @@ class Current {
 	public function get_site() {
 
 		return $this->site;
-
-	} // end get_site;
+	}
 
 	/**
 	 * Set the current site instance.
@@ -363,8 +331,7 @@ class Current {
 		$site = apply_filters('wu_current_set_site', $site, $this);
 
 		$this->site = $site;
-
-	} // end set_site;
+	}
 
 	/**
 	 * Get wether or not the site was set via request.
@@ -375,8 +342,7 @@ class Current {
 	public function is_site_set_via_request() {
 
 		return $this->site_set_via_request;
-
-	} // end is_site_set_via_request;
+	}
 
 	/**
 	 * Get the current customer instance.
@@ -387,8 +353,7 @@ class Current {
 	public function get_customer() {
 
 		return $this->customer;
-
-	} // end get_customer;
+	}
 
 	/**
 	 * Set the current customer instance.
@@ -412,8 +377,7 @@ class Current {
 		$customer = apply_filters('wu_current_set_customer', $customer, $this);
 
 		$this->customer = $customer;
-
-	} // end set_customer;
+	}
 
 	/**
 	 * Get the current membership instance.
@@ -424,8 +388,7 @@ class Current {
 	public function get_membership() {
 
 		return $this->membership;
-
-	} // end get_membership;
+	}
 
 	/**
 	 * Set the current membership instance.
@@ -449,8 +412,7 @@ class Current {
 		$membership = apply_filters('wu_current_set_membership', $membership, $this);
 
 		$this->membership = $membership;
-
-	} // end set_membership;
+	}
 
 	/**
 	 * Get wether or not the membership was set via request.
@@ -461,7 +423,5 @@ class Current {
 	public function is_membership_set_via_request() {
 
 		return $this->membership_set_via_request;
-
-	} // end is_membership_set_via_request;
-
-} // end class Current;
+	}
+}

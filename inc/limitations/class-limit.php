@@ -51,33 +51,33 @@ abstract class Limit implements \JsonSerializable {
 	protected $enabled;
 
 	/**
-     * Controls if this limit has its own limit.
-     *
-     * When the limit is inherited from other models,
-     * such as memberships or products.
-     *
-     * @since 2.0.0
-     * @var bool
-     */
+	 * Controls if this limit has its own limit.
+	 *
+	 * When the limit is inherited from other models,
+	 * such as memberships or products.
+	 *
+	 * @since 2.0.0
+	 * @var bool
+	 */
 	private bool $has_own_limit = true;
 
 	/**
-     * Controls if this limit has its own enabled status.
-     *
-     * When the enabled is inherited from other models,
-     * such as memberships or products.
-     *
-     * @since 2.0.0
-     * @var bool
-     */
+	 * Controls if this limit has its own enabled status.
+	 *
+	 * When the enabled is inherited from other models,
+	 * such as memberships or products.
+	 *
+	 * @since 2.0.0
+	 * @var bool
+	 */
 	private bool $has_own_enabled = true;
 
 	/**
-     * Allows sub-type limits to set their own default value for enabled.
-     *
-     * @since 2.0.0
-     * @var bool
-     */
+	 * Allows sub-type limits to set their own default value for enabled.
+	 *
+	 * @since 2.0.0
+	 * @var bool
+	 */
 	private bool $enabled_default_value = true;
 
 	/**
@@ -89,8 +89,7 @@ abstract class Limit implements \JsonSerializable {
 	public function __construct($data) {
 
 		$this->setup($data);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Prepare for serialization.
@@ -101,8 +100,7 @@ abstract class Limit implements \JsonSerializable {
 	public function __serialize() { // phpcs:ignore
 
 		return serialize($this->to_array());
-
-	} // end __serialize;
+	}
 
 	/**
 	 * Handles un-serialization.
@@ -115,8 +113,7 @@ abstract class Limit implements \JsonSerializable {
 	public function __unserialize($data) { // phpcs:ignore
 
 		$this->setup(unserialize($data));
-
-	} // end __unserialize;
+	}
 
 	/**
 	 * Sets up the module based on the module data.
@@ -128,11 +125,9 @@ abstract class Limit implements \JsonSerializable {
 	 */
 	public function setup($data) {
 
-		if (!is_array($data)) {
-
+		if ( ! is_array($data)) {
 			$data = (array) $data;
-
-		} // end if;
+		}
 
 		$current_limit = wu_get_isset($data, 'limit', 'not-set');
 
@@ -140,31 +135,29 @@ abstract class Limit implements \JsonSerializable {
 		 * Sets the own limit flag, if necessary.
 		 */
 		if ($current_limit === 'not-set' || $current_limit === '') {
-
 			$this->has_own_limit = false;
-
-		} // end if;
+		}
 
 		/*
 		 * Sets the own enabled flag, if necessary.
 		 */
 		if (wu_get_isset($data, 'enabled', 'not-set') === 'not-set') {
-
 			$this->has_own_enabled = false;
+		}
 
-		} // end if;
-
-		$data = wp_parse_args($data, array(
-			'limit'   => null,
-			'enabled' => $this->enabled_default_value,
-		));
+		$data = wp_parse_args(
+			$data,
+			array(
+				'limit'   => null,
+				'enabled' => $this->enabled_default_value,
+			)
+		);
 
 		$this->limit   = is_array($data['limit']) ? (object) $data['limit'] : $data['limit'];
 		$this->enabled = (bool) $data['enabled'];
 
 		do_action("wu_{$this->id}_limit_setup", $data, $this);
-
-	} // end setup;
+	}
 
 	/**
 	 * Returns the id of the module.
@@ -175,8 +168,7 @@ abstract class Limit implements \JsonSerializable {
 	public function get_id() {
 
 		return $this->id;
-
-	} // end get_id;
+	}
 
 	/**
 	 * Checks if a value is allowed under this limit.
@@ -193,19 +185,16 @@ abstract class Limit implements \JsonSerializable {
 	 * @param string $type The type parameter.
 	 * @return bool
 	 */
-	public final function allowed($value_to_check, $type = '') {
+	final public function allowed($value_to_check, $type = '') {
 
 		$allowed = $this->is_enabled();
 
 		if ($allowed) {
-
 			$allowed = $this->check($value_to_check, $this->limit, $type);
-
-		} // end if;
+		}
 
 		return apply_filters("wu_limit_{$this->id}_{$type}_allowed", $allowed, $type, $this);
-
-	} // end allowed;
+	}
 
 	/**
 	 * The check method is what gets called when allowed is called.
@@ -233,8 +222,7 @@ abstract class Limit implements \JsonSerializable {
 	public function get_limit($type = '') {
 
 		return $this->limit;
-
-	} // end get_limit;
+	}
 
 	/**
 	 * Checks if the module is enabled.
@@ -247,8 +235,7 @@ abstract class Limit implements \JsonSerializable {
 	public function is_enabled($type = '') {
 
 		return $this->enabled;
-
-	}  // end is_enabled;
+	}
 
 	/**
 	 * Converts the limitations list to an array.
@@ -268,8 +255,7 @@ abstract class Limit implements \JsonSerializable {
 		unset($array['enabled_default_value']);
 
 		return $array;
-
-	} // end to_array;
+	}
 
 	/**
 	 * Prepares for serialization.
@@ -281,8 +267,7 @@ abstract class Limit implements \JsonSerializable {
 	public function jsonSerialize() {
 
 		return json_encode($this->to_array());
-
-	} // end jsonSerialize;
+	}
 
 	/**
 	 * Checks if this module has its own limit.
@@ -293,8 +278,7 @@ abstract class Limit implements \JsonSerializable {
 	public function has_own_limit() {
 
 		return $this->has_own_limit;
-
-	} // end has_own_limit;
+	}
 
 	/**
 	 * Checks if this module has its own enabled.
@@ -305,8 +289,7 @@ abstract class Limit implements \JsonSerializable {
 	public function has_own_enabled() {
 
 		return $this->has_own_enabled;
-
-	} // end has_own_enabled;
+	}
 
 	/**
 	 * Handles enabled status on post submission.
@@ -319,8 +302,7 @@ abstract class Limit implements \JsonSerializable {
 		$module = wu_get_isset($_POST['modules'], $this->id, array());
 
 		return (bool) wu_get_isset($module, 'enabled', false);
-
-	} // end handle_enabled;
+	}
 
 	/**
 	 * Handles other elements when saving. Used for custom attributes.
@@ -333,8 +315,7 @@ abstract class Limit implements \JsonSerializable {
 	public function handle_others($module) {
 
 		return $module;
-
-	} // end handle_others;
+	}
 
 	/**
 	 * Handles limits on post submission.
@@ -347,8 +328,7 @@ abstract class Limit implements \JsonSerializable {
 		$module = wu_get_isset($_POST['modules'], $this->id, array());
 
 		return wu_get_isset($module, 'limit', null);
-
-	} // end handle_limit;
+	}
 
 	/**
 	 * Returns a default state.
@@ -362,7 +342,5 @@ abstract class Limit implements \JsonSerializable {
 			'enabled' => false,
 			'limit'   => null,
 		);
-
-	} // end default_state;
-
-} // end class Limit;
+	}
+}

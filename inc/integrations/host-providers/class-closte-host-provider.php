@@ -78,8 +78,7 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	public function detect() {
 
 		return defined('CLOSTE_CLIENT_API_KEY') && CLOSTE_CLIENT_API_KEY;
-
-	} // end detect;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -91,12 +90,14 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 */
 	public function on_add_domain($domain, $site_id) {
 
-		$this->send_closte_api_request('/adddomainalias', array(
-			'domain'   => $domain,
-			'wildcard' => strncmp($domain, '*.', strlen('*.')) === 0
-		));
-
-	} // end on_add_domain;
+		$this->send_closte_api_request(
+			'/adddomainalias',
+			array(
+				'domain'   => $domain,
+				'wildcard' => strncmp($domain, '*.', strlen('*.')) === 0,
+			)
+		);
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -108,12 +109,14 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 */
 	public function on_remove_domain($domain, $site_id) {
 
-		$this->send_closte_api_request('/deletedomainalias', array(
-			'domain'   => $domain,
-			'wildcard' => strncmp($domain, '*.', strlen('*.')) === 0
-		));
-
-	} // end on_remove_domain;
+		$this->send_closte_api_request(
+			'/deletedomainalias',
+			array(
+				'domain'   => $domain,
+				'wildcard' => strncmp($domain, '*.', strlen('*.')) === 0,
+			)
+		);
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -125,7 +128,7 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {} // end on_add_subdomain;
+	public function on_add_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -137,7 +140,7 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {} // end on_remove_subdomain;
+	public function on_remove_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * Tests the connection with the API.
@@ -152,18 +155,17 @@ class Closte_Host_Provider extends Base_Host_Provider {
 		$response = $this->send_closte_api_request('/adddomainalias', array());
 
 		if (wu_get_isset($response, 'error') === 'Invalid or empty domain: ') {
-
-			wp_send_json_success(array(
-				'message' => __('Access Authorized'),
-			));
-
-		} // end if;
+			wp_send_json_success(
+				array(
+					'message' => __('Access Authorized'),
+				)
+			);
+		}
 
 		$error = new \WP_Error('not-auth', __('Something went wrong', 'wp-ultimo'));
 
 		wp_send_json_error($error);
-
-	} // end test_connection;
+	}
 
 	/**
 	 * Sends a request to Closte, with the right API key.
@@ -176,47 +178,43 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	public function send_closte_api_request($endpoint, $data) {
 
 		if (defined('CLOSTE_CLIENT_API_KEY') === false) {
-
 			return (object) array(
 				'success' => false,
 				'error'   => 'Closte API Key not found.',
 			);
-
-		} // end if;
+		}
 
 		$post_fields = array(
 			'blocking' => true,
 			'timeout'  => 45,
 			'method'   => 'POST',
-			'body'     => array_merge(array(
-				'apikey' => CLOSTE_CLIENT_API_KEY,
-			), $data)
+			'body'     => array_merge(
+				array(
+					'apikey' => CLOSTE_CLIENT_API_KEY,
+				),
+				$data
+			),
 		);
 
 		$response = wp_remote_post('https://app.closte.com/api/client' . $endpoint, $post_fields);
 
 		wu_log_add('integration-closte', wp_remote_retrieve_body($response));
 
-		if (!is_wp_error($response)) {
-
+		if ( ! is_wp_error($response)) {
 			$body = json_decode(wp_remote_retrieve_body($response), true);
 
 			if (json_last_error() === JSON_ERROR_NONE) {
-
 				return $body;
-
-			} // end if;
+			}
 
 			return (object) array(
 				'success' => false,
-				'error'   => 'unknown'
+				'error'   => 'unknown',
 			);
-
-		} // end if;
+		}
 
 		return $response;
-
-	} // end send_closte_api_request;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -227,8 +225,7 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __('Closte is not just another web hosting who advertise their services as a cloud hosting while still provides fixed plans like in 1995.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -239,7 +236,5 @@ class Closte_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('closte.svg', 'img/hosts');
-
-	} // end get_logo;
-
-}  // end class Closte_Host_Provider;
+	}
+}

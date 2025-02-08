@@ -32,30 +32,22 @@ class Mapping {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_domain_by_domain($domain)');
 
-		if (!function_exists('wu_get_domain_by_domain')) {
-
+		if ( ! function_exists('wu_get_domain_by_domain')) {
 			return false;
-
-		} // end if;
+		}
 
 		$domain = false;
 
 		foreach ((array) $domains as $url_to_search) {
-
 			$found_domain = wu_get_domain_by_domain($url_to_search);
 
 			if ($found_domain) {
-
 				$domain = $found_domain;
 
 				break;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $domain;
-
-	} // end get_by_domain;
-
-} // end class Mapping;
+	}
+}

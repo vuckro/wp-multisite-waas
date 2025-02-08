@@ -11,9 +11,9 @@
 
 namespace WP_Ultimo\Managers;
 
-use \Psr\Log\LogLevel;
-use \WP_Ultimo\Managers\Base_Manager;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
+use Psr\Log\LogLevel;
+use WP_Ultimo\Managers\Base_Manager;
+use WP_Ultimo\Database\Memberships\Membership_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -25,7 +25,9 @@ defined('ABSPATH') || exit;
  */
 class Membership_Manager extends Base_Manager {
 
-	use \WP_Ultimo\Apis\Rest_Api, \WP_Ultimo\Apis\WP_CLI, \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Apis\Rest_Api;
+	use \WP_Ultimo\Apis\WP_CLI;
+	use \WP_Ultimo\Traits\Singleton;
 
 	/**
 	 * The manager slug.
@@ -55,9 +57,12 @@ class Membership_Manager extends Base_Manager {
 
 		$this->enable_wp_cli();
 
-		add_action('init', function (){
-			Event_Manager::register_model_events('membership', __('Membership', 'wp-ultimo'), array('created', 'updated'));
-		});
+		add_action(
+			'init',
+			function () {
+				Event_Manager::register_model_events('membership', __('Membership', 'wp-ultimo'), array('created', 'updated'));
+			}
+		);
 
 		add_action('wu_async_transfer_membership', array($this, 'async_transfer_membership'), 10, 2);
 
@@ -83,8 +88,7 @@ class Membership_Manager extends Base_Manager {
 		add_action('wp_ajax_wu_check_pending_site_created', array($this, 'check_pending_site_created'));
 
 		add_action('wu_async_publish_pending_site', array($this, 'async_publish_pending_site'), 10);
-
-	} // end init;
+	}
 
 	/**
 	 * Processes a delayed site publish action.
@@ -98,50 +102,42 @@ class Membership_Manager extends Base_Manager {
 		ignore_user_abort(true);
 
 		// Don't make the request block till we finish, if possible.
-		if ( function_exists( 'fastcgi_finish_request' ) && version_compare( phpversion(), '7.0.16', '>=' ) ) {
-
-			wp_send_json(array( 'status' => 'creating-site'));
+		if ( function_exists('fastcgi_finish_request') && version_compare(phpversion(), '7.0.16', '>=') ) {
+			wp_send_json(array('status' => 'creating-site'));
 
 			fastcgi_finish_request();
-
-		} // end if;
+		}
 
 		$membership_id = wu_request('membership_id');
 
 		$this->async_publish_pending_site($membership_id);
 
 		exit; // Just exit the request
-
-	} // end publish_pending_site;
- /**
-  * Processes a delayed site publish action.
-  *
-  * @since 2.0.0
-  *
-  * @param int $membership_id The membership id.
-  * @return bool|\WP_Error
-  */
- public function async_publish_pending_site($membership_id) {
+	}
+	/**
+	 * Processes a delayed site publish action.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int $membership_id The membership id.
+	 * @return bool|\WP_Error
+	 */
+	public function async_publish_pending_site($membership_id) {
 
 		$membership = wu_get_membership($membership_id);
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$status = $membership->publish_pending_site();
 
 		if (is_wp_error($status)) {
-
 			wu_log_add('site-errors', $status, LogLevel::ERROR);
-
-		} // end if;
+		}
 
 		return $status;
-
-	} // end async_publish_pending_site;
+	}
 
 	/**
 	 * Processes a delayed site publish action.
@@ -154,82 +150,68 @@ class Membership_Manager extends Base_Manager {
 
 		$membership = wu_get_membership_by_hash($membership_id);
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$pending_site = $membership->get_pending_site();
 
-		if (!$pending_site) {
+		if ( ! $pending_site) {
 			/**
 			 * We do not have a pending site, so we can assume the site was created.
 			 */
 			wp_send_json(array('publish_status' => 'completed'));
 
 			exit;
-
-		} // end if;
+		}
 
 		wp_send_json(array('publish_status' => $pending_site->is_publishing() ? 'running' : 'stopped'));
 
 		exit;
-
-	} // end check_pending_site_created;
- /**
-  * Processes a membership swap.
-  *
-  * @since 2.0.0
-  *
-  * @param int $membership_id The membership id.
-  * @return bool|\WP_Error
-  */
- public function async_membership_swap($membership_id) {
+	}
+	/**
+	 * Processes a membership swap.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int $membership_id The membership id.
+	 * @return bool|\WP_Error
+	 */
+	public function async_membership_swap($membership_id) {
 
 		global $wpdb;
 
 		$membership = wu_get_membership($membership_id);
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$scheduled_swap = $membership->get_scheduled_swap();
 
 		if (empty($scheduled_swap)) {
-
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$order = $scheduled_swap->order;
 
 		$wpdb->query('START TRANSACTION');
 
 		try {
-
 			$membership->swap($order);
 
 			$status = $membership->save();
 
 			if (is_wp_error($status)) {
-
 				$wpdb->query('ROLLBACK');
 
 				return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-			} // end if;
-
+			}
 		} catch (\Throwable $exception) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end try;
+		}
 
 		/*
 		 * Clean up the membership swap order.
@@ -239,8 +221,7 @@ class Membership_Manager extends Base_Manager {
 		$wpdb->query('COMMIT');
 
 		return true;
-
-	} // end async_membership_swap;
+	}
 
 	/**
 	 * Watches the change in payment status to take action when needed.
@@ -261,22 +242,18 @@ class Membership_Manager extends Base_Manager {
 			Membership_Status::ON_HOLD,
 		);
 
-		if (!in_array($old_status, $allowed_previous_status, true)) {
-
+		if ( ! in_array($old_status, $allowed_previous_status, true)) {
 			return;
-
-		} // end if;
+		}
 
 		$allowed_status = array(
 			Membership_Status::ACTIVE,
 			Membership_Status::TRIALING,
 		);
 
-		if (!in_array($new_status, $allowed_status, true)) {
-
+		if ( ! in_array($new_status, $allowed_status, true)) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Create pending sites.
@@ -286,12 +263,9 @@ class Membership_Manager extends Base_Manager {
 		$status = $membership->publish_pending_site_async();
 
 		if (is_wp_error($status)) {
-
 			wu_log_add('site-errors', $status, LogLevel::ERROR);
-
-		} // end if;
-
-	} // end transition_membership_status;
+		}
+	}
 
 	/**
 	 * Mark the membership date of cancellation.
@@ -306,16 +280,13 @@ class Membership_Manager extends Base_Manager {
 	public function mark_cancelled_date($old_value, $new_value, $item_id) {
 
 		if ($new_value === 'cancelled' && $new_value !== $old_value) {
-
 			$membership = wu_get_membership($item_id);
 
 			$membership->set_date_cancellation(wu_get_current_time('mysql', true));
 
 			$membership->save();
-
-		} // end if;
-
-	} // end mark_cancelled_date;
+		}
+	}
 
 	/**
 	 * Transfer a membership from a user to another.
@@ -334,11 +305,9 @@ class Membership_Manager extends Base_Manager {
 
 		$target_customer = wu_get_customer($target_customer_id);
 
-		if (!$membership || !$target_customer || absint($membership->get_customer_id()) === absint($target_customer->get_id())) {
-
+		if ( ! $membership || ! $target_customer || absint($membership->get_customer_id()) === absint($target_customer->get_id())) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$wpdb->query('START TRANSACTION');
 
@@ -346,30 +315,28 @@ class Membership_Manager extends Base_Manager {
 			/*
 			 * Get Sites and move them over.
 			 */
-			$sites = wu_get_sites(array(
-				'meta_query' => array(
-					'membership_id' => array(
-						'key'   => 'wu_membership_id',
-						'value' => $membership->get_id(),
+			$sites = wu_get_sites(
+				array(
+					'meta_query' => array(
+						'membership_id' => array(
+							'key'   => 'wu_membership_id',
+							'value' => $membership->get_id(),
+						),
 					),
-				),
-			));
+				)
+			);
 
 			foreach ($sites as $site) {
-
 				$site->set_customer_id($target_customer_id);
 
 				$saved = $site->save();
 
 				if (is_wp_error($saved)) {
-
 					$wpdb->query('ROLLBACK');
 
 					return $saved;
-
-				} // end if;
-
-			} // end foreach;
+				}
+			}
 
 			/*
 			 * Change the membership
@@ -379,28 +346,22 @@ class Membership_Manager extends Base_Manager {
 			$saved = $membership->save();
 
 			if (is_wp_error($saved)) {
-
 				$wpdb->query('ROLLBACK');
 
 				return $saved;
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('exception', $e->getMessage());
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		$membership->unlock();
 
 		return true;
-
-	} // end async_transfer_membership;
+	}
 
 	/**
 	 * Delete a membership.
@@ -416,11 +377,9 @@ class Membership_Manager extends Base_Manager {
 
 		$membership = wu_get_membership($membership_id);
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$wpdb->query('START TRANSACTION');
 
@@ -428,28 +387,26 @@ class Membership_Manager extends Base_Manager {
 			/*
 			 * Get Sites and delete them.
 			 */
-			$sites = wu_get_sites(array(
-				'meta_query' => array(
-					'membership_id' => array(
-						'key'   => 'wu_membership_id',
-						'value' => $membership->get_id(),
+			$sites = wu_get_sites(
+				array(
+					'meta_query' => array(
+						'membership_id' => array(
+							'key'   => 'wu_membership_id',
+							'value' => $membership->get_id(),
+						),
 					),
-				),
-			));
+				)
+			);
 
 			foreach ($sites as $site) {
-
 				$saved = $site->delete();
 
 				if (is_wp_error($saved)) {
-
 					$wpdb->query('ROLLBACK');
 
 					return $saved;
-
-				} // end if;
-
-			} // end foreach;
+				}
+			}
 
 			/*
 			 * Delete the membership
@@ -457,25 +414,18 @@ class Membership_Manager extends Base_Manager {
 			$saved = $membership->delete();
 
 			if (is_wp_error($saved)) {
-
 				$wpdb->query('ROLLBACK');
 
 				return $saved;
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('exception', $e->getMessage());
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		return true;
-
-	} // end async_delete_membership;
-
-} // end class Membership_Manager;
+	}
+}

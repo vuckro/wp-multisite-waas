@@ -96,8 +96,7 @@ class Country_MX extends Country {
 	public function get_name() {
 
 		return __('Mexico', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for MX.
@@ -141,7 +140,5 @@ class Country_MX extends Country {
 			'YUC'  => __('Yucatán', 'wp-ultimo-locations'),
 			'ZAC'  => __('Zacatecas', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_MX;
+	}
+}

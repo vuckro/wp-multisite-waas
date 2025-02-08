@@ -34,16 +34,18 @@ class Webhook_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Webhook', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Webhooks', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true,                        // does this table support ajax?
-			'add_new'  => array(
-				'url'     => wu_get_form_url('add_new_webhook_modal'),
-				'classes' => 'wubox',
-			),
-		));
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Webhook', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Webhooks', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                        // does this table support ajax?
+				'add_new'  => array(
+					'url'     => wu_get_form_url('add_new_webhook_modal'),
+					'classes' => 'wubox',
+				),
+			)
+		);
+	}
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -58,8 +60,14 @@ class Webhook_List_Table extends Base_List_Table {
 			'model' => 'webhook',
 		);
 
-		$title = sprintf('<a href="%s"><strong>%s</strong></a>
-				<span data-loading="wu_action_button_loading_%s" id="wu_action_button_loading" class="wu-blinking-animation wu-text-gray-600 wu-my-1 wu-text-2xs wu-uppercase wu-font-semibold hidden" >%s</span>', wu_network_admin_url('wp-ultimo-edit-webhook', $url_atts), $item->get_name(), $item->get_id(), __('Sending Test..', 'wp-ultimo'));
+		$title = sprintf(
+			'<a href="%s"><strong>%s</strong></a>
+				<span data-loading="wu_action_button_loading_%s" id="wu_action_button_loading" class="wu-blinking-animation wu-text-gray-600 wu-my-1 wu-text-2xs wu-uppercase wu-font-semibold hidden" >%s</span>',
+			wu_network_admin_url('wp-ultimo-edit-webhook', $url_atts),
+			$item->get_name(),
+			$item->get_id(),
+			__('Sending Test..', 'wp-ultimo')
+		);
 
 		$actions = array(
 			'edit'   => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-webhook', $url_atts), __('Edit', 'wp-ultimo')),
@@ -76,8 +84,7 @@ class Webhook_List_Table extends Base_List_Table {
 		);
 
 		return $title . $this->row_actions($actions);
-
-	} // end column_name;
+	}
 
 	/**
 	 * Displays the content of the webhook url column.
@@ -92,8 +99,7 @@ class Webhook_List_Table extends Base_List_Table {
 		$trimmed_url = mb_strimwidth((string) $item->get_webhook_url(), 0, 50, '...');
 
 		return "<span class='wu-py-1 wu-px-2 wu-bg-gray-200 wu-rounded-sm wu-text-gray-700 wu-text-xs wu-font-mono'>{$trimmed_url}</span>";
-
-	} // end column_webhook_url;
+	}
 
 	/**
 	 * Displays the content of the event column.
@@ -108,8 +114,7 @@ class Webhook_List_Table extends Base_List_Table {
 		$event = $item->get_event();
 
 		return "<span class='wu-py-1 wu-px-2 wu-bg-gray-200 wu-rounded-sm wu-text-gray-700 wu-text-xs wu-font-mono'>{$event}</span>";
-
-	} // end column_event;
+	}
 	/**
 	 * Displays the content of the count column.
 	 *
@@ -126,8 +131,7 @@ class Webhook_List_Table extends Base_List_Table {
 		);
 
 		return $count . $this->row_actions($actions);
-
-	} // end column_count;
+	}
 	/**
 	 * Displays the content of the integration column.
 	 *
@@ -138,8 +142,7 @@ class Webhook_List_Table extends Base_List_Table {
 	public function column_integration($item): string {
 
 		return ucwords(str_replace(array('_', '-'), ' ', (string) $item->get_integration()));
-
-	} // end column_integration;
+	}
 
 	/**
 	 * Displays the content of the active column.
@@ -152,8 +155,7 @@ class Webhook_List_Table extends Base_List_Table {
 	public function column_active($item) {
 
 		return $item->is_active() ? __('Yes', 'wp-ultimo') : __('No', 'wp-ultimo');
-
-	} // end column_active;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -175,8 +177,7 @@ class Webhook_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -188,7 +189,5 @@ class Webhook_List_Table extends Base_List_Table {
 			'filters'      => array(),
 			'date_filters' => array(),
 		);
-
-	} // end get_filters;
-
-} // end class Webhook_List_Table;
+	}
+}

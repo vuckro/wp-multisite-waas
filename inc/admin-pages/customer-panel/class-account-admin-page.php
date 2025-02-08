@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages\Customer_Panel;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
+use WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
 
 /**
  * WP Multisite WaaS My_Account Admin Page.
@@ -103,12 +103,9 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$this->register_page_settings();
 
 		if ($this->current_site->get_type() === 'customer_owned') {
-
 			parent::__construct();
-
-		} // end if;
-
-	} // end __construct;
+		}
+	}
 
 	/**
 	 * Loads the current site and membership.
@@ -123,8 +120,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$this->current_membership = $this->current_site->get_membership();
 
 		$this->add_notices();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Adds notices after a membership is changed.
@@ -139,16 +135,13 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$update_type = wu_request('updated');
 
 		if (empty($update_type)) {
-
 			return;
-
-		} // end if;
+		}
 
 		$update_message = apply_filters('wu_account_update_message', __('Your account was successfully updated.', 'wp-ultimo'), $update_type);
 
 		WP_Ultimo()->notices->add($update_message);
-
-	} // end add_notices;
+	}
 
 	/**
 	 * Allow child classes to add hooks to be run once the page is loaded.
@@ -157,7 +150,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Allow child classes to add screen options; Useful for pages that have list tables.
@@ -165,7 +158,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function screen_options() {} // end screen_options;
+	public function screen_options() {}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -194,8 +187,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		\WP_Ultimo\UI\Simple_Text_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes');
 
 		\WP_Ultimo\UI\Current_Site_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes', array('show_admin_link' => false));
-
-	} // end register_widgets;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -206,8 +198,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_title() {
 
 		return __('Account', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -218,8 +209,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Account', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -230,8 +220,7 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Account', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -243,12 +232,13 @@ class Account_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/dash', array(
-			'screen'            => get_current_screen(),
-			'page'              => $this,
-			'has_full_position' => false,
-		));
-
-	} // end output;
-
-} // end class Account_Admin_Page;
+		wu_get_template(
+			'base/dash',
+			array(
+				'screen'            => get_current_screen(),
+				'page'              => $this,
+				'has_full_position' => false,
+			)
+		);
+	}
+}

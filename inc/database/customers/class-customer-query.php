@@ -109,7 +109,5 @@ class Customer_Query extends Query {
 		// $query['type'] = 'customer';
 
 		parent::__construct($query);
-
-	} // end __construct;
-
-} // end class Customer_Query;
+	}
+}

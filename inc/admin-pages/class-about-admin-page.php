@@ -87,8 +87,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	public function get_title() {
 
 		return __('About', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -99,8 +98,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Multisite WaaS', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -111,8 +109,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('About', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -123,8 +120,7 @@ class About_Admin_Page extends Base_Admin_Page {
 	public function output() {
 
 		wu_get_template('about');
-
-	} // end output;
+	}
 
 	/**
 	 * Adds the cure bg image here as well.
@@ -136,12 +132,16 @@ class About_Admin_Page extends Base_Admin_Page {
 
 		parent::register_scripts();
 
-		wp_add_inline_style('wu-admin', sprintf('
+		wp_add_inline_style(
+			'wu-admin',
+			sprintf(
+				'
 		#wpwrap {
 			background: url("%s") right bottom no-repeat;
 			background-size: 60%%;	 
-		}', wu_get_asset('bg-setup.png', 'img')));
-
-	} // end register_scripts;
-
-} // end class About_Admin_Page;
+		}',
+				wu_get_asset('bg-setup.png', 'img')
+			)
+		);
+	}
+}

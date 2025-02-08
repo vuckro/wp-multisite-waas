@@ -63,23 +63,20 @@ class Thank_You_Element extends Base_Element {
 	protected $customer;
 
 	/**
-     * The icon of the UI element.
-     * e.g. return fa fa-search
-     *
-     * @since 2.0.0
-     * @param string $context One of the values: block, elementor or bb.
-     */
+	 * The icon of the UI element.
+	 * e.g. return fa fa-search
+	 *
+	 * @since 2.0.0
+	 * @param string $context One of the values: block, elementor or bb.
+	 */
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Overload the init to add site-related forms.
@@ -90,8 +87,7 @@ class Thank_You_Element extends Base_Element {
 	public function init() {
 
 		parent::init();
-
-	} // end init;
+	}
 
 	/**
 	 * Replace the register page title with the Thank you title.
@@ -106,8 +102,7 @@ class Thank_You_Element extends Base_Element {
 		$title_parts['title'] = $this->get_title();
 
 		return $title_parts;
-
-	} // end replace_page_title;
+	}
 
 	/**
 	 * Maybe clear the title at the content level.
@@ -123,14 +118,11 @@ class Thank_You_Element extends Base_Element {
 		global $post;
 
 		if ($post && $post->ID === $id) {
-
 			return '';
-
-		} // end if;
+		}
 
 		return $title;
-
-	} // end maybe_replace_page_title;
+	}
 
 	/**
 	 * Register additional scripts for the thank you page.
@@ -145,22 +137,25 @@ class Thank_You_Element extends Base_Element {
 
 		wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), array(), wu_get_version());
 
-		wp_localize_script('wu-thank-you', 'wu_thank_you', array(
-			'creating'                        => $is_publishing,
-			'has_pending_site'                => $has_pending_site,
-			'next_queue'                      => wu_get_next_queue_run(),
-			'ajaxurl'                         => admin_url('admin-ajax.php'),
-			'resend_verification_email_nonce' => wp_create_nonce('wu_resend_verification_email_nonce'),
-			'membership_hash'                 => $this->membership ? $this->membership->get_hash() : false,
-			'i18n'                            => array(
-				'resending_verification_email' => __('Resending verification email...', 'wp-ultimo'),
-				'email_sent'                   => __('Verification email sent!', 'wp-ultimo'),
-			),
-		));
+		wp_localize_script(
+			'wu-thank-you',
+			'wu_thank_you',
+			array(
+				'creating'                        => $is_publishing,
+				'has_pending_site'                => $has_pending_site,
+				'next_queue'                      => wu_get_next_queue_run(),
+				'ajaxurl'                         => admin_url('admin-ajax.php'),
+				'resend_verification_email_nonce' => wp_create_nonce('wu_resend_verification_email_nonce'),
+				'membership_hash'                 => $this->membership ? $this->membership->get_hash() : false,
+				'i18n'                            => array(
+					'resending_verification_email' => __('Resending verification email...', 'wp-ultimo'),
+					'email_sent'                   => __('Verification email sent!', 'wp-ultimo'),
+				),
+			)
+		);
 
 		wp_enqueue_script('wu-thank-you');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -175,8 +170,7 @@ class Thank_You_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Thank You', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -192,8 +186,7 @@ class Thank_You_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -272,8 +265,7 @@ class Thank_You_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -301,8 +293,7 @@ class Thank_You_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -327,8 +318,7 @@ class Thank_You_Element extends Base_Element {
 			'thank_you_message_pending' => __('Thank you for your order! We are waiting on the payment processor to confirm your payment, which can take up to 5 minutes. We will notify you via email when your site is ready.', 'wp-ultimo'),
 			'no_sites_message'          => __('No sites found', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -340,31 +330,26 @@ class Thank_You_Element extends Base_Element {
 
 		$this->payment = wu_get_payment_by_hash(wu_request('payment'));
 
-		if (!$this->payment) {
-
+		if ( ! $this->payment) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->membership = $this->payment->get_membership();
 
-		if (!$this->membership || !$this->membership->is_customer_allowed()) {
-
+		if ( ! $this->membership || ! $this->membership->is_customer_allowed()) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->customer = $this->membership->get_customer();
 
 		add_filter('document_title_parts', array($this, 'replace_page_title'));
 
 		add_filter('the_title', array($this, 'maybe_replace_page_title'), 10, 2);
-
-	} // end setup;
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -379,8 +364,7 @@ class Thank_You_Element extends Base_Element {
 		$this->membership = wu_mock_membership();
 
 		$this->customer = wu_mock_customer();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -410,45 +394,42 @@ class Thank_You_Element extends Base_Element {
 		 */
 		$conversion_snippets = $atts['checkout_form']->get_conversion_snippets();
 
-		if (!empty($conversion_snippets)) {
-
+		if ( ! empty($conversion_snippets)) {
 			$product_ids = array();
 
 			foreach ($this->payment->get_line_items() as $line_item) {
-
 				if ($line_item->get_product_id()) {
-
 					$product_ids[] = (string) $line_item->get_product_id();
+				}
+			}
 
-				} // end if;
-
-			} // end foreach;
-
-			$conversion_placeholders = apply_filters( 'wu_conversion_placeholders', array(
-				'CUSTOMER_ID'         => $this->customer->get_id(),
-				'CUSTOMER_EMAIL'      => $this->customer->get_email_address(),
-				'MEMBERSHIP_DURATION' => $this->membership->get_recurring_description(),
-				'MEMBERSHIP_PLAN'     => $this->membership->get_plan_id(),
-				'MEMBERSHIP_AMOUNT'   => $this->membership->get_amount(),
-				'ORDER_ID'            => $this->payment->get_hash(),
-				'ORDER_CURRENCY'      => $this->payment->get_currency(),
-				'ORDER_PRODUCTS'      => array_values($product_ids),
-				'ORDER_AMOUNT'        => $this->payment->get_total(),
-			));
+			$conversion_placeholders = apply_filters(
+				'wu_conversion_placeholders',
+				array(
+					'CUSTOMER_ID'         => $this->customer->get_id(),
+					'CUSTOMER_EMAIL'      => $this->customer->get_email_address(),
+					'MEMBERSHIP_DURATION' => $this->membership->get_recurring_description(),
+					'MEMBERSHIP_PLAN'     => $this->membership->get_plan_id(),
+					'MEMBERSHIP_AMOUNT'   => $this->membership->get_amount(),
+					'ORDER_ID'            => $this->payment->get_hash(),
+					'ORDER_CURRENCY'      => $this->payment->get_currency(),
+					'ORDER_PRODUCTS'      => array_values($product_ids),
+					'ORDER_AMOUNT'        => $this->payment->get_total(),
+				)
+			);
 
 			foreach ($conversion_placeholders as $placeholder => $value) {
-
 				$conversion_snippets = preg_replace('/\%\%\s?' . $placeholder . '\s?\%\%/', json_encode($value), (string) $conversion_snippets);
+			}
 
-			} // end foreach;
+			add_action(
+				'wp_print_footer_scripts',
+				function () use ($conversion_snippets) {
 
-			add_action('wp_print_footer_scripts', function() use ($conversion_snippets) {
-
-				echo $conversion_snippets;
-
-			});
-
-		} // end if;
+					echo $conversion_snippets;
+				}
+			);
+		}
 
 		/*
 		 * Account for the 'className' Gutenberg attribute.
@@ -456,7 +437,5 @@ class Thank_You_Element extends Base_Element {
 		$atts['className'] = trim('wu-' . $this->id . ' ' . wu_get_isset($atts, 'className', ''));
 
 		return wu_get_template_contents('dashboard-widgets/thank-you', $atts);
-
-	} // end output;
-
-} // end class Thank_You_Element;
+	}
+}

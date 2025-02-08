@@ -7,48 +7,48 @@
 ?>
 <div class="wu-my-6">
 
-  <div class="wu-flex">
+	<div class="wu-flex">
 
-    <div class="wu-w-1/3">
+	<div class="wu-w-1/3">
 
-      <label for="<?php echo esc_attr($field->id); ?>">
+		<label for="<?php echo esc_attr($field->id); ?>">
 
-        <?php echo $field->title; ?>
+		<?php echo $field->title; ?>
 
-      </label>
+		</label>
 
-    </div>
+	</div>
 
-    <div class="wu-w-2/3">
+	<div class="wu-w-2/3">
 
-      <select name="<?php echo esc_attr($field->id); ?>" id="<?php echo esc_attr($field->id); ?>" class="regular-text">
+		<select name="<?php echo esc_attr($field->id); ?>" id="<?php echo esc_attr($field->id); ?>" class="regular-text">
 
-        <?php foreach ($field->options as $value => $option) : ?>
+		<?php foreach ($field->options as $value => $option) : ?>
 
-          <option <?php selected(wu_get_setting($field->id), $value); ?> value="<?php echo esc_attr($value); ?>">
+			<option <?php selected(wu_get_setting($field->id), $value); ?> value="<?php echo esc_attr($value); ?>">
 
-            <?php echo $option; ?>
+			<?php echo $option; ?>
 
-          </option>
+			</option>
 
-        <?php endforeach; ?>
+		<?php endforeach; ?>
 
-      </select>
+		</select>
 
-      <?php if ($field->desc) : ?>
+		<?php if ($field->desc) : ?>
 
-        <p class="description" id="<?php echo $field->id; ?>-desc">
+		<p class="description" id="<?php echo $field->id; ?>-desc">
 
-          <?php echo $field->desc; ?>
+			<?php echo $field->desc; ?>
 
-        </p>
+		</p>
 
-      <?php endif; ?>
+		<?php endif; ?>
 
-    </div>
+	</div>
 
-  </div>
+	</div>
 
-  <?php // if (isset($field['tooltip'])) {echo WU_Util::tooltip($field['tooltip']);} ?>
+	<?php // if (isset($field['tooltip'])) {echo WU_Util::tooltip($field['tooltip']);} ?>
 
 </div>

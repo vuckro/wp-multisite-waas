@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
-use \WP_Ultimo\Managers\Field_Templates_Manager;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Managers\Field_Templates_Manager;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -25,15 +25,14 @@ defined('ABSPATH') || exit;
 class Signup_Field_Steps extends Base_Signup_Field {
 
 	/**
-     * Returns the type of the field.
-     *
-     * @since 2.0.0
-     */
+	 * Returns the type of the field.
+	 *
+	 * @since 2.0.0
+	 */
 	public function get_type(): string {
 
 		return 'steps';
-
-	} // end get_type;
+	}
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -42,8 +41,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function is_required(): bool {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -56,8 +54,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Steps', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -70,8 +67,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a list of the steps.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -84,8 +80,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a list of the steps.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -96,8 +91,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function get_icon(): string {
 
 		return 'dashicons-wu-filter_1';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -113,8 +107,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 		return array(
 			'steps_template' => 'clean',
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -125,8 +118,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function default_fields() {
 
 		return array();
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -139,8 +131,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 		return array(
 			'id' => 'steps',
 		);
-
-	} // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of available pricing table templates.
@@ -153,8 +144,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 		$available_templates = Field_Templates_Manager::get_instance()->get_templates_as_options('steps');
 
 		return $available_templates;
-
-	} // end get_templates;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -192,8 +182,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 		// );
 
 		return $editor_fields;
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -206,12 +195,10 @@ class Signup_Field_Steps extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if (wu_get_isset($attributes, 'steps_template') === 'legacy') {
-
 			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
 
 			wp_add_inline_style('legacy-shortcodes', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
-
-		} // end if;
+		}
 
 		$attributes['steps']        = \WP_Ultimo\Checkout\Checkout::get_instance()->steps;
 		$attributes['current_step'] = \WP_Ultimo\Checkout\Checkout::get_instance()->step_name;
@@ -227,7 +214,5 @@ class Signup_Field_Steps extends Base_Signup_Field {
 				'wrapper_classes' => $attributes['element_classes'],
 			),
 		);
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Steps;
+	}
+}

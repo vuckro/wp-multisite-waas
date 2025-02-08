@@ -14,9 +14,9 @@
 
 namespace WP_Ultimo\SSO;
 
-use \Jasny\SSO\Server\SessionInterface;
-use \Jasny\SSO\ServerException;
-use \WP_Ultimo\SSO\Exception\SSO_Session_Exception;
+use Jasny\SSO\Server\SessionInterface;
+use Jasny\SSO\ServerException;
+use WP_Ultimo\SSO\Exception\SSO_Session_Exception;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -44,20 +44,16 @@ class SSO_Session_Handler implements SessionInterface {
 	 * @param \WP_Ultimo\SSO\SSO|null $sso_manager The sso manager.
 	 */
 	public function __construct(\WP_Ultimo\SSO\SSO $sso_manager = null) {
-
 		$this->sso_manager = $sso_manager;
-
-	} // end __construct;
+	}
 	/**
 	 * Returns the session id.
 	 *
 	 * @since 2.0.11
 	 */
  public function getId(): string { // phpcs:ignore
-
 		return $this->sso_manager->input('broker');
-
-	} // end getId;
+	}
 	/**
 	 * Start a new session.
 	 *
@@ -70,17 +66,14 @@ class SSO_Session_Handler implements SessionInterface {
 
 		$site_hash = $this->sso_manager->input('broker');
 
-		if (!get_current_user_id()) {
-
+		if ( ! get_current_user_id()) {
 			throw new SSO_Session_Exception('User not logged in.', 401);
-
-		} // end if;
+		}
 
 		$id = $this->sso_manager->decode($site_hash, $this->sso_manager->salt());
 
 		set_site_transient("sso-{$site_hash}-{$id}", get_current_user_id(), 180);
-
-	} // end start;
+	}
 	/**
 	 * Resume an existing session.
 	 *
@@ -98,12 +91,9 @@ class SSO_Session_Handler implements SessionInterface {
 		$user_id = get_site_transient("sso-{$id}-{$decoded_id}");
 
 		if ($user_id) {
-
 			$this->sso_manager->set_target_user_id($user_id);
-
-		} // end if;
-
-	} // end resume;
+		}
+	}
 	/**
 	 * Check if a session is active. (status PHP_SESSION_ACTIVE).
 	 *
@@ -112,9 +102,6 @@ class SSO_Session_Handler implements SessionInterface {
 	 * @since 2.0.11
 	 */
  public function isActive(): bool { // phpcs:ignore
-
 		return false;
-
-	} // end isActive;
-
-} // end class SSO_Session_Handler;
+	}
+}

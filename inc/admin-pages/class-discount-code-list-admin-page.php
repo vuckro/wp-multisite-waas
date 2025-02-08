@@ -60,7 +60,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -74,8 +74,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Discount Code removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Discount Code', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -86,8 +85,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Discount Codes', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -98,8 +96,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Discount Codes', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -110,8 +107,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Discount Codes', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -128,8 +124,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 				'icon'  => 'wu-circle-with-plus',
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -140,7 +135,5 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Discount_Code_List_Table();
-
-	} // end table;
-
-} // end class Discount_Code_List_Admin_Page;
+	}
+}

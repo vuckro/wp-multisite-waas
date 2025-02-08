@@ -7,17 +7,17 @@
 ?>
 <div id="wu-domain-log" class="">
 
-  <pre id="content" class="wu-overflow-auto wu-p-4 wu-m-0 wu-mt-3 wu-rounded wu-content-center wu-bg-gray-800 wu-text-white wu-font-mono wu-border wu-border-solid wu-border-gray-300 wu-max-h-screen wu-overflow-y-auto">
-    <?php _e('Loading log contents...', 'wp-ultimo') ; ?>
-  </pre>
+	<pre id="content" class="wu-overflow-auto wu-p-4 wu-m-0 wu-mt-3 wu-rounded wu-content-center wu-bg-gray-800 wu-text-white wu-font-mono wu-border wu-border-solid wu-border-gray-300 wu-max-h-screen wu-overflow-y-auto">
+	<?php _e('Loading log contents...', 'wp-ultimo'); ?>
+	</pre>
 
 </div>
 
 <div class="wu-box-border wu-p-4 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid wu-bg-gray-200 wu-text-right wu--mx-3 wu-mt-3 wu--mb-3 wu-relative wu-overflow-hidden">
 
-  <button id="refresh-logs" type="submit" name="submit_button" value="refresh-logs" class="button wu-float-right">
-    <?php _e('Refresh Logs', 'wp-ultimo'); ?>
-  </button>
+	<button id="refresh-logs" type="submit" name="submit_button" value="refresh-logs" class="button wu-float-right">
+	<?php _e('Refresh Logs', 'wp-ultimo'); ?>
+	</button>
 
 </div>
 
@@ -25,52 +25,52 @@
 
 (function($) {
 
-  $(document).ready(function() {
+	$(document).ready(function() {
 
-    const refresh_logs = function(callback) {
+	const refresh_logs = function(callback) {
 
-      $.ajax({
-        url: ajaxurl,
-        method: 'GET',
-        data: {
-          action: 'wu_handle_view_logs',
-          file: '<?php echo esc_js($log_path); ?>domain-<?php echo esc_js($domain->get_domain()); ?>.log',
-          return_ascii: 'no',
-        },
-        success(response) {
+		$.ajax({
+		url: ajaxurl,
+		method: 'GET',
+		data: {
+			action: 'wu_handle_view_logs',
+			file: '<?php echo esc_js($log_path); ?>domain-<?php echo esc_js($domain->get_domain()); ?>.log',
+			return_ascii: 'no',
+		},
+		success(response) {
 
-          $('#content').html(response.data.contents);
+			$('#content').html(response.data.contents);
 
-          if (typeof callback !== 'undefined') {
+			if (typeof callback !== 'undefined') {
 
-            callback();
+			callback();
 
-          }
+			}
 
-        },
-      });
+		},
+		});
 
-    } // end refresh_logs;
+	} // end refresh_logs;
 
-    refresh_logs();
+	refresh_logs();
 
-    setInterval(refresh_logs, 60000);
+	setInterval(refresh_logs, 60000);
 
-    $(document).on('click', '#refresh-logs', function(e) {
+	$(document).on('click', '#refresh-logs', function(e) {
 
-      const block_content = wu_block_ui('#content');
+		const block_content = wu_block_ui('#content');
 
-      e.preventDefault();
+		e.preventDefault();
 
-      refresh_logs(function() {
+		refresh_logs(function() {
 
-        block_content.unblock();
+		block_content.unblock();
 
-      });
+		});
 
-    });
+	});
 
-  });
+	});
 
 })(jQuery);
 

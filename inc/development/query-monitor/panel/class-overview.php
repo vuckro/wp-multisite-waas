@@ -20,12 +20,12 @@ defined('ABSPATH') || exit;
 class Overview extends \QM_Output_Html {
 
 	/**
-     * Initializes the panel.
-     *
-     * @since 2.0.11
-     *
-     * @param \QM_Collector $collector The collector associated with the panel.
-     */
+	 * Initializes the panel.
+	 *
+	 * @since 2.0.11
+	 *
+	 * @param \QM_Collector $collector The collector associated with the panel.
+	 */
 	public function __construct($collector) {
 
 		parent::__construct($collector);
@@ -33,8 +33,7 @@ class Overview extends \QM_Output_Html {
 		add_filter('qm/output/menus', array($this, 'admin_menu'), 1000);
 
 		add_filter('qm/output/panel_menus', array($this, 'panel_menu'), 1000);
-
-	} // end __construct;
+	}
 
 	/**
 	 * The name of the panel.
@@ -45,8 +44,7 @@ class Overview extends \QM_Output_Html {
 	public function name() {
 
 		return __('WP Multisite WaaS', 'wp-ultimo');
-
-	} // end name;
+	}
 
 	/**
 	 * Output the contents of the panel.
@@ -79,8 +77,7 @@ class Overview extends \QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$this->after_non_tabular_output();
-
-	} // end output;
+	}
 
 	/**
 	 * Adds the panel to the admin panel.
@@ -93,8 +90,7 @@ class Overview extends \QM_Output_Html {
 	public function admin_menu(array $menu) {
 
 		return $menu;
-
-	} // end admin_menu;
+	}
 
 	/**
 	 * Adds a panel menu for the panel.
@@ -107,14 +103,14 @@ class Overview extends \QM_Output_Html {
 	public function panel_menu(array $menu) {
 
 		$new_menu = array(
-			'wp-ultimo' => $this->menu(array(
-				'title' => esc_html__('WP Multisite WaaS', 'wp-ultimo'),
-				'id'    => 'wp-ultimo',
-			)),
+			'wp-ultimo' => $this->menu(
+				array(
+					'title' => esc_html__('WP Multisite WaaS', 'wp-ultimo'),
+					'id'    => 'wp-ultimo',
+				)
+			),
 		);
 
 		return $new_menu + $menu;
-
-	} // end panel_menu;
-
-} // end class Overview;
+	}
+}

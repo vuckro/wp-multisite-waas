@@ -22,8 +22,7 @@ function wu_convert_to_state($state_array = array()) {
 	$object = (object) $state_array; // Force object to prevent issues with Vue.
 
 	return json_encode($object);
-
-} // end wu_convert_to_state;
+}
 
 /**
  * Clean up p tags around block elements.
@@ -35,23 +34,26 @@ function wu_convert_to_state($state_array = array()) {
  */
 function wu_remove_empty_p($content): ?string {
 
-	$content = preg_replace(array(
-		'#<p>\s*<(div|aside|section|article|header|footer)#',
-		'#</(div|aside|section|article|header|footer)>\s*</p>#',
-		'#</(div|aside|section|article|header|footer)>\s*<br ?/?>#',
-		'#<(div|aside|section|article|header|footer)(.*?)>\s*</p>#',
-		'#<p>\s*</(div|aside|section|article|header|footer)#',
-	), array(
-		'<$1',
-		'</$1>',
-		'</$1>',
-		'<$1$2>',
-		'</$1',
-	), $content);
+	$content = preg_replace(
+		array(
+			'#<p>\s*<(div|aside|section|article|header|footer)#',
+			'#</(div|aside|section|article|header|footer)>\s*</p>#',
+			'#</(div|aside|section|article|header|footer)>\s*<br ?/?>#',
+			'#<(div|aside|section|article|header|footer)(.*?)>\s*</p>#',
+			'#<p>\s*</(div|aside|section|article|header|footer)#',
+		),
+		array(
+			'<$1',
+			'</$1>',
+			'</$1>',
+			'<$1$2>',
+			'</$1',
+		),
+		$content
+	);
 
 	return preg_replace('#<p>(\s|&nbsp;)*+(<br\s*/*>)*(\s|&nbsp;)*</p>#i', '', $content);
-
-} // end wu_remove_empty_p;
+}
 /**
  * Generates a string containing html attributes to be used inside html tags.
  *
@@ -76,8 +78,7 @@ function wu_array_to_html_attrs($attributes = array()): string {
 	$attributes = array_map(fn($key, $value) => $key . '="' . htmlspecialchars((string) $value) . '"', array_keys($attributes), $attributes);
 
 	return implode(' ', $attributes);
-
-} // end wu_array_to_html_attrs;
+}
 
 /**
  * Adds a tooltip icon.
@@ -91,28 +92,21 @@ function wu_array_to_html_attrs($attributes = array()): string {
 function wu_tooltip($tooltip, $icon = 'dashicons-editor-help') {
 
 	if (empty($tooltip)) {
-
 		return '';
-
-	} // end if;
+	}
 
 	$markup = sprintf('<span class="wu-styling" role="tooltip" aria-label="%s">', esc_attr($tooltip));
 
-	if (!is_admin()) {
-
+	if ( ! is_admin()) {
 		$markup .= '<svg style="width:11px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 122.88 122.88" xml:space="preserve"><g><path class="st0" d="M122.88,61.44C122.88,27.51,95.37,0,61.44,0C27.51,0,0,27.51,0,61.44c0,33.93,27.51,61.44,61.44,61.44 C95.37,122.88,122.88,95.37,122.88,61.44L122.88,61.44z M68.79,74.58H51.3v-1.75c0-2.97,0.32-5.39,1-7.25 c0.68-1.87,1.68-3.55,3.01-5.1c1.34-1.54,4.35-4.23,9.01-8.11c2.48-2.03,3.73-3.88,3.73-5.56c0-1.71-0.51-3.01-1.5-3.95 c-1-0.93-2.51-1.4-4.54-1.4c-2.19,0-3.98,0.73-5.4,2.16c-1.43,1.44-2.34,3.97-2.74,7.56l-17.88-2.22c0.61-6.57,3-11.86,7.15-15.85 c4.17-4.02,10.55-6.01,19.14-6.01c6.7,0,12.1,1.4,16.21,4.19c5.6,3.78,8.38,8.82,8.38,15.1c0,2.62-0.73,5.14-2.16,7.56 c-1.44,2.44-4.39,5.39-8.85,8.88c-3.09,2.48-5.05,4.44-5.86,5.93C69.19,70.24,68.79,72.19,68.79,74.58L68.79,74.58z M50.68,79.25 h18.76v16.53H50.68V79.25L50.68,79.25z"></path></g></svg>';
-
 	} else {
-
 		$markup .= sprintf('<span class="dashicons wu-text-xs wu-w-auto wu-h-auto wu-align-text-bottom %s"></span>', esc_attr($icon));
-
-	} // end if;
+	}
 
 	$markup .= '</span>';
 
 	return $markup;
-
-} // end wu_tooltip;
+}
 /**
  * Adds a tooltip to a HTML element. Needs to be echo'ed.
  *
@@ -123,8 +117,7 @@ function wu_tooltip($tooltip, $icon = 'dashicons-editor-help') {
 function wu_tooltip_text($tooltip): string {
 
 	return sprintf('role="tooltip" aria-label="%s"', esc_attr($tooltip));
-
-} // end wu_tooltip_text;
+}
 /**
  * Adds a preview tag that displays the image passed on hover.
  *
@@ -136,14 +129,11 @@ function wu_tooltip_text($tooltip): string {
 function wu_preview_image($image_url, $label = false): string {
 
 	if (empty($label)) {
-
 		$label = __('Preview', 'wp-ultimo');
-
-	} // end if;
+	}
 
 	return sprintf(' <span class="wu-image-preview wu-text-gray-600 wu-bg-gray-200 wu-p-1 wu-px-2 wu-ml-1 wu-inline-block wu-text-2xs wu-uppercase wu-font-bold wu-rounded wu-cursor-pointer wu-border-gray-300 wu-border wu-border-solid" data-image="%s">%s %s</span>', $image_url, "<span class='dashicons-wu-image wu-align-middle wu-mr-1'></span>", $label);
-
-} // end wu_preview_image;
+}
 
 /**
  * Returns the list of available icons. To add more icons you need use the filter
@@ -496,7 +486,7 @@ function wu_get_icons_list() {
 		'dashicons-wu-voicemail',
 		'dashicons-wu-wallet',
 		'dashicons-wu-warning',
-		'dashicons-wu-wp-ultimo'
+		'dashicons-wu-wp-ultimo',
 	);
 
 	$all_icons['Dashicons'] = array(
@@ -757,8 +747,7 @@ function wu_get_icons_list() {
 	);
 
 	return apply_filters('wu_icons_list', $all_icons);
-
-} // end wu_get_icons_list;
+}
 
 /**
  * Checks if the current theme is a block theme.
@@ -769,11 +758,8 @@ function wu_get_icons_list() {
 function wu_is_block_theme() {
 
 	if (function_exists('wp_is_block_theme')) {
-
 		return wp_is_block_theme();
-
-	} // end if;
+	}
 
 	return false;
-
-} // end wu_is_block_theme;
+}

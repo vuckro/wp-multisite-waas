@@ -19,7 +19,7 @@ defined('ABSPATH') || exit;
  */
 class Query extends \BerlinDB\Database\Query {
 
- 	/**
+	/**
 	 * The prefix for the custom table.
 	 *
 	 * @since 2.0.0
@@ -73,17 +73,14 @@ class Query extends \BerlinDB\Database\Query {
 
 		$cache_group = $this->apply_prefix($this->cache_group, '-');
 
-		if ($this->global_cache && !in_array($cache_group, self::$added_globals, true)) {
-
+		if ($this->global_cache && ! in_array($cache_group, self::$added_globals, true)) {
 			wp_cache_add_global_groups(array($cache_group));
 
 			self::$added_globals[] = $cache_group;
-
-		} // end if;
+		}
 
 		parent::__construct($query);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Get the plural name.
@@ -94,7 +91,5 @@ class Query extends \BerlinDB\Database\Query {
 	public function get_plural_name() {
 
 		return $this->item_name_plural;
-
-	} // end get_plural_name;
-
-} // end class Query;
+	}
+}

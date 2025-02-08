@@ -107,7 +107,5 @@ class Discount_Code_Query extends Query {
 	public function __construct($query = array()) {
 
 		parent::__construct($query);
-
-	} // end __construct;
-
-} // end class Discount_Code_Query;
+	}
+}

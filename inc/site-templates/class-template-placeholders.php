@@ -74,8 +74,7 @@ class Template_Placeholders {
 		add_filter('the_content', array($this, 'placeholder_replacer'));
 
 		add_filter('the_title', array($this, 'placeholder_replacer'));
-
-	} // end init;
+	}
 
 	/**
 	 * Loads the placeholders to keep them "cached".
@@ -85,9 +84,12 @@ class Template_Placeholders {
 	 */
 	protected function load_placeholders() {
 
-		$placeholders = wu_get_option('template_placeholders', array(
-			'placeholders' => array(),
-		));
+		$placeholders = wu_get_option(
+			'template_placeholders',
+			array(
+				'placeholders' => array(),
+			)
+		);
 
 		$this->placeholders_as_saved = $placeholders;
 
@@ -109,8 +111,7 @@ class Template_Placeholders {
 		$this->placeholder_keys   = array_filter($this->placeholder_keys);
 		$this->placeholder_values = array_filter($this->placeholder_values);
 		$this->placeholders       = array_filter($this->placeholders);
-
-	} // end load_placeholders;
+	}
 
 	/**
 	 * Adds curly braces to the placeholders.
@@ -123,8 +124,7 @@ class Template_Placeholders {
 	protected function add_curly_braces($tag) {
 
 		return "{{{$tag}}}";
-
-	} // end add_curly_braces;
+	}
 	/**
 	 * Replace the contents with the placeholders.
 	 *
@@ -135,8 +135,7 @@ class Template_Placeholders {
 	public function placeholder_replacer($content): string {
 
 		return str_replace($this->placeholder_keys, $this->placeholder_values, $content);
-
-	} // end placeholder_replacer;
+	}
 
 	/**
 	 * Serve placeholders via ajax.
@@ -147,8 +146,7 @@ class Template_Placeholders {
 	public function serve_placeholders_via_ajax() {
 
 		wp_send_json_success($this->placeholders_as_saved);
-
-	} // end serve_placeholders_via_ajax;
+	}
 
 	/**
 	 * Save the placeholders.
@@ -158,29 +156,33 @@ class Template_Placeholders {
 	 */
 	public function save_placeholders() {
 
-		if (!check_ajax_referer('wu_edit_placeholders_editing')) {
-
-			wp_send_json(array(
-				'code'    => 'not-enough-permissions',
-				'message' => __('You don\'t have permission to alter placeholders.', 'wp-ultimo')
-			));
-
-		} // end if;
+		if ( ! check_ajax_referer('wu_edit_placeholders_editing')) {
+			wp_send_json(
+				array(
+					'code'    => 'not-enough-permissions',
+					'message' => __('You don\'t have permission to alter placeholders.', 'wp-ultimo'),
+				)
+			);
+		}
 
 		$data = json_decode(file_get_contents('php://input'), true);
 
 		$placeholders = isset($data['placeholders']) ? $data['placeholders'] : array();
 
-		wu_save_option('template_placeholders', array(
-			'placeholders' => $placeholders,
-		));
+		wu_save_option(
+			'template_placeholders',
+			array(
+				'placeholders' => $placeholders,
+			)
+		);
 
-		wp_send_json(array(
-			'code'    => 'success',
-			'message' => __('Placeholders successfully updated!', 'wp-ultimo'),
-		));
-
-	} // end save_placeholders;
+		wp_send_json(
+			array(
+				'code'    => 'success',
+				'message' => __('Placeholders successfully updated!', 'wp-ultimo'),
+			)
+		);
+	}
 
 	/**
 	 * Adds the template placeholders admin page.
@@ -190,8 +192,6 @@ class Template_Placeholders {
 	 */
 	public function add_template_placeholders_admin_page() {
 
-		new \WP_Ultimo\Admin_Pages\Placeholders_Admin_Page;
-
-	} // end add_template_placeholders_admin_page;
-
-} // end class Template_Placeholders;
+		new \WP_Ultimo\Admin_Pages\Placeholders_Admin_Page();
+	}
+}

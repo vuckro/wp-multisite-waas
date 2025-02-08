@@ -15,8 +15,8 @@
  * @version     1.4.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
@@ -25,45 +25,50 @@ if (!defined('ABSPATH')) {
 
 /**
  * Get Navigational Links
+ *
  * @var array
  */
-$nav_links = apply_filters('wu_signup_form_nav_links', array(
-  home_url()     => __('Return to Home', 'wp-ultimo') ,
-  wp_login_url() => sprintf('<strong>%s</strong>', __('Log In', 'wp-ultimo'))
-));
+$nav_links = apply_filters(
+	'wu_signup_form_nav_links',
+	array(
+		home_url()     => __('Return to Home', 'wp-ultimo'),
+		wp_login_url() => sprintf('<strong>%s</strong>', __('Log In', 'wp-ultimo')),
+	)
+);
 
-if (!isset($signup->step)) {
-
-  return;
-
+if ( ! isset($signup->step)) {
+	return;
 } // end if;
 
 ?>
 
 <?php if ($signup->step != 'plan' && $signup->step != 'template') : ?>
 
-  <p id="nav">
+	<p id="nav">
 
-    <?php $i = 1; foreach ($nav_links as $link => $label) : ?>
+	<?php $i = 1; foreach ($nav_links as $link => $label) : ?>
 
-      <a href="<?php echo $link; ?>">
+		<a href="<?php echo $link; ?>">
 
-        <?php echo $label; ?>
+		<?php echo $label; ?>
 
-      </a>
+		</a>
 
-      <?php if ($i < count($nav_links)) {
+		<?php
+		if ($i < count($nav_links)) {
 
-        /**
-         * We need this in order to maintain backwards compatibility with WordPress login page
-         * @since 1.9.2
-         */
-        echo " | "; $i++;
+			/**
+			 * We need this in order to maintain backwards compatibility with WordPress login page
+		 *
+			 * @since 1.9.2
+			 */
+			echo ' | ';
+			++$i;
+		}
+		?>
 
-      } ?>
+	<?php endforeach; ?>
 
-    <?php endforeach; ?>
-
-  </p>
+	</p>
 
 <?php endif; ?>

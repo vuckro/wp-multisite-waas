@@ -18,14 +18,11 @@ defined('ABSPATH') || exit;
 function wu_get_next_queue_run() {
 
 	if (class_exists('ActionScheduler')) {
-
 		return wu_switch_blog_and_run(fn() => ActionScheduler::lock()->get_expiration('async-request-runner') - time());
-
-	} // end if;
+	}
 
 	return 0;
-
-} // end wu_get_next_queue_run;
+}
 
 /**
  * Enqueue an action to run one time, as soon as possible.
@@ -40,8 +37,7 @@ function wu_get_next_queue_run() {
 function wu_enqueue_async_action($hook, $args = array(), $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_enqueue_async_action($hook, $args, $group));
-
-} // end wu_enqueue_async_action;
+}
 
 /**
  * Schedule an action to run one time.
@@ -58,8 +54,7 @@ function wu_enqueue_async_action($hook, $args = array(), $group = '') {
 function wu_schedule_single_action($timestamp, $hook, $args = array(), $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_schedule_single_action($timestamp, $hook, $args, $group));
-
-} // end wu_schedule_single_action;
+}
 
 /**
  * Schedule a recurring action.
@@ -77,8 +72,7 @@ function wu_schedule_single_action($timestamp, $hook, $args = array(), $group = 
 function wu_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $args = array(), $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $args, $group));
-
-} // end wu_schedule_recurring_action;
+}
 
 /**
  * Schedule an action that recurs on a cron-like schedule.
@@ -108,8 +102,7 @@ function wu_schedule_recurring_action($timestamp, $interval_in_seconds, $hook, $
 function wu_schedule_cron_action($timestamp, $schedule, $hook, $args = array(), $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_schedule_cron_action($timestamp, $schedule, $hook, $args, $group));
-
-} // end wu_schedule_cron_action;
+}
 
 /**
  * Cancel the next occurrence of a scheduled action.
@@ -125,8 +118,7 @@ function wu_schedule_cron_action($timestamp, $schedule, $hook, $args = array(), 
 function wu_unschedule_action($hook, $args = array(), $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_unschedule_action($hook, $args, $group));
-
-} // end wu_unschedule_action;
+}
 
 /**
  * Cancel all occurrences of a scheduled action.
@@ -137,11 +129,10 @@ function wu_unschedule_action($hook, $args = array(), $group = '') {
  * @param array  $args Args that would have been passed to the job.
  * @param string $group The group the job is assigned to.
  */
-function wu_unschedule_all_actions($hook, $args = array(), $group = '' ) {
+function wu_unschedule_all_actions($hook, $args = array(), $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_unschedule_all_actions($hook, $args, $group));
-
-} // end wu_unschedule_all_actions;
+}
 
 /**
  * Check if there is an existing action in the queue with a given hook, args and group combination.
@@ -163,8 +154,7 @@ function wu_unschedule_all_actions($hook, $args = array(), $group = '' ) {
 function wu_next_scheduled_action($hook, $args = null, $group = '') {
 
 	return wu_switch_blog_and_run(fn() => as_next_scheduled_action($hook, $args, $group));
-
-} // end wu_next_scheduled_action;
+}
 
 /**
  * Find scheduled actions.
@@ -179,5 +169,4 @@ function wu_next_scheduled_action($hook, $args = null, $group = '') {
 function wu_get_scheduled_actions($args = array(), $return_format = OBJECT) {
 
 	return wu_switch_blog_and_run(fn() => as_get_scheduled_actions($args, $return_format));
-
-} // end wu_get_scheduled_actions;
+}

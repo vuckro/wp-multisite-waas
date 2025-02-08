@@ -96,8 +96,7 @@ class Country_CN extends Country {
 	public function get_name() {
 
 		return __('China', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for CN.
@@ -143,7 +142,5 @@ class Country_CN extends Country {
 			'YN' => __('Yunnan', 'wp-ultimo'),
 			'ZJ' => __('Zhejiang', 'wp-ultimo'),
 		);
-
-	} // end states;
-
-} // end class Country_CN;
+	}
+}

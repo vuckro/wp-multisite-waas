@@ -12,7 +12,7 @@ namespace WP_Ultimo\Database\Products;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Engine\Enum;
+use WP_Ultimo\Database\Engine\Enum;
 
 /**
  * Product Types.
@@ -43,8 +43,7 @@ class Product_Type extends Enum {
 			static::PACKAGE => 'wu-bg-gray-200 wu-text-blue-700',
 			static::SERVICE => 'wu-bg-yellow-200 wu-text-yellow-700',
 		);
-
-	} // end classes;
+	}
 
 	/**
 	 * Returns an array with values => labels.
@@ -59,7 +58,5 @@ class Product_Type extends Enum {
 			static::PACKAGE => __('Package', 'wp-ultimo'),
 			static::SERVICE => __('Service', 'wp-ultimo'),
 		);
-
-	} // end labels;
-
-} // end class Product_Type;
+	}
+}

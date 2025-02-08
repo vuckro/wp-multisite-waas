@@ -84,8 +84,7 @@ class Documentation {
 		$links['multiple-accounts'] = 'https://help.wpultimo.com/article/303-accounts-taken-care-of-with-wp-ultimo-multiple-accounts';
 
 		$this->links = apply_filters('wu_documentation_links_list', $links);
-
-	} // end init;
+	}
 
 	/**
 	 * Checks if a link exists.
@@ -98,8 +97,7 @@ class Documentation {
 	public function has_link($slug) {
 
 		return (bool) $this->get_link($slug, false);
-
-	} // end has_link;
+	}
 
 	/**
 	 * Retrieves a link registered
@@ -125,8 +123,7 @@ class Documentation {
 		 * @param string $default_link The default link registered
 		 */
 		return apply_filters('wu_documentation_get_link', $link, $slug, $this->default_link);
-
-	} // end get_link;
+	}
 
 	/**
 	 * Add a new link to the list of links available for reference
@@ -138,8 +135,6 @@ class Documentation {
 	 */
 	public function register_link($slug, $link) {
 
-		$this->links[$slug] = $link;
-
-	}  // end register_link;
-
-} // end class Documentation;
+		$this->links[ $slug ] = $link;
+	}
+}

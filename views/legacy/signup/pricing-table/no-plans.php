@@ -15,12 +15,12 @@
  * @version     1.0.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
 
 <div class="wu-setup-content-error">
-  <p><?php _e('There are no Plans created in the platform.', 'wp-ultimo'); ?></p><br>
+	<p><?php _e('There are no Plans created in the platform.', 'wp-ultimo'); ?></p><br>
 </div>

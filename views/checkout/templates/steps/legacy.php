@@ -15,42 +15,39 @@
  * @version     1.4.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
 
 <ol class="wu-setup-steps wu-flex">
 
-  <?php foreach ($steps as $index => $step) : 
+	<?php
+	foreach ($steps as $index => $step) :
+		$step_key = $step['id'];
 
-    $step_key = $step['id'];
+		/**
+		 * Class element of the Step Status Bar
+	 *
+		 * @var string
+		 */
+		$class = '';
 
-    /**
-     * Class element of the Step Status Bar
-     * @var string
-     */
-    $class = '';
+		if ($step_key === $current_step) {
+			$class = 'active';
+		} elseif (array_search($current_step, array_column($steps, 'id')) > array_search($step_key, array_column($steps, 'id'))) {
+			$class = 'done';
+		} // end if;
 
-    if ($step_key === $current_step) {
+		?>
 
-      $class = 'active';
+	<li class="<?php echo $class; ?> wu-flex-1">
 
-    } elseif (array_search($current_step, array_column($steps, 'id')) > array_search($step_key, array_column($steps, 'id'))) {
+		<?php echo esc_html($step['name']); ?>
 
-      $class = 'done';
+	</li>
 
-    } // end if;
-
-    ?>
-
-    <li class="<?php echo $class; ?> wu-flex-1">
-
-      <?php echo esc_html($step['name']); ?>
-
-    </li>
-
-  <?php endforeach; ?>
+		<?php endforeach; ?>
 
 </ol>

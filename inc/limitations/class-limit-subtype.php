@@ -36,11 +36,9 @@ class Limit_Subtype extends Limit {
 		/*
 		 * If no type is passed, bail.
 		 */
-		if (!$type) {
-
+		if ( ! $type) {
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Set default values for inexistent post types.
@@ -51,24 +49,19 @@ class Limit_Subtype extends Limit {
 		/*
 		 * Case post type disabled.
 		 */
-		if (!$post_type_limit->enabled) {
-
+		if ( ! $post_type_limit->enabled) {
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Case unlimited posts
 		 */
 		if (absint($post_type_limit->number) === 0) {
-
 			return true;
-
-		} // end if;
+		}
 
 		return absint($value_to_check) < absint($post_type_limit->number);
-
-	} // end check;
+	}
 
 	/**
 	 * Adds a magic getter for subtypes.
@@ -83,8 +76,7 @@ class Limit_Subtype extends Limit {
 		$type = (object) wu_get_isset($this->get_limit(), $sub_type, $this->get_default_permissions($sub_type));
 
 		return (object) wp_parse_args($type, $this->get_default_permissions($sub_type));
-
-	} // end __get;
+	}
 
 	/**
 	 * Returns default permissions.
@@ -100,8 +92,7 @@ class Limit_Subtype extends Limit {
 			'enabled' => true,
 			'number'  => '', // unlimited
 		);
-
-	} // end get_default_permissions;
+	}
 
 	/**
 	 * Checks if a theme exists on the current module.
@@ -116,8 +107,7 @@ class Limit_Subtype extends Limit {
 		$results = wu_get_isset($this->get_limit(), $type, array());
 
 		return wu_get_isset($results, 'number', 'not-set') !== 'not-set';
-
-	} // end exists;
+	}
 
 	/**
 	 * Handles limits on post submission.
@@ -127,16 +117,12 @@ class Limit_Subtype extends Limit {
 	 */
 	public function handle_limit() {
 
-		$received = wu_get_isset($_POST['modules'][$this->id], 'limit', array());
+		$received = wu_get_isset($_POST['modules'][ $this->id ], 'limit', array());
 
 		foreach ($received as $post_type => &$limitations) {
-
-			$limitations['enabled'] = (bool) wu_get_isset($_POST['modules'][$this->id]['limit'][$post_type], 'enabled', false);
-
-		} // end foreach;
+			$limitations['enabled'] = (bool) wu_get_isset($_POST['modules'][ $this->id ]['limit'][ $post_type ], 'enabled', false);
+		}
 
 		return $received;
-
-	} // end handle_limit;
-
-} // end class Limit_Subtype;
+	}
+}

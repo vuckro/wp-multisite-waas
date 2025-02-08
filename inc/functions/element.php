@@ -17,6 +17,5 @@ defined('ABSPATH') || exit;
  */
 function wu_element_setup_preview() {
 
-	!did_action('wu_element_preview') && do_action('wu_element_preview');
-
-} // end wu_element_setup_preview;
+	! did_action('wu_element_preview') && do_action('wu_element_preview');
+}

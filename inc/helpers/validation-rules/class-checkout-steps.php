@@ -50,7 +50,7 @@ class Checkout_Steps extends Rule {
 
       $value = maybe_unserialize($value);
 
-    } // end if;
+    }
 
     $required_fields = Signup_Fields_Manager::get_instance()->get_required_fields();
 
@@ -60,7 +60,7 @@ class Checkout_Steps extends Rule {
 
       return true;
 
-    } // end if;
+    }
 
 		$fields = array_column($value, 'fields');
 
@@ -68,7 +68,7 @@ class Checkout_Steps extends Rule {
 
 			return true;
 
-		} // end if;
+		}
 
     $all_fields = call_user_func_array('array_merge', $fields);
 
@@ -87,9 +87,9 @@ class Checkout_Steps extends Rule {
 
         return false;
 
-      } // end if;
+      }
 
-    } // end if;
+    }
 
     /**
      * Allow developers to bypass the check if a field is auto-submittable.
@@ -124,9 +124,9 @@ class Checkout_Steps extends Rule {
 
         return false;
 
-      } // end if;
+      }
 
-    } // end foreach;
+    }
 
     /*
      * @todo: Plan, product selection fields must come before the order summary and payment fields.
@@ -134,6 +134,6 @@ class Checkout_Steps extends Rule {
 
     return true;
 
-	} // end check;
+	}
 
-} // end class Checkout_Steps;
+}

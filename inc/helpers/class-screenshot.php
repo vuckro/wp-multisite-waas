@@ -22,83 +22,77 @@ defined('ABSPATH') || exit;
 class Screenshot {
 
 	/**
-     * Returns the api link for the screenshot.
-     *
-     * @since 2.0.0
-     *
-     * @param string $domain Original site domain.
-     */
+	 * Returns the api link for the screenshot.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $domain Original site domain.
+	 */
 	public static function api_url($domain): string {
 		return 'https://image.thum.io/get/' . $domain;
 	}
- /**
-  * Takes in a URL and creates it as an attachment.
-  *
-  * @since 2.0.0
-  *
-  * @param string $url Image URL to download.
-  * @return string|false
-  */
- public static function take_screenshot($url) {
+	/**
+	 * Takes in a URL and creates it as an attachment.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $url Image URL to download.
+	 * @return string|false
+	 */
+	public static function take_screenshot($url) {
 
 		$url = self::api_url($url);
 
 		return self::save_image_from_url($url);
-
-	} // end take_screenshot;
- /**
-  * Downloads the image from the URL.
-  *
-  * @since 2.0.0
-  *
-  * @param string $url Image URL to download.
-  * @return int|false
-  */
- public static function save_image_from_url($url) {
+	}
+	/**
+	 * Downloads the image from the URL.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $url Image URL to download.
+	 * @return int|false
+	 */
+	public static function save_image_from_url($url) {
 
 		// translators: %s is the API URL.
 		$log_prefix = sprintf(__('Downloading image from "%s":'), $url) . ' ';
 
-		$response = wp_remote_get($url, array(
-			'timeout' => 50,
-		));
+		$response = wp_remote_get(
+			$url,
+			array(
+				'timeout' => 50,
+			)
+		);
 
 		if (wp_remote_retrieve_response_code($response) !== 200) {
-
 			wu_log_add('screenshot-generator', $log_prefix . wp_remote_retrieve_response_message($response), LogLevel::ERROR);
 
 			return false;
-
-		} // end if;
+		}
 
 		if (is_wp_error($response)) {
-
 			wu_log_add('screenshot-generator', $log_prefix . $response->get_error_message(), LogLevel::ERROR);
 
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Check if the results contain a PNG header.
 		 */
 		if (strncmp($response['body'], "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a", strlen("\x89\x50\x4e\x47\x0d\x0a\x1a\x0a")) !== 0) {
-
 			wu_log_add('screenshot-generator', $log_prefix . __('Result is not a PNG file.', 'wp-ultimo'), LogLevel::ERROR);
 
 			return false;
-
-		} // end if;
+		}
 
 		$upload = wp_upload_bits('screenshot-' . gmdate('Y-m-d-H-i-s') . '.png', null, $response['body']);
 
-		if (!empty($upload['error'])) {
-
+		if ( ! empty($upload['error'])) {
 			wu_log_add('screenshot-generator', $log_prefix . json_encode($upload['error']), LogLevel::ERROR);
 
 			return false;
-
-		} // end if;
+		}
 
 		$file_path        = $upload['file'];
 		$file_name        = basename($file_path);
@@ -118,7 +112,7 @@ class Screenshot {
 		$attach_id = wp_insert_attachment($post_info, $file_path);
 
 		// Include image.php
-		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
 		// Define attachment metadata
 		$attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
@@ -129,7 +123,5 @@ class Screenshot {
 		wu_log_add('screenshot-generator', $log_prefix . __('Success!', 'wp-ultimo'));
 
 		return $attach_id;
-
-	} // end save_image_from_url;
-
-} // end class Screenshot;
+	}
+}

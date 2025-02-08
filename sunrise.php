@@ -13,7 +13,7 @@
  *
  * This tells WordPress that it should load our sunrise file before plugins get loaded and
  * the request is processed. We use this great power to handle domain mapping logic and more.
- * 
+ *
  * @since 2.0.0.5 Adds a network admin notice warning that sunrise is still active when Ultimo is deactivated.
  * @since 2.0.0.5 Change return statement to a continue statement to prevent an early exit from the file.
  *
@@ -25,7 +25,7 @@
 
 defined('ABSPATH') || exit;
 
-define('WP_ULTIMO_SUNRISE_VERSION', '2.0.0.8');
+const WP_ULTIMO_SUNRISE_VERSION = '2.0.0.8';
 
 $wu_sunrise = defined('WP_PLUGIN_DIR')
 	? WP_PLUGIN_DIR . '/wp-multisite-waas/inc/class-sunrise.php'
@@ -38,49 +38,40 @@ $wu_mu_sunrise = defined('WPMU_PLUGIN_DIR')
 /**
  * We search for the sunrise class file
  * in the plugins and mu-plugins folders.
- * 
+ *
  * @since 2.0.0.3 Sunrise Version.
  */
-$possible_sunrises = array(
-	$wu_sunrise,
-	$wu_mu_sunrise,
-);
 
-foreach ($possible_sunrises as $sunrise) {
+foreach (array($wu_sunrise, $wu_mu_sunrise) as $wu_sunrise_file) {
+	if (file_exists($wu_sunrise_file)) {
+		if ($wu_sunrise_file === $wu_mu_sunrise) {
 
-	if (file_exists($sunrise)) {
-
-		if ($sunrise === $wu_mu_sunrise) {
-
-		 /**
-		  * Use a particular function that is defined
-		  * after mu-plugins are loaded but before regular plugins
-		  * to check if we are being loaded in a must-use context.
-		  */
+			/**
+			 * Use a particular function that is defined
+			 * after mu-plugins are loaded but before regular plugins
+			 * to check if we are being loaded in a must-use context.
+			 */
 			define('WP_ULTIMO_IS_MUST_USE', true);
+		}
 
-		} // end if;
-	
-		require_once $sunrise;
+		require_once $wu_sunrise_file;
 
-		define('WP_ULTIMO_SUNRISE_FILE', $sunrise);
-	
+		define('WP_ULTIMO_SUNRISE_FILE', $wu_sunrise_file);
+
 		WP_Ultimo\Sunrise::init();
 
 		add_action('network_admin_notices', 'wu_remove_sunrise_warning', 0);
 
 		break; // Exit the loop.
-	
-	} // end if;
-
-} // end if;
-
+	}
+}
+unset($wu_sunrise_file);
 /**
  * Include Mercator.
- * 
+ *
  * This is here purely for backwards compatibility reasons.
  * The file included here is a dumb file in version 2.0.7+.
- * 
+ *
  * @since 2.0.7
  */
 $wu_mercator = defined('WP_PLUGIN_DIR')
@@ -88,10 +79,8 @@ $wu_mercator = defined('WP_PLUGIN_DIR')
 	: WP_CONTENT_DIR . '/plugins/wp-multisite-waas/inc/mercator/mercator.php';
 
 if (file_exists($wu_mercator)) {
-
 	require $wu_mercator;
-
-} // end if;
+}
 
 /**
  * Adds a warning when WP Multisite WaaS is not present but the sunrise file is.
@@ -99,22 +88,19 @@ if (file_exists($wu_mercator)) {
  * @since 2.0.0
  * @return void
  */
-function wu_remove_sunrise_warning() { 
-	
+function wu_remove_sunrise_warning() {
+
 	if (function_exists('WP_Ultimo') === false) {
 
-	?>
-
+		?>
 	<div class="notice notice-warning">
 		<p>
 			WP Multisite WaaS is deactivated, yet its <strong>sunrise.php</strong> file is still being loaded. If you have no intentions of continuing to use WP Multisite WaaS and this was not a temporary deactivation, we recommend removing the <code>define('SUNRISE', true);</code> line from your <strong>wp-config.php</strong> file. Keeping WP Multisite WaaS <strong>sunrise.php</strong> file active without WP Multisite WaaS can lead to unexpected behaviors and it is not advised.
 		</p>
 	</div>
 
-	<?php
-
-	} // end if;
-
-} // end wu_remove_sunrise_warning;
+		<?php
+	}
+}
 
 // WP Ultimo Ends #

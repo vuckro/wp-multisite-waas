@@ -43,7 +43,7 @@ class Unique_Site extends Rule {
 	 *
 	 * @param mixed $value Value being checked.
 	 */
- public function check($value) : bool { // phpcs:ignore
+    public function check($value) : bool { // phpcs:ignore
 
 		$this->requireParameters(array());
 
@@ -52,15 +52,11 @@ class Unique_Site extends Rule {
 		$results = wpmu_validate_blog_signup($value, 'Test Title');
 
 		if ($results['errors']->has_errors()) {
-
 			$this->message = $results['errors']->get_error_message();
 
 			return false;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end check;
-
-} // end class Unique_Site;
+	}
+}

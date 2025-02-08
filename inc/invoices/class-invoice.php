@@ -12,8 +12,8 @@ namespace WP_Ultimo\Invoices;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \Mpdf\Mpdf;
-use \Mpdf\Output\Destination;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 
 /**
  * Handles the generation of PDF Invoices.
@@ -63,13 +63,12 @@ class Invoice {
 
 		$this->set_payment($payment);
 
-		$saved_atts = Invoice::get_settings();
+		$saved_atts = self::get_settings();
 
 		$atts = array_merge($saved_atts, $atts);
 
 		$this->set_attributes($atts);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Magic getter for attributes.
@@ -81,9 +80,8 @@ class Invoice {
 	 */
 	public function __get($key) {
 
-		return isset($this->attributes[$key]) ? $this->attributes[$key] : '';
-
-	} // end __get;
+		return isset($this->attributes[ $key ]) ? $this->attributes[ $key ] : '';
+	}
 
 	/**
 	 * Setups the printer object. Uses mPdf.
@@ -93,12 +91,14 @@ class Invoice {
 	 */
 	private function pdf_setup() {
 
-		$this->printer = new Mpdf(array(
-			'mode'             => '+aCJK',
-			'autoScriptToLang' => true,
-			'autoLangToFont'   => true,
-			'tempDir'          => get_temp_dir(),
-		));
+		$this->printer = new Mpdf(
+			array(
+				'mode'             => '+aCJK',
+				'autoScriptToLang' => true,
+				'autoLangToFont'   => true,
+				'tempDir'          => get_temp_dir(),
+			)
+		);
 
 		$this->printer->setDefaultFont($this->font);
 
@@ -108,11 +108,9 @@ class Invoice {
 
 		$this->printer->SetAuthor($this->company_name);
 
-		if (!$this->payment->is_payable()) {
-
+		if ( ! $this->payment->is_payable()) {
 			$this->printer->SetWatermarkText($this->paid_tag_text);
-
-		} // end if;
+		}
 
 		$this->printer->showWatermarkText = true;
 
@@ -123,12 +121,9 @@ class Invoice {
 		$this->printer->SetDisplayMode('fullpage');
 
 		if ($this->footer_message) {
-
 			$this->printer->SetHTMLFooter($this->footer_message);
-
-		} // end if;
-
-	} // end pdf_setup;
+		}
+	}
 
 	/**
 	 * Saves the PDF file to the disk.
@@ -143,8 +138,7 @@ class Invoice {
 		$file_name = self::get_folder() . $file_name;
 
 		$this->pdf($file_name);
-
-	} // end save_file;
+	}
 
 	/**
 	 * Prints the PDF file to the browser.
@@ -155,8 +149,7 @@ class Invoice {
 	public function print_file() {
 
 		$this->pdf();
-
-	} // end print_file;
+	}
 
 	/**
 	 * Generates the HTML content of the Invoice template.
@@ -177,8 +170,7 @@ class Invoice {
 		$atts['billing_address'] = $atts['membership'] ? $atts['membership']->get_billing_address()->to_array() : array();
 
 		return wu_get_template_contents('invoice/template', $atts);
-
-	} // end render;
+	}
 
 	/**
 	 * Handles the PDF generation.
@@ -199,16 +191,11 @@ class Invoice {
 		$this->printer->WriteHTML($this->render());
 
 		if ($file_name) {
-
 			$this->printer->Output($file_name, Destination::FILE);
-
 		} else {
-
 			$this->printer->Output();
-
-		} // end if;
-
-	} // end pdf;
+		}
+	}
 
 	/**
 	 * Get the value of payment.
@@ -219,8 +206,7 @@ class Invoice {
 	public function get_payment() {
 
 		return $this->payment;
-
-	} // end get_payment;
+	}
 
 	/**
 	 * Set the value of payment.
@@ -232,8 +218,7 @@ class Invoice {
 	public function set_payment($payment) {
 
 		$this->payment = $payment;
-
-	} // end set_payment;
+	}
 
 	/**
 	 * Get the value of attributes.
@@ -244,8 +229,7 @@ class Invoice {
 	public function get_attributes() {
 
 		return $this->attributes;
-
-	} // end get_attributes;
+	}
 
 	/**
 	 * Set the value of attributes.
@@ -256,21 +240,23 @@ class Invoice {
 	 */
 	public function set_attributes($attributes) {
 
-		$attributes = wp_parse_args($attributes, array(
-			'company_name'    => wu_get_setting('company_name'),
-			'company_address' => wu_get_setting('company_address'),
-			'primary_color'   => '#675645',
-			'font'            => 'DejaVuSansCondensed',
-			'logo_url'        => wu_get_network_logo(),
-			'use_custom_logo' => false,
-			'custom_logo'     => false,
- 			'footer_message'  => '',
-			'paid_tag_text'   => __('Paid', 'wp-ultimo'),
-		));
+		$attributes = wp_parse_args(
+			$attributes,
+			array(
+				'company_name'    => wu_get_setting('company_name'),
+				'company_address' => wu_get_setting('company_address'),
+				'primary_color'   => '#675645',
+				'font'            => 'DejaVuSansCondensed',
+				'logo_url'        => wu_get_network_logo(),
+				'use_custom_logo' => false,
+				'custom_logo'     => false,
+				'footer_message'  => '',
+				'paid_tag_text'   => __('Paid', 'wp-ultimo'),
+			)
+		);
 
 		$this->attributes = $attributes;
-
-	} // end set_attributes;
+	}
 
 	/**
 	 * Generates the folder to keep invoices and returns the path.
@@ -281,8 +267,7 @@ class Invoice {
 	public static function get_folder() {
 
 		return wu_maybe_create_folder('wu-invoices');
-
-	} // end get_folder;
+	}
 
 	/**
 	 * Returns the list of saved settings to customize the invoices..
@@ -292,9 +277,8 @@ class Invoice {
 	 */
 	public static function get_settings() {
 
-		return wu_get_option(Invoice::KEY, array());
-
-	} // end get_settings;
+		return wu_get_option(self::KEY, array());
+	}
 
 	/**
 	 * Save settings.
@@ -311,17 +295,11 @@ class Invoice {
 		$allowed_keys = array_keys($invoice->get_attributes());
 
 		foreach ($settings_to_save as $setting_to_save => $value) {
+			if ( ! in_array($setting_to_save, $allowed_keys, true)) {
+				unset($settings_to_save[ $setting_to_save ]);
+			}
+		}
 
-			if (!in_array($setting_to_save, $allowed_keys, true)) {
-
-				unset($settings_to_save[$setting_to_save]);
-
-			} // end if;
-
-		} // end foreach;
-
-		return wu_save_option(Invoice::KEY, $settings_to_save);
-
-	} // end save_settings;
-
-} // end class Invoice;
+		return wu_save_option(self::KEY, $settings_to_save);
+	}
+}

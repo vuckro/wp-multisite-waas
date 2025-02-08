@@ -90,8 +90,7 @@ class Signup_Fields_Manager extends Base_Manager {
 		 * @return array
 		 */
 		return apply_filters('wu_checkout_field_types', $field_types);
-
-	} // end get_field_types;
+	}
 
 	/**
 	 * Instantiate a field type.
@@ -104,8 +103,7 @@ class Signup_Fields_Manager extends Base_Manager {
 	public function instantiate_field_type($class_name) {
 
 		return new $class_name();
-
-	} // end instantiate_field_type;
+	}
 
 	/**
 	 * Returns an array with all fields, instantiated.
@@ -116,14 +114,11 @@ class Signup_Fields_Manager extends Base_Manager {
 	public function get_instantiated_field_types() {
 
 		if ($this->instantiated_field_types === null) {
-
 			$this->instantiated_field_types = array_map(array($this, 'instantiate_field_type'), $this->get_field_types());
-
-		} // end if;
+		}
 
 		return $this->instantiated_field_types;
-
-	} // end get_instantiated_field_types;
+	}
 
 	/**
 	 * Returns a list of all the required fields that must be present on a CF.
@@ -138,8 +133,7 @@ class Signup_Fields_Manager extends Base_Manager {
 		$fields = array_filter($fields, fn($item) => $item->is_required());
 
 		return $fields;
-
-	} // end get_required_fields;
+	}
 
 	/**
 	 * Returns a list of all the user fields.
@@ -154,8 +148,7 @@ class Signup_Fields_Manager extends Base_Manager {
 		$fields = array_filter($fields, fn($item) => $item->is_user_field());
 
 		return $fields;
-
-	} // end get_user_fields;
+	}
 
 	/**
 	 * Returns a list of all the site fields.
@@ -170,8 +163,7 @@ class Signup_Fields_Manager extends Base_Manager {
 		$fields = array_filter($fields, fn($item) => $item->is_site_field());
 
 		return $fields;
-
-	} // end get_site_fields;
+	}
 
 	/**
 	 * Returns a list of all editor fields registered.
@@ -186,13 +178,9 @@ class Signup_Fields_Manager extends Base_Manager {
 		$field_types = $this->get_instantiated_field_types();
 
 		foreach ($field_types as $field_type) {
-
 			$all_editor_fields = array_merge($all_editor_fields, $field_class->get_fields());
-
-		} // end foreach;
+		}
 
 		return $all_editor_fields;
-
-	} // end get_all_editor_fields;
-
-} // end class Signup_Fields_Manager;
+	}
+}

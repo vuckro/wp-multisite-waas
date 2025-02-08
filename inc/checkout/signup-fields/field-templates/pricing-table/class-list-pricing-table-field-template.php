@@ -12,7 +12,7 @@ namespace WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Pricing_Table;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Base_Field_Template;
+use WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Base_Field_Template;
 
 /**
  * Base Field Template
@@ -43,8 +43,7 @@ class List_Pricing_Table_Field_Template extends Base_Field_Template {
 	public function get_title() {
 
 		return __('Simple List', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the field template.
@@ -57,8 +56,7 @@ class List_Pricing_Table_Field_Template extends Base_Field_Template {
 	public function get_description() {
 
 		return __('Simple stylized list with price, recurrence, and the plan description.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The preview image of the field template.
@@ -71,8 +69,7 @@ class List_Pricing_Table_Field_Template extends Base_Field_Template {
 	public function get_preview(): string {
 
 		return wu_get_asset('checkout-forms/list-pricing-table.png');
-
-	} // end get_preview;
+	}
 
 	/**
 	 * The content of the template.
@@ -85,7 +82,5 @@ class List_Pricing_Table_Field_Template extends Base_Field_Template {
 	public function output($attributes) {
 
 		wu_get_template('checkout/templates/pricing-table/list', $attributes);
-
-	} // end output;
-
-} // end class List_Pricing_Table_Field_Template;
+	}
+}

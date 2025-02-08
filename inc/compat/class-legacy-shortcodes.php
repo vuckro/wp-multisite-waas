@@ -57,8 +57,7 @@ class Legacy_Shortcodes {
 		add_shortcode('wu_pricing_table', array($this, 'pricing_table'));
 
 		add_shortcode('wu_templates_list', array($this, 'templates_list'));
-
-	} // end init;
+	}
 
 	/**
 	 * Return the value of a user meta on the database.
@@ -81,39 +80,34 @@ class Legacy_Shortcodes {
 		$customer = $site->get_customer();
 
 		if ($customer) {
-
 			$customer_id = $customer->get_id();
 
 			$user_id = $customer->get_user_id();
+		}
 
-		} // end if;
-
-		$atts = shortcode_atts(array(
-			'user_id'   => $user_id,
-			'meta_name' => 'first_name',
-			'default'   => false,
-			'unique'    => true,
-		), $atts, 'wu_user_meta');
+		$atts = shortcode_atts(
+			array(
+				'user_id'   => $user_id,
+				'meta_name' => 'first_name',
+				'default'   => false,
+				'unique'    => true,
+			),
+			$atts,
+			'wu_user_meta'
+		);
 
 		if ($customer_id) {
-
 			$value = $customer->get_meta($atts['meta_name']);
-
 		} else {
-
 			$value = get_user_meta($atts['user_id'], $atts['meta_name'], $atts['unique']);
-
-		} // end if;
+		}
 
 		if (is_array($value)) {
-
 			$value = implode(', ', $value);
-
-		} // end if;
+		}
 
 		return $value ? $value : '--';
-
-	} // end user_meta;
+	}
 
 	/**
 	 * Returns the number of paying users on the platform.
@@ -129,13 +123,14 @@ class Legacy_Shortcodes {
 
 		$atts = shortcode_atts(array(), $atts, 'wu_paying_users');
 
-		$paying_customers = wu_get_customers(array(
-			'count' => true,
-		));
+		$paying_customers = wu_get_customers(
+			array(
+				'count' => true,
+			)
+		);
 
 		return $paying_customers;
-
-	} // end paying_users;
+	}
 
 	/**
 	 * Plan Link shortcode.
@@ -147,22 +142,24 @@ class Legacy_Shortcodes {
 	 */
 	public function plan_link($atts) {
 
-		$atts = shortcode_atts(array(
-			'plan_id'   => 0,
-			'plan_freq' => 1,
-			'skip_plan' => 1,
-		), $atts, 'wu_plan_link');
+		$atts = shortcode_atts(
+			array(
+				'plan_id'   => 0,
+				'plan_freq' => 1,
+				'skip_plan' => 1,
+			),
+			$atts,
+			'wu_plan_link'
+		);
 
 		/**
 		 * Treat the results to make sure we are getting numbers out of it
-    	 *
+		 *
 		 * @since 1.5.1
 		 */
 		foreach (array('plan_id', 'plan_freq') as $att) {
-
-			$atts[$att] = wu_extract_number($atts[$att]);
-
-		} // end foreach;
+			$atts[ $att ] = wu_extract_number($atts[ $att ]);
+		}
 
 		$path = '';
 
@@ -173,30 +170,23 @@ class Legacy_Shortcodes {
 		$plan = wu_get_product_by('migrated_from_id', $atts['plan_id']);
 
 		if ($plan) {
-
 			$path = $plan->get_slug();
-
-		} // end if;
+		}
 
 		/**
 		 * Second pass: try via the real ID, if new customers
 		 * decide to use the old shortcode.
 		 */
 		if (empty($path)) {
-
 			$plan = wu_get_product($atts['plan_id']);
 
 			if ($plan) {
-
 				$path = $plan->get_slug();
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return wu_get_registration_url($path);
-
-	} // end plan_link;
+	}
 
 	/**
 	 * Renders the restrict content shortcode.
@@ -209,40 +199,38 @@ class Legacy_Shortcodes {
 	 */
 	public function restricted_content($atts, $content) {
 
-		$atts = shortcode_atts(array(
-			'plan_id'        => false,
-			'product_id'     => false,
-			'only_active'    => true,
-			'only_logged'    => false,
-			'exclude_trials' => false,
-			'from_request'   => false,
-		), $atts, 'wu_restricted_content');
+		$atts = shortcode_atts(
+			array(
+				'plan_id'        => false,
+				'product_id'     => false,
+				'only_active'    => true,
+				'only_logged'    => false,
+				'exclude_trials' => false,
+				'from_request'   => false,
+			),
+			$atts,
+			'wu_restricted_content'
+		);
 
-		$atts['plan_id'] = !empty($atts['product_id']) ? $atts['product_id'] : $atts['plan_id'];
+		$atts['plan_id'] = ! empty($atts['product_id']) ? $atts['product_id'] : $atts['plan_id'];
 
-		if (empty($atts) || !$atts['plan_id']) {
-
+		if (empty($atts) || ! $atts['plan_id']) {
 			return __('You need to pass a valid plan ID.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$query_products = get_query_var('products', array());
 
 		$request_products = array();
 
 		foreach ($query_products as $product) {
-
 			$product = wu_get_product($product);
 
-			if (!$product) {
-
+			if ( ! $product) {
 				continue;
-
-			} // end if;
+			}
 
 			$request_products[] = $product->get_id();
-
-		} // end foreach;
+		}
 
 		$plan_ids = explode(',', $atts['plan_id']);
 		$plan_ids = array_map('trim', $plan_ids);
@@ -251,16 +239,12 @@ class Legacy_Shortcodes {
 		$else = '[wu_default_content]';
 
 		if (strpos($content, $else) !== false) {
-
 			list($if, $else) = explode($else, $content, 2);
-
 		} else {
-
 			$if = $content;
 
 			$else = '';
-
-		} // end if;
+		}
 
 		$condition = false;
 
@@ -268,12 +252,11 @@ class Legacy_Shortcodes {
 
 		$user_logged_in = is_user_logged_in();
 
-		$should_check = !(bool) $atts['only_logged'] || $user_logged_in;
+		$should_check = ! (bool) $atts['only_logged'] || $user_logged_in;
 
 		$from_request = $atts['from_request'] && count(array_intersect($plan_ids, $request_products)) > 0;
 
-		if ($membership && $should_check && !$from_request) {
-
+		if ($membership && $should_check && ! $from_request) {
 			$membership_products = array_merge(
 				array($membership->get_plan_id()),
 				$membership->get_addon_ids()
@@ -281,29 +264,21 @@ class Legacy_Shortcodes {
 
 			$condition = in_array('all', $plan_ids, true) || count(array_intersect($membership_products, $plan_ids)) > 0;
 
-			if ((bool) $atts['only_active']) {
-
+			if ( (bool) $atts['only_active']) {
 				$condition = $condition && ($membership->is_active() || $membership->get_status() === 'trialing');
+			}
 
-			} // end if;
-
-			if ((bool) $atts['exclude_trials']) {
-
-				$condition = $condition && !$membership->is_trialing();
-
-			} // end if;
-
+			if ( (bool) $atts['exclude_trials']) {
+				$condition = $condition && ! $membership->is_trialing();
+			}
 		} else {
-
 			$condition = $from_request && $should_check;
-
-		} // end if;
+		}
 
 		$final_content = wpautop($condition ? $if : $else);
 
 		return do_shortcode($final_content);
-
-	} // end restricted_content;
+	}
 
 	/**
 	 * Adds the pricing table shortcode.
@@ -321,27 +296,29 @@ class Legacy_Shortcodes {
 
 		global $post;
 
-		$atts = shortcode_atts(array(
-			'primary_color'          => wu_get_setting('primary_color', '#00a1ff'),
-			'accent_color'           => wu_get_setting('accent_color', '#78b336'),
-			'default_pricing_option' => wu_get_setting('default_pricing_option', 1),
-			'plan_id'                => false,
-			'show_selector'          => true,
-			// New Options
-			'layout'                 => 'legacy',
-			'period_selector_layout' => 'legacy',
-		), $atts, 'wu_pricing_table');
+		$atts = shortcode_atts(
+			array(
+				'primary_color'          => wu_get_setting('primary_color', '#00a1ff'),
+				'accent_color'           => wu_get_setting('accent_color', '#78b336'),
+				'default_pricing_option' => wu_get_setting('default_pricing_option', 1),
+				'plan_id'                => false,
+				'show_selector'          => true,
+				// New Options
+				'layout'                 => 'legacy',
+				'period_selector_layout' => 'legacy',
+			),
+			$atts,
+			'wu_pricing_table'
+		);
 
 		/**
 		 * In the case of the legacy layout, we need to load extra styles.
 		 */
 		if ($atts['layout'] === 'legacy') {
-
 			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'));
 
 			wp_add_inline_style('legacy-signup', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
-
-		} // end if;
+		}
 
 		do_action('wu_checkout_scripts', $post);
 
@@ -349,7 +326,7 @@ class Legacy_Shortcodes {
 
 		$atts['plan_id'] = is_string($atts['plan_id']) && $atts['plan_id'] !== 'all' ? explode(',', $atts['plan_id']) : false;
 
-		$checkout_form = new \WP_Ultimo\Models\Checkout_Form;
+		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
 		$fields = array();
 
@@ -358,13 +335,10 @@ class Legacy_Shortcodes {
 		);
 
 		if ($atts['plan_id']) {
-
 			$search_arguments['id__in'] = $atts['plan_id'];
-
-		} // end if;
+		}
 
 		if ($atts['show_selector']) {
-
 			$fields[] = array(
 				'step'                      => 'checkout',
 				'name'                      => '',
@@ -389,8 +363,7 @@ class Legacy_Shortcodes {
 					),
 				),
 			);
-
-		} // end if;
+		}
 
 		$layout = $atts['layout'];
 
@@ -410,18 +383,16 @@ class Legacy_Shortcodes {
 		 * we'll need a submit field.
 		 */
 		if ($layout !== 'legacy') {
-
-			$fields[] = array (
+			$fields[] = array(
 				'step' => 'checkout',
 				'name' => __('Get Started &rarr;', 'wp-ultimo'),
 				'type' => 'submit_button',
 				'id'   => 'checkout',
 			);
+		}
 
-		} // end if;
-
-		$steps = array (
-			array (
+		$steps = array(
+			array(
 				'id'     => 'checkout',
 				'name'   => __('Checkout', 'wp-ultimo'),
 				'desc'   => '',
@@ -441,14 +412,21 @@ class Legacy_Shortcodes {
 
 		do_action('wu_setup_checkout');
 
-		wp_add_inline_script('wu-checkout', sprintf('
+		wp_add_inline_script(
+			'wu-checkout',
+			sprintf(
+				'
 
 			/**
 			 * Set the auto-submittable field, if one exists.
 			 */
 			window.wu_auto_submittable_field = %s;
 
-		', json_encode($auto_submittable_field)), 'after');
+		',
+				json_encode($auto_submittable_field)
+			),
+			'after'
+		);
 
 		$final_fields = wu_create_checkout_fields($checkout_form->get_step('checkout', true)['fields']);
 
@@ -469,16 +447,18 @@ class Legacy_Shortcodes {
 			'value' => 1,
 		);
 
-		return wu_get_template_contents('checkout/form', array(
-			'step'                 => $checkout_form->get_step('checkout', true),
-			'step_name'            => 'checkout',
-			'checkout_form_name'   => 'wu_pricing_table',
-			'checkout_form_action' => add_query_arg('pre-flight', 1, wu_get_registration_url()),
-			'display_title'        => '',
-			'final_fields'         => $final_fields,
-		));
-
-	} // end pricing_table;
+		return wu_get_template_contents(
+			'checkout/form',
+			array(
+				'step'                 => $checkout_form->get_step('checkout', true),
+				'step_name'            => 'checkout',
+				'checkout_form_name'   => 'wu_pricing_table',
+				'checkout_form_action' => add_query_arg('pre-flight', 1, wu_get_registration_url()),
+				'display_title'        => '',
+				'final_fields'         => $final_fields,
+			)
+		);
+	}
 
 	/**
 	 * Adds the template sites shortcode.
@@ -496,18 +476,22 @@ class Legacy_Shortcodes {
 
 		global $post;
 
-		$atts = shortcode_atts(array(
-			'show_filters'  => true,
-			'show_title'    => true,
-			'templates'     => false,
-			'cols'          => 3,
-			'layout'        => 'legacy',
-			'checkout_page' => wu_guess_registration_page(),
-		), $atts, 'wu_templates_list');
+		$atts = shortcode_atts(
+			array(
+				'show_filters'  => true,
+				'show_title'    => true,
+				'templates'     => false,
+				'cols'          => 3,
+				'layout'        => 'legacy',
+				'checkout_page' => wu_guess_registration_page(),
+			),
+			$atts,
+			'wu_templates_list'
+		);
 
 		/**
-         * Hide header, if necessary
-         */
+		 * Hide header, if necessary
+		 */
 		add_filter('wu_step_template_display_header', $atts['show_title'] ? '__return_true' : '__return_false');
 
 		/**
@@ -521,14 +505,12 @@ class Legacy_Shortcodes {
 		 * In the case of the legacy layout, we need to load extra styles.
 		 */
 		if ($atts['layout'] === 'legacy') {
-
 			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'));
 
 			wp_add_inline_style('legacy-signup', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
+		}
 
-		} // end if;
-
-		$checkout_form = new \WP_Ultimo\Models\Checkout_Form;
+		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
 		$fields = array();
 
@@ -549,8 +531,8 @@ class Legacy_Shortcodes {
 			'element_classes'             => $layout === 'legacy' ? 'wu-content-templates' : '',
 		);
 
-		$steps = array (
-			array (
+		$steps = array(
+			array(
 				'id'     => 'checkout',
 				'name'   => __('Checkout', 'wp-ultimo'),
 				'desc'   => '',
@@ -572,14 +554,21 @@ class Legacy_Shortcodes {
 
 		do_action('wu_setup_checkout');
 
-		wp_add_inline_script('wu-checkout', sprintf('
+		wp_add_inline_script(
+			'wu-checkout',
+			sprintf(
+				'
 
 			/**
 			 * Set the auto-submittable field, if one exists.
 			 */
 			window.wu_auto_submittable_field = %s;
 
-		', json_encode($auto_submittable_field)), 'after');
+		',
+				json_encode($auto_submittable_field)
+			),
+			'after'
+		);
 
 		$final_fields['pre-flight'] = array(
 			'type'  => 'hidden',
@@ -588,16 +577,18 @@ class Legacy_Shortcodes {
 
 		$page_url = wu_switch_blog_and_run(fn() => get_permalink($atts['checkout_page']));
 
-		return wu_get_template_contents('checkout/form', array(
-			'step'                 => $checkout_form->get_step('checkout', true),
-			'step_name'            => 'checkout',
-			'checkout_form_name'   => 'wu_templates_list',
-			'checkout_form_action' => add_query_arg('pre-flight', 1, $page_url),
-			'display_title'        => '',
-			'final_fields'         => $final_fields,
-		));
-
-	} // end templates_list;
+		return wu_get_template_contents(
+			'checkout/form',
+			array(
+				'step'                 => $checkout_form->get_step('checkout', true),
+				'step_name'            => 'checkout',
+				'checkout_form_name'   => 'wu_templates_list',
+				'checkout_form_action' => add_query_arg('pre-flight', 1, $page_url),
+				'display_title'        => '',
+				'final_fields'         => $final_fields,
+			)
+		);
+	}
 	/**
 	 * Makes sure we don't return any invalid values.
 	 *
@@ -609,7 +600,5 @@ class Legacy_Shortcodes {
 		$list = array_map('trim', explode(',', $templates));
 
 		return array_filter($list);
-
-	} // end treat_template_list;
-
-} // end class Legacy_Shortcodes;
+	}
+}

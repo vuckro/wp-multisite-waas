@@ -28,8 +28,7 @@ class Trial_Limits {
 	 * @return void
 	 */
 	public function init() {
-
-	} // end init;
+	}
 
 	/**
 	 * Apply limitations if they are available.
@@ -38,7 +37,5 @@ class Trial_Limits {
 	 * @return void
 	 */
 	public function load_limitations() {
-
-	} // end load_limitations;
-
-} // end class Trial_Limits;
+	}
+}

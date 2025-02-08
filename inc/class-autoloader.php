@@ -31,7 +31,7 @@ class Autoloader {
 	/**
 	 * Static-only class.
 	 */
-	private function __construct() {} // end __construct;
+	private function __construct() {}
 
 	/**
 	 * Initializes our custom autoloader
@@ -42,7 +42,7 @@ class Autoloader {
 	 */
 	public static function init() {
 		// do nothing now. Composer autoloader does the work.
-	} // end init;
+	}
 
 	/**
 	 * Checks for unit tests and WP_ULTIMO_DEBUG.
@@ -53,7 +53,5 @@ class Autoloader {
 	public static function is_debug() {
 
 		return false; // return wu_is_debug();
-
-	} // end is_debug;
-
-} // end class Autoloader;
+	}
+}

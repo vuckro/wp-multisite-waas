@@ -66,8 +66,7 @@ class Country_SG extends Country {
 	public function get_name() {
 
 		return __('Singapore', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for SG.
@@ -84,7 +83,5 @@ class Country_SG extends Country {
 			'04' => __('South East Community Development Council', 'wp-ultimo-locations'),
 			'05' => __('South West Community Development Council', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_SG;
+	}
+}

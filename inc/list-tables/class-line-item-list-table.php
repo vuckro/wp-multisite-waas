@@ -34,13 +34,14 @@ class Line_Item_List_Table extends Payment_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Line Item', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Line Items', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true                         // does this table support ajax?
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Line Item', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Line Items', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                         // does this table support ajax?
+			)
+		);
+	}
 
 	/**
 	 * Get the payment object.
@@ -53,8 +54,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 		$payment_id = wu_request('id');
 
 		return wu_get_payment($payment_id);
-
-	} // end get_payment;
+	}
 
 	/**
 	 * Overrides the parent get_items to add a total line.
@@ -73,14 +73,11 @@ class Line_Item_List_Table extends Payment_List_Table {
 		$items = $payment->get_line_items();
 
 		if ($count) {
-
 			return count($items);
-
-		} // end if;
+		}
 
 		return $items;
-
-	} // end get_items;
+	}
 
 	/**
 	 * Displays the name of the product and description being hired.
@@ -92,11 +89,9 @@ class Line_Item_List_Table extends Payment_List_Table {
 	 */
 	public function column_service($item) {
 
-		if (!$item) {
-
+		if ( ! $item) {
 			return '--';
-
-		} // end if;
+		}
 
 		$url_atts = array(
 			'id'           => $this->get_payment()->get_id(),
@@ -113,8 +108,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 		$html .= sprintf('<span class="wu-block wu-text-gray-600 wu-text-xs">%s</span>', $item->get_description());
 
 		return $html . $this->row_actions($actions);
-
-	} // end column_service;
+	}
 
 	/**
 	 * Displays the tax rate for the item.
@@ -131,8 +125,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 		$quantity = sprintf(__('Quantity: %s', 'wp-ultimo'), $item->get_quantity()); // phpcs:ignore
 
 		return $html . sprintf('<small class="wu-block">%s</small>', $quantity);
-
-	} // end column_unit_price;
+	}
 
 	/**
 	 * Displays the tax rate for the item.
@@ -149,16 +142,13 @@ class Line_Item_List_Table extends Payment_List_Table {
 		$tax_rate = '';
 
 		if ($item->get_tax_type() === 'percentage' && $item->get_tax_rate()) {
-
 			$tax_rate = $item->get_tax_rate() . '%';
-
-		} // end if;
+		}
 
 		$tax_label = $item->get_tax_rate() ? ($item->get_tax_label() ? $item->get_tax_label() : __('Tax Applied', 'wp-ultimo')) : __('No Taxes Applied', 'wp-ultimo');
 
 		return $html . sprintf('<small class="wu-block">%s (%s)</small>', $tax_rate, $tax_label);
-
-	} // end column_tax_total;
+	}
 
 	/**
 	 * Displays the tax rate for the item.
@@ -175,16 +165,13 @@ class Line_Item_List_Table extends Payment_List_Table {
 		$tax_rate = '';
 
 		if ($item->get_discount_type() === 'percentage' && $item->get_discount_rate()) {
-
 			$tax_rate = $item->get_discount_rate() . '%';
-
-		} // end if;
+		}
 
 		$tax_label = $item->get_discount_rate() ? ($item->get_discount_label() ? $item->get_discount_label() : __('Discount', 'wp-ultimo')) : __('No discount', 'wp-ultimo');
 
 		return $html . sprintf('<small class="wu-block">%s (%s)</small>', $tax_rate, $tax_label);
-
-	} // end column_discounts_total;
+	}
 
 	/**
 	 * Displays the total column.
@@ -197,8 +184,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 	public function column_total($item) {
 
 		return wu_format_currency($item->get_total());
-
-	} // end column_total;
+	}
 
 	/**
 	 * Displays the subtotal column.
@@ -211,8 +197,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 	public function column_subtotal($item) {
 
 		return wu_format_currency($item->get_subtotal());
-
-	} // end column_subtotal;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -232,8 +217,7 @@ class Line_Item_List_Table extends Payment_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Leaves no sortable items on the columns.
@@ -244,7 +228,5 @@ class Line_Item_List_Table extends Payment_List_Table {
 	public function get_sortable_columns() {
 
 		return array();
-
-	} // end get_sortable_columns;
-
-} // end class Line_Item_List_Table;
+	}
+}

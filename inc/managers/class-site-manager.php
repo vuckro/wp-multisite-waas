@@ -11,10 +11,10 @@
 
 namespace WP_Ultimo\Managers;
 
-use \WP_Ultimo\Managers\Base_Manager;
-use \WP_Ultimo\Helpers\Screenshot;
-use \WP_Ultimo\Database\Sites\Site_Type;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Managers\Base_Manager;
+use WP_Ultimo\Helpers\Screenshot;
+use WP_Ultimo\Database\Sites\Site_Type;
+use WP_Ultimo\Database\Memberships\Membership_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -26,7 +26,9 @@ defined('ABSPATH') || exit;
  */
 class Site_Manager extends Base_Manager {
 
-	use \WP_Ultimo\Apis\Rest_Api, \WP_Ultimo\Apis\WP_CLI, \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Apis\Rest_Api;
+	use \WP_Ultimo\Apis\WP_CLI;
+	use \WP_Ultimo\Traits\Singleton;
 
 	/**
 	 * The manager slug.
@@ -97,8 +99,7 @@ class Site_Manager extends Base_Manager {
 		add_filter('wpmu_validate_blog_signup', array($this, 'allow_hyphens_in_site_name'), 10, 1);
 
 		add_action('wu_daily', array($this, 'delete_pending_sites'));
-
-	} // end init;
+	}
 
 	/**
 	 * Allows for hyphens to be used, since WordPress supports it.
@@ -123,27 +124,20 @@ class Site_Manager extends Base_Manager {
 		 * if so, we remove it and re-validate with our custom rule
 		 * which is the same, but also allows for hyphens.
 		 */
-		if (!empty($blogname_errors) && $error_key !== false) {
-
-			unset($result['errors']->errors['blogname'][$error_key]);
+		if ( ! empty($blogname_errors) && $error_key !== false) {
+			unset($result['errors']->errors['blogname'][ $error_key ]);
 
 			if (empty($result['errors']->errors['blogname'])) {
-
 				unset($result['errors']->errors['blogname']);
-
-			} // end if;
+			}
 
 			if (preg_match('/[^a-z0-9-]+/', (string) $result['blogname'])) {
-
 				$result['errors']->add('blogname', __('Site names can only contain lowercase letters (a-z), numbers, and hyphens.', 'wp-ultimo'));
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $result;
-
-	} // end allow_hyphens_in_site_name;
+	}
 
 	/**
 	 * Handles the request to add a new site, if that's the case.
@@ -158,8 +152,7 @@ class Site_Manager extends Base_Manager {
 		global $wpdb;
 
 		if (wu_request('create-new-site') && wp_verify_nonce(wu_request('create-new-site'), 'create-new-site')) {
-
-			$errors = new \WP_Error;
+			$errors = new \WP_Error();
 
 			$rules = array(
 				'site_title' => 'min:4',
@@ -167,73 +160,57 @@ class Site_Manager extends Base_Manager {
 			);
 
 			if ($checkout->is_last_step()) {
-
 				$membership = WP_Ultimo()->currents->get_membership();
 
 				$customer = wu_get_current_customer();
 
-				if (!$customer || !$membership || $customer->get_id() !== $membership->get_customer_id()) {
-
+				if ( ! $customer || ! $membership || $customer->get_id() !== $membership->get_customer_id()) {
 					$errors->add('not-owner', __('You do not have the necessary permissions to create a site to this membership', 'wp-ultimo'));
-
-				} // end if;
+				}
 
 				if ($errors->has_errors() === false) {
-
 					$d = wu_get_site_domain_and_path(wu_request('site_url', ''), $checkout->request_or_session('site_domain'));
 
-					$pending_site = $membership->create_pending_site(array(
-						'domain'        => $d->domain,
-						'path'          => $d->path,
-						'template_id'   => $checkout->request_or_session('template_id'),
-						'title'         => $checkout->request_or_session('site_title'),
-						'customer_id'   => $customer->get_id(),
-						'membership_id' => $membership->get_id(),
-					));
+					$pending_site = $membership->create_pending_site(
+						array(
+							'domain'        => $d->domain,
+							'path'          => $d->path,
+							'template_id'   => $checkout->request_or_session('template_id'),
+							'title'         => $checkout->request_or_session('site_title'),
+							'customer_id'   => $customer->get_id(),
+							'membership_id' => $membership->get_id(),
+						)
+					);
 
 					if (is_wp_error($pending_site)) {
-
 						wp_send_json_error($pending_site);
 
 						exit;
-
-					} // end if;
+					}
 
 					$results = $membership->publish_pending_site();
 
 					if (is_wp_error($results)) {
-
 						wp_send_json_error($errors);
-
-					} // end if;
-
+					}
 				} else {
-
 					wp_send_json_error($errors);
-
-				} // end if;
+				}
 
 				wp_send_json_success(array());
-
 			} else {
-
 				$validation = $checkout->validate($rules);
 
 				if (is_wp_error($validation)) {
-
 					wp_send_json_error($validation);
-
-				} // end if;
+				}
 
 				$wpdb->query('COMMIT');
 
 				wp_send_json_success(array());
-
-			} // end if;
-
-		} // end if;
-
-	} // end maybe_validate_add_new_site;
+			}
+		}
+	}
 
 	/**
 	 * Checks if the current request is a add new site request.
@@ -244,20 +221,20 @@ class Site_Manager extends Base_Manager {
 	public function maybe_add_new_site() {
 
 		if (wu_request('create-new-site') && wp_verify_nonce(wu_request('create-new-site'), 'create-new-site')) {
-
 			$redirect_url = wu_request('redirect_url', admin_url('admin.php?page=sites'));
 
-			$redirect_url = add_query_arg(array(
-				'new_site_created' => true,
-			), $redirect_url);
+			$redirect_url = add_query_arg(
+				array(
+					'new_site_created' => true,
+				),
+				$redirect_url
+			);
 
 			wp_redirect($redirect_url);
 
 			exit;
-
-		} // end if;
-
-	} // end maybe_add_new_site;
+		}
+	}
 
 	/**
 	 * Triggers the do_event of the site publish successful.
@@ -277,8 +254,7 @@ class Site_Manager extends Base_Manager {
 		);
 
 		wu_do_event('site_published', $payload);
-
-	} // end handle_site_published;
+	}
 
 	/**
 	 * Locks the site front-end if the site is not public.
@@ -291,10 +267,8 @@ class Site_Manager extends Base_Manager {
 	public function lock_site() {
 
 		if (is_main_site() || is_admin() || wu_is_login_page() || wp_doing_ajax() || wu_request('wu-ajax')) {
-
 			return;
-
-		} // end if;
+		}
 
 		$can_access = true;
 
@@ -302,11 +276,9 @@ class Site_Manager extends Base_Manager {
 
 		$site = wu_get_current_site();
 
-		if (!$site->is_active()) {
-
+		if ( ! $site->is_active()) {
 			$can_access = false;
-
-		} // end if;
+		}
 
 		$membership = $site->get_membership();
 
@@ -314,7 +286,7 @@ class Site_Manager extends Base_Manager {
 
 		$is_cancelled = $status === Membership_Status::CANCELLED;
 
-		$is_inactive = $status && !$membership->is_active() && $status !== Membership_Status::TRIALING;
+		$is_inactive = $status && ! $membership->is_active() && $status !== Membership_Status::TRIALING;
 
 		if ($is_cancelled || ($is_inactive && wu_get_setting('block_frontend', false))) {
 
@@ -324,40 +296,36 @@ class Site_Manager extends Base_Manager {
 			$expiration_time = wu_date($membership->get_date_expiration())->getTimestamp() + $grace_period * DAY_IN_SECONDS;
 
 			if ($expiration_time < wu_date()->getTimestamp()) {
-
 				$checkout_pages = \WP_Ultimo\Checkout\Checkout_Pages::get_instance();
 
 				// We only show the url field when block_frontend is true
 				$redirect_url = wu_get_setting('block_frontend', false) ? $checkout_pages->get_page_url('block_frontend') : false;
 
 				$can_access = false;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		if ($can_access === false) {
-
 			if ($redirect_url) {
-
 				wp_redirect($redirect_url);
 
 				exit;
+			}
 
-			} // end if;
-
-			wp_die(new \WP_Error(
-				'not-available',
+			wp_die(
+				new \WP_Error(
+					'not-available',
 				// phpcs:ignore
 				sprintf( __('This site is not available at the moment.<br><small>If you are the site admin, click <a href="%s">here</a> to login.</small>', 'wp-ultimo'), wp_login_url()),
-				array(
-					'title' => __('Site not available', 'wp-ultimo'),
-				)
-			), '', array('code' => 200));
-
-		} // end if;
-
-	} // end lock_site;
+					array(
+						'title' => __('Site not available', 'wp-ultimo'),
+					)
+				),
+				'',
+				array('code' => 200)
+			);
+		}
+	}
 
 	/**
 	 * Takes screenshots asynchronously.
@@ -371,27 +339,22 @@ class Site_Manager extends Base_Manager {
 
 		$site = wu_get_site($site_id);
 
-		if (!$site) {
-
+		if ( ! $site) {
 			return false;
-
-		} // end if;
+		}
 
 		$domain = $site->get_active_site_url();
 
 		$attachment_id = Screenshot::take_screenshot($domain);
 
-		if (!$attachment_id) {
-
+		if ( ! $attachment_id) {
 			return false;
-
-		} // end if;
+		}
 
 		$site->set_featured_image_id($attachment_id);
 
 		return $site->save();
-
-	} // end async_get_site_screenshot;
+	}
 
 	/**
 	 * Listens for the ajax endpoint and generate the screenshot.
@@ -405,34 +368,31 @@ class Site_Manager extends Base_Manager {
 
 		$site = wu_get_site($site_id);
 
-		if (!$site) {
-
+		if ( ! $site) {
 			wp_send_json_error(
 				new \WP_Error('missing-site', __('Site not found.', 'wp-ultimo'))
 			);
-
-		} // end if;
+		}
 
 		$domain = $site->get_active_site_url();
 
 		$attachment_id = Screenshot::take_screenshot($domain);
 
-		if (!$attachment_id) {
-
+		if ( ! $attachment_id) {
 			wp_send_json_error(
 				new \WP_Error('error', __('We were not able to fetch the screenshot.', 'wp-ultimo'))
 			);
-
-		} // end if;
+		}
 
 		$attachment_url = wp_get_attachment_image_src($attachment_id, 'wu-thumb-medium');
 
-		wp_send_json_success(array(
-			'attachment_id'  => $attachment_id,
-			'attachment_url' => $attachment_url[0],
-		));
-
-	} // end get_site_screenshot;
+		wp_send_json_success(
+			array(
+				'attachment_id'  => $attachment_id,
+				'attachment_url' => $attachment_url[0],
+			)
+		);
+	}
 
 	/**
 	 * Add the additional sizes required by WP Multisite WaaS.
@@ -445,14 +405,12 @@ class Site_Manager extends Base_Manager {
 	public function additional_thumbnail_sizes() {
 
 		if (is_main_site()) {
-
 			add_image_size('wu-thumb-large', 900, 675, array('center', 'top')); // (cropped)
 
 			add_image_size('wu-thumb-medium', 400, 300, array('center', 'top')); // (cropped)
 
-		} // end if;
-
-	} // end additional_thumbnail_sizes;
+		}
+	}
 
 	/**
 	 * Adds a notification if the no-index setting is active.
@@ -463,12 +421,9 @@ class Site_Manager extends Base_Manager {
 	public function add_no_index_warning() {
 
 		if (wu_get_setting('stop_template_indexing', false)) {
-
 			add_meta_box('wu-warnings', __('WP Multisite WaaS - Search Engines', 'wp-ultimo'), array($this, 'render_no_index_warning'), 'dashboard-network', 'normal', 'high');
-
-		} // end if;
-
-	} // end add_no_index_warning;
+		}
+	}
 
 	/**
 	 * Renders the no indexing warning.
@@ -491,8 +446,7 @@ class Site_Manager extends Base_Manager {
 		</div>
 
 		<?php // phpcs:enable
-
-	} // end render_no_index_warning;
+	}
 
 	/**
 	 * Prevents Search Engines from indexing Site Templates.
@@ -502,29 +456,21 @@ class Site_Manager extends Base_Manager {
 	 */
 	public function prevent_site_template_indexing() {
 
-		if (!wu_get_setting('stop_template_indexing', false)) {
-
+		if ( ! wu_get_setting('stop_template_indexing', false)) {
 			return;
-
-		} // end if;
+		}
 
 		$site = wu_get_current_site();
 
 		if ($site && $site->get_type() === Site_Type::SITE_TEMPLATE) {
-
 			if (function_exists('wp_robots_no_robots')) {
-
 				add_filter('wp_robots', 'wp_robots_no_robots'); // WordPress 5.7+
 
 			} else {
-
 				wp_no_robots();
-
-			} // end if;
-
-		} // end if;
-
-	} // end prevent_site_template_indexing;
+			}
+		}
+	}
 
 	/**
 	 * Check if sub-site has a custom logo and change login logo.
@@ -535,23 +481,17 @@ class Site_Manager extends Base_Manager {
 	 */
 	public function custom_login_logo() {
 
-		if (!wu_get_setting('subsite_custom_login_logo', false) || !has_custom_logo()) {
-
+		if ( ! wu_get_setting('subsite_custom_login_logo', false) || ! has_custom_logo()) {
 			$logo = wu_get_network_logo();
-
 		} else {
-
 			$logo = wp_get_attachment_image_src(get_theme_mod('custom_logo'), 'full');
 
 			$logo = wu_get_isset($logo, 0, false);
-
-		} // end if;
+		}
 
 		if (empty($logo)) {
-
 			return;
-
-		} // end if;
+		}
 
 		// phpcs:disable
 
@@ -568,8 +508,7 @@ class Site_Manager extends Base_Manager {
     </style>
 
 		<?php // phpcs:enable
-
-	} // end custom_login_logo;
+	}
 
 	/**
 	 * Replaces the WordPress url with the site url.
@@ -580,8 +519,7 @@ class Site_Manager extends Base_Manager {
 	public function login_header_url() {
 
 		return get_site_url();
-
-	} // end login_header_url;
+	}
 
 	/**
 	 * Replaces the WordPress text with the site name.
@@ -592,8 +530,7 @@ class Site_Manager extends Base_Manager {
 	public function login_header_text() {
 
 		return get_bloginfo('name');
-
-	} // end login_header_text;
+	}
 
 	/**
 	 * Add notices to default site page, recommending the WP Multisite WaaS option.
@@ -605,20 +542,28 @@ class Site_Manager extends Base_Manager {
 
 		$notice = __('Hey there! We highly recommend managing your network sites using the WP Multisite WaaS &rarr; Sites page. <br>If you want to avoid confusion, you can also hide this page from the admin panel completely on the WP Multisite WaaS &rarr; Settings &rarr; Whitelabel options.', 'wp-ultimo');
 
-		WP_Ultimo()->notices->add($notice, 'info', 'network-admin', 'wu-sites-use-wp-ultimo', array(
+		WP_Ultimo()->notices->add(
+			$notice,
+			'info',
+			'network-admin',
+			'wu-sites-use-wp-ultimo',
 			array(
-				'title' => __('Go to the WP Multisite WaaS Sites page &rarr;', 'wp-ultimo'),
-				'url'   => wu_network_admin_url('wp-ultimo-sites'),
-			),
-			array(
-				'title' => __('Go to the Whitelabel Settings &rarr;', 'wp-ultimo'),
-				'url'   => wu_network_admin_url('wp-ultimo-settings', array(
-					'tab' => 'whitelabel',
-				)),
-			),
-		));
-
-	} // end add_notices_to_default_site_page;
+				array(
+					'title' => __('Go to the WP Multisite WaaS Sites page &rarr;', 'wp-ultimo'),
+					'url'   => wu_network_admin_url('wp-ultimo-sites'),
+				),
+				array(
+					'title' => __('Go to the Whitelabel Settings &rarr;', 'wp-ultimo'),
+					'url'   => wu_network_admin_url(
+						'wp-ultimo-settings',
+						array(
+							'tab' => 'whitelabel',
+						)
+					),
+				),
+			)
+		);
+	}
 
 	/**
 	 * Add search and replace filter to be used on site duplication.
@@ -638,8 +583,7 @@ class Site_Manager extends Base_Manager {
 		$final_list = array_merge($search_and_replace, $additional_duplication);
 
 		return $this->filter_illegal_search_keys($final_list);
-
-	} // end search_and_replace_on_duplication;
+	}
 
 	/**
 	 * Get search and replace settings
@@ -654,18 +598,13 @@ class Site_Manager extends Base_Manager {
 		$pairs = array();
 
 		foreach ($search_and_replace as $item) {
-
-			if ((isset($item['search']) && !empty($item['search'])) && isset($item['replace'])) {
-
-				$pairs[$item['search']] = $item['replace'];
-
-			} // end if;
-
-		} // end foreach;
+			if ((isset($item['search']) && ! empty($item['search'])) && isset($item['replace'])) {
+				$pairs[ $item['search'] ] = $item['replace'];
+			}
+		}
 
 		return $pairs;
-
-	} // end get_search_and_replace_settings;
+	}
 
 	/**
 	 * Handles search and replace for new blogs from WordPress.
@@ -679,11 +618,9 @@ class Site_Manager extends Base_Manager {
 
 		$to_site_id = $site->get_id();
 
-		if (!$to_site_id) {
-
+		if ( ! $to_site_id) {
 			return;
-
-		} // end if;
+		}
 
 		/**
 		 * In order to be backwards compatible here, we'll have to do some crazy stuff,
@@ -706,46 +643,33 @@ class Site_Manager extends Base_Manager {
 		$results = \MUCD_Data::do_sql_query('SHOW TABLES LIKE \'' . $to_blog_prefix_like . '%\'', 'col', false);
 
 		foreach ($results as $k => $v) {
-
-			$tables[str_replace($to_blog_prefix, '', (string) $v)] = array();
-
-		} // end foreach;
+			$tables[ str_replace($to_blog_prefix, '', (string) $v) ] = array();
+		}
 
 		foreach ( $tables as $table => $col) {
-
 			$results = \MUCD_Data::do_sql_query('SHOW COLUMNS FROM `' . $to_blog_prefix . $table . '`', 'col', false);
 
 			$columns = array();
 
 			foreach ($results as $k => $v) {
-
 				$columns[] = $v;
+			}
 
-			} // end foreach;
-
-			$tables[$table] = $columns;
-
-		} // end foreach;
+			$tables[ $table ] = $columns;
+		}
 
 		$default_tables = \MUCD_Option::get_fields_to_update();
 
 		foreach ($default_tables as $table => $field) {
-
-			$tables[$table] = $field;
-
-		} // end foreach;
+			$tables[ $table ] = $field;
+		}
 
 		foreach ($tables as $table => $field) {
-
 			foreach ($string_to_replace as $from_string => $to_string) {
-
 				\MUCD_Data::update($to_blog_prefix . $table, $field, $from_string, $to_string);
-
-			} // end foreach;
-
-		} // end foreach;
-
-	} // end search_and_replace_for_new_site;
+			}
+		}
+	}
 	/**
 	 * Makes sure the search and replace array have no illegal values, such as null, false, etc
 	 *
@@ -754,9 +678,8 @@ class Site_Manager extends Base_Manager {
 	 */
 	public function filter_illegal_search_keys($search_and_replace): array {
 
-		return array_filter($search_and_replace, fn($k) => !is_null($k) && $k !== false && !empty($k), ARRAY_FILTER_USE_KEY);
-
-	} // end filter_illegal_search_keys;
+		return array_filter($search_and_replace, fn($k) => ! is_null($k) && $k !== false && ! empty($k), ARRAY_FILTER_USE_KEY);
+	}
 
 	/**
 	 * Handle the deletion of pending sites.
@@ -771,7 +694,6 @@ class Site_Manager extends Base_Manager {
 	public function handle_delete_pending_sites($action, $model, $ids) {
 
 		foreach ($ids as $membership_id) {
-
 			$membership = wu_get_membership($membership_id);
 
 			if (empty($membership)) {
@@ -782,18 +704,17 @@ class Site_Manager extends Base_Manager {
 				delete_metadata('wu_membership', $membership_id, 'pending_site');
 
 				continue;
-
-			} // end if;
+			}
 
 			$membership->delete_pending_site();
+		}
 
-		} // end foreach;
-
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('deleted', count($ids), wu_get_current_url()),
-		));
-
-	} // end handle_delete_pending_sites;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('deleted', count($ids), wu_get_current_url()),
+			)
+		);
+	}
 
 	/**
 	 * Hide the super admin user from the sub-site table list.
@@ -805,15 +726,12 @@ class Site_Manager extends Base_Manager {
 	 */
 	public function hide_super_admin_from_list($args) {
 
-		if (!is_super_admin()) {
-
+		if ( ! is_super_admin()) {
 			$args['login__not_in'] = get_super_admins();
-
-		} // end if;
+		}
 
 		return $args;
-
-	} // end hide_super_admin_from_list;
+	}
 
 	/**
 	 * Hides customer sites from the super admin user on listing.
@@ -829,60 +747,46 @@ class Site_Manager extends Base_Manager {
 
 		global $wpdb;
 
-		if (!is_super_admin()) {
-
+		if ( ! is_super_admin()) {
 			return $sites;
-
-		} // end if;
+		}
 
 		$keys = get_user_meta($user_id);
 
 		if (empty($keys)) {
-
 			return $sites;
-
-		} // end if;
+		}
 
 		// List the main site at beginning of array.
-		if (isset($keys[$wpdb->base_prefix . 'capabilities']) && defined('MULTISITE')) {
-
+		if (isset($keys[ $wpdb->base_prefix . 'capabilities' ]) && defined('MULTISITE')) {
 			$site_ids[] = 1;
 
-			unset($keys[$wpdb->base_prefix . 'capabilities']);
-
-		} // end if;
+			unset($keys[ $wpdb->base_prefix . 'capabilities' ]);
+		}
 
 		$keys = array_keys($keys);
 
 		foreach ($keys as $key) {
-
 			if (substr_compare($key, 'capabilities', -strlen('capabilities')) !== 0) {
-
 				continue;
-
-			} // end if;
+			}
 
 			if ($wpdb->base_prefix && strncmp($key, (string) $wpdb->base_prefix, strlen((string) $wpdb->base_prefix)) !== 0) {
-
 				continue;
-
-			} // end if;
+			}
 
 			$site_id = str_replace(array($wpdb->base_prefix, '_capabilities'), '', $key);
 
-			if (!is_numeric($site_id)) {
-
+			if ( ! is_numeric($site_id)) {
 				continue;
-
-			} // end if;
+			}
 
 			$site_ids[] = (int) $site_id;
-
-		} // end foreach;
+		}
 
 		$sites = array();
 
-		if (!empty($site_ids)) {
+		if ( ! empty($site_ids)) {
 
 			/**
 			 * Here we change the default WP behavior to filter
@@ -908,13 +812,11 @@ class Site_Manager extends Base_Manager {
 				),
 			);
 
-			if (!$all) {
-
+			if ( ! $all) {
 				$args['archived'] = 0;
 				$args['spam']     = 0;
 				$args['deleted']  = 0;
-
-			} // end if;
+			}
 
 			$_sites = array_merge(
 				array(
@@ -924,14 +826,11 @@ class Site_Manager extends Base_Manager {
 			);
 
 			foreach ($_sites as $site) {
-
-				if (!$site) {
-
+				if ( ! $site) {
 					continue;
+				}
 
-				} // end if;
-
-				$sites[$site->id] = (object) array(
+				$sites[ $site->id ] = (object) array(
 					'userblog_id' => $site->id,
 					'blogname'    => $site->blogname,
 					'domain'      => $site->domain,
@@ -943,10 +842,8 @@ class Site_Manager extends Base_Manager {
 					'spam'        => $site->spam,
 					'deleted'     => $site->deleted,
 				);
-
-			} // end foreach;
-
-		} // end if;
+			}
+		}
 
 		/**
 		 * Replicates the original WP Filter here, for good measure.
@@ -961,8 +858,7 @@ class Site_Manager extends Base_Manager {
 		 *                          those marked 'deleted', 'archived', or 'spam'. Default false.
 		 */
 		return apply_filters('get_blogs_of_user', $sites, $user_id, $all); // phpcs:ignore
-
-	} // end hide_customer_sites_from_super_admin_list;
+	}
 
 	/**
 	 * Delete pending sites from non-pending memberships
@@ -974,12 +870,9 @@ class Site_Manager extends Base_Manager {
 		$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending');
 
 		foreach ($pending_sites as $site) {
-
 			if ($site->is_publishing()) {
-
 				continue;
-
-			} // end if;
+			}
 
 			$membership = $site->get_membership();
 
@@ -987,15 +880,9 @@ class Site_Manager extends Base_Manager {
 
 				// Check if the last modify has more than some time, to avoid the deletion of sites on creation process
 				if ($membership->get_date_modified() < gmdate('Y-m-d H:i:s', strtotime('-1 days'))) {
-
 					$membership->delete_pending_site();
-
-				} // end if;
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end delete_pending_sites;
-
-} // end class Site_Manager;
+				}
+			}
+		}
+	}
+}

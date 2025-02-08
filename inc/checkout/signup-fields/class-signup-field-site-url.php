@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -24,15 +24,14 @@ defined('ABSPATH') || exit;
 class Signup_Field_Site_Url extends Base_Signup_Field {
 
 	/**
-     * Returns the type of the field.
-     *
-     * @since 2.0.0
-     */
+	 * Returns the type of the field.
+	 *
+	 * @since 2.0.0
+	 */
 	public function get_type(): string {
 
 		return 'site_url';
-
-	} // end get_type;
+	}
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -41,8 +40,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	public function is_required(): bool {
 
 		return false;
-
-	} // end is_required;
+	}
 	/**
 	 * Defines if this field/element is related to site creation or not.
 	 *
@@ -51,8 +49,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	public function is_site_field(): bool {
 
 		return true;
-
-	} // end is_site_field;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -65,8 +62,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Site URL', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -79,8 +75,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a Site URL field. This is used to set the URL of the site being created.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -93,8 +88,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a Site URL field. This is used to set the URL of the site being created.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -105,8 +99,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 	public function get_icon(): string {
 
 		return 'dashicons-wu-globe1';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -128,8 +121,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 			'display_field_attachments' => true,
 			'available_domains'         => $current_site->domain . PHP_EOL,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -144,8 +136,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 			'placeholder',
 			'tooltip',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -159,8 +150,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 			'id'       => 'site_url',
 			'required' => true,
 		);
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -246,8 +236,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the list of available pricing table templates.
@@ -263,8 +252,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 		);
 
 		return apply_filters('wu_get_pricing_table_templates', $templates);
-
-	} // end get_url_preview_templates;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -279,7 +267,6 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 		 * If we should auto-generate, add as hidden.
 		 */
 		if ($attributes['auto_generate_site_url']) {
-
 			return array(
 				'auto_generate_site_url' => array(
 					'type'  => 'hidden',
@@ -292,8 +279,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 					'value' => uniqid(),
 				),
 			);
-
-		} // end if;
+		}
 
 		$checkout_fields = array();
 
@@ -316,7 +302,6 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 		);
 
 		if ($attributes['display_field_attachments']) {
-
 			$checkout_fields['site_url']['classes'] .= ' xs:wu-rounded-none';
 
 			$checkout_fields['site_url']['prefix'] = ' ';
@@ -337,11 +322,9 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'v-cloak' => 1,
 				'v-show'  => 'is_subdomain',
 			);
-
-		} // end if;
+		}
 
 		if ($attributes['available_domains'] && $attributes['enable_domain_selection']) {
-
 			$options = $this->get_domain_options($attributes['available_domains']);
 
 			$checkout_fields['site_domain'] = array(
@@ -361,11 +344,9 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 					'style' => $this->calculate_style_attr(),
 				),
 			);
-
-		} // end if;
+		}
 
 		if ($attributes['display_url_preview']) {
-
 			$content = wu_get_template_contents('legacy/signup/steps/step-domain-url-preview');
 
 			$checkout_fields['site_url_preview'] = array(
@@ -377,12 +358,10 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 					'style' => $this->calculate_style_attr(),
 				),
 			);
-
-		} // end if;
+		}
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
+	}
 	/**
 	 * Get the domain options.
 	 *
@@ -397,7 +376,5 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 		$domains = array_map(fn($item) => trim((string) $item), $domains);
 
 		return array_combine($domains, $domains);
-
-	} // end get_domain_options;
-
-} // end class Signup_Field_Site_Url;
+	}
+}

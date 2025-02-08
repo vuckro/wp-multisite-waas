@@ -79,8 +79,7 @@ abstract class Base_Host_Provider {
 		add_filter('wu_domain_manager_get_integrations', array($this, 'self_register'));
 
 		add_action('init', array($this, 'add_to_integration_list'));
-
-	} // end init;
+	}
 
 	/**
 	 * Loads the hooks and dependencies, but only if the hosting is enabled via is_enabled().
@@ -89,13 +88,12 @@ abstract class Base_Host_Provider {
 	 */
 	final public function __construct() {
 
-		if ($this->detect() && !$this->is_enabled()) {
+		if ($this->detect() && ! $this->is_enabled()) {
 			/*
 			 * Adds an admin notice telling the admin that they should probably enable this integration.
 			 */
 			return $this->alert_provider_detected();
-
-		} // end if;
+		}
 
 		/*
 		 * Only add hooks if the integration is enabled and correctly setup.
@@ -104,13 +102,12 @@ abstract class Base_Host_Provider {
 			/*
 			 * Checks if everything was correctly setup.
 			 */
-			if (!$this->is_setup()) {
+			if ( ! $this->is_setup()) {
 				/*
 				 * Adds an admin notice telling the admin that the provider is not correctly setup.
 				 */
 				return $this->alert_provider_not_setup();
-
-			} // end if;
+			}
 
 			/*
 			 * Load the dependencies.
@@ -121,10 +118,8 @@ abstract class Base_Host_Provider {
 			 * Initialize the hooks.
 			 */
 			$this->register_hooks();
-
-		} // end if;
-
-	} // end __construct;
+		}
+	}
 
 	/**
 	 * Let the class register itself on the manager, allowing us to access the integrations later via the slug.
@@ -136,11 +131,10 @@ abstract class Base_Host_Provider {
 	 */
 	final public function self_register($integrations) {
 
-		$integrations[$this->get_id()] = get_called_class();
+		$integrations[ $this->get_id() ] = get_called_class();
 
 		return $integrations;
-
-	} // end self_register;
+	}
 
 	/**
 	 * Get the list of enabled host integrations.
@@ -151,8 +145,7 @@ abstract class Base_Host_Provider {
 	protected function get_enabled_list() {
 
 		return get_network_option(null, 'wu_host_integrations_enabled', array());
-
-	} // end get_enabled_list;
+	}
 
 	/**
 	 * Check if this integration is enabled.
@@ -165,8 +158,7 @@ abstract class Base_Host_Provider {
 		$list = $this->get_enabled_list();
 
 		return wu_get_isset($list, $this->get_id(), false);
-
-	} // end is_enabled;
+	}
 
 	/**
 	 * Enables this integration.
@@ -178,11 +170,10 @@ abstract class Base_Host_Provider {
 
 		$list = $this->get_enabled_list();
 
-		$list[$this->get_id()] = true;
+		$list[ $this->get_id() ] = true;
 
 		return update_network_option(null, 'wu_host_integrations_enabled', $list);
-
-	} // end enable;
+	}
 
 	/**
 	 * Disables this integration.
@@ -194,11 +185,10 @@ abstract class Base_Host_Provider {
 
 		$list = $this->get_enabled_list();
 
-		$list[$this->get_id()] = false;
+		$list[ $this->get_id() ] = false;
 
 		return update_network_option(null, 'wu_host_integrations_enabled', $list);
-
-	} // end disable;
+	}
 
 	/**
 	 * Adds the host to the list of integrations.
@@ -212,9 +202,12 @@ abstract class Base_Host_Provider {
 
 		$html = $this->is_enabled() ? sprintf('<span class="wu-self-center wu-text-green-800 wu-mr-4"><span class="dashicons-wu-check"></span> %s</span>', __('Activated', 'wp-ultimo')) : '';
 
-		$url = wu_network_admin_url('wp-ultimo-hosting-integration-wizard', array(
-			'integration' => $slug,
-		));
+		$url = wu_network_admin_url(
+			'wp-ultimo-hosting-integration-wizard',
+			array(
+				'integration' => $slug,
+			)
+		);
 
 		$html .= sprintf('<a href="%s" class="button-primary">%s</a>', $url, __('Configuration', 'wp-ultimo'));
 
@@ -226,13 +219,16 @@ abstract class Base_Host_Provider {
 			__('Go to the setup wizard to setup this integration.', 'wp-ultimo')
 		);
 
-		wu_register_settings_field('integrations', "integration_{$slug}", array(
-			'type'  => 'note',
-			'title' => $title,
-			'desc'  => $html,
-		));
-
-	} // end add_to_integration_list;
+		wu_register_settings_field(
+			'integrations',
+			"integration_{$slug}",
+			array(
+				'type'  => 'note',
+				'title' => $title,
+				'desc'  => $html,
+			)
+		);
+	}
 
 	/**
 	 * Adds an admin notice telling the admin that they should probably enable this integration.
@@ -243,10 +239,8 @@ abstract class Base_Host_Provider {
 	public function alert_provider_detected() {
 
 		if (WP_Ultimo()->is_loaded() === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		// translators: %1$s will be replaced with the integration title. E.g. RunCloud
 		$message = sprintf(__('It looks like you are using %1$s as your hosting provider, yet the %1$s integration module is not active. In order for the domain mapping integration to work with %1$s, you might want to activate that module.', 'wp-ultimo'), $this->get_title());
@@ -257,15 +251,17 @@ abstract class Base_Host_Provider {
 			'activate' => array(
 				// translators: %s is the integration name.
 				'title' => sprintf(__('Activate %s', 'wp-ultimo'), $this->get_title()),
-				'url'   => wu_network_admin_url('wp-ultimo-hosting-integration-wizard', array(
-					'integration' => $slug,
-				)),
-			)
+				'url'   => wu_network_admin_url(
+					'wp-ultimo-hosting-integration-wizard',
+					array(
+						'integration' => $slug,
+					)
+				),
+			),
 		);
 
 		WP_Ultimo()->notices->add($message, 'info', 'network-admin', "should-enable-{$slug}-integration", $actions);
-
-	} // end alert_provider_detected;
+	}
 
 	/**
 	 * Adds an admin notice telling the admin that the provider is not correctly setup.
@@ -276,10 +272,8 @@ abstract class Base_Host_Provider {
 	public function alert_provider_not_setup() {
 
 		if (WP_Ultimo()->is_loaded() === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		// translators: %1$s will be replaced with the integration title. E.g. RunCloud.
 		$message = sprintf(__('It looks like you are using %1$s as your hosting provider, yet the %1$s integration module was not properly setup. In order for the domain mapping integration to work with %1$s, you need to configure that module.', 'wp-ultimo'), $this->get_title());
@@ -290,16 +284,18 @@ abstract class Base_Host_Provider {
 			'activate' => array(
 				// translators: %s is the integration name
 				'title' => sprintf(__('Setup %s', 'wp-ultimo'), $this->get_title()),
-				'url'   => wu_network_admin_url('wp-ultimo-hosting-integration-wizard', array(
-					'integration' => $slug,
-					'tab'         => 'config',
-				)),
-			)
+				'url'   => wu_network_admin_url(
+					'wp-ultimo-hosting-integration-wizard',
+					array(
+						'integration' => $slug,
+						'tab'         => 'config',
+					)
+				),
+			),
 		);
 
 		WP_Ultimo()->notices->add($message, 'warning', 'network-admin', "should-setup-{$slug}-integration", $actions);
-
-	} // end alert_provider_not_setup;
+	}
 
 	/**
 	 * Get Fields for the integration.
@@ -310,8 +306,7 @@ abstract class Base_Host_Provider {
 	public function get_fields() {
 
 		return array();
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the integration id.
@@ -322,8 +317,7 @@ abstract class Base_Host_Provider {
 	public function get_id() {
 
 		return $this->id;
-
-	} // end get_id;
+	}
 
 	/**
 	 * Returns the integration title.
@@ -334,8 +328,7 @@ abstract class Base_Host_Provider {
 	public function get_title() {
 
 		return $this->title;
-
-	} // end get_title;
+	}
 
 	/**
 	 * Checks if a feature is supported, like auto-ssl for example.
@@ -347,8 +340,7 @@ abstract class Base_Host_Provider {
 	public function supports($feature) {
 
 		return apply_filters('wu_hosting_support_supports', in_array($feature, $this->supports, true), $this);
-
-	} // end supports;
+	}
 
 	/**
 	 * Initializes the hooks.
@@ -381,8 +373,7 @@ abstract class Base_Host_Provider {
 		 * Add additional hooks.
 		 */
 		$this->additional_hooks();
-
-	} // end register_hooks;
+	}
 
 	/**
 	 * Lets integrations add additional hooks.
@@ -390,7 +381,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	public function additional_hooks() {} // end additional_hooks;
+	public function additional_hooks() {}
 
 	/**
 	 * Can be used to load dependencies.
@@ -398,7 +389,7 @@ abstract class Base_Host_Provider {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function load_dependencies() {} // end load_dependencies;
+	public function load_dependencies() {}
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -421,22 +412,17 @@ abstract class Base_Host_Provider {
 		$all_set = true;
 
 		foreach ($this->constants as $constant) {
-
 			$constants = is_array($constant) ? $constant : array($constant);
 
 			$current = false;
 
 			foreach ($constants as $constant) {
-
 				if (defined($constant) && constant($constant)) {
-
 					$current = true;
 
 					break;
-
-				} // end if;
-
-			} // end foreach;
+				}
+			}
 
 			$all_set = $all_set && $current;
 
@@ -444,16 +430,12 @@ abstract class Base_Host_Provider {
 			 * If any constant fail, bail.
 			 */
 			if ($all_set === false) {
-
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $all_set;
-
-	} // end is_setup;
+	}
 
 	/**
 	 * Returns a list of missing constants configured on wp-config.php
@@ -466,30 +448,23 @@ abstract class Base_Host_Provider {
 		$missing_constants = array();
 
 		foreach ($this->constants as $constant) {
-
 			$constants = is_array($constant) ? $constant : array($constant);
 
 			$current = false;
 
 			foreach ($constants as $constant) {
-
 				if (defined($constant) && constant($constant)) {
-
 					$current = true;
 
 					break;
-
-				} // end if;
-
-			} // end foreach;
+				}
+			}
 
 			$missing_constants = $current ? $missing_constants : array_merge($missing_constants, $constants);
-
-		} // end foreach;
+		}
 
 		return $missing_constants;
-
-	} // end get_missing_constants;
+	}
 
 	/**
 	 * Returns a list of all constants, optional or not.
@@ -502,16 +477,13 @@ abstract class Base_Host_Provider {
 		$constants = array();
 
 		foreach ($this->constants as $constant) {
-
 			$current = is_array($constant) ? $constant : array($constant);
 
 			$constants = array_merge($constants, $current);
-
-		} // end foreach;
+		}
 
 		return array_merge($constants, $this->optional_constants);
-
-	} // end get_all_constants;
+	}
 
 	/**
 	 * Adds the constants with their respective values into the wp-config.php.
@@ -532,12 +504,9 @@ abstract class Base_Host_Provider {
 		$values = shortcode_atts(array_flip($this->get_all_constants()), $constant_values);
 
 		foreach ($values as $constant => $value) {
-
 			WP_Config::get_instance()->inject_wp_config_constant($constant, $value);
-
-		} // end foreach;
-
-	} // end setup_constants;
+		}
+	}
 
 	/**
 	 * Generates a define string for manual insertion on-to wp-config.php.
@@ -569,10 +538,8 @@ abstract class Base_Host_Provider {
 		 * Adds the constants, one by one.
 		 */
 		foreach ($constant_values as $constant => $value) {
-
 			$content[] = sprintf("define( '%s', '%s' );", $constant, $value);
-
-		} // end foreach;
+		}
 
 		/*
 		 * Adds the final line.
@@ -580,8 +547,7 @@ abstract class Base_Host_Provider {
 		$content[] = sprintf('// WP Multisite WaaS - Domain Mapping - %s - End', $this->get_title());
 
 		return implode(PHP_EOL, $content);
-
-	} // end get_constants_string;
+	}
 
 	/**
 	 * Returns the explainer lines for the integration.
@@ -603,17 +569,14 @@ abstract class Base_Host_Provider {
 
 			// translators: %s is the name of the integration e.g. RunCloud
 			$explainer_lines['will'][] = sprintf(__('Fetch and install a SSL certificate on %s platform after the domain is added.', 'wp-ultimo'), $this->get_title());
-
 		} else {
 
 			// translators: %s is the name of the integration e.g. RunCloud
 			$explainer_lines['will_not'][] = sprintf(__('Fetch and install a SSL certificate on %s platform after the domain is added. This needs to be done manually.', 'wp-ultimo'), $this->get_title());
-
-		} // end if;
+		}
 
 		return $explainer_lines;
-
-	} // end get_explainer_lines;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -670,8 +633,7 @@ abstract class Base_Host_Provider {
 	public function test_connection() {
 
 		wp_send_json_success(array());
-
-	} // end test_connection;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -682,8 +644,7 @@ abstract class Base_Host_Provider {
 	public function get_description() {
 
 		return __('No description provided.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -694,7 +655,5 @@ abstract class Base_Host_Provider {
 	public function get_logo() {
 
 		return '';
-
-	} // end get_logo;
-
-} // end class Base_Host_Provider;
+	}
+}

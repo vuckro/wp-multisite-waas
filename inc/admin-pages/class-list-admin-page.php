@@ -23,15 +23,15 @@ defined('ABSPATH') || exit;
 abstract class List_Admin_Page extends Base_Admin_Page {
 
 	/**
-     * @var bool
-     */
+	 * @var bool
+	 */
 	public $has_search;
 	/**
-     * The id/name/slug of the object being edited/created. e.g: plan
-     *
-     * @since 1.8.2
-     * @var object
-     */
+	 * The id/name/slug of the object being edited/created. e.g: plan
+	 *
+	 * @since 1.8.2
+	 * @var object
+	 */
 	protected $object_id;
 
 	/**
@@ -82,8 +82,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 		 * Adds the process for process actions
 		 */
 		$this->process_single_action();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Initializes the class
@@ -99,8 +98,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 		parent::init();
 
 		add_filter('set-screen-option', array($this, 'save_screen_option'), 8, 3);
-
-	} // end init;
+	}
 
 	/**
 	 * Process lins actions of the tables
@@ -111,12 +109,9 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	public function process_single_action() {
 
 		if ($this->table) {
-
 			$this->table->process_single_action();
-
-		} // end if;
-
-	} // end process_single_action;
+		}
+	}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -130,8 +125,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 			'deleted_message' => __('Object removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Object', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Allow child classes to register scripts and styles that can be loaded on the output function, for example.
@@ -150,8 +144,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 		wp_enqueue_style('wp-color-picker');
 
 		wp_enqueue_script('wu-selectizer');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Sets the default list template
@@ -164,13 +157,15 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 		/**
 		 * Renders the base list page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/list', array(
-			'page'    => $this,
-			'table'   => $this->get_table(),
-			'classes' => $this->table->get_filters() ? 'wu-advanced-filters' : 'wu-no-advanced-filters',
-		));
-
-	} // end output;
+		wu_get_template(
+			'base/list',
+			array(
+				'page'    => $this,
+				'table'   => $this->get_table(),
+				'classes' => $this->table->get_filters() ? 'wu-advanced-filters' : 'wu-no-advanced-filters',
+			)
+		);
+	}
 
 	/**
 	 * Child classes can to implement to hide the search field
@@ -181,8 +176,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	public function has_search() {
 
 		return true;
-
-	} // end has_search;
+	}
 
 	/**
 	 * Set the screen options to allow users to set the pagination options of the subscriptions list
@@ -193,7 +187,6 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	public function screen_options() {
 
 		if ($this->table) {
-
 			$args = array(
 				'default' => 20,
 				'label'   => $this->table->get_per_page_option_label(),
@@ -201,10 +194,8 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 			);
 
 			add_screen_option('per_page', $args);
-
-		} // end if;
-
-	} // end screen_options;
+		}
+	}
 
 	/**
 	 * Tells WordPress we want to save screen options on our pages.
@@ -219,8 +210,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	public function save_screen_option($value, $option, $other_value) {
 
 		return $value === false && is_numeric($other_value) ? (int) $other_value : $value;
-
-	} // end save_screen_option;
+	}
 
 	/**
 	 * Dumb function. Child classes need to implement this to set the table that WP Multisite WaaS will use
@@ -231,8 +221,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	public function get_table() {
 
 		return $this->table;
-
-	} // end get_table;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -241,5 +230,4 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @return \WP_Ultimo\List_Tables\Base_List_Table
 	 */
 	abstract function table();
-
-} // end class List_Admin_Page;
+}

@@ -10,72 +10,52 @@ $is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 $notes = array();
 
 if ($is_trial_setup) {
-
 	$desc = $membership->get_recurring_description();
 
-	$date = wp_date(get_option('date_format'), strtotime( $membership->get_date_trial_end(), wu_get_current_time('timestamp', true)));
+	$date = wp_date(get_option('date_format'), strtotime($membership->get_date_trial_end(), wu_get_current_time('timestamp', true)));
 
 	$notes[] = sprintf(__('Your trial period will end on %1$s.', 'wp-ultimo'), $date);
-
 } // end if;
 
 $original_cart = $payment->get_meta('wu_original_cart');
 
-$should_auto_renew = !empty($original_cart) ? $original_cart->should_auto_renew() : false;
+$should_auto_renew = ! empty($original_cart) ? $original_cart->should_auto_renew() : false;
 
 $recurring_total = $membership->get_amount();
 
 if ($membership->is_recurring() && $should_auto_renew) {
-
 	$payment_total = $payment->get_total() ? $payment->get_total() : $membership->get_initial_amount();
 
 	$desc = $membership->get_recurring_description();
 
 	if ($recurring_total !== $payment_total) {
-
 		$recurring_total_format = wu_format_currency($recurring_total, $payment->get_currency());
 
 		if ($original_cart->get_cart_type() === 'downgrade') {
 			$subtotal = wu_format_currency($payment->get_subtotal(), $payment->get_currency());
 			if ($is_trial_setup) {
-
 				$notes[] = sprintf(__('Your updated membership will start on $1$s, from that date you will be billed %2$s %3$s.', 'wp-ultimo'), $date, $subtotal, $desc);
-
 			} else {
-
-				$date_renew = wp_date(get_option('date_format'), strtotime( $membership->get_date_expiration(), wu_get_current_time('timestamp', true)));
+				$date_renew = wp_date(get_option('date_format'), strtotime($membership->get_date_expiration(), wu_get_current_time('timestamp', true)));
 
 				$notes[] = sprintf(__('Your updated membership will start on %1$s, from that date you will be billed %2$s %3$s.', 'wp-ultimo'), $date_renew, $subtotal, $desc);
-
 			} // end if;
 		} elseif ($is_trial_setup) {
-
 			$initial_amount_format = wu_format_currency($membership->get_initial_amount(), $payment->get_currency());
 
 			$notes[] = sprintf(__('After the first payment of %1$s you will be billed %2$s %3$s.', 'wp-ultimo'), $initial_amount_format, $recurring_total_format, $desc);
-
 		} else {
-
 			$notes[] = sprintf(__('After this payment you will be billed %1$s %2$s.', 'wp-ultimo'), $recurring_total_format, $desc);
-
 		} // end if;
-
 	} else {
-
 		$recurring_total_format = wu_format_currency($recurring_total, $payment->get_currency());
 
 		if ($is_trial_setup) {
-
 			$notes[] = sprintf(__('From that date, you will be billed %1$s %2$s.', 'wp-ultimo'), $recurring_total_format, $desc);
-
 		} else {
-
 			$notes[] = sprintf(__('After this payment you will be billed %1$s.', 'wp-ultimo'), $desc);
-
 		} // end if;
-
 	} // end if;
-
 } // end if;
 
 $note = implode(' ', $notes);
@@ -90,7 +70,7 @@ $subtotal = 0;
 
 		<div class="wu-text-sm wu-mb-4 wu-rounded-lg wu-border wu-border-gray-300 wu-bg-white wu-border-solid wu-shadow-sm wu-px-6 wu-py-4">
 			<span class="wu-font-semibold wu-block wu-text-gray-900">
-				<?php echo sprintf('%s %s', wu_get_isset($checkout_details, 'FIRSTNAME', ''), wu_get_isset($checkout_details, 'LASTNAME', '')); ?>
+				<?php printf('%s %s', wu_get_isset($checkout_details, 'FIRSTNAME', ''), wu_get_isset($checkout_details, 'LASTNAME', '')); ?>
 			</span>
 
 			<div class="wu-text-gray-600">
@@ -112,7 +92,7 @@ $subtotal = 0;
 
 		<tbody>
 			<?php
-            foreach ($payment->get_line_items() as $line_item) :
+			foreach ($payment->get_line_items() as $line_item) :
 				$subtotal += $line_item->get_subtotal();
 				?>
 
@@ -152,7 +132,7 @@ $subtotal = 0;
 		</tfoot>
 	</table>
 
-	<?php if (!empty($note)) : ?>
+	<?php if ( ! empty($note)) : ?>
 
 		<div class="wu-col-span-2 wu-mb-4">
 			<div class="wu-p-4 wu-bg-yellow-200">

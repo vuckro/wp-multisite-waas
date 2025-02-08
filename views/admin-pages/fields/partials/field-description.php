@@ -8,10 +8,10 @@
 
 <?php if ($field->desc) : ?>
 
-  <p class="description wu-text-2xs" id="<?php echo $field->id; ?>-desc">
+	<p class="description wu-text-2xs" id="<?php echo $field->id; ?>-desc">
 
-    <?php echo $field->desc; ?>
+	<?php echo $field->desc; ?>
 
-  </p>
+	</p>
 
 <?php endif; ?>

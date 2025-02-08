@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Payments_Meta_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'paymentmeta';
 
 	/**
@@ -55,8 +55,7 @@ final class Payments_Meta_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema
@@ -76,7 +75,5 @@ final class Payments_Meta_Table extends Table {
 		PRIMARY KEY (meta_id),
 		KEY wu_payment_id (wu_payment_id),
 		KEY meta_key (meta_key({$max_index_length}))";
-
-	} // end set_schema;
-
-}  // end class Payments_Meta_Table;
+	}
+}

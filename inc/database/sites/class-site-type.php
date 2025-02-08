@@ -12,7 +12,7 @@ namespace WP_Ultimo\Database\Sites;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Engine\Enum;
+use WP_Ultimo\Database\Engine\Enum;
 
 /**
  * Site Types.
@@ -49,8 +49,7 @@ class Site_Type extends Enum {
 			static::EXTERNAL       => 'wu-bg-blue-200 wu-text-blue-700',
 			static::MAIN           => 'wu-bg-pink-200 wu-text-pink-700',
 		);
-
-	} // end classes;
+	}
 
 	/**
 	 * Returns an array with values => labels.
@@ -67,7 +66,5 @@ class Site_Type extends Enum {
 			static::PENDING        => __('Pending', 'wp-ultimo'),
 			static::MAIN           => __('Main Site', 'wp-ultimo'),
 		);
-
-	} // end labels;
-
-} // end class Site_Type;
+	}
+}

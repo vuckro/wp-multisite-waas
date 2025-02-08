@@ -147,8 +147,7 @@ class Country_RU extends Country {
 	public function get_name() {
 
 		return __('Russia', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for RU.
@@ -244,7 +243,5 @@ class Country_RU extends Country {
 			'YAR'   => __('Yaroslavl Oblast', 'wp-ultimo-locations'),
 			'ZAB'   => __('Zabaykalsky Krai', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_RU;
+	}
+}

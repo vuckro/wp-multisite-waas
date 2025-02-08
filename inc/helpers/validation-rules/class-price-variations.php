@@ -49,13 +49,13 @@ class Price_Variations extends Rule {
 
       $value = maybe_unserialize($value);
 
-    } // end if;
+    }
 
     if (!is_array($value)) {
 
       return false;
 
-    } // end if;
+    }
 
     foreach ($value as $price_variation) {
 
@@ -68,7 +68,7 @@ class Price_Variations extends Rule {
 
         return false;
 
-      } // end if;
+      }
 
       /**
        * Validation Unit
@@ -86,7 +86,7 @@ class Price_Variations extends Rule {
 
         return false;
 
-      } // end if;
+      }
 
       /**
        * Check if it is the same as the main duration
@@ -97,7 +97,7 @@ class Price_Variations extends Rule {
 
         return false;
 
-      } // end if;
+      }
 
       /**
        * Validation Amount
@@ -108,18 +108,18 @@ class Price_Variations extends Rule {
 
         $amount = wu_to_float($amount);
 
-      } // end if;
+      }
 
       if (!is_numeric($amount)) {
 
         return false;
 
-      } // end if;
+      }
 
-    } // end foreach;
+    }
 
     return true;
 
-	} // end check;
+	}
 
-} // end class Price_Variations;
+}

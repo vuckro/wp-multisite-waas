@@ -60,8 +60,7 @@ class Limit_Themes extends Limit {
 		);
 
 		return wu_get_isset($types, $type, false);
-
-	} // end check;
+	}
 
 	/**
 	 * Adds a magic getter for themes.
@@ -76,8 +75,7 @@ class Limit_Themes extends Limit {
 		$theme = (object) wu_get_isset($this->get_limit(), $theme_name, $this->get_default_permissions($theme_name));
 
 		return (object) wp_parse_args($theme, $this->get_default_permissions($theme_name));
-
-	} // end __get;
+	}
 
 	/**
 	 * Returns default permissions.
@@ -93,8 +91,7 @@ class Limit_Themes extends Limit {
 			'visibility' => 'visible',
 			'behavior'   => 'available',
 		);
-
-	} // end get_default_permissions;
+	}
 
 	/**
 	 * Checks if a theme exists on the current module.
@@ -109,8 +106,7 @@ class Limit_Themes extends Limit {
 		$results = wu_get_isset($this->get_limit(), $theme_name, array());
 
 		return wu_get_isset($results, 'visibility', 'not-set') !== 'not-set' || wu_get_isset($results, 'behavior', 'not-set') !== 'not-set';
-
-	} // end exists;
+	}
 
 	/**
 	 * Get all themes.
@@ -123,8 +119,7 @@ class Limit_Themes extends Limit {
 		$themes = (array) $this->get_limit();
 
 		return array_keys($themes);
-
-	} // end get_all_themes;
+	}
 
 	/**
 	 * Get available themes.
@@ -139,20 +134,15 @@ class Limit_Themes extends Limit {
 		$available = array();
 
 		foreach ($limits as $theme_slug => $theme_settings) {
-
 			$theme_settings = (object) $theme_settings;
 
 			if ($theme_settings->behavior === 'available') {
-
 				$available[] = $theme_slug;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $available;
-
-	} // end get_available_themes;
+	}
 
 	/**
 	 * Get the forced active theme for the current limitations.
@@ -167,34 +157,25 @@ class Limit_Themes extends Limit {
 		$limits = $this->get_limit();
 
 		if (empty($limits)) {
-
 			return $active_theme;
-
-		} // end if;
+		}
 
 		if ($this->forced_active_theme !== null) {
-
 			return $this->forced_active_theme;
-
-		} // end if;
+		}
 
 		foreach ($limits as $theme_slug => $theme_settings) {
-
 			$theme_settings = (object) $theme_settings;
 
 			if ($theme_settings->behavior === 'force_active') {
-
 				$active_theme = $theme_slug;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$this->forced_active_theme = $active_theme;
 
 		return $this->forced_active_theme;
-
-	} // end get_forced_active_theme;
+	}
 
 	/**
 	 * Checks if the module is enabled.
@@ -207,7 +188,5 @@ class Limit_Themes extends Limit {
 	public function is_enabled($type = '') {
 
 		return true;
-
-	} // end is_enabled;
-
-} // end class Limit_Themes;
+	}
+}

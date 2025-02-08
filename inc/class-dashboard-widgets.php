@@ -58,8 +58,7 @@ class Dashboard_Widgets {
 		add_action('wp_ajax_wu_fetch_activity', array($this, 'process_ajax_fetch_events'));
 
 		add_action('wp_ajax_wu_generate_csv', array($this, 'handle_table_csv'));
-
-	} // end init;
+	}
 
 	/**
 	 * Enqueues the JavaScript code that sends the dismiss call to the ajax endpoint.
@@ -71,17 +70,14 @@ class Dashboard_Widgets {
 
 		global $pagenow;
 
-		if (!$pagenow || $pagenow !== 'index.php') {
-
+		if ( ! $pagenow || $pagenow !== 'index.php') {
 			return;
-
-		} // end if;
+		}
 
 		wp_enqueue_script('wu-vue');
 
 		wp_enqueue_script('moment');
-
-	} // end enqueue_scripts;
+	}
 
 	/**
 	 * Register the widgets
@@ -97,40 +93,42 @@ class Dashboard_Widgets {
 
 		add_meta_box('wp-ultimo-activity-stream', __('WP Multisite WaaS - Activity Stream', 'wp-ultimo'), array($this, 'output_widget_activity_stream'), $this->screen_id, 'normal', 'high');
 
-		\WP_Ultimo\UI\Tours::get_instance()->create_tour('dashboard', array(
+		\WP_Ultimo\UI\Tours::get_instance()->create_tour(
+			'dashboard',
 			array(
-				'id'    => 'welcome',
-				'title' => __('Welcome!', 'wp-ultimo'),
-				'text'  => array(
-					__('Welcome to your new network dashboard!', 'wp-ultimo'),
-					__('You will notice that <strong>WP Multisite WaaS</strong> adds a couple of useful widgets here so you can keep an eye on how your network is doing.', 'wp-ultimo'),
+				array(
+					'id'    => 'welcome',
+					'title' => __('Welcome!', 'wp-ultimo'),
+					'text'  => array(
+						__('Welcome to your new network dashboard!', 'wp-ultimo'),
+						__('You will notice that <strong>WP Multisite WaaS</strong> adds a couple of useful widgets here so you can keep an eye on how your network is doing.', 'wp-ultimo'),
+					),
 				),
-			),
-			array(
-				'id'       => 'finish-your-setup',
-				'title'    => __('Finish your setup', 'wp-ultimo'),
-				'text'     => array(
-					__('You still have a couple of things to do configuration-wise. Check the steps on this list and make sure you complete them all.', 'wp-ultimo'),
+				array(
+					'id'       => 'finish-your-setup',
+					'title'    => __('Finish your setup', 'wp-ultimo'),
+					'text'     => array(
+						__('You still have a couple of things to do configuration-wise. Check the steps on this list and make sure you complete them all.', 'wp-ultimo'),
+					),
+					'attachTo' => array(
+						'element' => '#wp-ultimo-setup',
+						'on'      => 'left',
+					),
 				),
-				'attachTo' => array(
-					'element' => '#wp-ultimo-setup',
-					'on'      => 'left',
+				array(
+					'id'       => 'wp-ultimo-menu',
+					'title'    => __('Our home', 'wp-ultimo'),
+					'text'     => array(
+						__('You can always find WP Multisite WaaS settings and other pages under our menu item, here on the Network-level dashboard. 😃', 'wp-ultimo'),
+					),
+					'attachTo' => array(
+						'element' => '.toplevel_page_wp-ultimo',
+						'on'      => 'left',
+					),
 				),
-			),
-			array(
-				'id'       => 'wp-ultimo-menu',
-				'title'    => __('Our home', 'wp-ultimo'),
-				'text'     => array(
-					__('You can always find WP Multisite WaaS settings and other pages under our menu item, here on the Network-level dashboard. 😃', 'wp-ultimo'),
-				),
-				'attachTo' => array(
-					'element' => '.toplevel_page_wp-ultimo',
-					'on'      => 'left',
-				),
-			),
-		));
-
-	} // end register_network_widgets;
+			)
+		);
+	}
 
 	/**
 	 * Adds the customer's site's dashboard widgets.
@@ -143,10 +141,8 @@ class Dashboard_Widgets {
 		$screen = get_current_screen();
 
 		if (wu_get_current_site()->get_type() !== 'customer_owned') {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Account Summary
@@ -162,21 +158,16 @@ class Dashboard_Widgets {
 		 * Maintenance Mode Widget
 		 */
 		if (wu_get_setting('maintenance_mode')) {
-
 			\WP_Ultimo\UI\Site_Maintenance_Element::get_instance()->as_metabox($screen->id, 'side');
-
-		} // end if;
+		}
 
 		/*
 		 * Domain Mapping Widget
 		 */
 		if (wu_get_setting('enable_domain_mapping') && wu_get_setting('custom_domains')) {
-
 			\WP_Ultimo\UI\Domain_Mapping_Element::get_instance()->as_metabox($screen->id, 'side');
-
-		} // end if;
-
-	} // end register_widgets;
+		}
+	}
 
 	/**
 	 * Widget First Steps Output.
@@ -201,13 +192,16 @@ class Dashboard_Widgets {
 				'title'        => __('Payment Method', 'wp-ultimo'),
 				'desc'         => __('You will need to configure at least one payment gateway to be able to receive money from your customers.', 'wp-ultimo'),
 				'action_label' => __('Add a Payment Method', 'wp-ultimo'),
-				'action_link'  => wu_network_admin_url('wp-ultimo-settings', array(
-					'tab' => 'payment-gateways',
-				)),
-				'done'         => !empty(wu_get_active_gateways()),
+				'action_link'  => wu_network_admin_url(
+					'wp-ultimo-settings',
+					array(
+						'tab' => 'payment-gateways',
+					)
+				),
+				'done'         => ! empty(wu_get_active_gateways()),
 			),
 			'your-first-customer' => array(
-				'done'         => !empty(wu_get_customers()),
+				'done'         => ! empty(wu_get_customers()),
 				'title'        => __('Your First Customer', 'wp-ultimo'),
 				'desc'         => __('Open the link below in an incognito tab and go through your newly created signup form.', 'wp-ultimo'),
 				'action_link'  => wp_registration_url(),
@@ -215,19 +209,24 @@ class Dashboard_Widgets {
 			),
 		);
 
-		$done = \Arrch\Arrch::find($steps, array(
-			'where' => array(
-				array('done', true),
-			),
-		));
+		$done = \Arrch\Arrch::find(
+			$steps,
+			array(
+				'where' => array(
+					array('done', true),
+				),
+			)
+		);
 
-		wu_get_template('dashboard-widgets/first-steps', array(
-			'steps'      => $steps,
-			'percentage' => round(count($done) / count($steps) * 100),
-			'all_done'   => count($done) === count($steps),
-		));
-
-	} // end output_widget_first_steps;
+		wu_get_template(
+			'dashboard-widgets/first-steps',
+			array(
+				'steps'      => $steps,
+				'percentage' => round(count($done) / count($steps) * 100),
+				'all_done'   => count($done) === count($steps),
+			)
+		);
+	}
 
 	/**
 	 * Widget Activity Stream Output.
@@ -239,8 +238,7 @@ class Dashboard_Widgets {
 	public function output_widget_activity_stream() {
 
 		wu_get_template('dashboard-widgets/activity-stream');
-
-	} // end output_widget_activity_stream;
+	}
 
 	/**
 	 * Widget Summary Output
@@ -253,22 +251,26 @@ class Dashboard_Widgets {
 		/*
 		 * Get today's signups.
 		 */
-		$signups = wu_get_customers(array(
-			'count'      => true,
-			'date_query' => array(
-				'column'    => 'date_registered',
-				'after'     => 'today',
-				'inclusive' => true,
-			),
-		));
+		$signups = wu_get_customers(
+			array(
+				'count'      => true,
+				'date_query' => array(
+					'column'    => 'date_registered',
+					'after'     => 'today',
+					'inclusive' => true,
+				),
+			)
+		);
 
-		wu_get_template('dashboard-widgets/summary', array(
-			'signups'       => $signups,
-			'mrr'           => wu_calculate_mrr(),
-			'gross_revenue' => wu_calculate_revenue('today'),
-		));
-
-	} // end output_widget_summary;
+		wu_get_template(
+			'dashboard-widgets/summary',
+			array(
+				'signups'       => $signups,
+				'mrr'           => wu_calculate_mrr(),
+				'gross_revenue' => wu_calculate_revenue('today'),
+			)
+		);
+	}
 
 	/**
 	 * Process Ajax Filters for rss.
@@ -278,20 +280,22 @@ class Dashboard_Widgets {
 	 */
 	public function process_ajax_fetch_rss() {
 
-		$atts = wp_parse_args($_GET, array(
-			'url'          => 'https://community.wpultimo.com/topics/feed',
-			'title'        => __('Forum Discussions', 'wp-ultimo'),
-			'items'        => 3,
-			'show_summary' => 1,
-			'show_author'  => 0,
-			'show_date'    => 1,
-		));
+		$atts = wp_parse_args(
+			$_GET,
+			array(
+				'url'          => 'https://community.wpultimo.com/topics/feed',
+				'title'        => __('Forum Discussions', 'wp-ultimo'),
+				'items'        => 3,
+				'show_summary' => 1,
+				'show_author'  => 0,
+				'show_date'    => 1,
+			)
+		);
 
 		wp_widget_rss_output($atts);
 
 		exit;
-
-	} // end process_ajax_fetch_rss;
+	}
 
 	/**
 	 * Process Ajax Filters for rss.
@@ -303,22 +307,27 @@ class Dashboard_Widgets {
 
 		check_ajax_referer('wu_activity_stream');
 
-		$count = wu_get_events(array(
-			'count'  => true,
-			'number' => -1,
-		));
+		$count = wu_get_events(
+			array(
+				'count'  => true,
+				'number' => -1,
+			)
+		);
 
-		$data = wu_get_events(array(
-			'offset' => (wu_request('page', 1) - 1) * 5,
-			'number' => 5,
-		));
+		$data = wu_get_events(
+			array(
+				'offset' => (wu_request('page', 1) - 1) * 5,
+				'number' => 5,
+			)
+		);
 
-		wp_send_json_success(array(
-			'events' => $data,
-			'count'  => $count,
-		));
-
-	} // end process_ajax_fetch_events;
+		wp_send_json_success(
+			array(
+				'events' => $data,
+				'count'  => $count,
+			)
+		);
+	}
 
 	/**
 	 * Handle ajax endpoint to generate table CSV.
@@ -339,8 +348,7 @@ class Dashboard_Widgets {
 		wu_generate_csv($file_name, $data);
 
 		die;
-
-	} // end handle_table_csv;
+	}
 
 	/**
 	 * Get the registered widgets.
@@ -354,11 +362,9 @@ class Dashboard_Widgets {
 
 		ob_start();
 
-		if (!function_exists('wp_add_dashboard_widget')) {
-
+		if ( ! function_exists('wp_add_dashboard_widget')) {
 			require_once ABSPATH . '/wp-admin/includes/dashboard.php';
-
-		} // end if;
+		}
 
 		do_action('wp_network_dashboard_setup'); // phpcs:ignore
 
@@ -374,22 +380,20 @@ class Dashboard_Widgets {
 		);
 
 		foreach ($dashboard_widgets as $position => $priorities) {
-
 			foreach ($priorities as $priority => $widgets) {
-
 				foreach ($widgets as $widget_key => $widget) {
-
 					if (empty($widget) || wu_get_isset($widget, 'title') === false) {
-
 						continue;
+					}
 
-					} // end if;
-
-					$key = implode(':', array(
-						$position,
-						$priority,
-						$widget_key,
-					));
+					$key = implode(
+						':',
+						array(
+							$position,
+							$priority,
+							$widget_key,
+						)
+					);
 
 					/**
 					 * For some odd reason, in some cases, $options
@@ -397,22 +401,15 @@ class Dashboard_Widgets {
 					 * This checks prevents that error from happening.
 					 * I don't know why $options would ever be a boolean here, though.
 					 */
-					if (!is_array($options)) {
-
+					if ( ! is_array($options)) {
 						$options = array();
+					}
 
-					} // end if;
-
-					$options[$key] = $widget['title'];
-
-				} // end foreach;
-
-			} // end foreach;
-
-		} // end foreach;
+					$options[ $key ] = $widget['title'];
+				}
+			}
+		}
 
 		return $options;
-
-	} // end get_registered_dashboard_widgets;
-
-} // end class Dashboard_Widgets;
+	}
+}

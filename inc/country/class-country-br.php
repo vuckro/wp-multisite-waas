@@ -91,8 +91,7 @@ class Country_BR extends Country {
 	public function get_name() {
 
 		return __('Brazil', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for BR.
@@ -131,7 +130,5 @@ class Country_BR extends Country {
 			'SP' => __('São Paulo', 'wp-ultimo-locations'),
 			'TO' => __('Tocantins', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_BR;
+	}
+}

@@ -24,16 +24,13 @@ function wu_rest_get_endpoint_from_class_name($class_name) {
 	$endpoint = $class_name;
 
 	if (class_exists($class_name)) {
-
 		$last_segment = explode('\\', $class_name);
 
 		$endpoint = strtolower(end($last_segment));
-
-	} // end if;
+	}
 
 	return $endpoint;
-
-} // end wu_rest_get_endpoint_from_class_name;
+}
 
 /**
  * Searches the hard-coded schemas for a arguments list.
@@ -56,22 +53,17 @@ function wu_rest_get_endpoint_schema($class_name, $context = 'create', $force_ge
 	$schema_file = wu_path("inc/api/schemas/$endpoint-$context.php");
 
 	if (file_exists($schema_file) && apply_filters('wu_rest_get_endpoint_schema_use_cache', true)) {
-
 		$schema = include $schema_file;
 
 		$from_cache = true;
-
-	} // end if;
+	}
 
 	if (empty($schema) && $from_cache === false && $force_generate) {
-
 		$schema = wu_rest_generate_schema($class_name, $context);
-
-	} // end if;
+	}
 
 	return $schema;
-
-}  // end wu_rest_get_endpoint_schema;
+}
 
 /**
  * Generates the rest schema for a class name.
@@ -89,18 +81,15 @@ function wu_rest_generate_schema($class_name, $context = 'create') {
 	$schema = wu_reflection_parse_object_arguments($class_name);
 
 	foreach ($schema as $argument_name => &$argument) {
-
 		$argument['type'] = wu_rest_treat_argument_type($argument['type']);
 
 		$argument['required'] = $context === 'create' ? in_array($argument_name, $required_fields, true) : false;
 
-		$schema[$argument_name] = $argument;
-
-	} // end foreach;
+		$schema[ $argument_name ] = $argument;
+	}
 
 	return $schema;
-
-} // end wu_rest_generate_schema;
+}
 
 /**
  * Treat argument types to perform additional validations.
@@ -115,19 +104,12 @@ function wu_rest_treat_argument_type($type) {
 	$type = (string) $type;
 
 	if ($type === 'bool') {
-
 		$type = 'boolean';
-
 	} elseif ($type === 'int') {
-
 		$type = 'integer';
-
 	} elseif ($type === 'float') {
-
 		$type = 'number';
-
-	} // end if;
+	}
 
 	return $type;
-
-} // end wu_rest_treat_argument_type;
+}

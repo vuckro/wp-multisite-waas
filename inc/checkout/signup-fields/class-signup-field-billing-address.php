@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -32,8 +32,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function get_type() {
 
 		return 'billing_address';
-
-	} // end get_type;
+	}
 
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
@@ -44,8 +43,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function is_required() {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Is this a user-related field?
@@ -59,8 +57,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function is_user_field() {
 
 		return true;
-
-	} // end is_user_field;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -73,8 +70,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Address', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -87,8 +83,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds billing address fields such as country, zip code.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -101,8 +96,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds billing address fields such as country, zip code.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 
 	/**
 	 * Returns the icon to be used on the selector.
@@ -115,8 +109,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 	public function get_icon() {
 
 		return 'dashicons-wu-map1';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -132,8 +125,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 		return array(
 			'zip_and_country' => true,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -146,8 +138,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 		return array(
 			'name',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -161,8 +152,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 			'id'       => 'billing_address',
 			'required' => true,
 		);
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -180,8 +170,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 				'value' => true,
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Build a filed alternative.
@@ -199,9 +188,12 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 
 		$field = $base_field;
 
-		$option_template = sprintf('<option v-for="item in %s" :value="item.code">
+		$option_template = sprintf(
+			'<option v-for="item in %s" :value="item.code">
 			{{ item.name }}
-		</option>', $data_key_name);
+		</option>',
+			$data_key_name
+		);
 
 		$field['type']                      = 'select';
 		$field['options_template']          = $option_template;
@@ -214,8 +206,7 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 		$field['title']                     = sprintf('<span v-html="%s">%s</span>', "labels.$label_key_field", $field['title']);
 
 		return $field;
-
-	} // end build_select_alternative;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -235,29 +226,21 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 		 * Checks for an existing customer
 		 */
 		if ($customer) {
-
 			$fields = $customer->get_billing_address()->get_fields($zip_only);
-
 		} else {
-
 			$checkout_form = \WP_Ultimo\Checkout\Checkout::get_instance()->checkout_form;
 
 			$fields = \WP_Ultimo\Objects\Billing_Address::fields($zip_only, $checkout_form);
-
-		} // end if;
+		}
 
 		if (isset($fields['billing_country'])) {
-
 			$fields['billing_country']['html_attr'] = array(
 				'v-model' => 'country',
 			);
+		}
 
-		} // end if;
-
-		if (!$zip_only) {
-
+		if ( ! $zip_only) {
 			if (isset($fields['billing_state'])) {
-
 				$fields['billing_state']['html_attr'] = array(
 					'v-model.lazy' => 'state',
 				);
@@ -268,11 +251,9 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 				 * @since 2.0.11
 				 */
 				$fields['billing_state_select'] = $this->build_select_alternative($fields['billing_state'], 'state_list', 'state_field');
-
-			} // end if;
+			}
 
 			if (isset($fields['billing_city'])) {
-
 				$fields['billing_city']['html_attr'] = array(
 					'v-model.lazy' => 'city',
 				);
@@ -283,21 +264,15 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 				 * @since 2.0.11
 				 */
 				$fields['billing_city_select'] = $this->build_select_alternative($fields['billing_city'], 'city_list', 'city_field');
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		foreach ($fields as &$field) {
-
 			$field['wrapper_classes'] = trim(wu_get_isset($field, 'wrapper_classes', '') . ' ' . $attributes['element_classes']);
-
-		} // end foreach;
+		}
 
 		uasort($fields, 'wu_sort_by_order');
 
 		return $fields;
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Billing_Address;
+	}
+}

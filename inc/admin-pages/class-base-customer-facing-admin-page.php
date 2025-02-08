@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Admin_Pages\Base_Admin_Page;
+use WP_Ultimo\Admin_Pages\Base_Admin_Page;
 
 /**
  * Abstract class that adds customizability to customer facing pages.
@@ -20,16 +20,16 @@ use \WP_Ultimo\Admin_Pages\Base_Admin_Page;
 abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 
 	/**
-     * @var bool
-     */
+	 * @var bool
+	 */
 	protected $edit;
 
 	/**
-     * The capability required to be able to activate the customize mode.
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * The capability required to be able to activate the customize mode.
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $edit_capability = 'manage_network';
 
 	/**
@@ -74,15 +74,17 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 
 		add_action('updated_user_meta', array($this, 'save_settings'), 10, 4);
 
-		wu_register_form("edit_admin_page_$this->id", array(
-			'render'     => array($this, 'render_edit_page'),
-			'handler'    => array($this, 'handle_edit_page'),
-			'capability' => 'exist',
-		));
+		wu_register_form(
+			"edit_admin_page_$this->id",
+			array(
+				'render'     => array($this, 'render_edit_page'),
+				'handler'    => array($this, 'handle_edit_page'),
+				'capability' => 'exist',
+			)
+		);
 
 		$this->register_page_settings();
-
-	} // end init;
+	}
 
 	/**
 	 * Saves the original parameters and change them with the settings saved.
@@ -104,8 +106,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		$this->menu_title = wu_get_isset($new_parameters, 'title', $this->original_parameters['title']);
 		$this->position   = wu_get_isset($new_parameters, 'position', $this->original_parameters['position']);
 		$this->menu_icon  = str_replace('dashicons-before', '', (string) wu_get_isset($new_parameters, 'menu_icon', $this->original_parameters['menu_icon'] ?? ''));
-
-	} // end change_parameters;
+	}
 
 	/**
 	 * Renders the edit page form.
@@ -127,7 +128,6 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		);
 
 		if ($this->menu_settings) {
-
 			$fields['position'] = array(
 				'type'    => 'number',
 				'title'   => __('Menu', 'wp-ultimo'),
@@ -141,8 +141,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 				'value'   => wu_get_isset($settings, 'menu_icon', ''),
 				'tooltip' => '',
 			);
-
-		} // end if;
+		}
 
 		$fields['save_line'] = array(
 			'type'            => 'group',
@@ -168,23 +167,26 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 
 		$fields = apply_filters("wu_customer_facing_page_{$this->id}_fields", $fields);
 
-		$form = new \WP_Ultimo\UI\Form('edit_page', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => "{$this->id}_page_customize",
-				'data-state'  => wu_convert_to_state(),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'edit_page',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => "{$this->id}_page_customize",
+					'data-state'  => wu_convert_to_state(),
+				),
+			)
+		);
 
 		echo '<div class="wu-styling">';
 
 		$form->render();
 
 		echo '</div>';
-
-	} // end render_edit_page;
+	}
 
 	/**
 	 * Handles the edit page form and saved changes.
@@ -198,11 +200,12 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 
 		$this->save_page_settings($settings_to_save);
 
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_edit_page;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
 
 	/**
 	 * Generates a unique id for each page based on the class name.
@@ -217,8 +220,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		$class_name = array_pop($class_name_array);
 
 		return wu_replace_dashes(strtolower($class_name));
-
-	} // end get_page_unique_id;
+	}
 
 	/**
 	 * Grabs the original page parameters.
@@ -229,8 +231,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	public function get_defaults() {
 
 		return $this->original_parameters;
-
-	} // end get_defaults;
+	}
 
 	/**
 	 * Register the default setting on the core section.
@@ -240,11 +241,14 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	 */
 	public function register_page_settings() {
 
-		wu_register_settings_field('core', $this->get_page_unique_id() . '_settings', array(
-			'raw' => true,
-		));
-
-	} // end register_page_settings;
+		wu_register_settings_field(
+			'core',
+			$this->get_page_unique_id() . '_settings',
+			array(
+				'raw' => true,
+			)
+		);
+	}
 
 	/**
 	 * Get the page settings saved.
@@ -257,8 +261,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		$atts = wu_get_setting($this->get_page_unique_id() . '_settings', array());
 
 		return wp_parse_args($atts, $this->get_defaults());
-
-	} // end get_page_settings;
+	}
 
 	/**
 	 * Saves the page settings.
@@ -273,8 +276,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		$atts = shortcode_atts($this->get_defaults(), $settings); // Use shortcode atts to remove unauthorized params.
 
 		return wu_save_setting($this->get_page_unique_id() . '_settings', $atts);
-
-	} // end save_page_settings;
+	}
 
 	/**
 	 * Adds additional hooks using the right hook on the page lifecycle.
@@ -289,8 +291,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		add_action("load-$this->page_hook", array($this, 'add_additional_body_classes'));
 
 		add_action("load-$this->page_hook", array($this, 'additional_on_page_load'));
-
-	} // end additional_hooks;
+	}
 
 	/**
 	 * Registers additional hooks for the page load.
@@ -311,15 +312,17 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		 *
 		 * @todo review when possible.
 		 */
-		add_filter('wp_ultimo_render_vars', function($vars) {
+		add_filter(
+			'wp_ultimo_render_vars',
+			function ($vars) {
 
-			$vars['page_title'] = $this->title;
+				$vars['page_title'] = $this->title;
 
-			return $vars;
-
-		}, 15);
-
-	} // end additional_on_page_load;
+				return $vars;
+			},
+			15
+		);
+	}
 
 	/**
 	 * Adds additional body classes for styling control purposes.
@@ -329,15 +332,16 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	 */
 	public function add_additional_body_classes() {
 
-		add_action('admin_body_class', function($classes) {
+		add_action(
+			'admin_body_class',
+			function ($classes) {
 
-			$classes .= $this->is_edit_mode() ? ' wu-customize-admin-screen' : '';
+				$classes .= $this->is_edit_mode() ? ' wu-customize-admin-screen' : '';
 
-			return $classes;
-
-		});
-
-	} // end add_additional_body_classes;
+				return $classes;
+			}
+		);
+	}
 
 	/**
 	 * Registers and enqueues additional scripts and styles required.
@@ -352,31 +356,30 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		wp_enqueue_style('wu-admin-screen');
 
 		if ($this->is_edit_mode()) {
-
 			wp_enqueue_script('dashboard');
-
-		} // end if;
+		}
 
 		if (current_user_can($this->edit_capability)) {
-
 			\WP_Ultimo\Scripts::get_instance()->register_script('wu-admin-screen', wu_get_asset('admin-screen.js', 'js'), array('jquery', 'wu-fonticonpicker'));
 
-			wp_localize_script('wu-admin-screen', 'wu_admin_screen', array(
-				'page_customize_link' => wu_get_form_url("edit_admin_page_$this->id"),
-				'customize_link'      => add_query_arg('customize', 1),
-				'close_link'          => remove_query_arg('customize'),
-				'i18n'                => array(
-					'page_customize_label' => __('Customize Page', 'wp-ultimo'),
-					'customize_label'      => __('Customize Elements', 'wp-ultimo'),
-					'close_label'          => __('Exit Customize Mode', 'wp-ultimo'),
-				),
-			));
+			wp_localize_script(
+				'wu-admin-screen',
+				'wu_admin_screen',
+				array(
+					'page_customize_link' => wu_get_form_url("edit_admin_page_$this->id"),
+					'customize_link'      => add_query_arg('customize', 1),
+					'close_link'          => remove_query_arg('customize'),
+					'i18n'                => array(
+						'page_customize_label' => __('Customize Page', 'wp-ultimo'),
+						'customize_label'      => __('Customize Elements', 'wp-ultimo'),
+						'close_label'          => __('Exit Customize Mode', 'wp-ultimo'),
+					),
+				)
+			);
 
 			wp_enqueue_script('wu-admin-screen');
-
-		} // end if;
-
-	} // end register_additional_scripts;
+		}
+	}
 
 	/**
 	 * Filters the order and columns of the widgets to return a globally saved value.
@@ -395,8 +398,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 		$saved = wu_get_setting($option);
 
 		return empty($saved) ? $result : $saved;
-
-	} // end get_settings;
+	}
 
 	/**
 	 * Save the settings globally for columns and order of the widgets.
@@ -412,30 +414,23 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	public function save_settings($meta_id, $user_id, $meta_key, $_meta_value) {
 
 		if (wu_request('action') !== 'meta-box-order') {
-
 			return;
-
-		} // end if;
+		}
 
 		$is_this_page = strpos((string) wu_request('page'), $this->id) !== false;
 
-		if (!$is_this_page) {
-
+		if ( ! $is_this_page) {
 			return;
+		}
 
-		} // end if;
-
-		if (!user_can($user_id, $this->edit_capability)) {
-
+		if ( ! user_can($user_id, $this->edit_capability)) {
 			return;
-
-		} // end if;
+		}
 
 		$meta_key = wu_replace_dashes($meta_key);
 
 		wu_save_setting($meta_key, $_meta_value);
-
-	} // end save_settings;
+	}
 
 	/**
 	 * Get the value of editing.
@@ -446,8 +441,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	public function is_edit_mode() {
 
 		return $this->editing && current_user_can($this->edit_capability);
-
-	} // end is_edit_mode;
+	}
 
 	/**
 	 * Adds top-level admin page.
@@ -458,10 +452,8 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	public function add_toplevel_menu_page() {
 
 		if (wu_request('id')) {
-
 			$this->edit = true;
-
-		} // end if;
+		}
 
 		return add_menu_page(
 			$this->title,
@@ -472,7 +464,5 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 			$this->menu_icon,
 			$this->position
 		);
-
-	} // end add_toplevel_menu_page;
-
-} // end class Base_Customer_Facing_Admin_Page;
+	}
+}

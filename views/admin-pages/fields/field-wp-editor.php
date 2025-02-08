@@ -15,11 +15,15 @@
 
 			/**
 			 * Adds the partial title template.
+			 *
 			 * @since 2.0.0
 			 */
-			wu_get_template('admin-pages/fields/partials/field-title', array(
-				'field' => $field,
-			));
+			wu_get_template(
+				'admin-pages/fields/partials/field-title',
+				array(
+					'field' => $field,
+				)
+			);
 
 			?>
 
@@ -42,11 +46,15 @@
 
 			/**
 			 * Adds the partial title template.
+			 *
 			 * @since 2.0.0
 			 */
-			wu_get_template('admin-pages/fields/partials/field-description', array(
-				'field' => $field,
-			));
+			wu_get_template(
+				'admin-pages/fields/partials/field-description',
+				array(
+					'field' => $field,
+				)
+			);
 
 			?>
 

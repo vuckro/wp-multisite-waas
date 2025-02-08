@@ -81,8 +81,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	public function init() {
 
 		parent::init();
-
-	} // end init;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -93,8 +92,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	public function get_title() {
 
 		return __('Available Shortcodes', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -105,8 +103,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Available Shortcodes', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -117,8 +114,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Dashboard', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -130,12 +126,14 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 
 		$screen = get_current_screen();
 
-		wu_get_template('shortcodes/shortcodes', array(
-			'screen' => $screen,
-			'data'   => $this->get_data(),
-		));
-
-	} // end output;
+		wu_get_template(
+			'shortcodes/shortcodes',
+			array(
+				'screen' => $screen,
+				'data'   => $this->get_data(),
+			)
+		);
+	}
 
 	/**
 	 * Get data for shortcodes
@@ -150,50 +148,45 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 		$data = array();
 
 		foreach ($elements as $element) {
-
 			$defaults = $element->defaults();
 
 			$params = array_filter($element->fields(), fn($el) => $el['type'] !== 'note' && $el['type'] !== 'header');
 
 			foreach ($params as $key => $value) {
+				$params[ $key ]['default'] = wu_get_isset($defaults, $key, '');
 
-				$params[$key]['default'] = wu_get_isset($defaults, $key, '');
-
-				$params[$key]['desc'] = !isset($value['desc']) ? '' : $params[$key]['desc'];
+				$params[ $key ]['desc'] = ! isset($value['desc']) ? '' : $params[ $key ]['desc'];
 
 				switch ($value['type']) {
-        case 'toggle':
-            $params[$key]['options'] = '0 | 1';
-            break;
-        case 'select':
-            $params[$key]['options'] = implode(' | ', array_keys(wu_get_isset($value, 'options', array())));
-            break;
-        case 'int':
-            $params[$key]['options'] = __('integer', 'wp-ultimo');
-            break;
-        case 'number':
-            $params[$key]['options'] = __('number', 'wp-ultimo');
-            break;
-        case 'text':
-            $params[$key]['options'] = __('text', 'wp-ultimo');
-            break;
-        case 'textarea':
-            $params[$key]['options'] = __('text', 'wp-ultimo');
-            break;
-        default:
-            $params[$key]['options'] = $value['type'];
-            break;
-    } // end switch;
-
-			} // end foreach;
+					case 'toggle':
+						$params[ $key ]['options'] = '0 | 1';
+						break;
+					case 'select':
+						$params[ $key ]['options'] = implode(' | ', array_keys(wu_get_isset($value, 'options', array())));
+						break;
+					case 'int':
+						$params[ $key ]['options'] = __('integer', 'wp-ultimo');
+						break;
+					case 'number':
+						$params[ $key ]['options'] = __('number', 'wp-ultimo');
+						break;
+					case 'text':
+						$params[ $key ]['options'] = __('text', 'wp-ultimo');
+						break;
+					case 'textarea':
+						$params[ $key ]['options'] = __('text', 'wp-ultimo');
+						break;
+					default:
+						$params[ $key ]['options'] = $value['type'];
+						break;
+				}
+			}
 
 			$id = $element->get_id();
 
 			if (strncmp((string) $id, 'wp-ultimo/', strlen('wp-ultimo/')) === 0) {
-
 				$id = substr((string) $element->get_id(), strlen('wp-ultimo/'));
-
-			} // end if;
+			}
 
 			$data[] = array(
 				'generator_form_url' => wu_get_form_url("shortcode_{$id}"),
@@ -202,11 +195,8 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 				'description'        => $element->get_description(),
 				'params'             => $params,
 			);
-
-		} // end foreach;
+		}
 
 		return $data;
-
-	} // end get_data;
-
-} // end class Shortcodes_Admin_Page;
+	}
+}

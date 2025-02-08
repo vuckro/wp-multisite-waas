@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Models\Traits;
 
-use \WP_Ultimo\Database\Sites\Site_Type;
-use \WP_Ultimo\Objects\Limitations;
+use WP_Ultimo\Database\Sites\Site_Type;
+use WP_Ultimo\Objects\Limitations;
 
 /**
  * Singleton trait.
@@ -54,10 +54,8 @@ trait Limitable {
 		 * This is because we don't want to limit sites other than the customer owned ones.
 		 */
 		if ($this->model === 'site' && $this->get_type() !== Site_Type::CUSTOMER_OWNED) {
-
 			return new Limitations(array());
-
-		} // end if;
+		}
 
 		$cache_key = $waterfall ? '_composite_limitations_' : '_limitations_';
 
@@ -67,32 +65,23 @@ trait Limitable {
 
 		$cached_version = wu_get_isset($this->_limitations, $cache_key);
 
-		if (!empty($cached_version)) {
-
+		if ( ! empty($cached_version)) {
 			return $cached_version;
+		}
 
-		} // end if;
-
-		if (!is_array($this->meta)) {
-
+		if ( ! is_array($this->meta)) {
 			$this->meta = array();
-
-		} // end if;
+		}
 
 		if (did_action('muplugins_loaded') === false) {
-
 			$modules_data = $this->get_meta('wu_limitations', array());
-
 		} else {
-
 			$modules_data = Limitations::early_get_limitations($this->model, $this->get_id());
-
-		} // end if;
+		}
 
 		$limitations = new Limitations(array());
 
 		if ($waterfall) {
-
 			$limitations = $limitations->merge(...$this->limitations_to_merge());
 
 			/**
@@ -102,23 +91,17 @@ trait Limitable {
 			 * This will return only the parents permissions and is super useful for
 			 * comparisons.
 			 */
-			if (!$skip_self) {
-
+			if ( ! $skip_self) {
 				$limitations = $limitations->merge(true, $modules_data);
-
-			} // end if;
-
+			}
 		} else {
-
 			$limitations = $limitations->merge($modules_data);
+		}
 
-		} // end if;
-
-		$this->_limitations[$cache_key] = $limitations;
+		$this->_limitations[ $cache_key ] = $limitations;
 
 		return $limitations;
-
-	} // end get_limitations;
+	}
 
 	/**
 	 * Checks if this site has limitations or not.
@@ -129,8 +112,7 @@ trait Limitable {
 	public function has_limitations() {
 
 		return $this->get_limitations()->has_limitations();
-
-	} // end has_limitations;
+	}
 
 	/**
 	 * Checks if a particular module is being limited.
@@ -143,8 +125,7 @@ trait Limitable {
 	public function has_module_limitation($module) {
 
 		return $this->get_limitations()->is_module_enabled($module);
-
-	} // end has_module_limitation;
+	}
 
 	/**
 	 * Returns all user role quotas.
@@ -155,8 +136,7 @@ trait Limitable {
 	public function get_user_role_quotas() {
 
 		return $this->get_limitations()->get_user_role_quotas();
-
-	} // end get_user_role_quotas;
+	}
 
 	/**
 	 * Proxy method to retrieve the allowed user roles.
@@ -167,8 +147,7 @@ trait Limitable {
 	public function get_allowed_user_roles() {
 
 		return $this->get_limitations()->get_allowed_user_roles();
-
-	} // end get_allowed_user_roles;
+	}
 
 	/**
 	 * Schedules plugins to be activated or deactivated based on the current limitations;
@@ -181,50 +160,35 @@ trait Limitable {
 		$sites = array();
 
 		if ($this->model === 'site') {
-
 			$sites[] = $this;
-
 		} elseif ($this->model === 'membership') {
-
 			$sites = $this->get_sites();
-
-		} // end if;
+		}
 
 		foreach ($sites as $site_object) {
-
-			if (!$site_object->get_id() || $site_object->get_type() !== Site_Type::CUSTOMER_OWNED) {
-
+			if ( ! $site_object->get_id() || $site_object->get_type() !== Site_Type::CUSTOMER_OWNED) {
 				continue;
-
-			} // end if;
+			}
 
 			$site_id     = $site_object->get_id();
 			$limitations = $site_object->get_limitations();
 
-			if (!$limitations->plugins->is_enabled()) {
-
+			if ( ! $limitations->plugins->is_enabled()) {
 				continue;
-
-			} // end if;
+			}
 
 			$plugins_to_deactivate = $limitations->plugins->get_by_type('force_inactive');
 			$plugins_to_activate   = $limitations->plugins->get_by_type('force_active');
 
 			if ($plugins_to_deactivate) {
-
 				wu_async_deactivate_plugins($site_id, array_keys($plugins_to_deactivate));
-
-			} // end if;
+			}
 
 			if ($plugins_to_activate) {
-
 				wu_async_activate_plugins($site_id, array_keys($plugins_to_activate));
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end sync_plugins;
+			}
+		}
+	}
 
 	/**
 	 * Makes sure we save limitations when we are supposed to.
@@ -241,11 +205,9 @@ trait Limitable {
 		/*
 		 * Only handle limitations if there are to handle in the first place.
 		 */
-		if (!wu_request('modules')) {
-
+		if ( ! wu_request('modules')) {
 			return;
-
-		} // end if;
+		}
 
 		$object_limitations = $this->get_limitations(false);
 
@@ -258,22 +220,16 @@ trait Limitable {
 		$current_limitations = $this->get_limitations(true, true);
 
 		foreach ($limitations as $limitation_id => $class_name) {
-
 			$module = wu_get_isset($saved_limitations, $limitation_id, array());
 
 			try {
-
 				if (is_string($module)) {
-
 					$module = json_decode($module, true);
-
-				} // end if;
-
+				}
 			} catch (\Throwable $exception) {
 
 				// Silence is golden.
-
-			} // end try;
+			}
 
 			$module['enabled'] = $object_limitations->{$limitation_id}->handle_enabled();
 
@@ -282,32 +238,23 @@ trait Limitable {
 			$module = $object_limitations->{$limitation_id}->handle_others($module);
 
 			if ($module) {
-
-				$modules_to_save[$limitation_id] = $module;
-
-			} // end if;
-
-		} // end foreach;
+				$modules_to_save[ $limitation_id ] = $module;
+			}
+		}
 
 		if ($this->model !== 'product') {
 			/*
 			 * Set the new permissions, based on the diff.
 			 */
 			$limitations = wu_array_recursive_diff($modules_to_save, $current_limitations->to_array());
-
 		} elseif ($this->model === 'product' && $this->get_type() !== 'plan') {
-
 			$limitations = wu_array_recursive_diff($modules_to_save, Limitations::get_empty()->to_array());
-
 		} else {
-
 			$limitations = $modules_to_save;
-
-		} // end if;
+		}
 
 		$this->meta['wu_limitations'] = $limitations;
-
-	} // end handle_limitations;
+	}
 
 	/**
 	 * Returns the list of product slugs associated with this model.
@@ -318,31 +265,22 @@ trait Limitable {
 	public function get_applicable_product_slugs() {
 
 		if ($this->model === 'product') {
-
 			return array($this->get_slug());
-
-		} // end if;
+		}
 
 		$slugs = array();
 
 		if ($this->model === 'membership') {
-
 			$membership = $this;
-
 		} elseif ($this->model === 'site') {
-
 			$membership = $this->get_membership();
+		}
 
-		} // end if;
-
-		if (!empty($membership)) {
-
+		if ( ! empty($membership)) {
 			$slugs = array_column(array_map('wu_cast_model_to_array', array_column($membership->get_all_products(), 'product')), 'slug'); // WOW
 
-		} // end if;
+		}
 
 		return $slugs;
-
-	} // end get_applicable_product_slugs;
-
-} // end trait Limitable;
+	}
+}

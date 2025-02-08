@@ -16,4 +16,4 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-class Runtime_Exception extends \Exception {} // end class Runtime_Exception;
+class Runtime_Exception extends \Exception {}

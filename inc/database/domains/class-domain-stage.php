@@ -12,7 +12,7 @@ namespace WP_Ultimo\Database\Domains;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Engine\Enum;
+use WP_Ultimo\Database\Engine\Enum;
 
 /**
  * Domain Stage.
@@ -47,8 +47,7 @@ class Domain_Stage extends Enum {
 			static::DONE             => 'wu-bg-green-200 wu-text-green-700',
 			static::DONE_WITHOUT_SSL => 'wu-bg-gray-800 wu-text-white',
 		);
-
-	} // end classes;
+	}
 
 	/**
 	 * Returns an array with values => labels.
@@ -65,7 +64,5 @@ class Domain_Stage extends Enum {
 			static::DONE             => __('Ready', 'wp-ultimo'),
 			static::DONE_WITHOUT_SSL => __('Ready (without SSL)', 'wp-ultimo'),
 		);
-
-	} // end labels;
-
-} // end class Domain_Stage;
+	}
+}

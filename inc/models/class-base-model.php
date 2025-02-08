@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Models;
 
-use \WP_Ultimo\Helpers\Hash;
+use WP_Ultimo\Helpers\Hash;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -25,11 +25,11 @@ defined('ABSPATH') || exit;
 abstract class Base_Model implements \JsonSerializable {
 
 	/**
-     * ID of the object
-     *
-     * @since 2.0.0
-     * @var integer
-     */
+	 * ID of the object
+	 *
+	 * @since 2.0.0
+	 * @var integer
+	 */
 	protected $id = 0;
 
 	/**
@@ -140,20 +140,15 @@ abstract class Base_Model implements \JsonSerializable {
 		$this->model = sanitize_key((new \ReflectionClass($this))->getShortName());
 
 		if (is_array($object)) {
-
 			$object = (object) $object;
+		}
 
-		} // end if;
-
-		if (!is_object($object)) {
-
+		if ( ! is_object($object)) {
 			return;
-
-		} // end if;
+		}
 
 		$this->setup_model($object);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Get the value of slug
@@ -163,8 +158,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function get_slug() {
 
 		return $this->slug;
-
-	} // end get_slug;
+	}
 
 	/**
 	 * Set the value of slug
@@ -174,8 +168,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function set_slug($slug) {
 
 		$this->slug = $slug;
-
-	} // end set_slug;
+	}
 
 	/**
 	 * Returns a hashed version of the id. Useful for displaying data publicly.
@@ -188,17 +181,14 @@ abstract class Base_Model implements \JsonSerializable {
 
 		$value = call_user_func(array($this, "get_{$field}"));
 
-		if (!is_numeric($value)) {
-
+		if ( ! is_numeric($value)) {
 			_doing_it_wrong(__METHOD__, __('You can only use numeric fields to generate hashes.', 'wp-ultimo'), '2.0.0');
 
 			return false;
-
-		} // end if;
+		}
 
 		return Hash::encode($value, $this->model);
-
-	} // end get_hash;
+	}
 
 	/**
 	 * Setup properties.
@@ -211,25 +201,20 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	private function setup_model($object) {
 
-		if (!is_object($object)) {
-
+		if ( ! is_object($object)) {
 			return false;
-
-		} // end if;
+		}
 
 		$vars = get_object_vars($object);
 
 		$this->attributes($vars);
 
 		if (empty($this->id)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end setup_model;
+	}
 
 	/**
 	 * Sets the attributes of the model using the setters available.
@@ -242,45 +227,34 @@ abstract class Base_Model implements \JsonSerializable {
 	public function attributes($atts) {
 
 		foreach ($atts as $key => $value) {
-
 			if ($key === 'meta' && is_array($value)) {
-
 				$this->meta = is_array($this->meta) ? array_merge($this->meta, $value) : $value;
-
-			} // end if;
+			}
 
 			if (method_exists($this, "set_$key")) {
-
 				call_user_func(array($this, "set_$key"), $value);
-
-			} // end if;
+			}
 
 			$mapping = wu_get_isset($this->_mappings, $key);
 
 			if ($mapping && method_exists($this, "set_$mapping")) {
-
 				call_user_func(array($this, "set_$mapping"), $value);
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		/*
 		 * Keeps the original.
 		 */
 		if ($this->_original === null) {
-
 			$original = get_object_vars($this);
 
 			unset($original['_original']);
 
 			$this->_original = $original;
-
-		} // end if;
+		}
 
 		return $this;
-
-	} // end attributes;
+	}
 
 	/**
 	 * Return the model schema. useful to list all models fields.
@@ -306,8 +280,7 @@ abstract class Base_Model implements \JsonSerializable {
 			fn($column) => $column->to_array(),
 			$columns
 		);
-
-	} // end get_schema;
+	}
 
 	/**
 	 * Checks if this model was already saved to the database.
@@ -317,9 +290,8 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function exists() {
 
-		return !empty($this->id);
-
-	} // end exists;
+		return ! empty($this->id);
+	}
 
 	/**
 	 * Gets a single database row by the primary column ID, possibly from cache.
@@ -333,18 +305,15 @@ abstract class Base_Model implements \JsonSerializable {
 	public static function get_by_id($item_id) {
 
 		if (empty($item_id)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		$instance = new static();
 
 		$query_class = new $instance->query_class();
 
 		return $query_class->get_item($item_id);
-
-	} // end get_by_id;
+	}
 
 	/**
 	 * Gets a single database row by the hash, possibly from cache.
@@ -364,8 +333,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$query_class = new $instance->query_class();
 
 		return $query_class->get_item($item_id);
-
-	} // end get_by_hash;
+	}
 
 	/**
 	 * Gets a model instance by a column value.
@@ -383,8 +351,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$query_class = new $instance->query_class();
 
 		return $query_class->get_item_by($column, $value);
-
-	} // end get_by;
+	}
 
 	/**
 	 * Wrapper for a Query call.
@@ -399,8 +366,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$instance = new static();
 
 		return (new $instance->query_class($query))->query();
-
-	} // end get_items;
+	}
 
 	/**
 	 * Wrapper for a Query call, but returns the list as arrays.
@@ -417,8 +383,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$list = (new $instance->query_class($query))->query();
 
 		return array_map(fn($item) => $item->to_array(), $list);
-
-	} // end get_items_as_array;
+	}
 
 	/**
 	 * Get the ID of the model.
@@ -430,8 +395,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function get_id() {
 
 		return absint($this->id);
-
-	} // end get_id;
+	}
 
 	/**
 	 * Check if this model has a job running.
@@ -441,16 +405,17 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function has_running_jobs() {
 
-		$jobs = wu_get_scheduled_actions(array(
-			'status' => \ActionScheduler_Store::STATUS_RUNNING,
-			'args'   => array(
-				"{$this->model}_id" => $this->get_id(),
-			),
-		));
+		$jobs = wu_get_scheduled_actions(
+			array(
+				'status' => \ActionScheduler_Store::STATUS_RUNNING,
+				'args'   => array(
+					"{$this->model}_id" => $this->get_id(),
+				),
+			)
+		);
 
 		return $jobs;
-
-	} // end has_running_jobs;
+	}
 
 	/**
 	 * Set iD of the object.
@@ -462,8 +427,7 @@ abstract class Base_Model implements \JsonSerializable {
 	private function set_id($id) {
 
 		$this->id = $id;
-
-	} // end set_id;
+	}
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -478,8 +442,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function validation_rules() {
 
 		return array();
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Validates the rules and make sure we only save models when necessary.
@@ -490,30 +453,23 @@ abstract class Base_Model implements \JsonSerializable {
 	public function validate() {
 
 		if ($this->skip_validation) {
-
 			return true;
+		}
 
-		} // end if;
-
-		$validator = new \WP_Ultimo\Helpers\Validator;
+		$validator = new \WP_Ultimo\Helpers\Validator();
 
 		$validator->validate($this->to_array(), $this->validation_rules());
 
 		if ($validator->fails()) {
-
 			return $validator->get_errors();
-
-		} // end if;
+		}
 
 		foreach ($validator->get_validation()->getValidData() as $key => $value) {
-
 			$this->{$key} = $value;
-
-		} // end foreach;
+		}
 
 		return true;
-
-	} // end validate;
+	}
 
 	/**
 	 * Save (create or update) the model on the database.
@@ -529,10 +485,8 @@ abstract class Base_Model implements \JsonSerializable {
 		$data = get_object_vars($this);
 
 		if (isset($data['id']) && empty($data['id'])) {
-
 			unset($data['id']);
-
-		} // end if;
+		}
 
 		unset($data['_original']);
 
@@ -540,7 +494,7 @@ abstract class Base_Model implements \JsonSerializable {
 
 		$meta = wu_get_isset($data, 'meta', array());
 
-		$new = !$this->exists();
+		$new = ! $this->exists();
 
 		/**
 		 * Filters the data meta before it is serialized to be stored into the database.
@@ -559,26 +513,24 @@ abstract class Base_Model implements \JsonSerializable {
 		);
 
 		foreach ($blocked_attributes as $attribute) {
-
-			unset($data[$attribute]);
-
-		} // end foreach;
+			unset($data[ $attribute ]);
+		}
 
 		$this->validate();
 
 		$data = array_map('maybe_serialize', $data);
 
-		$data = array_map(function($_data) {
+		$data = array_map(
+			function ($_data) {
 
-			if (is_serialized($_data)) {
+				if (is_serialized($_data)) {
+					$_data = addslashes($_data);
+				}
 
-				$_data = addslashes($_data);
-
-			} // end if;
-
-			return $_data;
-
-		}, $data);
+				return $_data;
+			},
+			$data
+		);
 
 		/**
 		 * Filters the object data before it is stored into the database.
@@ -593,39 +545,29 @@ abstract class Base_Model implements \JsonSerializable {
 
 		$is_valid_data = $this->validate();
 
-		if (is_wp_error($is_valid_data) && !$this->skip_validation) {
-
+		if (is_wp_error($is_valid_data) && ! $this->skip_validation) {
 			return $is_valid_data;
-
-		} // end if;
+		}
 
 		$saved = false;
 
-		if (!$this->get_id()) {
-
+		if ( ! $this->get_id()) {
 			$new_id = $query_class->add_item($data);
 
 			if ($new_id) {
-
 				$this->id = $new_id;
 
 				$saved = true;
-
-			} // end if;
-
+			}
 		} else {
-
 			$saved = $query_class->update_item($this->get_id(), $data);
+		}
 
-		} // end if;
-
-		if (!empty($meta)) {
-
+		if ( ! empty($meta)) {
 			$this->update_meta_batch($meta);
 
 			$saved = true;
-
-		} // end if;
+		}
 
 		/**
 		 * Delete object cache to prevent errors.
@@ -658,8 +600,7 @@ abstract class Base_Model implements \JsonSerializable {
 		do_action("wu_{$this->model}_post_save", $data, $this, $new);
 
 		return $saved;
-
-	} // end save;
+	}
 
 	/**
 	 * Delete the model from the database.
@@ -670,11 +611,9 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function delete() {
 
-		if (!$this->get_id()) {
-
+		if ( ! $this->get_id()) {
 			return new \WP_Error("wu_{$this->model}_delete_unsaved_item", __('Item not found.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		/**
 		 * Fires after an object is stored into the database.
@@ -700,8 +639,7 @@ abstract class Base_Model implements \JsonSerializable {
 		do_action("wu_{$this->model}_post_delete", $result, $this);
 
 		return $result;
-
-	} // end delete;
+	}
 
 	/**
 	 * Returns the meta type name.
@@ -715,14 +653,13 @@ abstract class Base_Model implements \JsonSerializable {
 		$query_class = new $this->query_class();
 
 		// Maybe apply table prefix
-		$table = !empty($query_class->prefix)
+		$table = ! empty($query_class->prefix)
 		? "{$query_class->prefix}_{$query_class->item_name}"
 		: $query_class->item_name;
 
 		// Return table if exists, or false if not
 		return $table;
-
-	} // end get_meta_type_name;
+	}
 
 	/**
 	 * Returns the meta table name.
@@ -736,8 +673,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$table = $this->get_meta_type_name();
 
 		return _get_meta_table($table);
-
-	} // end get_meta_table_name;
+	}
 
 	/**
 	 * Checks if metadata handling is available, i.e., if there is a meta table
@@ -748,25 +684,22 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	protected function is_meta_available() {
 
-		if (!$this->get_meta_table_name()) {
+		if ( ! $this->get_meta_table_name()) {
 
 			// _doing_it_wrong(__METHOD__, __('This model does not support metadata.', 'wp-ultimo'), '2.0.0');
 
 			return false;
+		}
 
-		} // end if;
-
-		if (!$this->get_id() && !$this->_mocked) {
+		if ( ! $this->get_id() && ! $this->_mocked) {
 
 			// _doing_it_wrong(__METHOD__, __('Model metadata only works for already saved models.', 'wp-ultimo'), '2.0.0');
 
 			return false;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end is_meta_available;
+	}
 
 	/**
 	 * Returns the meta data, if set. Otherwise, returns the default.
@@ -780,23 +713,18 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function get_meta($key, $default = false, $single = true) {
 
-		if (!$this->is_meta_available()) {
-
+		if ( ! $this->is_meta_available()) {
 			return $default;
-
-		} // end if;
+		}
 
 		$meta_type = $this->get_meta_type_name();
 
 		if (metadata_exists($meta_type, $this->get_id(), $key)) {
-
 			return get_metadata($meta_type, $this->get_id(), $key, $single);
-
-		} // end if;
+		}
 
 		return $default;
-
-	} // end get_meta;
+	}
 
 	/**
 	 * Adds or updates meta data in batch.
@@ -808,33 +736,26 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function update_meta_batch($meta) {
 
-		if (!$this->is_meta_available()) {
-
+		if ( ! $this->is_meta_available()) {
 			return false;
+		}
 
-		} // end if;
-
-		if (!is_array($meta)) {
-
+		if ( ! is_array($meta)) {
 			_doing_it_wrong(__METHOD__, __('This method expects an array as argument.', 'wp-ultimo'), '2.0.0');
 
 			return false;
-
-		} // end if;
+		}
 
 		$meta_type = $this->get_meta_type_name();
 
 		$success = true;
 
 		foreach ($meta as $key => $value) {
-
 			update_metadata($meta_type, $this->get_id(), $key, $value);
-
-		} // end foreach;
+		}
 
 		return $success;
-
-	} // end update_meta_batch;
+	}
 
 	/**
 	 * Adds or updates the meta data.
@@ -848,17 +769,14 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function update_meta($key, $value) {
 
-		if (!$this->is_meta_available()) {
-
+		if ( ! $this->is_meta_available()) {
 			return false;
-
-		} // end if;
+		}
 
 		$meta_type = $this->get_meta_type_name();
 
 		return update_metadata($meta_type, $this->get_id(), $key, $value);
-
-	} // end update_meta;
+	}
 
 	/**
 	 * Deletes the meta data.
@@ -870,17 +788,14 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function delete_meta($key) {
 
-		if (!$this->is_meta_available()) {
-
+		if ( ! $this->is_meta_available()) {
 			return false;
-
-		} // end if;
+		}
 
 		$meta_type = $this->get_meta_type_name();
 
 		return delete_metadata($meta_type, $this->get_id(), $key);
-
-	} // end delete_meta;
+	}
 
 	/**
 	 * Queries object in the database.
@@ -899,8 +814,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$items = $query_class->query($args);
 
 		return $items;
-
-	} // end query;
+	}
 
 	/**
 	 * Transform the object into an assoc array.
@@ -921,18 +835,13 @@ abstract class Base_Model implements \JsonSerializable {
 		unset($array['_mocked']);
 
 		foreach ($array as $key => $value) {
-
 			if (strncmp('_', $key, strlen($key)) === 0) {
-
-				unset($array[$key]);
-
-			} // end if;
-
-		} // end foreach;
+				unset($array[ $key ]);
+			}
+		}
 
 		return $array;
-
-	} // end to_array;
+	}
 
 	/**
 	 * Convert data to Mapping instance
@@ -945,8 +854,7 @@ abstract class Base_Model implements \JsonSerializable {
 	protected static function to_instance($data) {
 
 		return new static($data);
-
-	} // end to_instance;
+	}
 
 	/**
 	 * Convert list of data to Mapping instances
@@ -957,8 +865,7 @@ abstract class Base_Model implements \JsonSerializable {
 	protected static function to_instances($data) {
 
 		return array_map(array(get_called_class(), 'to_instance'), $data);
-
-	} // end to_instances;
+	}
 
 	/**
 	 * By default, we just use the to_array method, but you can rewrite this.
@@ -969,8 +876,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function to_search_results() {
 
 		return $this->to_array();
-
-	} // end to_search_results;
+	}
 
 	/**
 	 * Defines how we should encode this.
@@ -982,14 +888,11 @@ abstract class Base_Model implements \JsonSerializable {
 	public function jsonSerialize() {
 
 		if (wp_doing_ajax() && wu_request('action') === 'wu_search') {
-
 			return $this->to_search_results();
-
-		} // end if;
+		}
 
 		return $this->to_array();
-
-	} // end jsonSerialize;
+	}
 
 	/**
 	 * Get the date when this model was created.
@@ -999,15 +902,12 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function get_date_created() {
 
-		if (!wu_validate_date($this->date_created)) {
-
+		if ( ! wu_validate_date($this->date_created)) {
 			return wu_get_current_time('mysql');
-
-		} // end if;
+		}
 
 		return $this->date_created;
-
-	} // end get_date_created;
+	}
 
 	/**
 	 * Get the date when this model was last modified.
@@ -1017,15 +917,12 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function get_date_modified() {
 
-		if (!wu_validate_date($this->date_modified)) {
-
+		if ( ! wu_validate_date($this->date_modified)) {
 			return wu_get_current_time('mysql');
-
-		} // end if;
+		}
 
 		return $this->date_modified;
-
-	} // end get_date_modified;
+	}
 
 	/**
 	 * Set model creation date.
@@ -1037,8 +934,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function set_date_created($date_created) {
 
 		$this->date_created = $date_created;
-
-	} // end set_date_created;
+	}
 
 	/**
 	 * Set model last modification date.
@@ -1050,8 +946,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function set_date_modified($date_modified) {
 
 		$this->date_modified = $date_modified;
-
-	} // end set_date_modified;
+	}
 
 	/**
 	 * Get the id of the original 1.X model that was used to generate this item on migration.
@@ -1062,8 +957,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function get_migrated_from_id() {
 
 		return $this->migrated_from_id;
-
-	} // end get_migrated_from_id;
+	}
 
 	/**
 	 * Set the id of the original 1.X model that was used to generate this item on migration.
@@ -1075,8 +969,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function set_migrated_from_id($migrated_from_id) {
 
 		$this->migrated_from_id = absint($migrated_from_id);
-
-	} // end set_migrated_from_id;
+	}
 
 	/**
 	 * Checks if this model is a migration from 1.X.
@@ -1086,9 +979,8 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function is_migrated() {
 
-		return !empty($this->get_migrated_from_id());
-
-	} // end is_migrated;
+		return ! empty($this->get_migrated_from_id());
+	}
 
 	/**
 	 * Helper method to return formatted values.
@@ -1106,14 +998,11 @@ abstract class Base_Model implements \JsonSerializable {
 		$value = (float) $this->{"get_{$key}"}();
 
 		if (is_numeric($value)) {
-
 			return wu_format_currency($value);
-
-		} // end if;
+		}
 
 		return $value;
-
-	} // end get_formatted_amount;
+	}
 
 	/**
 	 * Helper method to return formatted dates.
@@ -1131,14 +1020,11 @@ abstract class Base_Model implements \JsonSerializable {
 		$value = $this->{"get_{$key}"}();
 
 		if (wu_validate_date($value)) {
-
 			return date_i18n(get_option('date_format'), wu_date($value)->format('U'));
-
-		} // end if;
+		}
 
 		return $value;
-
-	} // end get_formatted_date;
+	}
 
 	/**
 	 * Get all items.
@@ -1157,8 +1043,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$items = $query_class->query($query_args);
 
 		return $items;
-
-	} // end get_all;
+	}
 
 	/**
 	 * Creates a copy of the given model adn resets it's id to a 'new' state.
@@ -1175,14 +1060,11 @@ abstract class Base_Model implements \JsonSerializable {
 		$clone->set_id(0);
 
 		if (method_exists($clone, 'set_date_created')) {
-
 			$clone->set_date_created(wu_get_current_time('mysql'));
-
-		} // end if;
+		}
 
 		return $clone;
-
-	} // end duplicate;
+	}
 
 	/**
 	 * Populate the data the resides on meta tables.
@@ -1198,7 +1080,6 @@ abstract class Base_Model implements \JsonSerializable {
 		unset($attributes['meta']);
 
 		foreach ($attributes as $attribute => $maybe_null) {
-
 			$possible_setters = array(
 				"get_{$attribute}",
 				"is_{$attribute}",
@@ -1207,21 +1088,16 @@ abstract class Base_Model implements \JsonSerializable {
 			foreach ($possible_setters as $setter) {
 				$setter = method_exists($this, $setter) ? $setter : '';
 
-				if (!$setter || !method_exists($this, "set_{$attribute}")) {
-
+				if ( ! $setter || ! method_exists($this, "set_{$attribute}")) {
 					continue;
-
-				} // end if;
+				}
 
 				$value = $this->{$setter}();
 
 				$this->{"set_{$attribute}"}($value);
-
-			} // end foreach;
-
-		} // end foreach;
-
-	} // end hydrate;
+			}
+		}
+	}
 
 	/**
 	 * Set set this to true to skip validations when saving..
@@ -1233,8 +1109,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function set_skip_validation($skip_validation = false) {
 
 		$this->skip_validation = $skip_validation;
-
-	} // end set_skip_validation;
+	}
 
 	/**
 	 * Returns the original parameters of the object.
@@ -1245,8 +1120,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function _get_original() {
 
 		return $this->_original;
-
-	} // end _get_original;
+	}
 
 	/**
 	 * Locks this model.
@@ -1257,8 +1131,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function lock() {
 
 		return $this->update_meta('wu_lock', true);
-
-	} // end lock;
+	}
 
 	/**
 	 * Check ths lock status of the model.
@@ -1269,8 +1142,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function is_locked() {
 
 		return $this->get_meta('wu_lock', false);
-
-	} // end is_locked;
+	}
 
 	/**
 	 * Unlocks the model.
@@ -1281,7 +1153,5 @@ abstract class Base_Model implements \JsonSerializable {
 	public function unlock() {
 
 		return $this->delete_meta('wu_lock');
-
-	} // end unlock;
-
-} // end class Base_Model;
+	}
+}

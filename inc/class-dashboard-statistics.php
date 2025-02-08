@@ -11,9 +11,9 @@
 
 namespace WP_Ultimo;
 
-use \WP_Ultimo\Models\Membership;
-use \WP_Ultimo\Models\Payment;
-use \WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Models\Membership;
+use WP_Ultimo\Models\Payment;
+use WP_Ultimo\Database\Payments\Payment_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -59,16 +59,13 @@ class Dashboard_Statistics {
 	public function __construct($args = array()) {
 
 		if ($args) {
-
 			$this->start_date = $args['start_date'];
 
 			$this->end_date = $args['end_date'];
 
 			$this->types = $args['types'];
-
-		} // end if;
-
-	} // end __construct;
+		}
+	}
 
 	/**
 	 * Runs on singleton instantiation.
@@ -76,7 +73,7 @@ class Dashboard_Statistics {
 	 * @since 2.0.0
 	 * @return void.
 	 */
-	public function init() {} // end init;
+	public function init() {}
 
 	/**
 	 * Main function to call the get data functions based on the array of types.
@@ -89,16 +86,13 @@ class Dashboard_Statistics {
 		$data = array();
 
 		foreach ($this->types as $key => $type) {
-
 			$data_function = 'get_data_' . $type;
 
-			$data[$key] = $this->$data_function();
-
-		} // end foreach;
+			$data[ $key ] = $this->$data_function();
+		}
 
 		return $data;
-
-	} // end statistics_data;
+	}
 
 	/**
 	 * Get data of all completed and refunded payments to show in the main graph.
@@ -159,16 +153,18 @@ class Dashboard_Statistics {
 			),
 		);
 
-		$memberships = wu_get_memberships(array(
-			'date_query' => array(
-				'column'   => 'date_created',
-				'compare'  => 'BETWEEN',
-				'relation' => '',
-				array(
-					'year' => current_time('Y', true),
+		$memberships = wu_get_memberships(
+			array(
+				'date_query' => array(
+					'column'   => 'date_created',
+					'compare'  => 'BETWEEN',
+					'relation' => '',
+					array(
+						'year' => current_time('Y', true),
+					),
 				),
 			)
-		));
+		);
 
 		$mrr_status = array(
 			'active',
@@ -182,39 +178,29 @@ class Dashboard_Statistics {
 		);
 
 		foreach ($memberships as $membership) {
-
-			if (!$membership->is_recurring()) {
-
+			if ( ! $membership->is_recurring()) {
 				continue;
-
-			} // end if;
+			}
 
 			$status = $membership->get_status();
 
 			if (in_array($status, $mrr_status, true)) {
-
 				$data = getdate(strtotime($membership->get_date_created()));
 
 				$month = strtolower($data['month']);
 
-				$payments_per_month[$month]['total'] += floatval($membership->get_normalized_amount());
-
-			} // end if;
+				$payments_per_month[ $month ]['total'] += floatval($membership->get_normalized_amount());
+			}
 
 			if (in_array($status, $churn_status, true)) {
-
 				$data = getdate(strtotime((string) $membership->get_date_cancellation()));
 
 				$month = strtolower($data['month']);
 
-				$payments_per_month[$month]['cancelled'] += floatval($membership->get_normalized_amount());
-
-			} // end if;
-
-		} // end foreach;
+				$payments_per_month[ $month ]['cancelled'] += floatval($membership->get_normalized_amount());
+			}
+		}
 
 		return $payments_per_month;
-
-	} // end get_data_mrr_growth;
-
-} // end class Dashboard_Statistics;
+	}
+}

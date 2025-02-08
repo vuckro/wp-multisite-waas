@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the default template used for steps defined ont he steps array 
+ * This is the default template used for steps defined ont he steps array
  *
  * This template can be overridden by copying it to yourtheme/wp-ultimo/signup/steps/step-default.php.
  *
@@ -15,35 +15,34 @@
  * @version     1.0.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
 
 <div class="wu-setup-content wu-content-<?php echo $signup->step; ?>">
 
-  <!-- <p class="message" style="width: 320px; margin-left: auto; margin-right: auto; box-sizing: border-box;">
-    Please enter your username or email address. You will receive a link to create a new password via email.
-  </p> -->
+	<!-- <p class="message" style="width: 320px; margin-left: auto; margin-right: auto; box-sizing: border-box;">
+	Please enter your username or email address. You will receive a link to create a new password via email.
+	</p> -->
 
-  <form name="loginform" id="loginform" method="post">
+	<form name="loginform" id="loginform" method="post">
 
-    <?php 
+	<?php
 
-    foreach ($fields as $field_slug => $field) {
+	foreach ($fields as $field_slug => $field) {
 
-      /**
-       * Prints each of our fields using a helper function
-       */
-      wu_print_signup_field($field_slug, $field, $results);
+		/**
+		 * Prints each of our fields using a helper function
+		 */
+		wu_print_signup_field($field_slug, $field, $results);
+	} // end foreach;
 
-    } // end foreach;
+	?>
 
-    ?>
+	<?php do_action("wp_ultimo_registration_step_$signup->step"); ?>
 
-    <?php do_action("wp_ultimo_registration_step_$signup->step"); ?>
-
-  </form>
+	</form>
 
 </div>

@@ -35,22 +35,18 @@ class Country extends Rule {
 	 *
 	 * @param mixed $country The country value detected.
 	 */
- public function check($country) : bool { // phpcs:ignore
+	public function check($country) : bool { // phpcs:ignore
 
 		$check = true;
 
 		if ($country) {
-
 			$country = strtoupper((string) $country);
 
 			$allowed_countries = array_keys(wu_get_countries());
 
 			$check = in_array($country, $allowed_countries, true);
-
-		} // end if;
+		}
 
 		return $check;
-
-	} // end check;
-
-} // end class Country;
+	}
+}

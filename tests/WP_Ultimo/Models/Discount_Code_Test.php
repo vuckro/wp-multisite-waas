@@ -12,11 +12,11 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_valid_active_discount_code() {
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( true );
+		$discount_code->set_active(true);
 
 		$result = $discount_code->is_valid();
 
-		$this->assertTrue( $result );
+		$this->assertTrue($result);
 	}
 
 	/**
@@ -24,13 +24,13 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_valid_inactive_discount_code() {
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( false );
+		$discount_code->set_active(false);
 
 		$result = $discount_code->is_valid();
 
-		$this->assertInstanceOf( WP_Error::class, $result );
-		$this->assertEquals( 'discount_code', $result->get_error_code() );
-		$this->assertEquals( 'This coupon code is not valid.', $result->get_error_message() );
+		$this->assertInstanceOf(WP_Error::class, $result);
+		$this->assertEquals('discount_code', $result->get_error_code());
+		$this->assertEquals('This coupon code is not valid.', $result->get_error_message());
 	}
 
 	/**
@@ -38,16 +38,18 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_valid_max_uses_exceeded() {
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( true );
-		$discount_code->set_max_uses( 5 );
-		$discount_code->set_uses( 5 );
+		$discount_code->set_active(true);
+		$discount_code->set_max_uses(5);
+		$discount_code->set_uses(5);
 
 		$result = $discount_code->is_valid();
 
-		$this->assertInstanceOf( WP_Error::class, $result );
-		$this->assertEquals( 'discount_code', $result->get_error_code() );
-		$this->assertEquals( 'This discount code was already redeemed the maximum amount of times allowed.',
-			$result->get_error_message() );
+		$this->assertInstanceOf(WP_Error::class, $result);
+		$this->assertEquals('discount_code', $result->get_error_code());
+		$this->assertEquals(
+			'This discount code was already redeemed the maximum amount of times allowed.',
+			$result->get_error_message()
+		);
 	}
 
 	/**
@@ -55,14 +57,14 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_valid_before_start_date() {
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( true );
-		$discount_code->set_date_start( date( 'Y-m-d H:i:s', strtotime( '+1 day' ) ) );
+		$discount_code->set_active(true);
+		$discount_code->set_date_start(date('Y-m-d H:i:s', strtotime('+1 day')));
 
 		$result = $discount_code->is_valid();
 
-		$this->assertInstanceOf( WP_Error::class, $result );
-		$this->assertEquals( 'discount_code', $result->get_error_code() );
-		$this->assertEquals( 'This coupon code is not valid.', $result->get_error_message() );
+		$this->assertInstanceOf(WP_Error::class, $result);
+		$this->assertEquals('discount_code', $result->get_error_code());
+		$this->assertEquals('This coupon code is not valid.', $result->get_error_message());
 	}
 
 	/**
@@ -70,14 +72,14 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_valid_after_expiration_date() {
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( true );
-		$discount_code->set_date_expiration( date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ) );
+		$discount_code->set_active(true);
+		$discount_code->set_date_expiration(date('Y-m-d H:i:s', strtotime('-1 day')));
 
 		$result = $discount_code->is_valid();
 
-		$this->assertInstanceOf( WP_Error::class, $result );
-		$this->assertEquals( 'discount_code', $result->get_error_code() );
-		$this->assertEquals( 'This coupon code is not valid.', $result->get_error_message() );
+		$this->assertInstanceOf(WP_Error::class, $result);
+		$this->assertEquals('discount_code', $result->get_error_code());
+		$this->assertEquals('This coupon code is not valid.', $result->get_error_message());
 	}
 
 	/**
@@ -86,13 +88,13 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	public function test_is_valid_for_allowed_product() {
 		$product_id    = 123;
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( true );
-		$discount_code->set_limit_products( true );
-		$discount_code->set_allowed_products( [ $product_id ] );
+		$discount_code->set_active(true);
+		$discount_code->set_limit_products(true);
+		$discount_code->set_allowed_products(array($product_id));
 
-		$result = $discount_code->is_valid( $product_id );
+		$result = $discount_code->is_valid($product_id);
 
-		$this->assertTrue( $result );
+		$this->assertTrue($result);
 	}
 
 	/**
@@ -102,15 +104,15 @@ class Discount_Code_Test extends WP_UnitTestCase {
 		$allowed_product_id    = 123;
 		$disallowed_product_id = 456;
 		$discount_code         = new Discount_Code();
-		$discount_code->set_active( true );
-		$discount_code->set_limit_products( true );
-		$discount_code->set_allowed_products( [ $allowed_product_id ] );
+		$discount_code->set_active(true);
+		$discount_code->set_limit_products(true);
+		$discount_code->set_allowed_products(array($allowed_product_id));
 
-		$result = $discount_code->is_valid( $disallowed_product_id );
+		$result = $discount_code->is_valid($disallowed_product_id);
 
-		$this->assertInstanceOf( WP_Error::class, $result );
-		$this->assertEquals( 'discount_code', $result->get_error_code() );
-		$this->assertEquals( 'This coupon code is not valid.', $result->get_error_message() );
+		$this->assertInstanceOf(WP_Error::class, $result);
+		$this->assertEquals('discount_code', $result->get_error_code());
+		$this->assertEquals('This coupon code is not valid.', $result->get_error_message());
 	}
 
 	/**
@@ -118,11 +120,11 @@ class Discount_Code_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_valid_no_product_limits() {
 		$discount_code = new Discount_Code();
-		$discount_code->set_active( true );
-		$discount_code->set_limit_products( false );
+		$discount_code->set_active(true);
+		$discount_code->set_limit_products(false);
 
 		$result = $discount_code->is_valid();
 
-		$this->assertTrue( $result );
+		$this->assertTrue($result);
 	}
 }

@@ -22,7 +22,7 @@ class Hooks {
 	/**
 	 * Static-only class.
 	 */
-	private function __construct() {} // end __construct;
+	private function __construct() {}
 
 	/**
 	 * Register the activation and deactivation hooks
@@ -46,8 +46,7 @@ class Hooks {
 		 * Runs the activation hook.
 		 */
 		add_action('plugins_loaded', array('WP_Ultimo\Hooks', 'on_activation_do'), 1);
-
-	} // end init;
+	}
 
 	/**
 	 *  Runs when WP Multisite WaaS is activated
@@ -63,8 +62,7 @@ class Hooks {
 		 * Set the activation flag
 		 */
 		update_network_option(null, 'wu_activation', 'yes');
-
-	} // end on_activation;
+	}
 
 	/**
 	 * Runs whenever the activation flag is set.
@@ -91,10 +89,8 @@ class Hooks {
 			 * @return void
 			 */
 			do_action('wu_activation');
-
-		} // end if;
-
-	} // end on_activation_do;
+		}
+	}
 
 	/**
 	 * Runs when WP Multisite WaaS is deactivated
@@ -118,7 +114,5 @@ class Hooks {
 		 * @return void
 		 */
 		do_action('wu_deactivation');
-
-	} // end on_deactivation;
-
-} // end class Hooks;
+	}
+}

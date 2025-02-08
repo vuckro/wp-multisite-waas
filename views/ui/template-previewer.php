@@ -15,8 +15,7 @@
  * @version     1.0.0
  */
 
-if (!defined('ABSPATH')) {
-
+if ( ! defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 
 } // end if;
@@ -29,190 +28,198 @@ do_action('wu_template_previewer_before');
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
-  <head>
+	<head>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="<?php bloginfo('charset'); ?>">
 
-  <?php wu_ignore_errors(function() {
-		wp_head();
-	}); ?>
+	<?php
+	wu_ignore_errors(
+		function () {
+			wp_head();
+		}
+	);
+	?>
 
-  </head>
+	</head>
 
-  <body>
+	<body>
 
-    <div id="switcher">
+	<div id="switcher">
 
-      <div class="center">
+		<div class="center">
 
-          <div class="logo">
+			<div class="logo">
 
-              <a title="<?php echo get_network_option(null, 'site_name'); ?>" href="<?php echo network_home_url(); ?>" target="_blank">
+				<a title="<?php echo get_network_option(null, 'site_name'); ?>" href="<?php echo network_home_url(); ?>" target="_blank">
 
-                  <?php if ($use_custom_logo && $custom_logo) : ?>
+					<?php if ($use_custom_logo && $custom_logo) : ?>
 
-						        <?php echo wp_get_attachment_image($custom_logo, 'full'); ?>
+								<?php echo wp_get_attachment_image($custom_logo, 'full'); ?>
 
-                  <?php else : ?>
+					<?php else : ?>
 
-                    <img src="<?php echo $logo_url; ?>" alt="<?php echo get_network_option(null, 'site_name'); ?>">
+					<img src="<?php echo $logo_url; ?>" alt="<?php echo get_network_option(null, 'site_name'); ?>">
 
-                  <?php endif; ?>
+					<?php endif; ?>
 
-              </a>
+				</a>
 
-          </div>
+			</div>
 
-          <ul id="theme_list_selector">
+			<ul id="theme_list_selector">
 
-              <li id="theme_list">
+				<li id="theme_list">
 
-                  <?php if ($selected_template) : ?>
+					<?php if ($selected_template) : ?>
 
-                      <a id="template_selector" href="#">
+						<a id="template_selector" href="#">
 
-						              <?php echo $selected_template->get_title(); ?>
+										<?php echo $selected_template->get_title(); ?>
 
-                          <span style="float: right; margin-top:  -3px" class="dashicons dashicons-arrow-down-alt2"></span>
+							<span style="float: right; margin-top:  -3px" class="dashicons dashicons-arrow-down-alt2"></span>
 
-                      </a>
+						</a>
 
-                  <?php else : ?>
+					<?php else : ?>
 
-                      <a id="template_selector" href="#">
+						<a id="template_selector" href="#">
 
-					                <?php _e('Select template...', 'wp-ultimo'); ?>
+									<?php _e('Select template...', 'wp-ultimo'); ?>
 
-                          <span style="float: right; margin-top:  -3px" class="dashicons dashicons-arrow-down-alt2"></span>
+							<span style="float: right; margin-top:  -3px" class="dashicons dashicons-arrow-down-alt2"></span>
 
-                      </a>
+						</a>
 
-                  <?php endif; ?>
+					<?php endif; ?>
 
-                  <ul id="test1a">
+					<ul id="test1a">
 
-                      <?php foreach ($templates as $template) : ?>
+						<?php foreach ($templates as $template) : ?>
 
-                          <li>
+							<li>
 
-                              <a
-                                href="<?php echo $tp->get_preview_url($template->get_id()); ?>"
-                                data-frame="<?php echo $template->get_active_site_url(); ?>"
-                                data-title="<?php echo $template->get_title(); ?>"
-                                data-id="<?php echo $template->get_id(); ?>"
-                              >
+								<a
+								href="<?php echo $tp->get_preview_url($template->get_id()); ?>"
+								data-frame="<?php echo $template->get_active_site_url(); ?>"
+								data-title="<?php echo $template->get_title(); ?>"
+								data-id="<?php echo $template->get_id(); ?>"
+								>
 
-							                  <?php echo $template->get_title(); ?>
+												<?php echo $template->get_title(); ?>
 
-                              </a>
+								</a>
 
-                              <img alt="" class="preview" src="<?php echo $template->get_featured_image(); ?>">
+								<img alt="" class="preview" src="<?php echo $template->get_featured_image(); ?>">
 
-                          </li>
+							</li>
 
-                      <?php endforeach; ?>
+						<?php endforeach; ?>
 
-                  </ul>
+					</ul>
 
-              </li>
+				</li>
 
-          </ul>
+			</ul>
 
-          <?php if ($display_responsive_controls) : ?>
+			<?php if ($display_responsive_controls) : ?>
 
-              <div class="responsive">
+				<div class="responsive">
 
-                  <a href="#" class="desktop active dashicons-before dashicons-desktop" title="<?php esc_attr_e('View Desktop Version', 'wp-ultimo'); ?>"></a>
+					<a href="#" class="desktop active dashicons-before dashicons-desktop" title="<?php esc_attr_e('View Desktop Version', 'wp-ultimo'); ?>"></a>
 
-                  <a href="#" class="tabletlandscape dashicons-before dashicons-tablet" title="<?php esc_attr_e('View Tablet Landscape (1024x768)', 'wp-ultimo'); ?>"></a>
+					<a href="#" class="tabletlandscape dashicons-before dashicons-tablet" title="<?php esc_attr_e('View Tablet Landscape (1024x768)', 'wp-ultimo'); ?>"></a>
 
-                  <a href="#" class="tabletportrait dashicons-before dashicons-tablet" title="<?php esc_attr_e('View Tablet Portrait (768x1024)', 'wp-ultimo'); ?>"></a>
+					<a href="#" class="tabletportrait dashicons-before dashicons-tablet" title="<?php esc_attr_e('View Tablet Portrait (768x1024)', 'wp-ultimo'); ?>"></a>
 
-                  <a href="#" class="mobilelandscape dashicons-before dashicons-smartphone" title="<?php esc_attr_e('View Mobile Landscape (480x320)', 'wp-ultimo'); ?>"></a>
+					<a href="#" class="mobilelandscape dashicons-before dashicons-smartphone" title="<?php esc_attr_e('View Mobile Landscape (480x320)', 'wp-ultimo'); ?>"></a>
 
-                  <a href="#" class="mobileportrait dashicons-before dashicons-smartphone" title="<?php esc_attr_e('View Mobile Portrait (320x480)', 'wp-ultimo'); ?>"></a>
+					<a href="#" class="mobileportrait dashicons-before dashicons-smartphone" title="<?php esc_attr_e('View Mobile Portrait (320x480)', 'wp-ultimo'); ?>"></a>
 
-              </div>
+				</div>
 
-          <?php endif; ?>
+			<?php endif; ?>
 
-      </div>
+		</div>
 
-      <?php if (!isset($_GET['switching'])) : ?>
+		<?php if ( ! isset($_GET['switching'])) : ?>
 
-        <ul class="links">
+		<ul class="links">
 
-            <?php if (wu_request('open')) : ?>
+			<?php if (wu_request('open')) : ?>
 
-                <li class="select-template">
+				<li class="select-template">
 
-                    <a id="action-select" href="#"><?php echo $button_text; ?> &rarr;</a>
+					<a id="action-select" href="#"><?php echo $button_text; ?> &rarr;</a>
 
-                </li>
+				</li>
 
-            <?php else : ?>
+			<?php else : ?>
 
-                <li class="select-template">
+				<li class="select-template">
 
-                    <a id="action-select-link" href="<?php echo wu_get_registration_url('?template_selection='.$selected_template->get_id()); ?>"><?php echo $button_text; ?> &rarr;</a>
+					<a id="action-select-link" href="<?php echo wu_get_registration_url('?template_selection=' . $selected_template->get_id()); ?>"><?php echo $button_text; ?> &rarr;</a>
 
-                </li>
+				</li>
 
-            <?php endif; ?>
+			<?php endif; ?>
 
-        </ul>
+		</ul>
 
-      <?php endif; ?>
+		<?php endif; ?>
 
-      <input type="hidden" id="template-selector" value="<?php echo esc_attr($_GET['template-preview']); ?>" />
+		<input type="hidden" id="template-selector" value="<?php echo esc_attr($_GET['template-preview']); ?>" />
 
-    </div>
+	</div>
 
-    <?php if (!isset($_GET['switching'])) : ?>
+	<?php if ( ! isset($_GET['switching'])) : ?>
 
-      <div class="mobile-selector">
+		<div class="mobile-selector">
 
-		      <?php if (wu_request('open')) : ?>
+				<?php if (wu_request('open')) : ?>
 
-              <a id="action-select2" href="#"><?php echo $button_text; ?> &rarr;</a>
+				<a id="action-select2" href="#"><?php echo $button_text; ?> &rarr;</a>
 
-          <?php else : ?>
+			<?php else : ?>
 
-              <a id="action-select-link" href="<?php echo wu_get_registration_url('?template_id='.$selected_template->get_id()); ?>"><?php echo $button_text; ?> &rarr;</a>
+				<a id="action-select-link" href="<?php echo wu_get_registration_url('?template_id=' . $selected_template->get_id()); ?>"><?php echo $button_text; ?> &rarr;</a>
 
-          <?php endif; ?>
+			<?php endif; ?>
 
-      </div>
+		</div>
 
-    <?php endif; ?>
+	<?php endif; ?>
 
-    <?php if (!wu_request('customizer')) : ?>
+	<?php if ( ! wu_request('customizer')) : ?>
 
-      <iframe id="iframe" src="<?php echo set_url_scheme(add_query_arg('wu-preview', '1', get_home_url($selected_template->get_id()))); ?>" width="100%" height="100%"></iframe>
+		<iframe id="iframe" src="<?php echo set_url_scheme(add_query_arg('wu-preview', '1', get_home_url($selected_template->get_id()))); ?>" width="100%" height="100%"></iframe>
 
-    <?php else : ?>
+	<?php else : ?>
 
-      <div class="wu-styling">
+		<div class="wu-styling">
 
-        <div class="wu-w-full wu-text-center wu-relative wu-flex wu-justify-center wu-items-center wu-h-screen">
+		<div class="wu-w-full wu-text-center wu-relative wu-flex wu-justify-center wu-items-center wu-h-screen">
 
-          <div class="wu-text-xl wu-rounded wu-font-bold wu-uppercase wu-inline-block wu-p-8 wu-opacity-50" style="margin-top: 62px; background-color: #000; color: #666;">
+			<div class="wu-text-xl wu-rounded wu-font-bold wu-uppercase wu-inline-block wu-p-8 wu-opacity-50" style="margin-top: 62px; background-color: #000; color: #666;">
 
-		        <?php _e('Site Template Preview will go here!', 'wp-ultimo'); ?>
+				<?php _e('Site Template Preview will go here!', 'wp-ultimo'); ?>
 
-          </div>
+			</div>
 
-        </div>
+		</div>
 
-      </div>
+		</div>
 
-    <?php endif; ?>
+	<?php endif; ?>
 
-		<?php wu_ignore_errors(function() {
-			wp_footer();
-		}); ?>
+		<?php
+		wu_ignore_errors(
+			function () {
+				wp_footer();
+			}
+		);
+		?>
 
-  </body>
+	</body>
 
 </html>

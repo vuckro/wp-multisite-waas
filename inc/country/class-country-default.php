@@ -40,8 +40,7 @@ class Country_Default extends Country {
 	public function get_name() {
 
 		return $this->name;
-
-	} // end get_name;
+	}
 
 	/**
 	 * Creates a country instance with a code and name.
@@ -55,18 +54,19 @@ class Country_Default extends Country {
 	 */
 	public static function build($code, $name = null, $attributes = array()) {
 
-		$instance = new self;
+		$instance = new self();
 
 		$instance->name = $name ? $name : wu_get_country_name($code);
 
-		$instance->attributes = wp_parse_args($attributes, array(
-			'country_code' => strtoupper($code),
-			'currency'     => strtoupper($code),
-			'phone_code'   => 00,
-		));
+		$instance->attributes = wp_parse_args(
+			$attributes,
+			array(
+				'country_code' => strtoupper($code),
+				'currency'     => strtoupper($code),
+				'phone_code'   => 00,
+			)
+		);
 
 		return $instance;
-
-	} // end build;
-
-} // end class Country_Default;
+	}
+}

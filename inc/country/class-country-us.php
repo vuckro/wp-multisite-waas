@@ -116,8 +116,7 @@ class Country_US extends Country {
 	public function get_name() {
 
 		return __('United States', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for US.
@@ -195,7 +194,5 @@ class Country_US extends Country {
 			'WI'    => __('Wisconsin', 'wp-ultimo-locations'),
 			'WY'    => __('Wyoming', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_US;
+	}
+}

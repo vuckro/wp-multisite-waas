@@ -8,16 +8,16 @@
 
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-  <div class="wu-mb-2 wu-mt-4">
+	<div class="wu-mb-2 wu-mt-4">
 
-    <!-- Content Element -->
-    <div class="wu-ml-auto entry-content wu-pb-3">
+	<!-- Content Element -->
+	<div class="wu-ml-auto entry-content wu-pb-3">
 
-      <?php echo do_shortcode($simple_text); ?>
+		<?php echo do_shortcode($simple_text); ?>
 
-    </div>
-    <!-- Content Element - End -->
+	</div>
+	<!-- Content Element - End -->
 
-  </div>
+	</div>
 
 </div>

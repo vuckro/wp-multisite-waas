@@ -59,8 +59,7 @@ abstract class Country {
 	public function __get($attribute) {
 
 		return wu_get_isset($this->attributes, $attribute, null);
-
-	} // end __get;
+	}
 
 	/**
 	 * Returns the list of states/provinces of this country.
@@ -85,8 +84,7 @@ abstract class Country {
 		 * @return array The filtered list of states.
 		 */
 		return apply_filters('wu_country_get_states', $states, $this->country_code, $this);
-
-	} // end get_states;
+	}
 
 	/**
 	 * Returns states as options.
@@ -103,17 +101,14 @@ abstract class Country {
 		$placeholder_option = array();
 
 		if ($placeholder !== false && $options) {
-
 			$division_name = $this->get_administrative_division_name();
 
 			// translators: %s is the name of the administrative division (state, province, etc).
 			$placeholder_option[''] = $placeholder !== '' ? $placeholder : sprintf(__('Select your %s', 'wp-ultimo'), $division_name);
-
-		} // end if;
+		}
 
 		return array_merge($placeholder_option, $options);
-
-	} // end get_states_as_options;
+	}
 
 	/**
 	 * Returns the list of cities for a country and state.
@@ -126,20 +121,16 @@ abstract class Country {
 	public function get_cities($state_code = '') {
 
 		if (empty($state_code)) {
-
 			return array();
-
-		} // end if;
+		}
 
 		$repository_file = wu_path("inc/country/{$this->country_code}/{$state_code}.php");
 
 		if (file_exists($repository_file) === false) {
-
 			return array();
+		}
 
-		} // end if;
-
-		$cities = include($repository_file);
+		$cities = include $repository_file;
 
 		/**
 		 * Returns the list of cities for a state in a country.
@@ -153,8 +144,7 @@ abstract class Country {
 		 * @return array The filtered list of states.
 		 */
 		return apply_filters('wu_country_get_cities', $cities, $this->country_code, $state_code, $this);
-
-	} // end get_cities;
+	}
 
 	/**
 	 * Get state cities as options.
@@ -172,16 +162,13 @@ abstract class Country {
 		$placeholder_option = array();
 
 		if ($placeholder !== false && $options) {
-
 			$placeholder_option[''] = $placeholder !== '' ? $placeholder : __('Select your city', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$options = array_combine($options, $options);
 
 		return array_merge($placeholder_option, $options);
-
-	} // end get_cities_as_options;
+	}
 
 	/**
 	 * Returns the list of states for a country.
@@ -192,8 +179,7 @@ abstract class Country {
 	protected function states() {
 
 		return array();
-
-	} // end states;
+	}
 
 	/**
 	 * Get the name of municipalities for a country/state.
@@ -214,8 +200,7 @@ abstract class Country {
 		$name = $ucwords ? ucwords($name) : $name;
 
 		return apply_filters('wu_country_get_municipality_name', $name, $this->country_code, $state_code, $ucwords, $this);
-
-	} // end get_municipality_name;
+	}
 
 	/**
 	 * Get the name given to states for a country.
@@ -263,7 +248,5 @@ abstract class Country {
 		 * @return string The modified division name.
 		 */
 		return apply_filters('wu_country_get_administrative_division_name', $name, $this->country_code, $state_code, $ucwords, $this);
-
-	} // end get_administrative_division_name;
-
-} // end class Country;
+	}
+}

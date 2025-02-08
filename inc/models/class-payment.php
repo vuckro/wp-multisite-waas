@@ -9,12 +9,12 @@
 
 namespace WP_Ultimo\Models;
 
-use \WP_Ultimo\Models\Base_Model;
-use \WP_Ultimo\Database\Payments\Payment_Status;
-use \WP_Ultimo\Checkout\Line_Item;
-use \WP_Ultimo\Models\Product;
-use \WP_Ultimo\Models\Customer;
-use \WP_Ultimo\Models\Membership;
+use WP_Ultimo\Models\Base_Model;
+use WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Checkout\Line_Item;
+use WP_Ultimo\Models\Product;
+use WP_Ultimo\Models\Customer;
+use WP_Ultimo\Models\Membership;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -189,14 +189,11 @@ class Payment extends Base_Model {
 		$method_key = str_replace('_formatted', '', $name);
 
 		if (strpos($name, '_formatted') !== false && method_exists($this, $method_key)) {
-
 			return wu_format_currency($this->{"$method_key"}(), $this->get_currency());
-
-		} // end if;
+		}
 
 		throw new \BadMethodCallException($name);
-
-	} // end __call;
+	}
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -233,8 +230,7 @@ class Payment extends Base_Model {
 			'invoice_number'              => 'default:',
 			'cancel_membership_on_refund' => 'boolean|default:0',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Gets the customer object associated with this payment.
@@ -246,8 +242,7 @@ class Payment extends Base_Model {
 	public function get_customer() {
 
 		return wu_get_customer($this->get_customer_id());
-
-	} // end get_customer;
+	}
 
 	/**
 	 * Get the value of customer_id.
@@ -258,8 +253,7 @@ class Payment extends Base_Model {
 	public function get_customer_id(): int {
 
 		return absint($this->customer_id);
-
-	} // end get_customer_id;
+	}
 
 	/**
 	 * Set the value of customer_id.
@@ -271,20 +265,18 @@ class Payment extends Base_Model {
 	public function set_customer_id($customer_id) {
 
 		$this->customer_id = absint($customer_id);
-
-	} // end set_customer_id;
- /**
-  * Gets the membership object associated with this payment.
-  *
-  * @todo Implement this.
-  * @since 2.0.0
-  * @return \WP_Ultimo\Models\Membership|false
-  */
- public function get_membership() {
+	}
+	/**
+	 * Gets the membership object associated with this payment.
+	 *
+	 * @todo Implement this.
+	 * @since 2.0.0
+	 * @return \WP_Ultimo\Models\Membership|false
+	 */
+	public function get_membership() {
 
 		return wu_get_membership($this->get_membership_id());
-
-	} // end get_membership;
+	}
 
 	/**
 	 * Get membership ID.
@@ -295,8 +287,7 @@ class Payment extends Base_Model {
 	public function get_membership_id() {
 
 		return $this->membership_id;
-
-	} // end get_membership_id;
+	}
 
 	/**
 	 * Set membership ID.
@@ -308,8 +299,7 @@ class Payment extends Base_Model {
 	public function set_membership_id($membership_id) {
 
 		$this->membership_id = $membership_id;
-
-	} // end set_membership_id;
+	}
 
 	/**
 	 * Get parent payment ID.
@@ -320,8 +310,7 @@ class Payment extends Base_Model {
 	public function get_parent_id() {
 
 		return $this->parent_id;
-
-	} // end get_parent_id;
+	}
 
 	/**
 	 * Set parent payment ID.
@@ -333,8 +322,7 @@ class Payment extends Base_Model {
 	public function set_parent_id($parent_id) {
 
 		$this->parent_id = $parent_id;
-
-	} // end set_parent_id;
+	}
 
 	/**
 	 * Get currency for this payment. 3-letter currency code.
@@ -346,8 +334,7 @@ class Payment extends Base_Model {
 
 		// return $this->currency; For now, multi-currency is not yet supported.
 		return wu_get_setting('currency_symbol', 'USD');
-
-	} // end get_currency;
+	}
 
 	/**
 	 * Set currency for this payment. 3-letter currency code.
@@ -359,8 +346,7 @@ class Payment extends Base_Model {
 	public function set_currency($currency) {
 
 		$this->currency = $currency;
-
-	} // end set_currency;
+	}
 
 	/**
 	 * Get value before taxes, discounts, fees and etc.
@@ -371,8 +357,7 @@ class Payment extends Base_Model {
 	public function get_subtotal(): float {
 
 		return $this->subtotal;
-
-	} // end get_subtotal;
+	}
 
 	/**
 	 * Set value before taxes, discounts, fees and etc.
@@ -384,8 +369,7 @@ class Payment extends Base_Model {
 	public function set_subtotal($subtotal) {
 
 		$this->subtotal = $subtotal;
-
-	} // end set_subtotal;
+	}
 
 	/**
 	 * Get refund total in this payment.
@@ -396,8 +380,7 @@ class Payment extends Base_Model {
 	public function get_refund_total(): float {
 
 		return $this->refund_total;
-
-	} // end get_refund_total;
+	}
 
 	/**
 	 * Set refund total in this payment.
@@ -409,8 +392,7 @@ class Payment extends Base_Model {
 	public function set_refund_total($refund_total): void {
 
 		$this->refund_total = $refund_total;
-
-	} // end set_refund_total;
+	}
 
 	/**
 	 * Get the amount, in currency, of the tax.
@@ -421,8 +403,7 @@ class Payment extends Base_Model {
 	public function get_tax_total(): float {
 
 		return (float) $this->tax_total;
-
-	} // end get_tax_total;
+	}
 
 	/**
 	 * Set the amount, in currency, of the tax.
@@ -434,8 +415,7 @@ class Payment extends Base_Model {
 	public function set_tax_total($tax_total): void {
 
 		$this->tax_total = $tax_total;
-
-	} // end set_tax_total;
+	}
 
 	/**
 	 * Get discount code used.
@@ -446,8 +426,7 @@ class Payment extends Base_Model {
 	public function get_discount_code() {
 
 		return $this->discount_code;
-
-	} // end get_discount_code;
+	}
 
 	/**
 	 * Set discount code used.
@@ -459,8 +438,7 @@ class Payment extends Base_Model {
 	public function set_discount_code($discount_code) {
 
 		$this->discount_code = $discount_code;
-
-	} // end set_discount_code;
+	}
 
 	/**
 	 * Get this takes into account fees, discounts, credits, etc.
@@ -471,8 +449,7 @@ class Payment extends Base_Model {
 	public function get_total(): float {
 
 		return (float) $this->total;
-
-	} // end get_total;
+	}
 
 	/**
 	 * Set this takes into account fees, discounts, credits, etc.
@@ -484,8 +461,7 @@ class Payment extends Base_Model {
 	public function set_total($total) {
 
 		$this->total = $total;
-
-	} // end set_total;
+	}
 
 	/**
 	 * Returns the Label for a given severity level.
@@ -498,8 +474,7 @@ class Payment extends Base_Model {
 		$status = new Payment_Status($this->get_status());
 
 		return $status->get_label();
-
-	} // end get_status_label;
+	}
 
 	/**
 	 * Gets the classes for a given class.
@@ -512,8 +487,7 @@ class Payment extends Base_Model {
 		$status = new Payment_Status($this->get_status());
 
 		return $status->get_classes();
-
-	} // end get_status_class;
+	}
 
 	/**
 	 * Get status of the status.
@@ -524,8 +498,7 @@ class Payment extends Base_Model {
 	public function get_status() {
 
 		return $this->status;
-
-	} // end get_status;
+	}
 
 	/**
 	 * Set status of the status.
@@ -538,8 +511,7 @@ class Payment extends Base_Model {
 	public function set_status($status) {
 
 		$this->status = $status;
-
-	} // end set_status;
+	}
 
 	/**
 	 * Get gateway used to process this payment.
@@ -550,8 +522,7 @@ class Payment extends Base_Model {
 	public function get_gateway() {
 
 		return $this->gateway;
-
-	} // end get_gateway;
+	}
 
 	/**
 	 * Set gateway used to process this payment.
@@ -563,8 +534,7 @@ class Payment extends Base_Model {
 	public function set_gateway($gateway) {
 
 		$this->gateway = $gateway;
-
-	} // end set_gateway;
+	}
 
 	/**
 	 * Returns the payment method used. Usually it is the public name of the gateway.
@@ -576,25 +546,20 @@ class Payment extends Base_Model {
 
 		$gateway = $this->get_gateway();
 
-		if (!$gateway) {
-
+		if ( ! $gateway) {
 			return __('None', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$gateway_class = wu_get_gateway($gateway);
 
-		if (!$gateway_class) {
-
+		if ( ! $gateway_class) {
 			return __('None', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$title = $gateway_class->get_public_title();
 
 		return apply_filters("wu_gateway_{$gateway}_as_option_title", $title, $gateway_class);
-
-	} // end get_payment_method;
+	}
 
 	/**
 	 * Returns the product associated to this payment.
@@ -605,8 +570,7 @@ class Payment extends Base_Model {
 	public function get_product() {
 
 		return wu_get_product($this->product_id);
-
-	} // end get_product;
+	}
 
 	/**
 	 * Checks if this payment has line items.
@@ -618,9 +582,8 @@ class Payment extends Base_Model {
 	 */
 	public function has_line_items(): bool {
 
-		return !empty($this->get_line_items());
-
-	} // end has_line_items;
+		return ! empty($this->get_line_items());
+	}
 
 	/**
 	 * Returns the line items for this payment.
@@ -634,16 +597,13 @@ class Payment extends Base_Model {
 	public function get_line_items(): array {
 
 		if ($this->line_items === null) {
-
 			$line_items = (array) $this->get_meta('wu_line_items');
 
 			$this->line_items = array_filter($line_items);
-
-		} // end if;
+		}
 
 		return (array) $this->line_items;
-
-	} // end get_line_items;
+	}
 
 	/**
 	 * Set the line items of this payment.
@@ -660,8 +620,7 @@ class Payment extends Base_Model {
 		$this->meta['wu_line_items'] = $line_items;
 
 		$this->line_items = $line_items;
-
-	} // end set_line_items;
+	}
 
 	/**
 	 * Add a new line item.
@@ -675,19 +634,16 @@ class Payment extends Base_Model {
 
 		$line_items = $this->get_line_items();
 
-		if (!is_a($line_item, self::class)) {
-
+		if ( ! is_a($line_item, self::class)) {
 			return;
+		}
 
-		} // end if;
-
-		$line_items[$line_item->get_id()] = $line_item;
+		$line_items[ $line_item->get_id() ] = $line_item;
 
 		$this->set_line_items($line_items);
 
 		krsort($this->line_items);
-
-	} // end add_line_item;
+	}
 
 	/**
 	 * Returns an array containing the subtotal per tax rate.
@@ -702,30 +658,23 @@ class Payment extends Base_Model {
 		$tax_brackets = array();
 
 		foreach ($line_items as $line_item) {
-
 			$tax_bracket = $line_item->get_tax_rate();
 
-			if (!$tax_bracket) {
+			if ( ! $tax_bracket) {
+				continue;
+			}
+
+			if (isset($tax_brackets[ $tax_bracket ])) {
+				$tax_brackets[ $tax_bracket ] += $line_item->get_tax_total();
 
 				continue;
+			}
 
-			} // end if;
-
-			if (isset($tax_brackets[$tax_bracket])) {
-
-				$tax_brackets[$tax_bracket] += $line_item->get_tax_total();
-
-				continue;
-
-			} // end if;
-
-			$tax_brackets[$tax_bracket] = $line_item->get_tax_total();
-
-		} // end foreach;
+			$tax_brackets[ $tax_bracket ] = $line_item->get_tax_total();
+		}
 
 		return $tax_brackets;
-
-	} // end get_tax_breakthrough;
+	}
 
 	/**
 	 * Recalculate payment totals.
@@ -748,7 +697,6 @@ class Payment extends Base_Model {
 		$total = 0;
 
 		foreach ($line_items as $line_item) {
-
 			$line_item->recalculate_totals();
 
 			$tax_total += $line_item->get_tax_total();
@@ -758,23 +706,21 @@ class Payment extends Base_Model {
 			$total += $line_item->get_total();
 
 			if ($line_item->get_type() === 'refund') {
-
 				$refund_total += $line_item->get_subtotal();
+			}
+		}
 
-			} // end if;
-
-		} // end foreach;
-
-		$this->attributes(array(
-			'tax_total'    => $tax_total,
-			'subtotal'     => $sub_total,
-			'refund_total' => $refund_total,
-			'total'        => $total,
-		));
+		$this->attributes(
+			array(
+				'tax_total'    => $tax_total,
+				'subtotal'     => $sub_total,
+				'refund_total' => $refund_total,
+				'total'        => $total,
+			)
+		);
 
 		return $this;
-
-	} // end recalculate_totals;
+	}
 
 	/**
 	 * Checks if this payment is payable still.
@@ -784,14 +730,16 @@ class Payment extends Base_Model {
 	 */
 	public function is_payable(): bool {
 
-		$payable_statuses = apply_filters('wu_payment_payable_statuses', array(
-			Payment_Status::PENDING,
-			Payment_Status::FAILED,
-		));
+		$payable_statuses = apply_filters(
+			'wu_payment_payable_statuses',
+			array(
+				Payment_Status::PENDING,
+				Payment_Status::FAILED,
+			)
+		);
 
 		return $this->get_total() > 0 && in_array($this->get_status(), $payable_statuses, true);
-
-	} // end is_payable;
+	}
 
 	/**
 	 * Returns the link to pay for this payment.
@@ -801,19 +749,19 @@ class Payment extends Base_Model {
 	 */
 	public function get_payment_url() {
 
-		if (!$this->is_payable()) {
-
+		if ( ! $this->is_payable()) {
 			return false;
-
-		} // end if;
+		}
 
 		$slug = $this->get_hash();
 
-		return add_query_arg(array(
-			'payment' => $slug,
-		), wu_get_registration_url());
-
-	} // end get_payment_url;
+		return add_query_arg(
+			array(
+				'payment' => $slug,
+			),
+			wu_get_registration_url()
+		);
+	}
 
 	/**
 	 * Get iD of the product of this payment.
@@ -824,8 +772,7 @@ class Payment extends Base_Model {
 	public function get_product_id() {
 
 		return $this->product_id;
-
-	} // end get_product_id;
+	}
 
 	/**
 	 * Set iD of the product of this payment.
@@ -837,8 +784,7 @@ class Payment extends Base_Model {
 	public function set_product_id($product_id) {
 
 		$this->product_id = $product_id;
-
-	} // end set_product_id;
+	}
 
 	/**
 	 * Generates the Invoice URL.
@@ -855,8 +801,7 @@ class Payment extends Base_Model {
 		);
 
 		return add_query_arg($url_atts, get_site_url(wu_get_main_site_id()));
-
-	} // end get_invoice_url;
+	}
 
 	/**
 	 * Get iD of the payment on the gateway, if it exists.
@@ -867,8 +812,7 @@ class Payment extends Base_Model {
 	public function get_gateway_payment_id() {
 
 		return $this->gateway_payment_id;
-
-	} // end get_gateway_payment_id;
+	}
 
 	/**
 	 * Set iD of the payment on the gateway, if it exists.
@@ -880,8 +824,7 @@ class Payment extends Base_Model {
 	public function set_gateway_payment_id($gateway_payment_id) {
 
 		$this->gateway_payment_id = $gateway_payment_id;
-
-	} // end set_gateway_payment_id;
+	}
 
 	/**
 	 * By default, we just use the to_array method, but you can rewrite this.
@@ -900,8 +843,7 @@ class Payment extends Base_Model {
 		$search_result['product_names'] = implode(', ', array_column($line_items, 'title'));
 
 		return $search_result;
-
-	} // end to_search_results;
+	}
 
 	/**
 	 * Get the total value in discounts.
@@ -912,8 +854,7 @@ class Payment extends Base_Model {
 	public function get_discount_total() {
 
 		return (float) $this->discount_total;
-
-	} // end get_discount_total;
+	}
 
 	/**
 	 * Set the total value in discounts.
@@ -925,8 +866,7 @@ class Payment extends Base_Model {
 	public function set_discount_total($discount_total) {
 
 		$this->discount_total = (float) $discount_total;
-
-	} // end set_discount_total;
+	}
 
 	/**
 	 * Get the invoice number actually saved on the payment.
@@ -937,14 +877,11 @@ class Payment extends Base_Model {
 	public function get_saved_invoice_number() {
 
 		if ($this->invoice_number === null) {
-
 			$this->invoice_number = $this->get_meta('wu_invoice_number', '');
-
-		} // end if;
+		}
 
 		return $this->invoice_number;
-
-	} // end get_saved_invoice_number;
+	}
 
 	/**
 	 * Get sequential invoice number assigned to this payment.
@@ -955,26 +892,20 @@ class Payment extends Base_Model {
 	public function get_invoice_number() {
 
 		if (wu_get_setting('invoice_numbering_scheme', 'reference_code') === 'reference_code') {
-
 			return $this->get_hash();
-
-		} // end if;
+		}
 
 		$provisional = false;
 
 		if ($this->invoice_number === null) {
-
 			$this->invoice_number = $this->get_meta('wu_invoice_number');
-
-		} // end if;
+		}
 
 		if ($this->invoice_number === false) {
-
 			$provisional = true;
 
 			$this->invoice_number = wu_get_setting('next_invoice_number');
-
-		} // end if;
+		}
 
 		$prefix = wu_get_setting('invoice_prefix', '');
 
@@ -999,8 +930,7 @@ class Payment extends Base_Model {
 		$prefix = str_replace($search, $replace, (string) $prefix);
 
 		return sprintf('%s%s %s', $prefix, $this->invoice_number, $provisional ? __('(provisional)', 'wp-ultimo') : '');
-
-	} // end get_invoice_number;
+	}
 
 	/**
 	 * Set sequential invoice number assigned to this payment.
@@ -1014,8 +944,7 @@ class Payment extends Base_Model {
 		$this->meta['wu_invoice_number'] = $invoice_number;
 
 		$this->invoice_number = $invoice_number;
-
-	} // end set_invoice_number;
+	}
 
 	/**
 	 * Remove all non-recurring items from the payment.
@@ -1031,22 +960,17 @@ class Payment extends Base_Model {
 		$line_items = $this->get_line_items();
 
 		foreach ($line_items as $line_item_id => $line_item) {
-
-			if (!$line_item->is_recurring()) {
-
-				unset($line_items[$line_item_id]);
-
-			} // end if;
-
-		} // end foreach;
+			if ( ! $line_item->is_recurring()) {
+				unset($line_items[ $line_item_id ]);
+			}
+		}
 
 		$this->set_line_items($line_items);
 
 		$this->recalculate_totals();
 
 		return $this;
-
-	} // end remove_non_recurring_items;
+	}
 
 	/**
 	 * Get holds if we need to cancel the membership on refund..
@@ -1057,14 +981,11 @@ class Payment extends Base_Model {
 	public function should_cancel_membership_on_refund() {
 
 		if ($this->cancel_membership_on_refund === null) {
-
 			$this->cancel_membership_on_refund = $this->get_meta('wu_cancel_membership_on_refund', false);
-
-		} // end if;
+		}
 
 		return $this->cancel_membership_on_refund;
-
-	} // end should_cancel_membership_on_refund;
+	}
 
 	/**
 	 * Set holds if we need to cancel the membership on refund..
@@ -1078,8 +999,7 @@ class Payment extends Base_Model {
 		$this->meta['wu_cancel_membership_on_refund'] = $cancel_membership_on_refund;
 
 		$this->cancel_membership_on_refund = $cancel_membership_on_refund;
-
-	} // end set_cancel_membership_on_refund;
+	}
 
 	/**
 	 * Handles a payment refund.
@@ -1108,10 +1028,8 @@ class Payment extends Base_Model {
 		 * refund the full amount.
 		 */
 		if (empty($amount)) {
-
 			$amount = $this->get_total();
-
-		} // end if;
+		}
 
 		$amount = wu_to_float($amount);
 
@@ -1119,10 +1037,8 @@ class Payment extends Base_Model {
 		 * Do the same for the behavior regarding memberships.
 		 */
 		if (is_null($should_cancel_membership_on_refund)) {
-
 			$should_cancel_membership_on_refund = $this->should_cancel_membership_on_refund();
-
-		} // end if;
+		}
 
 		/*
 		 * First, deal with the status.
@@ -1133,18 +1049,14 @@ class Payment extends Base_Model {
 		 * it is a partial refund.
 		 */
 		if ($amount >= $this->get_total()) {
-
 			$title = __('Full Refund', 'wp-ultimo');
 
 			$new_status = Payment_Status::REFUND;
-
 		} else {
-
 			$title = __('Partial Refund', 'wp-ultimo');
 
 			$new_status = Payment_Status::PARTIAL_REFUND;
-
-		} // end if;
+		}
 
 		$time = current_time('timestamp'); // phpcs:ignore
 
@@ -1175,30 +1087,23 @@ class Payment extends Base_Model {
 		$status = $this->save();
 
 		if (is_wp_error($status)) {
-
 			return $status;
-
-		} // end if;
+		}
 
 		/**
 		 * Updating the payment went well.
 		 * Let's deal with the membership, if needed.
 		 */
 		if ($should_cancel_membership_on_refund) {
-
 			$membership = $this->get_membership();
 
 			if ($membership) {
-
 				$membership->cancel();
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return true;
-
-	} // end refund;
+	}
 
 	/**
 	 * Creates a copy of the given model adn resets it's id to a 'new' state.
@@ -1215,7 +1120,5 @@ class Payment extends Base_Model {
 		$new_payment->set_line_items($line_items);
 
 		return $new_payment;
-
-	} // end duplicate;
-
-} // end class Payment;
+	}
+}

@@ -43,7 +43,7 @@ class Products extends Rule {
 	 *
 	 * @param mixed $products Value being checked.
 	 */
- public function check($products) : bool { // phpcs:ignore
+	 public function check($products) : bool { // phpcs:ignore
 
 		$products = (array) $products;
 
@@ -52,15 +52,11 @@ class Products extends Rule {
 		list($plan, $additional_products) = wu_segregate_products($product_objects);
 
 		if ($plan) {
-
 			return true;
-
-		} // end if;
+		}
 
 		$this->message = __('A plan is required.', 'wp-ultimo');
 
 		return false;
-
-	} // end check;
-
-} // end class Products;
+	}
+}

@@ -88,15 +88,12 @@ class Broadcast extends Post_Base_Model {
 
 		$object = (array) $object;
 
-		if (!wu_get_isset($object, 'migrated_from_id')) {
-
+		if ( ! wu_get_isset($object, 'migrated_from_id')) {
 			unset($object['migrated_from_id']);
-
-		} // end if;
+		}
 
 		parent::__construct($object);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -118,8 +115,7 @@ class Broadcast extends Post_Base_Model {
 			'content'     => 'required|min:3',
 			'type'        => 'required|in:broadcast_email,broadcast_notice|default:broadcast_notice',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get the id of the original 1.X model that was used to generate this item on migration.
@@ -130,14 +126,11 @@ class Broadcast extends Post_Base_Model {
 	public function get_migrated_from_id() {
 
 		if ($this->migrated_from_id === null) {
-
 			$this->migrated_from_id = $this->get_meta('migrated_from_id', 0);
-
-		} // end if;
+		}
 
 		return $this->migrated_from_id;
-
-	} // end get_migrated_from_id;
+	}
 
 	/**
 	 * Set the id of the original 1.X model that was used to generate this item on migration.
@@ -151,8 +144,7 @@ class Broadcast extends Post_Base_Model {
 		$this->meta['migrated_from_id'] = $migrated_from_id;
 
 		$this->migrated_from_id = $this->meta['migrated_from_id'];
-
-	} // end set_migrated_from_id;
+	}
 
 	/**
 	 * Get name of the broadcast
@@ -163,8 +155,7 @@ class Broadcast extends Post_Base_Model {
 	public function get_name() {
 
 		return $this->get_title();
-
-	} // end get_name;
+	}
 
 	/**
 	 * Get title of the broadcast
@@ -175,8 +166,7 @@ class Broadcast extends Post_Base_Model {
 	public function get_title() {
 
 		return $this->title;
-
-	} // end get_title;
+	}
 
 	/**
 	 * Get notice type
@@ -187,14 +177,11 @@ class Broadcast extends Post_Base_Model {
 	public function get_notice_type() {
 
 		if ($this->notice_type === null) {
-
 			$this->notice_type = $this->get_meta('notice_type', 'success');
-
-		} // end if;
+		}
 
 		return $this->notice_type;
-
-	} // end get_notice_type;
+	}
 
 	/**
 	 * Get the message targets.
@@ -205,8 +192,7 @@ class Broadcast extends Post_Base_Model {
 	public function get_message_targets() {
 
 		return $this->get_meta('message_targets');
-
-	} // end get_message_targets;
+	}
 
 	/**
 	 * Set the message product and/or customer targets.
@@ -219,8 +205,7 @@ class Broadcast extends Post_Base_Model {
 	public function set_message_targets($message_targets) {
 
 		$this->meta['message_targets'] = $message_targets;
-
-	} // end set_message_targets;
+	}
 
 	/**
 	 * Set the type of the notice.
@@ -236,8 +221,7 @@ class Broadcast extends Post_Base_Model {
 		$this->meta['notice_type'] = $notice_type;
 
 		$this->notice_type = $this->meta['notice_type'];
-
-	} // end set_notice_type;
+	}
 
 	/**
 	 * Set title using the name parameter.
@@ -250,8 +234,7 @@ class Broadcast extends Post_Base_Model {
 	public function set_name($name) {
 
 		$this->set_title($name);
-
-	} // end set_name;
+	}
 
 	/**
 	 * Adds checks to prevent saving the model with the wrong type.
@@ -263,15 +246,12 @@ class Broadcast extends Post_Base_Model {
 	 */
 	public function set_type($type) {
 
-		if (!in_array($type, $this->allowed_types, true)) {
-
+		if ( ! in_array($type, $this->allowed_types, true)) {
 			$type = 'broadcast_notice';
-
-		} // end if;
+		}
 
 		$this->type = $type;
-
-	} // end set_type;
+	}
 
 	/**
 	 * * Adds checks to prevent saving the model with the wrong status.
@@ -283,14 +263,10 @@ class Broadcast extends Post_Base_Model {
 	 */
 	public function set_status($status) {
 
-		if (!in_array($status, $this->allowed_status, true)) {
-
+		if ( ! in_array($status, $this->allowed_status, true)) {
 			$status = 'publish';
-
-		} // end if;
+		}
 
 		$this->status = $status;
-
-	} // end set_status;
-
-} // end class Broadcast;
+	}
+}

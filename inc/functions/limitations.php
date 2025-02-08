@@ -54,33 +54,25 @@ defined('ABSPATH') || exit;
  */
 function wu_has_product($product_slug, $blocking = false, $site_id = '') {
 
-	if (!is_array($product_slug)) {
-
+	if ( ! is_array($product_slug)) {
 		$product_slug = array($product_slug);
-
-	} // end if;
+	}
 
 	if (empty($site_id)) {
-
 		$site_id = get_current_blog_id();
-
-	} // end if;
+	}
 
 	$site = wu_get_site($site_id);
 
 	if (empty($site)) {
-
 		return new \WP_Error('site-not-found', __('Invalid site ID', 'wp-ultimo'));
-
-	} // end if;
+	}
 
 	$membership = $site->get_membership();
 
 	if (empty($membership)) {
-
 		return true;
-
-	} // end if;
+	}
 
 	$applicable_products_slugs = $membership->get_applicable_product_slugs();
 
@@ -89,14 +81,11 @@ function wu_has_product($product_slug, $blocking = false, $site_id = '') {
 	$active_status = true;
 
 	if ($blocking) {
-
 		$active_status = $membership->is_active();
-
-	} // end if;
+	}
 
 	return $contains_product && $active_status;
-
-} // end wu_has_product;
+}
 
 /**
  * Checks if the membership associated with a site is active.
@@ -109,30 +98,23 @@ function wu_has_product($product_slug, $blocking = false, $site_id = '') {
 function wu_is_membership_active($site_id = '') {
 
 	if (empty($site_id)) {
-
 		$site_id = get_current_blog_id();
-
-	} // end if;
+	}
 
 	$site = wu_get_site($site_id);
 
 	if (empty($site)) {
-
 		return new \WP_Error('site-not-found', __('Invalid site ID', 'wp-ultimo'));
-
-	} // end if;
+	}
 
 	$membership = $site->get_membership();
 
 	if (empty($membership)) {
-
 		return true;
-
-	} // end if;
+	}
 
 	return $membership->is_active();
-
-} // end wu_is_membership_active;
+}
 
 /**
  * Register a new Limitation module.
@@ -145,17 +127,18 @@ function wu_is_membership_active($site_id = '') {
  */
 function wu_register_limit_module($id, $class_name) {
 
-	add_filter('wu_limit_classes', function($classes) use ($id, $class_name) {
+	add_filter(
+		'wu_limit_classes',
+		function ($classes) use ($id, $class_name) {
 
-		$id = sanitize_title($id);
+			$id = sanitize_title($id);
 
-		$classes[$id] = $class_name;
+			$classes[ $id ] = $class_name;
 
-		return $classes;
-
-	});
-
-} // end wu_register_limit_module;
+			return $classes;
+		}
+	);
+}
 
 /**
  * Generate the modal link to search for an upgrade path.
@@ -167,18 +150,19 @@ function wu_register_limit_module($id, $class_name) {
  */
 function wu_generate_upgrade_to_unlock_url($args) {
 
-	$args = wp_parse_args($args, array(
-		'module' => false,
-		'type'   => false,
-	));
+	$args = wp_parse_args(
+		$args,
+		array(
+			'module' => false,
+			'type'   => false,
+		)
+	);
 
 	$membership = wu_get_current_site()->get_membership();
 
-	if (!$membership) {
-
+	if ( ! $membership) {
 		return '';
-
-	} // end if;
+	}
 
 	$upgrade_url = wu_get_membership_update_url($membership);
 
@@ -191,8 +175,7 @@ function wu_generate_upgrade_to_unlock_url($args) {
 	 * @param array  $args The module and type of limit that needs upgrading.
 	 */
 	return apply_filters('wu_upgrade_to_unlock_url', $url, $args);
-
-} // end wu_generate_upgrade_to_unlock_url;
+}
 
 /**
  * Generates a Unlock to Upgrade button for the upgrade modal.
@@ -205,16 +188,21 @@ function wu_generate_upgrade_to_unlock_url($args) {
  */
 function wu_generate_upgrade_to_unlock_button($title, $args) {
 
-	$args = wp_parse_args($args, array(
-		'module'  => false,
-		'type'    => false,
-		'classes' => '',
-	));
+	$args = wp_parse_args(
+		$args,
+		array(
+			'module'  => false,
+			'type'    => false,
+			'classes' => '',
+		)
+	);
 
-	$url = wu_generate_upgrade_to_unlock_url(array(
-		'module' => $args['module'],
-		'type'   => $args['type'],
-	));
+	$url = wu_generate_upgrade_to_unlock_url(
+		array(
+			'module' => $args['module'],
+			'type'   => $args['type'],
+		)
+	);
 
 	$element = sprintf(
 		'<a href="%s" title="%s" class="%s">%s</a>',
@@ -225,8 +213,7 @@ function wu_generate_upgrade_to_unlock_button($title, $args) {
 	);
 
 	return $element;
-
-} // end wu_generate_upgrade_to_unlock_button;
+}
 
 /**
  * Activate a plugin(s) via Job Queue.
@@ -241,15 +228,17 @@ function wu_generate_upgrade_to_unlock_button($title, $args) {
  */
 function wu_async_activate_plugins($site_id, $plugins, $network_wide = false, $silent = true) {
 
-	wu_enqueue_async_action('wu_async_handle_plugins', array(
-		'action'       => 'activate',
-		'site_id'      => $site_id,
-		'plugins'      => $plugins,
-		'network_wide' => $network_wide,
-		'silent'       => $silent,
-	));
-
-} // end wu_async_activate_plugins;
+	wu_enqueue_async_action(
+		'wu_async_handle_plugins',
+		array(
+			'action'       => 'activate',
+			'site_id'      => $site_id,
+			'plugins'      => $plugins,
+			'network_wide' => $network_wide,
+			'silent'       => $silent,
+		)
+	);
+}
 
 /**
  * Deactivates a plugin(s) via Job Queue.
@@ -264,15 +253,17 @@ function wu_async_activate_plugins($site_id, $plugins, $network_wide = false, $s
  */
 function wu_async_deactivate_plugins($site_id, $plugins, $network_wide = false, $silent = true) {
 
-	wu_enqueue_async_action('wu_async_handle_plugins', array(
-		'action'       => 'deactivate',
-		'site_id'      => $site_id,
-		'plugins'      => $plugins,
-		'network_wide' => $network_wide,
-		'silent'       => $silent,
-	));
-
-} // end wu_async_deactivate_plugins;
+	wu_enqueue_async_action(
+		'wu_async_handle_plugins',
+		array(
+			'action'       => 'deactivate',
+			'site_id'      => $site_id,
+			'plugins'      => $plugins,
+			'network_wide' => $network_wide,
+			'silent'       => $silent,
+		)
+	);
+}
 
 /**
  * Switch themes via Job Queue.
@@ -285,9 +276,11 @@ function wu_async_deactivate_plugins($site_id, $plugins, $network_wide = false, 
  */
 function wu_async_switch_theme($site_id, $theme_stylesheet) {
 
-	wu_enqueue_async_action('wu_async_switch_theme', array(
-		'site_id'          => $site_id,
-		'theme_stylesheet' => $theme_stylesheet,
-	));
-
-} // end wu_async_switch_theme;
+	wu_enqueue_async_action(
+		'wu_async_switch_theme',
+		array(
+			'site_id'          => $site_id,
+			'theme_stylesheet' => $theme_stylesheet,
+		)
+	);
+}

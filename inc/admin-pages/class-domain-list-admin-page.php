@@ -12,8 +12,8 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Domain;
-use \WP_Ultimo\Database\Domains\Domain_Stage;
+use WP_Ultimo\Models\Domain;
+use WP_Ultimo\Database\Domains\Domain_Stage;
 
 /**
  * WP Multisite WaaS Dashboard Admin Page.
@@ -67,13 +67,15 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Add new Domain
 		 */
-		wu_register_form('add_new_domain', array(
-			'render'     => array($this, 'render_add_new_domain_modal'),
-			'handler'    => array($this, 'handle_add_new_domain_modal'),
-			'capability' => 'wu_edit_domains',
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'add_new_domain',
+			array(
+				'render'     => array($this, 'render_add_new_domain_modal'),
+				'handler'    => array($this, 'handle_add_new_domain_modal'),
+				'capability' => 'wu_edit_domains',
+			)
+		);
+	}
 
 	/**
 	 * Renders the add new customer modal.
@@ -83,9 +85,12 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function render_add_new_domain_modal() {
 
-		$addon_url = wu_network_admin_url('wp-ultimo-addons', array(
-			's' => 'Domain Seller'
-		));
+		$addon_url = wu_network_admin_url(
+			'wp-ultimo-addons',
+			array(
+				's' => 'Domain Seller',
+			)
+		);
 
 		// translators: %s is the URL to the add-on.
 		$note_desc = sprintf(__('To activate this feature you need to install the <a href="%s" target="_blank" class="wu-no-underline">WP Multisite WaaS: Domain Seller</a> add-on.', 'wp-ultimo'), $addon_url);
@@ -182,22 +187,27 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('add_new_domain', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'add_new_domain',
-				'data-state'  => json_encode(array(
-					'type'           => 'add',
-					'primary_domain' => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_new_domain',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'add_new_domain',
+					'data-state'  => json_encode(
+						array(
+							'type'           => 'add',
+							'primary_domain' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_add_new_domain_modal;
+	}
 
 	/**
 	 * Handles creation of a new customer.
@@ -218,46 +228,49 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 			/*
 			 * Tries to create the domain
 			 */
-			$domain = wu_create_domain(array(
-				'domain'         => wu_request('domain'),
-				'stage'          => wu_request('stage'),
-				'blog_id'        => (int) wu_request('blog_id'),
-				'primary_domain' => (bool) wu_request('primary_domain'),
-			));
+			$domain = wu_create_domain(
+				array(
+					'domain'         => wu_request('domain'),
+					'stage'          => wu_request('stage'),
+					'blog_id'        => (int) wu_request('blog_id'),
+					'primary_domain' => (bool) wu_request('primary_domain'),
+				)
+			);
 
 			if (is_wp_error($domain)) {
-
 				wp_send_json_error($domain);
-
-			} // end if;
+			}
 
 			if (wu_request('primary_domain')) {
-
-				$old_primary_domains = wu_get_domains(array(
-					'primary_domain' => true,
-					'blog_id'        => wu_request('blog_id'),
-					'id__not_in'     => array($domain->get_id()),
-					'fields'         => 'ids',
-				));
+				$old_primary_domains = wu_get_domains(
+					array(
+						'primary_domain' => true,
+						'blog_id'        => wu_request('blog_id'),
+						'id__not_in'     => array($domain->get_id()),
+						'fields'         => 'ids',
+					)
+				);
 
 				/*
 				 * Trigger async action to update the old primary domains.
 				 */
 				do_action('wu_async_remove_old_primary_domains', array($old_primary_domains));
-
-			} // end if;
+			}
 
 			wu_enqueue_async_action('wu_async_process_domain_stage', array('domain_id' => $domain->get_id()), 'domain');
 
-			wp_send_json_success(array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-edit-domain', array(
-					'id' => $domain->get_id(),
-				))
-			));
-
-		} // end if;
-
-	} // end handle_add_new_domain_modal;
+			wp_send_json_success(
+				array(
+					'redirect_url' => wu_network_admin_url(
+						'wp-ultimo-edit-domain',
+						array(
+							'id' => $domain->get_id(),
+						)
+					),
+				)
+			);
+		}
+	}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -271,8 +284,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Domains removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Domains', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -283,8 +295,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Domains', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -295,8 +306,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Domains', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -307,8 +317,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Domains', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -326,8 +335,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 				'url'     => wu_get_form_url('add_new_domain'),
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -338,7 +346,5 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Domain_List_Table();
-
-	} // end table;
-
-} // end class Domain_List_Admin_Page;
+	}
+}

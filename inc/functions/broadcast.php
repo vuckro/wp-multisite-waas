@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Broadcast;
+use WP_Ultimo\Models\Broadcast;
 
 /**
  * Queries broadcast.
@@ -21,15 +21,12 @@ use \WP_Ultimo\Models\Broadcast;
  */
 function wu_get_broadcasts($query = array()) {
 
-	if (!isset($query['type__in'])) {
-
+	if ( ! isset($query['type__in'])) {
 		$query['type__in'] = array('broadcast_email', 'broadcast_notice');
-
-	} // end if;
+	}
 
 	return \WP_Ultimo\Models\Broadcast::query($query);
-
-} // end wu_get_broadcasts;
+}
 
 /**
  * Returns a single broadcast defined by a particular column and value.
@@ -45,10 +42,8 @@ function wu_get_broadcast_by($column, $value) {
 	$first_attempt = \WP_Ultimo\Models\Broadcast::get_by($column, $value);
 
 	if ($first_attempt) {
-
 		return $first_attempt;
-
-	} // end if;
+	}
 
 	$query = array(
 		'number'   => 1,
@@ -64,9 +59,8 @@ function wu_get_broadcast_by($column, $value) {
 
 	$results = \WP_Ultimo\Models\Broadcast::query($query);
 
-	return !empty($results) ? array_pop($results) : false;
-
-} // end wu_get_broadcast_by;
+	return ! empty($results) ? array_pop($results) : false;
+}
 
 /**
  * Gets a broadcast on the ID.
@@ -79,8 +73,7 @@ function wu_get_broadcast_by($column, $value) {
 function wu_get_broadcast($broadcast_id) {
 
 	return \WP_Ultimo\Models\Broadcast::get_by_id($broadcast_id);
-
-} // end wu_get_broadcast;
+}
 
 /**
  * Gets a broadcast on the ID.
@@ -97,19 +90,14 @@ function wu_get_broadcast_targets($broadcast_id, $type) {
 
 	$targets = $object->get_message_targets();
 
-	if (is_array($targets[$type])) {
-
-		return $targets[$type];
-
-	} elseif (is_string($targets[$type])) {
-
-		return explode(',', $targets[$type]);
-
-	} // end if;
+	if (is_array($targets[ $type ])) {
+		return $targets[ $type ];
+	} elseif (is_string($targets[ $type ])) {
+		return explode(',', $targets[ $type ]);
+	}
 
 	return array();
-
-} // end wu_get_broadcast_targets;
+}
 
 /**
  * Creates a new broadcast.
@@ -123,23 +111,25 @@ function wu_get_broadcast_targets($broadcast_id, $type) {
  */
 function wu_create_broadcast($broadcast_data) {
 
-	$broadcast_data = wp_parse_args($broadcast_data, array(
-		'type'             => 'broadcast_notice',
-		'notice_type'      => 'success',
-		'date_created'     => wu_get_current_time('mysql', true),
-		'date_modified'    => wu_get_current_time('mysql', true),
-		'migrated_from_id' => 0,
-		'skip_validation'  => false,
-		'message_targets'  => array(
-			'customers' => array(),
-			'products'  => array(),
-		),
-	));
+	$broadcast_data = wp_parse_args(
+		$broadcast_data,
+		array(
+			'type'             => 'broadcast_notice',
+			'notice_type'      => 'success',
+			'date_created'     => wu_get_current_time('mysql', true),
+			'date_modified'    => wu_get_current_time('mysql', true),
+			'migrated_from_id' => 0,
+			'skip_validation'  => false,
+			'message_targets'  => array(
+				'customers' => array(),
+				'products'  => array(),
+			),
+		)
+	);
 
 	$broadcast = new Broadcast($broadcast_data);
 
 	$saved = $broadcast->save();
 
 	return is_wp_error($saved) ? $saved : $broadcast;
-
-} // end wu_create_broadcast;
+}

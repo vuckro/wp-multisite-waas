@@ -30,11 +30,11 @@ class Membership_Edit_Admin_Page_Test extends WP_UnitTestCase {
 		parent::setUp();
 		$faker = new Faker();
 		$faker->generate_fake_memberships();
-		$this->swap_time = strtotime( '+100 days' );
+		$this->swap_time = strtotime('+100 days');
 
-		$this->membership = current( $faker->get_fake_data_generated( 'memberships' ) );
-		$cart             = new Cart( array() );
-		$this->membership->schedule_swap( $cart, gmdate( 'Y-m-d H:i:s', $this->swap_time ) );
+		$this->membership = current($faker->get_fake_data_generated('memberships'));
+		$cart             = new Cart(array());
+		$this->membership->schedule_swap($cart, gmdate('Y-m-d H:i:s', $this->swap_time));
 		// Mock Membership_Edit_Admin_Page with dependencies and methods.
 		$this->membership_edit_admin_page = new Membership_Edit_Admin_Page();
 	}
@@ -48,16 +48,16 @@ class Membership_Edit_Admin_Page_Test extends WP_UnitTestCase {
 		$this->membership_edit_admin_page->page_loaded();
 
 		$membership = $this->membership_edit_admin_page->get_object();
-		$this->assertInstanceOf( Membership::class, $membership );
-		$this->assertEquals( $membership->get_id(), $this->membership->get_id() );
-		$this->assertTrue( $this->membership_edit_admin_page->edit );
+		$this->assertInstanceOf(Membership::class, $membership);
+		$this->assertEquals($membership->get_id(), $this->membership->get_id());
+		$this->assertTrue($this->membership_edit_admin_page->edit);
 
-		$notices = \WP_Ultimo()->notices->get_notices( 'network-admin' );
-		$this->assertNotEmpty( $notices );
-		$notice = array_shift( $notices );
-		$this->assertEquals( 'warning', $notice['type'] );
-		$this->assertFalse( $notice['dismissible_key'] );
-		$this->assertNotEmpty( $notice['actions'] );
-		$this->assertStringContainsString( gmdate( get_option( 'date_format' ), $this->swap_time ), $notice['message'] );
+		$notices = \WP_Ultimo()->notices->get_notices('network-admin');
+		$this->assertNotEmpty($notices);
+		$notice = array_shift($notices);
+		$this->assertEquals('warning', $notice['type']);
+		$this->assertFalse($notice['dismissible_key']);
+		$this->assertNotEmpty($notice['actions']);
+		$this->assertStringContainsString(gmdate(get_option('date_format'), $this->swap_time), $notice['message']);
 	}
 }

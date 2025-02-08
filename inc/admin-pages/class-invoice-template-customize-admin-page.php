@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Admin_Pages;
 
-use \WP_Ultimo\Invoices\Invoice;
+use WP_Ultimo\Invoices\Invoice;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -83,8 +83,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		parent::init();
 
 		add_action('wp_ajax_wu-preview-invoice', array($this, 'generate_invoice_preview'));
-
-	} // end init;
+	}
 
 	/**
 	 * Ajax endpoint to generate the Ajax Preview.
@@ -94,11 +93,9 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function generate_invoice_preview() {
 
-		if (!current_user_can('wu_manage_invoice')) {
-
+		if ( ! current_user_can('wu_manage_invoice')) {
 			return;
-
-		} // end if;
+		}
 
 		$order = false;
 
@@ -109,8 +106,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		$invoice->print_file();
 
 		die;
-
-	} // end generate_invoice_preview;
+	}
 
 	/**
 	 * Returns the preview URL. This is then added to the iframe.
@@ -122,13 +118,15 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$url = get_admin_url(wu_get_main_site_id(), 'admin-ajax.php');
 
-		return add_query_arg(array(
-			'action'            => 'wu-preview-invoice',
-			'customizer'        => 1,
-			'invoice-customize' => 1
-		), $url);
-
-	} // end get_preview_url;
+		return add_query_arg(
+			array(
+				'action'            => 'wu-preview-invoice',
+				'customizer'        => 1,
+				'invoice-customize' => 1,
+			),
+			$url
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -140,14 +138,17 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$settings = Invoice::get_settings();
 
-		$this->add_save_widget('save', array(
-			'fields' => array(
-				'note' => array(
-					'type' => 'note',
-					'desc' => __('Changes to this template will be applied to all PDF invoices generated after the change. <br><br>Existing PDF Invoices will not be affected unless explicitly re-generated', 'wp-ultimo'),
+		$this->add_save_widget(
+			'save',
+			array(
+				'fields' => array(
+					'note' => array(
+						'type' => 'note',
+						'desc' => __('Changes to this template will be applied to all PDF invoices generated after the change. <br><br>Existing PDF Invoices will not be affected unless explicitly re-generated', 'wp-ultimo'),
+					),
 				),
 			)
-		));
+		);
 
 		$custom_logo = wu_get_isset($settings, 'custom_logo');
 
@@ -267,24 +268,29 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'font'            => wu_get_isset($settings, 'font', 'DejaVuSansCondensed'),
 		);
 
-		$state = array_merge($settings, array(
-			'tab'     => 'general',
-			'refresh' => true,
-		));
+		$state = array_merge(
+			$settings,
+			array(
+				'tab'     => 'general',
+				'refresh' => true,
+			)
+		);
 
-		$this->add_fields_widget('customizer', array(
-			'title'     => __('Customizer', 'wp-ultimo'),
-			'position'  => 'side',
-			'fields'    => $fields,
-			'html_attr' => array(
-				'style'                    => 'margin-top: -6px;',
-				'data-wu-app'              => 'invoice_customizer',
-				'data-wu-customizer-panel' => true,
-				'data-state'               => json_encode($state),
-			),
-		));
-
-	} // end register_widgets;
+		$this->add_fields_widget(
+			'customizer',
+			array(
+				'title'     => __('Customizer', 'wp-ultimo'),
+				'position'  => 'side',
+				'fields'    => $fields,
+				'html_attr' => array(
+					'style'                    => 'margin-top: -6px;',
+					'data-wu-app'              => 'invoice_customizer',
+					'data-wu-customizer-panel' => true,
+					'data-state'               => json_encode($state),
+				),
+			)
+		);
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -295,8 +301,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_title() {
 
 		return __('Customize Invoice Template', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -307,8 +312,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Customize Invoice Template', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -319,8 +323,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function action_links() {
 
 		return array();
-
-	} // end action_links;
+	}
 
 	/**
 	 * Returns the labels to be used on the admin page.
@@ -340,8 +343,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'save_button_label' => __('Save Invoice Template', 'wp-ultimo'),
 			'save_description'  => __('Save Invoice Template', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Should implement the processes necessary to save the changes made to the object.
@@ -358,7 +360,5 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		wp_redirect($url);
 
 		exit;
-
-	} // end handle_save;
-
-} // end class Invoice_Template_Customize_Admin_Page;
+	}
+}

@@ -15,8 +15,8 @@
  * @version     1.0.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
@@ -34,20 +34,20 @@ $accent_color_2 = wu_color($accent_color->darken(4));
 
 <style>
 
-  .wu-content-plan .plan-tier h4 {
-    background-color: #<?php echo $primary_color->getHex(); ?>;
-    color: <?php echo $primary_color->isDark() ? "white" : "#333"; ?> !important;
-  }
+	.wu-content-plan .plan-tier h4 {
+	background-color: #<?php echo $primary_color->getHex(); ?>;
+	color: <?php echo $primary_color->isDark() ? 'white' : '#333'; ?> !important;
+	}
 
-  .wu-content-plan .plan-tier.callout h6 {
-    background-color: #<?php echo $accent_color->getHex(); ?>;
-    color: <?php echo $accent_color->isDark() ? "#f9f9f9" : "rgba(39,65,90,.5)"; ?> !important;
-  }
+	.wu-content-plan .plan-tier.callout h6 {
+	background-color: #<?php echo $accent_color->getHex(); ?>;
+	color: <?php echo $accent_color->isDark() ? '#f9f9f9' : 'rgba(39,65,90,.5)'; ?> !important;
+	}
 
-  .wu-content-plan .plan-tier.callout h4 {
-    background-color: #<?php echo $accent_color_2->getHex(); ?>;
-    color: <?php echo $accent_color->isDark() ? "white" : "#333"; ?> !important;
-  }
+	.wu-content-plan .plan-tier.callout h4 {
+	background-color: #<?php echo $accent_color_2->getHex(); ?>;
+	color: <?php echo $accent_color->isDark() ? 'white' : '#333'; ?> !important;
+	}
 
 </style>
 
@@ -58,10 +58,8 @@ $accent_color_2 = wu_color($accent_color->darken(4));
 /**
  * Display the frequency selector
  */
-if (!isset($is_shortcode) || !$is_shortcode || $atts['show_selector']) {
-
-  wu_get_template('/legacy/signup/pricing-table/frequency-selector');
-
+if ( ! isset($is_shortcode) || ! $is_shortcode || $atts['show_selector']) {
+	wu_get_template('/legacy/signup/pricing-table/frequency-selector');
 } // end if;
 
 /**
@@ -69,51 +67,51 @@ if (!isset($is_shortcode) || !$is_shortcode || $atts['show_selector']) {
  */
 
 if (empty($plans)) {
+	wu_get_template('legacy/signup/pricing-table/no-plans');
+} else {
+	?>
 
-  wu_get_template('legacy/signup/pricing-table/no-plans');
+	<form id="signupform" method="post">
 
-} else { ?>
+	<?php
 
-  <form id="signupform" method="post">
+	/**
+	 * Required: Prints the essential fields necessary to this form to work properly
+	 */
+	$signup->form_fields($current_plan);
 
-    <?php
+	?>
 
-    /**
-     * Required: Prints the essential fields necessary to this form to work properly
-     */
-    $signup->form_fields($current_plan);
+	<div class="layer plans">
 
-    ?>
+		<?php
 
-    <div class="layer plans">
+		/**
+		 * Display the plan table
+		 */
 
-      <?php
+		$count   = count($plans);
+		$columns = $count == 5 ? '2-4' : 12 / $count;
 
-      /**
-       * Display the plan table
-       */
+		foreach ($plans as $plan) {
+			wu_get_template(
+				'legacy/signup/pricing-table/plan',
+				array(
+					'plan'         => $plan,
+					'count'        => $count,
+					'columns'      => $columns,
+					'current_plan' => $current_plan,
+				)
+			);
+		} // end foreach;
 
-      $count   = count($plans);
-      $columns = $count == 5 ? '2-4' : 12 / $count;
+		?>
 
-      foreach ($plans as $plan) {
+		<div style="clear: both"></div>
 
-        wu_get_template('legacy/signup/pricing-table/plan', array(
-          'plan'         => $plan,
-          'count'        => $count,
-          'columns'      => $columns,
-          'current_plan' => $current_plan,
-        ));
+	</div>
 
-      } // end foreach;
-
-      ?>
-
-      <div style="clear: both"></div>
-
-    </div>
-
-  </form>
+	</form>
 
 <?php } // end if no-plans; ?>
 
@@ -123,16 +121,16 @@ if (empty($plans)) {
 
 <script type="text/javascript">
 
-  (function ($) {
-    $(document).ready(function () {
-      /**
-       * Select the default pricing option
-       */
-      setTimeout(function() {
-        $('[data-frequency-selector="<?php echo wu_get_setting('default_pricing_option', 1); ?>"]').click();
-      }, 100);
+	(function ($) {
+	$(document).ready(function () {
+		/**
+		* Select the default pricing option
+		*/
+		setTimeout(function() {
+		$('[data-frequency-selector="<?php echo wu_get_setting('default_pricing_option', 1); ?>"]').click();
+		}, 100);
 
-    });
-  })(jQuery);
+	});
+	})(jQuery);
 
 </script>

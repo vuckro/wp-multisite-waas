@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Event;
+use WP_Ultimo\Models\Event;
 
 /**
  * WP Multisite WaaS Event View Admin Page.
@@ -97,8 +97,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 		wp_enqueue_script('clipboard');
 
 		wp_enqueue_script('wu-vue');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Register ajax forms that we use for membership.
@@ -111,11 +110,13 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 		 * Delete Event - Confirmation modal
 		 */
 
-		add_filter('wu_data_json_success_delete_event_modal', fn($data_json) => array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-events', array('deleted' => 1))
-		));
-
-	} // end register_forms;
+		add_filter(
+			'wu_data_json_success_delete_event_modal',
+			fn($data_json) => array(
+				'redirect_url' => wu_network_admin_url('wp-ultimo-events', array('deleted' => 1)),
+			)
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -133,13 +134,15 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 
 		add_meta_box('wp-ultimo-payload', __('Event Payload', 'wp-ultimo'), array($this, 'output_default_widget_payload'), get_current_screen()->id, 'normal', 'default');
 
-		$this->add_info_widget('info', array(
-			'title'    => __('Timestamps', 'wp-ultimo'),
-			'position' => 'side',
-			'modified' => false,
-		));
-
-	} // end register_widgets;
+		$this->add_info_widget(
+			'info',
+			array(
+				'title'    => __('Timestamps', 'wp-ultimo'),
+				'position' => 'side',
+				'modified' => false,
+			)
+		);
+	}
 
 	/**
 	 * Outputs the markup for the default Save widget.
@@ -149,14 +152,16 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function output_default_widget_message() {
 
-		wu_get_template('events/widget-message', array(
-			'screen' => get_current_screen(),
-			'page'   => $this,
-			'labels' => $this->get_labels(),
-			'object' => $this->get_object(),
-		));
-
-	} // end output_default_widget_message;
+		wu_get_template(
+			'events/widget-message',
+			array(
+				'screen' => get_current_screen(),
+				'page'   => $this,
+				'labels' => $this->get_labels(),
+				'object' => $this->get_object(),
+			)
+		);
+	}
 
 	/**
 	 * Outputs the markup for the payload widget.
@@ -168,13 +173,15 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 
 		$object = $this->get_object();
 
-		wu_get_template('events/widget-payload', array(
-			'title'        => __('Event Payload', 'wp-ultimo'),
-			'loading_text' => __('Loading Payload', 'wp-ultimo'),
-			'payload'      => json_encode($object->get_payload(), JSON_PRETTY_PRINT),
-		));
-
-	} // end output_default_widget_payload;
+		wu_get_template(
+			'events/widget-payload',
+			array(
+				'title'        => __('Event Payload', 'wp-ultimo'),
+				'loading_text' => __('Loading Payload', 'wp-ultimo'),
+				'payload'      => json_encode($object->get_payload(), JSON_PRETTY_PRINT),
+			)
+		);
+	}
 
 	/**
 	 * Outputs the markup for the initiator widget.
@@ -191,8 +198,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 		);
 
 		wu_get_template('events/widget-initiator', $args);
-
-	} // end output_default_widget_initiator;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -203,8 +209,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	public function get_title() {
 
 		return $this->edit ? __('Edit Event', 'wp-ultimo') : __('Add new Event', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -215,8 +220,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Edit Event', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -227,8 +231,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	public function action_links() {
 
 		return array();
-
-	} // end action_links;
+	}
 
 	/**
 	 * Returns the labels to be used on the admin page.
@@ -249,8 +252,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 			'delete_button_label' => __('Delete Event', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the object being edit at the moment.
@@ -261,24 +263,19 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	public function get_object() {
 
 		if (isset($_GET['id'])) {
-
-			$query = new \WP_Ultimo\Database\Events\Event_Query;
+			$query = new \WP_Ultimo\Database\Events\Event_Query();
 
 			$item = $query->get_item_by('id', $_GET['id']);
 
 			if ($item) {
-
 				return $item;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		wp_redirect(wu_network_admin_url('wp-ultimo-events'));
 
 		exit;
-
-	} // end get_object;
+	}
 	/**
 	 * Events have titles.
 	 *
@@ -287,8 +284,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	public function has_title(): bool {
 
 		return false;
-
-	} // end has_title;
+	}
 	/**
 	 * Handles the save of this form.
 	 *
@@ -297,7 +293,5 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 	public function handle_save(): bool {
 
 		return true;
-
-	} // end handle_save;
-
-} // end class Event_View_Admin_Page;
+	}
+}

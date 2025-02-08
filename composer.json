@@ -42,7 +42,8 @@
         "symfony/cache": "v5.4.29",
         "scssphp/scssphp": "v1.11.1",
         "cweagans/composer-patches": "^1.7",
-        "woocommerce/action-scheduler": "^3.9.1"
+        "woocommerce/action-scheduler": "^3.9.1",
+        "ext-json": "*"
     },
     "require-dev": {
         "composer/installers": "1.9.0",

@@ -8,18 +8,18 @@
 
 <?php if ($field->title) : ?>
 
-  <label class="wu-block" for="field-<?php echo esc_attr($field->id); ?>">
+	<label class="wu-block" for="field-<?php echo esc_attr($field->id); ?>">
 
-    <?php echo $field->title; ?>
+	<?php echo $field->title; ?>
 
-    <?php if ($field->required) : ?>
+	<?php if ($field->required) : ?>
 
-      <span class="wu-checkout-required-field wu-text-red-500">*</span>
+		<span class="wu-checkout-required-field wu-text-red-500">*</span>
 
-    <?php endif; ?>
+	<?php endif; ?>
 
-    <?php echo wu_tooltip($field->tooltip); ?>
+	<?php echo wu_tooltip($field->tooltip); ?>
 
-  </label>
+	</label>
 
 <?php endif; ?>

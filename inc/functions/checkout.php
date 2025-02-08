@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Managers\Signup_Fields_Manager;
+use WP_Ultimo\Managers\Signup_Fields_Manager;
 
 /**
  * Needs to be removed.
@@ -22,15 +22,12 @@ function wu_errors() {
 
 	global $wu_errors;
 
-	if (!is_wp_error($wu_errors)) {
-
+	if ( ! is_wp_error($wu_errors)) {
 		$wu_errors = new \WP_Error();
-
-	} // end if;
+	}
 
 	return $wu_errors;
-
-} // end wu_errors;
+}
 
 /**
  * Generate an idempotency key.
@@ -57,8 +54,7 @@ function wu_stripe_generate_idempotency_key($args, $context = 'new') {
 	$idempotency_key = apply_filters('wu_stripe_generate_idempotency_key', $idempotency_key, $args, $context);
 
 	return $idempotency_key;
-
-} // end wu_stripe_generate_idempotency_key;
+}
 
 /**
  * Loops through the signup field types to return the checkout fields.
@@ -75,31 +71,22 @@ function wu_create_checkout_fields($fields = array()) {
 	$actual_fields = array();
 
 	// Extra check to prevent error messages from being displayed.
-	if (!is_array($fields)) {
-
+	if ( ! is_array($fields)) {
 		$fields = array();
-
-	} // end if;
+	}
 
 	foreach ($fields as $field) {
-
 		$type = $field['type'];
 
-		if (!wu_get_isset($field_types, $type)) {
-
+		if ( ! wu_get_isset($field_types, $type)) {
 			continue;
-
-		} // end if;
+		}
 
 		try {
-
-			$field_class = new $field_types[$type]();
-
+			$field_class = new $field_types[ $type ]();
 		} catch (\Throwable $exception) {
-
 			continue;
-
-		} // end try;
+		}
 
 		$field = wp_parse_args($field, $field_class->defaults());
 
@@ -111,20 +98,14 @@ function wu_create_checkout_fields($fields = array()) {
 		$visibility = wu_get_isset($field, 'logged', 'always');
 
 		if ($visibility !== 'always') {
-
 			if ($visibility === 'guests_only' && is_user_logged_in()) {
-
 				continue;
+			}
 
-			} // end if;
-
-			if ($visibility === 'logged_only' && !is_user_logged_in()) {
-
+			if ($visibility === 'logged_only' && ! is_user_logged_in()) {
 				continue;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		/*
 		 * Pass the attributes down to the field class.
@@ -134,10 +115,13 @@ function wu_create_checkout_fields($fields = array()) {
 		/*
 		 * Makes sure we have default indexes.
 		 */
-		$field = wp_parse_args($field, array(
-			'element_classes' => '',
-			'classes'         => '',
-		));
+		$field = wp_parse_args(
+			$field,
+			array(
+				'element_classes' => '',
+				'classes'         => '',
+			)
+		);
 
 		$field_array = $field_class->to_fields_array($field);
 
@@ -150,12 +134,10 @@ function wu_create_checkout_fields($fields = array()) {
 		do_action("wu_checkout_add_field_{$field_class->get_type()}", $field_array);
 
 		$actual_fields = array_merge($actual_fields, $field_array);
-
-	} // end foreach;
+	}
 
 	return $actual_fields;
-
-} // end wu_create_checkout_fields;
+}
 
 /**
  * Returns the URL for the registration page.
@@ -170,31 +152,28 @@ function wu_get_registration_url($path = false) {
 
 	$url = $checkout_pages->get_page_url('register');
 
-	if (!$url) {
+	if ( ! $url) {
 
 		/**
 		 * Just to be extra sure, we try to fetch the URL
 		 * for a main site page that has the registration slug.
 		 */
-		$url = wu_switch_blog_and_run(function() {
+		$url = wu_switch_blog_and_run(
+			function () {
 
-			$maybe_register_page = get_page_by_path('register');
+				$maybe_register_page = get_page_by_path('register');
 
-			if ($maybe_register_page && has_shortcode($maybe_register_page->post_content, 'wu_checkout')) {
-
-				return get_the_permalink($maybe_register_page->ID);
-
+				if ($maybe_register_page && has_shortcode($maybe_register_page->post_content, 'wu_checkout')) {
+					return get_the_permalink($maybe_register_page->ID);
+				}
 			}
-
-		});
+		);
 
 		return $url ?? '#no-registration-url';
-
-	} // end if;
+	}
 
 	return $url . $path;
-
-} // end wu_get_registration_url;
+}
 /**
  * Returns the URL for the login page.
  *
@@ -207,15 +186,12 @@ function wu_get_login_url($path = false): string {
 
 	$url = $checkout_pages->get_page_url('login');
 
-	if (!$url) {
-
+	if ( ! $url) {
 		return '#no-login-url';
-
-	} // end if;
+	}
 
 	return $url . $path;
-
-} // end wu_get_login_url;
+}
 
 /**
  * Checks if we allow for multiple memberships.
@@ -227,8 +203,7 @@ function wu_get_login_url($path = false): string {
 function wu_multiple_memberships_enabled() {
 
 	return wu_get_setting('enable_multiple_memberships', true);
-
-} // end wu_multiple_memberships_enabled;
+}
 
 /**
  * Get the number of days in a billing cycle.
@@ -246,26 +221,25 @@ function wu_get_days_in_cycle($duration_unit, $duration) {
 	$days_in_cycle = 0;
 
 	switch ($duration_unit) {
-     case 'day':
-         $days_in_cycle = $duration;
-         break;
-     case 'week':
-         $days_in_cycle = $duration * 7;
-         break;
-     case 'month':
-         $days_in_cycle = $duration * 30.4375;
-         break;
-     case 'year':
-         $days_in_cycle = $duration * 365.25;
-         break;
-     default:
-         $days_in_cycle = $days_in_cycle;
-         break;
- } // end switch;
+		case 'day':
+			$days_in_cycle = $duration;
+			break;
+		case 'week':
+			$days_in_cycle = $duration * 7;
+			break;
+		case 'month':
+			$days_in_cycle = $duration * 30.4375;
+			break;
+		case 'year':
+			$days_in_cycle = $duration * 365.25;
+			break;
+		default:
+			$days_in_cycle = $days_in_cycle;
+			break;
+	}
 
 	return $days_in_cycle;
-
-} // end wu_get_days_in_cycle;
+}
 
 /**
  * Register a new field type.
@@ -283,15 +257,16 @@ function wu_get_days_in_cycle($duration_unit, $duration) {
  */
 function wu_register_field_type($field_type_id, $field_type_class_name) {
 
-	add_filter('wu_checkout_field_types', function($field_types) use ($field_type_id, $field_type_class_name) {
+	add_filter(
+		'wu_checkout_field_types',
+		function ($field_types) use ($field_type_id, $field_type_class_name) {
 
-		$field_types[$field_type_id] = $field_type_class_name;
+			$field_types[ $field_type_id ] = $field_type_class_name;
 
-		return $field_types;
-
-	});
-
-} // end wu_register_field_type;
+			return $field_types;
+		}
+	);
+}
 
 /**
  * Register a new field template for a field type.
@@ -311,16 +286,17 @@ function wu_register_field_type($field_type_id, $field_type_class_name) {
  */
 function wu_register_field_template($field_type, $field_template_id, $field_template_class_name) {
 
-	add_filter('wu_checkout_field_templates', function($field_templates) use ($field_type, $field_template_id, $field_template_class_name) {
+	add_filter(
+		'wu_checkout_field_templates',
+		function ($field_templates) use ($field_type, $field_template_id, $field_template_class_name) {
 
-		$field_templates_for_field_type = wu_get_isset($field_templates, $field_type, array());
+			$field_templates_for_field_type = wu_get_isset($field_templates, $field_type, array());
 
-		$field_templates_for_field_type[$field_template_id] = $field_template_class_name;
+			$field_templates_for_field_type[ $field_template_id ] = $field_template_class_name;
 
-		$field_templates[$field_type] = $field_templates_for_field_type;
+			$field_templates[ $field_type ] = $field_templates_for_field_type;
 
-		return $field_templates;
-
-	});
-
-} // end wu_register_field_template;
+			return $field_templates;
+		}
+	);
+}

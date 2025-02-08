@@ -10,7 +10,7 @@
  * @since 2.1.0
  */
 
-use \Rarst\wps\Plugin as Whoops;
+use Rarst\wps\Plugin as Whoops;
 
 return;
 
@@ -19,10 +19,8 @@ return;
  * or by setting the constant we used to have on previous versions.
  */
 if (isset($_GET['whoops-disable']) || (defined('WP_ULTIMO_DISABLE_WHOOPS') && WP_ULTIMO_DISABLE_WHOOPS)) {
-
 	return;
-
-} // end if;
+}
 
 $wu_whoops = new Whoops();
 

@@ -20,8 +20,7 @@ defined('ABSPATH') || exit;
 function wu_string_to_bool($string) {
 
 	return is_bool($string) ? $string : ('on' === strtolower($string) || 'yes' === strtolower($string) || 1 === $string || 'true' === strtolower($string) || '1' === $string);
-
-} // end wu_string_to_bool;
+}
 
 /**
  * Converts a slug to a name.
@@ -38,8 +37,7 @@ function wu_slug_to_name($slug) {
 	$slug = str_replace(array('-', '_'), ' ', $slug);
 
 	return ucwords($slug);
-
-} // end wu_slug_to_name;
+}
 
 /**
  * Replaces dashes with underscores on strings.
@@ -52,8 +50,7 @@ function wu_slug_to_name($slug) {
 function wu_replace_dashes($str) {
 
 	return str_replace('-', '_', $str);
-
-} // end wu_replace_dashes;
+}
 
 /**
  * Get the initials for a string.
@@ -73,17 +70,12 @@ function wu_get_initials($string, $max_size = 2) {
 	$initials = '';
 
 	for ($i = 0; $i < $max_size; $i++) {
-
-		if (!isset($words[$i])) {
-
+		if ( ! isset($words[ $i ])) {
 			break;
+		}
 
-		} // end if;
-
-		$initials .= substr($words[$i], 0, 1);
-
-	} // end for;
+		$initials .= substr($words[ $i ], 0, 1);
+	}
 
 	return strtoupper($initials);
-
-} // end wu_get_initials;
+}

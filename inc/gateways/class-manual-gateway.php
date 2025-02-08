@@ -15,9 +15,9 @@
 
 namespace WP_Ultimo\Gateways;
 
-use \WP_Ultimo\Gateways\Base_Gateway;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
-use \WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Gateways\Base_Gateway;
+use WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Database\Payments\Payment_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -48,8 +48,7 @@ class Manual_Gateway extends Base_Gateway {
 		 * Adds payment instructions to the thank you page.
 		 */
 		add_action('wu_thank_you_before_info_blocks', array($this, 'add_payment_instructions_block'), 10, 3);
-
-	} // end hooks;
+	}
 
 	/**
 	 * Declares support to recurring payments.
@@ -63,8 +62,7 @@ class Manual_Gateway extends Base_Gateway {
 	public function supports_recurring(): bool {
 
 		return false;
-
-	} // end supports_recurring;
+	}
 
 	/**
 	 * Declares support to free trials
@@ -75,8 +73,7 @@ class Manual_Gateway extends Base_Gateway {
 	public function supports_free_trials(): bool {
 
 		return false;
-
-	} // end supports_free_trials;
+	}
 
 	/**
 	 * Adds the Stripe Gateway settings to the settings screen.
@@ -86,28 +83,35 @@ class Manual_Gateway extends Base_Gateway {
 	 */
 	public function settings() {
 
-		wu_register_settings_field('payment-gateways', 'manual_header', array(
-			'title'           => __('Manual', 'wp-ultimo'),
-			'desc'            => __('Use the settings section below to configure the manual payment method. This method allows your customers to manually pay for their memberships, but those payments require manual confirmation on your part.', 'wp-ultimo'),
-			'type'            => 'header',
-			'show_as_submenu' => true,
-			'require'         => array(
-				'active_gateways' => 'manual',
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'manual_header',
+			array(
+				'title'           => __('Manual', 'wp-ultimo'),
+				'desc'            => __('Use the settings section below to configure the manual payment method. This method allows your customers to manually pay for their memberships, but those payments require manual confirmation on your part.', 'wp-ultimo'),
+				'type'            => 'header',
+				'show_as_submenu' => true,
+				'require'         => array(
+					'active_gateways' => 'manual',
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'manual_payment_instructions', array(
-			'title'      => __('Payment Instructions', 'wp-ultimo'),
-			'desc'       => __('This instructions will be shown to the customer on the thank you page, as well as be sent via email.', 'wp-ultimo'),
-			'type'       => 'wp_editor',
-			'allow_html' => true,
-			'default'    => __('Payment instructions here.', 'wp-ultimo'),
-			'require'    => array(
-				'active_gateways' => 'manual',
-			),
-		));
-
-	}  // end settings;
+		wu_register_settings_field(
+			'payment-gateways',
+			'manual_payment_instructions',
+			array(
+				'title'      => __('Payment Instructions', 'wp-ultimo'),
+				'desc'       => __('This instructions will be shown to the customer on the thank you page, as well as be sent via email.', 'wp-ultimo'),
+				'type'       => 'wp_editor',
+				'allow_html' => true,
+				'default'    => __('Payment instructions here.', 'wp-ultimo'),
+				'require'    => array(
+					'active_gateways' => 'manual',
+				),
+			)
+		);
+	}
 
 	/**
 	 * Reflects membership changes on the gateway.
@@ -123,8 +127,7 @@ class Manual_Gateway extends Base_Gateway {
 	public function process_membership_update(&$membership, $customer) {
 
 		return true;
-
-	} // end process_membership_update;
+	}
 
 	/**
 	 * Returns a message about what will happen to the gateway subscription
@@ -138,18 +141,13 @@ class Manual_Gateway extends Base_Gateway {
 	public function get_amount_update_message($to_customer = false) {
 
 		if ($to_customer) {
-
 			$message = __('You will receive a updated invoice on the next billing cycle.', 'wp-ultimo');
-
 		} else {
-
 			$message = __('The customer will receive a updated invoice on the next billing cycle.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return $message;
-
-	} // end get_amount_update_message;
+	}
 	/**
 	 * Process a checkout.
 	 *
@@ -220,11 +218,9 @@ class Manual_Gateway extends Base_Gateway {
 		if ($type === 'new') {
 
 			// Your logic here.
-
 		} elseif ($type === 'renewal') {
 
 			// Your logic here.
-
 		} elseif ($type === 'downgrade') {
 			/*
 			 * When downgrading, we need to schedule a swap for the end of the
@@ -242,7 +238,6 @@ class Manual_Gateway extends Base_Gateway {
 			 * Saves the membership with the changes.
 			 */
 			$status = $membership->save();
-
 		} elseif ($type === 'upgrade' || $type === 'addon') {
 			/*
 			* After everything is said and done,
@@ -271,8 +266,7 @@ class Manual_Gateway extends Base_Gateway {
 			 * Saves the membership with the changes.
 			 */
 			$status = $membership->save();
-
-		} // end if;
+		}
 
 		/*
 		 * We want to check the status
@@ -288,19 +282,15 @@ class Manual_Gateway extends Base_Gateway {
 		 * will be undone, including the swap above.
 		 */
 		if (is_wp_error($status)) {
-
 			throw new \Exception($status->get_error_message(), $status->get_error_code());
-
-		} // end if;
+		}
 
 		// In case of trials with payment method
 		if ($payment->get_total() === 0.00) {
-
 			$payment->set_status(Payment_Status::COMPLETED);
 
 			$payment->save();
-
-		} // end if;
+		}
 
 		/*
 		 * You don't need to return anything,
@@ -312,8 +302,7 @@ class Manual_Gateway extends Base_Gateway {
 		 * extra redirects.
 		 */
 		return true;
-
-	} // end process_checkout;
+	}
 
 	/**
 	 * Process a cancellation.
@@ -327,7 +316,7 @@ class Manual_Gateway extends Base_Gateway {
 	 * @param \WP_Ultimo\Models\Customer   $customer The customer checking out.
 	 * @return void|bool
 	 */
-	public function process_cancellation($membership, $customer) {} // end process_cancellation;
+	public function process_cancellation($membership, $customer) {}
 
 	/**
 	 * Process a checkout.
@@ -348,29 +337,25 @@ class Manual_Gateway extends Base_Gateway {
 		$status = $payment->refund($amount);
 
 		if (is_wp_error($status)) {
-
 			throw new \Exception($status->get_error_code(), $status->get_error_message());
-
-		} // end if;
-
-	} // end process_refund;
- /**
-  * Adds additional fields to the checkout form for a particular gateway.
-  *
-  * In this method, you can either return an array of fields (that we will display
-  * using our form display methods) or you can return plain HTML in a string,
-  * which will get outputted to the gateway section of the checkout.
-  *
-  * @since 2.0.0
-  * @return mixed[]|string
-  */
- public function fields() {
+		}
+	}
+	/**
+	 * Adds additional fields to the checkout form for a particular gateway.
+	 *
+	 * In this method, you can either return an array of fields (that we will display
+	 * using our form display methods) or you can return plain HTML in a string,
+	 * which will get outputted to the gateway section of the checkout.
+	 *
+	 * @since 2.0.0
+	 * @return mixed[]|string
+	 */
+	public function fields() {
 
 		$message = __('After you finish signing up, we will send you an email with instructions to finalize the payment. Your account will be pending until the payment is finalized and confirmed.', 'wp-ultimo');
 
 		return sprintf('<p v-if="!order.has_trial" class="wu-p-4 wu-bg-yellow-200">%s</p>', $message);
-
-	} // end fields;
+	}
 
 	/**
 	 * Adds the payment instruction block.
@@ -385,10 +370,8 @@ class Manual_Gateway extends Base_Gateway {
 	public function add_payment_instructions_block($payment, $membership, $customer) {
 
 		if ($payment->get_gateway() !== $this->id) {
-
 			return;
-
-		} // end if;
+		}
 
 		// phpcs:disable
 
@@ -427,7 +410,5 @@ class Manual_Gateway extends Base_Gateway {
 		<?php endif;
 
 		// phpcs:enable
-
-	} // end add_payment_instructions_block;
-
-} // end class Manual_Gateway;
+	}
+}

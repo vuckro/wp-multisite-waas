@@ -17,13 +17,12 @@ defined('ABSPATH') || exit;
  */
 function wu_try_unlimited_server_limits() {
 
-  // Disable memory_limit by setting it to minus 1.
+	// Disable memory_limit by setting it to minus 1.
   @ini_set('memory_limit', '-1'); // phpcs:ignore
 
-  // Disable the time limit by setting it to 0.
+	// Disable the time limit by setting it to 0.
   @set_time_limit(0); // phpcs:ignore
-
-} // end wu_try_unlimited_server_limits;
+}
 
 /**
  * Custom error handler for memory leaks
@@ -40,5 +39,4 @@ function wu_setup_memory_limit_trap($return_type = 'plain') {
 	$trap->set_return_type($return_type);
 
 	$trap->setup();
-
-} // end wu_setup_memory_limit_trap;
+}

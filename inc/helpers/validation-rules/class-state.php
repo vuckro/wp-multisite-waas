@@ -35,28 +35,22 @@ class State extends Rule {
 	 *
 	 * @param mixed $state The state value detected.
 	 */
- public function check($state) : bool { // phpcs:ignore
+    public function check($state) : bool { // phpcs:ignore
 
 		$check = true;
 
 		$country = $this->parameter('country') ?? wu_request('billing_country');
 
 		if ($country && $state) {
-
 			$state = strtoupper((string) $state);
 
 			$allowed_states = array_keys(wu_get_country_states(strtoupper((string) $country), false));
 
-			if (!empty($allowed_states)) {
-
+			if (! empty($allowed_states)) {
 				$check = in_array($state, $allowed_states, true);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $check;
-
-	} // end check;
-
-} // end class State;
+	}
+}

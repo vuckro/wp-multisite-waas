@@ -32,7 +32,5 @@ class Job_Manager {
 	 * @return void
 	 */
 	public function init() {
-
-	} // end init;
-
-} // end class Job_Manager;
+	}
+}

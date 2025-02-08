@@ -15,32 +15,32 @@
  * @version     1.0.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
 
 <div id="wu-your-site-block">
 
-  <small><?php _e('Your URL will be', 'wp-ultimo'); ?></small><br>
+	<small><?php _e('Your URL will be', 'wp-ultimo'); ?></small><br>
 
-  <?php
-  /**
-   * Change the base, if sub-domain or subdirectory
-   */
-  $dynamic_part  = '<strong id="wu-your-site" v-html="site_url ? site_url : \'yoursite\'">';
-  // This is used on the yoursite.network.com during sign-up
-  $dynamic_part .= isset($signup->results['blogname']) ? $signup->results['blogname'] : __('yoursite', 'wp-ultimo');
-  $dynamic_part .= '</strong>';
+	<?php
+	/**
+	 * Change the base, if sub-domain or subdirectory
+	 */
+	$dynamic_part = '<strong id="wu-your-site" v-html="site_url ? site_url : \'yoursite\'">';
+	// This is used on the yoursite.network.com during sign-up
+	$dynamic_part .= isset($signup->results['blogname']) ? $signup->results['blogname'] : __('yoursite', 'wp-ultimo');
+	$dynamic_part .= '</strong>';
 
-  $site_url      = preg_replace('#^https?://#', '', WU_Signup()->get_site_url_for_previewer());
-  $site_url      = str_replace('www.', '', $site_url);
+	$site_url = preg_replace('#^https?://#', '', WU_Signup()->get_site_url_for_previewer());
+	$site_url = str_replace('www.', '', $site_url);
 
-  $template      = is_subdomain_install() ? sprintf('%s.<span id="wu-site-domain" v-html="site_domain">%s</span>', $dynamic_part, $site_url) : sprintf('<span id="wu-site-domain" v-html="site_domain">%s</span>/%s', $site_url, $dynamic_part);
+	$template = is_subdomain_install() ? sprintf('%s.<span id="wu-site-domain" v-html="site_domain">%s</span>', $dynamic_part, $site_url) : sprintf('<span id="wu-site-domain" v-html="site_domain">%s</span>/%s', $site_url, $dynamic_part);
 
-  echo $template;
+	echo $template;
 
-  ?>
+	?>
 
 </div>

@@ -26,8 +26,7 @@ trait WP_Ultimo_Deprecated {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_slugify($term)');
 
 		wu_slugify($term);
-
-	} // end slugfy;
+	}
 
 	/**
 	 * Deprecated: WP_Ultimo->add_page_to_branding()
@@ -38,8 +37,7 @@ trait WP_Ultimo_Deprecated {
 	public function add_page_to_branding() {
 
 		_deprecated_function(__METHOD__, '2.0.0');
-
-	} // end add_page_to_branding;
+	}
 
 	/**
 	 * Renders a view file from the view folder.
@@ -56,8 +54,7 @@ trait WP_Ultimo_Deprecated {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_template()');
 
 		wu_get_template($view, $vars);
-
-	} // end render;
+	}
 
 	/**
 	 * Returns the full path to the plugin folder
@@ -73,8 +70,7 @@ trait WP_Ultimo_Deprecated {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_path()');
 
 		return wu_path($dir);
-
-	} // end path;
+	}
 
 	/**
 	 * Deprecated: Add messages to be displayed as notices
@@ -95,12 +91,9 @@ trait WP_Ultimo_Deprecated {
 		$ultimo = WP_Ultimo();
 
 		if (isset($ultimo->notices) && $ultimo->notices) {
-
 			$ultimo->notices->add($message, $type, $panel);
-
-		} // end if;
-
-	} // end add_message;
+		}
+	}
 
 	/**
 	 * Deprecated: This function is here to make sure that the plugin is network active
@@ -116,8 +109,7 @@ trait WP_Ultimo_Deprecated {
 		_deprecated_function(__METHOD__, '2.0.0', 'WP_Ultimo()->is_loaded()');
 
 		return WP_Ultimo()->is_loaded();
-
-	} // end check_before_run;
+	}
 
 	/**
 	 * Deprecated: enqueue_select2.
@@ -132,7 +124,5 @@ trait WP_Ultimo_Deprecated {
 		wp_enqueue_style('wu-select2css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.css', false, '1.0', 'all');
 
 		wp_enqueue_script('wu-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.js', array('jquery'), '1.0', true);
-
-	} // end enqueue_select2;
-
-} // end trait WP_Ultimo_Deprecated;
+	}
+}

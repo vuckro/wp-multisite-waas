@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages\Customer_Panel;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
+use WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
 
 /**
  * WP Multisite WaaS My Sites Admin Page.
@@ -20,10 +20,10 @@ use \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
 class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 
 	/**
-     * Holds the ID for this page, this is also used as the page slug.
-     *
-     * @var string
-     */
+	 * Holds the ID for this page, this is also used as the page slug.
+	 *
+	 * @var string
+	 */
 	protected $id = 'sites';
 
 	/**
@@ -111,7 +111,6 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$this->register_page_settings();
 
 		if ($this->current_site->get_type() === 'customer_owned') {
-
 			parent::__construct();
 
 			add_action('admin_menu', array($this, 'unset_default_my_sites_menu'));
@@ -119,10 +118,8 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 			add_action('admin_bar_menu', array($this, 'change_my_sites_link'), 90);
 
 			add_action('current_screen', array($this, 'force_screen_options'));
-
-		} // end if;
-
-	} // end __construct;
+		}
+	}
 
 	/**
 	 * Loads the current site and membership.
@@ -133,8 +130,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function page_loaded() {
 
 		$this->customer = wu_get_current_customer();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Allow child classes to add hooks to be run once the page is loaded.
@@ -143,7 +139,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Remove the default my sites link.
@@ -156,8 +152,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		global $submenu;
 
 		unset($submenu['index.php'][5]);
-
-	} // end unset_default_my_sites_menu;
+	}
 
 	/**
 	 * Update the my sites link on the top-bar.
@@ -172,10 +167,8 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$my_sites = $wp_admin_bar->get_node('my-sites');
 
 		if (empty($my_sites)) {
-
 			return;
-
-		} // end if;
+		}
 
 		$args = array(
 			'page' => 'sites',
@@ -184,8 +177,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$my_sites->href = add_query_arg($args, admin_url('admin.php'));
 
 		$wp_admin_bar->add_node($my_sites);
-
-	} // end change_my_sites_link;
+	}
 
 	/**
 	 * Force the screen options so our customize options show up.
@@ -196,18 +188,18 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function force_screen_options() {
 
 		if (get_current_screen()->id !== 'toplevel_page_sites') {
-
 			return;
-
-		} // end if;
+		}
 
 		// Forces Screen options so we can add our links.
-		add_screen_option('wu_fix', array(
-			'option' => 'test',
-			'value'  => true,
-		));
-
-	} // end force_screen_options;
+		add_screen_option(
+			'wu_fix',
+			array(
+				'option' => 'test',
+				'value'  => true,
+			)
+		);
+	}
 
 	/**
 	 * Allow child classes to add screen options; Useful for pages that have list tables.
@@ -215,7 +207,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function screen_options() {} // end screen_options;
+	public function screen_options() {}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -230,8 +222,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		\WP_Ultimo\UI\Simple_Text_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes');
 
 		\WP_Ultimo\UI\My_Sites_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes');
-
-	} // end register_widgets;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -242,8 +233,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_title() {
 
 		return __('My Sites', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -254,8 +244,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_menu_title() {
 
 		return __('My Sites', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -266,8 +255,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('My Sites', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -279,12 +267,13 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/dash', array(
-			'screen'            => get_current_screen(),
-			'page'              => $this,
-			'has_full_position' => false,
-		));
-
-	} // end output;
-
-} // end class My_Sites_Admin_Page;
+		wu_get_template(
+			'base/dash',
+			array(
+				'screen'            => get_current_screen(),
+				'page'              => $this,
+				'has_full_position' => false,
+			)
+		);
+	}
+}

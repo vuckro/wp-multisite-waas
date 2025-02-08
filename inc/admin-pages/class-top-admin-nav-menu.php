@@ -33,8 +33,7 @@ class Top_Admin_Nav_Menu {
 	public function __construct() {
 
 		add_action('admin_bar_menu', array($this, 'add_top_bar_menus'), 50);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Adds the WP Multisite WaaS top-bar shortcut menu
@@ -45,14 +44,12 @@ class Top_Admin_Nav_Menu {
 	 */
 	public function add_top_bar_menus($wp_admin_bar) {
 
-    // Only for super admins
-		if (!current_user_can('manage_network')) {
-
+		// Only for super admins
+		if ( ! current_user_can('manage_network')) {
 			return;
+		}
 
-		} // end if;
-
-    // Add Parent element
+		// Add Parent element
 		$parent = array(
 			'id'    => 'wp-ultimo',
 			'title' => __('Multisite Waas', 'wp-ultimo'),
@@ -60,10 +57,10 @@ class Top_Admin_Nav_Menu {
 			'meta'  => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the dashboard', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Site
+		// Site
 		$sites = array(
 			'id'     => 'wp-ultimo-sites',
 			'parent' => 'wp-ultimo',
@@ -72,10 +69,10 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the sites page', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Memberships
+		// Memberships
 		$memberships = array(
 			'id'     => 'wp-ultimo-memberships',
 			'parent' => 'wp-ultimo',
@@ -84,10 +81,10 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the memberships page', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Customers
+		// Customers
 		$customers = array(
 			'id'     => 'wp-ultimo-customers',
 			'parent' => 'wp-ultimo',
@@ -96,10 +93,10 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the customers page', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Products
+		// Products
 		$products = array(
 			'id'     => 'wp-ultimo-products',
 			'parent' => 'wp-ultimo',
@@ -108,10 +105,10 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the products page', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Payments
+		// Payments
 		$payments = array(
 			'id'     => 'wp-ultimo-payments',
 			'parent' => 'wp-ultimo',
@@ -120,10 +117,10 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the payments page', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Discount Codes
+		// Discount Codes
 		$discount_codes = array(
 			'id'     => 'wp-ultimo-discount-codes',
 			'parent' => 'wp-ultimo',
@@ -132,7 +129,7 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu',
 				'title' => __('Go to the discount codes page', 'wp-ultimo'),
-			)
+			),
 		);
 
 		$container = array(
@@ -144,10 +141,10 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu ab-sub-secondary',
 				'title' => __('Go to the settings page', 'wp-ultimo'),
-			)
+			),
 		);
 
-    // Settings
+		// Settings
 		$settings = array(
 			'id'     => 'wp-ultimo-settings',
 			'parent' => 'wp-ultimo-settings-group',
@@ -156,7 +153,7 @@ class Top_Admin_Nav_Menu {
 			'meta'   => array(
 				'class' => 'wp-ultimo-top-menu ab-sub-secondary',
 				'title' => __('Go to the settings page', 'wp-ultimo'),
-			)
+			),
 		);
 
 		/**
@@ -165,44 +162,32 @@ class Top_Admin_Nav_Menu {
 		$wp_admin_bar->add_node($parent);
 
 		if (current_user_can('wu_read_sites')) {
-
 			$wp_admin_bar->add_node($sites);
-
 		} //end if;
 
 		if (current_user_can('wu_read_memberships')) {
-
 			$wp_admin_bar->add_node($memberships);
-
 		} //end if;
 
 		if (current_user_can('wu_read_customers')) {
-
 			$wp_admin_bar->add_node($customers);
-
 		} //end if;
 
 		if (current_user_can('wu_read_products')) {
-
 			$wp_admin_bar->add_node($products);
-
 		} //end if;
 
 		if (current_user_can('wu_read_payments')) {
-
 			$wp_admin_bar->add_node($payments);
 		} //end if;
 
 		if (current_user_can('wu_read_discount_codes')) {
-
 			$wp_admin_bar->add_node($discount_codes);
 		} //end if;
 
 		if (current_user_can('wu_read_settings')) {
-
 			$wp_admin_bar->add_node($container);
 			$wp_admin_bar->add_node($settings);
-
 		} //end if;
 
 		/*
@@ -213,20 +198,15 @@ class Top_Admin_Nav_Menu {
 		$has_addons = false;
 
 		foreach ($settings_tabs as $tab => $tab_info) {
-
 			if (wu_get_isset($tab_info, 'invisible')) {
-
 				continue;
-
-			} // end if;
+			}
 
 			$parent = 'wp-ultimo-settings';
 
 			if (wu_get_isset($tab_info, 'addon', false)) {
-
 				$parent = 'wp-ultimo-settings-addons';
-
-			} // end if;
+			}
 
 			$settings_tab = array(
 				'id'     => 'wp-ultimo-settings-' . $tab,
@@ -236,13 +216,10 @@ class Top_Admin_Nav_Menu {
 				'meta'   => array(
 					'class' => 'wp-ultimo-top-menu',
 					'title' => __('Go to the settings page', 'wp-ultimo'),
-				)
+				),
 			);
 
 			$wp_admin_bar->add_node($settings_tab);
-
-		} // end foreach;
-
-	} // end add_top_bar_menus;
-
-}  // end class Top_Admin_Nav_Menu;
+		}
+	}
+}

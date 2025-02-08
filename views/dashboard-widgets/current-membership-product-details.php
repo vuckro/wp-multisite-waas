@@ -8,58 +8,58 @@
 
 <div class="<?php echo "wu-product-{$product->get_id()}-head"; ?> wu-bg-gray-100 wu-p-4 wu-flex wu-items-center">
 
-  <div>
+	<div>
 
-    <span class="wu-text-xl wu-font-medium wu-block"><?php echo $product->get_name(); ?></span>
+	<span class="wu-text-xl wu-font-medium wu-block"><?php echo $product->get_name(); ?></span>
 
-    <small class="wu-text-gray-600 wu-text-sm wu-block wu-mt-2"><?php echo $product->get_price_description(); ?></small>
+	<small class="wu-text-gray-600 wu-text-sm wu-block wu-mt-2"><?php echo $product->get_price_description(); ?></small>
 
-  </div>
+	</div>
 
-  <?php if ($product->get_featured_image()) : ?>
+	<?php if ($product->get_featured_image()) : ?>
 
-    <div class="wu-ml-auto">
+	<div class="wu-ml-auto">
 
-      <img 
-        class="wu-h-12 wu-w-12 wu-rounded" 
-        src="<?php echo esc_url($product->get_featured_image()); ?>" 
-        alt="<?php echo esc_attr($product->get_name()); ?>"
-      >
+		<img 
+		class="wu-h-12 wu-w-12 wu-rounded" 
+		src="<?php echo esc_url($product->get_featured_image()); ?>" 
+		alt="<?php echo esc_attr($product->get_name()); ?>"
+		>
 
-    </div>
+	</div>
 
-  <?php endif; ?>
+	<?php endif; ?>
 
 </div>
 
 <div class="<?php echo "wu-product-{$product->get_id()}-description"; ?> wu-p-4 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b wu-border-gray-300 wu-border-solid">
 
-  <?php if ($product->get_description()) : ?>
+	<?php if ($product->get_description()) : ?>
 
-    <span class="wu-text-xs wu-uppercase wu-font-bold wu-block">
+	<span class="wu-text-xs wu-uppercase wu-font-bold wu-block">
 
-      <?php _e('Product Description:', 'wp-ultimo'); ?>
+		<?php _e('Product Description:', 'wp-ultimo'); ?>
 
-    </span>
+	</span>
 
-    <p class="wu-mb-6"><?php echo $product->get_description(); ?></p>
+	<p class="wu-mb-6"><?php echo $product->get_description(); ?></p>
 
-  <?php endif; ?>
+	<?php endif; ?>
 
-  <span class="wu-text-xs wu-uppercase wu-font-bold wu-block">
+	<span class="wu-text-xs wu-uppercase wu-font-bold wu-block">
 
-    <?php _e('Product Characteristics:', 'wp-ultimo'); ?>
+	<?php _e('Product Characteristics:', 'wp-ultimo'); ?>
 
-  </span>
+	</span>
 
-  <ul class="wu-m-0 wu-mt-4 wu-p-0 wu-list-none">
+	<ul class="wu-m-0 wu-mt-4 wu-p-0 wu-list-none">
 
-    <?php foreach ($product->get_pricing_table_lines() as $key => $line) : ?>
+	<?php foreach ($product->get_pricing_table_lines() as $key => $line) : ?>
 
-      <li class="<?php echo str_replace('_', '-', $key); ?>"><?php echo $line; ?></li>
+		<li class="<?php echo str_replace('_', '-', $key); ?>"><?php echo $line; ?></li>
 
-    <?php endforeach; ?>
+	<?php endforeach; ?>
 
-  </ul>
+	</ul>
 
 </div>

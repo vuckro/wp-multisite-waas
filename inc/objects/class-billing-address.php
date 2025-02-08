@@ -37,8 +37,7 @@ class Billing_Address {
 	public function __construct($data = array()) {
 
 		$this->attributes($data);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Loops through allowed fields and loads them.
@@ -53,16 +52,11 @@ class Billing_Address {
 		$allowed_attributes = array_keys(self::fields());
 
 		foreach ($data as $key => $value) {
-
 			if (in_array($key, $allowed_attributes, true)) {
-
-				$this->attributes[$key] = $value;
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end attributes;
+				$this->attributes[ $key ] = $value;
+			}
+		}
+	}
 
 	/**
 	 * Checks if this billing address has any content at all.
@@ -72,9 +66,8 @@ class Billing_Address {
 	 */
 	public function exists() {
 
-		return !empty(array_filter($this->attributes));
-
-	} // end exists;
+		return ! empty(array_filter($this->attributes));
+	}
 
 	/**
 	 * Checks if a parameter exists.
@@ -87,8 +80,7 @@ class Billing_Address {
 	public function __isset($name) {
 
 		return wu_get_isset($this->attributes, $name, '');
-
-	} // end __isset;
+	}
 
 	/**
 	 * Gets a billing address field.
@@ -103,8 +95,7 @@ class Billing_Address {
 		$value = wu_get_isset($this->attributes, $name, '');
 
 		return apply_filters("wu_billing_address_get_{$name}", $value, $this);
-
-	} // end __get;
+	}
 
 	/**
 	 * Sets a billing address field.
@@ -118,9 +109,8 @@ class Billing_Address {
 
 		$value = apply_filters("wu_billing_address_set_{$name}", $value, $this);
 
-		$this->attributes[$name] = $value;
-
-	} // end __set;
+		$this->attributes[ $name ] = $value;
+	}
 	/**
 	 * Returns the validation rules for the billing address fields.
 	 *
@@ -133,8 +123,7 @@ class Billing_Address {
 		$keys = array_keys(array_filter($fields, fn($item) => wu_get_isset($item, 'validation_rules')));
 
 		return array_combine($keys, array_column($fields, 'validation_rules'));
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Validates the fields following the validation rules.
@@ -144,19 +133,16 @@ class Billing_Address {
 	 */
 	public function validate() {
 
-		$validator = new \WP_Ultimo\Helpers\Validator;
+		$validator = new \WP_Ultimo\Helpers\Validator();
 
 		$validator->validate($this->to_array(), $this->validation_rules());
 
 		if ($validator->fails()) {
-
 			return $validator->get_errors();
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end validate;
+	}
 
 	/**
 	 * Returns a key => value representation of the billing address.
@@ -173,20 +159,15 @@ class Billing_Address {
 		$fields = self::fields();
 
 		foreach ($fields as $field_key => $field) {
-
-			if (!empty($this->{$field_key})) {
-
+			if ( ! empty($this->{$field_key})) {
 				$key = $labels ? $field['title'] : $field_key;
 
-				$address_array[$key] = $this->{$field_key};
-
-			} // end if;
-
-		} // end foreach;
+				$address_array[ $key ] = $this->{$field_key};
+			}
+		}
 
 		return $address_array;
-
-	}  // end to_array;
+	}
 	/**
 	 * Returns a string representation of the billing address.
 	 *
@@ -204,8 +185,7 @@ class Billing_Address {
 	public function to_string($delimiter = PHP_EOL): string {
 
 		return implode($delimiter, $this->to_array());
-
-	} // end to_string;
+	}
 
 	/**
 	 * Returns the field array with values added.
@@ -219,14 +199,11 @@ class Billing_Address {
 		$fields = self::fields($zip_only);
 
 		foreach ($fields as $field_key => &$field) {
-
 			$field['value'] = $this->{$field_key};
-
-		} // end foreach;
+		}
 
 		return $fields;
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Billing Address field definitions.
@@ -246,23 +223,17 @@ class Billing_Address {
 
 		// Get allowed countries in form
 		if ($checkout_form && $checkout_form->has_country_lock()) {
-
 			$allowed_countries = $checkout_form->get_allowed_countries();
 
 			// Allow the Select Country field
 			$allowed_countries[] = '';
 
 			foreach ($countries as $country_code => $country) {
-
-				if (!in_array($country_code, $allowed_countries, true)) {
-
-					unset($countries[$country_code]);
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
+				if ( ! in_array($country_code, $allowed_countries, true)) {
+					unset($countries[ $country_code ]);
+				}
+			}
+		}
 
 		$fields['company_name'] = array(
 			'type'                => 'text',
@@ -329,13 +300,11 @@ class Billing_Address {
 		$fields = wu_set_order_from_index($fields); // Adds missing order attributes
 
 		if ($zip_only) {
-
 			$fields = array(
 				'billing_zip_code' => $fields['billing_zip_code'],
 				'billing_country'  => $fields['billing_country'],
 			);
-
-		} // end if;
+		}
 
 		/**
 		 * Allow plugin developers to filter the billing address fields.
@@ -343,7 +312,7 @@ class Billing_Address {
 		 * @since 2.0.0
 		 *
 		 * @param array $fields Billing Address array.
-	   * @param bool  $zip_only If we only need zip and country.
+		* @param bool  $zip_only If we only need zip and country.
 		 * @return array
 		 */
 		$fields = apply_filters('wu_billing_address_fields', $fields, $zip_only);
@@ -351,8 +320,7 @@ class Billing_Address {
 		uasort($fields, 'wu_sort_by_order');
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * Billing Address fields array for REST API.
@@ -366,27 +334,21 @@ class Billing_Address {
 		$fields_for_rest = array();
 
 		foreach (self::fields($zip_only) as $field_key => $field) {
-
 			$options = wu_get_isset($field, 'options', false);
 
 			$enum = is_callable($options) ? call_user_func($options) : false;
 
-			$fields_for_rest[$field_key] = array(
+			$fields_for_rest[ $field_key ] = array(
 				'description' => wu_get_isset($field, 'title', false) . '. ' . wu_get_isset($field, 'default_placeholder', false),
 				'type'        => 'string',
 				'required'    => wu_get_isset($field, 'required', false),
 			);
 
 			if ($enum) {
-
-				$fields_for_rest[$field_key]['enum'] = array_keys($enum);
-
-			} // end if;
-
-		} // end foreach;
+				$fields_for_rest[ $field_key ]['enum'] = array_keys($enum);
+			}
+		}
 
 		return $fields_for_rest;
-
-	} // end fields_for_rest;
-
-} // end class Billing_Address;
+	}
+}

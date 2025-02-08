@@ -34,17 +34,18 @@ class Checkout_Form_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Checkout Form', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Checkout Forms', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true,                              // does this table support ajax?
-			'add_new'  => array(
-				'url'     => wu_get_form_url('add_new_checkout_form'),
-				'classes' => 'wubox',
-			),
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Checkout Form', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Checkout Forms', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                              // does this table support ajax?
+				'add_new'  => array(
+					'url'     => wu_get_form_url('add_new_checkout_form'),
+					'classes' => 'wubox',
+				),
+			)
+		);
+	}
 	/**
 	 * Displays the content of the product column.
 	 *
@@ -64,14 +65,23 @@ class Checkout_Form_List_Table extends Base_List_Table {
 
 		$actions = array(
 			'edit'          => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-edit-checkout-form', $url_atts), __('Edit', 'wp-ultimo')),
-			'duplicate'     => sprintf('<a href="%s">%s</a>', wu_network_admin_url('wp-ultimo-checkout-forms', array('action' => 'duplicate', 'id' => $item->get_id())), __('Duplicate', 'wp-ultimo')),
+			'duplicate'     => sprintf(
+				'<a href="%s">%s</a>',
+				wu_network_admin_url(
+					'wp-ultimo-checkout-forms',
+					array(
+						'action' => 'duplicate',
+						'id'     => $item->get_id(),
+					)
+				),
+				__('Duplicate', 'wp-ultimo')
+			),
 			'get_shortcode' => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Shortcode', 'wp-ultimo'), wu_get_form_url('shortcode_checkout', $url_atts), __('Shortcode', 'wp-ultimo')),
 			'delete'        => sprintf('<a title="%s" class="wubox" href="%s">%s</a>', __('Delete', 'wp-ultimo'), wu_get_form_url('delete_modal', $url_atts), __('Delete', 'wp-ultimo')),
 		);
 
 		return $title . $this->row_actions($actions);
-
-	} // end column_name;
+	}
 
 	/**
 	 * Displays the slug of the form.
@@ -86,8 +96,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 		$slug = $item->get_slug();
 
 		return "<span class='wu-bg-gray-200 wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono'>{$slug}</span>";
-
-	} // end column_slug;
+	}
 	/**
 	 * Displays the number pof steps and fields.
 	 *
@@ -98,8 +107,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 	public function column_steps($item): string {
 
 		return sprintf(__('%1$d Step(s) and %2$d Field(s)', 'wp-ultimo'), $item->get_step_count(), $item->get_field_count());
-
-	} // end column_steps;
+	}
 	/**
 	 * Displays the form shortcode.
 	 *
@@ -109,14 +117,16 @@ class Checkout_Form_List_Table extends Base_List_Table {
 	 */
 	public function column_shortcode($item): string {
 
-		$button = sprintf('
+		$button = sprintf(
+			'
 		<button type="button" data-clipboard-action="copy" data-clipboard-target="#hidden_textarea" class="btn-clipboard" title="%s">
       <span class="dashicons-wu-copy"></span>
-    </button>', __('Copy to the Clipboard', 'wp-ultimo'));
+    </button>',
+			__('Copy to the Clipboard', 'wp-ultimo')
+		);
 
 		return sprintf('<input class="wu-bg-gray-200 wu-border-none wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono" value="%s">', esc_attr($item->get_shortcode()), '');
-
-	} // end column_shortcode;
+	}
 
 	/**
 	 * Handles the bulk processing adding duplication
@@ -129,18 +139,15 @@ class Checkout_Form_List_Table extends Base_List_Table {
 		$bulk_action = $this->current_action();
 
 		if ($bulk_action === 'duplicate') {
-
 			$checkout_form_id = wu_request('id');
 
 			$checkout_form = wu_get_checkout_form($checkout_form_id);
 
-			if (!$checkout_form) {
-
+			if ( ! $checkout_form) {
 				WP_Ultimo()->notices->add(__('Checkout form not found.', 'wp-ultimo'), 'error', 'network-admin');
 
 				return;
-
-			} // end if;
+			}
 
 			$new_checkout_form = $checkout_form->duplicate();
 
@@ -155,25 +162,24 @@ class Checkout_Form_List_Table extends Base_List_Table {
 			$result = $new_checkout_form->save();
 
 			if (is_wp_error($result)) {
-
 				WP_Ultimo()->notices->add($result->get_error_message(), 'error', 'network-admin');
 
 				return;
+			}
 
-			} // end if;
-
-			$redirect_url = wu_network_admin_url('wp-ultimo-edit-checkout-form', array(
-				'id'      => $new_checkout_form->get_id(),
-				'updated' => 1,
-			));
+			$redirect_url = wu_network_admin_url(
+				'wp-ultimo-edit-checkout-form',
+				array(
+					'id'      => $new_checkout_form->get_id(),
+					'updated' => 1,
+				)
+			);
 
 			wp_redirect($redirect_url);
 
 			exit;
-
-		} // end if;
-
-	} // end process_single_action;
+		}
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -192,8 +198,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -205,7 +210,5 @@ class Checkout_Form_List_Table extends Base_List_Table {
 			'filters'      => array(),
 			'date_filters' => array(),
 		);
-
-	} // end get_filters;
-
-} // end class Checkout_Form_List_Table;
+	}
+}

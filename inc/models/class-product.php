@@ -12,8 +12,8 @@ namespace WP_Ultimo\Models;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Base_Model;
-use \WP_Ultimo\Database\Products\Product_Type;
+use WP_Ultimo\Models\Base_Model;
+use WP_Ultimo\Database\Products\Product_Type;
 
 /**
  * Product model class. Implements the Base Model.
@@ -22,7 +22,8 @@ use \WP_Ultimo\Database\Products\Product_Type;
  */
 class Product extends Base_Model {
 
-	use Traits\Limitable, \WP_Ultimo\Traits\WP_Ultimo_Plan_Deprecated;
+	use Traits\Limitable;
+	use \WP_Ultimo\Traits\WP_Ultimo_Plan_Deprecated;
 
 	/**
 	 * The product name.
@@ -323,8 +324,7 @@ class Product extends Base_Model {
 			'contact_us_link'     => 'url:http,https',
 			'customer_role'       => 'alpha_dash',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get featured image ID.
@@ -335,14 +335,11 @@ class Product extends Base_Model {
 	public function get_featured_image_id() {
 
 		if ($this->featured_image_id === null) {
-
 			$this->featured_image_id = $this->get_meta('wu_featured_image_id');
-
-		} // end if;
+		}
 
 		return $this->featured_image_id;
-
-	} // end get_featured_image_id;
+	}
 
 	/**
 	 * Get featured image url.
@@ -360,8 +357,7 @@ class Product extends Base_Model {
 		is_multisite() && restore_current_blog();
 
 		return $image_attributes ? $image_attributes[0] : '';
-
-	} // end get_featured_image;
+	}
 
 	/**
 	 * Set featured image ID.
@@ -375,8 +371,7 @@ class Product extends Base_Model {
 		$this->meta['wu_featured_image_id'] = $image_id;
 
 		$this->featured_image_id = $image_id;
-
-	} // end set_featured_image_id;
+	}
 
 	/**
 	 * Get the product slug.
@@ -386,8 +381,7 @@ class Product extends Base_Model {
 	public function get_slug() {
 
 		return $this->slug;
-
-	} // end get_slug;
+	}
 
 	/**
 	 * Set the slug name.
@@ -397,8 +391,7 @@ class Product extends Base_Model {
 	public function set_slug($slug) {
 
 		$this->slug = $slug;
-
-	} // end set_slug;
+	}
 
 	/**
 	 * Get the product name.
@@ -408,8 +401,7 @@ class Product extends Base_Model {
 	public function get_name() {
 
 		return $this->name;
-
-	} // end get_name;
+	}
 
 	/**
 	 * Set the product name.
@@ -419,8 +411,7 @@ class Product extends Base_Model {
 	public function set_name($name) {
 
 		$this->name = $name;
-
-	} // end set_name;
+	}
 
 	/**
 	 * Get the product description.
@@ -430,8 +421,7 @@ class Product extends Base_Model {
 	public function get_description() {
 
 		return stripslashes($this->description);
-
-	} // end get_description;
+	}
 
 	/**
 	 * Set the product description.
@@ -441,8 +431,7 @@ class Product extends Base_Model {
 	public function set_description($description) {
 
 		$this->description = $description;
-
-	} // end set_description;
+	}
 
 	/**
 	 * Get the value of currency.
@@ -457,14 +446,11 @@ class Product extends Base_Model {
 		$currency = wu_get_setting('currency_symbol', 'USD');
 
 		if ($should_use_saved_currency) {
-
 			$currency = $this->currency;
-
-		} // end if;
+		}
 
 		return $currency;
-
-	} // end get_currency;
+	}
 
 	/**
 	 * Set the value of currency.
@@ -476,8 +462,7 @@ class Product extends Base_Model {
 	public function set_currency($currency) {
 
 		$this->currency = $currency;
-
-	} // end set_currency;
+	}
 
 	/**
 	 * Get can be one of 'free', 'paid', and 'contact_us'.
@@ -488,8 +473,7 @@ class Product extends Base_Model {
 	public function get_pricing_type() {
 
 		return $this->pricing_type;
-
-	} // end get_pricing_type;
+	}
 
 	/**
 	 * Set pricing type can be one of 'free', 'paid', and 'contact_us'.
@@ -504,14 +488,11 @@ class Product extends Base_Model {
 		$this->pricing_type = $pricing_type;
 
 		if ($pricing_type === 'free' || $pricing_type === 'contact_us') {
-
 			$this->set_amount(0);
 
 			$this->set_recurring(false);
-
-		} // end if;
-
-	} // end set_pricing_type;
+		}
+	}
 
 	/**
 	 * Checks if a given product offers a trial period.
@@ -522,8 +503,7 @@ class Product extends Base_Model {
 	public function has_trial() {
 
 		return $this->get_trial_duration() > 0;
-
-	} // end has_trial;
+	}
 
 	/**
 	 * Get duration of the trial.
@@ -534,8 +514,7 @@ class Product extends Base_Model {
 	public function get_trial_duration() {
 
 		return $this->trial_duration;
-
-	} // end get_trial_duration;
+	}
 
 	/**
 	 * Set duration of the trial.
@@ -547,8 +526,7 @@ class Product extends Base_Model {
 	public function set_trial_duration($trial_duration) {
 
 		$this->trial_duration = $trial_duration;
-
-	} // end set_trial_duration;
+	}
 
 	/**
 	 * Get the trial duration unit.
@@ -559,8 +537,7 @@ class Product extends Base_Model {
 	public function get_trial_duration_unit() {
 
 		return $this->trial_duration_unit;
-
-	} // end get_trial_duration_unit;
+	}
 
 	/**
 	 * Set the trial duration unit.
@@ -573,8 +550,7 @@ class Product extends Base_Model {
 	public function set_trial_duration_unit($trial_duration_unit) {
 
 		$this->trial_duration_unit = $trial_duration_unit;
-
-	} // end set_trial_duration_unit;
+	}
 
 	/**
 	 * Get time interval between charges.
@@ -584,8 +560,7 @@ class Product extends Base_Model {
 	public function get_duration() {
 
 		return absint($this->duration);
-
-	} // end get_duration;
+	}
 
 	/**
 	 * Set time interval between charges.
@@ -595,8 +570,7 @@ class Product extends Base_Model {
 	public function set_duration($duration) {
 
 		$this->duration = $duration;
-
-	} // end set_duration;
+	}
 
 	/**
 	 * Get time interval unit between charges.
@@ -606,8 +580,7 @@ class Product extends Base_Model {
 	public function get_duration_unit() {
 
 		return $this->duration_unit;
-
-	} // end get_duration_unit;
+	}
 
 	/**
 	 * Set time interval unit between charges.
@@ -617,8 +590,7 @@ class Product extends Base_Model {
 	public function set_duration_unit($duration_unit) {
 
 		$this->duration_unit = $duration_unit;
-
-	} // end set_duration_unit;
+	}
 
 	/**
 	 * Get the product amount.
@@ -628,20 +600,15 @@ class Product extends Base_Model {
 	public function get_amount() {
 
 		if ($this->get_pricing_type() === 'free') {
-
 			return 0;
-
-		} // end if;
+		}
 
 		if ($this->get_pricing_type() === 'contact_us') {
-
 			return 0;
-
-		} // end if;
+		}
 
 		return $this->amount;
-
-	} // end get_amount;
+	}
 
 	/**
 	 * Get the formatted price amount.
@@ -653,20 +620,15 @@ class Product extends Base_Model {
 	public function get_formatted_amount($key = 'amount') {
 
 		if ($this->is_free()) {
-
 			return __('Free!', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		if ($this->get_pricing_type() === 'contact_us') {
-
 			return $this->get_contact_us_label() ? $this->get_contact_us_label() : __('Contact Us', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return wu_format_currency($this->get_amount(), $this->get_currency());
-
-	} // end get_formatted_amount;
+	}
 
 	/**
 	 * Set the product amount.
@@ -676,8 +638,7 @@ class Product extends Base_Model {
 	public function set_amount($amount) {
 
 		$this->amount = wu_to_float($amount);
-
-	} // end set_amount;
+	}
 
 	/**
 	 * Get the product setup fee..
@@ -688,8 +649,7 @@ class Product extends Base_Model {
 	public function get_setup_fee() {
 
 		return $this->setup_fee;
-
-	} // end get_setup_fee;
+	}
 
 	/**
 	 * Set the product setup fee..
@@ -701,8 +661,7 @@ class Product extends Base_Model {
 	public function set_setup_fee($setup_fee) {
 
 		$this->setup_fee = wu_to_float($setup_fee);
-
-	} // end set_setup_fee;
+	}
 
 	/**
 	 * Checks if a given product haw a setup fee.
@@ -713,8 +672,7 @@ class Product extends Base_Model {
 	public function has_setup_fee() {
 
 		return $this->get_setup_fee() > 0;
-
-	} // end has_setup_fee;
+	}
 
 	/**
 	 * Get the product initial amount
@@ -724,8 +682,7 @@ class Product extends Base_Model {
 	public function get_initial_amount() {
 
 		return $this->get_amount() + $this->get_setup_fee();
-
-	} // end get_initial_amount;
+	}
 
 	/**
 	 * Returns the product price structure in a way human can understand it.
@@ -740,19 +697,14 @@ class Product extends Base_Model {
 		$pricing = array();
 
 		if ($this->get_pricing_type() === 'contact_us') {
-
 			return __('Contact us', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		if ($this->is_free()) {
-
 			return __('Free!', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		if ($this->is_recurring()) {
-
 			$duration = $this->get_duration();
 
 			$message = sprintf(
@@ -765,8 +717,7 @@ class Product extends Base_Model {
 
 			$pricing['subscription'] = $message;
 
-			if (!$this->is_forever_recurring()) {
-
+			if ( ! $this->is_forever_recurring()) {
 				$billing_cycles_message = sprintf(
 					// translators: %s is the number of billing cycles.
 					_n('for %s cycle', 'for %s cycles', $this->get_billing_cycles(), 'wp-ultimo'),
@@ -774,32 +725,25 @@ class Product extends Base_Model {
 				);
 
 				$pricing['subscription'] .= ' ' . $billing_cycles_message;
-
-			} // end if;
-
+			}
 		} else {
-
 			$pricing['subscription'] = sprintf(
 				// translators: %1$s is the formatted price of the product
 				__('%1$s one time payment', 'wp-ultimo'),
 				wu_format_currency($this->get_amount(), $this->get_currency())
 			);
-
-		} // end if;
+		}
 
 		if ($this->has_setup_fee() && $include_fees) {
-
 			$pricing['fee'] = sprintf(
 				// translators: %1$s is the formatted price of the setup fee
 				__('Setup Fee of %1$s', 'wp-ultimo'),
 				wu_format_currency($this->get_setup_fee(), $this->get_currency())
 			);
-
-		} // end if;
+		}
 
 		return implode(' + ', $pricing);
-
-	} // end get_price_description;
+	}
 
 	/**
 	 * Returns the amount recurring in a human-friendly way.
@@ -810,16 +754,12 @@ class Product extends Base_Model {
 	public function get_recurring_description() {
 
 		if ($this->is_free() || $this->get_pricing_type() === 'contact_us') {
-
 			return '--';
+		}
 
-		} // end if;
-
-		if (!$this->is_recurring()) {
-
+		if ( ! $this->is_recurring()) {
 			return __('one-time payment', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$description = sprintf(
 			// translators: %1$s the duration, and %2$s the duration unit (day, week, month, etc)
@@ -829,8 +769,7 @@ class Product extends Base_Model {
 		);
 
 		return $description;
-
-	} // end get_recurring_description;
+	}
 
 	/**
 	 * Get the product list order. Useful when ordering products in a list.
@@ -840,8 +779,7 @@ class Product extends Base_Model {
 	public function get_list_order() {
 
 		return $this->list_order;
-
-	} // end get_list_order;
+	}
 
 	/**
 	 * Set the product list order. Useful when ordering products in a list.
@@ -851,8 +789,7 @@ class Product extends Base_Model {
 	public function set_list_order($list_order) {
 
 		$this->list_order = $list_order;
-
-	} // end set_list_order;
+	}
 
 	/**
 	 * Get is this product active?.
@@ -863,8 +800,7 @@ class Product extends Base_Model {
 	public function is_active() {
 
 		return (bool) $this->active;
-
-	} // end is_active;
+	}
 
 	/**
 	 * Set is this product active?
@@ -876,8 +812,7 @@ class Product extends Base_Model {
 	public function set_active($active) {
 
 		$this->active = (bool) $active;
-
-	} // end set_active;
+	}
 
 	/**
 	 * Get type of the product.
@@ -887,8 +822,7 @@ class Product extends Base_Model {
 	public function get_type() {
 
 		return $this->type;
-
-	} // end get_type;
+	}
 
 	/**
 	 * Set type of the product.
@@ -899,8 +833,7 @@ class Product extends Base_Model {
 	public function set_type($type) {
 
 		$this->type = $type;
-
-	} // end set_type;
+	}
 
 	/**
 	 * Returns the Label for a given type.
@@ -913,8 +846,7 @@ class Product extends Base_Model {
 		$type = new Product_Type($this->get_type());
 
 		return $type->get_label();
-
-	} // end get_type_label;
+	}
 
 	/**
 	 * Gets the classes for a given class.
@@ -927,8 +859,7 @@ class Product extends Base_Model {
 		$type = new Product_Type($this->get_type());
 
 		return $type->get_classes();
-
-	} // end get_type_class;
+	}
 
 	/**
 	 * Get product that this product relates to..
@@ -939,8 +870,7 @@ class Product extends Base_Model {
 	public function get_parent_id() {
 
 		return $this->parent_id;
-
-	} // end get_parent_id;
+	}
 
 	/**
 	 * Set product that this product relates to..
@@ -952,8 +882,7 @@ class Product extends Base_Model {
 	public function set_parent_id($parent_id) {
 
 		$this->parent_id = $parent_id;
-
-	} // end set_parent_id;
+	}
 
 	/**
 	 * Get is this product recurring?
@@ -964,8 +893,7 @@ class Product extends Base_Model {
 	public function is_recurring() {
 
 		return (bool) $this->recurring && (float) $this->get_amount() > 0;
-
-	} // end is_recurring;
+	}
 
 	/**
 	 * Checks if this plan is free or not.
@@ -976,8 +904,7 @@ class Product extends Base_Model {
 	public function is_free() {
 
 		return empty($this->get_amount()) && empty($this->get_initial_amount());
-
-	} // end is_free;
+	}
 
 	/**
 	 * Set is this product recurring?
@@ -989,8 +916,7 @@ class Product extends Base_Model {
 	public function set_recurring($recurring) {
 
 		$this->recurring = (bool) $recurring;
-
-	} // end set_recurring;
+	}
 
 	/**
 	 * Get the number of times we should charge this product.
@@ -1001,8 +927,7 @@ class Product extends Base_Model {
 	public function get_billing_cycles() {
 
 		return (int) $this->billing_cycles;
-
-	} // end get_billing_cycles;
+	}
 
 	/**
 	 * Checks if this product recurs forever.
@@ -1013,8 +938,7 @@ class Product extends Base_Model {
 	public function is_forever_recurring() {
 
 		return empty($this->get_billing_cycles()) || $this->get_billing_cycles() <= 0;
-
-	} // end is_forever_recurring;
+	}
 
 	/**
 	 * Set the number of times we should charge this product.
@@ -1026,8 +950,7 @@ class Product extends Base_Model {
 	public function set_billing_cycles($billing_cycles) {
 
 		$this->billing_cycles = (int) $billing_cycles;
-
-	} // end set_billing_cycles;
+	}
 
 	/**
 	 * Get date when this was created..
@@ -1038,8 +961,7 @@ class Product extends Base_Model {
 	public function get_date_created() {
 
 		return $this->date_created;
-
-	} // end get_date_created;
+	}
 
 	/**
 	 * Set date when this was created..
@@ -1051,8 +973,7 @@ class Product extends Base_Model {
 	public function set_date_created($date_created) {
 
 		$this->date_created = $date_created;
-
-	} // end set_date_created;
+	}
 
 	/**
 	 * Get date when this was last modified..
@@ -1063,8 +984,7 @@ class Product extends Base_Model {
 	public function get_date_modified() {
 
 		return $this->date_modified;
-
-	} // end get_date_modified;
+	}
 
 	/**
 	 * Set date when this was last modified..
@@ -1076,8 +996,7 @@ class Product extends Base_Model {
 	public function set_date_modified($date_modified) {
 
 		$this->date_modified = $date_modified;
-
-	} // end set_date_modified;
+	}
 
 	/**
 	 * By default, we just use the to_array method, but you can rewrite this.
@@ -1096,8 +1015,7 @@ class Product extends Base_Model {
 		$search_result['image']           = $image ? sprintf('<img class="wu-rounded wu-mr-3" height="40" width="40" src="%s">', esc_attr($image)) : '';
 
 		return $search_result;
-
-	} // end to_search_results;
+	}
 
 	// Secondary Info, to be saved as meta
 
@@ -1112,8 +1030,7 @@ class Product extends Base_Model {
 		$is_taxable = (bool) $this->get_meta('taxable', true);
 
 		return apply_filters('wu_product_is_taxable', $is_taxable, $this);
-
-	} // end is_taxable;
+	}
 
 	/**
 	 * Sets the taxable status of the product.
@@ -1128,8 +1045,7 @@ class Product extends Base_Model {
 		$this->meta['taxable'] = (bool) $is_taxable;
 
 		$this->taxable = $this->meta['taxable'];
-
-	} // end set_taxable;
+	}
 
 	/**
 	 * Returns the tax category to apply.
@@ -1140,14 +1056,11 @@ class Product extends Base_Model {
 	public function get_tax_category() {
 
 		if ($this->tax_category === null) {
-
 			$this->tax_category = $this->get_meta('tax_category', 'default');
-
-		} // end if;
+		}
 
 		return apply_filters('wu_product_tax_category', $this->tax_category, $this);
-
-	}  // end get_tax_category;
+	}
 
 	/**
 	 * Sets the tax category to apply.
@@ -1162,8 +1075,7 @@ class Product extends Base_Model {
 		$this->meta['tax_category'] = $tax_category;
 
 		$this->tax_category = $this->meta['tax_category'];
-
-	} // end set_tax_category;
+	}
 
 	/**
 	 * Get the contact us label.
@@ -1174,14 +1086,11 @@ class Product extends Base_Model {
 	public function get_contact_us_label() {
 
 		if ($this->contact_us_label === null) {
-
 			$this->contact_us_label = $this->get_meta('wu_contact_us_label', '');
-
-		} // end if;
+		}
 
 		return $this->contact_us_label;
-
-	} // end get_contact_us_label;
+	}
 
 	/**
 	 * Set the contact us label.
@@ -1195,8 +1104,7 @@ class Product extends Base_Model {
 		$this->meta['wu_contact_us_label'] = $contact_us_label;
 
 		$this->contact_us_label = $this->meta['wu_contact_us_label'];
-
-	} // end set_contact_us_label;
+	}
 
 	/**
 	 * Get the contact us link.
@@ -1207,14 +1115,11 @@ class Product extends Base_Model {
 	public function get_contact_us_link() {
 
 		if ($this->contact_us_link === null) {
-
 			$this->contact_us_link = $this->get_meta('wu_contact_us_link', '');
-
-		} // end if;
+		}
 
 		return $this->contact_us_link;
-
-	} // end get_contact_us_link;
+	}
 
 	/**
 	 * Set the contact us link.
@@ -1228,8 +1133,7 @@ class Product extends Base_Model {
 		$this->meta['wu_contact_us_link'] = $contact_us_link;
 
 		$this->contact_us_link = $this->meta['wu_contact_us_link'];
-
-	} // end set_contact_us_link;
+	}
 
 	/**
 	 * Get feature list for pricing tables..
@@ -1240,14 +1144,11 @@ class Product extends Base_Model {
 	public function get_feature_list() {
 
 		if ($this->feature_list === null) {
-
 			$this->feature_list = $this->get_meta('feature_list');
-
-		} // end if;
+		}
 
 		return $this->feature_list;
-
-	} // end get_feature_list;
+	}
 
 	/**
 	 * Set feature list for pricing tables..
@@ -1261,8 +1162,7 @@ class Product extends Base_Model {
 		$this->meta['feature_list'] = $feature_list;
 
 		$this->feature_list = $this->meta['feature_list'];
-
-	} // end set_feature_list;
+	}
 
 	/**
 	 * Get the customer role to force customers to be on this plan.
@@ -1273,14 +1173,11 @@ class Product extends Base_Model {
 	public function get_customer_role() {
 
 		if ($this->customer_role === null) {
-
 			$this->customer_role = $this->get_limitations()->customer_user_role->get_limit();
-
-		} // end if;
+		}
 
 		return $this->customer_role;
-
-	} // end get_customer_role;
+	}
 
 	/**
 	 * Set the customer role to force customers to be on this plan.
@@ -1290,7 +1187,7 @@ class Product extends Base_Model {
 	 * @param string $customer_role  The customer role of this product.
 	 * @return void
 	 */
-	public function set_customer_role($customer_role) {} // end set_customer_role;
+	public function set_customer_role($customer_role) {}
 
 	/**
 	 * Returns the same product, but with price and duration info changed to
@@ -1310,38 +1207,29 @@ class Product extends Base_Model {
 		$duration_unit = $duration_unit ? $duration_unit : 'month';
 
 		if ($this->is_free()) {
-
 			return $this;
-
-		} // end if;
+		}
 
 		if ($duration !== $this->get_duration() || $duration_unit !== $this->get_duration_unit()) {
-
 			$price_variation = $this->get_price_variation($duration, $duration_unit);
-
-		} // end if;
+		}
 
 		if (absint($duration) === $this->get_duration() && $duration_unit === $this->get_duration_unit()) {
-
 			$price_variation = array(
 				'amount' => $this->get_amount(),
 			);
-
-		} // end if;
+		}
 
 		$price_variation = apply_filters('wu_get_as_variation_price_variation', $price_variation, $duration, $duration_unit, $this);
 
 		if ($price_variation) {
-
 			$this->attributes((array) $price_variation);
 
 			return $this;
-
-		} // end if;
+		}
 
 		return false;
-
-	} // end get_as_variation;
+	}
 
 	/**
 	 * Returns the price variations for this product.
@@ -1352,22 +1240,21 @@ class Product extends Base_Model {
 	public function get_price_variations() {
 
 		if ($this->price_variations === null) {
+			$this->price_variations = array_map(
+				function ($price_variation) {
+					/**
+					 * Ensure the amount is a float.
+					 */
+					$price_variation['amount'] = wu_to_float(wu_get_isset($price_variation, 'amount', 0));
 
-			$this->price_variations = array_map(function($price_variation) {
-				/**
-				 * Ensure the amount is a float.
-				 */
-				$price_variation['amount'] = wu_to_float(wu_get_isset($price_variation, 'amount', 0));
-
-				return $price_variation;
-
-			}, $this->get_meta('price_variations', array()));
-
-		} // end if;
+					return $price_variation;
+				},
+				$this->get_meta('price_variations', array())
+			);
+		}
 
 		return $this->price_variations;
-
-	} // end get_price_variations;
+	}
 
 	/**
 	 * Sets the new price variations.
@@ -1379,19 +1266,20 @@ class Product extends Base_Model {
 	public function set_price_variations(?array $price_variations) {
 
 		// Ensure the amount is a float.
-		$price_variations = array_map(function($price_variation) {
+		$price_variations = array_map(
+			function ($price_variation) {
 
-			$price_variation['amount'] = wu_to_float(wu_get_isset($price_variation, 'amount', 0));
+				$price_variation['amount'] = wu_to_float(wu_get_isset($price_variation, 'amount', 0));
 
-			return $price_variation;
-
-		}, $price_variations ?? array());
+				return $price_variation;
+			},
+			$price_variations ?? array()
+		);
 
 		$this->meta['price_variations'] = $price_variations;
 
 		$this->price_variations = $this->meta['price_variations'];
-
-	} // end set_price_variations;
+	}
 
 	/**
 	 * Get a particular price variation.
@@ -1408,35 +1296,26 @@ class Product extends Base_Model {
 
 		$price_variations = $this->get_price_variations();
 
-		if (!empty($price_variations)) {
-
+		if ( ! empty($price_variations)) {
 			if (absint($duration) === 12 && $duration_unit === 'month') {
-
 				$duration = 1;
 
 				$duration_unit = 'year';
-
-			} // end if;
+			}
 
 			foreach ($price_variations as $pv) {
-
 				if (absint($pv['duration']) === absint($duration) && $pv['duration_unit'] === $duration_unit) {
-
 					$pv['monthly_amount'] = $pv['amount'] / (wu_convert_duration_unit_to_month($duration_unit) * $pv['duration']);
 
 					$price_variation = $pv;
 
 					break;
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
+				}
+			}
+		}
 
 		return apply_filters('wu_product_get_price_variation', $price_variation, $duration, $duration_unit, $this);
-
-	} // end get_price_variation;
+	}
 
 	/**
 	 * Save (create or update) the model on the database.
@@ -1448,36 +1327,27 @@ class Product extends Base_Model {
 	public function save() {
 
 		if (empty($this->slug) && $this->name) {
-
 			$this->set_slug(sanitize_title($this->name));
-
-		} // end if;
+		}
 
 		if ($this->is_free() && $this->get_pricing_type() !== 'contact_us') {
-
 			$this->set_pricing_type('free');
-
-		} // end if;
+		}
 
 		$results = parent::save();
 
-		if (!is_wp_error($results) && has_action('save_post_wpultimo_plan')) {
-
+		if ( ! is_wp_error($results) && has_action('save_post_wpultimo_plan')) {
 			do_action_deprecated('save_post_wpultimo_plan', array($this->get_id()), '2.0.0');
+		}
 
-		} // end if;
-
-		if (!is_wp_error($results) && has_action('wu_save_plan')) {
-
+		if ( ! is_wp_error($results) && has_action('wu_save_plan')) {
 			$compat_plan = new \WU_Plan($this);
 
 			do_action_deprecated('wu_save_plan', array($compat_plan), '2.0.0', 'wu_product_post_save');
-
-		} // end if;
+		}
 
 		return $results;
-
-	} // end save;
+	}
 
 	/**
 	 * Creates a copy of the given model adn resets it's id to a 'new' state.
@@ -1492,8 +1362,7 @@ class Product extends Base_Model {
 		$new_product = parent::duplicate();
 
 		return $new_product;
-
-	} // end duplicate;
+	}
 
 	/**
 	 * Get available add-ons.
@@ -1504,20 +1373,15 @@ class Product extends Base_Model {
 	public function get_available_addons() {
 
 		if ($this->available_addons === null) {
-
 			$this->available_addons = $this->get_meta('wu_available_addons', array());
 
 			if (is_string($this->available_addons)) {
-
 				$this->available_addons = explode(',', $this->available_addons);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $this->available_addons;
-
-	} // end get_available_addons;
+	}
 
 	/**
 	 * Set available add-ons.
@@ -1531,8 +1395,7 @@ class Product extends Base_Model {
 		$this->meta['wu_available_addons'] = $available_addons;
 
 		$this->available_addons = $this->meta['wu_available_addons'];
-
-	} // end set_available_addons;
+	}
 
 	/**
 	 * Get the shareable link for this product, depending on the permalinks structure.
@@ -1544,8 +1407,7 @@ class Product extends Base_Model {
 	public function get_shareable_link($deprecated = false) {
 
 		return wu_get_registration_url($this->get_slug());
-
-	} // end get_shareable_link;
+	}
 
 	/**
 	 * Get available add-ons.
@@ -1556,8 +1418,7 @@ class Product extends Base_Model {
 	public function get_group() {
 
 		return $this->product_group;
-
-	} // end get_group;
+	}
 
 	/**
 	 * Set the group of this product.
@@ -1569,8 +1430,7 @@ class Product extends Base_Model {
 	public function set_group($group) {
 
 		$this->product_group = $group;
-
-	} // end set_group;
+	}
 
 	/**
 	 * Get if legacy options are available.
@@ -1581,14 +1441,11 @@ class Product extends Base_Model {
 	public function get_legacy_options() {
 
 		if ($this->legacy_options === null) {
-
 			$this->legacy_options = $this->get_meta('legacy_options', false);
-
-		} // end if;
+		}
 
 		return $this->legacy_options;
-
-	} // end get_legacy_options;
+	}
 
 	/**
 	 * Set if legacy options are available.
@@ -1602,8 +1459,7 @@ class Product extends Base_Model {
 		$this->meta['legacy_options'] = $legacy_options;
 
 		$this->legacy_options = $this->meta['legacy_options'];
-
-	} // end set_legacy_options;
+	}
 
 	/**
 	 * List of limitations that need to be merged.
@@ -1622,7 +1478,5 @@ class Product extends Base_Model {
 	public function limitations_to_merge() {
 
 		return array();
-
-	} // end limitations_to_merge;
-
-} // end class Product;
+	}
+}

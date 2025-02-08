@@ -44,7 +44,7 @@
       },
     });
 
-  }); // end each;
+  });
 
   function wu_fields_to_block_options(fields, props) {
 
@@ -72,7 +72,7 @@
 
         field_slug = _.first(_.keys(sub_fields));
 
-      } // end if;
+      }
 
       const component = wu_get_field_component(field.type, field);
 
@@ -80,7 +80,7 @@
 
         field.required = {};
 
-      } // end if;
+      }
 
       let should_display = true;
 
@@ -113,7 +113,7 @@
           },
         }));
 
-      } // end if;
+      }
 
       /*
        * Handle header types differently
@@ -126,7 +126,7 @@
 
           new_panel = true;
 
-        } // end if;
+        }
 
         if (new_panel) {
 
@@ -141,7 +141,7 @@
 
           first_panel = false;
 
-        } // end if;
+        }
 
         current_panel = field;
 
@@ -149,7 +149,7 @@
 
         gt_fields = [];
 
-      } // end if;
+      }
 
     });
 
@@ -164,7 +164,7 @@
 
     return el(InspectorControls, { key: 'wp-ultimo' }, gt_panels);
 
-  } // end wu_fields_to_block_options;
+  }
 
   function wu_format_options(options) {
 
@@ -205,7 +205,7 @@
 
         component = NumberControl;
 
-      } // end if;
+      }
 
       break;
 
@@ -233,7 +233,7 @@
 
       break;
 
-    } // end switch;
+    }
 
     return component;
 

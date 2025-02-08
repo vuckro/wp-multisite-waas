@@ -17,4 +17,4 @@ defined('ABSPATH') || exit;
  *
  * @since 1.0.0
  */
-class Meta extends \BerlinDB\Database\Meta {} // end class Meta;
+class Meta extends \BerlinDB\Database\Meta {}

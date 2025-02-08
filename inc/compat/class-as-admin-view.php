@@ -27,6 +27,5 @@ class AS_Admin_View {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {} // end init;
-
-} // end class AS_Admin_View;
+	public function init() {}
+}

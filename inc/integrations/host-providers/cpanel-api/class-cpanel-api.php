@@ -17,11 +17,11 @@ use WP_Ultimo\Logger;
 class CPanel_API {
 
 	/**
-     * Holds the name of the cookis file.
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Holds the name of the cookis file.
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	private $cookie_file;
 
 	/**
@@ -41,40 +41,40 @@ class CPanel_API {
 	private $cpsess;
 
 	/**
-     * Holds the cPanel url.
-     *
-     * @since 2.0.0
-     * @var string|null
-     */
+	 * Holds the cPanel url.
+	 *
+	 * @since 2.0.0
+	 * @var string|null
+	 */
 	private ?string $homepage = null;
 
 	/**
-     * Holds the execution url.
-     *
-     * @since 2.0.0
-     * @var string|null
-     */
+	 * Holds the execution url.
+	 *
+	 * @since 2.0.0
+	 * @var string|null
+	 */
 	private ?string $ex_page = null;
- /**
-  * @var string
-  */
- private $username;
- /**
-  * @var string
-  */
- private $password;
- /**
-  * @var string
-  */
- private $host;
- /**
-  * @var integer
-  */
- private $port = 2083;
- /**
-  * @var boolean
-  */
- private $log = false;
+	/**
+	 * @var string
+	 */
+	private $username;
+	/**
+	 * @var string
+	 */
+	private $password;
+	/**
+	 * @var string
+	 */
+	private $host;
+	/**
+	 * @var integer
+	 */
+	private $port = 2083;
+	/**
+	 * @var boolean
+	 */
+	private $log = false;
 
 	/**
 	 * Creates the CPanel_API Object.
@@ -95,18 +95,17 @@ class CPanel_API {
 	) {
 
 		$this->username = $username;
-  $this->password = $password;
-  $this->host = $host;
-  $this->port = $port;
-  $this->log = $log;
-  // Generates the cookie file
+		$this->password = $password;
+		$this->host     = $host;
+		$this->port     = $port;
+		$this->log      = $log;
+		// Generates the cookie file
 		$this->generate_cookie();
 		$this->cookie_file = Logger::get_logs_folder() . 'integration-cpanel-cookie.log';
 
 		// Signs up
 		$this->sign_in();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Generate the Cookie File, that is used to make API requests to CPanel.
@@ -117,8 +116,7 @@ class CPanel_API {
 	public function generate_cookie() {
 
 		wu_log_add('integration-cpanel-cookie', '');
-
-	} // end generate_cookie;
+	}
 
 	/**
 	 * Logs error or success messages.
@@ -130,8 +128,7 @@ class CPanel_API {
 	public function log($message) {
 
 		return wu_log_add('integration-cpanel', $message);
-
-	} // end log;
+	}
 
 	/**
 	 * Sends the request to the CPanel API.
@@ -144,36 +141,24 @@ class CPanel_API {
 	private function request($url, $params = array()) {
 
 		if ($this->log) {
-
 			$curl_log = fopen($this->curlfile, 'a+');
+		}
 
-		} // end if;
-
-		if (!file_exists($this->cookie_file)) {
-
+		if ( ! file_exists($this->cookie_file)) {
 			try {
-
 				fopen($this->cookie_file, 'w');
-
 			} catch (Exception $ex) {
-
-				if (!file_exists($this->cookie_file)) {
-
+				if ( ! file_exists($this->cookie_file)) {
 					$this->log($ex . __('Cookie file missing.', 'wp-ultimo'));
 
 					return false;
-
-				} // end if;
-
-			} // end try;
-
-		} elseif (!is_writable($this->cookie_file)) {
-
+				}
+			}
+		} elseif ( ! is_writable($this->cookie_file)) {
 			$this->log(__('Cookie file not writable', 'wp-ultimo'));
 
 			return false;
-
-		} // end if;
+		}
 
 		$ch = curl_init();
 
@@ -192,24 +177,20 @@ class CPanel_API {
 				'Accept-Language: en-US,en;q=0.5',
 				'Accept-Encoding: gzip, deflate',
 				'Connection: keep-alive',
-				'Content-Type: application/x-www-form-urlencoded'
+				'Content-Type: application/x-www-form-urlencoded',
 			),
 		);
 
-		if (!empty($params)) {
-
-			$curl_opts[CURLOPT_POST]       = true;
-			$curl_opts[CURLOPT_POSTFIELDS] = $params;
-
-		} // end if;
+		if ( ! empty($params)) {
+			$curl_opts[ CURLOPT_POST ]       = true;
+			$curl_opts[ CURLOPT_POSTFIELDS ] = $params;
+		}
 
 		if ($this->log) {
-
-			$curl_opts[CURLOPT_STDERR]      = $curl_log;
-			$curl_opts[CURLOPT_FAILONERROR] = false;
-			$curl_opts[CURLOPT_VERBOSE]     = true;
-
-		} // end if;
+			$curl_opts[ CURLOPT_STDERR ]      = $curl_log;
+			$curl_opts[ CURLOPT_FAILONERROR ] = false;
+			$curl_opts[ CURLOPT_VERBOSE ]     = true;
+		}
 
 		curl_setopt_array($ch, $curl_opts);
 
@@ -221,20 +202,16 @@ class CPanel_API {
 			$this->log(sprintf(__('cPanel API Error: %s', 'wp-ultimo'), curl_error($ch)));
 
 			return false;
-
-		} // end if;
+		}
 
 		curl_close($ch);
 
 		if ($this->log) {
-
 			fclose($curl_log);
-
-		} // end if;
+		}
 
 		return (@gzdecode($answer)) ? gzdecode($answer) : $answer; // phpcs:ignore
-
-	} // end request;
+	}
 	/**
 	 * Get the base URL to make the calls.
 	 *
@@ -243,8 +220,7 @@ class CPanel_API {
 	private function get_base_url(): string {
 
 		return sprintf('https://%s:%s', $this->host, $this->port);
-
-	} // end get_base_url;
+	}
 
 	/**
 	 * Signs in on the cPanel.
@@ -266,14 +242,10 @@ class CPanel_API {
 			$this->cpsess   = $reply['security_token'];
 			$this->homepage = $this->get_base_url() . $reply['redirect'];
 			$this->ex_page  = $this->get_base_url() . "/{$this->cpsess}/execute/";
-
 		} else {
-
 			return $this->log(__('Cannot connect to your cPanel server : Invalid Credentials', 'wp-ultimo'));
-
-		} // end if;
-
-	} // end sign_in;
+		}
+	}
 
 	/**
 	 * Executes API calls, taking the request to the right API version
@@ -289,15 +261,14 @@ class CPanel_API {
 	public function execute($api, $module, $function, array $parameters = array()) {
 
 		switch ($api) {
-      case 'api2':
-          return $this->api2($module, $function, $parameters);
-      case 'uapi':
-          return $this->uapi($module, $function, $parameters);
-      default:
-          throw new Exception('Invalid API type : api2 and uapi are accepted', 1);
-  } // end switch;
-
-	} // end execute;
+			case 'api2':
+				return $this->api2($module, $function, $parameters);
+			case 'uapi':
+				return $this->uapi($module, $function, $parameters);
+			default:
+				throw new Exception('Invalid API type : api2 and uapi are accepted', 1);
+		}
+	}
 
 	/**
 	 * Send the request if the API being used is the UAPI (newer version)
@@ -311,18 +282,13 @@ class CPanel_API {
 	public function uapi($module, $function, array $parameters = array()) {
 
 		if (count($parameters) < 1) {
-
 			$parameters = '';
-
 		} else {
-
 			$parameters = (http_build_query($parameters));
-
-		} // end if;
+		}
 
 		return json_decode((string) $this->request($this->ex_page . $module . '/' . $function . '?' . $parameters));
-
-	} // end uapi;
+	}
 
 	/**
 	 * Send the request if the API being used is the API2 (older version)
@@ -336,14 +302,10 @@ class CPanel_API {
 	public function api2($module, $function, array $parameters = array()) {
 
 		if (count($parameters) < 1) {
-
 			$parameters = '';
-
 		} else {
-
 			$parameters = (http_build_query($parameters));
-
-		} // end if;
+		}
 
 		$url = $this->get_base_url() . $this->cpsess . '/json-api/cpanel' .
 		'?cpanel_jsonapi_version=2' .
@@ -351,7 +313,5 @@ class CPanel_API {
 		"&cpanel_jsonapi_module={$module}&" . $parameters;
 
 		return json_decode((string) $this->request($url, $parameters));
-
-	} // end api2;
-
-} // end class CPanel_API;
+	}
+}

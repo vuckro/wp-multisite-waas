@@ -24,8 +24,7 @@ function wu_extract_number($str) {
 	preg_match_all('/\d+/', $str, $matches);
 
 	return isset($matches[0][0]) ? (int) $matches[0][0] : 0;
-
-} // end wu_extract_number;
+}
 
 /**
  * Converts formatted values back into floats.
@@ -39,29 +38,20 @@ function wu_extract_number($str) {
 function wu_to_float($num, $decimal_separator = false) {
 
 	if (is_float($num) || is_numeric($num)) {
-
 		return (float) $num;
-
-	} // end if;
+	}
 
 	if (empty($decimal_separator)) {
-
 		$decimal_separator = wu_get_setting('decimal_separator', '.');
-
-	} // end if;
+	}
 
 	if ($decimal_separator) {
-
 		$pattern = '/[^0-9\\' . $decimal_separator . '-]+/';
-
 	} else {
-
 		$pattern = '/[^0-9-]+/';
-
-	} // end if;
+	}
 
 	$val = preg_replace($pattern, '', (string) $num);
 
 	return floatval($val);
-
-} // end wu_to_float;
+}

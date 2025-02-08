@@ -9,11 +9,11 @@
 
 namespace WP_Ultimo\API;
 
-use \WP_Ultimo\Checkout\Cart;
-use \WP_Ultimo\Database\Sites\Site_Type;
-use \WP_Ultimo\Database\Payments\Payment_Status;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
-use \WP_Ultimo\Objects\Billing_Address;
+use WP_Ultimo\Checkout\Cart;
+use WP_Ultimo\Database\Sites\Site_Type;
+use WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Objects\Billing_Address;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -36,8 +36,7 @@ class Register_Endpoint {
 	public function init() {
 
 		add_action('wu_register_rest_routes', array($this, 'register_route'));
-
-	} // end init;
+	}
 
 	/**
 	 * Adds a new route to the wu namespace, for the register endpoint.
@@ -51,20 +50,27 @@ class Register_Endpoint {
 
 		$namespace = $api->get_namespace();
 
-		register_rest_route($namespace, '/register', array(
-			'methods'             => \WP_REST_Server::READABLE,
-			'callback'            => array($this, 'handle_get'),
-			'permission_callback' => \Closure::fromCallable([$api, 'check_authorization']),
-		));
+		register_rest_route(
+			$namespace,
+			'/register',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => array($this, 'handle_get'),
+				'permission_callback' => \Closure::fromCallable(array($api, 'check_authorization')),
+			)
+		);
 
-		register_rest_route($namespace, '/register', array(
-			'methods'             => \WP_REST_Server::CREATABLE,
-			'callback'            => array($this, 'handle_endpoint'),
-			'permission_callback' => \Closure::fromCallable([$api, 'check_authorization']),
-			'args'                => $this->get_rest_args(),
-		));
-
-	} // end register_route;
+		register_rest_route(
+			$namespace,
+			'/register',
+			array(
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => array($this, 'handle_endpoint'),
+				'permission_callback' => \Closure::fromCallable(array($api, 'check_authorization')),
+				'args'                => $this->get_rest_args(),
+			)
+		);
+	}
 
 	/**
 	 * Handle the register endpoint get for zapier integration reasons.
@@ -79,8 +85,7 @@ class Register_Endpoint {
 		return array(
 			'registration_status' => wu_get_setting('enable_registration', true) ? 'open' : 'closed',
 		);
-
-	} // end handle_get;
+	}
 
 	/**
 	 * Handle the register endpoint logic.
@@ -97,60 +102,63 @@ class Register_Endpoint {
 		$params = json_decode($request->get_body(), true);
 
 		if (\WP_Ultimo\API::get_instance()->should_log_api_calls()) {
-
 			wu_log_add('api-calls', json_encode($params, JSON_PRETTY_PRINT));
-
-		} // end if;
+		}
 
 		$validation_errors = $this->validate($params);
 
 		if (is_wp_error($validation_errors)) {
-
-			$validation_errors->add_data(array(
-				'status' => 400,
-			));
+			$validation_errors->add_data(
+				array(
+					'status' => 400,
+				)
+			);
 
 			return $validation_errors;
-
-		} // end if;
+		}
 
 		$wpdb->query('START TRANSACTION');
 
 		try {
-
 			$customer = $this->maybe_create_customer($params);
 
 			if (is_wp_error($customer)) {
-
 				return $this->rollback_and_return($customer);
-
-			} // end if;
+			}
 
 			$customer->update_last_login(true, true);
 
-			$customer->add_note(array(
-				'text'      => __('Created via REST API', 'wp-ultimo'),
-				'author_id' => $customer->get_user_id(),
-			));
+			$customer->add_note(
+				array(
+					'text'      => __('Created via REST API', 'wp-ultimo'),
+					'author_id' => $customer->get_user_id(),
+				)
+			);
 
 			/*
 			 * Payment Method defaults
 			 */
-			$payment_method = wp_parse_args(wu_get_isset($params, 'payment_method'), array(
-				'gateway'                 => '',
-				'gateway_customer_id'     => '',
-				'gateway_subscription_id' => '',
-				'gateway_payment_id'      => '',
-			));
+			$payment_method = wp_parse_args(
+				wu_get_isset($params, 'payment_method'),
+				array(
+					'gateway'                 => '',
+					'gateway_customer_id'     => '',
+					'gateway_subscription_id' => '',
+					'gateway_payment_id'      => '',
+				)
+			);
 
 			/*
 			 * Cart params and creation
 			 */
 			$cart_params = $params;
 
-			$cart_params = wp_parse_args($cart_params, array(
-				'type' => 'new',
-			));
+			$cart_params = wp_parse_args(
+				$cart_params,
+				array(
+					'type' => 'new',
+				)
+			);
 
 			$cart = new Cart($cart_params);
 
@@ -158,21 +166,33 @@ class Register_Endpoint {
 			 * Validates if the cart is valid.
 			 */
 			if ($cart->is_valid() && count($cart->get_line_items()) === 0) {
-
-				return new \WP_Error('invalid_cart', __('Products are required.', 'wp-ultimo'), array_merge((array) $cart->done(), array(
-					'status' => 400,
-				)));
-
-			} // end if;
+				return new \WP_Error(
+					'invalid_cart',
+					__('Products are required.', 'wp-ultimo'),
+					array_merge(
+						(array) $cart->done(),
+						array(
+							'status' => 400,
+						)
+					)
+				);
+			}
 
 			/*
 			 * Get Membership data
 			 */
 			$membership_data = $cart->to_membership_data();
 
-			$membership_data = array_merge($membership_data, wu_get_isset($params, 'membership', array(
-				'status' => Membership_Status::PENDING,
-			)));
+			$membership_data = array_merge(
+				$membership_data,
+				wu_get_isset(
+					$params,
+					'membership',
+					array(
+						'status' => Membership_Status::PENDING,
+					)
+				)
+			);
 
 			$membership_data['customer_id']             = $customer->get_id();
 			$membership_data['gateway']                 = wu_get_isset($payment_method, 'gateway');
@@ -190,21 +210,28 @@ class Register_Endpoint {
 			$membership = wu_create_membership($membership_data);
 
 			if (is_wp_error($membership)) {
-
 				return $this->rollback_and_return($membership);
+			}
 
-			} // end if;
-
-			$membership->add_note(array(
-				'text'      => __('Created via REST API', 'wp-ultimo'),
-				'author_id' => $customer->get_user_id(),
-			));
+			$membership->add_note(
+				array(
+					'text'      => __('Created via REST API', 'wp-ultimo'),
+					'author_id' => $customer->get_user_id(),
+				)
+			);
 
 			$payment_data = $cart->to_payment_data();
 
-			$payment_data = array_merge($payment_data, wu_get_isset($params, 'payment', array(
-				'status' => Payment_Status::PENDING,
-			)));
+			$payment_data = array_merge(
+				$payment_data,
+				wu_get_isset(
+					$params,
+					'payment',
+					array(
+						'status' => Payment_Status::PENDING,
+					)
+				)
+			);
 
 			/*
 			 * Unset the status because we are going to transition it later.
@@ -221,15 +248,15 @@ class Register_Endpoint {
 			$payment = wu_create_payment($payment_data);
 
 			if (is_wp_error($payment)) {
-
 				return $this->rollback_and_return($payment);
+			}
 
-			} // end if;
-
-			$payment->add_note(array(
-				'text'      => __('Created via REST API', 'wp-ultimo'),
-				'author_id' => $customer->get_user_id(),
-			));
+			$payment->add_note(
+				array(
+					'text'      => __('Created via REST API', 'wp-ultimo'),
+					'author_id' => $customer->get_user_id(),
+				)
+			);
 
 			$site = false;
 
@@ -237,22 +264,17 @@ class Register_Endpoint {
 			 * Site creation.
 			 */
 			if (wu_get_isset($params, 'site')) {
-
 				$site = $this->maybe_create_site($params, $membership);
 
 				if (is_wp_error($site)) {
-
 					return $this->rollback_and_return($site);
-
-				} // end if;
-
-			} // end if;
+				}
+			}
 
 			/*
 			 * Deal with status changes.
 			 */
 			if ($membership_status !== $membership->get_status()) {
-
 				$membership->set_status($membership_status);
 
 				$membership->save();
@@ -263,34 +285,24 @@ class Register_Endpoint {
 				 * again, this time as a WU Site object.
 				 */
 				if ($site) {
-
 					$wp_site = get_site_by_path($site['domain'], $site['path']);
 
 					if ($wp_site) {
-
 						$site['id'] = $wp_site->blog_id;
-
-					} // end if;
-
-				} // end if;
-
-			} // end if;
+					}
+				}
+			}
 
 			if ($payment_status !== $payment->get_status()) {
-
 				$payment->set_status($payment_status);
 
 				$payment->save();
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('registration_error', $e->getMessage(), array('status' => 500));
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
@@ -303,8 +315,7 @@ class Register_Endpoint {
 			'payment'    => $payment->to_array(),
 			'site'       => $site ? $site : array('id' => 0),
 		);
-
-	} // end handle_endpoint;
+	}
 
 	/**
 	 * Returns the list of arguments allowed on to the endpoint.
@@ -351,7 +362,7 @@ class Register_Endpoint {
 					'billing_address' => array(
 						'type'       => 'object',
 						'properties' => $billing_address_fields,
-					)
+					),
 				),
 			),
 		);
@@ -521,39 +532,31 @@ class Register_Endpoint {
 		$args = array_merge($customer_args, $membership_args, $cart_args, $payment_args, $site_args);
 
 		return apply_filters('wu_rest_register_endpoint_args', $args, $this);
-
-	} // end get_rest_args;
- /**
-  * Maybe create a customer, if needed.
-  *
-  * @since 2.0.0
-  *
-  * @param array $p The request parameters.
-  * @return \WP_Ultimo\Models\Customer|\WP_Error
-  */
- public function maybe_create_customer($p) {
+	}
+	/**
+	 * Maybe create a customer, if needed.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $p The request parameters.
+	 * @return \WP_Ultimo\Models\Customer|\WP_Error
+	 */
+	public function maybe_create_customer($p) {
 
 		$customer_id = wu_get_isset($p, 'customer_id');
 
 		if ($customer_id) {
-
 			$customer = wu_get_customer($customer_id);
 
-			if (!$customer) {
-
+			if ( ! $customer) {
 				return new \WP_Error('customer_not_found', __('The customer id sent does not correspond to a valid customer.', 'wp-ultimo'));
-
-			} // end if;
-
+			}
 		} else {
-
 			$customer = wu_create_customer($p['customer']);
-
-		} // end if;
+		}
 
 		return $customer;
-
-	} // end maybe_create_customer;
+	}
 
 	/**
 	 * Undocumented function
@@ -585,15 +588,14 @@ class Register_Endpoint {
 		 * The get_sites method already includes pending sites,
 		 * so we can safely rely on it.
 		 */
-		if (!empty($sites)) {
+		if ( ! empty($sites)) {
 			/*
 			 * Returns the first site on that list.
 			 * This is not ideal, but since we'll usually only have
 			 * one site here, it's ok. for now.
 			 */
 			return current($sites);
-
-		} // end if;
+		}
 
 		$site_url = wu_get_isset($site_data, 'site_url');
 
@@ -605,10 +607,8 @@ class Register_Endpoint {
 		$results = wpmu_validate_blog_signup($site_url, wu_get_isset($site_data, 'site_title'), $membership->get_customer()->get_user());
 
 		if ($results['errors']->has_errors()) {
-
 			return $results['errors'];
-
-		} // end if;
+		}
 
 		/*
 		 * Get the transient data to save with the site
@@ -640,22 +640,17 @@ class Register_Endpoint {
 		$site_data['id'] = 0;
 
 		if (wu_get_isset($site_data, 'publish')) {
-
 			$membership->publish_pending_site();
 
 			$wp_site = get_site_by_path($site_data['domain'], $site_data['path']);
 
 			if ($wp_site) {
-
 				$site_data['id'] = $wp_site->blog_id;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $site_data;
-
-	} // end maybe_create_site;
+	}
 
 	/**
 	 * Set the validation rules for this particular model.
@@ -679,30 +674,26 @@ class Register_Endpoint {
 			'site.site_url'     => 'required_with:site|alpha_num|min:4|lowercase|unique_site',
 			'site.site_title'   => 'required_with:site|min:4',
 		);
+	}
+	/**
+	 * Validates the rules and make sure we only save models when necessary.
+	 *
+	 * @since 2.0.0
+	 * @param array $args The params to validate.
+	 * @return mixed[]|\WP_Error
+	 */
+	public function validate($args) {
 
-	} // end validation_rules;
- /**
-  * Validates the rules and make sure we only save models when necessary.
-  *
-  * @since 2.0.0
-  * @param array $args The params to validate.
-  * @return mixed[]|\WP_Error
-  */
- public function validate($args) {
-
-		$validator = new \WP_Ultimo\Helpers\Validator;
+		$validator = new \WP_Ultimo\Helpers\Validator();
 
 		$validator->validate($args, $this->validation_rules());
 
 		if ($validator->fails()) {
-
 			return $validator->get_errors();
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end validate;
+	}
 
 	/**
 	 * Rolls back database changes and returns the error passed.
@@ -719,7 +710,5 @@ class Register_Endpoint {
 		$wpdb->query('ROLLBACK');
 
 		return $error;
-
-	} // end rollback_and_return;
-
-} // end class Register_Endpoint;
+	}
+}

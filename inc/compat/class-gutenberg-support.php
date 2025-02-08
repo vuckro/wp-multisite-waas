@@ -35,14 +35,11 @@ class Gutenberg_Support {
 	public function should_load() {
 
 		if (function_exists('has_blocks')) {
-
 			return true;
-
-		} // end if;
+		}
 
 		return apply_filters('wu_gutenberg_support_should_load', true);
-
-	} // end should_load;
+	}
 
 	/**
 	 * Initializes the Class, if we need it.
@@ -53,12 +50,9 @@ class Gutenberg_Support {
 	public function init() {
 
 		if ($this->should_load()) {
-
 			add_action('admin_enqueue_scripts', array($this, 'add_scripts'));
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * Adds the Gutenberg Filters scripts.
@@ -70,16 +64,18 @@ class Gutenberg_Support {
 
 		wp_register_script('wu-gutenberg-support', wu_get_asset('gutenberg-support.js', 'js'), array('jquery'), wu_get_version(), true);
 
-    // translators: the placeholder is replaced with the network name.
+		// translators: the placeholder is replaced with the network name.
 		$preview_message = apply_filters('wu_gutenberg_support_preview_message', sprintf(__('<strong>%s</strong> is generating the preview...', 'wp-ultimo'), get_network_option(null, 'site_name')));
 
-		wp_localize_script('wu-gutenberg-support', 'wu_gutenberg', array(
-			'logo'                => esc_url(wu_get_network_logo()),
-			'replacement_message' => $preview_message,
-		));
+		wp_localize_script(
+			'wu-gutenberg-support',
+			'wu_gutenberg',
+			array(
+				'logo'                => esc_url(wu_get_network_logo()),
+				'replacement_message' => $preview_message,
+			)
+		);
 
 		wp_enqueue_script('wu-gutenberg-support');
-
-	} // end add_scripts;
-
-} // end class Gutenberg_Support;
+	}
+}

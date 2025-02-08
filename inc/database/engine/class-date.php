@@ -17,4 +17,4 @@ defined('ABSPATH') || exit;
  *
  * @since 1.0.0
  */
-class Date extends \BerlinDB\Database\Date {} // end class Date;
+class Date extends \BerlinDB\Database\Date {}

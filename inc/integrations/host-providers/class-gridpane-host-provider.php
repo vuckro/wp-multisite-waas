@@ -77,8 +77,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	public function detect() {
 
 		return defined('GRIDPANE') && GRIDPANE;
-
-	} // end detect;
+	}
 
 	/**
 	 * Enables this integration.
@@ -93,8 +92,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 		$success = \WP_Ultimo\Helpers\WP_Config::get_instance()->revert('SUNRISE');
 
 		parent::enable();
-
-	} // end enable;
+	}
 
 	/**
 	 * Sends a request to the GridPane API.
@@ -112,28 +110,26 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 			'timeout'  => 45,
 			'blocking' => true,
 			'method'   => $method,
-			'body'     => array_merge(array(
-				'api_token' => WU_GRIDPANE_API_KEY,
-			), $data)
+			'body'     => array_merge(
+				array(
+					'api_token' => WU_GRIDPANE_API_KEY,
+				),
+				$data
+			),
 		);
 
 		$response = wp_remote_request("https://my.gridpane.com/api/{$endpoint}", $post_fields);
 
-		if (!is_wp_error($response)) {
-
+		if ( ! is_wp_error($response)) {
 			$body = json_decode(wp_remote_retrieve_body($response), true);
 
 			if (json_last_error() === JSON_ERROR_NONE) {
-
 				return $body;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $response;
-
-	} // end send_gridpane_api_request;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -145,13 +141,15 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 */
 	public function on_add_domain($domain, $site_id) {
 
-		return $this->send_gridpane_api_request('application/add-domain', array(
-			'server_ip'  => WU_GRIDPANE_SERVER_ID,
-			'site_url'   => WU_GRIDPANE_APP_ID,
-			'domain_url' => $domain
-		));
-
-	} // end on_add_domain;
+		return $this->send_gridpane_api_request(
+			'application/add-domain',
+			array(
+				'server_ip'  => WU_GRIDPANE_SERVER_ID,
+				'site_url'   => WU_GRIDPANE_APP_ID,
+				'domain_url' => $domain,
+			)
+		);
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -163,13 +161,15 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 */
 	public function on_remove_domain($domain, $site_id) {
 
-		return $this->send_gridpane_api_request('application/delete-domain', array(
-			'server_ip'  => WU_GRIDPANE_SERVER_ID,
-			'site_url'   => WU_GRIDPANE_APP_ID,
-			'domain_url' => $domain
-		));
-
-	} // end on_remove_domain;
+		return $this->send_gridpane_api_request(
+			'application/delete-domain',
+			array(
+				'server_ip'  => WU_GRIDPANE_SERVER_ID,
+				'site_url'   => WU_GRIDPANE_APP_ID,
+				'domain_url' => $domain,
+			)
+		);
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -181,7 +181,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {} // end on_add_subdomain;
+	public function on_add_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -193,7 +193,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {} // end on_remove_subdomain;
+	public function on_remove_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * Tests the connection with the Gridpane API.
@@ -206,26 +206,27 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 		$results = $this->on_remove_domain('test.com', false);
 
 		if (wu_get_isset($results, 'message') === 'This action is unauthorized.') {
-
-			wp_send_json_error(array(
-				'error' => __('We were not able to successfully establish a connection.', 'wp-ultimo'),
-			));
-
-		} // end if;
+			wp_send_json_error(
+				array(
+					'error' => __('We were not able to successfully establish a connection.', 'wp-ultimo'),
+				)
+			);
+		}
 
 		if (is_wp_error($results)) {
+			wp_send_json_error(
+				array(
+					'error' => __('We were not able to successfully establish a connection.', 'wp-ultimo'),
+				)
+			);
+		}
 
-			wp_send_json_error(array(
-				'error' => __('We were not able to successfully establish a connection.', 'wp-ultimo'),
-			));
-
-		} // end if;
-
-		wp_send_json_success(array(
-			'success' => __('Connection successfully established.', 'wp-ultimo'),
-		));
-
-	} // end test_connection;
+		wp_send_json_success(
+			array(
+				'success' => __('Connection successfully established.', 'wp-ultimo'),
+			)
+		);
+	}
 
 	/**
 	 * Renders the instructions content.
@@ -236,8 +237,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	public function get_instructions() {
 
 		wu_get_template('wizards/host-integrations/gridpane-instructions');
-
-	} // end get_instructions;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -248,8 +248,7 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __("GridPane is the world's first hosting control panel built exclusively for serious WordPress professionals.", 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -260,7 +259,5 @@ class Gridpane_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('gridpane.png', 'img/hosts');
-
-	} // end get_logo;
-
-} // end class Gridpane_Host_Provider;
+	}
+}

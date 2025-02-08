@@ -77,8 +77,7 @@ class Country_CA extends Country {
 	public function get_name() {
 
 		return __('Canada', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for CA.
@@ -103,7 +102,5 @@ class Country_CA extends Country {
 			'SK' => __('Saskatchewan', 'wp-ultimo-locations'),
 			'YT' => __('Yukon', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_CA;
+	}
+}

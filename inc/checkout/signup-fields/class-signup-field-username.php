@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -32,8 +32,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function get_type() {
 
 		return 'username';
-
-	} // end get_type;
+	}
 
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
@@ -44,8 +43,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function is_required() {
 
 		return true;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Is this a user-related field?
@@ -59,8 +57,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function is_user_field() {
 
 		return true;
-
-	} // end is_user_field;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -73,8 +70,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Username', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -87,8 +83,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds an username field. This username will be used to create the WordPress user.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -101,8 +96,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds an username field. This username will be used to create the WordPress user.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 
 	/**
 	 * Returns the icon to be used on the selector.
@@ -115,8 +109,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 	public function get_icon() {
 
 		return 'dashicons-wu-user1';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -132,8 +125,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 		return array(
 			'auto_generate_username' => false,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -148,8 +140,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 			'placeholder',
 			'tooltip',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -163,8 +154,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 			'id'       => 'username',
 			'required' => true,
 		);
-
-	} // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -186,8 +176,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 				),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -202,13 +191,10 @@ class Signup_Field_Username extends Base_Signup_Field {
 		 * Logged in user, bail.
 		 */
 		if (is_user_logged_in()) {
-
 			return array();
-
-		} // end if;
+		}
 
 		if (isset($attributes['auto_generate_username']) && $attributes['auto_generate_username']) {
-
 			return array(
 				'auto_generate_username' => array(
 					'type'  => 'hidden',
@@ -221,8 +207,7 @@ class Signup_Field_Username extends Base_Signup_Field {
 					'value' => uniqid(),
 				),
 			);
-
-		} // end if;
+		}
 
 		return array(
 			'username' => array(
@@ -245,7 +230,5 @@ class Signup_Field_Username extends Base_Signup_Field {
 				),
 			),
 		);
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Username;
+	}
+}

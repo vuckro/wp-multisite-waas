@@ -21,14 +21,11 @@ function wu_get_current_url() {
 	 * the initiator URL.
 	 */
 	if (wp_doing_ajax() && isset($_SERVER['HTTP_REFERER'])) {
-
 		return $_SERVER['HTTP_REFERER'];
-
-	} // end if;
+	}
 
 	return (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-} // end wu_get_current_url;
+}
 
 /**
  * Replaces or removes the scheme from a URL.
@@ -42,8 +39,7 @@ function wu_get_current_url() {
 function wu_replace_scheme($url, $new_scheme = '') {
 
 	return preg_replace('(^https?://)', $new_scheme, $url);
-
-} // end wu_replace_scheme;
+}
 
 /**
  * Wrapper to the network_admin_url function for WP Multisite WaaS admin urls.
@@ -61,8 +57,7 @@ function wu_network_admin_url($path, $query = array()) {
 	$url = network_admin_url($path);
 
 	return add_query_arg($query, $url);
-
-} // end wu_network_admin_url;
+}
 
 /**
  * Get the light ajax implementation URL.
@@ -78,30 +73,23 @@ function wu_network_admin_url($path, $query = array()) {
 function wu_ajax_url($when = null, $query_args = array(), $site_id = false, $scheme = null) {
 
 	if (empty($site_id)) {
-
 		$site_id = get_current_blog_id();
-
-	} // end if;
+	}
 
 	$base_url = get_home_url($site_id, '', $scheme);
 
-	if (!is_array($query_args)) {
-
+	if ( ! is_array($query_args)) {
 		$query_args = array();
-
-	} // end if;
+	}
 
 	$query_args['wu-ajax'] = 1;
 	$query_args['r']       = wp_create_nonce('wu-ajax-nonce');
 
 	if ($when) {
-
 		$query_args['wu-when'] = base64_encode($when);
-
-	} // end if;
+	}
 
 	$url = add_query_arg($query_args, $base_url);
 
 	return apply_filters('wu_ajax_url', $url, $query_args, $when, $site_id);
-
-} // end wu_ajax_url;
+}

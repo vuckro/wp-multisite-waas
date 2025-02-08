@@ -15,17 +15,15 @@
 
 namespace WP_Ultimo\SSO;
 
-use \WP_Ultimo\Helpers\Hash;
-use \Jasny\SSO\Server\Server;
-use \Jasny\SSO\Server\ServerException;
-use \Jasny\SSO\Server\BrokerException;
-use \Jasny\SSO\Broker\NotAttachedException;
-use \Nyholm\Psr7\Factory\Psr17Factory;
-use \Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use \Symfony\Component\Cache\Psr16Cache;
-
-// Exit if accessed directly
-defined('ABSPATH') || exit;
+use Exception;
+use WP_Ultimo\Helpers\Hash;
+use Jasny\SSO\Server\Server;
+use Jasny\SSO\Server\ServerException;
+use Jasny\SSO\Server\BrokerException;
+use Jasny\SSO\Broker\NotAttachedException;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 /**
  * Handles Sign-sign on.
@@ -74,10 +72,8 @@ class SSO {
 	 * @return void
 	 */
 	public function init() {
-
 		$this->is_enabled() && $this->startup();
-
-	} // end init;
+	}
 
 	/**
 	 * Returns the status of SSO.
@@ -90,10 +86,8 @@ class SSO {
 		$enabled = $this->get_setting('enable_sso', true);
 
 		if (has_filter('mercator.sso.enabled')) {
-
 			$enabled = apply_filters_deprecated('mercator.sso.enabled', $enabled, '2.0.0', 'wu_sso_enabled');
-
-		} // end if;
+		}
 
 		/**
 		 * Enable/disable cross-domain single-sign-on capability.
@@ -106,8 +100,7 @@ class SSO {
 		 * @return bool If SSO is enabled or not.
 		 */
 		return apply_filters('wu_sso_enabled', $enabled);
-
-	} // end is_enabled;
+	}
 
 	/**
 	 * Encode a given string.
@@ -119,10 +112,8 @@ class SSO {
 	 * @return string The hashed content.
 	 */
 	public function encode($content, $salt) {
-
 		return Hash::encode($content, $salt);
-
-	} // end encode;
+	}
 
 	/**
 	 * Decode a given string.
@@ -134,10 +125,8 @@ class SSO {
 	 * @return string The original content.
 	 */
 	public function decode($hash, $salt) {
-
 		return Hash::decode($hash, $salt);
-
-	} // end decode;
+	}
 
 	/**
 	 * Get the current url.
@@ -146,41 +135,33 @@ class SSO {
 	 * @return string
 	 */
 	public function get_current_url() {
-
 		return wu_get_current_url();
-
-	} // end get_current_url;
+	}
 
 	/**
 	 * Returns the content of a key inside the $_REQUEST array.
 	 *
-	 * @since 2.0.11
-	 *
 	 * @param string $key The key to retrieve.
-	 * @param mixed  $default The default content.
+	 * @param mixed  $default_content The default content.
+	 *
 	 * @return mixed
 	 */
-	public function input($key, $default = false) {
-
-		return wu_request($key, $default);
-
-	} // end input;
+	public function input($key, $default_content = false) {
+		return wu_request($key, $default_content);
+	}
 
 	/**
-	 * Returns the content of a array key, if it exists.
+	 * Returns the content of an array key, if it exists.
 	 *
-	 * @since 2.0.11
-	 *
-	 * @param array  $array The array to check.
+	 * @param array  $array_checked The array to check.
 	 * @param string $key The key to test and return.
-	 * @param mixed  $default The default content to return.
+	 * @param mixed  $default_value The default content to return.
+	 *
 	 * @return mixed
 	 */
-	public function get_isset($array, $key, $default = false) {
-
-		return wu_get_isset($array, $key, $default);
-
-	} // end get_isset;
+	public function get_isset($array_checked, $key, $default_value = false) {
+		return wu_get_isset($array_checked, $key, $default_value);
+	}
 
 	/**
 	 * Get settings and preferences.
@@ -188,14 +169,12 @@ class SSO {
 	 * @since 2.0.11
 	 *
 	 * @param string $key The setting to retrieve.
-	 * @param mixed  $default The default value to return, if no setting is found.
+	 * @param mixed  $default_value The default value to return, if no setting is found.
 	 * @return mixed
 	 */
-	public function get_setting($key, $default = false) {
-
-		return wu_get_setting($key, $default);
-
-	} // end get_setting;
+	public function get_setting($key, $default_value = false) {
+		return wu_get_setting($key, $default_value);
+	}
 
 	/**
 	 * Startup the SSO hooks and filters.
@@ -302,8 +281,7 @@ class SSO {
 		 * on init, so later functionality can also hook into it.
 		 */
 		add_action('init', array($this, 'loaded_on_init'));
-
-	} // end startup;
+	}
 
 	/**
 	 * Late loaded hook, triggered on init.
@@ -312,10 +290,8 @@ class SSO {
 	 * @return void
 	 */
 	public function loaded_on_init() {
-
 		do_action('wu_sso_loaded_on_init', $this);
-
-	} // end loaded_on_init;
+	}
 
 	/**
 	 * Changes the default WordPress requirements for setting the logged in cookie
@@ -327,10 +303,8 @@ class SSO {
 	 * @return boolean
 	 */
 	public function force_secure_login_cookie() {
-
 		return is_ssl();
-
-	} // end force_secure_login_cookie;
+	}
 
 	/**
 	 * Bypasses the auth redirect on the wp-admin side of things.
@@ -349,15 +323,12 @@ class SSO {
 
 		$broker = $this->get_broker();
 
-		if (!$broker) {
-
-		} // end if;
+		if ( ! $broker) {
+		}
 
 		if ($broker->is_must_redirect_call()) {
-
 			return false;
-
-		} // end if;
+		}
 
 		$sso_path = $this->get_url_path();
 
@@ -369,10 +340,8 @@ class SSO {
 		 * login redirect.
 		 */
 		if ($this->input($sso_path) && $this->input($sso_path) !== 'done') {
-
 			return true;
-
-		} // end if;
+		}
 
 		$should_skip_redirect = $this->get_isset($_COOKIE, 'wu_sso_denied', false);
 
@@ -385,23 +354,24 @@ class SSO {
 		 * 2. If the user is logged in or not;
 		 * 3. If we should skip the redirect, based on previous attempts.
 		 */
-		if (!wu_is_same_domain() && !is_user_logged_in() && !$should_skip_redirect) {
-
+		if ( ! wu_is_same_domain() && ! is_user_logged_in() && ! $should_skip_redirect) {
 			nocache_headers();
 
 			$test = get_admin_url();
 
-			$redirect_after = $pagenow === 'index.php' ? '' : $this->get_current_url();
+			$redirect_after = 'index.php' === $pagenow ? '' : $this->get_current_url();
 
-			$redirect_url = add_query_arg(array(
-				$sso_path => 'login'
-			), wp_login_url($redirect_after));
+			$redirect_url = add_query_arg(
+				array(
+					$sso_path => 'login',
+				),
+				wp_login_url($redirect_after)
+			);
 
 			wp_redirect($redirect_url);
 
 			exit;
-
-		} // end if;
+		}
 
 		/**
 		 * Fix the redirect URL, just to be sure
@@ -409,9 +379,12 @@ class SSO {
 		 *
 		 * @since 2.0.11
 		 */
-		$_SERVER['REQUEST_URI'] = str_replace('https://a.com/', '', remove_query_arg('sso', 'https://a.com/' . $_SERVER['REQUEST_URI']));
-
-	} // end handle_auth_redirect;
+		$_SERVER['REQUEST_URI'] = str_replace(
+			'https://a.com/',
+			'',
+			remove_query_arg('sso', 'https://a.com/' . $_SERVER['REQUEST_URI'])
+		);
+	}
 
 	/**
 	 * Listens for SSO requests and route them to the correct handler.
@@ -423,11 +396,9 @@ class SSO {
 
 		$action = $this->get_sso_action();
 
-		if (!$action) {
-
+		if ( ! $action) {
 			return;
-
-		} // end if;
+		}
 
 		header('Access-Control-Allow-Headers: Content-Type');
 
@@ -444,8 +415,7 @@ class SSO {
 		do_action('wu_sso_handle', $action, $return_type, $this);
 
 		do_action("wu_sso_handle_{$action}", $return_type, $this);
-
-	} // end handle_requests;
+	}
 
 	/**
 	 * Handles the SSO server side of the auth protocol.
@@ -462,45 +432,36 @@ class SSO {
 		$server = $this->get_server();
 
 		try {
-
 			$verification_code = $server->attach();
 			$error             = null;
-
 		} catch (Exception\SSO_Session_Exception $e) {
-
 			if (is_ssl()) {
-
 				$verification_code = null;
 
 				$error = array(
 					'code'    => $e->getCode(),
 					'message' => $e->getMessage(),
 				);
-
 			} else {
-
 				$verification_code = 'must-redirect';
-
-			} // end if;
-
+			}
 		} catch (\Throwable $th) {
-
 			$verification_code = null;
 
 			$error = array(
 				'code'    => $th->getCode(),
 				'message' => $th->getMessage(),
 			);
+		}
 
-		} // end try;
-
-		if ($response_type === 'jsonp') {
-
-			$data = json_encode($error ?? array( // phpcs:ignore
-				'code'       => 200,
-				'verify'     => $verification_code,
-				'return_url' => $this->input('return_url', ''),
-			));
+		if ('jsonp' === $response_type) {
+			$data = wp_json_encode(
+				$error ?? array( // phpcs:ignore
+					'code'       => 200,
+					'verify'     => $verification_code,
+					'return_url' => $this->input('return_url', ''),
+				)
+			);
 
 			$response_code = 200; // phpcs:ignore
 
@@ -509,18 +470,14 @@ class SSO {
 			status_header($response_code);
 
 			exit;
-
 		} elseif ($response_type === 'redirect') {
-
 			$args = array(
 				'sso_verify' => $verification_code ? $verification_code : 'invalid',
 			);
 
 			if (isset($error) && $error) {
-
 				$args['sso_error'] = $error['message'];
-
-			} // end if;
+			}
 
 			$return_url = remove_query_arg('sso_verify', $_GET['return_url']);
 
@@ -529,10 +486,8 @@ class SSO {
 			wp_redirect($url, 303, 'WP-Ultimo-SSO');
 
 			exit;
-
-		} // end if;
-
-	} // end handle_server;
+		}
+	}
 
 	/**
 	 * Handles the broker side of the SSO protocol.
@@ -545,16 +500,12 @@ class SSO {
 	public function handle_broker($response_type = 'redirect') {
 
 		if (is_main_site()) {
-
 			return;
-
-		} // end if;
+		}
 
 		if (is_user_logged_in()) {
-
 			return;
-
-		} // end if;
+		}
 
 		nocache_headers();
 
@@ -563,7 +514,6 @@ class SSO {
 		$verify_code = $this->input('sso_verify');
 
 		if ($verify_code) {
-
 			$broker->verify($verify_code);
 
 			$url = $this->input('return_url', $this->get_current_url());
@@ -573,43 +523,37 @@ class SSO {
 			wp_redirect($redirect_url, 302, 'WP-Ultimo-SSO');
 
 			exit;
+		}
 
-		} // end if;
-
-    // Attach through redirect if the client isn't attached yet.
-		if (!$broker->isAttached()) {
-
+		// Attach through redirect if the client isn't attached yet.
+		if ( ! $broker->isAttached()) {
 			$return_url = $this->get_current_url();
 
-			if ($response_type === 'jsonp') {
-
-				$attach_url = $broker->getAttachUrl(array(
-					'_jsonp' => '1',
-				));
-
+			if ( 'jsonp' === $response_type) {
+				$attach_url = $broker->getAttachUrl(
+					array(
+						'_jsonp' => '1',
+					)
+				);
 			} else {
-
-				$attach_url = $broker->getAttachUrl(array(
-					'return_url' => $return_url,
-				));
-
-			} // end if;
+				$attach_url = $broker->getAttachUrl(
+					array(
+						'return_url' => $return_url,
+					)
+				);
+			}
 
 			wp_redirect($attach_url, 302, 'WP-Ultimo-SSO');
 
 			exit();
-
-		} // end if;
+		}
 
 		if ($response_type === 'jsonp') {
-
 			echo '// Nothing to see here.';
 
 			exit;
-
-		} // end if;
-
-	} // end handle_broker;
+		}
+	}
 
 	/**
 	 * Filters the list of allowed origins to add
@@ -632,41 +576,38 @@ class SSO {
 
 		$origin_url = wp_parse_url(get_http_origin());
 
-		$sites = get_sites(array(
-			'network_id' => get_current_network_id(),
-			'domain'     => $this->get_isset($origin_url, 'host', 'invalid'),
-		));
+		$sites = get_sites(
+			array(
+				'network_id' => get_current_network_id(),
+				'domain'     => $this->get_isset($origin_url, 'host', 'invalid'),
+			)
+		);
 
 		if ($sites) {
-
 			$additional_domains[] = sprintf('http://%s', $this->get_isset($origin_url, 'host', 'invalid'));
 			$additional_domains[] = sprintf('https://%s', $this->get_isset($origin_url, 'host', 'invalid'));
-
-		} // end if;
+		}
 
 		$site = get_site_by_path($this->get_isset($origin_url, 'host', 'invalid'), $this->get_isset($origin_url, 'path', '/'));
 
 		if ($site) {
-
-			$domains = wu_get_domains(array(
-				'active'        => true,
-				'blog_id'       => $site->blog_id,
-				'stage__not_in' => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
-				'fields'        => 'domain',
-			));
+			$domains = wu_get_domains(
+				array(
+					'active'        => true,
+					'blog_id'       => $site->blog_id,
+					'stage__not_in' => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
+					'fields'        => 'domain',
+				)
+			);
 
 			foreach ($domains as $domain) {
-
 				$additional_domains[] = "http://{$domain}";
 				$additional_domains[] = "https://{$domain}";
-
-			} // end foreach;
-
-		} // end if;
+			}
+		}
 
 		return array_merge($allowed_origins, $additional_domains);
-
-	} // end add_additional_origins;
+	}
 
 	/**
 	 * Determines the current user based on the Bearer token received.
@@ -682,16 +623,13 @@ class SSO {
 
 		$sso_path = $this->get_url_path();
 
-		if (!$this->input($sso_path) || $this->input($sso_path) !== 'done') {
-
+		if ( ! $this->input($sso_path) || $this->input($sso_path) !== 'done') {
 			return $current_user_id;
-
-		} // end if;
+		}
 
 		$broker = $this->get_broker();
 
 		try {
-
 			$bearer = $broker->getBearerToken();
 
 			$server_request = $this->build_server_request('GET', $this->get_current_url())->withHeader('Authorization', "Bearer $bearer");
@@ -699,23 +637,16 @@ class SSO {
 			$this->get_server()->startBrokerSession($server_request);
 
 			if ($this->get_target_user_id()) {
-
 				wp_set_auth_cookie($this->get_target_user_id(), true);
 
-				if ($pagenow === 'wp-login.php') {
-
+				if ('wp-login.php' === $pagenow) {
 					wp_redirect(wu_request('redirect_to', get_admin_url()));
-
 					exit;
-
-				} // end if;
+				}
 
 				return $this->get_target_user_id();
-
-			} // end if;
-
+			}
 		} catch (\Throwable $exception) {
-
 			/**
 			 * We don't need to handle the exceptions here
 			 * as we mostly just want to ignore this and move
@@ -726,12 +657,9 @@ class SSO {
 			 * @throws BrokerException
 			 * @throws NotAttachedException
 			 */
-
-		} // end try;
-
+		}
 		return $current_user_id;
-
-	} // end determine_current_user;
+	}
 
 	/**
 	 * Convert a user determined by a bearer into a cookie-based auth.
@@ -744,16 +672,13 @@ class SSO {
 		$broker = $this->get_broker();
 
 		if (is_user_logged_in() && $broker && $broker->isAttached()) {
-
 			$broker->clearToken();
 
 			$id = $this->decode($broker->getBrokerId(), $this->salt());
 
 			delete_site_transient(sprintf('sso-%s-%s', $broker->getBrokerId(), $id));
-
-		} // end if;
-
-	} // end convert_bearer_into_auth_cookies;
+		}
+	}
 
 	/**
 	 * Add the SSO tags to the removable query args.
@@ -768,8 +693,7 @@ class SSO {
 		$removable_query_args[] = $this->get_url_path();
 
 		return $removable_query_args;
-
-	} // end add_sso_removable_query_args;
+	}
 
 	/**
 	 * Adds the front-end script to trigger SSO flows
@@ -780,32 +704,22 @@ class SSO {
 	 */
 	public function enqueue_script() {
 
-		global $pagenow;
-
 		if (is_main_site()) {
-
 			return;
-
-		} // end if;
+		}
 
 		if ($this->get_setting('restrict_sso_to_login_pages', false)) {
-
 			if (wu_is_login_page() === false) {
-
 				return;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		/*
 		 * The visitor is actively trying to logout. Let them do it!
 		 */
 		if ($this->input('action', 'nothing') === 'logout' || $this->input('loggedout')) {
-
 			return;
-
-		} // end if;
+		}
 
 		wp_register_script('wu-detect-incognito', wu_get_asset('detectincognito.js', 'js/lib'), false, wu_get_version());
 
@@ -834,8 +748,7 @@ class SSO {
 		wp_localize_script('wu-sso', 'wu_sso_config', $options);
 
 		wp_enqueue_script('wu-sso');
-
-	} // end enqueue_script;
+	}
 
 	/**
 	 * Gets the strategy to be used by default.
@@ -853,18 +766,13 @@ class SSO {
 		$env = 'development';
 
 		if (function_exists('wp_get_environment_type')) {
-
 			$env = wp_get_environment_type();
-
 		} else {
-
 			$env = defined('WP_DEBUG') && WP_DEBUG ? 'development' : 'production';
+		}
 
-		} // end if;
-
-		return apply_filters('wu_sso_get_strategy', $env === 'development' ? 'redirect' : 'ajax', $env, $this);
-
-	} // end get_strategy;
+		return apply_filters('wu_sso_get_strategy', 'development' === $env ? 'redirect' : 'ajax', $env, $this);
+	}
 
 	/**
 	 * Gets the final return URL.
@@ -881,10 +789,8 @@ class SSO {
 		$query_values = array();
 
 		if (isset($parsed_url['query'])) {
-
 			parse_str($parsed_url['query'], $query_values);
-
-		} // end if;
+		}
 
 		$sso_path = $this->get_url_path();
 
@@ -902,17 +808,14 @@ class SSO {
 		);
 
 		if (isset($query_values['redirect_to'])) {
-
-			$args['redirect_to'] = urlencode($query_values['redirect_to']);
-
-		} // end if;
+			$args['redirect_to'] = rawurlencode($query_values['redirect_to']);
+		}
 
 		// We should use the login URL to avoid cache issues.
 		$login_url = wp_login_url(wu_get_isset($query_values, 'redirect_to', implode('/', $fragments)));
 
 		return add_query_arg($args, $login_url);
-
-	} // end get_final_return_url;
+	}
 
 	/**
 	 * Get the return type we need to use.
@@ -931,8 +834,7 @@ class SSO {
 		$received_type = $this->input('return_type', 'redirect');
 
 		return in_array($received_type, $allowed_return_types, true) ? $received_type : 'redirect';
-
-	}  // end get_return_type;
+	}
 
 	/**
 	 * Parses the request and gets the SSO action to perform.
@@ -954,27 +856,19 @@ class SSO {
 
 		$action = $this->get_isset($m, 0, '');
 
-		if (!$action) {
-
+		if ( ! $action) {
 			$action = $this->input($sso_path, 'done') !== 'done' ? $sso_path : '';
-
-		} // end if;
-
-		if (!$action) {
-
+		}
+		if ( ! $action) {
 			$action = $this->input("$sso_path-grant", 'done') !== 'done' ? "$sso_path-grant" : '';
+		}
 
-		} // end if;
-
-		if (!$action) {
-
+		if ( ! $action) {
 			$action = $this->input("{$sso_path}_verify", '') !== '' ? $sso_path : '';
-
-		} // end if;
+		}
 
 		return $action;
-
-	} // end get_sso_action;
+	}
 
 	/**
 	 * Returns the salt to be used on the hashing functions.
@@ -983,10 +877,8 @@ class SSO {
 	 * @return string
 	 */
 	public function salt() {
-
 		return apply_filters('wu_sso_salt', wp_salt(), $this);
-
-	} // end salt;
+	}
 
 	/**
 	 * Returns a PSR16-compatible cache implementation.
@@ -996,18 +888,15 @@ class SSO {
 	 */
 	public function cache() {
 
-		if ($this->cache === null) {
-
+		if (null === $this->cache) {
 			// the PSR-6 cache object that you want to use
 			$psr6_cache = new FilesystemAdapter();
 
 			$this->cache = new Psr16Cache($psr6_cache);
-
-		} // end if;
+		}
 
 		return apply_filters('wu_sso_cache', $this->cache, $this);
-
-	} // end cache;
+	}
 
 	/**
 	 * Creates a PSR7 Server Request object.
@@ -1024,8 +913,7 @@ class SSO {
 		$request = $psr7_server_request_builder->createServerRequest('GET', $url);
 
 		return apply_filters('wu_sso_server_request', $request, $url, $this);
-
-	} // end build_server_request;
+	}
 
 	/**
 	 * Returns a PSR3 logger interface that we can use to log SSO results.
@@ -1035,13 +923,10 @@ class SSO {
 	 */
 	public function logger() {
 
-		if ($this->logger === null) {
-
+		if (null === $this->logger) {
 			return apply_filters('wu_sso_logger', $this->logger, $this);
-
-		} // end if;
-
-	} // end logger;
+		}
+	}
 
 	/**
 	 * Creates a secret based on the date of registration of a sub-site.
@@ -1050,24 +935,20 @@ class SSO {
 	 *
 	 * @param string $date The date to use.
 	 * @return string The hashed secret.
+	 * @throws Exception\SSO_Exception Failure.
 	 */
 	public function calculate_secret_from_date($date) {
 
 		$tz = new \DateTimeZone('GMT');
 
 		try {
-
 			$int_version = (int) \DateTime::createFromFormat('Y-m-d H:i:s', $date, $tz)->format('mdisY');
-
 		} catch (\Throwable $exception) {
-
 			throw new Exception\SSO_Exception(__('SSO secret creation failed.', 'wp-ultimo'), 500);
-
-		} // end try;
+		}
 
 		return wp_hash($int_version);
-
-	} // end calculate_secret_from_date;
+	}
 
 	/**
 	 * Returns the server object to be used on the SSO protocol.
@@ -1082,8 +963,7 @@ class SSO {
 		$server = (new Server(array($this, 'get_broker_by_id'), $this->cache()))->withSession($session_handler);
 
 		return apply_filters('wu_sso_get_server', $server, $this);
-
-	} // end get_server;
+	}
 
 	/**
 	 * Gets a sub-site based on the broker id passed.
@@ -1101,11 +981,9 @@ class SSO {
 
 		$site = get_site($site_id ? $site_id : 'non-existent');
 
-		if (!$site) {
-
+		if ( ! $site) {
 			return null;
-
-		} // end if;
+		}
 
 		$main_domain = wp_parse_url(get_home_url($site_id), PHP_URL_HOST);
 
@@ -1115,10 +993,8 @@ class SSO {
 		);
 
 		if (is_subdomain_install()) {
-
 			$domain_list[] = $site->domain;
-
-		} // end if;
+		}
 
 		$domain_list = apply_filters('wu_sso_site_allowed_domains', $domain_list, $site_id, $site, $this);
 
@@ -1126,8 +1002,7 @@ class SSO {
 			'secret'  => $this->calculate_secret_from_date($site->registered),
 			'domains' => $domain_list,
 		);
-
-	} // end get_broker_by_id;
+	}
 
 	/**
 	 * Returns a broker instance.
@@ -1148,8 +1023,7 @@ class SSO {
 		$this->broker = new SSO_Broker($home_sso_url, $broker_id, $secret);
 
 		return apply_filters('wu_sso_get_broker', $this->broker, $this);
-
-	} // end get_broker;
+	}
 
 	/**
 	 * Set the target user after the bearer is passed.
@@ -1160,10 +1034,8 @@ class SSO {
 	 * @return void
 	 */
 	public function set_target_user_id($target_user_id) {
-
 		$this->target_user_id = $target_user_id;
-
-	} // end set_target_user_id;
+	}
 
 	/**
 	 * Returns the target user id.
@@ -1172,10 +1044,8 @@ class SSO {
 	 * @return int
 	 */
 	public function get_target_user_id() {
-
 		return $this->target_user_id;
-
-	} // end get_target_user_id;
+	}
 	/**
 	 * Get the url path for SSO.
 	 *
@@ -1194,14 +1064,11 @@ class SSO {
 		);
 
 		if ($action) {
-
 			$fragments[] = $action;
-
-		} // end if;
+		}
 
 		return implode('-', $fragments);
-
-	} // end get_url_path;
+	}
 
 	/**
 	 * Helper function to generate a sso url.
@@ -1213,13 +1080,11 @@ class SSO {
 	 */
 	public static function with_sso($url) {
 
-		$sso = SSO::get_instance();
+		$sso = self::get_instance();
 
 		if ($sso->is_enabled() === false) {
-
 			return $url;
-
-		} // end if;
+		}
 
 		$sso_path = $sso->get_url_path();
 
@@ -1228,7 +1093,5 @@ class SSO {
 		);
 
 		return add_query_arg($sso_params, $url);
-
-	}  // end with_sso;
-
-} // end class SSO;
+	}
+}

@@ -8,16 +8,16 @@
 
 <?php if ($field->title && is_string($field->title)) : ?>
 
-  <span class="wu-my-1 wu-text-2xs wu-uppercase wu-font-bold wu-block">
+	<span class="wu-my-1 wu-text-2xs wu-uppercase wu-font-bold wu-block">
 
-    <?php echo $field->title; ?>
+	<?php echo $field->title; ?>
 
-    <?php if ($field->tooltip) : ?>
+	<?php if ($field->tooltip) : ?>
 
-      <?php echo wu_tooltip($field->tooltip); ?>
+		<?php echo wu_tooltip($field->tooltip); ?>
 
-    <?php endif; ?>
+	<?php endif; ?>
 
-  </span>
+	</span>
 
 <?php endif; ?>

@@ -7,17 +7,17 @@
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-  <div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
+	<div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
 
-    <?php $form->render(); ?>
+	<?php $form->render(); ?>
 
-  </div>
+	</div>
 
 </div>
 
 <style>
 .wu-styling h3 {
-  font-weight: 600 !important;
-  font-size: 90% !important;
+	font-weight: 600 !important;
+	font-size: 90% !important;
 }
 </style>

@@ -65,14 +65,11 @@ class Theme_Limits {
 		 * @since 2.1.0
 		 */
 		if (wu_cli_is_plugin_skipped('wp-ultimo')) {
-
 			return;
-
 		}
 
 		add_action('wu_sunrise_loaded', array($this, 'load_limitations'));
-
-	} // end init;
+	}
 
 	/**
 	 * Apply limitations if they are available.
@@ -83,7 +80,6 @@ class Theme_Limits {
 	public function load_limitations() {
 
 		if (wu_get_current_site()->has_limitations()) {
-
 			add_filter('stylesheet', array($this, 'force_active_theme_stylesheet'));
 
 			add_filter('template', array($this, 'force_active_theme_template'));
@@ -99,10 +95,8 @@ class Theme_Limits {
 			add_action('admin_footer-themes.php', array($this, 'modify_backbone_template'));
 
 			add_action('customize_changeset_save_data', array($this, 'prevent_theme_activation_on_customizer'), 99, 2);
-
-		} // end if;
-
-	} // end load_limitations;
+		}
+	}
 
 	/**
 	 * Prevents sub-site admins from switching to locked themes inside the customizer.
@@ -116,25 +110,20 @@ class Theme_Limits {
 	public function prevent_theme_activation_on_customizer($data, $context) {
 
 		if (wu_get_current_site()->has_limitations() === false) {
-
 			return $data;
-
-		} // end if;
+		}
 
 		$pending_theme_switch = $context['manager']->is_theme_active() === false;
 
 		if ($pending_theme_switch === false) {
-
 			return $data;
-
-		} // end if;
+		}
 
 		$new_theme = $context['manager']->theme()->stylesheet;
 
 		$theme_limitations = wu_get_current_site()->get_limitations()->themes;
 
 		if ($theme_limitations->allowed($new_theme, 'not_available')) {
-
 			$response = array(
 				'code'    => 'not-available',
 				'message' => __('This theme is not available on your current plan.', 'wp-ultimo'),
@@ -143,12 +132,10 @@ class Theme_Limits {
 			wp_send_json($response, 'not-available');
 
 			exit;
-
-		} // end if;
+		}
 
 		return $data;
-
-	} // end prevent_theme_activation_on_customizer;
+	}
 
 	/**
 	 * Removes the activate button from not available themes.
@@ -166,38 +153,38 @@ class Theme_Limits {
 
 		global $pagenow;
 
-		if (!function_exists('wu_generate_upgrade_to_unlock_url')) {
-
+		if ( ! function_exists('wu_generate_upgrade_to_unlock_url')) {
 			return;
-
-		} // end if;
+		}
 
 		if ($pagenow !== 'themes.php') {
-
 			return;
-
-		} // end if;
+		}
 
 		$membership = wu_get_current_site()->get_membership();
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return;
+		}
 
-		} // end if;
+		$upgrade_button = wu_generate_upgrade_to_unlock_button(
+			__('Upgrade to unlock', 'wp-ultimo'),
+			array(
+				'module'  => 'themes',
+				'type'    => 'EXTENSION',
+				'classes' => 'button',
+			)
+		);
 
-		$upgrade_button = wu_generate_upgrade_to_unlock_button(__('Upgrade to unlock', 'wp-ultimo'), array(
-			'module'  => 'themes',
-			'type'    => 'EXTENSION',
-			'classes' => 'button',
-		));
-
-		wp_localize_script('theme', 'wu_theme_settings', array(
-			'themes_not_available' => $this->themes_not_available,
-			'replacement_message'  => $upgrade_button,
-		));
-
-	} // end hacky_remove_activate_button;
+		wp_localize_script(
+			'theme',
+			'wu_theme_settings',
+			array(
+				'themes_not_available' => $this->themes_not_available,
+				'replacement_message'  => $upgrade_button,
+			)
+		);
+	}
 
 	/**
 	 * Modifies the default WordPress theme page template.
@@ -217,13 +204,12 @@ class Theme_Limits {
 
 				document.getElementById("tmpl-theme").innerHTML = content;
 
-			} // end if;
+			}
 
 		</script>
 
 		<?php // phpcs:enable
-
-	} // end modify_backbone_template;
+	}
 
 	/**
 	 * Checks if a theme needs to have the activate button removed.
@@ -236,19 +222,15 @@ class Theme_Limits {
 	public function maybe_remove_activate_button($themes) {
 
 		if (is_main_site()) {
-
 			return $themes;
-
-		} // end if;
+		}
 
 		$theme_limitations = wu_get_current_site()->get_limitations()->themes;
 
 		foreach ($themes as $stylesheet => &$data) {
-
 			$data['notAvailable'] = false;
 
 			if ($theme_limitations->allowed($stylesheet, 'not_available')) {
-
 				$data['actions']['activate'] = '';
 
 				/*
@@ -262,14 +244,11 @@ class Theme_Limits {
 				 * for our hack-y solution.
 				 */
 				$this->themes_not_available[] = $stylesheet;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $themes;
-
-	} // end maybe_remove_activate_button;
+	}
 
 	/**
 	 * Force the activation of one particularly selected theme.
@@ -282,16 +261,13 @@ class Theme_Limits {
 	public function force_active_theme_stylesheet($stylesheet) {
 
 		if (is_main_site()) {
-
 			return $stylesheet;
-
-		} // end if;
+		}
 
 		$forced_stylesheet = $this->get_forced_theme_stylesheet();
 
 		return $forced_stylesheet ? $forced_stylesheet : $stylesheet;
-
-	} // end force_active_theme_stylesheet;
+	}
 
 	/**
 	 * Force the activation of one particularly selected theme.
@@ -304,16 +280,13 @@ class Theme_Limits {
 	public function force_active_theme_template($template) {
 
 		if (is_main_site()) {
-
 			return $template;
-
-		} // end if;
+		}
 
 		$forced_template = $this->get_forced_theme_template();
 
 		return $forced_template ? $forced_template : $template;
-
-	} // end force_active_theme_template;
+	}
 
 	/**
 	 * Deactivates the plugins that people are not allowed to use.
@@ -328,34 +301,25 @@ class Theme_Limits {
 		 * Bail on network admin =)
 		 */
 		if (is_network_admin()) {
-
 			return $themes;
-
-		} // end if;
+		}
 
 		$theme_limitations = wu_get_current_site()->get_limitations()->themes;
 
 		$_themes = $theme_limitations->get_all_themes();
 
 		foreach ($_themes as $theme_stylesheet) {
-
 			$should_appear = $theme_limitations->allowed($theme_stylesheet, 'visible');
 
-			if (!$should_appear && isset($themes[$theme_stylesheet])) {
-
-				unset($themes[$theme_stylesheet]);
-
-			} elseif ($should_appear && !isset($themes[$theme_stylesheet])) {
-
+			if ( ! $should_appear && isset($themes[ $theme_stylesheet ])) {
+				unset($themes[ $theme_stylesheet ]);
+			} elseif ($should_appear && ! isset($themes[ $theme_stylesheet ])) {
 				$themes[] = $theme_stylesheet;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $themes;
-
-	} // end add_extra_available_themes;
+	}
 
 	/**
 	 * Get the stylesheet of the theme that is forced to be active.
@@ -367,14 +331,11 @@ class Theme_Limits {
 	protected function get_forced_theme_stylesheet() {
 
 		if ($this->forced_theme_stylesheet === null) {
-
 			$this->forced_theme_stylesheet = wu_get_current_site()->get_limitations()->themes->get_forced_active_theme();
-
-		} // end if;
+		}
 
 		return $this->forced_theme_stylesheet;
-
-	} // end get_forced_theme_stylesheet;
+	}
 
 	/**
 	 * Get the template of the theme that is forced to be active.
@@ -386,15 +347,11 @@ class Theme_Limits {
 	protected function get_forced_theme_template() {
 
 		if ($this->forced_theme_template === null) {
-
 			$stylesheet = $this->get_forced_theme_stylesheet();
 
 			$this->forced_theme_template = $stylesheet ? wp_get_theme($stylesheet)->get_template() : false;
-
-		} // end if;
+		}
 
 		return $this->forced_theme_template;
-
-	} // end get_forced_theme_template;
-
-} // end class Theme_Limits;
+	}
+}

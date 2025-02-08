@@ -81,8 +81,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 		parent::init();
 
 		add_filter('action_scheduler_admin_view_class', array($this, 'hide_as_admin_page'), 9999, 1);
-
-	} // end init;
+	}
 
 	/**
 	 * Hide the Action Scheduler admin page on sub-sites.
@@ -95,14 +94,11 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	public function hide_as_admin_page($admin_view_class) {
 
 		if (is_network_admin() || class_exists('WooCommerce')) {
-
 			return $admin_view_class;
-
-		} // end if;
+		}
 
 		return '\WP_Ultimo\Compat\AS_Admin_View';
-
-	} // end hide_as_admin_page;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -113,8 +109,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	public function get_title() {
 
 		return __('Jobs', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -125,8 +120,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Jobs', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -137,8 +131,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Jobs', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Runs the hooks for the admin list table.
@@ -151,8 +144,7 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	public function page_loaded() {
 
 		\ActionScheduler_AdminView::instance()->process_admin_ui();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Calls the Action Scheduler renderer.
@@ -163,7 +155,5 @@ class Jobs_List_Admin_Page extends Base_Admin_Page {
 	public function output() {
 
 		\ActionScheduler_AdminView::instance()->render_admin_ui();
-
-	} // end output;
-
-} // end class Jobs_List_Admin_Page;
+	}
+}

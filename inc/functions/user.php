@@ -18,28 +18,21 @@ defined('ABSPATH') || exit;
  */
 function wu_get_roles_as_options($add_default_option = false) {
 
-	if (!function_exists('get_editable_roles')) {
-
-		require_once(ABSPATH . 'wp-admin/includes/user.php');
-
-	} // end if;
+	if ( ! function_exists('get_editable_roles')) {
+		require_once ABSPATH . 'wp-admin/includes/user.php';
+	}
 
 	$roles = array();
 
 	if ($add_default_option) {
-
 		$roles['default'] = __('Use WP Multisite WaaS default', 'wp-ultimo');
-
-	} // end if;
+	}
 
 	$editable_roles = get_editable_roles();
 
 	foreach ($editable_roles as $role => $details) {
-
-		$roles[esc_attr($role)] = translate_user_role($details['name']);
-
-	} // end foreach;
+		$roles[ esc_attr($role) ] = translate_user_role($details['name']);
+	}
 
 	return $roles;
-
-} // end wu_get_roles_as_options;
+}

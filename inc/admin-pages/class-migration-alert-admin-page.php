@@ -83,8 +83,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns the logo for the wizard.
@@ -95,8 +94,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	public function get_logo() {
 
 		return wu_get_asset('logo.png', 'img');
-
-	} // end get_logo;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -107,8 +105,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	public function get_title(): string {
 
 		return sprintf(__('Migration', 'wp-ultimo'));
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -119,8 +116,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	public function get_menu_title() {
 
 		return WP_Ultimo()->is_loaded() ? __('WP Multisite WaaS Migration Alert', 'wp-ultimo') : __('WP Multisite WaaS', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the sections for this Wizard.
@@ -137,8 +133,7 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 				'handler' => array($this, 'handle_proceed'),
 			),
 		);
-
-	} // end get_sections;
+	}
 
 	/**
 	 * Displays the content of the final section.
@@ -148,12 +143,14 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function section_alert() {
 
-		wu_get_template('wizards/setup/alert', array(
-			'screen' => get_current_screen(),
-			'page'   => $this,
-		));
-
-	} // end section_alert;
+		wu_get_template(
+			'wizards/setup/alert',
+			array(
+				'screen' => get_current_screen(),
+				'page'   => $this,
+			)
+		);
+	}
 
 	/**
 	 * Handles the proceed action.
@@ -169,7 +166,5 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 		wp_redirect(wu_network_admin_url('wp-ultimo-setup'));
 
 		exit;
-
-	} // end handle_proceed;
-
-} // end class Migration_Alert_Admin_Page;
+	}
+}

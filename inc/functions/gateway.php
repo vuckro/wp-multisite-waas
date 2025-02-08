@@ -25,15 +25,12 @@ use WP_Ultimo\Managers\Gateway_Manager;
  */
 function wu_register_gateway($id, $title, $desc, $class_name, $hidden = false) {
 
-	if (!did_action('wu_register_gateways')) {
-
+	if ( ! did_action('wu_register_gateways')) {
 		_doing_it_wrong(__FUNCTION__, __('You should not register new payment gateways before the wu_register_gateways hook.', 'wp-ultimo'), '2.0.0');
-
-	} // end if;
+	}
 
 	return Gateway_Manager::get_instance()->register_gateway($id, $title, $desc, $class_name, $hidden);
-
-} // end wu_register_gateway;
+}
 
 /**
  * Returns the currently registered gateways.
@@ -45,8 +42,7 @@ function wu_register_gateway($id, $title, $desc, $class_name, $hidden = false) {
 function wu_get_gateways() {
 
 	return Gateway_Manager::get_instance()->get_registered_gateways();
-
-} // end wu_get_gateways;
+}
 
 /**
  * Returns the currently registered and active gateways.
@@ -61,18 +57,13 @@ function wu_get_active_gateways() {
 	$active_gateways = (array) wu_get_setting('active_gateways', array());
 
 	foreach ($active_gateways as $active_gateway) {
-
 		if (Gateway_Manager::get_instance()->is_gateway_registered($active_gateway)) {
-
-			$gateways[$active_gateway] = Gateway_Manager::get_instance()->get_gateway($active_gateway);
-
-		} // end if;
-
-	} // end foreach;
+			$gateways[ $active_gateway ] = Gateway_Manager::get_instance()->get_gateway($active_gateway);
+		}
+	}
 
 	return apply_filters('wu_get_active_gateways', $gateways);
-
-} // end wu_get_active_gateways;
+}
 
 /**
  * Returns a gateway class if it exists.
@@ -87,17 +78,14 @@ function wu_get_gateway($id, $subscription = null) {
 
 	$gateway = Gateway_Manager::get_instance()->get_gateway($id);
 
-	if (!$gateway) {
-
+	if ( ! $gateway) {
 		return false;
-
-	} // end if;
+	}
 
 	$gateway_class = new $gateway['class_name']();
 
 	return $gateway_class;
-
-} // end wu_get_gateway;
+}
 
 /**
  * Returns the list of available gateways as key => name.
@@ -110,22 +98,17 @@ function wu_get_gateway_as_options() {
 	$options = array();
 
 	foreach (wu_get_gateways() as $gateway_slug => $gateway) {
-
 		$instance = class_exists($gateway['class_name']) ? new $gateway['class_name']() : false;
 
 		if ($instance === false || $gateway['hidden']) {
-
 			continue;
+		}
 
-		} // end if;
-
-		$options[$gateway_slug] = $gateway['title'];
-
-	} // end foreach;
+		$options[ $gateway_slug ] = $gateway['title'];
+	}
 
 	return $options;
-
-} // end wu_get_gateway_as_options;
+}
 
 /**
  * Get the active gateways.
@@ -138,21 +121,16 @@ function wu_get_active_gateway_as_options() {
 	$options = array();
 
 	foreach (wu_get_active_gateways() as $gateway_slug => $gateway) {
-
 		$instance = class_exists($gateway['class_name']) ? new $gateway['class_name']() : false;
 
 		if ($instance === false || $gateway['hidden']) {
-
 			continue;
-
-		} // end if;
+		}
 
 		$title = $instance->get_public_title();
 
-		$options[$gateway_slug] = apply_filters("wu_gateway_{$gateway_slug}_as_option_title", $title, $gateway);
-
-	} // end foreach;
+		$options[ $gateway_slug ] = apply_filters("wu_gateway_{$gateway_slug}_as_option_title", $title, $gateway);
+	}
 
 	return $options;
-
-} // end wu_get_active_gateway_as_options;
+}

@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Database\Memberships\Membership_Status;
 
 /**
  * WP Multisite WaaS Membership Edit/Add New Admin Page.
@@ -102,8 +102,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		 * Adds the swap notices, if needed.
 		 */
 		$this->add_swap_notices();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Displays swap notices, if necessary.
@@ -115,11 +114,9 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$swap_order = $this->get_object()->get_scheduled_swap();
 
-		if (!$swap_order || wu_request('preview-swap')) {
-
+		if ( ! $swap_order || wu_request('preview-swap')) {
 			return;
-
-		} // end if;
+		}
 
 		$actions = array(
 			'preview' => array(
@@ -134,8 +131,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$message = sprintf(__('There is a change scheduled to take place on this membership in <strong>%s</strong>. You can preview the changes here. Scheduled changes are usually created by downgrades.', 'wp-ultimo'), $date->format(get_option('date_format')));
 
 		WP_Ultimo()->notices->add($message, 'warning', 'network-admin', false, $actions);
-
-	} // end add_swap_notices;
+	}
 
 	/**
 	 * Registers the necessary scripts and styles for this admin page.
@@ -148,8 +144,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		parent::register_scripts();
 
 		wp_enqueue_editor();
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Register ajax forms that we use for membership.
@@ -161,41 +156,55 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		/*
 		 * Transfer membership - Confirmation modal
 		 */
-		wu_register_form('transfer_membership', array(
-			'render'     => array($this, 'render_transfer_membership_modal'),
-			'handler'    => array($this, 'handle_transfer_membership_modal'),
-			'capability' => 'wu_transfer_memberships',
-		));
+		wu_register_form(
+			'transfer_membership',
+			array(
+				'render'     => array($this, 'render_transfer_membership_modal'),
+				'handler'    => array($this, 'handle_transfer_membership_modal'),
+				'capability' => 'wu_transfer_memberships',
+			)
+		);
 
 		/*
 		 * Edit/Add product
 		 */
-		wu_register_form('edit_membership_product', array(
-			'render'  => array($this, 'render_edit_membership_product_modal'),
-			'handler' => array($this, 'handle_edit_membership_product_modal'),
-		));
+		wu_register_form(
+			'edit_membership_product',
+			array(
+				'render'  => array($this, 'render_edit_membership_product_modal'),
+				'handler' => array($this, 'handle_edit_membership_product_modal'),
+			)
+		);
 
 		/*
 		 * Change Plan
 		 */
-		wu_register_form('change_membership_plan', array(
-			'render'  => array($this, 'render_change_membership_plan_modal'),
-			'handler' => array($this, 'handle_change_membership_plan_modal'),
-		));
+		wu_register_form(
+			'change_membership_plan',
+			array(
+				'render'  => array($this, 'render_change_membership_plan_modal'),
+				'handler' => array($this, 'handle_change_membership_plan_modal'),
+			)
+		);
 
 		/*
 		 * Delete Product
 		 */
-		wu_register_form('remove_membership_product', array(
-			'render'  => array($this, 'render_remove_membership_product'),
-			'handler' => array($this, 'handle_remove_membership_product'),
-		));
+		wu_register_form(
+			'remove_membership_product',
+			array(
+				'render'  => array($this, 'render_remove_membership_product'),
+				'handler' => array($this, 'handle_remove_membership_product'),
+			)
+		);
 
-		add_filter('wu_data_json_success_delete_membership_modal', fn($data_json) => array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-memberships', array('deleted' => 1))
-		));
-
-	} // end register_forms;
+		add_filter(
+			'wu_data_json_success_delete_membership_modal',
+			fn($data_json) => array(
+				'redirect_url' => wu_network_admin_url('wp-ultimo-memberships', array('deleted' => 1)),
+			)
+		);
+	}
 
 	/**
 	 * Renders the deletion confirmation form.
@@ -207,11 +216,9 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return;
-
-		} // end if;
+		}
 
 		$fields = array(
 			'confirm'            => array(
@@ -243,21 +250,26 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('total-actions', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'true',
-				'data-state'  => json_encode(array(
-					'confirmed' => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'total-actions',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'true',
+					'data-state'  => json_encode(
+						array(
+							'confirmed' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_transfer_membership_modal;
+	}
 
 	/**
 	 * Handles the deletion of line items.
@@ -269,25 +281,19 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			wp_send_json_error(new \WP_Error('not-found', __('Membership not found.', 'wp-ultimo')));
-
-		} // end if;
+		}
 
 		$target_customer = wu_get_customer(wu_request('target_customer_id'));
 
-		if (!$target_customer) {
-
+		if ( ! $target_customer) {
 			wp_send_json_error(new \WP_Error('not-found', __('Target customer not found.', 'wp-ultimo')));
-
-		} // end if;
+		}
 
 		if ($target_customer->get_id() === $membership->get_customer_id()) {
-
 			wp_send_json_error(new \WP_Error('not-found', __('Cannot transfer to the same customer.', 'wp-ultimo')));
-
-		} // end if;
+		}
 
 		/*
 		 * Lock the membership to prevent memberships.
@@ -297,19 +303,27 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		/*
 		 * Enqueue task
 		 */
-		wu_enqueue_async_action('wu_async_transfer_membership', array(
-			'membership_id'      => $membership->get_id(),
-			'target_customer_id' => $target_customer->get_id(),
-		), 'membership');
+		wu_enqueue_async_action(
+			'wu_async_transfer_membership',
+			array(
+				'membership_id'      => $membership->get_id(),
+				'target_customer_id' => $target_customer->get_id(),
+			),
+			'membership'
+		);
 
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-edit-membership', array(
-				'id'               => $membership->get_id(),
-				'transfer-started' => 1,
-			))
-		));
-
-	} // end handle_transfer_membership_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					'wp-ultimo-edit-membership',
+					array(
+						'id'               => $membership->get_id(),
+						'transfer-started' => 1,
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -331,104 +345,125 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$gateway_message = false;
 
-		if (!empty($this->get_object()->get_gateway())) {
-
+		if ( ! empty($this->get_object()->get_gateway())) {
 			$gateway = wu_get_gateway($this->get_object()->get_gateway());
 
 			$gateway_message = $gateway ? $gateway->get_amount_update_message() : '';
+		}
 
-		} // end if;
-
-		$this->add_fields_widget('at_a_glance', array(
-			'title'                 => __('At a Glance', 'wp-ultimo'),
-			'position'              => 'normal',
-			'classes'               => 'wu-overflow-hidden wu-widget-inset',
-			'field_wrapper_classes' => 'wu-w-1/3 wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t-0 wu-border-l-0 wu-border-r wu-border-b-0 wu-border-gray-300 wu-border-solid wu-float-left wu-relative',
-			'fields'                => array(
-				'status'        => array(
-					'type'          => 'text-display',
-					'title'         => __('Membership Status', 'wp-ultimo'),
-					'display_value' => $tag,
-					'tooltip'       => '',
-				),
-				'hash'          => array(
-					'copy'          => true,
-					'type'          => 'text-display',
-					'title'         => __('Reference ID', 'wp-ultimo'),
-					'display_value' => $this->get_object()->get_hash(),
-				),
-				'total_grossed' => array(
-					'type'            => 'text-display',
-					'title'           => __('Total Grossed', 'wp-ultimo'),
-					'display_value'   => wu_format_currency($this->get_object()->get_total_grossed(), $this->get_object()->get_currency()),
-					'wrapper_classes' => 'sm:wu-border-r-0',
-				),
-			),
-		));
-
-		$this->add_list_table_widget('membership-products', array(
-			'position' => 'normal',
-			'title'    => __('Products', 'wp-ultimo'),
-			'table'    => new \WP_Ultimo\List_Tables\Membership_Line_Item_List_Table(),
-			'after'    => $this->output_widget_products(),
-		));
-
-		$this->add_list_table_widget('payments', array(
-			'title'        => __('Payments', 'wp-ultimo'),
-			'table'        => new \WP_Ultimo\List_Tables\Customers_Payment_List_Table(),
-			'query_filter' => array($this, 'payments_query_filter'),
-		));
-
-		$this->add_list_table_widget('sites', array(
-			'title'        => __('Sites', 'wp-ultimo'),
-			'table'        => new \WP_Ultimo\List_Tables\Memberships_Site_List_Table(),
-			'query_filter' => array($this, 'sites_query_filter'),
-		));
-
-		$this->add_list_table_widget('customer', array(
-			'title'        => __('Linked Customer', 'wp-ultimo'),
-			'table'        => new \WP_Ultimo\List_Tables\Site_Customer_List_Table(),
-			'query_filter' => array($this, 'customer_query_filter'),
-		));
-
-		$this->add_tabs_widget('options', array(
-			'title'    => __('Membership Options', 'wp-ultimo'),
-			'position' => 'normal',
-			'sections' => apply_filters('wu_membership_options_sections', array(
-				'general'      => array(
-					'title'  => __('General', 'wp-ultimo'),
-					'desc'   => __('General membership options', 'wp-ultimo'),
-					'icon'   => 'dashicons-wu-globe',
-					'fields' => array(
-						'blocking' => array(
-							'type'  => 'toggle',
-							'title' => __('Is Blocking?', 'wp-ultimo'),
-							'desc'  => __('Should we block access to the site, plugins, themes, and services after the expiration date is reached?', 'wp-ultimo'),
-							'value' => true,
-						),
+		$this->add_fields_widget(
+			'at_a_glance',
+			array(
+				'title'                 => __('At a Glance', 'wp-ultimo'),
+				'position'              => 'normal',
+				'classes'               => 'wu-overflow-hidden wu-widget-inset',
+				'field_wrapper_classes' => 'wu-w-1/3 wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t-0 wu-border-l-0 wu-border-r wu-border-b-0 wu-border-gray-300 wu-border-solid wu-float-left wu-relative',
+				'fields'                => array(
+					'status'        => array(
+						'type'          => 'text-display',
+						'title'         => __('Membership Status', 'wp-ultimo'),
+						'display_value' => $tag,
+						'tooltip'       => '',
+					),
+					'hash'          => array(
+						'copy'          => true,
+						'type'          => 'text-display',
+						'title'         => __('Reference ID', 'wp-ultimo'),
+						'display_value' => $this->get_object()->get_hash(),
+					),
+					'total_grossed' => array(
+						'type'            => 'text-display',
+						'title'           => __('Total Grossed', 'wp-ultimo'),
+						'display_value'   => wu_format_currency($this->get_object()->get_total_grossed(), $this->get_object()->get_currency()),
+						'wrapper_classes' => 'sm:wu-border-r-0',
 					),
 				),
-				'billing_info' => array(
-					'title'  => __('Billing Info', 'wp-ultimo'),
-					'desc'   => __('Billing information for this particular membership.', 'wp-ultimo'),
-					'icon'   => 'dashicons-wu-address',
-					'fields' => $this->get_object()->get_billing_address()->get_fields(),
+			)
+		);
+
+		$this->add_list_table_widget(
+			'membership-products',
+			array(
+				'position' => 'normal',
+				'title'    => __('Products', 'wp-ultimo'),
+				'table'    => new \WP_Ultimo\List_Tables\Membership_Line_Item_List_Table(),
+				'after'    => $this->output_widget_products(),
+			)
+		);
+
+		$this->add_list_table_widget(
+			'payments',
+			array(
+				'title'        => __('Payments', 'wp-ultimo'),
+				'table'        => new \WP_Ultimo\List_Tables\Customers_Payment_List_Table(),
+				'query_filter' => array($this, 'payments_query_filter'),
+			)
+		);
+
+		$this->add_list_table_widget(
+			'sites',
+			array(
+				'title'        => __('Sites', 'wp-ultimo'),
+				'table'        => new \WP_Ultimo\List_Tables\Memberships_Site_List_Table(),
+				'query_filter' => array($this, 'sites_query_filter'),
+			)
+		);
+
+		$this->add_list_table_widget(
+			'customer',
+			array(
+				'title'        => __('Linked Customer', 'wp-ultimo'),
+				'table'        => new \WP_Ultimo\List_Tables\Site_Customer_List_Table(),
+				'query_filter' => array($this, 'customer_query_filter'),
+			)
+		);
+
+		$this->add_tabs_widget(
+			'options',
+			array(
+				'title'    => __('Membership Options', 'wp-ultimo'),
+				'position' => 'normal',
+				'sections' => apply_filters(
+					'wu_membership_options_sections',
+					array(
+						'general'      => array(
+							'title'  => __('General', 'wp-ultimo'),
+							'desc'   => __('General membership options', 'wp-ultimo'),
+							'icon'   => 'dashicons-wu-globe',
+							'fields' => array(
+								'blocking' => array(
+									'type'  => 'toggle',
+									'title' => __('Is Blocking?', 'wp-ultimo'),
+									'desc'  => __('Should we block access to the site, plugins, themes, and services after the expiration date is reached?', 'wp-ultimo'),
+									'value' => true,
+								),
+							),
+						),
+						'billing_info' => array(
+							'title'  => __('Billing Info', 'wp-ultimo'),
+							'desc'   => __('Billing information for this particular membership.', 'wp-ultimo'),
+							'icon'   => 'dashicons-wu-address',
+							'fields' => $this->get_object()->get_billing_address()->get_fields(),
+						),
+					),
+					$this->get_object()
 				),
-			), $this->get_object()),
-		));
+			)
+		);
 
 		/*
 		 * Hide sensitive things when in swap preview.
 		 */
-		if (!$this->is_swap_preview) {
-
-			$this->add_list_table_widget('events', array(
-				'title'        => __('Events', 'wp-ultimo'),
-				'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
-				'query_filter' => array($this, 'events_query_filter'),
-			));
-
-		} // end if;
+		if ( ! $this->is_swap_preview) {
+			$this->add_list_table_widget(
+				'events',
+				array(
+					'title'        => __('Events', 'wp-ultimo'),
+					'table'        => new \WP_Ultimo\List_Tables\Inside_Events_List_Table(),
+					'query_filter' => array($this, 'events_query_filter'),
+				)
+			);
+		}
 
 		$regular_fields = array(
 			'status'              => array(
@@ -461,7 +496,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 				'desc'              => __('If enable we will cancel the subscription on payment method', 'wp-ultimo'),
 				'value'             => false,
 				'wrapper_html_attr' => array(
-					'v-show'  => !empty($this->get_object()->get_gateway_customer_id()) ? 'status == \'cancelled\'' : 'false',
+					'v-show'  => ! empty($this->get_object()->get_gateway_customer_id()) ? 'status == \'cancelled\'' : 'false',
 					'v-cloak' => '1',
 				),
 			),
@@ -521,17 +556,19 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 					'v-cloak' => '1',
 				),
 				'html_attr'         => array(
-					'v-bind:href' => "'" . wu_get_form_url('transfer_membership', array(
-						'id'                 => $this->get_object()->get_id(),
-						'target_customer_id' => '',
-					)) . "=' + customer_id",
+					'v-bind:href' => "'" . wu_get_form_url(
+						'transfer_membership',
+						array(
+							'id'                 => $this->get_object()->get_id(),
+							'target_customer_id' => '',
+						)
+					) . "=' + customer_id",
 					'title'       => __('Transfer Membership', 'wp-ultimo'),
 				),
 			),
 		);
 
 		if ($this->get_object()->is_locked()) {
-
 			unset($regular_fields['transfer_note']);
 
 			unset($regular_fields['transfer']);
@@ -539,301 +576,309 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			$regular_fields['submit_save']['title']                 = __('Locked', 'wp-ultimo');
 			$regular_fields['submit_save']['value']                 = 'none';
 			$regular_fields['submit_save']['html_attr']['disabled'] = 'disabled';
+		}
 
-		} // end if;
+		$this->add_fields_widget(
+			'save',
+			array(
+				'html_attr' => array(
+					'data-wu-app' => 'membership_save',
+					'data-state'  => json_encode(
+						array(
+							'status'               => $this->get_object()->get_status(),
+							'original_customer_id' => $this->get_object()->get_customer_id(),
+							'customer_id'          => $this->get_object()->get_customer_id(),
+							'plan_id'              => $this->get_object()->get_plan_id(),
+						)
+					),
+				),
+				'fields'    => $regular_fields,
+			)
+		);
 
-		$this->add_fields_widget('save', array(
-			'html_attr' => array(
-				'data-wu-app' => 'membership_save',
-				'data-state'  => json_encode(array(
-					'status'               => $this->get_object()->get_status(),
-					'original_customer_id' => $this->get_object()->get_customer_id(),
-					'customer_id'          => $this->get_object()->get_customer_id(),
-					'plan_id'              => $this->get_object()->get_plan_id(),
-				)),
-			),
-			'fields'    => $regular_fields,
-		));
-
-		$this->add_fields_widget('pricing', array(
-			'title'     => __('Billing Amount', 'wp-ultimo'),
-			'html_attr' => array(
-				'data-wu-app' => 'true',
-				'data-state'  => json_encode(array(
-					'is_recurring'            => $this->get_object()->is_recurring(),
-					'is_auto_renew'           => $this->get_object()->should_auto_renew(),
-					'amount'                  => $this->get_object()->get_amount(),
-					'initial_amount'          => $this->get_object()->get_initial_amount(),
-					'duration'                => $this->get_object()->get_duration(),
-					'duration_unit'           => $this->get_object()->get_duration_unit(),
-					'gateway'                 => $this->get_object()->get_gateway(),
-					'gateway_subscription_id' => $this->get_object()->get_gateway_subscription_id(),
-					'gateway_customer_id'     => $this->get_object()->get_gateway_customer_id(),
-				)),
-			),
-			'fields'    => array(
-				// Fields for price
-				'_initial_amount'               => array(
-					'type'              => 'text',
-					'title'             => __('Initial Amount', 'wp-ultimo'),
-					// translators: %s is a price placeholder value.
-					'placeholder'       => sprintf(__('E.g. %s', 'wp-ultimo'), wu_format_currency(199)),
-					'desc'              => __('The initial amount collected on the first payment.', 'wp-ultimo'),
-					'value'             => $this->get_object()->get_initial_amount(),
-					'money'             => true,
-					'html_attr'         => array(
-						'v-model' => 'initial_amount',
-					),
-					'wrapper_html_attr' => array(
-						'v-cloak' => '1',
+		$this->add_fields_widget(
+			'pricing',
+			array(
+				'title'     => __('Billing Amount', 'wp-ultimo'),
+				'html_attr' => array(
+					'data-wu-app' => 'true',
+					'data-state'  => json_encode(
+						array(
+							'is_recurring'            => $this->get_object()->is_recurring(),
+							'is_auto_renew'           => $this->get_object()->should_auto_renew(),
+							'amount'                  => $this->get_object()->get_amount(),
+							'initial_amount'          => $this->get_object()->get_initial_amount(),
+							'duration'                => $this->get_object()->get_duration(),
+							'duration_unit'           => $this->get_object()->get_duration_unit(),
+							'gateway'                 => $this->get_object()->get_gateway(),
+							'gateway_subscription_id' => $this->get_object()->get_gateway_subscription_id(),
+							'gateway_customer_id'     => $this->get_object()->get_gateway_customer_id(),
+						)
 					),
 				),
-				'initial_amount'                => array(
-					'type'      => 'hidden',
-					'html_attr' => array(
-						'v-model' => 'initial_amount',
-					),
-				),
-				'recurring'                     => array(
-					'type'              => 'toggle',
-					'title'             => __('Is Recurring', 'wp-ultimo'),
-					'desc'              => __('Use this option to manually enable or disable this membership.', 'wp-ultimo'),
-					'value'             => $this->get_object()->is_recurring(),
-					'html_attr'         => array(
-						'v-model' => 'is_recurring',
-					),
-					'wrapper_html_attr' => array(
-						'v-cloak' => '1',
-					),
-				),
-				'amount'                        => array(
-					'type'      => 'hidden',
-					'html_attr' => array(
-						'v-model' => 'amount',
-					),
-				),
-				'recurring_amount_group'        => array(
-					'type'              => 'group',
-					'title'             => __('Recurring Amount', 'wp-ultimo'),
-					// translators: placeholder %1$s is the amount, %2$s is the duration (such as 1, 2, 3), and %3$s is the unit (such as month, year, week)
-					'desc'              => sprintf(__('The customer will be charged %1$s every %2$s %3$s(s).', 'wp-ultimo'), '{{ wu_format_money(amount) }}', '{{ duration }}', '{{ duration_unit }}'),
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring',
-						'v-cloak' => '1',
-					),
-					'fields'            => array(
-						'_amount'       => array(
-							'type'            => 'text',
-							'value'           => $this->get_object()->get_amount(),
-							'placeholder'     => wu_format_currency('99'),
-							'wrapper_classes' => '',
-							'money'           => true,
-							'html_attr'       => array(
-								'v-model' => 'amount',
-							),
+				'fields'    => array(
+					// Fields for price
+					'_initial_amount'               => array(
+						'type'              => 'text',
+						'title'             => __('Initial Amount', 'wp-ultimo'),
+						// translators: %s is a price placeholder value.
+						'placeholder'       => sprintf(__('E.g. %s', 'wp-ultimo'), wu_format_currency(199)),
+						'desc'              => __('The initial amount collected on the first payment.', 'wp-ultimo'),
+						'value'             => $this->get_object()->get_initial_amount(),
+						'money'             => true,
+						'html_attr'         => array(
+							'v-model' => 'initial_amount',
 						),
-						'duration'      => array(
-							'type'            => 'number',
-							'value'           => $this->get_object()->get_duration(),
-							'placeholder'     => '',
-							'wrapper_classes' => 'wu-mx-2 wu-w-1/3',
-							'min'             => 0,
-							'html_attr'       => array(
-								'v-model' => 'duration',
-								'steps'   => 1,
-							),
-						),
-						'duration_unit' => array(
-							'type'            => 'select',
-							'value'           => $this->get_object()->get_duration_unit(),
-							'placeholder'     => '',
-							'wrapper_classes' => 'wu-w-2/3',
-							'html_attr'       => array(
-								'v-model' => 'duration_unit',
-							),
-							'options'         => array(
-								'day'   => __('Days', 'wp-ultimo'),
-								'week'  => __('Weeks', 'wp-ultimo'),
-								'month' => __('Months', 'wp-ultimo'),
-								'year'  => __('Years', 'wp-ultimo'),
-							),
+						'wrapper_html_attr' => array(
+							'v-cloak' => '1',
 						),
 					),
-				),
-				'recurring_note'                => array(
-					'type'              => 'note',
-					'desc'              => $gateway_message,
-					'classes'           => 'wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
-					'wrapper_html_attr' => array(
-						'v-show'  => implode(' && ', array(
-							'is_recurring',
-							'gateway',
-							'gateway === "' . $this->get_object()->get_gateway() . '"',
-							'gateway_subscription_id === "' . $this->get_object()->get_gateway_subscription_id() . '"',
-							'gateway_customer_id === "' . $this->get_object()->get_gateway_customer_id() . '"',
-							'(' . implode(' || ', array(
-								$this->get_object()->get_amount() . ' !== amount',
-								$this->get_object()->get_duration() . ' != duration',
-								'"' . $this->get_object()->get_duration_unit() . '" !== duration_unit',
-							)) . ')',
-						)),
-						'v-cloak' => '1',
+					'initial_amount'                => array(
+						'type'      => 'hidden',
+						'html_attr' => array(
+							'v-model' => 'initial_amount',
+						),
 					),
-				),
-				'billing_cycles'                => array(
-					'type'              => 'number',
-					'title'             => __('Billing Cycles', 'wp-ultimo'),
-					'placeholder'       => __('E.g. 0', 'wp-ultimo'),
-					'desc'              => __('How many times should we bill this customer. Leave 0 to charge until cancelled.', 'wp-ultimo'),
-					'value'             => $this->get_object()->get_billing_cycles(),
-					'min'               => 0,
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring',
-						'v-cloak' => '1',
+					'recurring'                     => array(
+						'type'              => 'toggle',
+						'title'             => __('Is Recurring', 'wp-ultimo'),
+						'desc'              => __('Use this option to manually enable or disable this membership.', 'wp-ultimo'),
+						'value'             => $this->get_object()->is_recurring(),
+						'html_attr'         => array(
+							'v-model' => 'is_recurring',
+						),
+						'wrapper_html_attr' => array(
+							'v-cloak' => '1',
+						),
 					),
-				),
-				'times_billed'                  => array(
-					'type'              => 'number',
-					'title'             => __('Times Billed', 'wp-ultimo'),
-					'desc'              => __('The number of times this membership was billed so far.', 'wp-ultimo'),
-					'value'             => $this->get_object()->get_times_billed(),
-					'min'               => 0,
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring',
-						'v-cloak' => '1',
+					'amount'                        => array(
+						'type'      => 'hidden',
+						'html_attr' => array(
+							'v-model' => 'amount',
+						),
 					),
-				),
+					'recurring_amount_group'        => array(
+						'type'              => 'group',
+						'title'             => __('Recurring Amount', 'wp-ultimo'),
+						// translators: placeholder %1$s is the amount, %2$s is the duration (such as 1, 2, 3), and %3$s is the unit (such as month, year, week)
+						'desc'              => sprintf(__('The customer will be charged %1$s every %2$s %3$s(s).', 'wp-ultimo'), '{{ wu_format_money(amount) }}', '{{ duration }}', '{{ duration_unit }}'),
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring',
+							'v-cloak' => '1',
+						),
+						'fields'            => array(
+							'_amount'       => array(
+								'type'            => 'text',
+								'value'           => $this->get_object()->get_amount(),
+								'placeholder'     => wu_format_currency('99'),
+								'wrapper_classes' => '',
+								'money'           => true,
+								'html_attr'       => array(
+									'v-model' => 'amount',
+								),
+							),
+							'duration'      => array(
+								'type'            => 'number',
+								'value'           => $this->get_object()->get_duration(),
+								'placeholder'     => '',
+								'wrapper_classes' => 'wu-mx-2 wu-w-1/3',
+								'min'             => 0,
+								'html_attr'       => array(
+									'v-model' => 'duration',
+									'steps'   => 1,
+								),
+							),
+							'duration_unit' => array(
+								'type'            => 'select',
+								'value'           => $this->get_object()->get_duration_unit(),
+								'placeholder'     => '',
+								'wrapper_classes' => 'wu-w-2/3',
+								'html_attr'       => array(
+									'v-model' => 'duration_unit',
+								),
+								'options'         => array(
+									'day'   => __('Days', 'wp-ultimo'),
+									'week'  => __('Weeks', 'wp-ultimo'),
+									'month' => __('Months', 'wp-ultimo'),
+									'year'  => __('Years', 'wp-ultimo'),
+								),
+							),
+						),
+					),
+					'recurring_note'                => array(
+						'type'              => 'note',
+						'desc'              => $gateway_message,
+						'classes'           => 'wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
+						'wrapper_html_attr' => array(
+							'v-show'  => implode(
+								' && ',
+								array(
+									'is_recurring',
+									'gateway',
+									'gateway === "' . $this->get_object()->get_gateway() . '"',
+									'gateway_subscription_id === "' . $this->get_object()->get_gateway_subscription_id() . '"',
+									'gateway_customer_id === "' . $this->get_object()->get_gateway_customer_id() . '"',
+									'(' . implode(
+										' || ',
+										array(
+											$this->get_object()->get_amount() . ' !== amount',
+											$this->get_object()->get_duration() . ' != duration',
+											'"' . $this->get_object()->get_duration_unit() . '" !== duration_unit',
+										)
+									) . ')',
+								)
+							),
+							'v-cloak' => '1',
+						),
+					),
+					'billing_cycles'                => array(
+						'type'              => 'number',
+						'title'             => __('Billing Cycles', 'wp-ultimo'),
+						'placeholder'       => __('E.g. 0', 'wp-ultimo'),
+						'desc'              => __('How many times should we bill this customer. Leave 0 to charge until cancelled.', 'wp-ultimo'),
+						'value'             => $this->get_object()->get_billing_cycles(),
+						'min'               => 0,
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring',
+							'v-cloak' => '1',
+						),
+					),
+					'times_billed'                  => array(
+						'type'              => 'number',
+						'title'             => __('Times Billed', 'wp-ultimo'),
+						'desc'              => __('The number of times this membership was billed so far.', 'wp-ultimo'),
+						'value'             => $this->get_object()->get_times_billed(),
+						'min'               => 0,
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring',
+							'v-cloak' => '1',
+						),
+					),
 
-				'auto_renew'                    => array(
-					'type'              => 'toggle',
-					'title'             => __('Auto-Renew?', 'wp-ultimo'),
-					'desc'              => __('Activating this will tell the gateway to try to automatically charge for this membership.', 'wp-ultimo'),
-					'value'             => $this->get_object()->should_auto_renew(),
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring',
-						'v-cloak' => '1',
+					'auto_renew'                    => array(
+						'type'              => 'toggle',
+						'title'             => __('Auto-Renew?', 'wp-ultimo'),
+						'desc'              => __('Activating this will tell the gateway to try to automatically charge for this membership.', 'wp-ultimo'),
+						'value'             => $this->get_object()->should_auto_renew(),
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring',
+							'v-cloak' => '1',
+						),
+						'html_attr'         => array(
+							'v-model' => 'is_auto_renew',
+						),
 					),
-					'html_attr'         => array(
-						'v-model' => 'is_auto_renew',
+					'gateway'                       => array(
+						'type'              => 'text',
+						'title'             => __('Gateway', 'wp-ultimo'),
+						'placeholder'       => __('e.g. stripe', 'wp-ultimo'),
+						'description'       => __('e.g. stripe', 'wp-ultimo'),
+						'desc'              => __('Payment gateway used to process the payment.', 'wp-ultimo'),
+						'value'             => $this->get_object()->get_gateway(),
+						'wrapper_classes'   => 'wu-w-full',
+						'html_attr'         => array(
+							'v-on:input'   => 'gateway = $event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, "")',
+							'v-bind:value' => 'gateway',
+						),
+						'wrapper_html_attr' => array(
+							'v-cloak' => '1',
+						),
 					),
-				),
-				'gateway'                       => array(
-					'type'              => 'text',
-					'title'             => __('Gateway', 'wp-ultimo'),
-					'placeholder'       => __('e.g. stripe', 'wp-ultimo'),
-					'description'       => __('e.g. stripe', 'wp-ultimo'),
-					'desc'              => __('Payment gateway used to process the payment.', 'wp-ultimo'),
-					'value'             => $this->get_object()->get_gateway(),
-					'wrapper_classes'   => 'wu-w-full',
-					'html_attr'         => array(
-						'v-on:input'   => 'gateway = $event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, "")',
-						'v-bind:value' => 'gateway',
-					),
-					'wrapper_html_attr' => array(
-						'v-cloak' => '1',
-					),
-				),
-				'gateway_customer_id_group'     => array(
-					'type'              => 'group',
-					'desc'              => function(): string {
+					'gateway_customer_id_group'     => array(
+						'type'              => 'group',
+						'desc'              => function (): string {
 
-						$gateway_id = $this->get_object()->get_gateway();
+							$gateway_id = $this->get_object()->get_gateway();
 
-						if (empty($this->get_object()->get_gateway_customer_id())) {
+							if (empty($this->get_object()->get_gateway_customer_id())) {
+								return '';
+							}
+
+							$url = apply_filters("wu_{$gateway_id}_remote_customer_url", $this->get_object()->get_gateway_customer_id());
+
+							if ($url) {
+								return sprintf('<a class="wu-text-gray-800 wu-text-center wu-w-full wu-no-underline" href="%s" target="_blank">%s</a>', esc_attr($url), __('View on Gateway &rarr;', 'wp-ultimo'));
+							}
 
 							return '';
-
-						} // end if;
-
-						$url = apply_filters("wu_{$gateway_id}_remote_customer_url", $this->get_object()->get_gateway_customer_id());
-
-						if ($url) {
-
-							return sprintf('<a class="wu-text-gray-800 wu-text-center wu-w-full wu-no-underline" href="%s" target="_blank">%s</a>', esc_attr($url), __('View on Gateway &rarr;', 'wp-ultimo'));
-
-						} // end if;
-
-						return '';
-
-					},
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring && is_auto_renew',
-						'v-cloak' => '1',
-					),
-					'fields'            => array(
-						'gateway_customer_id' => array(
-							'type'              => 'text',
-							'title'             => __('Gateway Customer ID', 'wp-ultimo'),
-							'placeholder'       => __('Gateway Customer ID', 'wp-ultimo'),
-							'value'             => $this->get_object()->get_gateway_customer_id(),
-							'tooltip'           => '',
-							'wrapper_classes'   => 'wu-w-full',
-							'wrapper_html_attr' => array(),
-							'html_attr'         => array(
-								'v-model' => 'gateway_customer_id',
+						},
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring && is_auto_renew',
+							'v-cloak' => '1',
+						),
+						'fields'            => array(
+							'gateway_customer_id' => array(
+								'type'              => 'text',
+								'title'             => __('Gateway Customer ID', 'wp-ultimo'),
+								'placeholder'       => __('Gateway Customer ID', 'wp-ultimo'),
+								'value'             => $this->get_object()->get_gateway_customer_id(),
+								'tooltip'           => '',
+								'wrapper_classes'   => 'wu-w-full',
+								'wrapper_html_attr' => array(),
+								'html_attr'         => array(
+									'v-model' => 'gateway_customer_id',
+								),
 							),
 						),
 					),
-				),
 
-				'gateway_subscription_id_group' => array(
-					'type'              => 'group',
-					'desc'              => function(): string {
+					'gateway_subscription_id_group' => array(
+						'type'              => 'group',
+						'desc'              => function (): string {
 
-						$gateway_id = $this->get_object()->get_gateway();
+							$gateway_id = $this->get_object()->get_gateway();
 
-						if (empty($this->get_object()->get_gateway_subscription_id())) {
+							if (empty($this->get_object()->get_gateway_subscription_id())) {
+								return '';
+							}
+
+							$url = apply_filters("wu_{$gateway_id}_remote_subscription_url", $this->get_object()->get_gateway_subscription_id());
+
+							if ($url) {
+								return sprintf('<a class="wu-text-gray-800 wu-text-center wu-w-full wu-no-underline" href="%s" target="_blank">%s</a>', esc_attr($url), __('View on Gateway &rarr;', 'wp-ultimo'));
+							}
 
 							return '';
-
-						} // end if;
-
-						$url = apply_filters("wu_{$gateway_id}_remote_subscription_url", $this->get_object()->get_gateway_subscription_id());
-
-						if ($url) {
-
-							return sprintf('<a class="wu-text-gray-800 wu-text-center wu-w-full wu-no-underline" href="%s" target="_blank">%s</a>', esc_attr($url), __('View on Gateway &rarr;', 'wp-ultimo'));
-
-						} // end if;
-
-						return '';
-
-					},
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring && is_auto_renew',
-						'v-cloak' => '1',
-					),
-					'fields'            => array(
-						'gateway_subscription_id' => array(
-							'type'              => 'text',
-							'title'             => __('Gateway Subscription ID', 'wp-ultimo'),
-							'placeholder'       => __('Gateway Subscription ID', 'wp-ultimo'),
-							'value'             => $this->get_object()->get_gateway_subscription_id(),
-							'tooltip'           => '',
-							'wrapper_classes'   => 'wu-w-full',
-							'wrapper_html_attr' => array(),
-							'html_attr'         => array(
-								'v-model' => 'gateway_subscription_id',
+						},
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring && is_auto_renew',
+							'v-cloak' => '1',
+						),
+						'fields'            => array(
+							'gateway_subscription_id' => array(
+								'type'              => 'text',
+								'title'             => __('Gateway Subscription ID', 'wp-ultimo'),
+								'placeholder'       => __('Gateway Subscription ID', 'wp-ultimo'),
+								'value'             => $this->get_object()->get_gateway_subscription_id(),
+								'tooltip'           => '',
+								'wrapper_classes'   => 'wu-w-full',
+								'wrapper_html_attr' => array(),
+								'html_attr'         => array(
+									'v-model' => 'gateway_subscription_id',
+								),
 							),
 						),
 					),
-				),
 
-				'gateway_note'                  => array(
-					'type'              => 'note',
-					'desc'              => __('We will try to cancel the old subscription on the gateway.', 'wp-ultimo'),
-					'classes'           => 'wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
-					'wrapper_html_attr' => array(
-						'v-show'  => 'is_recurring && (' . implode(' || ', array(
-							'"' . $this->get_object()->get_gateway() . '" !== "" && gateway !== "' . $this->get_object()->get_gateway() . '"',
-							'"' . $this->get_object()->get_gateway_subscription_id() . '" !== "" && gateway_subscription_id !== "' . $this->get_object()->get_gateway_subscription_id() . '"',
-							'"' . $this->get_object()->get_gateway_customer_id() . '" !== "" && gateway_customer_id !== "' . $this->get_object()->get_gateway_customer_id() . '"',
-						)) . ')',
-						'v-cloak' => '1',
+					'gateway_note'                  => array(
+						'type'              => 'note',
+						'desc'              => __('We will try to cancel the old subscription on the gateway.', 'wp-ultimo'),
+						'classes'           => 'wu-p-2 wu-bg-red-100 wu-text-red-600 wu-rounded wu-w-full',
+						'wrapper_html_attr' => array(
+							'v-show'  => 'is_recurring && (' . implode(
+								' || ',
+								array(
+									'"' . $this->get_object()->get_gateway() . '" !== "" && gateway !== "' . $this->get_object()->get_gateway() . '"',
+									'"' . $this->get_object()->get_gateway_subscription_id() . '" !== "" && gateway_subscription_id !== "' . $this->get_object()->get_gateway_subscription_id() . '"',
+									'"' . $this->get_object()->get_gateway_customer_id() . '" !== "" && gateway_customer_id !== "' . $this->get_object()->get_gateway_customer_id() . '"',
+								)
+							) . ')',
+							'v-cloak' => '1',
+						),
 					),
 				),
-			),
-		));
+			)
+		);
 
 		$timestamp_fields = array();
 
@@ -845,10 +890,9 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		);
 
 		foreach ($timestamps as $timestamp_name => $timestamp_label) {
-
 			$value = $this->get_object()->{"get_$timestamp_name"}();
 
-			$timestamp_fields[$timestamp_name] = array(
+			$timestamp_fields[ $timestamp_name ] = array(
 				'title'         => $timestamp_label,
 				'type'          => 'text-edit',
 				'date'          => true,
@@ -862,11 +906,9 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 					'data-allow-time' => 'true',
 				),
 			);
+		}
 
-		} // end foreach;
-
-		if (!$this->get_object()->is_lifetime()) {
-
+		if ( ! $this->get_object()->is_lifetime()) {
 			$timestamp_fields['convert_to_lifetime'] = array(
 				'type'              => 'submit',
 				'title'             => __('Convert to Lifetime', 'wp-ultimo'),
@@ -874,15 +916,16 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 				'classes'           => 'button wu-w-full',
 				'wrapper_html_attr' => array(),
 			);
+		}
 
-		} // end if;
-
-		$this->add_fields_widget('membership-timestamps', array(
-			'title'  => __('Important Timestamps', 'wp-ultimo'),
-			'fields' => $timestamp_fields,
-		));
-
-	} // end register_widgets;
+		$this->add_fields_widget(
+			'membership-timestamps',
+			array(
+				'title'  => __('Important Timestamps', 'wp-ultimo'),
+				'fields' => $timestamp_fields,
+			)
+		);
+	}
 
 	/**
 	 * Renders the widget used to display the product list.
@@ -892,11 +935,13 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function output_widget_products() {
 
-		return wu_get_template_contents('memberships/product-list', array(
-			'membership' => $this->get_object(),
-		));
-
-	} // end output_widget_products;
+		return wu_get_template_contents(
+			'memberships/product-list',
+			array(
+				'membership' => $this->get_object(),
+			)
+		);
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -907,8 +952,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	public function get_title() {
 
 		return $this->edit ? __('Edit Membership', 'wp-ultimo') : __('Add new Membership', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -919,8 +963,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Edit Membership', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -931,8 +974,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	public function action_links() {
 
 		return array();
-
-	} // end action_links;
+	}
 
 	/**
 	 * Returns the labels to be used on the admin page.
@@ -953,8 +995,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			'delete_button_label' => __('Delete Membership', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Filters the list table to return only relevant payments.
@@ -969,8 +1010,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$args['membership_id'] = $this->get_object()->get_id();
 
 		return $args;
-
-	} // end payments_query_filter;
+	}
 
 	/**
 	 * Filters the list table to return only relevant sites.
@@ -990,8 +1030,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		);
 
 		return $args;
-
-	} // end sites_query_filter;
+	}
 
 	/**
 	 * Filters the list table to return only relevant customer.
@@ -1006,8 +1045,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$args['id'] = $this->get_object()->get_customer_id();
 
 		return $args;
-
-	} // end customer_query_filter;
+	}
 
 	/**
 	 * Filters the list table to return only relevant events.
@@ -1025,8 +1063,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		);
 
 		return array_merge($args, $extra_args);
-
-	} // end events_query_filter;
+	}
 
 	/**
 	 * Returns the object being edit at the moment.
@@ -1037,22 +1074,18 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	public function get_object() {
 
 		if ($this->object !== null) {
-
 			return $this->object;
-
-		} // end if;
+		}
 
 		$item_id = wu_request('id', 0);
 
 		$item = wu_get_membership($item_id);
 
-		if (!$item) {
-
+		if ( ! $item) {
 			wp_redirect(wu_network_admin_url('wp-ultimo-memberships'));
 
 			exit;
-
-		} // end if;
+		}
 
 		$this->object = $item;
 
@@ -1060,14 +1093,11 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		 * Deal with scheduled swaps.
 		 */
 		if (wu_request('preview-swap')) {
-
 			$swap_order = $this->get_object()->get_scheduled_swap();
 
-			if (!$swap_order) {
-
+			if ( ! $swap_order) {
 				return $this->object;
-
-			} // end if;
+			}
 
 			$this->is_swap_preview = true;
 
@@ -1086,12 +1116,10 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			WP_Ultimo()->notices->add($message, 'info', 'network-admin', false, $actions);
 
 			$this->object->swap($swap_order->order);
-
-		} // end if;
+		}
 
 		return $this->object;
-
-	} // end get_object;
+	}
 	/**
 	 * Memberships have titles.
 	 *
@@ -1100,8 +1128,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	public function has_title(): bool {
 
 		return false;
-
-	} // end has_title;
+	}
 	/**
 	 * Handle convert to lifetime.
 	 *
@@ -1116,32 +1143,27 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$save = $object->save();
 
 		if (is_wp_error($save)) {
-
 			$errors = implode('<br>', $save->get_error_messages());
 
 			WP_Ultimo()->notices->add($errors, 'error', 'network-admin');
 
 			return false;
-
-		} // end if;
+		}
 
 		$array_params = array(
 			'updated' => 1,
 		);
 
 		if ($this->edit === false) {
-
 			$array_params['id'] = $object->get_id();
-
-		} // end if;
+		}
 
 		$url = add_query_arg($array_params);
 
 		wp_redirect($url);
 
 		return true;
-
-	} // end handle_convert_to_lifetime;
+	}
 
 	/**
 	 * Should implement the processes necessary to save the changes made to the object.
@@ -1154,25 +1176,19 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$object = $this->get_object();
 
 		// Cancel membership on gateway
-		if ((bool) wu_request('cancel_gateway', false) && wu_request('status', Membership_Status::CANCELLED)) {
-
+		if ( (bool) wu_request('cancel_gateway', false) && wu_request('status', Membership_Status::CANCELLED)) {
 			$gateway = wu_get_gateway(wu_request('gateway'));
 
 			if ($gateway) {
-
 				$gateway->process_cancellation($object, $object->get_customer());
 
 				$_POST['gateway'] = '';
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		if (wu_request('submit_button') === 'convert_to_lifetime') {
-
 			return $this->handle_convert_to_lifetime();
-
-		} // end if;
+		}
 
 		$_POST['auto_renew'] = (bool) wu_request('auto_renew', false);
 
@@ -1183,14 +1199,12 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$valid_address = $billing_address->validate();
 
 		if (is_wp_error($valid_address)) {
-
 			$errors = implode('<br>', $valid_address->get_error_messages());
 
 			WP_Ultimo()->notices->add($errors, 'error', 'network-admin');
 
 			return false;
-
-		} // end if;
+		}
 
 		$object->set_billing_address($billing_address);
 
@@ -1199,7 +1213,6 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		$status = parent::handle_save();
 
 		if ($this->is_swap_preview) {
-
 			ob_clean();
 
 			$object->delete_scheduled_swap();
@@ -1215,12 +1228,10 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			wp_redirect($url);
 
 			return true;
-
-		} // end if;
+		}
 
 		return $status;
-
-	} // end handle_save;
+	}
 
 	/**
 	 * Renders the add/edit line items form.
@@ -1232,21 +1243,17 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return;
-
-		} // end if;
+		}
 
 		$gateway_message = false;
 
-		if (!empty($membership->get_gateway())) {
-
+		if ( ! empty($membership->get_gateway())) {
 			$gateway = wu_get_gateway($membership->get_gateway());
 
 			$gateway_message = $gateway ? $gateway->get_amount_update_message() : '';
-
-		} // end if;
+		}
 
 		$fields = array(
 			'product_id'    => array(
@@ -1306,27 +1313,30 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			),
 		);
 
-		if (!$gateway_message) {
-
+		if ( ! $gateway_message) {
 			unset($fields['transfer_note']);
+		}
 
-		} // end if;
-
-		$form = new \WP_Ultimo\UI\Form('edit_membership_product', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'edit_membership_product',
-				'data-state'  => wu_convert_to_state(array(
-					'update_pricing' => 0,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'edit_membership_product',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'edit_membership_product',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'update_pricing' => 0,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_edit_membership_product_modal;
+	}
 
 	/**
 	 * Handles the add/edit of line items.
@@ -1338,54 +1348,45 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('membership-not-found', __('Membership not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$product = wu_get_product(wu_request('product_id'));
 
-		if (!$product) {
-
+		if ( ! $product) {
 			$error = new \WP_Error('product-not-found', __('Product not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$membership->add_product($product->get_id(), (int) wu_request('quantity', 1));
 
 		// if we are updating the pricing, we need to update the membership price.
 		if (wu_request('update_price')) {
-
 			$value_to_add = wu_get_membership_product_price($membership, $product->get_id(), (int) wu_request('quantity', 1));
 
 			if (is_wp_error($value_to_add)) {
-
 				wp_send_json_error($value_to_add);
-
-			} // end if;
+			}
 
 			$membership->set_amount($membership->get_amount() + $value_to_add);
-
-		} // end if;
+		}
 
 		$saved = $membership->save();
 
 		if (is_wp_error($saved)) {
-
 			wp_send_json_error($saved);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_edit_membership_product_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
 
 	/**
 	 * Renders the deletion confirmation form.
@@ -1397,21 +1398,17 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return;
-
-		} // end if;
+		}
 
 		$gateway_message = false;
 
 		if ($membership->get_gateway()) {
-
 			$gateway = wu_get_gateway($membership->get_gateway());
 
 			$gateway_message = $gateway ? $gateway->get_amount_update_message() : '';
-
-		} // end if;
+		}
 
 		$fields = array(
 			'quantity'      => array(
@@ -1460,27 +1457,30 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			),
 		);
 
-		if (!$gateway_message) {
-
+		if ( ! $gateway_message) {
 			unset($fields['transfer_note']);
+		}
 
-		} // end if;
-
-		$form = new \WP_Ultimo\UI\Form('edit_membership_product', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'edit_membership_product',
-				'data-state'  => wu_convert_to_state(array(
-					'update_pricing' => 0,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'edit_membership_product',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'edit_membership_product',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'update_pricing' => 0,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_remove_membership_product;
+	}
 
 	/**
 	 * Handles the deletion of line items.
@@ -1492,23 +1492,19 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('membership-not-found', __('Membership not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$product = wu_get_product(wu_request('product_id'));
 
-		if (!$product) {
-
+		if ( ! $product) {
 			$error = new \WP_Error('product-not-found', __('Product not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		// Get the existing quantity by filtering the products array.
 		$existing_quantity = array_filter($membership->get_addon_products(), fn($item) => $item['product']->get_id() === $product->get_id())[0]['quantity'];
@@ -1520,32 +1516,27 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		// if we are updating the pricing, we need to update the membership price.
 		if (wu_request('update_price')) {
-
 			$value_to_remove = wu_get_membership_product_price($membership, $product->get_id(), $quantity);
 
 			if (is_wp_error($value_to_remove)) {
-
 				wp_send_json_error($value_to_remove);
-
-			} // end if;
+			}
 
 			$membership->set_amount($membership->get_amount() - $value_to_remove);
-
-		} // end if;
+		}
 
 		$saved = $membership->save();
 
 		if (is_wp_error($saved)) {
-
 			wp_send_json_error($saved);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_remove_membership_product;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
 
 	/**
 	 * Renders the add/edit line items form.
@@ -1557,29 +1548,23 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return;
-
-		} // end if;
+		}
 
 		$product = wu_get_product(wu_request('product_id'));
 
-		if (!$product) {
-
+		if ( ! $product) {
 			return;
-
-		} // end if;
+		}
 
 		$gateway_message = false;
 
 		if ($membership->get_gateway()) {
-
 			$gateway = wu_get_gateway($membership->get_gateway());
 
 			$gateway_message = $gateway ? $gateway->get_amount_update_message() : '';
-
-		} // end if;
+		}
 
 		$fields = array(
 			'plan_id'       => array(
@@ -1634,29 +1619,32 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			),
 		);
 
-		if (!$gateway_message) {
-
+		if ( ! $gateway_message) {
 			unset($fields['transfer_note']);
+		}
 
-		} // end if;
-
-		$form = new \WP_Ultimo\UI\Form('change_membership_plan', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'change_membership_plan',
-				'data-state'  => wu_convert_to_state(array(
-					'update_pricing'   => 0,
-					'original_plan_id' => $product->get_id(),
-					'plan_id'          => $product->get_id(),
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'change_membership_plan',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'change_membership_plan',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'update_pricing'   => 0,
+							'original_plan_id' => $product->get_id(),
+							'plan_id'          => $product->get_id(),
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_change_membership_plan_modal;
+	}
 
 	/**
 	 * Handles the add/edit of line items.
@@ -1668,71 +1656,57 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('membership-not-found', __('Membership not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$plan = wu_get_product(wu_request('plan_id'));
 
-		if (!$plan) {
-
+		if ( ! $plan) {
 			$error = new \WP_Error('plan-not-found', __('Plan not found.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$original_plan_id = $membership->get_plan_id();
 
 		if (absint($original_plan_id) === absint($plan->get_id())) {
-
 			$error = new \WP_Error('same-plan', __('No change performed. The same plan selected.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$membership->set_plan_id($plan->get_id());
 
 		// if we are updating the pricing, we need to update the membership price.
 		if (wu_request('update_price')) {
-
 			$value_to_add = wu_get_membership_product_price($membership, $plan->get_id(), 1);
 
 			if (is_wp_error($value_to_add)) {
-
 				wp_send_json_error($value_to_add);
-
-			} // end if;
+			}
 
 			$value_to_remove = wu_get_membership_product_price($membership, $original_plan_id, 1);
 
 			if (is_wp_error($value_to_remove)) {
-
 				wp_send_json_error($value_to_remove);
-
-			} // end if;
+			}
 
 			$membership->set_amount($membership->get_amount() + $value_to_add - $value_to_remove);
-
-		} // end if;
+		}
 
 		$saved = $membership->save();
 
 		if (is_wp_error($saved)) {
-
 			wp_send_json_error($saved);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_change_membership_plan_modal;
-
-} // end class Membership_Edit_Admin_Page;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
+}

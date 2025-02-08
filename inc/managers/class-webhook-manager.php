@@ -25,7 +25,9 @@ defined('ABSPATH') || exit;
  */
 class Webhook_Manager extends Base_Manager {
 
-	use \WP_Ultimo\Apis\Rest_Api, \WP_Ultimo\Apis\WP_CLI, \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Apis\Rest_Api;
+	use \WP_Ultimo\Apis\WP_CLI;
+	use \WP_Ultimo\Traits\Singleton;
 
 	/**
 	 * The manager slug.
@@ -74,8 +76,7 @@ class Webhook_Manager extends Base_Manager {
 		add_action('init', array($this, 'register_webhook_listeners'));
 
 		add_action('wp_ajax_wu_send_test_event', array($this, 'send_test_event'));
-
-	} // end init;
+	}
 
 	/**
 	 * Adds the listeners to the webhook callers, extend this by adding actions to wu_register_webhook_listeners
@@ -86,12 +87,9 @@ class Webhook_Manager extends Base_Manager {
 	public function register_webhook_listeners() {
 
 		foreach (wu_get_event_types() as $key => $event) {
-
 			add_action('wu_event_' . $key, array($this, 'send_webhooks'));
-
-		} // end foreach;
-
-	} // end register_webhook_listeners;
+		}
+	}
 
 	/**
 	 * Sends all the webhooks that are triggered by a specific event.
@@ -106,18 +104,13 @@ class Webhook_Manager extends Base_Manager {
 		$webhooks = Webhook::get_all();
 
 		foreach ($webhooks as $webhook) {
-
 			if ('wu_event_' . $webhook->get_event() === current_filter()) {
-
 				$blocking = wu_get_setting('webhook_calls_blocking', false);
 
 				$this->send_webhook($webhook, $args, $blocking);
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end send_webhooks;
+			}
+		}
+	}
 
 	/**
 	 * Sends a specific webhook.
@@ -132,30 +125,31 @@ class Webhook_Manager extends Base_Manager {
 	 */
 	public function send_webhook($webhook, $data, $blocking = true, $count = true) {
 
-		if (!$data) {
-
+		if ( ! $data) {
 			return;
+		}
 
-		} // end if;
-
-		$request = wp_remote_post($webhook->get_webhook_url(), array(
-			'method'      => 'POST',
-			'timeout'     => 45,
-			'redirection' => 5,
-			'headers'     => array(
-				'Content-Type' => 'application/json',
+		$request = wp_remote_post(
+			$webhook->get_webhook_url(),
+			array(
+				'method'      => 'POST',
+				'timeout'     => 45,
+				'redirection' => 5,
+				'headers'     => array(
+					'Content-Type' => 'application/json',
+				),
+				'cookies'     => array(),
+				'body'        => wp_json_encode($data),
+				'blocking'    => $blocking,
 			),
-			'cookies'     => array(),
-			'body'        => wp_json_encode($data),
-			'blocking'    => $blocking,
-		), current_filter(), $webhook);
+			current_filter(),
+			$webhook
+		);
 
 		if (is_wp_error($request)) {
-
 			$error_message = $request->get_error_message();
 
 			if ($count) {
-
 				$this->create_event(
 					$webhook->get_event(),
 					$webhook->get_id(),
@@ -164,24 +158,19 @@ class Webhook_Manager extends Base_Manager {
 					$error_message,
 					true
 				);
-
-			} // end if;
+			}
 
 			return $error_message;
-
-		} // end if;
+		}
 
 		$response = '';
 
 		// if blocking, we have a response
 		if ($blocking) {
-
 			$response = wp_remote_retrieve_body($request);
-
-		} // end if;
+		}
 
 		if ($count) {
-
 			$this->create_event(
 				$webhook->get_event(),
 				$webhook->get_id(),
@@ -194,12 +183,10 @@ class Webhook_Manager extends Base_Manager {
 
 			$webhook->set_event_count($new_count);
 			$webhook->save();
-
-		} // end if;
+		}
 
 		return $response;
-
-	} // end send_webhook;
+	}
 
 	/**
 	 * Send a test event of the webhook
@@ -208,14 +195,14 @@ class Webhook_Manager extends Base_Manager {
 	 */
 	public function send_test_event() {
 
-		if (!current_user_can('manage_network')) {
-
-			wp_send_json(array(
-				'response' => __('You do not have enough permissions to send a test event.', 'wp-ultimo'),
-				'webhooks' => Webhook::get_items_as_array(),
-			));
-
-		} // end if;
+		if ( ! current_user_can('manage_network')) {
+			wp_send_json(
+				array(
+					'response' => __('You do not have enough permissions to send a test event.', 'wp-ultimo'),
+					'webhooks' => Webhook::get_items_as_array(),
+				)
+			);
+		}
 
 		$event = wu_get_event_type($_POST['webhook_event']);
 
@@ -229,12 +216,13 @@ class Webhook_Manager extends Base_Manager {
 
 		$response = $this->send_webhook($webhook, wu_maybe_lazy_load_payload($event['payload']), true, false);
 
-		wp_send_json(array(
-			'response' => htmlentities2($response),
-			'id'       => wu_request('webhook_id')
-		));
-
-	} // end send_test_event;
+		wp_send_json(
+			array(
+				'response' => htmlentities2($response),
+				'id'       => wu_request('webhook_id'),
+			)
+		);
+	}
 
 	/**
 	 * Reads the log file and displays the content.
@@ -262,34 +250,33 @@ class Webhook_Manager extends Base_Manager {
 		</style>
 		';
 
-		if (!current_user_can('manage_network')) {
-
+		if ( ! current_user_can('manage_network')) {
 			echo __('You do not have enough permissions to read the logs of this webhook.', 'wp-ultimo');
 
 			exit;
-
-		} // end if;
+		}
 
 		$id = absint($_REQUEST['id']);
 
-		$logs = array_map(function($line): string {
+		$logs = array_map(
+			function ($line): string {
 
-			$line = str_replace(' - ', ' </strong> - ', $line);
+				$line = str_replace(' - ', ' </strong> - ', $line);
 
-			$matches = array();
+				$matches = array();
 
-			$line = str_replace('\'', '\\\'', $line);
-			$line = preg_replace('~(\{(?:[^{}]|(?R))*\})~', '<pre><script>document.write(JSON.stringify(JSON.parse(\'${1}\'), null, 2));</script></pre>', $line);
+				$line = str_replace('\'', '\\\'', $line);
+				$line = preg_replace('~(\{(?:[^{}]|(?R))*\})~', '<pre><script>document.write(JSON.stringify(JSON.parse(\'${1}\'), null, 2));</script></pre>', $line);
 
-			return '<strong>' . $line . '<hr>';
-
-		}, Logger::read_lines("webhook-$id", 5));
+				return '<strong>' . $line . '<hr>';
+			},
+			Logger::read_lines("webhook-$id", 5)
+		);
 
 		echo implode('', $logs);
 
 		exit;
-
-	}  // end serve_logs;
+	}
 
 	/**
 	 * Log a webhook sent for later reference.
@@ -308,15 +295,11 @@ class Webhook_Manager extends Base_Manager {
 
 		$message = sprintf('Sent a %s event to the URL %s with data: %s ', $event_name, $url, json_encode($data));
 
-		if (!$is_error) {
-
+		if ( ! $is_error) {
 			$message .= empty($response) ? sprintf('Got response: %s', $response) : 'To debug the remote server response, turn the "Wait for Response" option on the WP Multisite WaaS Settings > API & Webhooks Tab';
-
 		} else {
-
 			$message .= sprintf('Got error: %s', $response);
-
-		} // end if;
+		}
 
 		$event_data = array(
 			'object_id'   => $id,
@@ -328,7 +311,5 @@ class Webhook_Manager extends Base_Manager {
 		);
 
 		wu_create_event($event_data);
-
-	} // end create_event;
-
-} // end class Webhook_Manager;
+	}
+}

@@ -82,10 +82,8 @@ class Multiple_Accounts_Compat {
 
 			// Adds the number of additional accounts.
 			add_filter('manage_users_custom_column', array($this, 'add_column_content'), 10, 3);
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * Fixes the object cache to allow multiple accounts.
@@ -98,16 +96,13 @@ class Multiple_Accounts_Compat {
 	public function fix_object_cache_on_multiple_accounts(): void {
 
 		$to_remove = array(
-			'useremail'
+			'useremail',
 		);
 
 		if (function_exists('wp_cache_add_non_persistent_groups')) {
-
 			wp_cache_add_non_persistent_groups($to_remove);
-
-		} // end if;
-
-	} // end fix_object_cache_on_multiple_accounts;
+		}
+	}
 
 	/**
 	 * Filters the database query so that we can get the right user.
@@ -124,7 +119,6 @@ class Multiple_Accounts_Compat {
 		$search = "\$db->get_row(\"SELECT * FROM $wpdb->users WHERE user_email";
 
 		if ( strpos($wpdb->func_call, $search) === 0) {
-
 			$prefix = "SELECT * FROM $wpdb->users WHERE user_email";
 
 			$last = substr($query, strlen($prefix));
@@ -135,17 +129,19 @@ class Multiple_Accounts_Compat {
 			 * We can't use the $wpdb->prepare() method here because it will
 			 * escape the %s placeholder, which will break the query.
 			 */
-			return sprintf("SELECT u.* 
+			return sprintf(
+				"SELECT u.* 
 				FROM $wpdb->users u 
 				JOIN $wpdb->usermeta m on u.id = m.user_id 
 				WHERE m.meta_key = \"wp_%d_capabilities\"
-				AND u.user_email%s", $site_id, $last);
-
-		} // end if;
+				AND u.user_email%s",
+				$site_id,
+				$last
+			);
+		}
 
 		return $query;
-
-	} // end fix_user_query;
+	}
 
 	/**
 	 * Hooks into email_exists verification to allow duplicate emails in different sites.
@@ -159,16 +155,13 @@ class Multiple_Accounts_Compat {
 	public function allow_duplicate_emails($user_id, string $email) {
 
 		if ($user_id) {
-
 			$site_user = $this->get_right_user($email);
 
 			return $site_user ? $site_user->ID : false;
-
-		} // end if;
+		}
 
 		return $user_id;
-
-	} // end allow_duplicate_emails;
+	}
 
 	/**
 	 * Prevent WooCommerce from adding users to site without us knowing.
@@ -186,8 +179,7 @@ class Multiple_Accounts_Compat {
 		add_filter('can_add_user_to_blog', '__return_false');
 
 		return $results;
-
-	} // end prevent_woo_from_adding_to_blog;
+	}
 
 	/**
 	 * Checks if the user belongs to a site they are currently viewing and unset them if they don't.
@@ -200,10 +192,8 @@ class Multiple_Accounts_Compat {
 		global $current_user;
 
 		if (is_admin() || is_main_site() || current_user_can('manage_network')) {
-
 			return;
-
-		} // end if;
+		}
 
 		/**
 		 * Allow developers to bypass the unset current user code.
@@ -222,10 +212,8 @@ class Multiple_Accounts_Compat {
 		 * @return mixed
 		 */
 		if (apply_filters('wu_bypass_unset_current_user', null, $current_user) !== null) {
-
 			return;
-
-		} // end if;
+		}
 
 		$user = wp_get_current_user();
 
@@ -237,16 +225,13 @@ class Multiple_Accounts_Compat {
 		 * currently logged in.
 		 */
 		if ($has_user === false) {
-
 			wu_x_header('X-Ultimo-Multiple-Accounts: user-unset');
 
 			$current_user = null;
 
 			wp_set_current_user(0);
-
-		} // end if;
-
-	} // end maybe_unset_current_user;
+		}
+	}
 
 	/**
 	 * Allow plugin developers to disable this functionality to prevent compatibility issues.
@@ -258,8 +243,7 @@ class Multiple_Accounts_Compat {
 	public function should_load() {
 
 		return apply_filters('wu_should_load_multiple_accounts_support', wu_get_setting('enable_multiple_accounts', true));
-
-	} // end should_load;
+	}
 
 	// Methods
 
@@ -272,20 +256,27 @@ class Multiple_Accounts_Compat {
 	 */
 	public function add_settings() {
 
-		wu_register_settings_field('login-and-registration', 'multiple_accounts_header', array(
-			'title' => __('Multiple Accounts', 'wp-ultimo'),
-			'desc'  => __('Options related to the Multiple Accounts feature.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
+		wu_register_settings_field(
+			'login-and-registration',
+			'multiple_accounts_header',
+			array(
+				'title' => __('Multiple Accounts', 'wp-ultimo'),
+				'desc'  => __('Options related to the Multiple Accounts feature.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('login-and-registration', 'enable_multiple_accounts', array(
-			'title'   => __('Enable Multiple Accounts', 'wp-ultimo'),
-			'desc'    => __('Allow users to have accounts in different sites with the same email address. This is useful when running stores with WooCommerce and other plugins, for example.', 'wp-ultimo') . ' ' . sprintf('<a href="%s" target="_blank">%s</a>', wu_get_documentation_url('multiple-accounts'), __('Read More', 'wp-ultimo')),
-			'type'    => 'toggle',
-			'default' => 0,
-		));
-
-	} // end add_settings;
+		wu_register_settings_field(
+			'login-and-registration',
+			'enable_multiple_accounts',
+			array(
+				'title'   => __('Enable Multiple Accounts', 'wp-ultimo'),
+				'desc'    => __('Allow users to have accounts in different sites with the same email address. This is useful when running stores with WooCommerce and other plugins, for example.', 'wp-ultimo') . ' ' . sprintf('<a href="%s" target="_blank">%s</a>', wu_get_documentation_url('multiple-accounts'), __('Read More', 'wp-ultimo')),
+				'type'    => 'toggle',
+				'default' => 0,
+			)
+		);
+	}
 
 	/**
 	 * Adds the Multiple accounts column to the users table.
@@ -300,8 +291,7 @@ class Multiple_Accounts_Compat {
 		$columns['multiple_accounts'] = __('Multiple Accounts', 'wp-ultimo');
 
 		return $columns;
-
-	} // end add_multiple_account_column;
+	}
 
 	/**
 	 * Renders the content of our custom column.
@@ -321,11 +311,13 @@ class Multiple_Accounts_Compat {
 			$user = get_user_by('ID', $user_id);
 
 			// Get all the accounts with the same email
-			$users = new \WP_User_Query(array(
-				'blog_id' => 0,
-				'search'  => $user->user_email,
-				'fields'  => array('ID', 'user_login'),
-			));
+			$users = new \WP_User_Query(
+				array(
+					'blog_id' => 0,
+					'search'  => $user->user_email,
+					'fields'  => array('ID', 'user_login'),
+				)
+			);
 
 			// translators: the %d is the account count for that email address.
 			$html = sprintf(__('<strong>%d</strong> accounts using this email.', 'wp-ultimo'), $users->total_users);
@@ -333,10 +325,8 @@ class Multiple_Accounts_Compat {
 			$html .= sprintf("<br><a href='%s' class=''>" . __('See all', 'wp-ultimo') . ' &raquo;</a>', network_admin_url('users.php?s=' . $user->user_email));
 
 			echo $html;
-
-		} // end if;
-
-	} // end add_column_content;
+		}
+	}
 
 	/**
 	 * Handles password resetting.
@@ -351,18 +341,14 @@ class Multiple_Accounts_Compat {
 
 			// Only do thing if is login by email
 			if (is_email($_REQUEST['user_login'])) {
-
 				$user = $this->get_right_user($_REQUEST['user_login']);
 
 				$_REQUEST['user_login'] = $user->user_login;
 
 				$_POST['user_login'] = $user->user_login;
-
-			} // end if;
-
-		} // end if;
-
-	} // end handle_reset_password;
+			}
+		}
+	}
 
 	/**
 	 * Checks if a given user is a member in the site.
@@ -391,12 +377,10 @@ class Multiple_Accounts_Compat {
 		 * @since 2.0.11
 		 */
 		if ($user_id) {
-
 			$query['include'] = array(
 				absint($user_id),
 			);
-
-		} // end if;
+		}
 
 		// Now we search for the correct user based on the password and the blog information
 		$users = new \WP_User_Query($query);
@@ -406,43 +390,36 @@ class Multiple_Accounts_Compat {
 
 			// Check for the pertinence of that user in this site
 			if ($this->user_can_for_blog($user_with_email, get_current_blog_id(), 'read')) {
-
 				$has_user = true;
 
 				break;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		// If nothing was found return false;
 		return $has_user;
+	}
+	/**
+	 * Gets the right user when logging-in.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param null|\WP_User|\WP_Error $user The current user object. Usually false.
+	 * @param string                  $username The username to search for.
+	 * @param string                  $password The user password.
+	 * @return null|\WP_User|\WP_Error
+	 */
+	public function fix_login($user, $username, $password) {
 
-	} // end check_for_user_in_site;
- /**
-  * Gets the right user when logging-in.
-  *
-  * @since 2.0.0
-  *
-  * @param null|\WP_User|\WP_Error $user The current user object. Usually false.
-  * @param string                  $username The username to search for.
-  * @param string                  $password The user password.
-  * @return null|\WP_User|\WP_Error
-  */
- public function fix_login($user, $username, $password) {
-
-		if (!is_email($username)) {
-
+		if ( ! is_email($username)) {
 			return $user;
-
-		} // end if;
+		}
 
 		// Sets the right user to be returned;
 		$user = $this->get_right_user($username, $password);
 
 		return $user ? $user : null;
-
-	} // end fix_login;
+	}
 
 	/**
 	 * Check if user can do something in a specific blog.
@@ -461,42 +438,35 @@ class Multiple_Accounts_Compat {
 		$current_user = $user;
 
 		if (empty($current_user)) {
-
 			if ($switched) {
-
 				restore_current_blog();
-
-			} // end if;
+			}
 
 			return false;
-
-		} // end if;
+		}
 
 		$args = array_slice(func_get_args(), 2);
 
 		$args = array_merge(array($capability), $args);
 
-		$can = call_user_func_array(\Closure::fromCallable([$current_user, 'has_cap']), $args);
+		$can = call_user_func_array(\Closure::fromCallable(array($current_user, 'has_cap')), $args);
 
 		if ($switched) {
-
 			restore_current_blog();
-
-		} // end if;
+		}
 
 		return $can;
-
-	} // end user_can_for_blog;
- /**
-  * Gets the right user for a given domain.
-  *
-  * @since 2.0.0
-  *
-  * @param string  $email User email address.
-  * @param boolean $password User password.
-  * @return \WP_User|false
-  */
- protected function get_right_user($email, $password = false) {
+	}
+	/**
+	 * Gets the right user for a given domain.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string  $email User email address.
+	 * @param boolean $password User password.
+	 * @return \WP_User|false
+	 */
+	protected function get_right_user($email, $password = false) {
 
 		// Sets the right user to be returned;
 		$right_user = false;
@@ -507,7 +477,6 @@ class Multiple_Accounts_Compat {
 
 		// Loop the results and check which one is in this group
 		foreach ($users->results as $user_with_email) {
-
 			$conditions = $password == false ? true : wp_check_password($password, $user_with_email->user_pass, $user_with_email->ID);
 
 			// Check for the pertinence of that user in this site
@@ -517,14 +486,10 @@ class Multiple_Accounts_Compat {
 				$right_user = $user_with_email;
 
 				continue;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		// Return right user
 		return $right_user;
-
-	} // end get_right_user;
-
-} // end class Multiple_Accounts_Compat;
+	}
+}

@@ -54,8 +54,7 @@ class Limit_Post_Types extends Limit_Subtype {
 		 * @param int User id
 		 */
 		return apply_filters('wu_limits_is_post_above_limit', $quota > 0 && $post_count >= $quota);
-
-	} // end is_post_above_limit;
+	}
 
 	/**
 	 * Get the post count for this site.
@@ -85,14 +84,10 @@ class Limit_Post_Types extends Limit_Subtype {
 		$post_statuses = apply_filters('wu_post_count_statuses', $statuses, $post_type);
 
 		foreach ($post_statuses as $post_status) {
-
 			if (isset($post_count->{$post_status})) {
-
 				$count += (int) $post_count->{$post_status};
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		/**
 		 * Allow plugin developers to change the count total
@@ -104,7 +99,5 @@ class Limit_Post_Types extends Limit_Subtype {
 		 * @return int New total
 		 */
 		return apply_filters('wu_post_count', $count, $post_count, $post_type);
-
-	} // end get_post_count;
-
-} // end class Limit_Post_Types;
+	}
+}

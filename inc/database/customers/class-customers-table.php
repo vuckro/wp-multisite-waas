@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Customers_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'customers';
 
 	/**
@@ -66,8 +66,7 @@ final class Customers_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema
@@ -91,8 +90,7 @@ final class Customers_Table extends Table {
 			signup_form varchar(40) DEFAULT 'by-admin',
 			PRIMARY KEY (id),
 			KEY user_id (user_id)";
-
-	} // end set_schema;
+	}
 
 	/**
 	 * Adds the signup_form column.
@@ -109,17 +107,14 @@ final class Customers_Table extends Table {
 
 		// Maybe add column
 		if (empty($result)) {
-
 			$query = "ALTER TABLE {$this->table_name} ADD COLUMN `signup_form` varchar(40) default 'by-admin' AFTER `ips`;";
 
 			$result = $this->get_db()->query($query);
-
-		} // end if;
+		}
 
 		// Return success/fail
 		return $this->is_success($result);
-
-	} // end __20210508;
+	}
 
 	/**
 	 * Adds the signup_form column.
@@ -133,27 +128,22 @@ final class Customers_Table extends Table {
 
 		// Maybe add column
 		if (empty($result)) {
-
 			$query_set = "SET sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';";
 
 			$result_set = $this->get_db()->query($query_set);
 
 			if ($this->is_success($result_set) === false) {
-
 				return false;
-
-			} // end if;
+			}
 
 			$query = "ALTER TABLE {$this->table_name} ADD COLUMN `signup_form` varchar(40) default 'by-admin' AFTER `ips`;";
 
 			$result = $this->get_db()->query($query);
-
-		} // end if;
+		}
 
 		// Return success/fail
 		return $this->is_success($result);
-
-	} // end __20210607;
+	}
 
 	/**
 	 * Fixes the datetime columns to accept null.
@@ -169,21 +159,15 @@ final class Customers_Table extends Table {
 		);
 
 		foreach ($null_columns as $column) {
-
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";
 
 			$result = $this->get_db()->query($query);
 
-			if (!$this->is_success($result)) {
-
+			if ( ! $this->is_success($result)) {
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return true;
-
-	} // end __20230601;
-
-} // end class Customers_Table;
+	}
+}

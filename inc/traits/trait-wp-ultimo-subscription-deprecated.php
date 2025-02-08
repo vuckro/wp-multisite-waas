@@ -28,12 +28,10 @@ trait WP_Ultimo_Subscription_Deprecated {
 		$value = null;
 
 		switch ($key) {
-
 			case 'plan_id':
 				$value = $this->get_plan_id();
 				break;
-
-		} // end switch;
+		}
 
 		/**
 		 * Let developers know that this is not going to be supported in the future.
@@ -43,7 +41,5 @@ trait WP_Ultimo_Subscription_Deprecated {
 		_doing_it_wrong($key, __('Membership keys should not be accessed directly', 'wp-ultimo'), '2.0.0');
 
 		return $value;
-
-	} // end __get;
-
-} // end trait WP_Ultimo_Subscription_Deprecated;
+	}
+}

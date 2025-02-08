@@ -71,8 +71,7 @@ class Placeholders_Admin_Page extends Base_Admin_Page {
 	public function get_title() {
 
 		return __('Edit Template Placeholders', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -83,8 +82,7 @@ class Placeholders_Admin_Page extends Base_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Edit Template Placeholders', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -95,8 +93,7 @@ class Placeholders_Admin_Page extends Base_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Edit Template Placeholders', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -108,17 +105,22 @@ class Placeholders_Admin_Page extends Base_Admin_Page {
 
 		do_action('wu_load_edit_placeholders_list_page');
 
-		$columns = apply_filters('wu_edit_placeholders_columns', array(
-			'placeholder' => __('Placeholder', 'wp-ultimo'),
-			'content'     => __('Content', 'wp-ultimo'),
-		));
+		$columns = apply_filters(
+			'wu_edit_placeholders_columns',
+			array(
+				'placeholder' => __('Placeholder', 'wp-ultimo'),
+				'content'     => __('Content', 'wp-ultimo'),
+			)
+		);
 
-		wu_get_template('sites/edit-placeholders', array(
-			'columns' => $columns,
-			'types'   => array(),
-		));
-
-	} // end output;
+		wu_get_template(
+			'sites/edit-placeholders',
+			array(
+				'columns' => $columns,
+				'types'   => array(),
+			)
+		);
+	}
 
 	/**
 	 * Adds the cure bg image here as well.
@@ -132,14 +134,16 @@ class Placeholders_Admin_Page extends Base_Admin_Page {
 
 		wp_register_script('wu-edit-placeholders', wu_get_asset('edit-placeholders.js', 'js'), array('wu-admin', 'wu-vue', 'underscore'), wu_get_version(), false);
 
-		wp_localize_script('wu-edit-placeholders', 'wu_placeholdersl10n', array(
-			'name'                                => __('Tax', 'wp-ultimo'),
-			'confirm_message'                     => __('Are you sure you want to delete this rows?', 'wp-ultimo'),
-			'confirm_delete_tax_category_message' => __('Are you sure you want to delete this tax category?', 'wp-ultimo'),
-		));
+		wp_localize_script(
+			'wu-edit-placeholders',
+			'wu_placeholdersl10n',
+			array(
+				'name'                                => __('Tax', 'wp-ultimo'),
+				'confirm_message'                     => __('Are you sure you want to delete this rows?', 'wp-ultimo'),
+				'confirm_delete_tax_category_message' => __('Are you sure you want to delete this tax category?', 'wp-ultimo'),
+			)
+		);
 
 		wp_enqueue_script('wu-edit-placeholders');
-
-	} // end register_scripts;
-
-} // end class Placeholders_Admin_Page;
+	}
+}

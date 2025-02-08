@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Admin_Pages;
 
-use \WP_Ultimo\Models\Event;
+use WP_Ultimo\Models\Event;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -65,8 +65,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	public function init() {
 
 		add_action('init', array($this, 'set_badge_count'));
-
-	} // end init;
+	}
 
 	/**
 	 * Adds hooks when the page loads.
@@ -79,8 +78,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 		parent::page_loaded();
 
 		add_action('in_admin_header', array($this, 'count_seen_events'));
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Sets events badge notification subtracting the total number of events from the seen events in the user meta.
@@ -97,12 +95,10 @@ class Event_List_Admin_Page extends List_Admin_Page {
 		$cache = get_site_transient("wu_{$user_id}_unseen_events_count");
 
 		if ($cache) {
-
 			$this->badge_count = $cache;
 
 			return;
-
-		} // end if;
+		}
 
 		$table_name = "{$wpdb->base_prefix}wu_events";
 
@@ -115,8 +111,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 		$this->badge_count = $unseen;
 
 		set_site_transient("wu_{$user_id}_unseen_events_count", $unseen, 5 * MINUTE_IN_SECONDS);
-
-	} // end set_badge_count;
+	}
 
 	/**
 	 * Sets the seen events in the current user meta.
@@ -130,24 +125,23 @@ class Event_List_Admin_Page extends List_Admin_Page {
 
 		delete_site_transient("wu_{$user_id}_unseen_events_count");
 
-		$last_event = wu_get_events(array(
-			'orderby' => 'id',
-			'fields'  => 'ids',
-			'order'   => 'DESC',
-			'number'  => 1,
-		));
+		$last_event = wu_get_events(
+			array(
+				'orderby' => 'id',
+				'fields'  => 'ids',
+				'order'   => 'DESC',
+				'number'  => 1,
+			)
+		);
 
-		if (!empty($last_event)) {
-
+		if ( ! empty($last_event)) {
 			$last_event_id = current($last_event);
 
 			update_user_meta($user_id, 'wu_seen_events', $last_event_id);
-
-		} // end if;
+		}
 
 		$this->badge_count = '';
-
-	} // end count_seen_events;
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -155,7 +149,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -169,8 +163,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Event removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Event', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -181,8 +174,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Events', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -193,8 +185,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Events', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -205,8 +196,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Events', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -223,8 +213,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 				'icon'  => 'dashicons dashicons-editor-ol',
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -235,7 +224,5 @@ class Event_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Event_List_Table();
-
-	} // end table;
-
-} // end class Event_List_Admin_Page;
+	}
+}

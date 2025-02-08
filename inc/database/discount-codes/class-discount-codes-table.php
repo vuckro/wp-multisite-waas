@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Discount_Codes_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'discount_codes';
 
 	/**
@@ -64,8 +64,7 @@ final class Discount_Codes_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema
@@ -93,8 +92,7 @@ final class Discount_Codes_Table extends Table {
 			date_created datetime NULL,
 			date_modified datetime NULL,
 			PRIMARY KEY (id)";
-
-	} // end set_schema;
+	}
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *
@@ -108,21 +106,15 @@ final class Discount_Codes_Table extends Table {
 		);
 
 		foreach ($null_columns as $column) {
-
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";
 
 			$result = $this->get_db()->query($query);
 
-			if (!$this->is_success($result)) {
-
+			if ( ! $this->is_success($result)) {
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return true;
-
-	} // end __20230601;
-
-} // end class Discount_Codes_Table;
+	}
+}

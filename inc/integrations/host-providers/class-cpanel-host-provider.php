@@ -78,7 +78,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 */
 	protected $optional_constants = array(
 		'WU_CPANEL_PORT',
-		'WU_CPANEL_ROOT_DIR'
+		'WU_CPANEL_ROOT_DIR',
 	);
 
 	/**
@@ -90,18 +90,17 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	protected $api = null;
 
 	/**
-     * Picks up on tips that a given host provider is being used.
-     *
-     * We use this to suggest that the user should activate an integration module.
-     * Unfortunately, we don't have a good method of detecting if someone is running from cPanel.
-     *
-     * @since 2.0.0
-     */
+	 * Picks up on tips that a given host provider is being used.
+	 *
+	 * We use this to suggest that the user should activate an integration module.
+	 * Unfortunately, we don't have a good method of detecting if someone is running from cPanel.
+	 *
+	 * @since 2.0.0
+	 */
 	public function detect(): bool {
 
 		return false;
-
-	} // end detect;
+	}
 
 	/**
 	 * Returns the list of installation fields.
@@ -136,8 +135,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 				'value'       => '/public_html',
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -153,15 +151,18 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 		$root_dir = defined('WU_CPANEL_ROOT_DIR') && WU_CPANEL_ROOT_DIR ? WU_CPANEL_ROOT_DIR : '/public_html';
 
 		// Send Request
-		$results = $this->load_api()->api2('AddonDomain', 'addaddondomain', array(
-			'dir'       => $root_dir,
-			'newdomain' => $domain,
-			'subdomain' => $this->get_subdomain($domain),
-		));
+		$results = $this->load_api()->api2(
+			'AddonDomain',
+			'addaddondomain',
+			array(
+				'dir'       => $root_dir,
+				'newdomain' => $domain,
+				'subdomain' => $this->get_subdomain($domain),
+			)
+		);
 
 		$this->log_calls($results);
-
-	} // end on_add_domain;
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -174,14 +175,17 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function on_remove_domain($domain, $site_id) {
 
 		// Send Request
-		$results = $this->load_api()->api2('AddonDomain', 'deladdondomain', array(
-			'domain'    => $domain,
-			'subdomain' => $this->get_subdomain($domain) . '_' . $this->get_site_url(),
-		));
+		$results = $this->load_api()->api2(
+			'AddonDomain',
+			'deladdondomain',
+			array(
+				'domain'    => $domain,
+				'subdomain' => $this->get_subdomain($domain) . '_' . $this->get_site_url(),
+			)
+		);
 
 		$this->log_calls($results);
-
-	} // end on_remove_domain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -203,16 +207,19 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 		$rootdomain = str_replace($subdomain . '.', '', $this->get_site_url($site_id));
 
 		// Send Request
-		$results = $this->load_api()->api2('SubDomain', 'addsubdomain', array(
-			'dir'        => $root_dir,
-			'domain'     => $subdomain,
-			'rootdomain' => $rootdomain,
-		));
+		$results = $this->load_api()->api2(
+			'SubDomain',
+			'addsubdomain',
+			array(
+				'dir'        => $root_dir,
+				'domain'     => $subdomain,
+				'rootdomain' => $rootdomain,
+			)
+		);
 
 		// Check the results
 		$this->log_calls($results);
-
-	} // end on_add_subdomain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -224,7 +231,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {} // end on_remove_subdomain;
+	public function on_remove_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * Load the CPanel API.
@@ -235,7 +242,6 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function load_api() {
 
 		if ($this->api === null) {
-
 			$username = defined('WU_CPANEL_USERNAME') ? WU_CPANEL_USERNAME : '';
 			$password = defined('WU_CPANEL_PASSWORD') ? WU_CPANEL_PASSWORD : '';
 			$host     = defined('WU_CPANEL_HOST') ? WU_CPANEL_HOST : '';
@@ -245,12 +251,10 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 			 * Set up the API.
 			 */
 			$this->api = new CPanel_API($username, $password, preg_replace('#^https?://#', '', (string) $host), $port);
-
-		} // end if;
+		}
 
 		return $this->api;
-
-	} // end load_api;
+	}
 	/**
 	 * Returns the Site URL.
 	 *
@@ -260,8 +264,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function get_site_url($site_id = null): string {
 
 		return trim(preg_replace('#^https?://#', '', get_site_url($site_id)), '/');
-
-	} // end get_site_url;
+	}
 
 	/**
 	 * Returns the sub-domain version of the domain.
@@ -274,18 +277,15 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function get_subdomain($domain, $mapped_domain = true) {
 
 		if ($mapped_domain === false) {
-
 			$domain_parts = explode('.', $domain);
 
 			return array_shift($domain_parts);
-
-		} // end if;
+		}
 
 		$subdomain = str_replace(array('.', '/'), '', $domain);
 
 		return $subdomain;
-
-	} // end get_subdomain;
+	}
 
 	/**
 	 * Logs the results of the calls for debugging purposes
@@ -297,18 +297,13 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function log_calls($results) {
 
 		if (is_object($results->cpanelresult->data)) {
-
 			return wu_log_add('integration-cpanel', $results->cpanelresult->data->reason);
-
-		} elseif (!isset($results->cpanelresult->data[0])) {
-
+		} elseif ( ! isset($results->cpanelresult->data[0])) {
 			return wu_log_add('integration-cpanel', __('Unexpected error ocurred trying to sync domains with CPanel', 'wp-ultimo'), LogLevel::ERROR);
-
-		} // end if;
+		}
 
 		return wu_log_add('integration-cpanel', $results->cpanelresult->data[0]->reason);
-
-	} // end log_calls;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -319,8 +314,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __('cPanel is the management panel being used on a large number of shared and dedicated hosts across the globe.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -331,8 +325,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('cpanel.svg', 'img/hosts');
-
-	} // end get_logo;
+	}
 
 	/**
 	 * Tests the connection with the Cloudflare API.
@@ -346,17 +339,14 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 
 		$this->log_calls($results);
 
-		if (isset($results->cpanelresult->data) && !isset($results->cpanelresult->error)) {
-
+		if (isset($results->cpanelresult->data) && ! isset($results->cpanelresult->error)) {
 			wp_send_json_success($results);
 
 			exit;
-
-		} // end if;
+		}
 
 		wp_send_json_error($results);
-
-	} // end test_connection;
+	}
 
 	/**
 	 * Returns the explainer lines for the integration.
@@ -374,13 +364,9 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 		);
 
 		if (is_subdomain_install()) {
-
 			$explainer_lines['will']['send_sub_domains'] = __('Add a new SubDomain on cPanel whenever a new site gets created on your network', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return $explainer_lines;
-
-	} // end get_explainer_lines;
-
-} // end class CPanel_Host_Provider;
+	}
+}

@@ -37,7 +37,7 @@ class Domains_Schema extends Schema {
 			'unsigned' => true,
 			'extra'    => 'auto_increment',
 			'primary'  => true,
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -117,5 +117,4 @@ class Domains_Schema extends Schema {
 		),
 
 	);
-
-} // end class Domains_Schema;
+}

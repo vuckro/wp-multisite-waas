@@ -101,7 +101,7 @@ class Payments_Schema extends Schema {
 			'type'     => 'varchar',
 			'length'   => '20',
 			'default'  => 'USD',
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -188,5 +188,4 @@ class Payments_Schema extends Schema {
 		),
 
 	);
-
-} // end class Payments_Schema;
+}

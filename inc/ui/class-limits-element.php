@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\UI\Base_Element;
+use WP_Ultimo\UI\Base_Element;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -55,23 +55,20 @@ class Limits_Element extends Base_Element {
 	protected $site;
 
 	/**
-     * The icon of the UI element.
-     * e.g. return fa fa-search
-     *
-     * @since 2.0.0
-     * @param string $context One of the values: block, elementor or bb.
-     */
+	 * The icon of the UI element.
+	 * e.g. return fa fa-search
+	 *
+	 * @since 2.0.0
+	 * @param string $context One of the values: block, elementor or bb.
+	 */
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-skill-bar';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -86,8 +83,7 @@ class Limits_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Limits & Quotas', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -103,8 +99,7 @@ class Limits_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -152,8 +147,7 @@ class Limits_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -181,8 +175,7 @@ class Limits_Element extends Base_Element {
 			'Limits',
 			'Quotas',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -204,8 +197,7 @@ class Limits_Element extends Base_Element {
 			'columns' => 1,
 			'title'   => __('Site Limits', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -217,13 +209,10 @@ class Limits_Element extends Base_Element {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
-		if (!$this->site || !$this->site->is_customer_allowed()) {
-
+		if ( ! $this->site || ! $this->site->is_customer_allowed()) {
 			$this->set_display(false);
-
-		} // end if;
-
-	} // end setup;
+		}
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -234,8 +223,7 @@ class Limits_Element extends Base_Element {
 	public function setup_preview() {
 
 		$this->site = wu_mock_site();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -252,9 +240,12 @@ class Limits_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		$post_types = get_post_types(array(
-			'public' => true,
-		), 'objects');
+		$post_types = get_post_types(
+			array(
+				'public' => true,
+			),
+			'objects'
+		);
 
 		/*
 		 * Remove post types that where disabled or that are not available for display.
@@ -278,7 +269,5 @@ class Limits_Element extends Base_Element {
 		$atts['post_type_limits'] = $this->site->get_limitations()->post_types;
 
 		return wu_get_template_contents('dashboard-widgets/limits-and-quotas', $atts);
-
-	} // end output;
-
-} // end class Limits_Element;
+	}
+}

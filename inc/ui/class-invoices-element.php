@@ -65,14 +65,11 @@ class Invoices_Element extends Base_Element {
 	public function get_icon($context = 'block') {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-price-list';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -87,8 +84,7 @@ class Invoices_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Invoices', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -104,8 +100,7 @@ class Invoices_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -151,8 +146,7 @@ class Invoices_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -180,8 +174,7 @@ class Invoices_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -203,8 +196,7 @@ class Invoices_Element extends Base_Element {
 			'title' => __('Invoices', 'wp-ultimo'),
 			'limit' => 0,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Loads the required scripts.
@@ -215,8 +207,7 @@ class Invoices_Element extends Base_Element {
 	public function register_scripts() {
 
 		wp_enqueue_script('wu-ajax-list-table');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Loads dependencies for the render.
@@ -226,26 +217,19 @@ class Invoices_Element extends Base_Element {
 	 */
 	public function dependencies() {
 
-		if (!function_exists('convert_to_screen')) {
-
+		if ( ! function_exists('convert_to_screen')) {
 			require_once ABSPATH . 'wp-admin/includes/template.php';
+		}
 
-		} // end if;
-
-		if (!function_exists('get_column_headers')) {
-
+		if ( ! function_exists('get_column_headers')) {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
 			require_once ABSPATH . 'wp-admin/includes/screen.php';
+		}
 
-		} // end if;
-
-		if (!function_exists('wu_responsive_table_row')) {
-
+		if ( ! function_exists('wu_responsive_table_row')) {
 			require wu_path('/inc/functions/admin.php');
-
-		} // end if;
-
-	} // end dependencies;
+		}
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -257,15 +241,12 @@ class Invoices_Element extends Base_Element {
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
-		if (!$this->membership) {
-
+		if ( ! $this->membership) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
-
-	} // end setup;
+		}
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -276,8 +257,7 @@ class Invoices_Element extends Base_Element {
 	public function setup_preview() {
 
 		$this->membership = wu_mock_membership();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -297,7 +277,5 @@ class Invoices_Element extends Base_Element {
 		$atts['membership'] = $this->membership;
 
 		return wu_get_template_contents('dashboard-widgets/invoices', $atts);
-
-	} // end output;
-
-} // end class Invoices_Element;
+	}
+}

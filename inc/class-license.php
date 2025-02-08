@@ -10,8 +10,7 @@ class License {
 	 *
 	 * @return null
 	 */
-	public function get_license_key()
-	{
+	public function get_license_key() {
 		return null;
 	}
 }

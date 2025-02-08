@@ -17,4 +17,4 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.11
  */
-class SSO_Exception extends \RuntimeException {} // end class SSO_Exception;
+class SSO_Exception extends \RuntimeException {}

@@ -20,5 +20,4 @@ defined('ABSPATH') || exit;
 class Schema extends \BerlinDB\Database\Schema {
 
 	protected $prefix = 'wu';
-
-} // end class Schema;
+}

@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\UI\Base_Element;
-use \WP_Ultimo\Managers\Field_Templates_Manager;
+use WP_Ultimo\UI\Base_Element;
+use WP_Ultimo\Managers\Field_Templates_Manager;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -59,23 +59,20 @@ class Template_Switching_Element extends Base_Element {
 	protected $products;
 
 	/**
-     * The icon of the UI element.
-     * e.g. return fa fa-search
-     *
-     * @since 2.0.0
-     * @param string $context One of the values: block, elementor or bb.
-     */
+	 * The icon of the UI element.
+	 * e.g. return fa fa-search
+	 *
+	 * @since 2.0.0
+	 * @param string $context One of the values: block, elementor or bb.
+	 */
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-cart-medium';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -86,8 +83,7 @@ class Template_Switching_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Template Switching', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -98,8 +94,7 @@ class Template_Switching_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds the template switching form to this page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Initializes the singleton.
@@ -112,8 +107,7 @@ class Template_Switching_Element extends Base_Element {
 		add_action('wu_ajax_wu_switch_template', array($this, 'switch_template'));
 
 		parent::init();
-
-	} // end init;
+	}
 
 	/**
 	 * Register element scripts.
@@ -126,13 +120,16 @@ class Template_Switching_Element extends Base_Element {
 
 		wp_register_script('wu-template-switching', wu_get_asset('template-switching.js', 'js'), array('jquery', 'wu-vue-apps', 'wu-selectizer', 'wp-hooks', 'wu-cookie-helpers'));
 
-		wp_localize_script('wu-template-switching', 'wu_template_switching_params', array(
-			'ajaxurl' => wu_ajax_url(),
-		));
+		wp_localize_script(
+			'wu-template-switching',
+			'wu_template_switching_params',
+			array(
+				'ajaxurl' => wu_ajax_url(),
+			)
+		);
 
 		wp_enqueue_script('wu-template-switching');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -177,8 +174,7 @@ class Template_Switching_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -195,8 +191,7 @@ class Template_Switching_Element extends Base_Element {
 			'Template',
 			'Template Switching',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -206,17 +201,18 @@ class Template_Switching_Element extends Base_Element {
 	 */
 	public function defaults() {
 
-		$site_template_ids = wu_get_site_templates(array(
-			'fields' => 'ids',
-		));
+		$site_template_ids = wu_get_site_templates(
+			array(
+				'fields' => 'ids',
+			)
+		);
 
 		return array(
 			'slug'                        => 'template-switching',
 			'template_selection_template' => 'clean',
 			'template_selection_sites'    => implode(',', $site_template_ids),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -228,13 +224,11 @@ class Template_Switching_Element extends Base_Element {
 
 		$this->site = wu_get_current_site();
 
-		if (!$this->site || !$this->site->is_customer_allowed()) {
-
+		if ( ! $this->site || ! $this->site->is_customer_allowed()) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->membership = $this->site->get_membership();
 
@@ -243,22 +237,15 @@ class Template_Switching_Element extends Base_Element {
 		$all_membership_products = array();
 
 		if ($this->membership) {
-
 			$all_membership_products = $this->membership->get_all_products();
 
 			if (is_array($all_membership_products) && $all_membership_products) {
-
 				foreach ($all_membership_products as $product) {
-
 					$this->products[] = $product['product']->get_id();
-
-				} // end foreach;
-
-			} // end if;
-
-		} // end if;
-
-	} // end setup;
+				}
+			}
+		}
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -270,8 +257,7 @@ class Template_Switching_Element extends Base_Element {
 	public function setup_preview() {
 
 		$this->site = wu_mock_site();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * Ajax action to change the template for a given site.
@@ -282,19 +268,15 @@ class Template_Switching_Element extends Base_Element {
 	 */
 	public function switch_template() {
 
-		if (!$this->site) {
-
+		if ( ! $this->site) {
 			$this->site = wu_get_current_site();
-
-		} // end if;
+		}
 
 		$template_id = wu_request('template_id', '');
 
-		if (!$template_id) {
-
+		if ( ! $template_id) {
 			return new \WP_Error('template_id_required', __('You need to provide a valid template to duplicate.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$switch = \WP_Ultimo\Helpers\Site_Duplicator::override_site($template_id, $this->site->get_id());
 
@@ -308,16 +290,18 @@ class Template_Switching_Element extends Base_Element {
 		do_action('wu_after_switch_template', $this->site->get_id());
 
 		if ($switch) {
-
-			wp_send_json_success(array(
-				'redirect_url' => add_query_arg(array(
-					'updated' => 1,
-				), $_SERVER['HTTP_REFERER']),
-			));
-
-		} // end if;
-
-	} // end switch_template;
+			wp_send_json_success(
+				array(
+					'redirect_url' => add_query_arg(
+						array(
+							'updated' => 1,
+						),
+						$_SERVER['HTTP_REFERER']
+					),
+				)
+			);
+		}
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -335,18 +319,15 @@ class Template_Switching_Element extends Base_Element {
 	public function output($atts, $content = null) {
 
 		if ($this->site) {
-
 			$filter_template_limits = new \WP_Ultimo\Limits\Site_Template_Limits();
 
 			$atts['products'] = $this->products;
 
 			$template_selection_field = $filter_template_limits->maybe_filter_template_selection_options($atts);
 
-			if (!isset($template_selection_field['sites'])) {
-
+			if ( ! isset($template_selection_field['sites'])) {
 				$template_selection_field['sites'] = array();
-
-			} // end if;
+			}
 
 			$atts['template_selection_sites'] = implode(',', $template_selection_field['sites']);
 
@@ -400,7 +381,7 @@ class Template_Switching_Element extends Base_Element {
 				'wrapper_classes'   => '',
 				'value'             => 0,
 				'html_attr'         => array(
-					'v-model' => 'confirm_switch'
+					'v-model' => 'confirm_switch',
 				),
 				'wrapper_html_attr' => array(
 					'v-show'  => 'template_id != 0 && template_id != original_template_id',
@@ -416,7 +397,7 @@ class Template_Switching_Element extends Base_Element {
 				'wrapper_html_attr' => array(
 					'v-cloak'            => 1,
 					'v-show'             => 'confirm_switch',
-					'v-on:click.prevent' => 'ready = true'
+					'v-on:click.prevent' => 'ready = true',
 				),
 			);
 
@@ -430,23 +411,25 @@ class Template_Switching_Element extends Base_Element {
 
 			$section_slug = 'wu-template-switching-form';
 
-			$form = new Form($section_slug, $checkout_fields, array(
-				'views'                 => 'admin-pages/fields',
-				'classes'               => 'wu-striped wu-widget-inset',
-				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-py-5 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid'
-			));
+			$form = new Form(
+				$section_slug,
+				$checkout_fields,
+				array(
+					'views'                 => 'admin-pages/fields',
+					'classes'               => 'wu-striped wu-widget-inset',
+					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-py-5 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				)
+			);
 
 			ob_start();
 
 			$form->render();
 
 			return ob_get_clean();
-
-		} // end if;
+		}
 
 		return '';
-
-	} // end output;
+	}
 
 	/**
 	 * Returns the list of available pricing table templates.
@@ -459,7 +442,5 @@ class Template_Switching_Element extends Base_Element {
 		$available_templates = Field_Templates_Manager::get_instance()->get_templates_as_options('template_selection');
 
 		return $available_templates;
-
-	} // end get_template_selection_templates;
-
-} // end class Template_Switching_Element;
+	}
+}

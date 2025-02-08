@@ -20,8 +20,7 @@ defined('ABSPATH') || exit;
 function wu_should_load_sunrise() {
 
 	return \WP_Ultimo\Sunrise::should_load_sunrise();
-
-} // end wu_should_load_sunrise;
+}
 
 /**
  * Get a setting value, when te normal APIs are not available.
@@ -37,18 +36,15 @@ function wu_should_load_sunrise() {
 function wu_get_setting_early($setting, $default = false) {
 
 	if (did_action('wp_ultimo_load')) {
-
 		_doing_it_wrong('wu_get_setting_early', __('Regular setting APIs are already available. You should use wu_get_setting() instead.', 'wp-ultimo'), '2.0.0');
-
-	} // end if;
+	}
 
 	$settings_key = \WP_Ultimo\Settings::KEY;
 
 	$settings = get_network_option(null, 'wp-ultimo_' . $settings_key);
 
 	return wu_get_isset($settings, $setting, $default);
-
-} // end wu_get_setting_early;
+}
 
 /**
  * Set a setting value, when te normal APIs are not available.
@@ -63,20 +59,17 @@ function wu_get_setting_early($setting, $default = false) {
 function wu_save_setting_early($key, $value) {
 
 	if (did_action('wp_ultimo_load')) {
-
 		_doing_it_wrong('wu_save_setting_early', __('Regular setting APIs are already available. You should use wu_save_setting() instead.', 'wp-ultimo'), '2.0.20');
-
-	} // end if;
+	}
 
 	$settings_key = \WP_Ultimo\Settings::KEY;
 
 	$settings = get_network_option(null, 'wp-ultimo_' . $settings_key);
 
-	$settings[$key] = $value;
+	$settings[ $key ] = $value;
 
 	return update_network_option(null, 'wp-ultimo_' . $settings_key, $settings);
-
-} // end wu_save_setting_early;
+}
 
 /**
  * Get the security mode key used to disable security mode
@@ -88,8 +81,7 @@ function wu_get_security_mode_key(): string {
 	$hash = md5((string) get_network_option(null, 'admin_email'));
 
 	return substr($hash, 0, 6);
-
-} // end wu_get_security_mode_key;
+}
 
 /**
  * Early substitute for wp_kses_data before it exists.
@@ -106,5 +98,4 @@ function wu_get_security_mode_key(): string {
 function wu_kses_data($data) {
 
 	return function_exists('wp_kses_data') ? wp_kses_data($data) : $data;
-
-} // end wu_kses_data;
+}

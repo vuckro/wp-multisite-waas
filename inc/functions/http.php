@@ -22,8 +22,7 @@ function wu_get_input($raw = false) {
 	$body = @file_get_contents('php://input'); // phpcs:ignore
 
 	return $raw ? $body : json_decode($body);
-
-} // end wu_get_input;
+}
 
 /**
  * Prevents the current page from being cached.
@@ -33,8 +32,7 @@ function wu_get_input($raw = false) {
  */
 function wu_no_cache() {
 
-	if (!headers_sent()) {
-
+	if ( ! headers_sent()) {
 		nocache_headers();
 
 		header('Pragma: no-cache');
@@ -44,12 +42,10 @@ function wu_no_cache() {
 		 * easily spot when no-caching is out fault!
 		 */
 		wu_x_header('X-Ultimo-Cache: prevent-caching');
-
-	} // end if;
+	}
 
 	do_action('wu_no_cache');
-
-} // end wu_no_cache;
+}
 
 /**
  * Maybe sends a WP Multisite WaaS X Header.
@@ -66,9 +62,6 @@ function wu_no_cache() {
 function wu_x_header($header) {
 
 	if (apply_filters('wu_should_send_x_headers', defined('WP_DEBUG') && WP_DEBUG)) {
-
-		!headers_sent() && header($header);
-
-	} // end if;
-
-} // end wu_x_header;
+		! headers_sent() && header($header);
+	}
+}

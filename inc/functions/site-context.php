@@ -20,11 +20,9 @@ defined('ABSPATH') || exit;
  */
 function wu_switch_blog_and_run($callback, $site_id = false) {
 
-	if (!$site_id) {
-
+	if ( ! $site_id) {
 		$site_id = wu_get_main_site_id();
-
-	} // end if;
+	}
 
 	is_multisite() && switch_to_blog($site_id);
 
@@ -33,5 +31,4 @@ function wu_switch_blog_and_run($callback, $site_id = false) {
 	is_multisite() && restore_current_blog();
 
 	return $result;
-
-} // end wu_switch_blog_and_run;
+}

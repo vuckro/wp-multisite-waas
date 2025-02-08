@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\List_Tables;
 
-use \WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Database\Payments\Payment_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -36,17 +36,18 @@ class Payment_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Payment', 'wp-ultimo'),
-			'plural'   => __('Payments', 'wp-ultimo'),
-			'ajax'     => true,
-			'add_new'  => array(
-				'url'     => wu_get_form_url('add_new_payment'),
-				'classes' => 'wubox',
-			),
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Payment', 'wp-ultimo'),
+				'plural'   => __('Payments', 'wp-ultimo'),
+				'ajax'     => true,
+				'add_new'  => array(
+					'url'     => wu_get_form_url('add_new_payment'),
+					'classes' => 'wubox',
+				),
+			)
+		);
+	}
 
 	/**
 	 * Adds the extra search field when the search element is present.
@@ -67,8 +68,7 @@ class Payment_List_Table extends Base_List_Table {
 		$_filter_fields['parent_id__in'] = array('0', 0, '', null);
 
 		return $_filter_fields;
-
-	} // end get_extra_query_fields;
+	}
 
 	/**
 	 * Displays the payment reference code.
@@ -95,7 +95,7 @@ class Payment_List_Table extends Base_List_Table {
 					'delete_modal',
 					array(
 						'model' => 'payment',
-						'id'    => $item->get_id()
+						'id'    => $item->get_id(),
 					)
 				),
 				__('Delete', 'wp-ultimo')
@@ -105,8 +105,7 @@ class Payment_List_Table extends Base_List_Table {
 		$html = "<span class='wu-font-mono'><strong>{$code}</strong></span>";
 
 		return $html . $this->row_actions($actions);
-
-	} // end column_hash;
+	}
 
 	/**
 	 * Displays the membership photo and special status.
@@ -123,8 +122,7 @@ class Payment_List_Table extends Base_List_Table {
 		$class = $item->get_status_class();
 
 		return "<span class='wu-bg-gray-200 wu-text-gray-700 wu-py-1 wu-px-2 wu-inline-block wu-leading-none wu-rounded-sm wu-text-xs wu-font-mono $class'>{$label}</span>";
-
-	} // end column_status;
+	}
 
 	/**
 	 * Returns the number of subscriptions owned by this membership.
@@ -138,11 +136,9 @@ class Payment_List_Table extends Base_List_Table {
 
 		$product = $item->get_product();
 
-		if (!$product) {
-
+		if ( ! $product) {
 			return __('No product found', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$url_atts = array(
 			'product_id' => $product->get_id(),
@@ -155,8 +151,7 @@ class Payment_List_Table extends Base_List_Table {
 		$html = $product->get_name();
 
 		return $html . $this->row_actions($actions);
-
-	} // end column_product;
+	}
 
 	/**
 	 * Displays the column for the total amount of the payment.
@@ -171,8 +166,7 @@ class Payment_List_Table extends Base_List_Table {
 		$gateway = wu_slug_to_name($item->get_gateway());
 
 		return wu_format_currency($item->get_total()) . "<small class='wu-block'>{$gateway}</small>";
-
-	} // end column_total;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -194,8 +188,7 @@ class Payment_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Returns the filters for this page.
@@ -211,13 +204,13 @@ class Payment_List_Table extends Base_List_Table {
 				 * Status
 				 */
 				'status'  => array(
-					'label'   => __( 'Status', 'wp-ultimo' ),
+					'label'   => __('Status', 'wp-ultimo'),
 					'options' => array(
-						'pending'   => __( 'Pending', 'wp-ultimo' ),
-						'completed' => __( 'Completed', 'wp-ultimo' ),
-						'refund'    => __( 'Refund', 'wp-ultimo' ),
-						'partial'   => __( 'Partial', 'wp-ultimo' ),
-						'failed'    => __( 'Failed', 'wp-ultimo' ),
+						'pending'   => __('Pending', 'wp-ultimo'),
+						'completed' => __('Completed', 'wp-ultimo'),
+						'refund'    => __('Refund', 'wp-ultimo'),
+						'partial'   => __('Partial', 'wp-ultimo'),
+						'failed'    => __('Failed', 'wp-ultimo'),
 					),
 				),
 
@@ -225,12 +218,12 @@ class Payment_List_Table extends Base_List_Table {
 				 * Gateway
 				 */
 				'gateway' => array(
-					'label'   => __( 'Gateway', 'wp-ultimo' ),
+					'label'   => __('Gateway', 'wp-ultimo'),
 					'options' => array(
-						'free'   => __( 'Free', 'wp-ultimo' ),
-						'manual' => __( 'Manual', 'wp-ultimo' ),
-						'paypal' => __( 'Paypal', 'wp-ultimo' ),
-						'stripe' => __( 'Stripe', 'wp-ultimo' ),
+						'free'   => __('Free', 'wp-ultimo'),
+						'manual' => __('Manual', 'wp-ultimo'),
+						'paypal' => __('Paypal', 'wp-ultimo'),
+						'stripe' => __('Stripe', 'wp-ultimo'),
 					),
 				),
 			),
@@ -240,13 +233,12 @@ class Payment_List_Table extends Base_List_Table {
 				 * Created At
 				 */
 				'date_created' => array(
-					'label'   => __( 'Created At', 'wp-ultimo' ),
+					'label'   => __('Created At', 'wp-ultimo'),
 					'options' => $this->get_default_date_filter_options(),
 				),
 			),
 		);
-
-	} // end get_filters;
+	}
 
 	/**
 	 * Returns the pre-selected filters on the filter bar.
@@ -294,7 +286,5 @@ class Payment_List_Table extends Base_List_Table {
 				'count' => 0,
 			),
 		);
-
-	} // end get_views;
-
-} // end class Payment_List_Table;
+	}
+}

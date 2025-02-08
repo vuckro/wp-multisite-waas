@@ -49,8 +49,7 @@ class Jumper {
 		add_action('wp_ultimo_load', array($this, 'add_settings'), 20);
 
 		add_action('init', array($this, 'load_jumper'));
-
-	} // end __construct;
+	}
 
 	/**
 	 * Checks if we should add the jumper or not.
@@ -61,8 +60,7 @@ class Jumper {
 	protected function is_jumper_enabled() {
 
 		return apply_filters('wu_is_jumper_enabled', wu_get_setting('enable_jumper', true) && current_user_can('manage_network'));
-
-	} // end is_jumper_enabled;
+	}
 
 	/**
 	 * Adds the Jumper trigger to the admin top pages.
@@ -74,12 +72,14 @@ class Jumper {
 	 */
 	public function add_jumper_trigger($page) {
 
-		wu_get_template('ui/jumper-trigger', array(
-			'page'   => $page,
-			'jumper' => $this,
-		));
-
-	} // end add_jumper_trigger;
+		wu_get_template(
+			'ui/jumper-trigger',
+			array(
+				'page'   => $page,
+				'jumper' => $this,
+			)
+		);
+	}
 
 	/**
 	 * Loads the necessary elements to display the Jumper.
@@ -90,7 +90,6 @@ class Jumper {
 	public function load_jumper() {
 
 		if ($this->is_jumper_enabled() && is_admin()) {
-
 			add_action('wu_header_right', array($this, 'add_jumper_trigger'));
 
 			add_action('admin_init', array($this, 'rebuild_menu'));
@@ -108,10 +107,8 @@ class Jumper {
 			add_filter('wu_link_list', array($this, 'add_wp_ultimo_extra_links'));
 
 			add_filter('wu_link_list', array($this, 'add_user_custom_links'));
-
-		} // end if;
-
-	} // end load_jumper;
+		}
+	}
 
 	/**
 	 * Clear the jumper menu cache on settings save
@@ -127,12 +124,9 @@ class Jumper {
 	public function clear_jump_cache_on_save($settings) {
 
 		if (isset($settings['jumper_custom_links'])) {
-
 			delete_site_transient($this->transient_key);
-
-		} // end if;
-
-	} // end clear_jump_cache_on_save;
+		}
+	}
 
 	/**
 	 * Rebuilds the jumper menu via a trigger URL.
@@ -142,17 +136,14 @@ class Jumper {
 	 */
 	public function rebuild_menu() {
 
-		if (isset($_GET[$this->reset_slug]) && current_user_can('manage_network')) {
-
+		if (isset($_GET[ $this->reset_slug ]) && current_user_can('manage_network')) {
 			delete_site_transient($this->transient_key);
 
 			wp_redirect(network_admin_url());
 
 			exit;
-
-		} // end if;
-
-	} // end rebuild_menu;
+		}
+	}
 
 	/**
 	 * Retrieves the custom links added by the super admin
@@ -169,22 +160,17 @@ class Jumper {
 		$lines = explode(PHP_EOL, (string) $saved_links);
 
 		foreach ($lines as $line) {
-
 			$link_elements = explode(':', $line, 2);
 
 			if (count($link_elements) === 2) {
-
 				$title = trim($link_elements[1]);
 
-				$treated_lines[$title] = trim($link_elements[0]);
-
-			} // end if;
-
-		} // end foreach;
+				$treated_lines[ $title ] = trim($link_elements[0]);
+			}
+		}
 
 		return $treated_lines;
-
-	} // end get_user_custom_links;
+	}
 
 	/**
 	 * Add the custom links to the Jumper menu
@@ -198,15 +184,12 @@ class Jumper {
 
 		$custom_links = $this->get_user_custom_links();
 
-		if (!empty($custom_links)) {
-
-			$links[__('Custom Links', 'wp-ultimo')] = $custom_links;
-
-		} // end if;
+		if ( ! empty($custom_links)) {
+			$links[ __('Custom Links', 'wp-ultimo') ] = $custom_links;
+		}
 
 		return $links;
-
-	} // end add_user_custom_links;
+	}
 
 	/**
 	 * Add WP Multisite WaaS settings links to the Jumper menu.
@@ -219,7 +202,6 @@ class Jumper {
 	public function add_wp_ultimo_extra_links($links) {
 
 		if (isset($links['WP Ultimo'])) {
-
 			$settings_tabs = array(
 				'general'        => __('General', 'wp-ultimo'),
 				'network'        => __('Network Settings', 'wp-ultimo'),
@@ -233,13 +215,11 @@ class Jumper {
 			);
 
 			foreach ($settings_tabs as $tab => $tab_label) {
-
 				$url = network_admin_url('admin.php?page=wp-ultimo-settings&wu-tab=' . $tab);
 
 				// translators: The placeholder represents the title of the Settings tab.
-				$links['WP Ultimo'][$url] = sprintf(__('Settings: %s', 'wp-ultimo'), $tab_label);
-
-			} // end foreach;
+				$links['WP Ultimo'][ $url ] = sprintf(__('Settings: %s', 'wp-ultimo'), $tab_label);
+			}
 
 			$links['WP Ultimo'][ network_admin_url('admin.php?page=wp-ultimo-settings&wu-tab=tools') ] = __('Settings: Webhooks', 'wp-ultimo');
 
@@ -248,19 +228,15 @@ class Jumper {
 			/**
 			 * Adds Main Site Dashboard
 			 */
-			if (isset($links[__('Sites')])) {
-
+			if (isset($links[ __('Sites') ])) {
 				$main_site_url = get_admin_url(get_current_site()->blog_id);
 
-				$links[__('Sites')][$main_site_url] = __('Main Site Dashboard', 'wp-ultimo');
-
-			} // end if;
-
-		} // end if;
+				$links[ __('Sites') ][ $main_site_url ] = __('Main Site Dashboard', 'wp-ultimo');
+			}
+		}
 
 		return $links;
-
-	} // end add_wp_ultimo_extra_links;
+	}
 	/**
 	 * Get the trigger key defined by the user.
 	 *
@@ -269,8 +245,7 @@ class Jumper {
 	function get_defined_trigger_key(): string {
 
 		return substr((string) wu_get_setting('jumper_key', 'g'), 0, 1);
-
-	} // end get_defined_trigger_key;
+	}
 
 	/**
 	 * Get the trigger key combination depending on the OS
@@ -292,9 +267,8 @@ class Jumper {
 			'osx' => array('command', 'option', $trigger_key),
 		);
 
-		return isset($keys[$os]) ? $keys[$os] : $keys['win'];
-
-	} // end get_keys;
+		return isset($keys[ $os ]) ? $keys[ $os ] : $keys['win'];
+	}
 
 	/**
 	 * Changes the helper footer message about the Jumper and its trigger
@@ -306,11 +280,9 @@ class Jumper {
 	 */
 	public function add_jumper_footer_message($text) {
 
-		if (!wu_get_setting('jumper_display_tip', true)) {
-
+		if ( ! wu_get_setting('jumper_display_tip', true)) {
 			return $text;
-
-		} // end if;
+		}
 
 		$os = stristr((string) $_SERVER['HTTP_USER_AGENT'], 'mac') ? 'osx' : 'win';
 
@@ -319,17 +291,14 @@ class Jumper {
 		$html = '';
 
 		foreach ($keys as $key) {
-
 			$html .= '<span class="wu-keys-key">' . $key . '</span>+';
-
-		} // end foreach;
+		}
 
 		$html = trim($html, '+');
 
 		// translators: the %s placeholder is the key combination to trigger the Jumper.
 		return '<span class="wu-keys">' . sprintf(__('<strong>Quick Tip:</strong> Use %s to jump between pages.', 'wp-ultimo'), $html) . '</span>' . $text;
-
-	} // end add_jumper_footer_message;
+	}
 
 	/**
 	 * Enqueues the JavaScript files necessary to make the jumper work.
@@ -343,19 +312,22 @@ class Jumper {
 
 		wp_register_script('wu-jumper', wu_get_asset('jumper.js', 'js'), array('jquery', 'wu-selectize', 'wu-mousetrap', 'underscore'), wu_get_version(), true);
 
-		wp_localize_script('wu-jumper', 'wu_jumper_vars', array(
-			'not_found_message' => __('Nothing found for', 'wp-ultimo'),
-			'trigger_key'       => $this->get_defined_trigger_key(),
-			'network_base_url'  => network_admin_url(),
-			'ajaxurl'           => wu_ajax_url(),
-			'base_url'          => get_admin_url(get_current_site()->blog_id),
-		));
+		wp_localize_script(
+			'wu-jumper',
+			'wu_jumper_vars',
+			array(
+				'not_found_message' => __('Nothing found for', 'wp-ultimo'),
+				'trigger_key'       => $this->get_defined_trigger_key(),
+				'network_base_url'  => network_admin_url(),
+				'ajaxurl'           => wu_ajax_url(),
+				'base_url'          => get_admin_url(get_current_site()->blog_id),
+			)
+		);
 
 		wp_enqueue_script('wu-jumper');
 
 		wp_enqueue_style('wu-admin');
-
-	} // end enqueue_scripts;
+	}
 
 	/**
 	 * Enqueues the CSS files necessary to make the jumper work.
@@ -366,8 +338,7 @@ class Jumper {
 	public function enqueue_styles() {
 
 		wp_enqueue_style('wu-jumper', wu_get_asset('jumper.css', 'css'), array(), wu_get_version());
-
-	} // end enqueue_styles;
+	}
 
 	/**
 	 * Outputs the actual HTML markup of the Jumper.
@@ -377,11 +348,13 @@ class Jumper {
 	 */
 	public function output() {
 
-		wu_get_template('ui/jumper', array(
-			'menu_groups' => $this->get_link_list(),
-		));
-
-	} // end output;
+		wu_get_template(
+			'ui/jumper',
+			array(
+				'menu_groups' => $this->get_link_list(),
+			)
+		);
+	}
 	/**
 	 * Get the full page URL for admin pages.
 	 *
@@ -394,8 +367,7 @@ class Jumper {
 		$final_url = menu_page_url($url, false);
 
 		return str_replace(admin_url(), network_admin_url(), $final_url);
-
-	} // end get_menu_page_url;
+	}
 
 	/**
 	 * Returns the URL of a jumper menu item
@@ -411,20 +383,15 @@ class Jumper {
 	public function get_target_url($url) {
 
 		if (strpos($url, 'http') !== false) {
-
 			return $url;
-
-		} // end if;
+		}
 
 		if (strpos($url, '.php') !== false) {
-
 			return network_admin_url($url);
-
-		} // end if;
+		}
 
 		return $this->get_menu_page_url($url);
-
-	} // end get_target_url;
+	}
 
 	/**
 	 * Builds the list of links based on the $menu and $submenu globals.
@@ -435,55 +402,50 @@ class Jumper {
 	 */
 	public function build_link_list() {
 
-		return Logger::track_time('jumper', __('Regenerating Jumper menu items', 'wp-ultimo'), function() {
+		return Logger::track_time(
+			'jumper',
+			__('Regenerating Jumper menu items', 'wp-ultimo'),
+			function () {
 
-			global $menu, $submenu;
+				global $menu, $submenu;
 
-			// This variable is going to carry our options
-			$choices = array();
+				// This variable is going to carry our options
+				$choices = array();
 
-			// Prevent first run bug
-			if (!is_array($menu) || !is_array($submenu)) {
+				// Prevent first run bug
+				if ( ! is_array($menu) || ! is_array($submenu)) {
+					return array();
+				}
 
-				return array();
+				// Loop all submenus so que can get our final
+				foreach ($submenu as $menu_name => $submenu_items) {
+					$title = $this->search_recursive($menu_name, $menu);
 
-			} // end if;
+					$string = wu_get_isset($title, 0, '');
 
-			// Loop all submenus so que can get our final
-			foreach ($submenu as $menu_name => $submenu_items) {
+					$title = preg_replace('/[0-9]+/', '', strip_tags($string));
 
-				$title = $this->search_recursive($menu_name, $menu);
+					// If parent does not exists, skip
+					if ( ! empty($title) && is_array($submenu_items)) {
 
-				$string = wu_get_isset($title, 0, '');
+						// We have to loop now each submenu
+						foreach ($submenu_items as $submenu_item) {
+							$url = $this->get_target_url($submenu_item[2]);
 
-				$title = preg_replace('/[0-9]+/', '', strip_tags($string));
+							// Add to our choices the admin urls
+							$choices[ $title ][ $url ] = preg_replace('/[0-9]+/', '', strip_tags((string) $submenu_item[0]));
+						}
+					}
+				}
 
-				// If parent does not exists, skip
-				if (!empty($title) && is_array($submenu_items)) {
+				$choices = apply_filters('wu_link_list', $choices);
 
-					// We have to loop now each submenu
-					foreach ($submenu_items as $submenu_item) {
+				set_site_transient($this->transient_key, $choices, 10 * MINUTE_IN_SECONDS);
 
-						$url = $this->get_target_url($submenu_item[2]);
-
-						// Add to our choices the admin urls
-						$choices[$title][$url] = preg_replace('/[0-9]+/', '', strip_tags((string) $submenu_item[0]));
-
-					} // end foreach;
-
-				} // end if;
-
-			} // end foreach;
-
-			$choices = apply_filters('wu_link_list', $choices);
-
-			set_site_transient($this->transient_key, $choices, 10 * MINUTE_IN_SECONDS);
-
-			return $choices;
-
-		});
-
-	} // end build_link_list;
+				return $choices;
+			}
+		);
+	}
 
 	/**
 	 * Gets the cached menu list saved.
@@ -496,8 +458,7 @@ class Jumper {
 		$saved_menu = get_site_transient($this->transient_key);
 
 		return $saved_menu ? $saved_menu : array();
-
-	} // end get_saved_menu;
+	}
 
 	/**
 	 * Returns the link list.
@@ -507,11 +468,10 @@ class Jumper {
 	 */
 	public function get_link_list() {
 
-		$should_rebuild_menu = !get_site_transient($this->transient_key);
+		$should_rebuild_menu = ! get_site_transient($this->transient_key);
 
 		return $should_rebuild_menu && is_network_admin() ? $this->build_link_list() : $this->get_saved_menu();
-
-	} // end get_link_list;
+	}
 
 	/**
 	 * Filter the WP Multisite WaaS settings to add Jumper options
@@ -522,49 +482,67 @@ class Jumper {
 	 */
 	public function add_settings() {
 
-		wu_register_settings_section('tools', array(
-			'title' => __('Tools', 'wp-ultimo'),
-			'desc'  => __('Tools', 'wp-ultimo'),
-			'icon'  => 'dashicons-wu-tools',
-		));
+		wu_register_settings_section(
+			'tools',
+			array(
+				'title' => __('Tools', 'wp-ultimo'),
+				'desc'  => __('Tools', 'wp-ultimo'),
+				'icon'  => 'dashicons-wu-tools',
+			)
+		);
 
-		wu_register_settings_field('tools', 'tools_header', array(
-			'title' => __('Jumper', 'wp-ultimo'),
-			'desc'  => __('Spotlight-like search bar that allows you to easily access everything on your network.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
+		wu_register_settings_field(
+			'tools',
+			'tools_header',
+			array(
+				'title' => __('Jumper', 'wp-ultimo'),
+				'desc'  => __('Spotlight-like search bar that allows you to easily access everything on your network.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('tools', 'enable_jumper', array(
-			'title'   => __('Enable Jumper', 'wp-ultimo'),
-			'desc'    => __('Turn this option on to make the Jumper available on your network.', 'wp-ultimo'),
-			'type'    => 'toggle',
-			'default' => 1,
-		));
+		wu_register_settings_field(
+			'tools',
+			'enable_jumper',
+			array(
+				'title'   => __('Enable Jumper', 'wp-ultimo'),
+				'desc'    => __('Turn this option on to make the Jumper available on your network.', 'wp-ultimo'),
+				'type'    => 'toggle',
+				'default' => 1,
+			)
+		);
 
-		wu_register_settings_field('tools', 'jumper_key', array(
-			'title'   => __('Trigger Key', 'wp-ultimo'),
-			'desc'    => __('Change the keyboard key used in conjunction with ctrl + alt (or cmd + option), to trigger the Jumper box.', 'wp-ultimo'),
-			'type'    => 'text',
-			'default' => 'g',
-			'require' => array(
-				'enable_jumper' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'tools',
+			'jumper_key',
+			array(
+				'title'   => __('Trigger Key', 'wp-ultimo'),
+				'desc'    => __('Change the keyboard key used in conjunction with ctrl + alt (or cmd + option), to trigger the Jumper box.', 'wp-ultimo'),
+				'type'    => 'text',
+				'default' => 'g',
+				'require' => array(
+					'enable_jumper' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('tools', 'jumper_custom_links', array(
-			'title'       => __('Custom Links', 'wp-ultimo'),
-			'desc'        => __('Use this textarea to add custom links to the Jumper. Add one per line, with the format "Title : url".', 'wp-ultimo'),
-			'placeholder' => __('Tile of Custom Link : http://link.com', 'wp-ultimo'),
-			'type'        => 'textarea',
-			'html_attr'   => array(
-				'rows' => 4,
-			),
-			'require'     => array(
-				'enable_jumper' => 1,
-			),
-		));
-
-	} // end add_settings;
+		wu_register_settings_field(
+			'tools',
+			'jumper_custom_links',
+			array(
+				'title'       => __('Custom Links', 'wp-ultimo'),
+				'desc'        => __('Use this textarea to add custom links to the Jumper. Add one per line, with the format "Title : url".', 'wp-ultimo'),
+				'placeholder' => __('Tile of Custom Link : http://link.com', 'wp-ultimo'),
+				'type'        => 'textarea',
+				'html_attr'   => array(
+					'rows' => 4,
+				),
+				'require'     => array(
+					'enable_jumper' => 1,
+				),
+			)
+		);
+	}
 
 	/**
 	 * Helper function to recursively seach an array.
@@ -578,19 +556,13 @@ class Jumper {
 	public function search_recursive($needle, $haystack) {
 
 		foreach ($haystack as $key => $value) {
-
 			$current_key = $key;
 
 			if ($needle === $value || (is_array($value) && $this->search_recursive($needle, $value) !== false)) {
-
 				return $value;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return false;
-
-	} // end search_recursive;
-
-} // end class Jumper;
+	}
+}

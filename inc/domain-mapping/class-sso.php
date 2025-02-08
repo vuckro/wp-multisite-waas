@@ -26,5 +26,4 @@ defined('ABSPATH') || exit;
 class SSO {
 
 	use \WP_Ultimo\Traits\Singleton;
-
-} // end class SSO;
+}

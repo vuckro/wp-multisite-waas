@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\UI\Field;
+use WP_Ultimo\UI\Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -48,32 +48,37 @@ class Form implements \JsonSerializable {
 	 */
 	public function __construct($id, $fields, $atts = array()) {
 
-		$this->atts = apply_filters("wu_{$id}_form_atts", wp_parse_args($atts, array(
-			'id'                    => $id,
-			'method'                => 'post',
-			'before'                => '',
-			'after'                 => '',
-			'action'                => false,
-			'title'                 => false,
-			'wrap_in_form_tag'      => false,
-			'wrap_tag'              => 'div',
-			'classes'               => false,
-			'field_wrapper_classes' => false,
-			'field_classes'         => false,
-			'views'                 => 'settings/fields',
-			'variables'             => array(),
-			'step'                  => (object) array(
-				'classes'    => '',
-				'element_id' => '',
-			),
-			'html_attr'             => array(
-				'class' => '',
-			),
-		)));
+		$this->atts = apply_filters(
+			"wu_{$id}_form_atts",
+			wp_parse_args(
+				$atts,
+				array(
+					'id'                    => $id,
+					'method'                => 'post',
+					'before'                => '',
+					'after'                 => '',
+					'action'                => false,
+					'title'                 => false,
+					'wrap_in_form_tag'      => false,
+					'wrap_tag'              => 'div',
+					'classes'               => false,
+					'field_wrapper_classes' => false,
+					'field_classes'         => false,
+					'views'                 => 'settings/fields',
+					'variables'             => array(),
+					'step'                  => (object) array(
+						'classes'    => '',
+						'element_id' => '',
+					),
+					'html_attr'             => array(
+						'class' => '',
+					),
+				)
+			)
+		);
 
 		$this->set_fields($fields);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns attributes as class properties.
@@ -90,17 +95,14 @@ class Form implements \JsonSerializable {
 			'after',
 		);
 
-		$attr = isset($this->atts[$att]) ? $this->atts[$att] : false;
+		$attr = isset($this->atts[ $att ]) ? $this->atts[ $att ] : false;
 
 		if (in_array($att, $allowed_callable, true) && is_callable($attr)) {
-
 			$attr = call_user_func($attr, $this);
-
-		} // end if;
+		}
 
 		return $attr;
-
-	} // end __get;
+	}
 
 	/**
 	 * Returns the list of field attributes.
@@ -111,8 +113,7 @@ class Form implements \JsonSerializable {
 	public function get_attributes() {
 
 		return $this->atts;
-
-	} // end get_attributes;
+	}
 
 	/**
 	 * Returns the list of fields used by the form.
@@ -123,8 +124,7 @@ class Form implements \JsonSerializable {
 	public function get_fields() {
 
 		return (array) $this->fields;
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Casts fields to \WP_Ultimo\UI\Fields and stores them on private list.
@@ -148,14 +148,11 @@ class Form implements \JsonSerializable {
 		$fields = apply_filters("wu_{$id}_form_fields", $fields);
 
 		foreach ($fields as $field_slug => $field) {
-
 			$field['form'] = $this;
 
-			$this->fields[$field_slug] = new Field($field_slug, $field);
-
-		} // end foreach;
-
-	} // end set_fields;
+			$this->fields[ $field_slug ] = new Field($field_slug, $field);
+		}
+	}
 
 	/**
 	 * Renders the form with its fields.
@@ -165,42 +162,44 @@ class Form implements \JsonSerializable {
 	 */
 	public function render() {
 
-		$variables = array_merge($this->variables, array(
-			'form_slug' => $this->id,
-			'form'      => $this,
-			'step'      => $this->step,
-		));
+		$variables = array_merge(
+			$this->variables,
+			array(
+				'form_slug' => $this->id,
+				'form'      => $this,
+				'step'      => $this->step,
+			)
+		);
 
 		ob_start();
 
 		foreach ($this->get_fields() as $field_slug => $field) {
-
 			$template_name = $field->get_template_name();
 
 			if (wu_get_isset($field->wrapper_html_attr, 'id') === false) {
-
 				$new_wrapper_attributes = $field->wrapper_html_attr;
 
 				$new_wrapper_attributes['id'] = "wrapper-field-$field_slug";
 
 				$field->set_attribute('wrapper_html_attr', $new_wrapper_attributes);
+			}
 
-			} // end if;
-
-			wu_get_template("{$this->views}/field-{$template_name}", array(
-				'field_slug' => $field_slug,
-				'field'      => $field,
-			), "{$this->views}/field-text");
-
-		} // end foreach;
+			wu_get_template(
+				"{$this->views}/field-{$template_name}",
+				array(
+					'field_slug' => $field_slug,
+					'field'      => $field,
+				),
+				"{$this->views}/field-text"
+			);
+		}
 
 		$rendered_fields = ob_get_clean();
 
 		$variables['rendered_fields'] = $rendered_fields;
 
 		wu_get_template("{$this->views}/form", $variables);
-
-	} // end render;
+	}
 
 	/**
 	 * Return HTML attributes for the field.
@@ -215,24 +214,17 @@ class Form implements \JsonSerializable {
 		unset($this->atts['html_attr']['class']);
 
 		if ($this->type === 'number') {
-
 			if ($this->min !== false) {
-
 				$attributes['min'] = $this->min;
-
-			} // end if;
+			}
 
 			if ($this->max !== false) {
-
 				$attributes['max'] = $this->max;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return wu_array_to_html_attrs($attributes);
-
-	} // end get_html_attributes;
+	}
 
 	/**
 	 * Implements our on json_decode version of this object. Useful for use in vue.js
@@ -244,7 +236,5 @@ class Form implements \JsonSerializable {
 	public function jsonSerialize() {
 
 		return $this->atts;
-
-	} // end jsonSerialize;
-
-} // end class Form;
+	}
+}

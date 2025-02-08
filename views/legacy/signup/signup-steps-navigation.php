@@ -15,14 +15,12 @@
  * @version     1.4.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
-if (!$signup) {
-
-  return;
-
+if ( ! $signup) {
+	return;
 } // end if;
 
 ?>
@@ -39,33 +37,30 @@ $percent     = 100 / $count;
 
 <ol class="wu-setup-steps">
 
-  <?php foreach ($ouput_steps as $step) : 
+	<?php
+	foreach ($ouput_steps as $step) :
+		$step_key = $step['id'];
 
-    $step_key = $step['id'];
+		/**
+		 * Class element of the Step Status Bar
+	 *
+		 * @var string
+		 */
+		$class = '';
 
-    /**
-     * Class element of the Step Status Bar
-     * @var string
-     */
-    $class = '';
+		if ($step_key === $signup->step) {
+			$class = 'active';
+		} elseif (array_search($signup->step, array_keys($signup->steps)) > array_search($step_key, array_keys($signup->steps))) {
+			$class = 'done';
+		} // end if;
 
-    if ($step_key === $signup->step) {
+		?>
 
-      $class = 'active';
+	<li style="width: <?php echo $percent; ?>%;" class="<?php echo $class; ?>">
 
-    } elseif (array_search($signup->step, array_keys($signup->steps)) > array_search($step_key, array_keys($signup->steps))) {
+		<?php echo esc_html($step['name']); ?>
 
-      $class = 'done';
-
-    } // end if;
-
-    ?>
-
-    <li style="width: <?php echo $percent; ?>%;" class="<?php echo $class; ?>">
-
-      <?php echo esc_html($step['name']); ?>
-
-    </li>
+	</li>
 
 <?php endforeach; ?>
 
@@ -73,14 +68,14 @@ $percent     = 100 / $count;
 
 <?php if ($prev_link = $signup->get_prev_step_link()) : ?>
 
-  <div class="wu-signup-back">
+	<div class="wu-signup-back">
 
-    <a class="wu-signup-back-link" href="<?php echo $prev_link; ?>">
+	<a class="wu-signup-back-link" href="<?php echo $prev_link; ?>">
 
-      <?php _e('&larr; Go Back to Previous Step', 'wp-ultimo'); ?>
+		<?php _e('&larr; Go Back to Previous Step', 'wp-ultimo'); ?>
 
-    </a>
+	</a>
 
-  </div>
+	</div>
 
 <?php endif; ?>

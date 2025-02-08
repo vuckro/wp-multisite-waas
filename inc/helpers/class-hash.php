@@ -29,7 +29,7 @@ class Hash {
 	/**
 	 * Static-only class.
 	 */
-	private function __construct() {} // end __construct;
+	private function __construct() {}
 
 	/**
 	 * Encodes a number or ID. Do not use to encode strings.
@@ -45,8 +45,7 @@ class Hash {
 		$hasher = new Hashids($group, self::LENGTH, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
 
 		return $hasher->encode($number);
-
-	} // end encode;
+	}
 
 	/**
 	 * Decodes a hash back into an integer.
@@ -62,7 +61,5 @@ class Hash {
 		$hasher = new Hashids($group, 10, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
 
 		return current($hasher->decode($hash));
-
-	} // end decode;
-
-} // end class Hash;
+	}
+}

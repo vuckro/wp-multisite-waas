@@ -42,8 +42,7 @@ class Logger extends AbstractLogger {
 	public static function get_logs_folder() {
 
 		return wu_maybe_create_folder('wu-logs');
-
-	} // end get_logs_folder;
+	}
 
 	/**
 	 * Add a log entry to chosen file.
@@ -57,10 +56,8 @@ class Logger extends AbstractLogger {
 		$allowed_log_level = wu_get_setting('error_logging_level', 'default');
 
 		if ($allowed_log_level === 'disabled') {
-
 			return;
-
-		} // end if;
+		}
 
 		if ($allowed_log_level === 'default') {
 			/**
@@ -91,42 +88,30 @@ class Logger extends AbstractLogger {
 			$current_log_levels = array();
 
 			foreach ($psr_log_levels as $php_level => $psr_level) {
-
 				if ($reporting_level & $php_level) {
-
 					$current_log_levels[] = $psr_level;
+				}
+			}
 
-				} // end if;
-
-			} // end foreach;
-
-			if (!in_array($log_level, $current_log_levels, true) && ($reporting_level & ~E_ALL)) {
-
+			if ( ! in_array($log_level, $current_log_levels, true) && ($reporting_level & ~E_ALL)) {
 				return;
-
-			} // end if;
-
+			}
 		} elseif ($allowed_log_level === 'errors' && $log_level !== LogLevel::ERROR && $log_level !== LogLevel::CRITICAL) {
-
 			return;
-
-		} // end if;
+		}
 
 		$instance = self::get_instance();
 
 		$instance->set_log_file(self::get_logs_folder() . "/$handle.log");
 
 		if (is_wp_error($message)) {
-
 			$message = $message->get_error_message();
-
-		} // end if;
+		}
 
 		$instance->log($log_level, $message);
 
 		do_action('wu_log_add', $handle, $message);
-
-	} // end add;
+	}
 
 	/**
 	 * Get the log contents
@@ -141,11 +126,9 @@ class Logger extends AbstractLogger {
 
 		$file = self::get_logs_folder() . "/$handle.log";
 
-		if (!file_exists($file)) {
-
+		if ( ! file_exists($file)) {
 			return array();
-
-		} // end if;
+		}
 
 		// read file
 		$content = file_get_contents($file);
@@ -155,15 +138,12 @@ class Logger extends AbstractLogger {
 
 		// remove last line if empty
 		if (empty(end($arr_content))) {
-
 			array_pop($arr_content);
-
-		} // end if;
+		}
 
 		// return last lines
 		return array_slice($arr_content, -$lines);
-
-	} // end read_lines;
+	}
 
 	/**
 	 * Clear entries from chosen file.
@@ -176,14 +156,11 @@ class Logger extends AbstractLogger {
 
 		// Delete the file if it exists.
 		if (file_exists($file)) {
-
 			@unlink($file); // phpcs:ignore
-
-		} // end if;
+		}
 
 		do_action('wu_log_clear', $handle);
-
-	} // end clear;
+	}
 
 	/**
 	 * Takes a callable as a parameter and logs how much time it took to execute it.
@@ -209,8 +186,7 @@ class Logger extends AbstractLogger {
 		self::add($handle, $message);
 
 		return $return;
-
-	} // end track_time;
+	}
 
 	/**
 	 * Set the log file path.
@@ -222,8 +198,7 @@ class Logger extends AbstractLogger {
 	public function set_log_file($log_file) {
 
 		$this->log_file = $log_file;
-
-	} // end set_log_file;
+	}
 
 	/**
 	 * Logs with an arbitrary level.
@@ -238,17 +213,14 @@ class Logger extends AbstractLogger {
 	 */
 	public function log($level, $message, array $context = array()) {
 
-		if (!$this->is_valid_log_level($level) ) {
-
+		if ( ! $this->is_valid_log_level($level) ) {
 			return;
-
-		} // end if;
+		}
 
 		$formatted_message = $this->format_message($level, $message, $context);
 
 		$this->write_to_file($formatted_message);
-
-	} // end log;
+	}
 
 	/**
 	 * Check if the log level is valid.
@@ -271,8 +243,7 @@ class Logger extends AbstractLogger {
 		);
 
 		return in_array($level, $valid_log_levels, true);
-
-	} // end is_valid_log_level;
+	}
 
 	/**
 	 * Format the message to be logged.
@@ -296,8 +267,7 @@ class Logger extends AbstractLogger {
 		);
 
 		return $formatted_message;
-
-	} // end format_message;
+	}
 
 	/**
 	 * Write the message to the log file.
@@ -309,20 +279,14 @@ class Logger extends AbstractLogger {
 	 */
 	protected function write_to_file($message) {
 
-		if (!file_exists($this->log_file)) {
-
+		if ( ! file_exists($this->log_file)) {
 			touch($this->log_file);
+		}
 
-		} // end if;
-
-		if (!is_writable($this->log_file)) {
-
+		if ( ! is_writable($this->log_file)) {
 			return;
-
-		} // end if;
+		}
 
 		file_put_contents($this->log_file, $message, FILE_APPEND | LOCK_EX);
-
-	} // end write_to_file;
-
-} // end class Logger;
+	}
+}

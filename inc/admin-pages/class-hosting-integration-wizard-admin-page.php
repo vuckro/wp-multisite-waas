@@ -87,24 +87,19 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	public function page_loaded() {
 
 		if (isset($_GET['integration'])) {
-
 			$domain_manager = \WP_Ultimo\Managers\Domain_Manager::get_instance();
 
 			$this->integration = $domain_manager->get_integration_instance($_GET['integration']);
+		}
 
-		} // end if;
-
-		if (!$this->integration) {
-
+		if ( ! $this->integration) {
 			wp_redirect(network_admin_url('admin.php?page=wp-ultimo-settings'));
 
 			exit;
-
-		} // end if;
+		}
 
 		parent::page_loaded();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -115,8 +110,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	public function get_title(): string {
 
 		return sprintf(__('Integration Setup', 'wp-ultimo'));
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -127,8 +121,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Host Provider Integration', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the sections for this Wizard.
@@ -167,23 +160,18 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 		 * Some host providers require no instructions.
 		 */
 		if ($this->integration->supports('no-instructions')) {
-
 			unset($sections['instructions']);
-
-		} // end if;
+		}
 
 		/*
 		 * Some host providers require no additional setup.
 		 */
 		if ($this->integration->supports('no-config')) {
-
 			unset($sections['config']);
-
-		} // end if;
+		}
 
 		return $sections;
-
-	} // end get_sections;
+	}
 
 	/**
 	 * Displays the content of the activation section.
@@ -195,15 +183,17 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		$explainer_lines = $this->integration->get_explainer_lines();
 
-		wu_get_template('wizards/host-integrations/activation', array(
-			'screen'      => get_current_screen(),
-			'page'        => $this,
-			'integration' => $this->integration,
-			'will'        => $explainer_lines['will'],
-			'will_not'    => $explainer_lines['will_not'],
-		));
-
-	} // end section_activation;
+		wu_get_template(
+			'wizards/host-integrations/activation',
+			array(
+				'screen'      => get_current_screen(),
+				'page'        => $this,
+				'integration' => $this->integration,
+				'will'        => $explainer_lines['will'],
+				'will_not'    => $explainer_lines['will_not'],
+			)
+		);
+	}
 
 	/**
 	 * Displays the contents of the instructions section.
@@ -216,8 +206,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 		call_user_func(array($this->integration, 'get_instructions'));
 
 		$this->render_submit_box();
-
-	} // end section_instructions;
+	}
 
 	/**
 	 * Displays the content of the configuration section.
@@ -230,39 +219,44 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 		$fields = $this->integration->get_fields();
 
 		foreach ($fields as $field_constant => &$field) {
-
 			$field['value'] = defined($field_constant) && constant($field_constant) ? constant($field_constant) : '';
+		}
 
-		} // end foreach;
-
-		$form = new \WP_Ultimo\UI\Form($this->get_current_section(), $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-px-6 wu-py-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			$this->get_current_section(),
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-px-6 wu-py-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+			)
+		);
 
 		if (wu_request('manual')) {
+			wu_get_template(
+				'wizards/host-integrations/configuration-results',
+				array(
+					'screen'      => get_current_screen(),
+					'page'        => $this,
+					'integration' => $this->integration,
+					'form'        => $form,
+					'post'        => $_GET['post'],
+				)
+			);
 
-			wu_get_template('wizards/host-integrations/configuration-results', array(
+			return;
+		}
+
+		wu_get_template(
+			'wizards/host-integrations/configuration',
+			array(
 				'screen'      => get_current_screen(),
 				'page'        => $this,
 				'integration' => $this->integration,
 				'form'        => $form,
-				'post'        => $_GET['post'],
-			));
-
-			return;
-
-		} // end if;
-
-		wu_get_template('wizards/host-integrations/configuration', array(
-			'screen'      => get_current_screen(),
-			'page'        => $this,
-			'integration' => $this->integration,
-			'form'        => $form,
-		));
-
-	} // end section_configuration;
+			)
+		);
+	}
 
 	/**
 	 * Displays the content of the final section.
@@ -272,13 +266,15 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function section_ready() {
 
-		wu_get_template('wizards/host-integrations/ready', array(
-			'screen'      => get_current_screen(),
-			'page'        => $this,
-			'integration' => $this->integration,
-		));
-
-	} // end section_ready;
+		wu_get_template(
+			'wizards/host-integrations/ready',
+			array(
+				'screen'      => get_current_screen(),
+				'page'        => $this,
+				'integration' => $this->integration,
+			)
+		);
+	}
 
 	/**
 	 * Handles the activation of a given integration.
@@ -291,20 +287,17 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 		$is_enabled = $this->integration->is_enabled();
 
 		if ($is_enabled) {
-
 			$this->integration->disable();
 
 			return;
-
-		} // end if;
+		}
 
 		$this->integration->enable();
 
 		wp_redirect($this->get_next_section_link());
 
 		exit;
-
-	} // end handle_activation;
+	}
 
 	/**
 	 * Handles the configuration of a given integration.
@@ -316,22 +309,22 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		if (wu_request('submit') == '0') { // phpcs:ignore
 
-			$redirect_url = add_query_arg(array(
-				'manual' => '1',
-				'post'   => $_POST,
-			));
+			$redirect_url = add_query_arg(
+				array(
+					'manual' => '1',
+					'post'   => $_POST,
+				)
+			);
 
 			wp_redirect($redirect_url);
 
 			exit;
-
-		} // end if;
+		}
 
 		if (wu_request('submit') == '1') { // phpcs:ignore
 
 			$this->integration->setup_constants($_POST);
-
-		} // end if;
+		}
 
 		$redirect_url = $this->get_next_section_link();
 
@@ -342,8 +335,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 		wp_redirect($redirect_url);
 
 		exit;
-
-	} // end handle_configuration;
+	}
 
 	/**
 	 * Handles the testing of a given configuration.
@@ -356,12 +348,13 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		wp_enqueue_script('wu-vue');
 
-		wu_get_template('wizards/host-integrations/test', array(
-			'screen'      => get_current_screen(),
-			'page'        => $this,
-			'integration' => $this->integration,
-		));
-
-	} // end section_test;
-
-} // end class Hosting_Integration_Wizard_Admin_Page;
+		wu_get_template(
+			'wizards/host-integrations/test',
+			array(
+				'screen'      => get_current_screen(),
+				'page'        => $this,
+				'integration' => $this->integration,
+			)
+		);
+	}
+}

@@ -12,7 +12,7 @@ namespace WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Steps;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Base_Field_Template;
+use WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Base_Field_Template;
 
 /**
  * Template Selection Clean
@@ -52,8 +52,7 @@ class Clean_Steps_Field_Template extends Base_Field_Template {
 	public function get_render_type(): string {
 
 		return 'dynamic';
-
- 	} // end get_render_type;
+	}
 
 	/**
 	 * The title of the field template.
@@ -66,8 +65,7 @@ class Clean_Steps_Field_Template extends Base_Field_Template {
 	public function get_title() {
 
 		return __('Clean', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the field template.
@@ -80,8 +78,7 @@ class Clean_Steps_Field_Template extends Base_Field_Template {
 	public function get_description() {
 
 		return __('A simple layout with minimal styling, just enough to make it usable out-of-the-box.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The preview of the field template.
@@ -92,8 +89,7 @@ class Clean_Steps_Field_Template extends Base_Field_Template {
 	public function get_preview(): string {
 
 		return wu_get_asset('checkout-forms/clean-steps.png');
-
-	} // end get_preview;
+	}
 
 	/**
 	 * The content of the template.
@@ -106,7 +102,5 @@ class Clean_Steps_Field_Template extends Base_Field_Template {
 	public function output($attributes) {
 
 		wu_get_template('checkout/templates/steps/clean', $attributes);
-
-	} // end output;
-
-} // end class Clean_Steps_Field_Template;
+	}
+}

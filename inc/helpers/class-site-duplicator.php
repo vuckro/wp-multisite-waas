@@ -16,11 +16,9 @@ defined('ABSPATH') || exit;
 
 require_once WP_ULTIMO_PLUGIN_DIR . '/inc/duplication/duplicate.php';
 
-if (!defined('MUCD_PRIMARY_SITE_ID')) {
-
+if ( ! defined('MUCD_PRIMARY_SITE_ID')) {
 	define('MUCD_PRIMARY_SITE_ID', get_current_network_id()); // phpcs:ignore
-
-} // end if;
+}
 
 /**
  * Exposes the public API to handle site duplication.
@@ -36,7 +34,7 @@ class Site_Duplicator {
 	/**
 	 * Static-only class.
 	 */
-	private function __construct() {} // end __construct;
+	private function __construct() {}
 
 	/**
 	 * Duplicate an existing network site.
@@ -53,7 +51,7 @@ class Site_Duplicator {
 		$args['from_site_id'] = $from_site_id;
 		$args['title']        = $title;
 
-		$duplicate_site = Site_Duplicator::process_duplication($args);
+		$duplicate_site = self::process_duplication($args);
 
 		if (is_wp_error($duplicate_site)) {
 
@@ -63,8 +61,7 @@ class Site_Duplicator {
 			wu_log_add('site-duplication', $message, LogLevel::ERROR);
 
 			return $duplicate_site;
-
-		} // end if;
+		}
 
 		// translators: %1$d is the ID of the site template used, and %2$d is the id of the new site.
 		$message = sprintf(__('Attempt to duplicate site %1$d successful - New site id: %2$d', 'wp-ultimo'), $from_site_id, $duplicate_site);
@@ -72,8 +69,7 @@ class Site_Duplicator {
 		wu_log_add('site-duplication', $message);
 
 		return $duplicate_site;
-
-	} // end duplicate_site;
+	}
 
 	/**
 	 * Replace the contents of a site with the contents of another.
@@ -95,14 +91,17 @@ class Site_Duplicator {
 
 		$to_site_customer = $to_site_membership->get_customer();
 
-		$args = wp_parse_args($args, array(
-			'email'        => $to_site_customer->get_email_address(),
-			'title'        => $to_site->get_title(),
-			'path'         => $to_site->get_path(),
-			'from_site_id' => $from_site_id,
-			'to_site_id'   => $to_site_id,
-			'meta'         => $to_site->meta
-		));
+		$args = wp_parse_args(
+			$args,
+			array(
+				'email'        => $to_site_customer->get_email_address(),
+				'title'        => $to_site->get_title(),
+				'path'         => $to_site->get_path(),
+				'from_site_id' => $from_site_id,
+				'to_site_id'   => $to_site_id,
+				'meta'         => $to_site->meta,
+			)
+		);
 
 		$duplicate_site_id = self::process_duplication($args);
 
@@ -114,8 +113,7 @@ class Site_Duplicator {
 			wu_log_add('site-duplication', $message, LogLevel::ERROR);
 
 			return false;
-
-		} // end if;
+		}
 
 		$new_to_site = wu_get_site($duplicate_site_id);
 
@@ -139,10 +137,8 @@ class Site_Duplicator {
 			wu_log_add('site-duplication', $message);
 
 			return $saved;
-
-		} // end if;
-
-	} // end override_site;
+		}
+	}
 
 	/**
 	 * Processes a site duplication.
@@ -166,20 +162,23 @@ class Site_Duplicator {
 
 		global $current_site, $wpdb;
 
-		$args = wp_parse_args($args, array(
-			'email'        => '',    // Required arguments.
-			'title'        => '',    // Required arguments.
-			'path'         => '/',   // Required arguments.
-			'from_site_id' => false, // Required arguments.
-			'to_site_id'   => false,
-			'keep_users'   => true,
-			'public'       => true,
-			'domain'       => $current_site->domain,
-			'copy_files'   => wu_get_setting('copy_media', true),
-			'network_id'   => get_current_network_id(),
-			'meta'         => array(),
-			'user_id'      => 0,
-		));
+		$args = wp_parse_args(
+			$args,
+			array(
+				'email'        => '',    // Required arguments.
+				'title'        => '',    // Required arguments.
+				'path'         => '/',   // Required arguments.
+				'from_site_id' => false, // Required arguments.
+				'to_site_id'   => false,
+				'keep_users'   => true,
+				'public'       => true,
+				'domain'       => $current_site->domain,
+				'copy_files'   => wu_get_setting('copy_media', true),
+				'network_id'   => get_current_network_id(),
+				'meta'         => array(),
+				'user_id'      => 0,
+			)
+		);
 
 		// Checks
 		$args = (object) $args;
@@ -188,55 +187,41 @@ class Site_Duplicator {
 
 		$wpdb->hide_errors();
 
-		if (!$args->from_site_id) {
-
+		if ( ! $args->from_site_id) {
 			return new \WP_Error('from_site_id_required', __('You need to provide a valid site to duplicate.', 'wp-ultimo'));
+		}
 
-		} // end if;
-
-		$user_id = !empty($args->user_id) ? $args->user_id : self::create_admin($args->email, $site_domain);
+		$user_id = ! empty($args->user_id) ? $args->user_id : self::create_admin($args->email, $site_domain);
 
 		if (is_wp_error($user_id)) {
-
 			return $user_id;
+		}
 
-		} // end if;
-
-		if (!$args->to_site_id) {
-
+		if ( ! $args->to_site_id) {
 			$meta = array_merge($args->meta, array('public' => $args->public));
 
 			$args->to_site_id = wpmu_create_blog($args->domain, $args->path, $args->title, $user_id, $meta, $args->network_id);
 
 			$wpdb->show_errors();
-
-		} // end if;
+		}
 
 		if (is_wp_error($args->to_site_id)) {
-
 			return $args->to_site_id;
+		}
 
-		} // end if;
-
-		if (!is_numeric($args->to_site_id)) {
-
+		if ( ! is_numeric($args->to_site_id)) {
 			return new \WP_Error('site_creation_failed', __('An attempt to create a new site failed.', 'wp-ultimo'));
+		}
 
-		} // end if;
-
-		if (!is_super_admin($user_id) && !get_user_option('primary_blog', $user_id)) {
-
+		if ( ! is_super_admin($user_id) && ! get_user_option('primary_blog', $user_id)) {
 			update_user_option($user_id, 'primary_blog', $args->to_site_id, true);
-
-		} // end if;
+		}
 
 		\MUCD_Duplicate::bypass_server_limit();
 
 		if ($args->copy_files) {
-
 			$result = \MUCD_Files::copy_files($args->from_site_id, $args->to_site_id);
-
-		} // end if;
+		}
 
 		/**
 		 * Supress email change notification on site duplication processes.
@@ -246,10 +231,8 @@ class Site_Duplicator {
 		$result = \MUCD_Data::copy_data($args->from_site_id, $args->to_site_id);
 
 		if ($args->keep_users) {
-
 			$result = \MUCD_Duplicate::copy_users($args->from_site_id, $args->to_site_id);
-
-		} // end if;
+		}
 
 		wp_cache_flush();
 
@@ -259,13 +242,15 @@ class Site_Duplicator {
 		 * @since 1.9.4
 		 * @return void
 		 */
-		do_action('wu_duplicate_site', array(
-			'site_id' => $args->to_site_id,
-		));
+		do_action(
+			'wu_duplicate_site',
+			array(
+				'site_id' => $args->to_site_id,
+			)
+		);
 
 		return $args->to_site_id;
-
-	} // end process_duplication;
+	}
 
 	/**
 	 * Creates an admin user if no user exists with this email.
@@ -282,26 +267,19 @@ class Site_Duplicator {
 
 		$user_id = email_exists($email);
 
-		if (!$user_id) { // Create a new user with a random password
+		if ( ! $user_id) { // Create a new user with a random password
 
 			$password = wp_generate_password(12, false);
 
 			$user_id = wpmu_create_user($domain, $password, $email);
 
 			if (false === $user_id) {
-
 				return new \WP_Error('user_creation_error', __('We were not able to create a new admin user for the site being duplicated.', 'wp-ultimo'));
-
 			} else {
-
 				wp_new_user_notification($user_id);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $user_id;
-
-	} // end create_admin;
-
-} // end class Site_Duplicator;
+	}
+}

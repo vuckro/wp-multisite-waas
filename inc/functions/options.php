@@ -22,8 +22,7 @@ function wu_get_option($option_name = 'settings', $default = array()) {
 	$option_value = get_network_option(null, wu_slugify($option_name), $default);
 
 	return apply_filters('wu_get_option', $option_value, $option_name, $default);
-
-} // end wu_get_option;
+}
 
 /**
  * Save slugfied network option
@@ -36,8 +35,7 @@ function wu_get_option($option_name = 'settings', $default = array()) {
 function wu_save_option($option_name = 'settings', $value = false) {
 
 	return update_network_option(null, wu_slugify($option_name), $value);
-
-} // end wu_save_option;
+}
 
 /**
  * Delete slugfied network option
@@ -49,5 +47,4 @@ function wu_save_option($option_name = 'settings', $value = false) {
 function wu_delete_option($option_name) {
 
 	return delete_network_option(null, wu_slugify($option_name));
-
-} // end wu_delete_option;
+}

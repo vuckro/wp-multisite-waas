@@ -9,18 +9,18 @@
 
 namespace WP_Ultimo\Helpers;
 
-use \Rakit\Validation\Validator as Validator_Helper;
-use \WP_Ultimo\Helpers\Validation_Rules\Unique;
-use \WP_Ultimo\Helpers\Validation_Rules\Unique_Site;
-use \WP_Ultimo\Helpers\Validation_Rules\Exists;
-use \WP_Ultimo\Helpers\Validation_Rules\Checkout_Steps;
-use \WP_Ultimo\Helpers\Validation_Rules\Price_Variations;
-use \WP_Ultimo\Helpers\Validation_Rules\Domain;
-use \WP_Ultimo\Helpers\Validation_Rules\Site_Template;
-use \WP_Ultimo\Helpers\Validation_Rules\Products;
-use \WP_Ultimo\Helpers\Validation_Rules\Country;
-use \WP_Ultimo\Helpers\Validation_Rules\State;
-use \WP_Ultimo\Helpers\Validation_Rules\City;
+use Rakit\Validation\Validator as Validator_Helper;
+use WP_Ultimo\Helpers\Validation_Rules\Unique;
+use WP_Ultimo\Helpers\Validation_Rules\Unique_Site;
+use WP_Ultimo\Helpers\Validation_Rules\Exists;
+use WP_Ultimo\Helpers\Validation_Rules\Checkout_Steps;
+use WP_Ultimo\Helpers\Validation_Rules\Price_Variations;
+use WP_Ultimo\Helpers\Validation_Rules\Domain;
+use WP_Ultimo\Helpers\Validation_Rules\Site_Template;
+use WP_Ultimo\Helpers\Validation_Rules\Products;
+use WP_Ultimo\Helpers\Validation_Rules\Country;
+use WP_Ultimo\Helpers\Validation_Rules\State;
+use WP_Ultimo\Helpers\Validation_Rules\City;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -66,44 +66,49 @@ class Validator {
 		// translators: %s is the field name.
 		$field_required_message = sprintf(__('The %s field is required', 'wp-ultimo'), ':attribute');
 
-		$validation_error_messages = apply_filters('wu_validator_error_messages', array(
-			'required'         => $field_required_message,
-			'required_without' => $field_required_message,
-			'required_with'    => $field_required_message,
-			// translators: %s is the email field identifier
-			'email'            => sprintf(__('The %s is not valid email', 'wp-ultimo'), ':attribute'),
-			// translators: 1st %s is the field name; 2nd is the allowed value
-			'min'              => sprintf(__('The %1$s minimum is %2$s', 'wp-ultimo'), ':attribute', ':min'),
-			// translators: 1st %s is the field name; 2nd is the allowed value
-			'max'              => sprintf(__('The %1$s maximum is %2$s', 'wp-ultimo'), ':attribute', ':max'),
-			// translators: %s is the field identifier
-			'alpha_dash'       => sprintf(__('The %s only allows a-z, 0-9, _ and -', 'wp-ultimo'), ':attribute'),
-			// translators: %s is the field identifier
-			'lowercase'        => sprintf(__('The %s must be lowercase', 'wp-ultimo'), ':attribute'),
-			// translators: %s is the field identifier
-			'integer'          => sprintf(__('The %s must be integer', 'wp-ultimo'), ':attribute')
-		), $this);
+		$validation_error_messages = apply_filters(
+			'wu_validator_error_messages',
+			array(
+				'required'         => $field_required_message,
+				'required_without' => $field_required_message,
+				'required_with'    => $field_required_message,
+				// translators: %s is the email field identifier
+				'email'            => sprintf(__('The %s is not valid email', 'wp-ultimo'), ':attribute'),
+				// translators: 1st %s is the field name; 2nd is the allowed value
+				'min'              => sprintf(__('The %1$s minimum is %2$s', 'wp-ultimo'), ':attribute', ':min'),
+				// translators: 1st %s is the field name; 2nd is the allowed value
+				'max'              => sprintf(__('The %1$s maximum is %2$s', 'wp-ultimo'), ':attribute', ':max'),
+				// translators: %s is the field identifier
+				'alpha_dash'       => sprintf(__('The %s only allows a-z, 0-9, _ and -', 'wp-ultimo'), ':attribute'),
+				// translators: %s is the field identifier
+				'lowercase'        => sprintf(__('The %s must be lowercase', 'wp-ultimo'), ':attribute'),
+				// translators: %s is the field identifier
+				'integer'          => sprintf(__('The %s must be integer', 'wp-ultimo'), ':attribute'),
+			),
+			$this
+		);
 
 		$this->validator = new Validator_Helper($validation_error_messages);
 
-		$this->validator->setTranslations(array(
-			'and' => __('and', 'wp-ultimo'),
-			'or'  => __('or', 'wp-ultimo'),
-		));
+		$this->validator->setTranslations(
+			array(
+				'and' => __('and', 'wp-ultimo'),
+				'or'  => __('or', 'wp-ultimo'),
+			)
+		);
 
-		$this->validator->addValidator('unique', new Unique);
-		$this->validator->addValidator('unique_site', new Unique_Site);
-		$this->validator->addValidator('exists', new Exists);
-		$this->validator->addValidator('checkout_steps', new Checkout_Steps);
-		$this->validator->addValidator('price_variations', new Price_Variations);
-		$this->validator->addValidator('domain', new Domain);
-		$this->validator->addValidator('site_template', new Site_Template);
-		$this->validator->addValidator('products', new Products);
-		$this->validator->addValidator('country', new Country);
-		$this->validator->addValidator('state', new State);
-		$this->validator->addValidator('city', new City);
-
-	} // end __construct;
+		$this->validator->addValidator('unique', new Unique());
+		$this->validator->addValidator('unique_site', new Unique_Site());
+		$this->validator->addValidator('exists', new Exists());
+		$this->validator->addValidator('checkout_steps', new Checkout_Steps());
+		$this->validator->addValidator('price_variations', new Price_Variations());
+		$this->validator->addValidator('domain', new Domain());
+		$this->validator->addValidator('site_template', new Site_Template());
+		$this->validator->addValidator('products', new Products());
+		$this->validator->addValidator('country', new Country());
+		$this->validator->addValidator('state', new State());
+		$this->validator->addValidator('city', new City());
+	}
 
 	/**
 	 * Validates the data passed according to the rules passed.
@@ -118,7 +123,7 @@ class Validator {
 	 */
 	public function validate($data, $rules = array(), $aliases = array()) {
 
-		$this->errors = new \WP_Error;
+		$this->errors = new \WP_Error();
 
 		$this->validation = $this->validator->make($data, $rules);
 
@@ -127,8 +132,7 @@ class Validator {
 		$this->validation->validate();
 
 		return $this;
-
-	} // end validate;
+	}
 
 	/**
 	 * Returns true when the validation fails.
@@ -139,8 +143,7 @@ class Validator {
 	public function fails() {
 
 		return $this->validation->fails();
-
-	} // end fails;
+	}
 
 	/**
 	 * Returns a WP_Error object containing all validation errors.
@@ -155,8 +158,7 @@ class Validator {
 		$this->cast_to_wp_error($errors);
 
 		return $this->errors;
-
-	} // end get_errors;
+	}
 
 	/**
 	 * Converts the native error structure to a WP_Error object.
@@ -169,16 +171,11 @@ class Validator {
 	protected function cast_to_wp_error($errors) {
 
 		foreach ($errors as $key => $error_messages) {
-
 			foreach ($error_messages as $error_message) {
-
 				$this->errors->add($key, $error_message);
-
-			} // end foreach;
-
-		} // end foreach;
-
-	} // end cast_to_wp_error;
+			}
+		}
+	}
 
 	/**
 	 * Get holds an instance of the validation being performed.
@@ -189,7 +186,5 @@ class Validator {
 	public function get_validation() {
 
 		return $this->validation;
-
-	} // end get_validation;
-
-} // end class Validator;
+	}
+}

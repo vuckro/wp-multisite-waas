@@ -8,6 +8,7 @@
 
 <?php if ($field->desc) : ?>
 
-  <?php echo $field->desc; ?>
+	<?php echo $field->desc; ?>
 
-<?php endif; ?>
+	<?php
+endif;

@@ -129,5 +129,4 @@ class Customers_Schema extends Schema {
 		),
 
 	);
-
-} // end class Customers_Schema;
+}

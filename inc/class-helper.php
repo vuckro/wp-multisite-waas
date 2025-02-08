@@ -33,8 +33,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_path');
 
 		return wu_path($dir);
-
-	} // end path;
+	}
 
 	/**
 	 * Returns the URL to the plugin folder.
@@ -48,8 +47,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_url');
 
 		return wu_url($dir);
-
-	} // end url;
+	}
 
 	/**
 	 * Shorthand for url('assets/img'). Returns the URL for assets inside the assets folder.
@@ -65,8 +63,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_get_asset');
 
 		return wu_get_asset($asset, $assets_dir, $base_dir);
-
-	} // end get_asset;
+	}
 
 	/**
 	 * Renders a view file from the view folder.
@@ -82,8 +79,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_get_template');
 
 		wu_get_template($view, $vars, $default_view);
-
-	} // end render;
+	}
 
 	/**
 	 * This function return 'slugfied' options terms to be used as options ids.
@@ -99,8 +95,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_slugify');
 
 		return wu_slugify($term);
-
-	} // end slugfy;
+	}
 
 	/**
 	 * Get the value of a slugified network option
@@ -115,8 +110,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_get_option');
 
 		return wu_get_option($option_name, $default);
-
-	} // end get_option;
+	}
 
 	/**
 	 * Save slugified network option.
@@ -131,8 +125,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_save_option');
 
 		return wu_save_option($option_name, $value);
-
-	} // end save_option;
+	}
 
 	/**
 	 * Delete slugified network option
@@ -146,8 +139,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_delete_option');
 
 		return wu_delete_option($option_name);
-
-	} // end delete_option;
+	}
 
 	/**
 	 * Gets the URL for the folders created with maybe_create_folder().
@@ -163,8 +155,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_get_folder_url');
 
 		return wu_get_folder_url($folder);
-
-	} // end get_folder_url;
+	}
 
 	/**
 	 * Creates a WP Multisite WaaS folder inside the uploads folder. Returns the path to the folder.
@@ -180,8 +171,7 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_maybe_create_folder');
 
 		return wu_maybe_create_folder($folder);
-
-	} // end maybe_create_folder;
+	}
 
 	/**
 	 * Drop our custom tables.
@@ -196,7 +186,5 @@ class Helper {
 		_deprecated_function(__METHOD__, '2.0.11', 'wu_drop_tables');
 
 		wu_drop_tables();
-
-	} // end drop_tables;
-
-} // end class Helper;
+	}
+}

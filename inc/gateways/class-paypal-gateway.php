@@ -9,9 +9,9 @@
 
 namespace WP_Ultimo\Gateways;
 
-use \WP_Ultimo\Gateways\Base_Gateway;
-use \WP_Ultimo\Database\Payments\Payment_Status;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Gateways\Base_Gateway;
+use WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Database\Memberships\Membership_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -24,8 +24,8 @@ defined('ABSPATH') || exit;
 class PayPal_Gateway extends Base_Gateway {
 
 	/**
-     * @var string
-     */
+	 * @var string
+	 */
 	public $error_message;
 	/**
 	 * @var string
@@ -36,11 +36,11 @@ class PayPal_Gateway extends Base_Gateway {
 	 */
 	public $payment;
 	/**
-     * Holds the ID of a given gateway.
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Holds the ID of a given gateway.
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $id = 'paypal';
 
 	/**
@@ -111,8 +111,7 @@ class PayPal_Gateway extends Base_Gateway {
 	public function supports_recurring(): bool {
 
 		return true;
-
-	} // end supports_recurring;
+	}
 
 	/**
 	 * Declares support to subscription amount updates.
@@ -123,8 +122,7 @@ class PayPal_Gateway extends Base_Gateway {
 	public function supports_amount_update(): bool {
 
 		return true;
-
-	} // end supports_amount_update;
+	}
 
 	/**
 	 * Adds the necessary hooks for the manual gateway.
@@ -132,7 +130,7 @@ class PayPal_Gateway extends Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Initialization code.
@@ -154,7 +152,6 @@ class PayPal_Gateway extends Base_Gateway {
 		 * use test mode keys.
 		 */
 		if ($this->test_mode) {
-
 			$this->api_endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
 			$this->checkout_url = 'https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token=';
 
@@ -163,8 +160,7 @@ class PayPal_Gateway extends Base_Gateway {
 			$this->signature = wu_get_setting('paypal_test_signature', '');
 
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Otherwise, set
@@ -176,8 +172,7 @@ class PayPal_Gateway extends Base_Gateway {
 		$this->username  = wu_get_setting('paypal_live_username', '');
 		$this->password  = wu_get_setting('paypal_live_password', '');
 		$this->signature = wu_get_setting('paypal_live_signature', '');
-
-	} // end init;
+	}
 
 	/**
 	 * Adds the PayPal Gateway settings to the settings screen.
@@ -187,114 +182,145 @@ class PayPal_Gateway extends Base_Gateway {
 	 */
 	public function settings() {
 
-		wu_register_settings_field('payment-gateways', 'paypal_header', array(
-			'title'           => __('PayPal', 'wp-ultimo'),
-			'desc'            => __('Use the settings section below to configure PayPal Express as a payment method.', 'wp-ultimo'),
-			'type'            => 'header',
-			'show_as_submenu' => true,
-			'require'         => array(
-				'active_gateways' => 'paypal',
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_header',
+			array(
+				'title'           => __('PayPal', 'wp-ultimo'),
+				'desc'            => __('Use the settings section below to configure PayPal Express as a payment method.', 'wp-ultimo'),
+				'type'            => 'header',
+				'show_as_submenu' => true,
+				'require'         => array(
+					'active_gateways' => 'paypal',
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_sandbox_mode', array(
-			'title'     => __('PayPal Sandbox Mode', 'wp-ultimo'),
-			'desc'      => __('Toggle this to put PayPal on sandbox mode. This is useful for testing and making sure PayPal is correctly setup to handle your payments.', 'wp-ultimo'),
-			'type'      => 'toggle',
-			'default'   => 0,
-			'html_attr' => array(
-				'v-model' => 'paypal_sandbox_mode',
-			),
-			'require'   => array(
-				'active_gateways' => 'paypal',
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_sandbox_mode',
+			array(
+				'title'     => __('PayPal Sandbox Mode', 'wp-ultimo'),
+				'desc'      => __('Toggle this to put PayPal on sandbox mode. This is useful for testing and making sure PayPal is correctly setup to handle your payments.', 'wp-ultimo'),
+				'type'      => 'toggle',
+				'default'   => 0,
+				'html_attr' => array(
+					'v-model' => 'paypal_sandbox_mode',
+				),
+				'require'   => array(
+					'active_gateways' => 'paypal',
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_test_username', array(
-			'title'       => __('PayPal Test Username', 'wp-ultimo'),
-			'desc'        => '',
-			'tooltip'     => __('Make sure you are placing the TEST username, not the live one.', 'wp-ultimo'),
-			'placeholder' => __('e.g. username_api1.username.co', 'wp-ultimo'),
-			'type'        => 'text',
-			'default'     => '',
-			'capability'  => 'manage_api_keys',
-			'require'     => array(
-				'active_gateways'     => 'paypal',
-				'paypal_sandbox_mode' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_test_username',
+			array(
+				'title'       => __('PayPal Test Username', 'wp-ultimo'),
+				'desc'        => '',
+				'tooltip'     => __('Make sure you are placing the TEST username, not the live one.', 'wp-ultimo'),
+				'placeholder' => __('e.g. username_api1.username.co', 'wp-ultimo'),
+				'type'        => 'text',
+				'default'     => '',
+				'capability'  => 'manage_api_keys',
+				'require'     => array(
+					'active_gateways'     => 'paypal',
+					'paypal_sandbox_mode' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_test_password', array(
-			'title'       => __('PayPal Test Password', 'wp-ultimo'),
-			'desc'        => '',
-			'tooltip'     => __('Make sure you are placing the TEST password, not the live one.', 'wp-ultimo'),
-			'placeholder' => __('e.g. IUOSABK987HJG88N', 'wp-ultimo'),
-			'type'        => 'text',
-			'default'     => '',
-			'capability'  => 'manage_api_keys',
-			'require'     => array(
-				'active_gateways'     => 'paypal',
-				'paypal_sandbox_mode' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_test_password',
+			array(
+				'title'       => __('PayPal Test Password', 'wp-ultimo'),
+				'desc'        => '',
+				'tooltip'     => __('Make sure you are placing the TEST password, not the live one.', 'wp-ultimo'),
+				'placeholder' => __('e.g. IUOSABK987HJG88N', 'wp-ultimo'),
+				'type'        => 'text',
+				'default'     => '',
+				'capability'  => 'manage_api_keys',
+				'require'     => array(
+					'active_gateways'     => 'paypal',
+					'paypal_sandbox_mode' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_test_signature', array(
-			'title'       => __('PayPal Test Signature', 'wp-ultimo'),
-			'desc'        => '',
-			'tooltip'     => __('Make sure you are placing the TEST signature, not the live one.', 'wp-ultimo'),
-			'placeholder' => __('e.g. AFcpSSRl31ADOdqnHNv4KZdVHEQzdMEEsWxV21C7fd0v3bYYYRCwYxqo', 'wp-ultimo'),
-			'type'        => 'text',
-			'default'     => '',
-			'capability'  => 'manage_api_keys',
-			'require'     => array(
-				'active_gateways'     => 'paypal',
-				'paypal_sandbox_mode' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_test_signature',
+			array(
+				'title'       => __('PayPal Test Signature', 'wp-ultimo'),
+				'desc'        => '',
+				'tooltip'     => __('Make sure you are placing the TEST signature, not the live one.', 'wp-ultimo'),
+				'placeholder' => __('e.g. AFcpSSRl31ADOdqnHNv4KZdVHEQzdMEEsWxV21C7fd0v3bYYYRCwYxqo', 'wp-ultimo'),
+				'type'        => 'text',
+				'default'     => '',
+				'capability'  => 'manage_api_keys',
+				'require'     => array(
+					'active_gateways'     => 'paypal',
+					'paypal_sandbox_mode' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_live_username', array(
-			'title'       => __('PayPal Live Username', 'wp-ultimo'),
-			'desc'        => '',
-			'tooltip'     => __('Make sure you are placing the LIVE username, not the test one.', 'wp-ultimo'),
-			'placeholder' => __('e.g. username_api1.username.co', 'wp-ultimo'),
-			'type'        => 'text',
-			'default'     => '',
-			'capability'  => 'manage_api_keys',
-			'require'     => array(
-				'active_gateways'     => 'paypal',
-				'paypal_sandbox_mode' => 0,
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_live_username',
+			array(
+				'title'       => __('PayPal Live Username', 'wp-ultimo'),
+				'desc'        => '',
+				'tooltip'     => __('Make sure you are placing the LIVE username, not the test one.', 'wp-ultimo'),
+				'placeholder' => __('e.g. username_api1.username.co', 'wp-ultimo'),
+				'type'        => 'text',
+				'default'     => '',
+				'capability'  => 'manage_api_keys',
+				'require'     => array(
+					'active_gateways'     => 'paypal',
+					'paypal_sandbox_mode' => 0,
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_live_password', array(
-			'title'       => __('PayPal Live Password', 'wp-ultimo'),
-			'desc'        => '',
-			'tooltip'     => __('Make sure you are placing the LIVE password, not the test one.', 'wp-ultimo'),
-			'placeholder' => __('e.g. IUOSABK987HJG88N', 'wp-ultimo'),
-			'type'        => 'text',
-			'default'     => '',
-			'capability'  => 'manage_api_keys',
-			'require'     => array(
-				'active_gateways'     => 'paypal',
-				'paypal_sandbox_mode' => 0,
-			),
-		));
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_live_password',
+			array(
+				'title'       => __('PayPal Live Password', 'wp-ultimo'),
+				'desc'        => '',
+				'tooltip'     => __('Make sure you are placing the LIVE password, not the test one.', 'wp-ultimo'),
+				'placeholder' => __('e.g. IUOSABK987HJG88N', 'wp-ultimo'),
+				'type'        => 'text',
+				'default'     => '',
+				'capability'  => 'manage_api_keys',
+				'require'     => array(
+					'active_gateways'     => 'paypal',
+					'paypal_sandbox_mode' => 0,
+				),
+			)
+		);
 
-		wu_register_settings_field('payment-gateways', 'paypal_live_signature', array(
-			'title'       => __('PayPal Live Signature', 'wp-ultimo'),
-			'desc'        => '',
-			'tooltip'     => __('Make sure you are placing the LIVE signature, not the test one.', 'wp-ultimo'),
-			'placeholder' => __('e.g. AFcpSSRl31ADOdqnHNv4KZdVHEQzdMEEsWxV21C7fd0v3bYYYRCwYxqo', 'wp-ultimo'),
-			'type'        => 'text',
-			'default'     => '',
-			'capability'  => 'manage_api_keys',
-			'require'     => array(
-				'active_gateways'     => 'paypal',
-				'paypal_sandbox_mode' => 0,
-			),
-		));
-
-	} // end settings;
+		wu_register_settings_field(
+			'payment-gateways',
+			'paypal_live_signature',
+			array(
+				'title'       => __('PayPal Live Signature', 'wp-ultimo'),
+				'desc'        => '',
+				'tooltip'     => __('Make sure you are placing the LIVE signature, not the test one.', 'wp-ultimo'),
+				'placeholder' => __('e.g. AFcpSSRl31ADOdqnHNv4KZdVHEQzdMEEsWxV21C7fd0v3bYYYRCwYxqo', 'wp-ultimo'),
+				'type'        => 'text',
+				'default'     => '',
+				'capability'  => 'manage_api_keys',
+				'require'     => array(
+					'active_gateways'     => 'paypal',
+					'paypal_sandbox_mode' => 0,
+				),
+			)
+		);
+	}
 
 	/**
 	 * Reflects membership changes on the gateway.
@@ -312,20 +338,16 @@ class PayPal_Gateway extends Base_Gateway {
 		$gateway_subscription_id = $membership->get_gateway_subscription_id();
 
 		if (empty($gateway_subscription_id)) {
-
 			return new \WP_Error('wu_paypal_no_subscription_id', __('Error: No gateway subscription ID found for this membership.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$original = $membership->_get_original();
 
 		$has_duration_change = $membership->get_duration() !== absint(wu_get_isset($original, 'duration')) || $membership->get_duration_unit() !== wu_get_isset($original, 'duration_unit');
 
 		if ($has_duration_change) {
-
 			return new \WP_Error('wu_paypal_no_duration_change', __('Error: PayPal does not support changing the duration of a subscription.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		/**
 		 * Generate a temporary wu payment so we can get the correct line items and amounts.
@@ -348,11 +370,14 @@ class PayPal_Gateway extends Base_Gateway {
 			'TAXAMT'    => $temp_payment->get_tax_total(),
 		);
 
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args,
-		));
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
 
 		/*
 		 * Check for wp-error on the request call
@@ -361,28 +386,21 @@ class PayPal_Gateway extends Base_Gateway {
 		 * Maybe PayPal is out? We can't be sure.
 		 */
 		if (is_wp_error($request)) {
-
 			return $request;
-
-		} // end if;
+		}
 
 		$body = wp_remote_retrieve_body($request);
 
 		if (is_string($body)) {
-
 			wp_parse_str($body, $body);
-
-		} // end if;
+		}
 
 		if ('failure' === strtolower((string) $body['ACK'])) {
-
 			return new \WP_Error($body['L_ERRORCODE0'], __('PayPal Error:', 'wp-ultimo') . ' ' . $body['L_LONGMESSAGE0']);
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end process_membership_update;
+	}
 
 	/**
 	 * Process a checkout.
@@ -479,17 +497,14 @@ class PayPal_Gateway extends Base_Gateway {
 		$notes = array();
 
 		if ($is_trial_setup) {
-
 			$desc = $membership->get_recurring_description();
 
-			$date = wp_date(get_option('date_format'), strtotime( $membership->get_date_trial_end(), wu_get_current_time('timestamp', true)));
+			$date = wp_date(get_option('date_format'), strtotime($membership->get_date_trial_end(), wu_get_current_time('timestamp', true)));
 
 			$notes[] = sprintf(__('Your trial period will end on %1$s.', 'wp-ultimo'), $date);
-
-		} // end if;
+		}
 
 		if ($is_recurring && $should_auto_renew) {
-
 			$recurring_total = $cart->get_recurring_total();
 			$cart_total      = $cart->get_total();
 
@@ -502,46 +517,25 @@ class PayPal_Gateway extends Base_Gateway {
 			$recurring_total_format = wu_format_currency($recurring_total, $cart->get_currency());
 
 			if ($recurring_total !== $cart_total) {
-
 				if ($type === 'downgrade') {
-
 					if ($is_trial_setup) {
-
 						$notes[] = sprintf(__('Your updated membership will start on $1$s, from that date you will be billed %2$s every month.', 'wp-ultimo'), $date, $recurring_total_format);
-
 					} else {
-
-						$date_renew = wp_date(get_option('date_format'), strtotime( $membership->get_date_expiration(), wu_get_current_time('timestamp', true)));
+						$date_renew = wp_date(get_option('date_format'), strtotime($membership->get_date_expiration(), wu_get_current_time('timestamp', true)));
 
 						$notes[] = sprintf(__('Your updated membership will start on %1$s, from that date you will be billed %2$s %3$s.', 'wp-ultimo'), $date_renew, $recurring_total_format, $desc);
-
-					} // end if;
-
+					}
 				} elseif ($is_trial_setup) {
-
 					$notes[] = sprintf(__('After the first payment you will be billed %1$s %2$s.', 'wp-ultimo'), $recurring_total_format, $desc);
-
 				} else {
-
 					$notes[] = sprintf(__('After this payment you will be billed %1$s %2$s.', 'wp-ultimo'), $recurring_total_format, $desc);
-
-				} // end if;
-
-			} else {
-
-				if ($is_trial_setup) {
-
+				}
+			} elseif ($is_trial_setup) {
 					$notes[] = sprintf(__('From that date, you will be billed %1$s %2$s.', 'wp-ultimo'), $recurring_total_format, $desc);
-
-				} else {
-
-					$notes[] = sprintf(__('After this payment you will be billed %1$s.', 'wp-ultimo'), $desc);
-
-				} // end if;
-
-			} // end if;
-
-		} // end if;
+			} else {
+				$notes[] = sprintf(__('After this payment you will be billed %1$s.', 'wp-ultimo'), $desc);
+			}
+		}
 
 		$args['NOTETOBUYER'] = implode(' ', $notes);
 
@@ -555,7 +549,6 @@ class PayPal_Gateway extends Base_Gateway {
 		 * Loop products and add them to the paypal
 		 */
 		foreach ($cart->get_line_items() as $line_item) {
-
 			$total      = $line_item->get_total();
 			$sub_total  = $line_item->get_subtotal();
 			$tax_amount = $line_item->get_tax_total();
@@ -574,34 +567,37 @@ class PayPal_Gateway extends Base_Gateway {
 
 			$args = array_merge($args, $product_args);
 
-			$product_index++;
-
-		} // end foreach;
+			++$product_index;
+		}
 
 		$discounts_total = $cart->get_total_discounts();
 
-		if (!empty($discounts_total)) {
-
+		if ( ! empty($discounts_total)) {
 			__('Account credit and other discounts', 'wp-ultimo');
 
-			$args = array_merge($args, array(
-				"L_PAYMENTREQUEST_0_NAME{$product_index}" => __('Account credit and other discounts', 'wp-ultimo'),
-				"L_PAYMENTREQUEST_0_AMT{$product_index}"  => $discounts_total,
-				"L_PAYMENTREQUEST_0_QTY{$product_index}"  => 1,
-			));
+			$args = array_merge(
+				$args,
+				array(
+					"L_PAYMENTREQUEST_0_NAME{$product_index}" => __('Account credit and other discounts', 'wp-ultimo'),
+					"L_PAYMENTREQUEST_0_AMT{$product_index}"  => $discounts_total,
+					"L_PAYMENTREQUEST_0_QTY{$product_index}"  => 1,
+				)
+			);
 
 			$args['PAYMENTREQUEST_0_ITEMAMT'] = $args['PAYMENTREQUEST_0_ITEMAMT'] + $discounts_total;
 			$args['PAYMENTREQUEST_0_AMT']     = $args['PAYMENTREQUEST_0_AMT'] + $discounts_total;
 
-			$product_index++;
+			++$product_index;
+		}
 
-		} // end if;
-
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args
-		));
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
 
 		$body    = wp_remote_retrieve_body($request);
 		$code    = wp_remote_retrieve_response_code($request);
@@ -616,10 +612,8 @@ class PayPal_Gateway extends Base_Gateway {
 		 * Maybe PayPal is out? We can't be sure.
 		 */
 		if (is_wp_error($request)) {
-
 			throw new \Exception($request->get_error_message(), $request->get_error_code());
-
-		} // end if;
+		}
 
 		/*
 		 * If we get here, we got a 200.
@@ -635,15 +629,11 @@ class PayPal_Gateway extends Base_Gateway {
 			 * Urrrrgh! Let's parse it.
 			 */
 			if (is_string($body)) {
-
 				wp_parse_str($body, $body);
-
-			} // end if;
+			}
 
 			if ('failure' === strtolower((string) $body['ACK']) || 'failurewithwarning' === strtolower((string) $body['ACK'])) {
-
 				wp_die($body['L_LONGMESSAGE0'], $body['L_ERRORCODE0']);
-
 			} else {
 				/*
 				 * We do have a valid token.
@@ -653,17 +643,14 @@ class PayPal_Gateway extends Base_Gateway {
 				wp_redirect($this->checkout_url . $body['TOKEN']);
 
 				exit;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		/*
 		 * If we get here, something went wrong.
 		 */
 		throw new \Exception(__('Something has gone wrong, please try again', 'wp-ultimo'));
-
-	} // end process_checkout;
+	}
 
 	/**
 	 * Process a cancellation.
@@ -691,13 +678,15 @@ class PayPal_Gateway extends Base_Gateway {
 			'ACTION'    => 'Cancel',
 		);
 
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args,
-		));
-
-	} // end process_cancellation;
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
+	}
 
 	/**
 	 * Process a checkout.
@@ -720,18 +709,14 @@ class PayPal_Gateway extends Base_Gateway {
 		$gateway_payment_id = $payment->get_gateway_payment_id();
 
 		if (empty($gateway_payment_id)) {
-
 			throw new \Exception(__('Gateway payment ID not found. Cannot process refund automatically.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$refund_type = 'Partial';
 
 		if ($amount >= $payment->get_total()) {
-
 			$refund_type = 'Full';
-
-		} // end if;
+		}
 
 		$amount_formatted = number_format($amount, 2);
 
@@ -747,26 +732,25 @@ class PayPal_Gateway extends Base_Gateway {
 		);
 
 		if ($refund_type === 'Partial') {
-
 			$args['AMT'] = $amount_formatted;
+		}
 
-		} // end if;
-
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args,
-		));
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
 
 		$body    = wp_remote_retrieve_body($request);
 		$code    = wp_remote_retrieve_response_code($request);
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-
 			throw new \Exception($request->get_error_message());
-
-		} // end if;
+		}
 
 		if (200 === absint($code) && 'OK' === $message) {
 			/*
@@ -774,44 +758,37 @@ class PayPal_Gateway extends Base_Gateway {
 			 * Urrrrgh! Let's parse it.
 			 */
 			if (is_string($body)) {
-
 				wp_parse_str($body, $body);
-
-			} // end if;
+			}
 
 			if ('failure' === strtolower((string) $body['ACK'])) {
-
 				throw new \Exception($body['L_LONGMESSAGE0']);
-
-			} // end if;
+			}
 
 			/*
 			 * All good.
 			 */
 			return true;
-
-		} // end if;
+		}
 
 		throw new \Exception(__('Something went wrong.', 'wp-ultimo'));
-
-	} // end process_refund;
- /**
-  * Adds additional fields to the checkout form for a particular gateway.
-  *
-  * In this method, you can either return an array of fields (that we will display
-  * using our form display methods) or you can return plain HTML in a string,
-  * which will get outputted to the gateway section of the checkout.
-  *
-  * @since 2.0.0
-  * @return mixed[]|string
-  */
- public function fields() {
+	}
+	/**
+	 * Adds additional fields to the checkout form for a particular gateway.
+	 *
+	 * In this method, you can either return an array of fields (that we will display
+	 * using our form display methods) or you can return plain HTML in a string,
+	 * which will get outputted to the gateway section of the checkout.
+	 *
+	 * @since 2.0.0
+	 * @return mixed[]|string
+	 */
+	public function fields() {
 
 		$message = __('You will be redirected to PayPal to complete the purchase.', 'wp-ultimo');
 
 		return sprintf('<p class="wu-p-4 wu-bg-yellow-200">%s</p>', $message);
-
-	} // end fields;
+	}
 
 	/**
 	 * Process confirmation.
@@ -844,12 +821,10 @@ class PayPal_Gateway extends Base_Gateway {
 			$details = $this->get_checkout_details(wu_request('token'));
 
 			if (empty($details)) {
-
 				$error = new \WP_Error(__('PayPal token no longer valid.', 'wp-ultimo'));
 
 				wp_die($error);
-
-			} // end if;
+			}
 
 			/*
 			* Tries to get the payment based on the request
@@ -862,12 +837,10 @@ class PayPal_Gateway extends Base_Gateway {
 			* Bail.
 			*/
 			if (empty($payment)) {
-
 				$error = new \WP_Error(__('Pending payment does not exist.', 'wp-ultimo'));
 
 				wp_die($error);
-
-			} // end if;
+			}
 
 			/*
 			* Now we need to original cart.
@@ -878,12 +851,10 @@ class PayPal_Gateway extends Base_Gateway {
 			$original_cart = $payment->get_meta('wu_original_cart');
 
 			if (empty($original_cart)) {
-
 				$error = new \WP_Error('no-cart', __('Original cart does not exist.', 'wp-ultimo'));
 
 				wp_die($error);
-
-			} // end if;
+			}
 
 			/*
 			* Set the variables
@@ -894,12 +865,10 @@ class PayPal_Gateway extends Base_Gateway {
 			$is_recurring      = $original_cart->has_recurring();
 
 			if (empty($membership) || empty($customer)) {
-
 				$error = new \WP_Error('no-membership', __('Missing membership or customer data.', 'wp-ultimo'));
 
 				wp_die($error);
-
-			} // end if;
+			}
 
 			if ($should_auto_renew && $is_recurring) {
 				/*
@@ -908,24 +877,19 @@ class PayPal_Gateway extends Base_Gateway {
 				* auto-renew option is active.
 				*/
 				$this->create_recurring_profile($details, $original_cart, $payment, $membership, $customer);
-
 			} else {
 				/*
 				* Otherwise, process
 				* single payment.
 				*/
 				$this->complete_single_payment($details, $original_cart, $payment, $membership, $customer);
-
-			} // end if;
-
-		} elseif (!empty(wu_request('token'))) {
+			}
+		} elseif ( ! empty(wu_request('token'))) {
 
 			// Prints the form
 			$this->confirmation_form();
-
-		} // end if;
-
-	} // end process_confirmation;
+		}
+	}
 	/**
 	 * Process webhooks
 	 *
@@ -941,27 +905,21 @@ class PayPal_Gateway extends Base_Gateway {
 		$customer   = false;
 		$membership = false;
 
-		$custom = !empty($posted['custom']) ? explode('|', (string) $posted['custom']) : array();
+		$custom = ! empty($posted['custom']) ? explode('|', (string) $posted['custom']) : array();
 
-		if (is_array($custom) && !empty($custom)) {
-
+		if (is_array($custom) && ! empty($custom)) {
 			$payment    = wu_get_payment(absint($custom[0]));
 			$membership = wu_get_payment(absint($custom[1]));
 			$customer   = wu_get_payment(absint($custom[2]));
+		}
 
-		} // end if;
-
-		if (!empty($posted['recurring_payment_id'])) {
-
+		if ( ! empty($posted['recurring_payment_id'])) {
 			$membership = wu_get_membership_by('gateway_subscription_id', $posted['recurring_payment_id']);
-
-		} // end if;
+		}
 
 		if (empty($membership)) {
-
 			throw new \Exception(__('Exiting PayPal Express IPN - membership ID not found.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		wu_log_add('paypal', sprintf('Processing IPN for membership #%d.', $membership->get_id()));
 
@@ -979,22 +937,16 @@ class PayPal_Gateway extends Base_Gateway {
 		$amount = isset($posted['mc_gross']) ? wu_to_float($posted['mc_gross']) : false;
 
 		if ($amount !== false) {
-
 			$payment_data['amount'] = $amount;
+		}
 
-		} // end if;
-
-		if (!empty($posted['payment_date'])) {
-
+		if ( ! empty($posted['payment_date'])) {
 			$payment_data['date'] = date('Y-m-d H:i:s', strtotime((string) $posted['payment_date'])); // phpcs:ignore
+		}
 
-		} // end if;
-
-		if (!empty($posted['txn_id'])) {
-
+		if ( ! empty($posted['txn_id'])) {
 			$payment_data['gateway_payment_id'] = sanitize_text_field($posted['txn_id']);
-
-		} // end if;
+		}
 
 		/*
 		 * Deal with each transaction type
@@ -1017,20 +969,14 @@ class PayPal_Gateway extends Base_Gateway {
 				 * payment and make sure we have a match.
 				 */
 				if (isset($posted['initial_payment_txn_id'])) {
-
 					$transaction_id = ('Completed' === $posted['initial_payment_status']) ? $posted['initial_payment_txn_id'] : '';
-
 				} else {
-
 					$transaction_id = $posted['ipn_track_id'];
-
-				} // end if;
+				}
 
 				if (empty($transaction_id)) {
-
 					throw new \Exception('Breaking out of PayPal Express IPN recurring_payment_profile_created. Transaction ID not given.');
-
-				} // end if;
+				}
 
 				// setup the payment info in an array for storage
 				$payment_data['date']               = date('Y-m-d H:i:s', strtotime($posted['time_created'])); // phpcs:ignore
@@ -1039,7 +985,7 @@ class PayPal_Gateway extends Base_Gateway {
 
 				$payment = wu_get_payment_by('gateway_payment_id', $payment_data['gateway_payment_id']);
 
-				$should_use_subscription = !$payment && isset($posted['recurring_payment_id']);
+				$should_use_subscription = ! $payment && isset($posted['recurring_payment_id']);
 
 				$payment = $should_use_subscription ? wu_get_payment_by('gateway_payment_id', sanitize_text_field($posted['recurring_payment_id'])) : $payment;
 
@@ -1048,11 +994,9 @@ class PayPal_Gateway extends Base_Gateway {
 				 * already exists, update it.
 				 */
 				if ($payment) {
-
 					$payment->attributes($payment_data);
 
 					$payment->save();
-
 				} else {
 					/*
 					 * Payment does not exist. Create it and renew the membership.
@@ -1066,7 +1010,7 @@ class PayPal_Gateway extends Base_Gateway {
 					$payment->attributes($payment_data);
 
 					$payment->save();
-				} // end if;
+				}
 
 				$is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 				$status         = $is_trial_setup ? Membership_Status::TRIALING : Membership_Status::ACTIVE;
@@ -1092,20 +1036,18 @@ class PayPal_Gateway extends Base_Gateway {
 				if ('failed' === strtolower((string) $posted['payment_status'])) {
 
 					// Recurring payment failed.
-					$membership->add_note( sprintf( __( 'Transaction ID %s failed in PayPal.', 'wp-ultimo' ), $posted['txn_id'] ) );
+					$membership->add_note(sprintf(__('Transaction ID %s failed in PayPal.', 'wp-ultimo'), $posted['txn_id']));
 
-					die( 'Subscription payment failed' );
-
+					die('Subscription payment failed');
 				} elseif ('pending' === strtolower((string) $posted['payment_status'])) {
 
 					// Recurring payment pending (such as echeck).
-					$pending_reason = !empty( $posted['pending_reason'] ) ? $posted['pending_reason'] : __( 'unknown', 'wp-ultimo' );
+					$pending_reason = ! empty($posted['pending_reason']) ? $posted['pending_reason'] : __('unknown', 'wp-ultimo');
 
-					$membership->add_note( sprintf( __( 'Transaction ID %1$s is pending in PayPal for reason: %2$s', 'wp-ultimo' ), $posted['txn_id'], $pending_reason ) );
+					$membership->add_note(sprintf(__('Transaction ID %1$s is pending in PayPal for reason: %2$s', 'wp-ultimo'), $posted['txn_id'], $pending_reason));
 
-					die( 'Subscription payment pending' );
-
-				} // end if;
+					die('Subscription payment pending');
+				}
 
 				$payment_data['transaction_type'] = 'renewal';
 
@@ -1116,11 +1058,9 @@ class PayPal_Gateway extends Base_Gateway {
 				 * already exists, update it.
 				 */
 				if ($payment) {
-
 					$payment->attributes($payment_data);
 
 					$payment->save();
-
 				} else {
 					/*
 					 * Payment does not exist. Create it and renew the membership.
@@ -1128,20 +1068,15 @@ class PayPal_Gateway extends Base_Gateway {
 					$payment = wu_create_payment($payment_data);
 
 					$membership->add_to_times_billed(1);
-
-				} // end if;
+				}
 
 				$is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 
-				if (!$is_trial_setup) {
-
+				if ( ! $is_trial_setup) {
 					$membership->renew(true);
-
 				} else {
-
 					$membership->save();
-
-				} // end if;
+				}
 
 				break;
 
@@ -1153,27 +1088,23 @@ class PayPal_Gateway extends Base_Gateway {
 					// Initial payment failed, so set the user back to pending.
 					$membership->set_status('pending');
 
-					$membership->add_note(__( 'Initial payment failed in PayPal Express.', 'wp-ultimo'));
+					$membership->add_note(__('Initial payment failed in PayPal Express.', 'wp-ultimo'));
 
 					$this->error_message = __('Initial payment failed.', 'wp-ultimo');
-
 				} else {
 
 					// If this is a completed payment plan, we can skip any cancellation actions. This is handled in renewals.
 					if ($membership->has_payment_plan() && $membership->at_maximum_renewals()) {
-
 						wu_log_add('paypal', sprintf('Membership #%d has completed its payment plan - not cancelling.', $membership->get_id()));
 
 						die('membership payment plan completed');
-
-					} // end if;
+					}
 
 					// user is marked as cancelled but retains access until end of term
 					$membership->cancel();
 
 					$membership->add_note(__('Membership cancelled via PayPal Express IPN.', 'wp-ultimo'));
-
-				} // end if;
+				}
 
 				break;
 
@@ -1181,20 +1112,15 @@ class PayPal_Gateway extends Base_Gateway {
 			case 'recurring_payment_suspended_due_to_max_failed_payment': // Same case as before
 				wu_log_add('paypal', 'Processing PayPal Express recurring_payment_failed or recurring_payment_suspended_due_to_max_failed_payment IPN.');
 
-				if (!in_array($membership->get_status(), array('cancelled', 'expired'), true)) {
-
+				if ( ! in_array($membership->get_status(), array('cancelled', 'expired'), true)) {
 					$membership->set_status('expired');
+				}
 
-				} // end if;
-
-				if (!empty($posted['txn_id'])) {
-
+				if ( ! empty($posted['txn_id'])) {
 					$this->webhook_event_id = sanitize_text_field($posted['txn_id']);
-
-				} elseif (!empty($posted['ipn_track_id'])) {
-
+				} elseif ( ! empty($posted['ipn_track_id'])) {
 					$this->webhook_event_id = sanitize_text_field($posted['ipn_track_id']);
-				} // end if;
+				}
 
 				break;
 
@@ -1202,13 +1128,10 @@ class PayPal_Gateway extends Base_Gateway {
 				wu_log_add('paypal', sprintf('Processing PayPal Express web_accept IPN. Payment status: %s', $posted['payment_status']));
 
 				switch (strtolower((string) $posted['payment_status'])) :
-
 					case 'completed':
 						if (empty($payment_data['gateway_payment_id'])) {
-
 							throw new \Exception('Breaking out of PayPal Express IPN recurring_payment_profile_created. Transaction ID not given.');
-
-						} // end if;
+						}
 
 						$payment = wu_get_payment_by('gateway_payment_id', $payment_data['gateway_payment_id']);
 
@@ -1217,21 +1140,18 @@ class PayPal_Gateway extends Base_Gateway {
 						* already exists, update it.
 						*/
 						if ($payment) {
-
 							$payment->attributes($payment_data);
 
 							$payment->save();
 
-						/*
-						* Payment does not exist. Create it and renew the membership.
-						*/
+							/*
+							* Payment does not exist. Create it and renew the membership.
+							*/
 						} else {
-
 							wu_create_payment($payment_data);
 
 							$membership->add_to_times_billed(1);
-
-						} // end if;
+						}
 
 						// Membership was already activated.
 
@@ -1247,26 +1167,19 @@ class PayPal_Gateway extends Base_Gateway {
 						 * Cancel active memberships.
 						 */
 						if ($membership->is_active()) {
-
 							$membership->cancel();
-
 						} else {
-
 							wu_log_add('paypal', sprintf('Membership #%d is not active - not cancelling account.', $membership->get_id()));
-
-						} // end if;
+						}
 
 						break;
-
 				endswitch;
 
 				break;
-
 		endswitch;
 
 		return true;
-
-	} // end process_webhooks;
+	}
 
 	/**
 	 * Create a recurring profile.
@@ -1302,15 +1215,12 @@ class PayPal_Gateway extends Base_Gateway {
 		);
 
 		if ($args['INITAMT'] < 0) {
-
 			unset($args['INITAMT']);
-
-		} // end if;
+		}
 
 		$is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 
 		if ($is_trial_setup) {
-
 			$trial_end = strtotime($membership->get_date_trial_end(), wu_get_current_time('timestamp', true));
 
 			$args['PROFILESTARTDATE']        = date('Y-m-d\TH:i:s', $trial_end); // phpcs:ignore
@@ -1318,30 +1228,28 @@ class PayPal_Gateway extends Base_Gateway {
 			$args['TRIALBILLINGFREQUENCY']   = floor(($trial_end - time()) / 86400);
 			$args['TRIALAMT']                = $membership->get_initial_amount();
 			$args['TRIALTOTALBILLINGCYCLES'] = 1;
+		}
 
-		} // end if;
-
-		if (!$membership->is_forever_recurring()) {
-
+		if ( ! $membership->is_forever_recurring()) {
 			$args['TOTALBILLINGCYCLES'] = $membership->get_billing_cycles() - $membership->get_times_billed();
+		}
 
-		} // end if;
-
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args,
-		));
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
 
 		$body    = wp_remote_retrieve_body($request);
 		$code    = wp_remote_retrieve_response_code($request);
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-
 			wp_die($request);
-
-		} // end if;
+		}
 
 		if (200 === absint($code) && 'OK' === $message) {
 			/*
@@ -1349,17 +1257,13 @@ class PayPal_Gateway extends Base_Gateway {
 			 * Urrrrgh! Let's parse it.
 			 */
 			if (is_string($body)) {
-
 				wp_parse_str($body, $body);
-
-			} // end if;
+			}
 
 			if ('failure' === strtolower((string) $body['ACK'])) {
-
 				$error = new \WP_Error($body['L_ERRORCODE0'], $body['L_LONGMESSAGE0']);
 
 				wp_die($error);
-
 			} else {
 				/*
 				 * We were successful, let's update
@@ -1374,16 +1278,14 @@ class PayPal_Gateway extends Base_Gateway {
 				// If TRANSACTIONID is not passed we need to wait for webhook
 				$payment_status = Payment_Status::PENDING;
 
-				if (!empty($transaction_id) || $profile_status === 'ActiveProfile' || $is_trial_setup) {
-
+				if ( ! empty($transaction_id) || $profile_status === 'ActiveProfile' || $is_trial_setup) {
 					$payment_status = Payment_Status::COMPLETED;
-
-				} // end if;
+				}
 
 				/**
 				 * If we don't have a transaction ID, let's use the profile ID.
 				 */
-				$transaction_id = empty($transaction_id) && !empty($body['PROFILEID']) ? $body['PROFILEID'] : $transaction_id;
+				$transaction_id = empty($transaction_id) && ! empty($body['PROFILEID']) ? $body['PROFILEID'] : $transaction_id;
 
 				$payment_data = array(
 					'gateway_payment_id' => $transaction_id,
@@ -1410,7 +1312,6 @@ class PayPal_Gateway extends Base_Gateway {
 				$membership->set_gateway('paypal');
 
 				if ($payment_status === Payment_Status::COMPLETED) {
-
 					$membership->add_to_times_billed(1);
 
 					/*
@@ -1420,34 +1321,23 @@ class PayPal_Gateway extends Base_Gateway {
 					* a membership swap.
 					*/
 					if ($cart->get_cart_type() === 'upgrade' || $cart->get_cart_type() === 'addon') {
-
 						$membership->swap($cart);
 
 						$membership->renew(true);
-
 					} elseif ($cart->get_cart_type() === 'downgrade') {
-
 						$membership->set_auto_renew(true);
 
 						$membership->schedule_swap($cart);
 
 						$membership->save();
-
-					} elseif (!$is_trial_setup) {
-
+					} elseif ( ! $is_trial_setup) {
 						$membership->renew(true);
-
 					} else {
-
 						$membership->save();
-
-					} // end if;
-
+					}
 				} else {
-
 					$membership->save();
-
-				} // end if;
+				}
 
 				$this->payment = $payment;
 				$redirect_url  = $this->get_return_url();
@@ -1455,16 +1345,18 @@ class PayPal_Gateway extends Base_Gateway {
 				wp_redirect($redirect_url);
 
 				exit;
-
-			} // end if;
-
+			}
 		} else {
-
-			wp_die( __( 'Something has gone wrong, please try again', 'wp-ultimo' ), __( 'Error', 'wp-ultimo' ), array( 'back_link' => true, 'response' => '401' ) );
-
-		} // end if;
-
-	} // end create_recurring_profile;
+			wp_die(
+				__('Something has gone wrong, please try again', 'wp-ultimo'),
+				__('Error', 'wp-ultimo'),
+				array(
+					'back_link' => true,
+					'response'  => '401',
+				)
+			);
+		}
+	}
 
 	/**
 	 * Get the subscription description.
@@ -1481,8 +1373,7 @@ class PayPal_Gateway extends Base_Gateway {
 		$desc = html_entity_decode(substr($descriptor, 0, 127), ENT_COMPAT, 'UTF-8');
 
 		return $desc;
-
-	} // end get_subscription_description;
+	}
 
 	/**
 	 * Create a single payment on PayPal.
@@ -1513,14 +1404,17 @@ class PayPal_Gateway extends Base_Gateway {
 			'PAYMENTREQUEST_0_SHIPPINGAMT'   => 0,
 			'PAYMENTREQUEST_0_TAXAMT'        => 0,
 			'PAYMENTREQUEST_0_CURRENCYCODE'  => $details['CURRENCYCODE'],
-			'BUTTONSOURCE'                   => 'WP_Ultimo'
+			'BUTTONSOURCE'                   => 'WP_Ultimo',
 		);
 
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args,
-		));
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
 
 		/*
 			* Retrieve the results of
@@ -1531,25 +1425,18 @@ class PayPal_Gateway extends Base_Gateway {
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-
 			wp_die($request);
-
-		} // end if;
+		}
 
 		if (200 === absint($code) && 'OK' === $message) {
-
 			if (is_string($body)) {
-
 				wp_parse_str($body, $body);
-
-			} // end if;
+			}
 
 			if ('failure' === strtolower((string) $body['ACK'])) {
-
 				$error = new \WP_Error($body['L_ERRORCODE0'], $body['L_LONGMESSAGE0']);
 
 				wp_die($error);
-
 			} else {
 				/*
 					* We were successful, let's update
@@ -1582,10 +1469,8 @@ class PayPal_Gateway extends Base_Gateway {
 				$membership = $payment->get_membership();
 
 				if ($cart->get_total() > 0) {
-
 					$membership->add_to_times_billed(1);
-
-				} // end if;
+				}
 
 				$is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 
@@ -1596,26 +1481,18 @@ class PayPal_Gateway extends Base_Gateway {
 				 * a membership swap.
 				 */
 				if ($cart->get_cart_type() === 'upgrade' || $cart->get_cart_type() === 'addon') {
-
 					$membership->swap($cart);
 
 					$membership->renew(false);
-
 				} elseif ($cart->get_cart_type() === 'downgrade') {
-
 					$membership->schedule_swap($cart);
 
 					$membership->save();
-
-				} elseif (!$is_trial_setup) {
-
+				} elseif ( ! $is_trial_setup) {
 					$membership->renew(false);
-
 				} else {
-
 					$membership->save();
-
-				} // end if;
+				}
 
 				$this->payment = $payment;
 				$redirect_url  = $this->get_return_url();
@@ -1623,16 +1500,18 @@ class PayPal_Gateway extends Base_Gateway {
 				wp_redirect($redirect_url);
 
 				exit;
-
-			} // end if;
-
+			}
 		} else {
-
-			wp_die(__('Something has gone wrong, please try again', 'wp-ultimo' ), __('Error', 'wp-ultimo'), array('back_link' => true, 'response' => '401'));
-
-		} // end if;
-
-	} // end complete_single_payment;
+			wp_die(
+				__('Something has gone wrong, please try again', 'wp-ultimo'),
+				__('Error', 'wp-ultimo'),
+				array(
+					'back_link' => true,
+					'response'  => '401',
+				)
+			);
+		}
+	}
 
 	/**
 	 * Display the confirmation form.
@@ -1646,35 +1525,35 @@ class PayPal_Gateway extends Base_Gateway {
 
 		$checkout_details = $this->get_checkout_details($token);
 
-		if (!is_array($checkout_details)) {
-
+		if ( ! is_array($checkout_details)) {
 			$error = is_wp_error($checkout_details) ? $checkout_details->get_error_message() : __('Invalid response code from PayPal', 'wp-ultimo');
 
 			// translators: %s is the paypal error message.
 			return '<p>' . sprintf(__('An unexpected PayPal error occurred. Error message: %s.', 'wp-ultimo'), $error) . '</p>';
-
-		} // end if;
+		}
 
 		/*
 		 * Compiles the necessary elements.
 		 */
 		$customer = $checkout_details['pending_payment']->get_customer(); // current customer
 
-		wu_get_template('checkout/paypal/confirm', array(
-			'checkout_details' => $checkout_details,
-			'customer'         => $customer,
-			'payment'          => $checkout_details['pending_payment'],
-			'membership'       => $checkout_details['pending_payment']->get_membership(),
-		));
-
-	} // end confirmation_form;
- /**
-  * Get checkout details.
-  *
-  * @param string $token PayPal token.
-  * @return mixed[]|bool|string|\WP_Error
-  */
- public function get_checkout_details($token = '') {
+		wu_get_template(
+			'checkout/paypal/confirm',
+			array(
+				'checkout_details' => $checkout_details,
+				'customer'         => $customer,
+				'payment'          => $checkout_details['pending_payment'],
+				'membership'       => $checkout_details['pending_payment']->get_membership(),
+			)
+		);
+	}
+	/**
+	 * Get checkout details.
+	 *
+	 * @param string $token PayPal token.
+	 * @return mixed[]|bool|string|\WP_Error
+	 */
+	public function get_checkout_details($token = '') {
 
 		$args = array(
 			'TOKEN'     => $token,
@@ -1685,49 +1564,43 @@ class PayPal_Gateway extends Base_Gateway {
 			'METHOD'    => 'GetExpressCheckoutDetails',
 		);
 
-		$request = wp_remote_post($this->api_endpoint, array(
-			'timeout'     => 45,
-			'httpversion' => '1.1',
-			'body'        => $args
-		));
+		$request = wp_remote_post(
+			$this->api_endpoint,
+			array(
+				'timeout'     => 45,
+				'httpversion' => '1.1',
+				'body'        => $args,
+			)
+		);
 
 		$body    = wp_remote_retrieve_body($request);
 		$code    = wp_remote_retrieve_response_code($request);
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-
 			return $request;
-
 		} elseif (200 === absint($code) && 'OK' === $message) {
-
 			if (is_string($body)) {
-
 				wp_parse_str($body, $body);
-
-			} // end if;
+			}
 
 			$payment_id = absint(wu_request('payment-id'));
 
 			$pending_payment = $payment_id ? wu_get_payment($payment_id) : wu_get_payment_by_hash(wu_request('payment'));
 
-			if (!empty($pending_payment)) {
-
+			if ( ! empty($pending_payment)) {
 				$pending_amount = $pending_payment->get_total();
-
-			} // end if;
+			}
 
 			$body['pending_payment'] = $pending_payment;
 
 			$custom = explode('|', (string) $body['PAYMENTREQUEST_0_CUSTOM']);
 
 			return $body;
-
-		} // end if;
+		}
 
 		return false;
-
-	} // end get_checkout_details;
+	}
 
 	/**
 	 * Returns the external link to view the payment on the payment gateway.
@@ -1742,8 +1615,7 @@ class PayPal_Gateway extends Base_Gateway {
 	public function get_payment_url_on_gateway($gateway_payment_id): string {
 
 		return '';
-
-	} // end get_payment_url_on_gateway;
+	}
 
 	/**
 	 * Returns the external link to view the membership on the membership gateway.
@@ -1762,7 +1634,5 @@ class PayPal_Gateway extends Base_Gateway {
 		$base_url = 'https://www.%spaypal.com/us/cgi-bin/webscr?cmd=_profile-recurring-payments&encrypted_profile_id=%s';
 
 		return sprintf($base_url, $sandbox_prefix, $gateway_subscription_id);
-
-	} // end get_subscription_url_on_gateway;
-
-} // end class PayPal_Gateway;
+	}
+}

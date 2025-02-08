@@ -60,7 +60,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -74,8 +74,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Product removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Product', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -86,8 +85,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Products', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -98,8 +96,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Products', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -110,8 +107,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Products', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -128,8 +124,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 				'icon'  => 'wu-circle-with-plus',
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -140,7 +135,5 @@ class Product_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Product_List_Table();
-
-	} // end table;
-
-} // end class Product_List_Admin_Page;
+	}
+}

@@ -104,5 +104,4 @@ class Events_Schema extends Schema {
 		),
 
 	);
-
-} // end class Events_Schema;
+}

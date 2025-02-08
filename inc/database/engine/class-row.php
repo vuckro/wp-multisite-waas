@@ -20,5 +20,4 @@ defined('ABSPATH') || exit;
 class Row extends \BerlinDB\Database\Row {
 
 	protected $prefix = 'wu';
-
-} // end class Row;
+}

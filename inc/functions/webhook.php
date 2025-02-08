@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Webhook;
+use WP_Ultimo\Models\Webhook;
 
 /**
  * Queries webhook.
@@ -22,8 +22,7 @@ use \WP_Ultimo\Models\Webhook;
 function wu_get_webhooks($query = array()) {
 
 	return \WP_Ultimo\Models\Webhook::query($query);
-
-} // end wu_get_webhooks;
+}
 
 /**
  * Gets a webhook on the ID.
@@ -36,8 +35,7 @@ function wu_get_webhooks($query = array()) {
 function wu_get_webhook($webhook_id) {
 
 	return \WP_Ultimo\Models\Webhook::get_by_id($webhook_id);
-
-} // end wu_get_webhook;
+}
 
 /**
  * Creates a new webhook.
@@ -51,21 +49,23 @@ function wu_get_webhook($webhook_id) {
  */
 function wu_create_webhook($webhook_data) {
 
-	$webhook_data = wp_parse_args($webhook_data, array(
-		'name'             => false,
-		'webhook_url'      => false,
-		'event'            => false,
-		'active'           => false,
-		'event_count'      => 0,
-		'date_created'     => wu_get_current_time('mysql', true),
-		'date_modified'    => wu_get_current_time('mysql', true),
-		'migrated_from_id' => 0,
-	));
+	$webhook_data = wp_parse_args(
+		$webhook_data,
+		array(
+			'name'             => false,
+			'webhook_url'      => false,
+			'event'            => false,
+			'active'           => false,
+			'event_count'      => 0,
+			'date_created'     => wu_get_current_time('mysql', true),
+			'date_modified'    => wu_get_current_time('mysql', true),
+			'migrated_from_id' => 0,
+		)
+	);
 
 	$webhook = new Webhook($webhook_data);
 
 	$saved = $webhook->save();
 
 	return is_wp_error($saved) ? $saved : $webhook;
-
-} // end wu_create_webhook;
+}

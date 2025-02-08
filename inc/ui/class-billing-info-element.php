@@ -63,23 +63,20 @@ class Billing_Info_Element extends Base_Element {
 	protected $site;
 
 	/**
-     * The icon of the UI element.
-     * e.g. return fa fa-search
-     *
-     * @since 2.0.0
-     * @param string $context One of the values: block, elementor or bb.
-     */
+	 * The icon of the UI element.
+	 * e.g. return fa fa-search
+	 *
+	 * @since 2.0.0
+	 * @param string $context One of the values: block, elementor or bb.
+	 */
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Overload the init to add site-related forms.
@@ -91,13 +88,15 @@ class Billing_Info_Element extends Base_Element {
 
 		parent::init();
 
-		wu_register_form('update_billing_address', array(
-			'render'     => array($this, 'render_update_billing_address'),
-			'handler'    => array($this, 'handle_update_billing_address'),
-			'capability' => 'exist',
-		));
-
-	} // end init;
+		wu_register_form(
+			'update_billing_address',
+			array(
+				'render'     => array($this, 'render_update_billing_address'),
+				'handler'    => array($this, 'handle_update_billing_address'),
+				'capability' => 'exist',
+			)
+		);
+	}
 
 	/**
 	 * Loads the required scripts.
@@ -108,8 +107,7 @@ class Billing_Info_Element extends Base_Element {
 	public function register_scripts() {
 
 		add_wubox();
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -124,8 +122,7 @@ class Billing_Info_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Billing Information', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -141,8 +138,7 @@ class Billing_Info_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -180,8 +176,7 @@ class Billing_Info_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -209,8 +204,7 @@ class Billing_Info_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -231,8 +225,7 @@ class Billing_Info_Element extends Base_Element {
 		return array(
 			'title' => __('Billing Address', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -244,15 +237,12 @@ class Billing_Info_Element extends Base_Element {
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
-		if (!$this->membership) {
-
+		if ( ! $this->membership) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
-
-	} // end setup;
+		}
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -265,8 +255,7 @@ class Billing_Info_Element extends Base_Element {
 		$this->site = wu_mock_site();
 
 		$this->membership = wu_mock_membership();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -287,14 +276,16 @@ class Billing_Info_Element extends Base_Element {
 
 		$atts['billing_address'] = $this->membership->get_billing_address();
 
-		$atts['update_billing_address_link'] = wu_get_form_url('update_billing_address', array(
-			'membership' => $this->membership->get_hash(),
-			'width'      => 500,
-		));
+		$atts['update_billing_address_link'] = wu_get_form_url(
+			'update_billing_address',
+			array(
+				'membership' => $this->membership->get_hash(),
+				'width'      => 500,
+			)
+		);
 
 		return wu_get_template_contents('dashboard-widgets/billing-info', $atts);
-
-	} // end output;
+	}
 
 	/**
 	 * Apply the placeholders to the fields.
@@ -307,14 +298,11 @@ class Billing_Info_Element extends Base_Element {
 	protected function apply_placeholders($fields) {
 
 		foreach ($fields as &$field) {
-
 			$field['placeholder'] = $field['default_placeholder'];
-
-		} // end foreach;
+		}
 
 		return $fields;
-
-	} // end apply_placeholders;
+	}
 
 	/**
 	 * Renders the update billing address form.
@@ -326,11 +314,9 @@ class Billing_Info_Element extends Base_Element {
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return '';
-
-		} // end if;
+		}
 
 		$billing_address = $membership->get_billing_address();
 
@@ -361,19 +347,22 @@ class Billing_Info_Element extends Base_Element {
 			'value' => wu_request('membership'),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('edit_site', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-grid-cols-2 wu-grid',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid wu-grid-col-span-2',
-			'html_attr'             => array(
-				'data-wu-app' => 'edit_site',
-				'data-state'  => wu_convert_to_state(),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'edit_site',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-grid-cols-2 wu-grid',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid wu-grid-col-span-2',
+				'html_attr'             => array(
+					'data-wu-app' => 'edit_site',
+					'data-state'  => wu_convert_to_state(),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_update_billing_address;
+	}
 
 	/**
 	 * Handles the password reset form.
@@ -385,13 +374,11 @@ class Billing_Info_Element extends Base_Element {
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('membership-dont-exist', __('Something went wrong.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$billing_address = $membership->get_billing_address();
 
@@ -400,25 +387,21 @@ class Billing_Info_Element extends Base_Element {
 		$valid_address = $billing_address->validate();
 
 		if (is_wp_error($valid_address)) {
-
 			wp_send_json_error($valid_address);
-
-		} // end if;
+		}
 
 		$membership->set_billing_address($billing_address);
 
 		$saved = $membership->save();
 
 		if (is_wp_error($saved)) {
-
 			wp_send_json_error($saved);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', (int) $saved, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_update_billing_address;
-
-} // end class Billing_Info_Element;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', (int) $saved, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
+}

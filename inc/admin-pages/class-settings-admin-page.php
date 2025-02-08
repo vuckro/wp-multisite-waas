@@ -9,9 +9,9 @@
 
 namespace WP_Ultimo\Admin_Pages;
 
-use \WP_Ultimo\Settings;
-use \WP_Ultimo\UI\Form;
-use \WP_Ultimo\UI\Field;
+use WP_Ultimo\Settings;
+use WP_Ultimo\UI\Form;
+use WP_Ultimo\UI\Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -118,8 +118,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		wp_enqueue_script('wu-fields');
 
 		wp_enqueue_style('wp-color-picker');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Registers widgets to the edit page.
@@ -135,37 +134,54 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 
 		parent::register_widgets();
 
-		wu_register_settings_side_panel('login-and-registration', array(
-			'title'  => __('Checkout Forms', 'wp-ultimo'),
-			'render' => array($this, 'render_checkout_forms_side_panel'),
-		));
+		wu_register_settings_side_panel(
+			'login-and-registration',
+			array(
+				'title'  => __('Checkout Forms', 'wp-ultimo'),
+				'render' => array($this, 'render_checkout_forms_side_panel'),
+			)
+		);
 
-		wu_register_settings_side_panel('sites', array(
-			'title'  => __('Template Previewer', 'wp-ultimo'),
-			'render' => array($this, 'render_site_template_side_panel'),
-		));
+		wu_register_settings_side_panel(
+			'sites',
+			array(
+				'title'  => __('Template Previewer', 'wp-ultimo'),
+				'render' => array($this, 'render_site_template_side_panel'),
+			)
+		);
 
-		wu_register_settings_side_panel('sites', array(
-			'title'  => __('Placeholder Editor', 'wp-ultimo'),
-			'render' => array($this, 'render_site_placeholders_side_panel'),
-		));
+		wu_register_settings_side_panel(
+			'sites',
+			array(
+				'title'  => __('Placeholder Editor', 'wp-ultimo'),
+				'render' => array($this, 'render_site_placeholders_side_panel'),
+			)
+		);
 
-		wu_register_settings_side_panel('payment-gateways', array(
-			'title'  => __('Invoices', 'wp-ultimo'),
-			'render' => array($this, 'render_invoice_side_panel'),
-		));
+		wu_register_settings_side_panel(
+			'payment-gateways',
+			array(
+				'title'  => __('Invoices', 'wp-ultimo'),
+				'render' => array($this, 'render_invoice_side_panel'),
+			)
+		);
 
-		wu_register_settings_side_panel('emails', array(
-			'title'  => __('System Emails', 'wp-ultimo'),
-			'render' => array($this, 'render_system_emails_side_panel'),
-		));
+		wu_register_settings_side_panel(
+			'emails',
+			array(
+				'title'  => __('System Emails', 'wp-ultimo'),
+				'render' => array($this, 'render_system_emails_side_panel'),
+			)
+		);
 
-		wu_register_settings_side_panel('emails', array(
-			'title'  => __('Email Template', 'wp-ultimo'),
-			'render' => array($this, 'render_email_template_side_panel'),
-		));
-
-	} // end register_widgets;
+		wu_register_settings_side_panel(
+			'emails',
+			array(
+				'title'  => __('Email Template', 'wp-ultimo'),
+				'render' => array($this, 'render_email_template_side_panel'),
+			)
+		);
+	}
 
 	/**
 	 * Renders the addons side panel
@@ -173,7 +189,8 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_checkout_forms_side_panel() { ?>
+	public function render_checkout_forms_side_panel() {
+		?>
 
 		<div class="wu-widget-inset">
 
@@ -206,8 +223,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		</div>
 
 		<?php
-
-	} // end render_checkout_forms_side_panel;
+	}
 
 	/**
 	 * Renders the site template side panel
@@ -215,7 +231,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_site_template_side_panel() { ?>
+	public function render_site_template_side_panel() {
+
+		?>
 
 		<div class="wu-widget-inset">
 
@@ -248,8 +266,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		</div>
 
 		<?php
-
-	} // end render_site_template_side_panel;
+	}
 
 	/**
 	 * Renders the site placeholder side panel
@@ -257,7 +274,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_site_placeholders_side_panel() { ?>
+	public function render_site_placeholders_side_panel() {
+
+		?>
 
 		<div class="wu-widget-inset">
 
@@ -290,8 +309,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		</div>
 
 		<?php
-
-	} // end render_site_placeholders_side_panel;
+	}
 
 	/**
 	 * Renders the invoice side panel
@@ -299,7 +317,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_invoice_side_panel() { ?>
+	public function render_invoice_side_panel() {
+
+		?>
 
 		<div class="wu-widget-inset">
 
@@ -332,8 +352,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		</div>
 
 		<?php
-
-	} // end render_invoice_side_panel;
+	}
 
 	/**
 	 * Renders system emails side panel.
@@ -341,7 +360,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_system_emails_side_panel() { ?>
+	public function render_system_emails_side_panel() {
+
+		?>
 
 		<div class="wu-widget-inset">
 
@@ -374,8 +395,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		</div>
 
 		<?php
-
-	} // end render_system_emails_side_panel;
+	}
 
 	/**
 	 * Renders the email template side panel.
@@ -383,7 +403,9 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_email_template_side_panel() { ?>
+	public function render_email_template_side_panel() {
+
+		?>
 
 		<div class="wu-widget-inset">
 
@@ -416,8 +438,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		</div>
 
 		<?php
-
-	} // end render_email_template_side_panel;
+	}
 
 	// phpcs:enable
 
@@ -430,8 +451,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	public function get_title() {
 
 		return __('Settings', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -442,8 +462,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Settings', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -465,16 +484,18 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 
 		do_action('wu_render_settings');
 
-		wu_get_template('base/settings', array(
-			'screen'               => get_current_screen(),
-			'page'                 => $this,
-			'classes'              => '',
-			'sections'             => $this->get_sections(),
-			'current_section'      => $this->get_current_section(),
-			'clickable_navigation' => $this->clickable_navigation,
-		));
-
-	} // end output;
+		wu_get_template(
+			'base/settings',
+			array(
+				'screen'               => get_current_screen(),
+				'page'                 => $this,
+				'classes'              => '',
+				'sections'             => $this->get_sections(),
+				'current_section'      => $this->get_current_section(),
+				'clickable_navigation' => $this->clickable_navigation,
+			)
+		);
+	}
 
 	/**
 	 * Returns the list of settings sections.
@@ -485,8 +506,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	public function get_sections() {
 
 		return WP_Ultimo()->settings->get_sections();
-
-	} // end get_sections;
+	}
 
 	/**
 	 * Default handler for step submission. Simply redirects to the next step.
@@ -496,25 +516,20 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function default_handler() {
 
-		if (!current_user_can('wu_edit_settings')) {
-
+		if ( ! current_user_can('wu_edit_settings')) {
 			wp_die(__('You do not have the permissions required to change settings.', 'wp-ultimo'));
+		}
 
-		} // end if;
-
-		if (!isset($_POST['active_gateways']) && wu_request('tab') === 'payment-gateways') {
-
+		if ( ! isset($_POST['active_gateways']) && wu_request('tab') === 'payment-gateways') {
 			$_POST['active_gateways'] = array();
-
-		} // end if;
+		}
 
 		WP_Ultimo()->settings->save_settings($_POST);
 
 		wp_redirect(add_query_arg('updated', 1, wu_get_current_url()));
 
 		exit;
-
-	} // end default_handler;
+	}
 
 	/**
 	 * Default method for views.
@@ -543,30 +558,30 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 			'classes'         => 'button button-primary button-large wu-ml-auto wu-w-full md:wu-w-auto',
 			'wrapper_classes' => 'wu-sticky wu-bottom-0 wu-save-button wu-mr-px wu-w-full md:wu-w-auto',
 			'html_attr'       => array(
-				'v-on:click' => 'send("window", "wu_block_ui", "#wpcontent")'
+				'v-on:click' => 'send("window", "wu_block_ui", "#wpcontent")',
 			),
 		);
 
-		if (!current_user_can('wu_edit_settings')) {
-
+		if ( ! current_user_can('wu_edit_settings')) {
 			$fields['save']['html_attr']['disabled'] = 'disabled';
+		}
 
-		} // end if;
-
-		$form = new Form($section_slug, $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu--mt-5 wu--mx-in wu--mb-in',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-py-5 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'style'        => '',
-				'data-on-load' => 'remove_block_ui',
-				'data-wu-app'  => str_replace('-', '_', $section_slug),
-				'data-state'   => json_encode(wu_array_map_keys('wu_replace_dashes', Settings::get_instance()->get_all(true))),
-			),
-		));
+		$form = new Form(
+			$section_slug,
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu--mt-5 wu--mx-in wu--mb-in',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-py-5 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'style'        => '',
+					'data-on-load' => 'remove_block_ui',
+					'data-wu-app'  => str_replace('-', '_', $section_slug),
+					'data-state'   => json_encode(wu_array_map_keys('wu_replace_dashes', Settings::get_instance()->get_all(true))),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end default_view;
-
-} // end class Settings_Admin_Page;
+	}
+}

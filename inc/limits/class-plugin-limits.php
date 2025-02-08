@@ -46,8 +46,7 @@ class Plugin_Limits {
 	public function init() {
 
 		add_action('wu_sunrise_loaded', array($this, 'load_limitations'));
-
-	} // end init;
+	}
 
 	/**
 	 * Apply limitations if they are available.
@@ -58,7 +57,6 @@ class Plugin_Limits {
 	public function load_limitations() {
 
 		if (wu_get_current_site()->has_limitations()) {
-
 			add_filter('site_option_active_sitewide_plugins', array($this, 'deactivate_network_plugins'));
 
 			add_filter('option_active_plugins', array($this, 'deactivate_plugins'));
@@ -72,14 +70,12 @@ class Plugin_Limits {
 			add_filter('show_network_active_plugins', '__return_true');
 
 			add_action('load-plugins.php', array($this, 'admin_page_hooks'));
-
-		} // end if;
+		}
 
 		add_action('wu_site_post_save', array($this, 'activate_and_inactive_plugins'), 10, 3);
 
 		add_action('wu_checkout_done', array($this, 'maybe_activate_and_inactive_plugins'), 10, 5);
-
-	} // end load_limitations;
+	}
 
 	/**
 	 * Registers scripts onto the plugins page.
@@ -88,10 +84,8 @@ class Plugin_Limits {
 	 * @return void
 	 */
 	public function admin_page_hooks() {
-
 		add_action('admin_enqueue_scripts', 'add_wubox');
-
-	} // end admin_page_hooks;
+	}
 
 	/**
 	 * Automatically activate and deactivate plugins when the site is created or a upgrade happens.
@@ -100,18 +94,14 @@ class Plugin_Limits {
 	 *
 	 * @param array                  $data Saved data.
 	 * @param \WP_Ultimo\Models\Site $site_object The site created.
-	 * @param bool                   $new If this site is a new one.
+	 * @param bool                   $new_site If this site is a new one.
 	 * @return void
 	 */
-	public function activate_and_inactive_plugins($data, $site_object, $new) {
-
-		if ($site_object && $new) {
-
+	public function activate_and_inactive_plugins($data, $site_object, $new_site) {
+		if ($site_object && $new_site) {
 			$site_object->sync_plugins();
-
-		} // end if;
-
-	} // end activate_and_inactive_plugins;
+		}
+	}
 
 	/**
 	 * Activate and Deactivate plugins on upgrades and downgrades.
@@ -126,14 +116,10 @@ class Plugin_Limits {
 	 * @return void
 	 */
 	public function maybe_activate_and_inactive_plugins($payment, $membership, $customer, $cart, $type) {
-
-		if ($type !== 'new' && $membership) {
-
+		if ('new' !== $type && $membership) {
 			$membership->sync_plugins();
-
-		} // end if;
-
-	} // end maybe_activate_and_inactive_plugins;
+		}
+	}
 
 	/**
 	 * Clear the actions of the plugins list table.
@@ -146,36 +132,34 @@ class Plugin_Limits {
 	 */
 	public function clear_actions($actions, $plugin_file) {
 
-		if (!function_exists('wu_generate_upgrade_to_unlock_url')) {
-
+		if ( ! function_exists('wu_generate_upgrade_to_unlock_url')) {
 			return $actions;
-
-		} // end if;
+		}
 
 		$plugin_limits = wu_get_current_site()->get_limitations()->plugins;
 
 		if (isset($actions['network_active'])) {
-
-			$actions['network_active'] = sprintf('<span class="wu-styling">
+			$actions['network_active'] = sprintf(
+				'<span class="wu-styling">
 				<span class="wu-text-green-600">
 					<span class="dashicons-wu-flash wu-align-text-bottom"></span>%s
 				</span>
-			</span>', __('Always Loaded', 'wp-ultimo'));
-
-		} // end if;
+			</span>',
+				__('Always Loaded', 'wp-ultimo')
+			);
+		}
 
 		if ($plugin_limits->allowed($plugin_file, 'force_active_locked')) {
-
 			unset($actions['deactivate']);
-
 		} elseif ($plugin_limits->allowed($plugin_file, 'force_inactive_locked')) {
-
 			$upgrade = sprintf(
 				'<a href="%s" class="wu-styling" title="%s"><span class="dashicons-wu-lock1 wu-mr-1"></span>%s</a>',
-				wu_generate_upgrade_to_unlock_url(array(
-					'module' => 'plugins',
-					'type'   => $plugin_file,
-				)),
+				wu_generate_upgrade_to_unlock_url(
+					array(
+						'module' => 'plugins',
+						'type'   => $plugin_file,
+					)
+				),
 				__('Upgrade to unlock', 'wp-ultimo'),
 				__('Upgrade to unlock', 'wp-ultimo')
 			);
@@ -183,12 +167,10 @@ class Plugin_Limits {
 			$actions['upgrade'] = $upgrade;
 
 			unset($actions['activate']);
-
-		} // end if;
+		}
 
 		return $actions;
-
-	} // end clear_actions;
+	}
 
 	/**
 	 * Clears the plugin list.
@@ -204,38 +186,27 @@ class Plugin_Limits {
 	public function clear_plugin_list($plugins) {
 
 		if (is_main_site()) {
-
 			return $plugins;
-
-		} // end if;
+		}
 
 		$plugin_limits = wu_get_current_site()->get_limitations()->plugins;
 
 		foreach ($plugins as $plugin_slug => $plugin_data) {
-
 			if ($plugin_data['Network']) {
-
-				unset($plugins[$plugin_slug]);
-
-			} // end if;
+				unset($plugins[ $plugin_slug ]);
+			}
 
 			if (strncmp($plugin_slug, 'wp-ultimo', strlen('wp-ultimo')) === 0) {
-
-				unset($plugins[$plugin_slug]);
-
-			} // end if;
+				unset($plugins[ $plugin_slug ]);
+			}
 
 			if ($plugin_limits->allowed($plugin_slug, 'hidden')) {
-
-				unset($plugins[$plugin_slug]);
-
-			} // end if;
-
-		} // end foreach;
+				unset($plugins[ $plugin_slug ]);
+			}
+		}
 
 		return $plugins;
-
-	} // end clear_plugin_list;
+	}
 
 	/**
 	 * Deactivates the network plugins that people are not allowed to use.
@@ -252,62 +223,45 @@ class Plugin_Limits {
 		 * Bail on network admin =)
 		 */
 		if (is_network_admin() || is_main_site()) {
-
 			return $plugins;
-
-		} // end if;
+		}
 
 		/*
 		 * Get the network plugins cache, if they're set.
 		 */
 		if (is_array($this->network_plugins)) {
-
 			return $this->network_plugins;
-
-		} // end if;
+		}
 
 		$plugin_limits = wu_get_current_site()->get_limitations()->plugins;
 
 		foreach ($plugins as $plugin_slug => $timestamp) {
-
 			if (strpos($plugin_slug, 'wp-ultimo') !== false) {
-
 				continue;
-
-			} // end if;
+			}
 
 			if ($plugin_limits->allowed($plugin_slug, 'force_inactive_locked')) {
-
-				unset($plugins[$plugin_slug]);
-
-			} // end if;
-
-		} // end foreach;
+				unset($plugins[ $plugin_slug ]);
+			}
+		}
 
 		// Ensure get_plugins function is loaded.
-		if (!function_exists('get_plugins')) {
-
+		if ( ! function_exists('get_plugins')) {
 			include ABSPATH . '/wp-admin/includes/plugin.php';
-
-		} // end if;
+		}
 
 		$other_plugins = get_plugins();
 
 		foreach ($other_plugins as $plugin_path => $other_plugin) {
-
-			if (!wu_get_isset($plugins, $plugin_path) && $plugin_limits->allowed($plugin_path, 'force_active_locked')) {
-
-				$plugins[$plugin_path] = true;
-
-			} // end if;
-
-		} // end foreach;
+			if ( ! wu_get_isset($plugins, $plugin_path) && $plugin_limits->allowed($plugin_path, 'force_active_locked')) {
+				$plugins[ $plugin_path ] = true;
+			}
+		}
 
 		$this->network_plugins = $plugins;
 
 		return $plugins;
-
-	} // end deactivate_network_plugins;
+	}
 
 	/**
 	 * Deactivates the plugins that people are not allowed to use.
@@ -322,64 +276,46 @@ class Plugin_Limits {
 		 * Bail on network admin =)
 		 */
 		if (is_network_admin() || is_main_site()) {
-
 			return $plugins;
-
-		} // end if;
+		}
 
 		/*
 		 * Get the site-level plugins cache, if they're set.
 		 */
 		if (is_array($this->plugins)) {
-
 			return $this->plugins;
-
-		} // end if;
+		}
 
 		$plugin_limits = wu_get_current_site()->get_limitations()->plugins;
 
 		foreach ($plugins as $plugin_slug) {
-
 			if (strpos((string) $plugin_slug, 'wp-ultimo') !== false) {
-
 				continue;
-
-			} // end if;
+			}
 
 			if ($plugin_limits->allowed($plugin_slug, 'force_inactive_locked')) {
-
 				$index = array_search($plugin_slug, $plugins, true);
-
-				unset($plugins[$index]);
-
-			} // end if;
-
-		} // end foreach;
+				unset($plugins[ $index ]);
+			}
+		}
 
 		// Ensure get_plugins function is loaded.
-		if (!function_exists('get_plugins')) {
-
+		if ( ! function_exists('get_plugins')) {
 			include ABSPATH . '/wp-admin/includes/plugin.php';
-
-		} // end if;
+		}
 
 		$other_plugins = get_plugins();
 
 		foreach ($other_plugins as $plugin_path => $other_plugin) {
-
 			if (in_array($plugin_path, $plugins, true) && $plugin_limits->allowed($plugin_path, 'force_active_locked')) {
-
 				$plugins[] = $plugin_path;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$this->plugins = $plugins;
 
 		return $plugins;
-
-	} // end deactivate_plugins;
+	}
 
 	/**
 	 * Remove the unused shortcodes after we disable plugins.
@@ -390,11 +326,6 @@ class Plugin_Limits {
 	 * @return string
 	 */
 	public function clean_unused_shortcodes($content) {
-
-		$content = preg_replace('/\[.+\].+\[\/.+\]/', '', $content);
-
-		return $content;
-
-	} // end clean_unused_shortcodes;
-
-} // end class Plugin_Limits;
+		return preg_replace('/\[.+\].+\[\/.+\]/', '', $content);
+	}
+}

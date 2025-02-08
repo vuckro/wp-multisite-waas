@@ -70,17 +70,16 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	);
 
 	/**
-     * Picks up on tips that a given host provider is being used.
-     *
-     * We use this to suggest that the user should activate an integration module.
-     *
-     * @since 2.0.0
-     */
+	 * Picks up on tips that a given host provider is being used.
+	 *
+	 * We use this to suggest that the user should activate an integration module.
+	 *
+	 * @since 2.0.0
+	 */
 	public function detect(): bool {
 
 		return strpos(ABSPATH, 'runcloud') !== false;
-
-	} // end detect;
+	}
 
 	/**
 	 * Returns the list of installation fields.
@@ -112,8 +111,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 				'placeholder' => __('e.g. 940288', 'wp-ultimo'),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -127,40 +125,35 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		$success = false;
 
-		$response = $this->send_runcloud_request($this->get_runcloud_base_url('domains'), array(
-			'name'        => $domain,
-			'www'         => true,
-			'redirection' => 'non-www'
-		), 'POST');
+		$response = $this->send_runcloud_request(
+			$this->get_runcloud_base_url('domains'),
+			array(
+				'name'        => $domain,
+				'www'         => true,
+				'redirection' => 'non-www',
+			),
+			'POST'
+		);
 
 		if (is_wp_error($response)) {
-
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
-
 		} else {
-
 			$success = true; // At least one of the calls was successful;
 
 			wu_log_add('integration-runcloud', wp_remote_retrieve_body($response));
-
-		} // end if;
+		}
 
 		/**
 		 * Only redeploy SSL if at least one of the domains were successfully added
 		 */
 		if ($success) {
-
 			$ssl_id = $this->get_runcloud_ssl_id();
 
 			if ($ssl_id) {
-
 				$this->redeploy_runcloud_ssl($ssl_id);
-
-			} // end if;
-
-		} // end if;
-
-	} // end on_add_domain;
+			}
+		}
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -174,25 +167,18 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		$domain_id = $this->get_runcloud_domain_id($domain);
 
-		if (!$domain_id) {
-
+		if ( ! $domain_id) {
 			wu_log_add('integration-runcloud', __('Domain name not found on runcloud', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$response = $this->send_runcloud_request($this->get_runcloud_base_url("domains/$domain_id"), array(), 'DELETE');
 
 		if (is_wp_error($response)) {
-
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
-
 		} else {
-
 			wu_log_add('integration-runcloud', wp_remote_retrieve_body($response));
-
-		} // end if;
-
-	} // end on_remove_domain;
+		}
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -204,7 +190,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {} // end on_add_subdomain;
+	public function on_add_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -216,7 +202,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {} // end on_remove_subdomain;
+	public function on_remove_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * Tests the connection with the RunCloud API.
@@ -229,16 +215,11 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 		$response = $this->send_runcloud_request($this->get_runcloud_base_url('domains'), array(), 'GET');
 
 		if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
-
 			wp_send_json_error($response);
-
 		} else {
-
 			wp_send_json_success($this->maybe_return_runcloud_body($response));
-
-		} // end if;
-
-	} // end test_connection;
+		}
+	}
 
 	/**
 	 * Returns the base domain API url to our calls.
@@ -254,8 +235,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 		$appid = defined('WU_RUNCLOUD_APP_ID') ? WU_RUNCLOUD_APP_ID : '';
 
 		return "https://manage.runcloud.io/api/v2/servers/{$serverid}/webapps/{$appid}/{$path}";
-
-	} // end get_runcloud_base_url;
+	}
 
 	/**
 	 * Sends the request to a given runcloud URL with a given body.
@@ -272,19 +252,21 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		$password = defined('WU_RUNCLOUD_API_SECRET') ? WU_RUNCLOUD_API_SECRET : '';
 
-		$response = wp_remote_request($url, array(
-			'timeout'     => 100,
-			'redirection' => 5,
-			'body'        => $data,
-			'method'      => $method,
-			'headers'     => array(
-				'Authorization' => 'Basic ' . base64_encode($username . ':' . $password),
-			),
-		));
+		$response = wp_remote_request(
+			$url,
+			array(
+				'timeout'     => 100,
+				'redirection' => 5,
+				'body'        => $data,
+				'method'      => $method,
+				'headers'     => array(
+					'Authorization' => 'Basic ' . base64_encode($username . ':' . $password),
+				),
+			)
+		);
 
 		return $response;
-
-	} // end send_runcloud_request;
+	}
 
 	/**
 	 * Treats the response, maybe returning the json decoded version
@@ -296,16 +278,11 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	public function maybe_return_runcloud_body($response) {
 
 		if (is_wp_error($response)) {
-
 			return $response->get_error_message();
-
 		} else {
-
 			return json_decode(wp_remote_retrieve_body($response));
-
-		} // end if;
-
-	} // end maybe_return_runcloud_body;
+		}
+	}
 
 	/**
 	 * Returns the RunCloud.io domain id to remove.
@@ -320,56 +297,42 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		$list = $this->maybe_return_runcloud_body($domains_list);
 
-		if (is_object($list) && !empty($list->data)) {
-
+		if (is_object($list) && ! empty($list->data)) {
 			foreach ($list->data as $remote_domain) {
-
 				if ($remote_domain->name === $domain) {
-
 					return $remote_domain->id;
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
+				}
+			}
+		}
 
 		return false;
-
-	} // end get_runcloud_domain_id;
- /**
-  * Checks if RunCloud has a SSL cert installed or not, and returns the ID.
-  *
-  * @since 1.10.4
-  * @return bool|int
-  */
- public function get_runcloud_ssl_id() {
+	}
+	/**
+	 * Checks if RunCloud has a SSL cert installed or not, and returns the ID.
+	 *
+	 * @since 1.10.4
+	 * @return bool|int
+	 */
+	public function get_runcloud_ssl_id() {
 
 		$ssl_id = false;
 
 		$response = $this->send_runcloud_request($this->get_runcloud_base_url('ssl'), array(), 'GET');
 
 		if (is_wp_error($response)) {
-
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
-
 		} else {
-
 			$data = $this->maybe_return_runcloud_body($response);
 
 			wu_log_add('integration-runcloud', json_encode($data));
 
 			if (property_exists($data, 'id')) {
-
 				$ssl_id = $data->id;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $ssl_id;
-
-	} // end get_runcloud_ssl_id;
+	}
 
 	/**
 	 * Redeploys the SSL cert when a new domain is added.
@@ -383,16 +346,11 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 		$response = $this->send_runcloud_request($this->get_runcloud_base_url("ssl/$ssl_id"), array(), 'PUT');
 
 		if (is_wp_error($response)) {
-
 			wu_log_add('integration-runcloud', $response->get_error_message(), LogLevel::ERROR);
-
 		} else {
-
 			wu_log_add('integration-runcloud', wp_remote_retrieve_body($response));
-
-		} // end if;
-
-	} // end redeploy_runcloud_ssl;
+		}
+	}
 
 	/**
 	 * Renders the instructions content.
@@ -403,8 +361,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	public function get_instructions() {
 
 		wu_get_template('wizards/host-integrations/runcloud-instructions');
-
-	} // end get_instructions;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -415,8 +372,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __('With RunCloud, you don’t need to be a Linux expert to build a website powered by DigitalOcean, AWS, or Google Cloud. Use our graphical interface and build a business on the cloud affordably.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -427,7 +383,5 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('runcloud.svg', 'img/hosts');
-
-	} // end get_logo;
-
-} // end class Runcloud_Host_Provider;
+	}
+}

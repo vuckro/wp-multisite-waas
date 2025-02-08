@@ -21,13 +21,12 @@ defined('ABSPATH') || exit;
  */
 function wu_sort_by_column($a, $b, $column = 'order') {
 
-	$a[$column] = isset($a[$column]) ? (int) $a[$column] : 50;
+	$a[ $column ] = isset($a[ $column ]) ? (int) $a[ $column ] : 50;
 
-	$b[$column] = isset($b[$column]) ? (int) $b[$column] : 50;
+	$b[ $column ] = isset($b[ $column ]) ? (int) $b[ $column ] : 50;
 
-	return $a[$column] - $b[$column];
-
-} // end wu_sort_by_column;
+	return $a[ $column ] - $b[ $column ];
+}
 
 /**
  * Sorts the fields.
@@ -39,8 +38,7 @@ function wu_sort_by_column($a, $b, $column = 'order') {
 function wu_sort_by_order($a, $b) {
 
 	return wu_sort_by_column($a, $b, 'order');
-
-} // end wu_sort_by_order;
+}
 
 /**
  * Loops through the list items and adds a order key if none is set, based on the index.
@@ -56,19 +54,14 @@ function wu_set_order_from_index($list, $order_key = 'order') {
 	$index = 1;
 
 	foreach ($list as &$item) {
-
-		if (isset($item[$order_key]) === false) {
-
+		if (isset($item[ $order_key ]) === false) {
 			$index = $index ? $index : 1; // phpcs:ignore
 
-			$item[$order_key] = $index * 10;
+			$item[ $order_key ] = $index * 10;
 
-			$index++;
-
-		} // end if;
-
-	} // end foreach;
+			++$index;
+		}
+	}
 
 	return $list;
-
-} // end wu_set_order_from_index;
+}

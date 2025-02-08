@@ -38,16 +38,13 @@ class Checkout_Pages {
 		add_filter('lostpassword_redirect', array($this, 'filter_lost_password_redirect'));
 
 		if (is_main_site()) {
-
 			add_action('before_signup_header', array($this, 'redirect_to_registration_page'));
 
 			$use_custom_login = wu_get_setting('enable_custom_login_page', false);
 
-			if (!$use_custom_login) {
-
+			if ( ! $use_custom_login) {
 				return;
-
-			} // end if;
+			}
 
 			add_filter('login_url', array($this, 'filter_login_url'), 10, 3);
 
@@ -73,10 +70,8 @@ class Checkout_Pages {
 			add_action('post_submitbox_misc_actions', array($this, 'render_compat_mode_setting'));
 
 			add_action('save_post', array($this, 'handle_compat_mode_setting'));
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * Filters the lost password redirect URL.
@@ -85,17 +80,14 @@ class Checkout_Pages {
 	 */
 	public function filter_lost_password_redirect(string $redirect_to): string {
 
-		if (!empty($redirect_to)) {
-
+		if ( ! empty($redirect_to)) {
 			return $redirect_to;
-
-		} // end if;
+		}
 
 		$redirect_to = add_query_arg('checkemail', 'confirm', wp_login_url());
 
 		return $redirect_to;
-
-	} // end filter_lost_password_redirect;
+	}
 
 	/**
 	 * Renders the compat mode option for pages and posts.
@@ -127,8 +119,7 @@ class Checkout_Pages {
 		<?php
 
 		// phpcs:enable
-
-	} // end render_compat_mode_setting;
+	}
 
 	/**
 	 * Handles saving the compat mode switch on posts.
@@ -141,34 +132,23 @@ class Checkout_Pages {
 	public function handle_compat_mode_setting($post_id) {
 
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-
 			return;
+		}
 
-		} // end if;
-
-		if (!isset($_POST['_wu_force_compat']) || !wp_verify_nonce($_POST['_wu_force_compat'], '_wu_force_compat_' . $post_id)) {
-
+		if ( ! isset($_POST['_wu_force_compat']) || ! wp_verify_nonce($_POST['_wu_force_compat'], '_wu_force_compat_' . $post_id)) {
 			return;
+		}
 
-		} // end if;
-
-		if (!current_user_can('edit_post', $post_id)) {
-
+		if ( ! current_user_can('edit_post', $post_id)) {
 			return;
-
-		} // end if;
+		}
 
 		if (isset($_POST['_wu_force_elements_loading'])) {
-
 			update_post_meta($post_id, '_wu_force_elements_loading', $_POST['_wu_force_elements_loading']);
-
 		} else {
-
 			delete_post_meta($post_id, '_wu_force_elements_loading');
-
-		} // end if;
-
-	} // end handle_compat_mode_setting;
+		}
+	}
 
 	/**
 	 * Replace wp-login.php in email URLs.
@@ -184,24 +164,19 @@ class Checkout_Pages {
 		 * wp-login.php in it to begin with.
 		 */
 		if (strpos($url, 'wp-login.php') === false) {
-
 			return $url;
-
-		} // end if;
+		}
 
 		$post_id = wu_get_setting('default_login_page', 0);
 
 		$post = get_post($post_id);
 
 		if ($post) {
-
 			$url = str_replace('wp-login.php', $post->post_name, $url);
-
-		} // end if;
+		}
 
 		return $url;
-
-	} // end maybe_change_wp_login_on_urls;
+	}
 
 	/**
 	 * Get an error message.
@@ -215,11 +190,11 @@ class Checkout_Pages {
 	public function get_error_message($error_code, $username = '') {
 
 		$messages = array(
-			'incorrect_password'         => sprintf(__( '<strong>Error:</strong> The password you entered is incorrect.', 'wp-ultimo')),
+			'incorrect_password'         => sprintf(__('<strong>Error:</strong> The password you entered is incorrect.', 'wp-ultimo')),
 			// From here we are using the same messages as WordPress core.
 			'expired'                    => __('Your session has expired. Please log in to continue where you left off.'),
 			'confirm'                    => sprintf(__('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'), wp_login_url()),
-			'registered'                 => sprintf(__( 'Registration complete. Please check your email, then visit the <a href="%s">login page</a>.' ), wp_login_url()),
+			'registered'                 => sprintf(__('Registration complete. Please check your email, then visit the <a href="%s">login page</a>.'), wp_login_url()),
 			'loggedout'                  => __('You are now logged out.'),
 			'registerdisabled'           => __('<strong>Error:</strong> User registration is currently not allowed.'),
 			'empty_username'             => __('<strong>Error:</strong> The username field is empty.'),
@@ -243,8 +218,7 @@ class Checkout_Pages {
 		$messages = apply_filters('wu_checkout_pages_error_messages', $messages);
 
 		return wu_get_isset($messages, $error_code, __('Something went wrong', 'wp-ultimo'));
-
-	} // end get_error_message;
+	}
 
 	/**
 	 * Handle password reset errors.
@@ -260,20 +234,20 @@ class Checkout_Pages {
 	public function maybe_handle_password_reset_errors($errors) {
 
 		if ($errors->has_errors()) {
-
-			$url = add_query_arg(array(
-				'action'     => wu_request('action', ''),
-				'user_login' => wu_request('user_login', ''),
-				'error'      => $errors->get_error_code(),
-			), wp_login_url());
+			$url = add_query_arg(
+				array(
+					'action'     => wu_request('action', ''),
+					'user_login' => wu_request('user_login', ''),
+					'error'      => $errors->get_error_code(),
+				),
+				wp_login_url()
+			);
 
 			wp_redirect($url);
 
 			exit;
-
-		} // end if;
-
-	} // end maybe_handle_password_reset_errors;
+		}
+	}
 
 	/**
 	 * Maybe redirects users to the confirm screen.
@@ -289,14 +263,11 @@ class Checkout_Pages {
 	public function maybe_redirect_to_confirm_screen() {
 
 		if (wu_request('redirect_to')) {
-
 			wp_redirect(wu_request('redirect_to'));
 
 			exit;
-
-		} // end if;
-
-	} // end maybe_redirect_to_confirm_screen;
+		}
+	}
 
 	/**
 	 * Replace the reset password link, if necessary.
@@ -311,11 +282,9 @@ class Checkout_Pages {
 	 */
 	public function replace_reset_password_link($message, $key, $user_login, $user_data) {
 
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			return $message;
-
-		} // end if;
+		}
 
 		$results = array();
 
@@ -330,28 +299,27 @@ class Checkout_Pages {
 
 			$switched_locale = switch_to_locale($locale);
 
-			$new_url = add_query_arg(array(
-				'action'  => 'rp',
-				'key'     => $key,
-				'login'   => rawurlencode($user_login),
-				'wp_lang' => $locale
-			), wp_login_url());
+			$new_url = add_query_arg(
+				array(
+					'action'  => 'rp',
+					'key'     => $key,
+					'login'   => rawurlencode($user_login),
+					'wp_lang' => $locale,
+				),
+				wp_login_url()
+			);
 
 			$new_url = set_url_scheme($new_url, null);
 
 			$message = str_replace($results[0], $new_url, $message);
-
-		} // end if;
+		}
 
 		if ($switched_locale) {
-
 			restore_previous_locale();
-
-		} // end if;
+		}
 
 		return $message;
-
-	} // end replace_reset_password_link;
+	}
 
 	/**
 	 * Redirect logged users when they reach the login page.
@@ -363,25 +331,19 @@ class Checkout_Pages {
 
 		global $post;
 
-		if (!is_user_logged_in()) {
-
+		if ( ! is_user_logged_in()) {
 			return;
-
-		} // end if;
+		}
 
 		$custom_login_page = $this->get_signup_page('login');
 
 		if (empty($custom_login_page) || empty($post)) {
-
 			return;
-
-		} // end if;
+		}
 
 		if ($custom_login_page->ID !== $post->ID) {
-
 			return;
-
-		} // end if;
+		}
 
 		/**
 		 * Create an exclusion list of parameters that prevent the auto-redirect.
@@ -392,24 +354,26 @@ class Checkout_Pages {
 		 * @since 2.0.4
 		 * @return array
 		 */
-		$exclusion_list = apply_filters('wu_maybe_redirect_to_admin_panel_exclusion_list', array(
-			'preview',           // WordPress Preview
-			'ct_builder',        // Oxygen Builder
-			'fl_builder',        // Beaver Builder
-			'elementor-preview', // Elementor
-			'brizy-edit',        // Brizy
-			'brizy-edit-iframe', // Brizy
-		), $custom_login_page, $post, $this);
+		$exclusion_list = apply_filters(
+			'wu_maybe_redirect_to_admin_panel_exclusion_list',
+			array(
+				'preview',           // WordPress Preview
+				'ct_builder',        // Oxygen Builder
+				'fl_builder',        // Beaver Builder
+				'elementor-preview', // Elementor
+				'brizy-edit',        // Brizy
+				'brizy-edit-iframe', // Brizy
+			),
+			$custom_login_page,
+			$post,
+			$this
+		);
 
 		foreach ($exclusion_list as $exclusion_param) {
-
 			if (wu_request($exclusion_param, null) !== null) {
-
 				return;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$user = wp_get_current_user();
 
@@ -418,34 +382,23 @@ class Checkout_Pages {
 		$redirect_to = $active_blog ? get_admin_url($active_blog->blog_id) : false;
 
 		if (isset($_GET['redirect_to'])) {
-
 			$redirect_to = $_GET['redirect_to'];
-
-		} elseif (is_multisite() && !get_active_blog_for_user($user->ID) && !is_super_admin($user->ID)) {
-
+		} elseif (is_multisite() && ! get_active_blog_for_user($user->ID) && ! is_super_admin($user->ID)) {
 			$redirect_to = user_admin_url();
-
-		} elseif (is_multisite() && !$user->has_cap('read')) {
-
+		} elseif (is_multisite() && ! $user->has_cap('read')) {
 			$redirect_to = get_dashboard_url($user->ID);
-
-		} elseif (!$user->has_cap('edit_posts')) {
-
+		} elseif ( ! $user->has_cap('edit_posts')) {
 			$redirect_to = $user->has_cap('read') ? admin_url('profile.php') : home_url();
+		}
 
-		} // end if;
-
-		if (!$redirect_to) {
-
+		if ( ! $redirect_to) {
 			return;
-
-		} // end if;
+		}
 
 		wp_redirect($redirect_to);
 
 		exit;
-
-	} // end maybe_redirect_to_admin_panel;
+	}
 
 	/**
 	 * Adds the unverified email account error message.
@@ -460,7 +413,6 @@ class Checkout_Pages {
 	public function add_verify_email_notice($payment, $membership, $customer) {
 
 		if ($payment->get_total() == 0 && $customer->get_email_verification() === 'pending') {
-
 			$html = '<div class="wu-p-4 wu-bg-yellow-200 wu-mb-2 wu-text-yellow-700 wu-rounded">%s</div>';
 
 			$message = __('Your email address is not yet verified. Your site <strong>will only be activated</strong> after your email address is verified. Check your inbox and verify your email address.', 'wp-ultimo');
@@ -468,10 +420,8 @@ class Checkout_Pages {
 			$message .= sprintf('<br><a href="#" class="wu-resend-verification-email wu-text-gray-700">%s</a>', __('Resend verification email &rarr;', 'wp-ultimo'));
 
 			printf($html, $message);
-
-		} // end if;
-
-	} // end add_verify_email_notice;
+		}
+	}
 
 	/**
 	 * Check if we should obfuscate the login URL.
@@ -483,44 +433,33 @@ class Checkout_Pages {
 
 		$use_custom_login = wu_get_setting('enable_custom_login_page', false);
 
-		if (!$use_custom_login) {
-
+		if ( ! $use_custom_login) {
 			return;
-
-		} // end if;
+		}
 
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
 			return;
-
-		} // end if;
+		}
 
 		if (wu_request('interim-login')) {
-
 			return;
-
-		} // end if;
+		}
 
 		if (wu_request('action') === 'logout') {
-
 			return;
-
-		} // end if;
+		}
 
 		$new_login_url = $this->get_page_url('login');
 
-		if (!$new_login_url) {
-
+		if ( ! $new_login_url) {
 			return;
-
-		} // end if;
+		}
 
 		$should_obfuscate = wu_get_setting('obfuscate_original_login_url', 1);
 
 		$bypass_obfuscation = wu_request('wu_bypass_obfuscation');
 
-		if ($should_obfuscate && !$bypass_obfuscation) {
-
+		if ($should_obfuscate && ! $bypass_obfuscation) {
 			status_header(404);
 
 			nocache_headers();
@@ -529,19 +468,15 @@ class Checkout_Pages {
 
 			$wp_query->set_404();
 
-			include(get_404_template());
+			include get_404_template();
 
 			die;
-
 		} else {
-
 			wp_redirect($new_login_url);
 
 			exit;
-
-		} // end if;
-
-	} // end maybe_obfuscate_login_url;
+		}
+	}
 
 	/**
 	 * Redirects the customers to the registration page, when one is used.
@@ -554,14 +489,11 @@ class Checkout_Pages {
 		$registration_url = $this->get_page_url('register');
 
 		if ($registration_url) {
-
 			wp_redirect($registration_url);
 
 			exit;
-
-		} // end if;
-
-	} // end redirect_to_registration_page;
+		}
+	}
 
 	/**
 	 * Filters the login URL if necessary.
@@ -578,19 +510,15 @@ class Checkout_Pages {
 		/**
 		 * Fix incompatibility with UIPress, making sure we only filter after wp_loaded ran.
 		 */
-		if (!did_action('wp_loaded')) {
-
+		if ( ! did_action('wp_loaded')) {
 			return $login_url;
-
-		} // end if;
+		}
 
 		$function_caller = wu_get_function_caller(5);
 
 		if ($function_caller === 'wp_auth_check_html') {
-
 			return $login_url;
-
-		} // end if;
+		}
 
 		$params = array();
 
@@ -600,33 +528,24 @@ class Checkout_Pages {
 
 		$new_login_url = $this->get_page_url('login');
 
-		if (!$new_login_url) {
-
+		if ( ! $new_login_url) {
 			return $login_url;
-
-		} // end if;
+		}
 
 		if ($params) {
-
 			$new_login_url = add_query_arg($params, $new_login_url);
-
-		} // end if;
+		}
 
 		if ($redirect) {
-
-			$new_login_url = add_query_arg('redirect_to', urlencode( $redirect ), $new_login_url);
-
-		} // end if;
+			$new_login_url = add_query_arg('redirect_to', urlencode($redirect), $new_login_url);
+		}
 
 		if ($force_reauth) {
-
 			$new_login_url = add_query_arg('reauth', 1, $new_login_url);
-
-		} // end if;
+		}
 
 		return $new_login_url;
-
-	} // end filter_login_url;
+	}
 
 	/**
 	 * Returns the ID of the pages being used for each WP Multisite WaaS purpose.
@@ -643,52 +562,45 @@ class Checkout_Pages {
 			'block_frontend' => wu_get_setting('default_block_frontend_page', false),
 			'new_site'       => wu_get_setting('default_new_site_page', false),
 		);
-
-	} // end get_signup_pages;
- /**
-  * Returns the WP_Post object for one of the pages.
-  *
-  * @since 2.0.0
-  *
-  * @param string $page The slug of the page to retrieve.
-  * @return \WP_Post|false
-  */
- public function get_signup_page($page) {
+	}
+	/**
+	 * Returns the WP_Post object for one of the pages.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $page The slug of the page to retrieve.
+	 * @return \WP_Post|false
+	 */
+	public function get_signup_page($page) {
 
 		$pages = $this->get_signup_pages();
 
 		$page_id = wu_get_isset($pages, $page);
 
-		if (!$page_id) {
-
+		if ( ! $page_id) {
 			return false;
-
-		} // end if;
+		}
 
 		return get_blog_post(wu_get_main_site_id(), $page_id);
-
-	} // end get_signup_page;
- /**
-  * Returns the URL for a particular page type.
-  *
-  * @since 2.0.0
-  *
-  * @param string $page_slug The signup page to get.
-  * @return string|false
-  */
- public function get_page_url($page_slug = 'login') {
+	}
+	/**
+	 * Returns the URL for a particular page type.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $page_slug The signup page to get.
+	 * @return string|false
+	 */
+	public function get_page_url($page_slug = 'login') {
 
 		$page = $this->get_signup_page($page_slug);
 
-		if (!$page) {
-
+		if ( ! $page) {
 			return false;
-
-		} // end if;
+		}
 
 		return wu_switch_blog_and_run(fn() => get_the_permalink($page));
-
-	} // end get_page_url;
+	}
 
 	/**
 	 * Tags the WP Multisite WaaS pages on the main site.
@@ -701,11 +613,9 @@ class Checkout_Pages {
 	 */
 	public function add_wp_ultimo_status_annotation($states, $post) {
 
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			return $states;
-
-		} // end if;
+		}
 
 		$labels = array(
 			'register'       => __('WP Multisite WaaS - Register Page', 'wp-ultimo'),
@@ -718,16 +628,13 @@ class Checkout_Pages {
 		$pages = array_map('absint', $this->get_signup_pages());
 
 		if (in_array($post->ID, $pages, true)) {
-
 			$key = array_search($post->ID, $pages, true);
 
 			$states['wp_ultimo_page'] = wu_get_isset($labels, $key);
-
-		} // end if;
+		}
 
 		return $states;
-
-	} // end add_wp_ultimo_status_annotation;
+	}
 
 	/**
 	 * Renders the confirmation page.
@@ -740,11 +647,12 @@ class Checkout_Pages {
 	 */
 	public function render_confirmation_page($atts, $content = null) {
 
-		return wu_get_template_contents('checkout/confirmation', array(
-			'errors'     => Checkout::get_instance()->errors,
-			'membership' => wu_get_membership_by_hash(wu_request('membership')),
-		));
-
-	} // end render_confirmation_page;
-
-} // end class Checkout_Pages;
+		return wu_get_template_contents(
+			'checkout/confirmation',
+			array(
+				'errors'     => Checkout::get_instance()->errors,
+				'membership' => wu_get_membership_by_hash(wu_request('membership')),
+			)
+		);
+	}
+}

@@ -34,17 +34,18 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Discount Code', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Discount Codes', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true,                              // does this table support ajax?
-			'add_new'  => array(
-				'url'     => wu_network_admin_url('wp-ultimo-edit-discount-code'),
-				'classes' => '',
-			),
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Discount Code', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Discount Codes', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                              // does this table support ajax?
+				'add_new'  => array(
+					'url'     => wu_network_admin_url('wp-ultimo-edit-discount-code'),
+					'classes' => '',
+				),
+			)
+		);
+	}
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -75,8 +76,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 		);
 
 		return $title . $this->row_actions($actions);
-
-	} // end column_name;
+	}
 
 	/**
 	 * Displays the content of the value column.
@@ -89,24 +89,19 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 */
 	public function column_value($item) {
 
-		if (!$item->get_value()) {
-
+		if ( ! $item->get_value()) {
 			return __('No Discount', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$value = wu_format_currency($item->get_value());
 
 		if ($item->get_type() === 'percentage') {
-
 			$value = number_format($item->get_value(), 0) . '%';
-
-		} // end if;
+		}
 
 		// translators: placeholder is the amount of discount. e.g. 10% or $5.
 		return sprintf(__('%s OFF', 'wp-ultimo'), $value);
-
-	} // end column_value;
+	}
 
 	/**
 	 * Displays the content of the setup fee value column.
@@ -119,24 +114,19 @@ class Discount_Code_List_Table extends Base_List_Table {
 	 */
 	public function column_setup_fee_value($item) {
 
-		if (!$item->get_setup_fee_value()) {
-
+		if ( ! $item->get_setup_fee_value()) {
 			return __('No Discount', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$value = wu_format_currency($item->get_setup_fee_value());
 
 		if ($item->get_setup_fee_type() === 'percentage') {
-
 			$value = number_format($item->get_setup_fee_value()) . '%';
-
-		} // end if;
+		}
 
 		// translators: placeholder is the amount of discount. e.g. 10% or $5.
 		return sprintf(__('%s OFF', 'wp-ultimo'), $value);
-
-	} // end column_setup_fee_value;
+	}
 
 	/**
 	 * Displays the use limitations.
@@ -155,16 +145,12 @@ class Discount_Code_List_Table extends Base_List_Table {
 
 			// translators: the placeholder is the number of times this coupon can be used before becoming inactive.
 			$html .= '<small class="wu-block">' . sprintf(__('Allowed uses: %d', 'wp-ultimo'), $item->get_max_uses()) . '</span>';
-
 		} else {
-
 			$html .= '<small class="wu-block">' . __('No Limits', 'wp-ultimo') . '</span>';
-
-		} // end if;
+		}
 
 		return $html;
-
-	} // end column_uses;
+	}
 
 	/**
 	 * Shows the code as a tag.
@@ -183,14 +169,11 @@ class Discount_Code_List_Table extends Base_List_Table {
 		$valid = $item->is_valid();
 
 		if (is_wp_error($valid)) {
-
 			$html .= sprintf('<small class="wu-block wu-sans" %s>%s</small>', wu_tooltip_text($valid->get_error_message()), __('Inactive', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		return $html;
-
-	} // end column_coupon_code;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -211,8 +194,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -224,7 +206,5 @@ class Discount_Code_List_Table extends Base_List_Table {
 			'filters'      => array(),
 			'date_filters' => array(),
 		);
-
-	} // end get_filters;
-
-} // end class Discount_Code_List_Table;
+	}
+}

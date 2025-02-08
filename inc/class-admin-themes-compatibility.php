@@ -29,8 +29,7 @@ class Admin_Themes_Compatibility {
 	public function __construct() {
 
 		add_filter('admin_body_class', array($this, 'add_body_classes'));
-
-	} // end __construct;
+	}
 
 	/**
 	 * Body tag classes. Fired by `body_class` filter.
@@ -45,18 +44,13 @@ class Admin_Themes_Compatibility {
 		$prefix = 'wu-compat-admin-theme-';
 
 		foreach (self::get_admin_themes() as $key => $value) {
-
 			if ($value['activated']) {
-
 				$classes .= ' ' . $prefix . $key . ' ';
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $classes;
-
-	} // end add_body_classes;
+	}
 
 	/**
 	 * Get list of Admin Themes
@@ -66,27 +60,28 @@ class Admin_Themes_Compatibility {
 	 */
 	public static function get_admin_themes() {
 
-		return apply_filters('wu_admin_themes_compatibility', array(
-			'material-wp' => array(
-				'activated' => class_exists('MaterialWP'),
-			),
-			'pro-theme'   => array(
-				'activated' => class_exists('PROTheme'),
-			),
-			'admin-2020'  => array(
-				'activated' => function_exists('run_admin_2020'),
-			),
-			'clientside'  => array(
-				'activated' => class_exists('Clientside'),
-			),
-			'wphave'      => array(
-				'activated' => class_exists('wphave_admin'),
-			),
-			'waaspro'     => array(
-				'activated' => class_exists('AdminUIPRO') || class_exists('AdminUIPROflat'),
-			),
-		));
-
-	} // end get_admin_themes;
-
-} // end class Admin_Themes_Compatibility;
+		return apply_filters(
+			'wu_admin_themes_compatibility',
+			array(
+				'material-wp' => array(
+					'activated' => class_exists('MaterialWP'),
+				),
+				'pro-theme'   => array(
+					'activated' => class_exists('PROTheme'),
+				),
+				'admin-2020'  => array(
+					'activated' => function_exists('run_admin_2020'),
+				),
+				'clientside'  => array(
+					'activated' => class_exists('Clientside'),
+				),
+				'wphave'      => array(
+					'activated' => class_exists('wphave_admin'),
+				),
+				'waaspro'     => array(
+					'activated' => class_exists('AdminUIPRO') || class_exists('AdminUIPROflat'),
+				),
+			)
+		);
+	}
+}

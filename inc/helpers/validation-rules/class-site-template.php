@@ -9,9 +9,9 @@
 
 namespace WP_Ultimo\Helpers\Validation_Rules;
 
-use \Rakit\Validation\Rule;
-use \WP_Ultimo\Checkout\Checkout;
-use \WP_Ultimo\Database\Sites\Site_Type;
+use Rakit\Validation\Rule;
+use WP_Ultimo\Checkout\Checkout;
+use WP_Ultimo\Database\Sites\Site_Type;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -45,49 +45,39 @@ class Site_Template extends Rule {
 	 *
 	 * @param mixed $template_id Value being checked.
 	 */
- public function check($template_id) : bool { // phpcs:ignore
+    public function check($template_id) : bool { // phpcs:ignore
 
 		$template_id = absint($template_id);
 
-		if (!$template_id) {
-
+		if (! $template_id) {
 			return true;
-
-		} // end if;
+		}
 
 		$site = wu_get_site($template_id);
 
-		if (!$site || ($site->get_type() !== Site_Type::SITE_TEMPLATE && $site->get_type() !== Site_Type::CUSTOMER_OWNED)) {
-
+		if (! $site || ($site->get_type() !== Site_Type::SITE_TEMPLATE && $site->get_type() !== Site_Type::CUSTOMER_OWNED)) {
 			$this->message = __('The Template ID does not correspond to a valid Template', 'wp-ultimo');
 
 			return false;
-
-		} // end if;
+		}
 
 		if ($site->get_type() === Site_Type::CUSTOMER_OWNED) {
-
-			if (!wu_get_setting('allow_own_site_as_template')) {
-
+			if (! wu_get_setting('allow_own_site_as_template')) {
 				$this->message = __('You can not use your sites as template', 'wp-ultimo');
 
 				return false;
-
-			} // end if;
+			}
 
 			$customer = wu_get_current_customer();
 
-			if (!$customer || $site->get_customer_id() !== $customer->get_id()) {
-
+			if (! $customer || $site->get_customer_id() !== $customer->get_id()) {
 				$this->message = __('The selected template is not available.', 'wp-ultimo');
 
 				return false;
-
-			} // end if;
+			}
 
 			return true;
-
-		} // end if;
+		}
 
 		$allowed_templates = false;
 
@@ -96,7 +86,6 @@ class Site_Template extends Rule {
 		$product_ids_or_slugs = array_unique($product_ids_or_slugs);
 
 		if ($product_ids_or_slugs) {
-
 			$products = array_map('wu_get_product', $product_ids_or_slugs);
 
 			$limits = new \WP_Ultimo\Objects\Limitations();
@@ -106,25 +95,19 @@ class Site_Template extends Rule {
 			$products = array_merge(array($plan), $additional_products);
 
 			foreach ($products as $product) {
-
 				$limits = $limits->merge($product->get_limitations());
-
-			} // end foreach;
+			}
 
 			$allowed_templates = $limits->site_templates->get_available_site_templates();
-
-		} // end if;
+		}
 
 		if (is_array($allowed_templates) && !in_array($template_id, $allowed_templates)) { // phpcs:ignore
 
 			$this->message = __('The selected template is not available for this product.', 'wp-ultimo');
 
 			return false;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end check;
-
-} // end class Site_Template;
+	}
+}

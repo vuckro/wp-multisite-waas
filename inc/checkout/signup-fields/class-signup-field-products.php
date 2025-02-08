@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -24,15 +24,14 @@ defined('ABSPATH') || exit;
 class Signup_Field_Products extends Base_Signup_Field {
 
 	/**
-     * Returns the type of the field.
-     *
-     * @since 2.0.0
-     */
+	 * Returns the type of the field.
+	 *
+	 * @since 2.0.0
+	 */
 	public function get_type(): string {
 
 		return 'products';
-
-	} // end get_type;
+	}
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -41,8 +40,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function is_required(): bool {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -55,8 +53,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Product', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -69,8 +66,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Hidden field used to pre-select products. This is useful when you have a signup page for specific offering/bundles and do not want your customers to be able to choose plans and products manually.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -83,8 +79,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Hidden field used to pre-select products. This is useful when you have a signup page for specific offering/bundles and do not want your customers to be able to choose plans and products manually.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -95,8 +90,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function get_icon(): string {
 
 		return 'dashicons-wu dashicons-wu-package';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -110,10 +104,9 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function defaults() {
 
 		return array(
-			''
+			'',
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -124,8 +117,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 	public function default_fields() {
 
 		return array();
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -139,8 +131,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 			'name' => __('Pre-selected Products', 'wp-ultimo'),
 			'id'   => 'products',
 		);
-
-	} // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -166,8 +157,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 				),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -184,22 +174,19 @@ class Signup_Field_Products extends Base_Signup_Field {
 		$products = explode(',', (string) $attributes['products']);
 
 		foreach ($products as $product_id) {
-
-			$checkout_fields["products[{$product_id}]"] = array(
+			$checkout_fields[ "products[{$product_id}]" ] = array(
 				'type'      => 'hidden',
 				'value'     => $product_id,
 				'html_attr' => array(
 					'v-bind:name' => "'products[]'",
 				),
 			);
-
-		} // end foreach;
+		}
 
 		$this->insert_products_in_form($products);
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
+	}
 
 	/**
 	 * Inserts the products in the form.
@@ -212,10 +199,8 @@ class Signup_Field_Products extends Base_Signup_Field {
 		static $added = false;
 
 		if ($added) {
-
 			return;
-
-		} // end if;
+		}
 
 		$added = true;
 
@@ -224,24 +209,23 @@ class Signup_Field_Products extends Base_Signup_Field {
 				data.products.push(...%s);
 				data.products = data.products.map((value) => parseInt(value) || value);
 				data.products = [...new Set(data.products)];
-			} // end if;
+			}
 			return data;
 		});";
 
 		if (did_action('wu-checkout')) {
-
 			wp_add_inline_script('wu-checkout', sprintf($script, json_encode($products)), 'before');
 
 			return;
+		}
 
-		} // end if;
+		add_action(
+			'wp_enqueue_scripts',
+			function () use ($script, $products) {
 
-		add_action('wp_enqueue_scripts', function() use ($script, $products) {
-
-			wp_add_inline_script('wu-checkout', sprintf($script, json_encode($products)), 'before');
-
-		}, 11);
-
-	} // end insert_products_in_form;
-
-} // end class Signup_Field_Products;
+				wp_add_inline_script('wu-checkout', sprintf($script, json_encode($products)), 'before');
+			},
+			11
+		);
+	}
+}

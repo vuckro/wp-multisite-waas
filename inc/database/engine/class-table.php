@@ -47,21 +47,16 @@ abstract class Table extends \BerlinDB\Database\Table {
 	 */
 	public function is_upgradeable() {
 
-		if (!is_main_network()) {
-
+		if ( ! is_main_network()) {
 			return false;
+		}
 
-		} // end if;
-
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			return false;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end is_upgradeable;
+	}
 
 	/**
 	 * Adds a caching layer to the parent exists method.
@@ -72,13 +67,9 @@ abstract class Table extends \BerlinDB\Database\Table {
 	public function exists() {
 
 		if ($this->_exists === null) {
-
 			$this->_exists = parent::exists();
-
-		} // end if;
+		}
 
 		return $this->_exists;
-
-	} // end exists;
-
-} // end class Table;
+	}
+}

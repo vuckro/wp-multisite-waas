@@ -32,8 +32,7 @@ class Discount_Code_Compat {
 	public function init() {
 
 		add_filter('update_post_metadata', array($this, 'check_update_coupon'), 10, 5);
-
-	} // end init;
+	}
 
 	/**
 	 * Saves meta data from old plugins on the new plugin.
@@ -51,22 +50,18 @@ class Discount_Code_Compat {
 		/*
 		 * Check if we are in the main site of the network.
 		 */
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Check if we have a new entity with this ID.
 		 */
 		$migrated_discount_code = wu_get_discount_code($object_id);
 
-		if (!$migrated_discount_code) {
-
+		if ( ! $migrated_discount_code) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Prevent double prefixing.
@@ -83,7 +78,5 @@ class Discount_Code_Compat {
 		 * returning anything else will prevent meta data from being saved.
 		 */
 		return null;
-
-	} // end check_update_coupon;
-
-} // end class Discount_Code_Compat;
+	}
+}

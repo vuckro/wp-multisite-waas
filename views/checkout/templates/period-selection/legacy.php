@@ -22,18 +22,18 @@ defined('ABSPATH') || exit;
 
 <div class="wu-mx-auto wu-text-center wu-mb-4">
 
-  <ul class="wu-plans-frequency-selector">
+	<ul class="wu-plans-frequency-selector">
 
-    <?php foreach ($period_options as $index => $period_option) : ?>
+	<?php foreach ($period_options as $index => $period_option) : ?>
 
-      <li>
-        <a class="wu-text-center" :class="(duration == <?php echo $period_option['duration']; ?> && duration_unit == '<?php echo $period_option['duration_unit']; ?>') || (<?php echo json_encode($index === 0); ?> && duration === '') ? 'active' : ''" v-on:click.prevent="duration = <?php echo $period_option['duration']; ?>; duration_unit = '<?php echo $period_option['duration_unit']; ?>'" href="#">
-          <?php echo $period_option['label']; ?>
-        </a>
-      </li>
+		<li>
+		<a class="wu-text-center" :class="(duration == <?php echo $period_option['duration']; ?> && duration_unit == '<?php echo $period_option['duration_unit']; ?>') || (<?php echo json_encode($index === 0); ?> && duration === '') ? 'active' : ''" v-on:click.prevent="duration = <?php echo $period_option['duration']; ?>; duration_unit = '<?php echo $period_option['duration_unit']; ?>'" href="#">
+			<?php echo $period_option['label']; ?>
+		</a>
+		</li>
 
-    <?php endforeach; ?>
+	<?php endforeach; ?>
 
-  </ul>
+	</ul>
 
 </div>

@@ -74,8 +74,7 @@ class Site_Actions_Element extends Base_Element {
 	public function register_scripts() {
 
 		add_wubox();
-
-	} // end register_scripts;
+	}
 	/**
 	 * The icon of the UI element.
 	 * e.g. return fa fa-search
@@ -86,14 +85,11 @@ class Site_Actions_Element extends Base_Element {
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -108,8 +104,7 @@ class Site_Actions_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Actions', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -125,8 +120,7 @@ class Site_Actions_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -179,19 +173,19 @@ class Site_Actions_Element extends Base_Element {
 			'value'   => 1,
 		);
 
-		$pages = get_pages(array(
-			'exclude' => array(get_the_ID()),
-		));
+		$pages = get_pages(
+			array(
+				'exclude' => array(get_the_ID()),
+			)
+		);
 
 		$pages = $pages ? $pages : array();
 
 		$pages_list = array(0 => __('Default', 'wp-ultimo'));
 
 		foreach ($pages as $page) {
-
-			$pages_list[$page->ID] = $page->post_title;
-
-		} // end foreach;
+			$pages_list[ $page->ID ] = $page->post_title;
+		}
 
 		$fields['redirect_after_delete'] = array(
 			'type'    => 'select',
@@ -203,8 +197,7 @@ class Site_Actions_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -232,8 +225,7 @@ class Site_Actions_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -257,8 +249,7 @@ class Site_Actions_Element extends Base_Element {
 			'show_change_payment_method' => 1,
 			'redirect_after_delete'      => 0,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -270,23 +261,18 @@ class Site_Actions_Element extends Base_Element {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
-		if (!$this->site || !$this->site->is_customer_allowed()) {
-
+		if ( ! $this->site || ! $this->site->is_customer_allowed()) {
 			$this->site = false;
-
-		} // end if;
+		}
 
 		$this->membership = WP_Ultimo()->currents->get_membership();
 
-		if (!$this->membership) {
-
+		if ( ! $this->membership) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
-
-	} // end setup;
+		}
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -299,8 +285,7 @@ class Site_Actions_Element extends Base_Element {
 		$this->site = wu_mock_site();
 
 		$this->membership = wu_mock_membership();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * Overload the init to add site-related forms.
@@ -313,8 +298,7 @@ class Site_Actions_Element extends Base_Element {
 		parent::init();
 
 		$this->register_forms();
-
-	} // end init;
+	}
 
 	/**
 	 * Register forms
@@ -324,37 +308,51 @@ class Site_Actions_Element extends Base_Element {
 	 */
 	public function register_forms() {
 
-		wu_register_form('change_password', array(
-			'render'     => array($this, 'render_change_password'),
-			'handler'    => array($this, 'handle_change_password'),
-			'capability' => 'exist',
-		));
+		wu_register_form(
+			'change_password',
+			array(
+				'render'     => array($this, 'render_change_password'),
+				'handler'    => array($this, 'handle_change_password'),
+				'capability' => 'exist',
+			)
+		);
 
-		wu_register_form('delete_site', array(
-			'render'     => array($this, 'render_delete_site'),
-			'handler'    => array($this, 'handle_delete_site'),
-			'capability' => 'exist',
-		));
+		wu_register_form(
+			'delete_site',
+			array(
+				'render'     => array($this, 'render_delete_site'),
+				'handler'    => array($this, 'handle_delete_site'),
+				'capability' => 'exist',
+			)
+		);
 
-		wu_register_form('change_default_site', array(
-			'render'     => array($this, 'render_change_default_site'),
-			'handler'    => array($this, 'handle_change_default_site'),
-			'capability' => 'exist',
-		));
+		wu_register_form(
+			'change_default_site',
+			array(
+				'render'     => array($this, 'render_change_default_site'),
+				'handler'    => array($this, 'handle_change_default_site'),
+				'capability' => 'exist',
+			)
+		);
 
-		wu_register_form('cancel_payment_method', array(
-			'render'     => array($this, 'render_cancel_payment_method'),
-			'handler'    => array($this, 'handle_cancel_payment_method'),
-			'capability' => 'exist',
-		));
+		wu_register_form(
+			'cancel_payment_method',
+			array(
+				'render'     => array($this, 'render_cancel_payment_method'),
+				'handler'    => array($this, 'handle_cancel_payment_method'),
+				'capability' => 'exist',
+			)
+		);
 
-		wu_register_form('cancel_membership', array(
-			'render'     => array($this, 'render_cancel_membership'),
-			'handler'    => array($this, 'handle_cancel_membership'),
-			'capability' => 'exist',
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'cancel_membership',
+			array(
+				'render'     => array($this, 'render_cancel_membership'),
+				'handler'    => array($this, 'handle_cancel_membership'),
+				'capability' => 'exist',
+			)
+		);
+	}
 
 	/**
 	 * Returns the actions for the element. These can be filtered.
@@ -372,58 +370,55 @@ class Site_Actions_Element extends Base_Element {
 		$is_template_switching_enabled = wu_get_setting('allow_template_switching', true);
 
 		if ($is_template_switching_enabled && $this->site) {
-
 			$actions['template_switching'] = array(
 				'label'        => __('Change Site Template', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-edit wu-align-middle',
-				'href'         => add_query_arg(array(
-					'page' => 'wu-template-switching',
-				), get_admin_url($this->site->get_id())),
+				'href'         => add_query_arg(
+					array(
+						'page' => 'wu-template-switching',
+					),
+					get_admin_url($this->site->get_id())
+				),
 			);
-
-		} // end if;
+		}
 
 		if (count($all_blogs) > 1 && wu_get_isset($atts, 'show_change_default_site')) {
-
 			$actions['default_site'] = array(
 				'label'        => __('Change Default Site', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-edit wu-align-middle',
 				'classes'      => 'wubox',
 				'href'         => wu_get_form_url('change_default_site'),
 			);
-
-		} // end if;
+		}
 
 		if (wu_get_isset($atts, 'show_change_password')) {
-
 			$actions['change_password'] = array(
 				'label'        => __('Change Password', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-edit wu-align-middle',
 				'classes'      => 'wubox',
 				'href'         => wu_get_form_url('change_password'),
 			);
-
-		} // end if;
+		}
 
 		$payment_gateway = $this->membership ? $this->membership->get_gateway() : false;
 
 		if (wu_get_isset($atts, 'show_change_payment_method') && $payment_gateway) {
-
 			$actions['cancel_payment_method'] = array(
 				'label'        => __('Cancel Current Payment Method', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-edit wu-align-middle',
 				'classes'      => 'wubox',
-				'href'         => wu_get_form_url('cancel_payment_method', array(
-					'membership'   => $this->membership->get_hash(),
-					'redirect_url' => wu_get_current_url(),
-				)),
+				'href'         => wu_get_form_url(
+					'cancel_payment_method',
+					array(
+						'membership'   => $this->membership->get_hash(),
+						'redirect_url' => wu_get_current_url(),
+					)
+				),
 			);
-
-		} // end if;
+		}
 
 		return apply_filters('wu_element_get_site_actions', $actions, $atts, $this->site, $this->membership);
-
-	} // end get_actions;
+	}
 
 	/**
 	 * Returns the danger actions actions for the element. These can be filtered.
@@ -437,40 +432,47 @@ class Site_Actions_Element extends Base_Element {
 		$actions = array();
 
 		if ($this->site) {
-
-			$actions = array_merge(array(
-				'delete_site' => array(
-					'label'        => __('Delete Site', 'wp-ultimo'),
-					'icon_classes' => 'dashicons-wu-edit wu-align-middle',
-					'classes'      => 'wubox wu-text-red-500',
-					'href'         => wu_get_form_url('delete_site', array(
-						'site'         => $this->site->get_hash(),
-						'redirect_url' => !$atts['redirect_after_delete'] ? false : get_page_link($atts['redirect_after_delete']),
-					)),
+			$actions = array_merge(
+				array(
+					'delete_site' => array(
+						'label'        => __('Delete Site', 'wp-ultimo'),
+						'icon_classes' => 'dashicons-wu-edit wu-align-middle',
+						'classes'      => 'wubox wu-text-red-500',
+						'href'         => wu_get_form_url(
+							'delete_site',
+							array(
+								'site'         => $this->site->get_hash(),
+								'redirect_url' => ! $atts['redirect_after_delete'] ? false : get_page_link($atts['redirect_after_delete']),
+							)
+						),
+					),
 				),
-			), $actions);
-
-		} // end if;
+				$actions
+			);
+		}
 
 		if ($this->membership && $this->membership->is_recurring() && $this->membership->get_status() !== Membership_Status::CANCELLED) {
-
-			$actions = array_merge(array(
-				'cancel_membership' => array(
-					'label'        => __('Cancel Membership', 'wp-ultimo'),
-					'icon_classes' => 'dashicons-wu-edit wu-align-middle',
-					'classes'      => 'wubox wu-text-red-500',
-					'href'         => wu_get_form_url('cancel_membership', array(
-						'membership'   => $this->membership->get_hash(),
-						'redirect_url' => wu_get_current_url(),
-					)),
+			$actions = array_merge(
+				array(
+					'cancel_membership' => array(
+						'label'        => __('Cancel Membership', 'wp-ultimo'),
+						'icon_classes' => 'dashicons-wu-edit wu-align-middle',
+						'classes'      => 'wubox wu-text-red-500',
+						'href'         => wu_get_form_url(
+							'cancel_membership',
+							array(
+								'membership'   => $this->membership->get_hash(),
+								'redirect_url' => wu_get_current_url(),
+							)
+						),
+					),
 				),
-			), $actions);
-
-		} // end if;
+				$actions
+			);
+		}
 
 		return apply_filters('wu_element_get_danger_zone_site_actions', $actions);
-
-	} // end get_danger_zone_actions;
+	}
 
 	/**
 	 * Renders the delete site modal.
@@ -484,22 +486,17 @@ class Site_Actions_Element extends Base_Element {
 
 		$error = '';
 
-		if (!$site) {
-
+		if ( ! $site) {
 			$error = __('Site not selected.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!$customer || $customer->get_id() !== $site->get_customer_id()) {
-
+		if ( ! $customer || $customer->get_id() !== $site->get_customer_id()) {
 			$error = __('You are not allowed to do this.', 'wp-ultimo');
+		}
 
-		} // end if;
-
-		if (!empty($error)) {
-
+		if ( ! empty($error)) {
 			$error_field = array(
 				'error_message' => array(
 					'type' => 'note',
@@ -507,17 +504,20 @@ class Site_Actions_Element extends Base_Element {
 				),
 			);
 
-			$form = new \WP_Ultimo\UI\Form('change_password', $error_field, array(
-				'views'                 => 'admin-pages/fields',
-				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			));
+			$form = new \WP_Ultimo\UI\Form(
+				'change_password',
+				$error_field,
+				array(
+					'views'                 => 'admin-pages/fields',
+					'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				)
+			);
 
 			$form->render();
 
 			return;
-
-		} // end if;
+		}
 
 		$fields = array(
 			'site'          => array(
@@ -549,21 +549,26 @@ class Site_Actions_Element extends Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('change_password', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'change_password',
-				'data-state'  => wu_convert_to_state(array(
-					'confirmed' => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'change_password',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'change_password',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'confirmed' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_delete_site;
+	}
 
 	/**
 	 * Handles the delete site modal.
@@ -578,55 +583,49 @@ class Site_Actions_Element extends Base_Element {
 
 		$site = wu_get_site_by_hash(wu_request('site'));
 
-		if (!$site || !$site->is_customer_allowed()) {
-
+		if ( ! $site || ! $site->is_customer_allowed()) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!$customer || $customer->get_id() !== $site->get_customer_id()) {
-
+		if ( ! $customer || $customer->get_id() !== $site->get_customer_id()) {
 			return new \WP_Error('error', __('You are not allowed to do this.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$wpdb->query('START TRANSACTION');
 
 		try {
-
 			$saved = $site->delete();
 
 			if (is_wp_error($saved)) {
-
 				$wpdb->query('ROLLBACK');
 
 				return $saved;
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('exception', $e->getMessage());
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		$redirect_url = wu_request('redirect_url');
 
-		$redirect_url = add_query_arg(array(
-			'site_deleted' => true,
-		), wu_request('redirect_url') ?? user_admin_url());
+		$redirect_url = add_query_arg(
+			array(
+				'site_deleted' => true,
+			),
+			wu_request('redirect_url') ?? user_admin_url()
+		);
 
-		wp_send_json_success(array(
-			'redirect_url' => $redirect_url,
-		));
-
-	} // end handle_delete_site;
+		wp_send_json_success(
+			array(
+				'redirect_url' => $redirect_url,
+			)
+		);
+	}
 
 	/**
 	 * Renders the change password modal.
@@ -665,19 +664,22 @@ class Site_Actions_Element extends Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('change_password', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'change_password',
-				'data-state'  => wu_convert_to_state(),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'change_password',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'change_password',
+					'data-state'  => wu_convert_to_state(),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_change_password;
+	}
 
 	/**
 	 * Handles the password reset form.
@@ -689,42 +691,34 @@ class Site_Actions_Element extends Base_Element {
 
 		$user = wp_get_current_user();
 
-		if (!$user) {
-
+		if ( ! $user) {
 			$error = new \WP_Error('user-dont-exist', __('Something went wrong.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$current_password = wu_request('password');
 
-		if (!wp_check_password($current_password, $user->user_pass, $user->ID)) {
-
+		if ( ! wp_check_password($current_password, $user->user_pass, $user->ID)) {
 			$error = new \WP_Error('wrong-password', __('Your current password is wrong.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$new_password      = wu_request('new_password');
 		$new_password_conf = wu_request('new_password_conf');
 
-		if (!$new_password || strlen((string) $new_password) < 6) {
-
+		if ( ! $new_password || strlen((string) $new_password) < 6) {
 			$error = new \WP_Error('password-min-length', __('The new password must be at least 6 characters long.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		if ($new_password !== $new_password_conf) {
-
 			$error = new \WP_Error('passwords-dont-match', __('New passwords do not match.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		reset_password($user, $new_password);
 
@@ -733,11 +727,12 @@ class Site_Actions_Element extends Base_Element {
 		wp_set_current_user($user->ID);
 		do_action('wp_login', $user->user_login, $user); // PHPCS:ignore
 
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_change_password;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
 
 	/**
 	 * Renders the change current site modal.
@@ -752,10 +747,8 @@ class Site_Actions_Element extends Base_Element {
 		$option_blogs = array();
 
 		foreach ($all_blogs as $key => $blog) {
-
-			$option_blogs[$blog->userblog_id] = get_home_url($blog->userblog_id);
-
-		} // end foreach;
+			$option_blogs[ $blog->userblog_id ] = get_home_url($blog->userblog_id);
+		}
 
 		$primary_blog = get_user_meta(get_current_user_id(), 'primary_blog', true);
 
@@ -782,21 +775,26 @@ class Site_Actions_Element extends Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('change_default_site', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'change_default_site',
-				'data-state'  => wu_convert_to_state(array(
-					'new_primary_site' => $primary_blog
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'change_default_site',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'change_default_site',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'new_primary_site' => $primary_blog,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_change_default_site;
+	}
 
 	/**
 	 * Handles the change default site form.
@@ -809,20 +807,19 @@ class Site_Actions_Element extends Base_Element {
 		$new_primary_site = wu_request('new_primary_site');
 
 		if ($new_primary_site) {
-
 			update_user_meta(get_current_user_id(), 'primary_blog', $new_primary_site);
 
-			wp_send_json_success(array(
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-			));
-
-		} // end if;
+			wp_send_json_success(
+				array(
+					'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				)
+			);
+		}
 
 		$error = new \WP_Error('no-site-selected', __('You need to select a new primary site.', 'wp-ultimo'));
 
 		wp_send_json_error($error);
-
-	} // end handle_change_default_site;
+	}
 
 	/**
 	 * Renders the cancel payment method modal.
@@ -836,22 +833,17 @@ class Site_Actions_Element extends Base_Element {
 
 		$error = '';
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = __('Membership not selected.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!is_super_admin() && (!$customer || $customer->get_id() !== $membership->get_customer_id())) {
-
+		if ( ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
 			$error = __('You are not allowed to do this.', 'wp-ultimo');
+		}
 
-		} // end if;
-
-		if (!empty($error)) {
-
+		if ( ! empty($error)) {
 			$error_field = array(
 				'error_message' => array(
 					'type' => 'note',
@@ -859,17 +851,20 @@ class Site_Actions_Element extends Base_Element {
 				),
 			);
 
-			$form = new \WP_Ultimo\UI\Form('cancel_payment_method', $error_field, array(
-				'views'                 => 'admin-pages/fields',
-				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			));
+			$form = new \WP_Ultimo\UI\Form(
+				'cancel_payment_method',
+				$error_field,
+				array(
+					'views'                 => 'admin-pages/fields',
+					'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				)
+			);
 
 			$form->render();
 
 			return;
-
-		} // end if;
+		}
 
 		$fields = array(
 			'membership'    => array(
@@ -901,21 +896,26 @@ class Site_Actions_Element extends Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('cancel_payment_method', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'cancel_payment_method',
-				'data-state'  => wu_convert_to_state(array(
-					'confirmed' => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'cancel_payment_method',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'cancel_payment_method',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'confirmed' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_cancel_payment_method;
+	}
 
 	/**
 	 * Handles the payment method cancellation.
@@ -927,27 +927,23 @@ class Site_Actions_Element extends Base_Element {
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
 
 			return;
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!is_super_admin() && (!$customer || $customer->get_id() !== $membership->get_customer_id())) {
-
+		if ( ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
 			$error = new \WP_Error('error', __('You are not allowed to do this.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
 
 			return;
-
-		} // end if;
+		}
 
 		$membership->set_gateway('');
 		$membership->set_gateway_subscription_id('');
@@ -958,15 +954,19 @@ class Site_Actions_Element extends Base_Element {
 
 		$redirect_url = wu_request('redirect_url');
 
-		$redirect_url = add_query_arg(array(
-			'payment_gateway_cancelled' => true,
-		), $redirect_url ?? user_admin_url());
+		$redirect_url = add_query_arg(
+			array(
+				'payment_gateway_cancelled' => true,
+			),
+			$redirect_url ?? user_admin_url()
+		);
 
-		wp_send_json_success(array(
-			'redirect_url' => $redirect_url,
-		));
-
-	} // end handle_cancel_payment_method;
+		wp_send_json_success(
+			array(
+				'redirect_url' => $redirect_url,
+			)
+		);
+	}
 
 	/**
 	 * Renders the cancel payment method modal.
@@ -980,22 +980,17 @@ class Site_Actions_Element extends Base_Element {
 
 		$error = '';
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = __('Membership not selected.', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!is_super_admin() && (!$customer || $customer->get_id() !== $membership->get_customer_id())) {
-
+		if ( ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
 			$error = __('You are not allowed to do this.', 'wp-ultimo');
+		}
 
-		} // end if;
-
-		if (!empty($error)) {
-
+		if ( ! empty($error)) {
 			$error_field = array(
 				'error_message' => array(
 					'type' => 'note',
@@ -1003,17 +998,20 @@ class Site_Actions_Element extends Base_Element {
 				),
 			);
 
-			$form = new \WP_Ultimo\UI\Form('cancel_membership', $error_field, array(
-				'views'                 => 'admin-pages/fields',
-				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			));
+			$form = new \WP_Ultimo\UI\Form(
+				'cancel_membership',
+				$error_field,
+				array(
+					'views'                 => 'admin-pages/fields',
+					'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				)
+			);
 
 			$form->render();
 
 			return;
-
-		} // end if;
+		}
 
 		$fields = array(
 			'membership'               => array(
@@ -1062,20 +1060,16 @@ class Site_Actions_Element extends Base_Element {
 		$next_charge = false;
 
 		if ($membership->is_recurring() && ($membership->is_active() || $membership->get_status() === Membership_Status::TRIALING)) {
-
 			$next_charge = strtotime($membership->get_date_expiration());
-
-		} // end if;
+		}
 
 		if ($next_charge && $next_charge > time()) {
-
 			$fields['next_charge'] = array(
 				'type' => 'note',
 				// translators: %s: Next charge date.
 				'desc' => sprintf(__('Your sites will stay working until %s.', 'wp-ultimo'), date_i18n(get_option('date_format'), $next_charge)),
 			);
-
-		} // end if;
+		}
 
 		$fields['submit_button'] = array(
 			'type'            => 'submit',
@@ -1089,22 +1083,27 @@ class Site_Actions_Element extends Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('cancel_membership', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'cancel_membership',
-				'data-state'  => wu_convert_to_state(array(
-					'confirmation'        => '',
-					'cancellation_reason' => '',
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'cancel_membership',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'cancel_membership',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'confirmation'        => '',
+							'cancellation_reason' => '',
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_cancel_membership;
+	}
 
 	/**
 	 * Handles the payment method cancellation.
@@ -1116,27 +1115,23 @@ class Site_Actions_Element extends Base_Element {
 
 		$membership = wu_get_membership_by_hash(wu_request('membership'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$error = new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
 
 			return;
-
-		} // end if;
+		}
 
 		$customer = wu_get_current_customer();
 
-		if (!is_super_admin() && (!$customer || $customer->get_id() !== $membership->get_customer_id())) {
-
+		if ( ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
 			$error = new \WP_Error('error', __('You are not allowed to do this.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
 
 			return;
-
-		} // end if;
+		}
 
 		$cancellation_options = array(
 			'unused'           => __('I no longer need it', 'wp-ultimo'),
@@ -1154,15 +1149,19 @@ class Site_Actions_Element extends Base_Element {
 
 		$redirect_url = wu_request('redirect_url');
 
-		$redirect_url = add_query_arg(array(
-			'payment_gateway_cancelled' => true,
-		), !empty($redirect_url) ? $redirect_url : user_admin_url());
+		$redirect_url = add_query_arg(
+			array(
+				'payment_gateway_cancelled' => true,
+			),
+			! empty($redirect_url) ? $redirect_url : user_admin_url()
+		);
 
-		wp_send_json_success(array(
-			'redirect_url' => $redirect_url,
-		));
-
-	} // end handle_cancel_membership;
+		wp_send_json_success(
+			array(
+				'redirect_url' => $redirect_url,
+			)
+		);
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -1184,7 +1183,5 @@ class Site_Actions_Element extends Base_Element {
 		$atts['danger_zone_actions'] = $this->get_danger_zone_actions($atts);
 
 		return wu_get_template_contents('dashboard-widgets/site-actions', $atts);
-
-	} // end output;
-
-} // end class Site_Actions_Element;
+	}
+}

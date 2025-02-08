@@ -19,5 +19,4 @@ defined('ABSPATH') || exit;
 function wu_get_invoice_template() {
 
 	return false;
-
-} // end wu_get_invoice_template;
+}

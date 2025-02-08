@@ -78,7 +78,5 @@ class Broadcast_Query extends Post_Query {
 		$query['type__in'] = array('broadcast_email', 'broadcast_notice');
 
 		return parent::query($query);
-
-	} // end query;
-
-} // end class Broadcast_Query;
+	}
+}

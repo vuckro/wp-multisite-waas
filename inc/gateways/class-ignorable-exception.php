@@ -14,4 +14,4 @@ namespace WP_Ultimo\Gateways;
  *
  * @since 2.0.7
  */
-class Ignorable_Exception extends \Exception {} // end class Ignorable_Exception;
+class Ignorable_Exception extends \Exception {}

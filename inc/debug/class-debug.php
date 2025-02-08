@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Debug;
 
-use \WP_Ultimo\Faker;
+use WP_Ultimo\Faker;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -24,11 +24,11 @@ class Debug {
 	use \WP_Ultimo\Traits\Singleton;
 
 	/**
-     * The registry of WP Multisite WaaS admin pages.
-     *
-     * @since 2.0.0
-     * @var array
-     */
+	 * The registry of WP Multisite WaaS admin pages.
+	 *
+	 * @since 2.0.0
+	 * @var array
+	 */
 	private array $pages = array();
 
 	/**
@@ -46,8 +46,7 @@ class Debug {
 		add_action('wp_ultimo_debug', array($this, 'add_additional_hooks'));
 
 		add_action('wp_ultimo_debug', array($this, 'register_forms'));
-
-	} // end init;
+	}
 
 	/**
 	 * Adds the additional debug links.
@@ -58,8 +57,7 @@ class Debug {
 	public function add_additional_hooks() {
 
 		add_action('wu_header_left', array($this, 'add_debug_links'));
-
-	} // end add_additional_hooks;
+	}
 
 	// phpcs:disable
 
@@ -109,7 +107,7 @@ class Debug {
 
 		<?php
 
-	} // end add_debug_links;
+	}
 
 	// phpcs:enable
 
@@ -123,28 +121,36 @@ class Debug {
 		/*
 		 * Add Generator Form
 		 */
-		wu_register_form('add_debug_generator_form', array(
-			'render'  => array($this, 'render_debug_generator_form'),
-			'handler' => array($this, 'handle_debug_generator_form'),
-		));
+		wu_register_form(
+			'add_debug_generator_form',
+			array(
+				'render'  => array($this, 'render_debug_generator_form'),
+				'handler' => array($this, 'handle_debug_generator_form'),
+			)
+		);
 
 		/*
 		 * Adds Reset Form
 		 */
-		wu_register_form('add_debug_reset_database_form', array(
-			'render'  => array($this, 'render_debug_reset_database_form'),
-			'handler' => array($this, 'handle_debug_reset_database_form'),
-		));
+		wu_register_form(
+			'add_debug_reset_database_form',
+			array(
+				'render'  => array($this, 'render_debug_reset_database_form'),
+				'handler' => array($this, 'handle_debug_reset_database_form'),
+			)
+		);
 
 		/*
 		 * Adds Drop Form
 		 */
-		wu_register_form('add_debug_drop_database_form', array(
-			'render'  => array($this, 'render_debug_drop_database_form'),
-			'handler' => array($this, 'handle_debug_drop_database_form'),
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'add_debug_drop_database_form',
+			array(
+				'render'  => array($this, 'render_debug_drop_database_form'),
+				'handler' => array($this, 'handle_debug_drop_database_form'),
+			)
+		);
+	}
 
 	/**
 	 * Adds the form to generate data.
@@ -283,28 +289,33 @@ class Debug {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('add_debug_generator_form', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'debug_generator',
-				'data-state'  => json_encode(array(
-					'customers'      => false,
-					'products'       => false,
-					'memberships'    => false,
-					'sites'          => false,
-					'domains'        => false,
-					'discount_codes' => false,
-					'webhooks'       => false,
-					'payments'       => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_debug_generator_form',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'debug_generator',
+					'data-state'  => json_encode(
+						array(
+							'customers'      => false,
+							'products'       => false,
+							'memberships'    => false,
+							'sites'          => false,
+							'domains'        => false,
+							'discount_codes' => false,
+							'webhooks'       => false,
+							'payments'       => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_debug_generator_form;
+	}
 
 	/**
 	 * Handles the checkout
@@ -325,72 +336,50 @@ class Debug {
 		$wpdb->query('START TRANSACTION');
 
 		try {
-
 			if (wu_request('customers')) {
-
 				$faker->generate_fake_customers(wu_request('customers_number', 0));
-
-			} // end if;
+			}
 
 			if (wu_request('products')) {
-
 				$faker->generate_fake_products(wu_request('products_number', 0));
-
-			} // end if;
+			}
 
 			if (wu_request('memberships')) {
-
 				$faker->generate_fake_memberships(wu_request('memberships_number', 0));
-
-			} // end if;
+			}
 
 			if (wu_request('sites')) {
-
 				$faker->generate_fake_site(wu_request('sites_number', 0));
-
-			} // end if;
+			}
 
 			if (wu_request('domains')) {
-
 				$faker->generate_fake_domain(wu_request('domains_number', 0));
-
-			} // end if;
+			}
 
 			if (wu_request('discount_codes')) {
-
 				$faker->generate_fake_discount_code(wu_request('discount_codes_number', 0));
-
-			} // end if;
+			}
 
 			if (wu_request('payments')) {
-
 				$faker->generate_fake_payment(wu_request('payments_number', 0));
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
 			wp_send_json_error($error);
-
-		} // end try;
+		}
 
 		$fake_data_generated = $faker->get_fake_data_generated();
 
 		$fake_ids_generated = array();
 
 		foreach ($fake_data_generated as $key => $model) {
-
 			foreach ($model as $object) {
-
-				$fake_ids_generated[$key][] = $object->get_id();
-
-			} // end foreach;
-
-		} // end foreach;
+				$fake_ids_generated[ $key ][] = $object->get_id();
+			}
+		}
 
 		$fake_ids_generated = array_merge_recursive($faker->get_option_debug_faker(), $fake_ids_generated);
 
@@ -398,11 +387,12 @@ class Debug {
 
 		$wpdb->query('COMMIT');
 
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo'),
-		));
-
-	} // end handle_debug_generator_form;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url('wp-ultimo'),
+			)
+		);
+	}
 
 	/**
 	 * Reset the database form.
@@ -431,21 +421,26 @@ class Debug {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('debug_reset_database_form', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'debug_reset_database_form',
-				'data-state'  => json_encode(array(
-					'reset_only' => true,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'debug_reset_database_form',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'debug_reset_database_form',
+					'data-state'  => json_encode(
+						array(
+							'reset_only' => true,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_debug_reset_database_form;
+	}
 
 	/**
 	 * Handles the database reset.
@@ -460,36 +455,29 @@ class Debug {
 		$wpdb->query('START TRANSACTION');
 
 		try {
-
 			if (wu_request('reset_only')) {
-
 				$this->reset_fake_data();
-
 			} else {
-
 				$this->reset_all_data();
-
-			} // end if;
-
+			}
 		} catch (Exception $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
 			wp_send_json_error($error);
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		wu_delete_option('debug_faker');
 
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-setup'),
-		));
-
-	} // end handle_debug_reset_database_form;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url('wp-ultimo-setup'),
+			)
+		);
+	}
 
 	/**
 	 * Reset the database form.
@@ -513,21 +501,26 @@ class Debug {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('debug_drop_database_form', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'debug_drop_database_form',
-				'data-state'  => json_encode(array(
-					'reset_only' => true,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'debug_drop_database_form',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'debug_drop_database_form',
+					'data-state'  => json_encode(
+						array(
+							'reset_only' => true,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_debug_drop_database_form;
+	}
 
 	/**
 	 * Handles the database reset.
@@ -540,28 +533,23 @@ class Debug {
 		global $wpdb;
 
 		try {
-
 			wu_drop_tables();
-
 		} catch (\Throwable $e) {
-
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
 			wp_send_json_error($error);
-
 		} catch (\Exception $e) {
-
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
 			wp_send_json_error($error);
+		}
 
-		} // end try;
-
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-setup&step=installation'),
-		));
-
-	} // end handle_debug_drop_database_form;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url('wp-ultimo-setup&step=installation'),
+			)
+		);
+	}
 
 	/**
 	 * Checks if we need to add the menu or not.
@@ -575,8 +563,7 @@ class Debug {
 	public function should_load() {
 
 		return defined('WP_ULTIMO_DEBUG') && WP_ULTIMO_DEBUG;
-
-	} // end should_load;
+	}
 
 	/**
 	 * Loads the debug pages and functions if we should.
@@ -587,20 +574,19 @@ class Debug {
 	public function load() {
 
 		if ($this->should_load()) {
-
 			add_action('wu_page_added', array($this, 'add_page'));
 
 			add_filter('wu_tour_finished', '__return_false');
 
-			add_action('plugins_loaded', function() {
+			add_action(
+				'plugins_loaded',
+				function () {
 
-				do_action('wp_ultimo_debug');
-
-			});
-
-		} // end if;
-
-	} // end load;
+					do_action('wp_ultimo_debug');
+				}
+			);
+		}
+	}
 
 	/**
 	 * Add a WP Multisite WaaS page to the registry.
@@ -612,9 +598,8 @@ class Debug {
 	 */
 	public function add_page($page_id) {
 
-		$this->pages[$page_id] = wu_network_admin_url($page_id);
-
-	} // end add_page;
+		$this->pages[ $page_id ] = wu_network_admin_url($page_id);
+	}
 
 	/**
 	 * Returns the pages registred.
@@ -625,8 +610,7 @@ class Debug {
 	public function get_pages() {
 
 		return $this->pages;
-
-	} // end get_pages;
+	}
 
 	/**
 	 * Adds the debug menu pages.
@@ -636,9 +620,8 @@ class Debug {
 	 */
 	public function add_main_debug_menu() {
 
-		new \WP_Ultimo\Admin_Pages\Debug\Debug_Admin_Page;
-
-	} // end add_main_debug_menu;
+		new \WP_Ultimo\Admin_Pages\Debug\Debug_Admin_Page();
+	}
 
 	/**
 	 * Reset fake data.
@@ -677,8 +660,7 @@ class Debug {
 		$payments_id = wu_get_isset($fake_data_generated, 'payments');
 
 		$this->reset_payments($payments_id);
-
-	} // end reset_fake_data;
+	}
 
 	/**
 	 * Reset all data.
@@ -709,8 +691,7 @@ class Debug {
 		$this->reset_events();
 
 		$this->reset_settings();
-
-	} // end reset_all_data;
+	}
 
 	/**
 	 * Reset table.
@@ -726,10 +707,8 @@ class Debug {
 
 		global $wpdb;
 
-		if (!empty($table)) {
-
-			if (!empty($ids)) {
-
+		if ( ! empty($table)) {
+			if ( ! empty($ids)) {
 				$ids = array_filter($ids);
 
 				$id_placeholders = implode(', ', array_fill(0, count($ids), '%d'));
@@ -737,24 +716,17 @@ class Debug {
 				$result = $wpdb->query(
 					$wpdb->prepare("DELETE FROM $table WHERE $field IN ($id_placeholders)", $ids) // phpcs:ignore
 				);
-
 			} else {
-
 				$result = $wpdb->query(
 					"DELETE FROM $table" // phpcs:ignore
 				);
-
-			} // end if;
+			}
 
 			if ($result === false) {
-
 				throw new \Exception("Error $table");
-
-			} // end if;
-
-		} // end if;
-
-	} // end reset_table;
+			}
+		}
+	}
 
 	/**
 	 * Reset customers and customermeta table.
@@ -771,33 +743,24 @@ class Debug {
 
 		$customer_meta_table = "{$wpdb->base_prefix}wu_customermeta";
 
-		if (!empty($ids)) {
-
+		if ( ! empty($ids)) {
 			foreach ($ids as $id) {
-
 				$customer = wu_get_customer($id);
 
 				if ($customer) {
-
 					$deleted = wpmu_delete_user($customer->get_user_id());
 
-					if (!$deleted) {
-
+					if ( ! $deleted) {
 						throw new \Exception('Error customer delete');
-
-					} // end if;
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
+					}
+				}
+			}
+		}
 
 		$this->reset_table($customers_table, $ids);
 
 		$this->reset_table($customer_meta_table, $ids, 'wu_customer_id');
-
-	} // end reset_customers;
+	}
 
 	/**
 	 * Reset customers and customermeta table.
@@ -809,23 +772,16 @@ class Debug {
 	 */
 	private function reset_sites($ids = array()) {
 
-		if (!empty($ids)) {
-
+		if ( ! empty($ids)) {
 			foreach ($ids as $id) {
-
 				$site = wu_get_site($id);
 
 				if ($site) {
-
 					wpmu_delete_blog($site->get_id(), true);
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
-
-	} // end reset_sites;
+				}
+			}
+		}
+	}
 
 	/**
 	 * Reset products and productmeta table.
@@ -845,8 +801,7 @@ class Debug {
 		$this->reset_table($products_table, $ids);
 
 		$this->reset_table($product_meta_table, $ids, 'wu_product_id');
-
-	} // end reset_products;
+	}
 
 	/**
 	 * Reset memberships and membershipmeta table.
@@ -866,8 +821,7 @@ class Debug {
 		$this->reset_table($memberships_table, $ids);
 
 		$this->reset_table($membership_meta_table, $ids, 'wu_membership_id');
-
-	} // end reset_memberships;
+	}
 
 	/**
 	 * Reset domains table.
@@ -883,8 +837,7 @@ class Debug {
 		$domain_table = "{$wpdb->base_prefix}wu_domain_mappings";
 
 		$this->reset_table($domain_table, $ids);
-
-	} // end reset_domains;
+	}
 
 	/**
 	 * Reset discount codes table.
@@ -900,8 +853,7 @@ class Debug {
 		$discount_codes_table = "{$wpdb->base_prefix}wu_discount_codes";
 
 		$this->reset_table($discount_codes_table, $ids);
-
-	} // end reset_discount_codes;
+	}
 
 	/**
 	 * Reset webhooks table.
@@ -917,8 +869,7 @@ class Debug {
 		$webhooks_table = "{$wpdb->base_prefix}wu_webhooks";
 
 		$this->reset_table($webhooks_table, $ids);
-
-	} // end reset_webhooks;
+	}
 
 	/**
 	 * Reset payments table.
@@ -934,8 +885,7 @@ class Debug {
 		$payments_table = "{$wpdb->base_prefix}wu_payments";
 
 		$this->reset_table($payments_table, $ids);
-
-	} // end reset_payments;
+	}
 
 	/**
 	 * Reset checkout forms
@@ -955,8 +905,7 @@ class Debug {
 		$this->reset_table($forms_table, $ids);
 
 		$this->reset_table($form_meta_table, $ids, 'wu_form_id');
-
-	} // end reset_checkout_forms;
+	}
 
 	/**
 	 * Reset custom posts.
@@ -976,8 +925,7 @@ class Debug {
 		$this->reset_table($posts_table, $ids);
 
 		$this->reset_table($post_meta_table, $ids, 'wu_post_id');
-
-	} // end reset_post_like_models;
+	}
 
 	/**
 	 * Reset events.
@@ -993,8 +941,7 @@ class Debug {
 		$events_table = "{$wpdb->base_prefix}wu_events";
 
 		$this->reset_table($events_table, $ids);
-
-	} // end reset_events;
+	}
 
 	/**
 	 * Reset the settings.
@@ -1026,13 +973,9 @@ class Debug {
 		);
 
 		foreach ($options as $option_name => $should_use_prefix) {
-
 			$prefix = $should_use_prefix ? $the_prefix : '';
 
 			delete_network_option(null, $prefix . $option_name);
-
-		} // end foreach;
-
-	} // end reset_settings;
-
-} // end class Debug;
+		}
+	}
+}

@@ -12,7 +12,7 @@ namespace WP_Ultimo\Database\Payments;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Database\Engine\Enum;
+use WP_Ultimo\Database\Engine\Enum;
 
 /**
  * Payment Status.
@@ -51,8 +51,7 @@ class Payment_Status extends Enum {
 			static::FAILED         => 'wu-bg-red-200 wu-text-red-700',
 			static::CANCELLED      => 'wu-bg-orange-200 wu-text-orange-700',
 		);
-
-	} // end classes;
+	}
 
 	/**
 	 * Returns an array with values => CSS Classes.
@@ -71,8 +70,7 @@ class Payment_Status extends Enum {
 			static::FAILED         => 'wu-align-middle dashicons-wu-circle-with-cross wu-text-red-700',
 			static::CANCELLED      => 'wu-align-middle dashicons-wu-circle-with-cross wu-text-orange-700',
 		);
-
-	} // end icon_classes;
+	}
 
 	/**
 	 * Returns an array with values => labels.
@@ -91,7 +89,5 @@ class Payment_Status extends Enum {
 			static::FAILED         => __('Failed', 'wp-ultimo'),
 			static::CANCELLED      => __('Cancelled', 'wp-ultimo'),
 		);
-
-	} // end labels;
-
-} // end class Payment_Status;
+	}
+}

@@ -35,5 +35,4 @@ function wu_env_picker($frontend_content, $backend_content, $is_admin = null) {
 	$is_admin = is_null($is_admin) ? is_admin() : $is_admin;
 
 	return $is_admin ? $backend_content : $frontend_content;
-
-} // end wu_env_picker;
+}

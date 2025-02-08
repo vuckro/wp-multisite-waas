@@ -27,11 +27,18 @@
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
 	<config name="minimum_supported_wp_version" value="5.3"/>
-	<rule ref="WordPress"/>
+	<rule ref="WordPress">
+	    <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+	    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+	    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
+	    <exclude name="Squiz.Commenting.VariableComment.Missing" />
+	    <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" />
+	    <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
+	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
-			<property name="prefixes" type="array" value="my-plugin"/>
+			<property name="prefixes" type="array" value="wu_,wp_ultimo"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
@@ -45,4 +52,28 @@
 			<property name="blank_line_check" value="true"/>
 		</properties>
 	</rule>
+	<rule ref="PEAR.Functions.FunctionCallSignature">
+        <properties>
+            <property name="requiredSpacesAfterOpen" value="0"/>
+            <property name="requiredSpacesBeforeClose" value="0"/>
+        </properties>
+    </rule>
+    <rule ref="NormalizedArrays.Arrays.ArrayBraceSpacing">
+        <properties>
+            <property name="spacesSingleLine" value="0"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
+		<properties>
+			<property name="equalsSpacing" value="1"/>
+			<property name="requiredSpacesAfterOpen" value="0"/>
+			<property name="requiredSpacesBeforeClose" value="0"/>
+		</properties>
+	</rule>
+	<rule ref="Generic.WhiteSpace.ArbitraryParenthesesSpacing">
+        <properties>
+            <property name="spacing" value="0"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
 </ruleset>

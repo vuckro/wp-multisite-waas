@@ -82,8 +82,7 @@ class Country_ES extends Country {
 	public function get_name() {
 
 		return __('Spain', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for ES.
@@ -123,7 +122,5 @@ class Country_ES extends Country {
 			'ZA' => __('Zamora Province', 'wp-ultimo-locations'),
 			'AV' => __('Ávila', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_ES;
+	}
+}

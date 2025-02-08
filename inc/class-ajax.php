@@ -41,8 +41,7 @@ class Ajax {
 		 * Load search endpoints.
 		 */
 		add_action('wp_ajax_wu_list_table_fetch_ajax_results', array($this, 'refresh_list_table'));
-
-	} // end __construct;
+	}
 	/**
 	 * Reverts the name of the table being processed.
 	 *
@@ -53,8 +52,7 @@ class Ajax {
 	private function get_table_class_name($table_id): string {
 
 		return str_replace(' ', '_', (ucwords(str_replace('_', ' ', $table_id))));
-
-	} // end get_table_class_name;
+	}
 
 	/**
 	 * Serves the pagination and search results of a list table ajax query.
@@ -71,16 +69,13 @@ class Ajax {
 		$full_class_name = "\\WP_Ultimo\\List_Tables\\{$class_name}";
 
 		if (class_exists($full_class_name)) {
-
 			$table = new $full_class_name();
 
 			$table->ajax_response();
-
-		} // end if;
+		}
 
 		do_action('wu_list_table_fetch_ajax_results', $table_id);
-
-	} // end refresh_list_table;
+	}
 
 	/**
 	 * Search models using our ajax endpoint.
@@ -98,125 +93,102 @@ class Ajax {
 		do_action('wu_before_search_models');
 
 		if (wu_request('model') === 'all') {
-
 			$this->search_all_models();
 
 			return;
+		}
 
-		} // end if;
+		$args = wp_parse_args(
+			$_REQUEST,
+			array(
+				'model'   => 'membership',
+				'query'   => array(),
+				'exclude' => array(),
+			)
+		);
 
-		$args = wp_parse_args($_REQUEST, array(
-			'model'   => 'membership',
-			'query'   => array(),
-			'exclude' => array()
-		));
-
-		$query = array_merge($args['query'], array(
-			'number' => -1,
-		));
+		$query = array_merge(
+			$args['query'],
+			array(
+				'number' => -1,
+			)
+		);
 
 		if ($args['exclude']) {
-
 			if (is_string($args['exclude'])) {
-
 				$args['exclude'] = explode(',', $args['exclude']);
 
 				$args['exclude'] = array_map('trim', $args['exclude']);
-
-			} // end if;
+			}
 
 			$query['id__not_in'] = $args['exclude'];
-
-		} // end if;
+		}
 
 		if (wu_get_isset($args, 'include')) {
-
 			if (is_string($args['include'])) {
-
 				$args['include'] = explode(',', $args['include']);
 
 				$args['include'] = array_map('trim', $args['include']);
-
-			} // end if;
+			}
 
 			$query['id__in'] = $args['include'];
-
-		} // end if;
+		}
 
 		/*
 		 * Deal with site
 		 */
 		if ($args['model'] === 'site') {
-
 			if (wu_get_isset($query, 'id__in')) {
-
 				$query['blog_id__in'] = $query['id__in'];
 
 				unset($query['id__in']);
-
-			} // end if;
+			}
 
 			if (wu_get_isset($query, 'id__not_in')) {
-
 				$query['blog_id__not_in'] = $query['id__not_in'];
 
 				unset($query['id__not_in']);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		$results = array();
 
 		if ($args['model'] === 'user') {
-
 			$results = $this->search_wordpress_users($query);
-
 		} elseif ($args['model'] === 'page') {
-
-			$results = get_posts(array(
-				'post_type'   => 'page',
-				'post_status' => 'publish',
-				'numberposts' => -1,
-				'exclude'     => isset($query['id__not_in']) ? $query['id__not_in'] : ''
-			));
-
+			$results = get_posts(
+				array(
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+					'numberposts' => -1,
+					'exclude'     => isset($query['id__not_in']) ? $query['id__not_in'] : '',
+				)
+			);
 		} elseif ($args['model'] === 'setting') {
-
 			$results = $this->search_wp_ultimo_setting($query);
-
 		} else {
-
 			$model_func = 'wu_get_' . strtolower((string) $args['model']) . 's';
 
 			if (function_exists($model_func)) {
-
 				$results = $model_func($query);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		// Try search by hash if do not have any result
 		if (empty($results)) {
-
 			$model_func = 'wu_get_' . strtolower((string) $args['model']) . '_by_hash';
 
 			if (function_exists($model_func)) {
-
 				$result = $model_func(trim((string) $query['search'], '*'));
 
 				$results = $result ? array($result) : array();
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		wp_send_json($results);
 
 		exit;
-
-	} // end search_models;
+	}
 
 	/**
 	 * Search all models for Jumper.
@@ -226,33 +198,40 @@ class Ajax {
 	 */
 	public function search_all_models() {
 
-		$query = array_merge(wu_request('query', array()), array(
-			'number' => 10000,
-		));
+		$query = array_merge(
+			wu_request('query', array()),
+			array(
+				'number' => 10000,
+			)
+		);
 
-		$results_user = array_map(function($item) {
+		$results_user = array_map(
+			function ($item) {
 
-			$item->model = 'user';
+				$item->model = 'user';
 
-			$item->group = 'Users';
+				$item->group = 'Users';
 
-			$item->value = network_admin_url("user-edit.php?user_id={$item->ID}");
+				$item->value = network_admin_url("user-edit.php?user_id={$item->ID}");
 
-			return $item;
+				return $item;
+			},
+			$this->search_wordpress_users($query)
+		);
 
-		}, $this->search_wordpress_users($query));
+		$results_settings = array_map(
+			function ($item) {
 
-		$results_settings = array_map(function($item) {
+				$item['model'] = 'setting';
 
-			$item['model'] = 'setting';
+				$item['group'] = 'Settings';
 
-			$item['group'] = 'Settings';
+				$item['value'] = $item['url'];
 
-			$item['value'] = $item['url'];
-
-			return $item;
-
-		}, $this->search_wp_ultimo_setting($query));
+				return $item;
+			},
+			$this->search_wp_ultimo_setting($query)
+		);
 
 		$data = array_merge($results_user, $results_settings);
 
@@ -261,57 +240,67 @@ class Ajax {
 		 *
 		 * @since 2.0.0
 		 */
-		$data_sources = apply_filters('wu_search_models_functions', array(
-			'wu_get_customers',
-			'wu_get_products',
-			'wu_get_plans',
-			'wu_get_domains',
-			'wu_get_sites',
-			'wu_get_memberships',
-			'wu_get_payments',
-			'wu_get_broadcasts',
-			'wu_get_checkout_forms',
-		));
+		$data_sources = apply_filters(
+			'wu_search_models_functions',
+			array(
+				'wu_get_customers',
+				'wu_get_products',
+				'wu_get_plans',
+				'wu_get_domains',
+				'wu_get_sites',
+				'wu_get_memberships',
+				'wu_get_payments',
+				'wu_get_broadcasts',
+				'wu_get_checkout_forms',
+			)
+		);
 
 		foreach ($data_sources as $function) {
-
 			$results = call_user_func($function, $query);
 
-			array_map(function($item) {
+			array_map(
+				function ($item) {
 
-				$url = str_replace('_', '-', (string) $item->model);
+					$url = str_replace('_', '-', (string) $item->model);
 
-				$item->value = wu_network_admin_url("wp-ultimo-edit-{$url}", array(
-					'id' => $item->get_id(),
-				));
+					$item->value = wu_network_admin_url(
+						"wp-ultimo-edit-{$url}",
+						array(
+							'id' => $item->get_id(),
+						)
+					);
 
-				$item->group = ucwords((string) $item->model) . 's';
+					$item->group = ucwords((string) $item->model) . 's';
 
-				return $item;
+					return $item;
+				},
+				$results
+			);
 
-			}, $results);
+			$discount_codes = array_map(
+				function ($item) {
 
-			$discount_codes = array_map(function($item) {
+					$discount = $item->to_array();
 
-				$discount = $item->to_array();
+					$discount['value'] = wu_network_admin_url(
+						'wp-ultimo-edit-discount-code',
+						array(
+							'id' => $discount['id'],
+						)
+					);
 
-				$discount['value'] = wu_network_admin_url('wp-ultimo-edit-discount-code', array(
-					'id' => $discount['id'],
-				));
+					$discount['group'] = 'Discount Codes';
 
-				$discount['group'] = 'Discount Codes';
-
-				return $discount;
-
-			}, wu_get_discount_codes($query));
+					return $discount;
+				},
+				wu_get_discount_codes($query)
+			);
 
 			$data = array_merge($data, $results, $discount_codes);
-
-		} // end foreach;
+		}
 
 		wp_send_json($data);
-
-	}  // end search_all_models;
+	}
 	/**
 	 * Search for WP Multisite WaaS settings to help customers find them.
 	 *
@@ -326,36 +315,41 @@ class Ajax {
 		$all_fields = array();
 
 		foreach ($sections as $section_slug => $section) {
+			$section['fields'] = array_map(
+				function ($item) use ($section, $section_slug) {
 
-			$section['fields'] = array_map(function($item) use ($section, $section_slug) {
+					$item['section'] = $section_slug;
 
-				$item['section'] = $section_slug;
+					$item['section_title'] = wu_get_isset($section, 'title', '');
 
-				$item['section_title'] = wu_get_isset($section, 'title', '');
+					$item['url'] = wu_network_admin_url(
+						'wp-ultimo-settings',
+						array(
+							'tab' => $section_slug,
+						)
+					) . '#' . $item['setting_id'];
 
-				$item['url'] = wu_network_admin_url('wp-ultimo-settings', array(
-					'tab' => $section_slug,
-				)) . '#' . $item['setting_id'];
-
-				return $item;
-
-			}, $section['fields']);
+					return $item;
+				},
+				$section['fields']
+			);
 
 			$all_fields = array_merge($all_fields, $section['fields']);
+		}
 
-		} // end foreach;
-
-		$_settings = \Arrch\Arrch::find($all_fields, array(
-			'sort_key' => 'title',
-			'where'    => array(
-				array('setting_id', '~', trim((string) $query['search'], '*')),
-				array('type', '!=', 'header'),
-			),
-		));
+		$_settings = \Arrch\Arrch::find(
+			$all_fields,
+			array(
+				'sort_key' => 'title',
+				'where'    => array(
+					array('setting_id', '~', trim((string) $query['search'], '*')),
+					array('type', '!=', 'header'),
+				),
+			)
+		);
 
 		return array_values($_settings);
-
-	} // end search_wp_ultimo_setting;
+	}
 
 	/**
 	 * Handles the special case of searching native WP users.
@@ -367,30 +361,44 @@ class Ajax {
 	 */
 	public function search_wordpress_users($query) {
 
-		$results = get_users(array(
-			'blog_id'        => 0,
-			'search'         => '*' . $query['search'] . '*',
-			'search_columns' => array(
-				'ID', 'user_login', 'user_email', 'user_url', 'user_nicename', 'display_name',
-			),
-		));
+		$results = get_users(
+			array(
+				'blog_id'        => 0,
+				'search'         => '*' . $query['search'] . '*',
+				'search_columns' => array(
+					'ID',
+					'user_login',
+					'user_email',
+					'user_url',
+					'user_nicename',
+					'display_name',
+				),
+			)
+		);
 
-		$results = array_map(function($item) {
+		$results = array_map(
+			function ($item) {
 
-			$item->data->user_pass = '';
+				$item->data->user_pass = '';
 
-			$item->data->avatar = get_avatar($item->data->user_email, 40, 'identicon', '', array(
-				'force_display' => true,
-				'class'         => 'wu-rounded-full wu-mr-3',
-			));
+				$item->data->avatar = get_avatar(
+					$item->data->user_email,
+					40,
+					'identicon',
+					'',
+					array(
+						'force_display' => true,
+						'class'         => 'wu-rounded-full wu-mr-3',
+					)
+				);
 
-			return $item->data;
-
-		}, $results);
+				return $item->data;
+			},
+			$results
+		);
 
 		return $results;
-
-	} // end search_wordpress_users;
+	}
 
 	/**
 	 * Adds the selectize templates to the admin footer.
@@ -401,11 +409,7 @@ class Ajax {
 	public function render_selectize_templates() {
 
 		if (current_user_can('manage_network')) {
-
 			wu_get_template('ui/selectize-templates');
-
-		} // end if;
-
-	} // end render_selectize_templates;
-
-} // end class Ajax;
+		}
+	}
+}

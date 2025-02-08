@@ -51,21 +51,20 @@ class Arr {
 	 */
 	public static function filter_by_property($array, $property, $expected_value, $flag = 0) {
 
-		$result = Arr::filter($array, function($value) use ($property, $expected_value) {
+		$result = self::filter(
+			$array,
+			function ($value) use ($property, $expected_value) {
 
 			return Arr::get($value, $property, null) == $expected_value; // phpcs:ignore
-
-		});
+			}
+		);
 
 		if ($flag) {
-
-			$result = $flag === Arr::RESULTS_FIRST ? reset($result) : end($result);
-
-		} // end if;
+			$result = $flag === self::RESULTS_FIRST ? reset($result) : end($result);
+		}
 
 		return $result;
-
-	} // end filter_by_property;
+	}
 
 	/**
 	 * Filters an array using a callback.
@@ -79,26 +78,19 @@ class Arr {
 	public static function filter($array, $closure) {
 
 		if ($closure) {
-
 			$result = array();
 
 			foreach ($array as $key => $value) {
-
 				if (call_user_func($closure, $value, $key)) {
-
 					$result[] = $value;
-
-				} // end if;
-
-			} // end foreach;
+				}
+			}
 
 			return $result;
-
-		} // end if;
+		}
 
 		return array_filter($array);
-
-	} // end filter;
+	}
 
 	/**
 	 * Get a nested value inside an array. Dot notation is supported.
@@ -113,32 +105,23 @@ class Arr {
 	public static function get($array, $key, $default = null) {
 
 		if (is_null($key)) {
-
 			return $array;
+		}
 
-		} // end if;
-
-		if (isset($array[$key])) {
-
-			return $array[$key];
-
-		} // end if;
+		if (isset($array[ $key ])) {
+			return $array[ $key ];
+		}
 
 		foreach (explode('.', $key) as $segment) {
-
-			if (!is_array($array) || !array_key_exists($segment, $array)) {
-
+			if ( ! is_array($array) || ! array_key_exists($segment, $array)) {
 				return $default;
+			}
 
-			} // end if;
-
-			$array = $array[$segment];
-
-		} // end foreach;
+			$array = $array[ $segment ];
+		}
 
 		return $array;
-
-	} // end get;
+	}
 
 	/**
 	 * Set a nested value inside an array. Dot notation is supported.
@@ -153,38 +136,30 @@ class Arr {
 	public static function set(&$array, $key, $value) {
 
 		if (is_null($key)) {
-
 			return $array = $value; // phpcs:ignore
-
-		} // end if;
+		}
 
 		$keys = explode('.', $key);
 
 		while (count($keys) > 1) {
-
 			$key = array_shift($keys);
 
-			if (!isset($array[$key]) || !is_array($array[$key])) {
+			if ( ! isset($array[ $key ]) || ! is_array($array[ $key ])) {
+				$array[ $key ] = array();
+			}
 
-				$array[$key] = array();
+			$array =& $array[ $key ];
+		}
 
-			} // end if;
-
-			$array =& $array[$key];
-
-		} // end while;
-
-		$array[array_shift($keys)] = $value;
+		$array[ array_shift($keys) ] = $value;
 
 		return $array;
-
-	} // end set;
+	}
 
 	/**
 	 * Static class only.
 	 *
 	 * @since 2.0.11
 	 */
-	private function __construct() {} // end __construct;
-
-} // end class Arr;
+	private function __construct() {}
+}

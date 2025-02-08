@@ -12,7 +12,7 @@
 <p><?php printf(__('In order to complete the activation of your account, you need to confirm your email address by clicking on the link below.', 'wp-ultimo')); ?></p>
 
 <p>
-  <a href="{{verification_link}}" style="text-decoration: none;" rel="nofollow" data-cy="email-verification-link"><?php _e('Verify Email Address &rarr;', 'wp-ultimo'); ?></a>
-  <br>
-  <small><?php printf(__('or copy the link %s and paste it onto your browser', 'wp-ultimo'), '<code>{{verification_link}}</code>'); ?></small>
+	<a href="{{verification_link}}" style="text-decoration: none;" rel="nofollow" data-cy="email-verification-link"><?php _e('Verify Email Address &rarr;', 'wp-ultimo'); ?></a>
+	<br>
+	<small><?php printf(__('or copy the link %s and paste it onto your browser', 'wp-ultimo'), '<code>{{verification_link}}</code>'); ?></small>
 </p>

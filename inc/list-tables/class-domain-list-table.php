@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\List_Tables;
 
-use \WP_Ultimo\Models\Domain;
+use WP_Ultimo\Models\Domain;
 use WP_Ultimo\Database\Domains\Domain_Stage;
 
 // Exit if accessed directly
@@ -37,17 +37,18 @@ class Domain_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Domain', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Domains', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true,                       // does this table support ajax?
-			'add_new'  => array(
-				'url'     => wu_get_form_url('add_new_domain'),
-				'classes' => 'wubox',
-			),
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Domain', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Domains', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                       // does this table support ajax?
+				'add_new'  => array(
+					'url'     => wu_get_form_url('add_new_domain'),
+					'classes' => 'wubox',
+				),
+			)
+		);
+	}
 
 	/**
 	 * Adds the extra search field when the search element is present.
@@ -60,14 +61,11 @@ class Domain_List_Table extends Base_List_Table {
 		$_filter_fields = parent::get_extra_query_fields();
 
 		if (wu_request('blog_id')) {
-
 			$_filter_fields['blog_id'] = wu_request('blog_id');
-
-		} // end if;
+		}
 
 		return $_filter_fields;
-
-	} // end get_extra_query_fields;
+	}
 	/**
 	 * Displays the content of the domain column.
 	 *
@@ -92,8 +90,7 @@ class Domain_List_Table extends Base_List_Table {
 		);
 
 		return $html . $this->row_actions($actions);
-
-	} // end column_domain;
+	}
 
 	/**
 	 * Displays the content of the active column.
@@ -106,8 +103,7 @@ class Domain_List_Table extends Base_List_Table {
 	public function column_active($item) {
 
 		return $item->is_active() ? __('Yes', 'wp-ultimo') : __('No', 'wp-ultimo');
-
-	} // end column_active;
+	}
 
 	/**
 	 * Displays the content of the primary domain column.
@@ -120,8 +116,7 @@ class Domain_List_Table extends Base_List_Table {
 	public function column_primary_domain($item) {
 
 		return $item->is_primary_domain() ? __('Yes', 'wp-ultimo') : __('No', 'wp-ultimo');
-
-	} // end column_primary_domain;
+	}
 
 	/**
 	 * Displays the content of the secure column.
@@ -134,8 +129,7 @@ class Domain_List_Table extends Base_List_Table {
 	public function column_secure($item) {
 
 		return $item->is_secure() ? __('Yes', 'wp-ultimo') : __('No', 'wp-ultimo');
-
-	} // end column_secure;
+	}
 
 	/**
 	 * Returns the markup for the stage column.
@@ -152,8 +146,7 @@ class Domain_List_Table extends Base_List_Table {
 		$class = $item->get_stage_class();
 
 		return "<span class='wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-leading-none wu-font-mono $class'>{$label}</span>";
-
-	} // end column_stage;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -175,8 +168,7 @@ class Domain_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -229,11 +221,7 @@ class Domain_List_Table extends Base_List_Table {
 				),
 
 			),
-			'date_filters' => array(
-
-			),
+			'date_filters' => array(),
 		);
-
-	} // end get_filters;
-
-} // end class Domain_List_Table;
+	}
+}

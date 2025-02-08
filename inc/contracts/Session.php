@@ -12,7 +12,7 @@ interface Session {
 
 	/**
 	 * Gets the value of a session key.
-     *
+	 *
 	 * @param string $key The key to retrieve.
 	 * @return mixed
 	 */
@@ -55,5 +55,4 @@ interface Session {
 	 * @return bool
 	 */
 	public function destroy();
-
-} // end interface;
+}

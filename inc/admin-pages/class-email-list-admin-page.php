@@ -84,8 +84,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		parent::init();
 
 		add_action('wu_page_list_redirect_handlers', array($this, 'handle_page_redirect'), 10);
-
-	} // end init;
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -93,7 +92,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Returns the title of the page.
@@ -104,8 +103,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('System Emails', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -116,8 +114,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('System Emails', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -128,8 +125,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('System Emails', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Register ajax form that we use for system emails.
@@ -141,31 +137,39 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Send a email test
 		 */
-		wu_register_form('send_new_test', array(
-			'render'     => array($this, 'render_send_new_test_modal'),
-			'handler'    => array($this, 'handle_send_new_test_modal'),
-			'capability' => 'wu_add_broadcast',
-		));
+		wu_register_form(
+			'send_new_test',
+			array(
+				'render'     => array($this, 'render_send_new_test_modal'),
+				'handler'    => array($this, 'handle_send_new_test_modal'),
+				'capability' => 'wu_add_broadcast',
+			)
+		);
 
 		/*
 		 * Reset or Import modal.
 		 */
-		wu_register_form('reset_import', array(
-			'render'     => array($this, 'render_reset_import_modal'),
-			'handler'    => array($this, 'handle_reset_import_modal'),
-			'capability' => 'wu_add_broadcasts',
-		));
+		wu_register_form(
+			'reset_import',
+			array(
+				'render'     => array($this, 'render_reset_import_modal'),
+				'handler'    => array($this, 'handle_reset_import_modal'),
+				'capability' => 'wu_add_broadcasts',
+			)
+		);
 
 		/*
 		 * Reset Confirmation modal.
 		 */
-		wu_register_form('reset_confirmation', array(
-			'render'     => array($this, 'render_reset_confirmation_modal'),
-			'handler'    => array($this, 'handle_reset_confirmation_modal'),
-			'capability' => 'wu_add_broadcasts',
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'reset_confirmation',
+			array(
+				'render'     => array($this, 'render_reset_confirmation_modal'),
+				'handler'    => array($this, 'handle_reset_confirmation_modal'),
+				'capability' => 'wu_add_broadcasts',
+			)
+		);
+	}
 
 	/**
 	 * Renders the modal to send tests with system emails.
@@ -184,7 +188,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 				'value'       => get_network_option(null, 'admin_email'),
 				'html_attr'   => array(
 					'required' => 'required',
-				)
+				),
 			),
 			'email_id'      => array(
 				'type'  => 'hidden',
@@ -203,18 +207,21 @@ class Email_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('send_new_test', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'send_new_test',
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'send_new_test',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'send_new_test',
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_send_new_test_modal;
+	}
 
 	/**
 	 * Handles the modal to send tests with system emails.
@@ -228,13 +235,11 @@ class Email_List_Admin_Page extends List_Admin_Page {
 
 		$send_to = wu_request('send_to');
 
-		if (!$email_id || !$send_to) {
-
+		if ( ! $email_id || ! $send_to) {
 			$error = new \WP_Error('error', __('Something wrong happened.', 'wp-ultimo'));
 
 			return wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$from = array(
 			'name'  => wu_get_setting('from_name'),
@@ -245,7 +250,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 			array(
 				'name'  => wu_get_setting('from_name'),
 				'email' => $send_to,
-			)
+			),
 		);
 
 		$email = wu_get_email($email_id);
@@ -257,10 +262,8 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		$payload = array();
 
 		if ($event_type) {
-
 			$payload = wu_maybe_lazy_load_payload($event_type['payload']);
-
-		} // end if;
+		}
 
 		$args = array(
 			'style'   => $email->get_style(),
@@ -271,36 +274,41 @@ class Email_List_Admin_Page extends List_Admin_Page {
 
 		$send_mail = wu_send_mail($from, $to, $args);
 
-		if (!$send_mail) {
-
+		if ( ! $send_mail) {
 			$error = new \WP_Error('error', __('Something wrong happened with your test.', 'wp-ultimo'));
 
 			return wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$page = wu_request('page', 'list');
 
 		if ($page === 'edit') {
-
-			wp_send_json_success(array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-edit-email', array(
-					'id'          => $email_id,
-					'test_notice' => __('Test sent successfully', 'wp-ultimo')
-				))
-			));
+			wp_send_json_success(
+				array(
+					'redirect_url' => wu_network_admin_url(
+						'wp-ultimo-edit-email',
+						array(
+							'id'          => $email_id,
+							'test_notice' => __('Test sent successfully', 'wp-ultimo'),
+						)
+					),
+				)
+			);
 
 			die();
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-emails', array(
-				'notice' => __('Test sent successfully', 'wp-ultimo'),
-			))
-		));
-
-	} // end handle_send_new_test_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					'wp-ultimo-emails',
+					array(
+						'notice' => __('Test sent successfully', 'wp-ultimo'),
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Renders the modal to reset or import system emails.
@@ -325,7 +333,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 				'html_attr' => array(
 					'v-model' => 'reset_emails',
 				),
-			)
+			),
 		);
 
 		$fields['reset_note'] = array(
@@ -341,18 +349,16 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		);
 
 		foreach ($created_emails as $system_email_key => $system_email_value) {
-
 			$system_email_slug = $system_email_value->get_slug();
 
-			if (isset($default_system_emails[$system_email_slug])) {
-
+			if (isset($default_system_emails[ $system_email_slug ])) {
 				$field_name = 'reset_' . $system_email_value->get_slug();
 
 				$system_email_target = $system_email_value->get_target();
 
 				$field_title = '<div><strong class="wu-inline-block wu-pr-1">' . $system_email_value->get_title() . '</strong></div>';
 
-				$fields[$field_name] = array(
+				$fields[ $field_name ] = array(
 					'type'              => 'toggle',
 					'title'             => $field_title,
 					'desc'              => $system_email_value->get_event() . ' <span class="wu-bg-gray-200 wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono">' . $system_email_target . '</span>',
@@ -366,14 +372,10 @@ class Email_List_Admin_Page extends List_Admin_Page {
 				);
 
 				if (isset($fields['reset_note'])) {
-
 					unset($fields['reset_note']);
-
-				} // end if;
-
-			} // end if;
-
-		} // end foreach;
+				}
+			}
+		}
 
 		$fields['import_emails'] = array(
 			'type'      => 'toggle',
@@ -399,16 +401,14 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		);
 
 		foreach ($default_system_emails as $default_email_key => $default_email_value) {
-
 			$maybe_is_created = wu_get_email_by('slug', $default_email_key);
 
-			if (!$maybe_is_created) {
-
+			if ( ! $maybe_is_created) {
 				$field_name = 'import_' . $default_email_key;
 
 				$field_title = '<div><strong class="wu-inline-block wu-pr-1">' . $default_email_value['title'] . '</strong> </div>';
 
-				$fields[$field_name] = array(
+				$fields[ $field_name ] = array(
 					'type'              => 'toggle',
 					'title'             => $field_title,
 					'desc'              => $default_email_value['event'] . ' <span class="wu-bg-gray-200 wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono">' . $default_email_value['target'] . '</span>',
@@ -422,14 +422,10 @@ class Email_List_Admin_Page extends List_Admin_Page {
 				);
 
 				if (isset($fields['import_note'])) {
-
 					unset($fields['import_note']);
-
-				} // end if;
-
-			} // end if;
-
- 		} // end foreach;
+				}
+			}
+		}
 
 		$fields['submit_button'] = array(
 			'type'            => 'submit',
@@ -439,22 +435,27 @@ class Email_List_Admin_Page extends List_Admin_Page {
 			'wrapper_classes' => 'wu-items-end wu-text-right',
 		);
 
-		$form = new \WP_Ultimo\UI\Form('reset_import', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'reset_import',
-				'data-state'  => json_encode(array(
-					'reset_emails'  => false,
-					'import_emails' => false
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'reset_import',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'reset_import',
+					'data-state'  => json_encode(
+						array(
+							'reset_emails'  => false,
+							'import_emails' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_reset_import_modal;
+	}
 
 	/**
 	 * Handles the modal to reset or import system emails.
@@ -474,48 +475,37 @@ class Email_List_Admin_Page extends List_Admin_Page {
 		$created_emails = wu_get_all_system_emails();
 
 		if ($reset) {
-
 			foreach ($created_emails as $created_email) {
-
 				$slug = $created_email->get_slug();
 
 				$maybe_reset = wu_request('reset_' . $slug, '');
 
 				if ($maybe_reset) {
-
 					$created_email->delete();
 
 					wu_create_default_system_email($slug);
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
+				}
+			}
+		}
 
 		if ($import) {
-
 			foreach ($default_system_emails as $default_system_emails_key => $default_system_emails_value) {
-
 				$slug = $default_system_emails_value['slug'];
 
 				$maybe_import = wu_request('import_' . $slug, '');
 
 				if ($maybe_import) {
-
 					wu_create_default_system_email($slug);
+				}
+			}
+		}
 
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-emails')
-		));
-
-	} // end handle_reset_import_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url('wp-ultimo-emails'),
+			)
+		);
+	}
 
 	/**
 	 * Handles the redirect notice from sent new test modal.
@@ -526,9 +516,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 	public function handle_page_redirect($page) {
 
 		if ($page->get_id() === 'wp-ultimo-emails') {
-
 			if (wu_request('notice')) {
-
 				$notice = wu_request('notice');
 
 				?>
@@ -541,11 +529,9 @@ class Email_List_Admin_Page extends List_Admin_Page {
 
 				<?php
 
-			} // end if;
-
-		} // end if;
-
-	} // end handle_page_redirect;
+			}
+		}
+	}
 
 	/**
 	 * Renders the reset confirmation modal.
@@ -563,7 +549,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 				'default'   => 0,
 				'html_attr' => array(
 					'required' => 'required',
-				)
+				),
 			),
 			'email_id'      => array(
 				'type'  => 'hidden',
@@ -578,18 +564,21 @@ class Email_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('reset_confirmation', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'reset_confirmation',
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'reset_confirmation',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'reset_confirmation',
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_reset_confirmation_modal;
+	}
 
 	/**
 	 * Handles the reset confirmation modal.
@@ -604,13 +593,11 @@ class Email_List_Admin_Page extends List_Admin_Page {
 
 		$email_id = wu_request('email_id');
 
-		if (!$single_reset || !$email_id) {
-
+		if ( ! $single_reset || ! $email_id) {
 			$error = new \WP_Error('error', __('Something wrong happened.', 'wp-ultimo'));
 
 			return wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$email = wu_get_email($email_id);
 
@@ -618,31 +605,31 @@ class Email_List_Admin_Page extends List_Admin_Page {
 
 		$default_system_emails = wu_get_default_system_emails();
 
-		if (isset($default_system_emails[$slug])) {
-
+		if (isset($default_system_emails[ $slug ])) {
 			$email->delete();
 
 			wu_create_default_system_email($slug);
 
 			$new_email = wu_get_email_by('slug', $slug);
 
-			if (!$new_email) {
-
+			if ( ! $new_email) {
 				$error = new \WP_Error('error', __('Something wrong happened.', 'wp-ultimo'));
 
 				return wp_send_json_error($error);
+			}
 
-			} // end if;
-
-			wp_send_json_success(array(
-				'redirect_url' => wu_network_admin_url('wp-ultimo-edit-email', array(
-					'id' => $new_email->get_id(),
-				))
-			));
-
-		} // end if;
-
-	}  // end handle_reset_confirmation_modal;
+			wp_send_json_success(
+				array(
+					'redirect_url' => wu_network_admin_url(
+						'wp-ultimo-edit-email',
+						array(
+							'id' => $new_email->get_id(),
+						)
+					),
+				)
+			);
+		}
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -672,8 +659,7 @@ class Email_List_Admin_Page extends List_Admin_Page {
 				'icon'    => 'wu-cycle',
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -684,7 +670,5 @@ class Email_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Email_List_Table();
-
-	} // end table;
-
-} // end class Email_List_Admin_Page;
+	}
+}

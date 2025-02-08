@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -32,8 +32,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function get_type() {
 
 		return 'terms_of_use';
-
-	} // end get_type;
+	}
 
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
@@ -44,8 +43,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function is_required() {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Is this a user-related field?
@@ -59,8 +57,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function is_user_field() {
 
 		return false;
-
-	} // end is_user_field;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -73,8 +70,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Terms of Use', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -87,8 +83,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a terms and conditions checkbox that must be marked before the account/site can be created.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -101,8 +96,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a terms and conditions checkbox that must be marked before the account/site can be created.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 
 	/**
 	 * Returns the icon to be used on the selector.
@@ -115,8 +109,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function get_icon() {
 
 		return 'dashicons-wu-file-text';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -132,8 +125,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 		return array(
 			'tou_name' => __('I agree with the terms of use.', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -144,8 +136,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 	public function default_fields() {
 
 		return array();
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -159,8 +150,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 			'id'   => 'terms_of_use',
 			'name' => __('Terms of Use', 'wp-ultimo'),
 		);
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -185,8 +175,7 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 				'placeholder' => __('e.g. https://yoursite.com/terms', 'wp-ultimo'),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -212,7 +201,5 @@ class Signup_Field_Terms_Of_Use extends Base_Signup_Field {
 		);
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Terms_Of_Use;
+	}
+}

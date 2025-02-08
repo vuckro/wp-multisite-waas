@@ -29,8 +29,7 @@ class Toolbox {
 	public function __construct() {
 
 		add_action('init', array($this, 'load_toolbox'));
-
-	} // end __construct;
+	}
 
 	/**
 	 * Checks if we should add the toolbox or not.
@@ -42,17 +41,14 @@ class Toolbox {
 
 		$can_see_toolbox = current_user_can('manage_network');
 
-		if (class_exists('\user_switching') && !$can_see_toolbox) {
-
+		if (class_exists('\user_switching') && ! $can_see_toolbox) {
 			$old_user = \user_switching::get_old_user();
 
 			$can_see_toolbox = user_can($old_user, 'manage_network');
+		}
 
-		} // end if;
-
-		return apply_filters('wu_is_toolbox_enabled', wu_get_setting('enable_jumper', true) && $can_see_toolbox && !is_network_admin());
-
-	} // end is_toolbox_enabled;
+		return apply_filters('wu_is_toolbox_enabled', wu_get_setting('enable_jumper', true) && $can_see_toolbox && ! is_network_admin());
+	}
 
 	/**
 	 * Loads the necessary elements to display the Toolbox.
@@ -63,16 +59,13 @@ class Toolbox {
 	public function load_toolbox() {
 
 		if ($this->is_toolbox_enabled()) {
-
 			add_action('wp_footer', array($this, 'output'));
 
 			add_action('admin_footer', array($this, 'output'));
 
 			add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-
-		} // end if;
-
-	} // end load_toolbox;
+		}
+	}
 
 	/**
 	 * Adds the admin styles to make sure the tooltip renders.
@@ -83,8 +76,7 @@ class Toolbox {
 	public function enqueue_styles() {
 
 		wp_enqueue_style('wu-admin');
-
-	} // end enqueue_styles;
+	}
 
 	/**
 	 * Outputs the actual HTML markup of the Toolbox.
@@ -96,13 +88,14 @@ class Toolbox {
 
 		$current_site = wu_get_current_site();
 
-		wu_get_template('ui/toolbox', array(
-			'toolbox'      => $this,
-			'current_site' => $current_site,
-			'customer'     => $current_site ? $current_site->get_customer() : false,
-			'membership'   => $current_site ? $current_site->get_membership() : false,
-		));
-
-	} // end output;
-
-} // end class Toolbox;
+		wu_get_template(
+			'ui/toolbox',
+			array(
+				'toolbox'      => $this,
+				'current_site' => $current_site,
+				'customer'     => $current_site ? $current_site->get_customer() : false,
+				'membership'   => $current_site ? $current_site->get_membership() : false,
+			)
+		);
+	}
+}

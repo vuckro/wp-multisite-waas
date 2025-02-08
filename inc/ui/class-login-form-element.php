@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\UI\Base_Element;
-use \WP_Ultimo\Checkout\Checkout_Pages;
+use WP_Ultimo\UI\Base_Element;
+use WP_Ultimo\Checkout\Checkout_Pages;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -67,27 +67,23 @@ class Login_Form_Element extends Base_Element {
 		add_filter('login_redirect', array($this, 'handle_redirect'), -1, 3);
 
 		parent::init();
-
-	} // end init;
+	}
 
 	/**
-     * The icon of the UI element.
-     * e.g. return fa fa-search
-     *
-     * @since 2.0.0
-     * @param string $context One of the values: block, elementor or bb.
-     */
+	 * The icon of the UI element.
+	 * e.g. return fa fa-search
+	 *
+	 * @since 2.0.0
+	 * @param string $context One of the values: block, elementor or bb.
+	 */
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-lock-user';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -102,8 +98,7 @@ class Login_Form_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Login Form', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -119,8 +114,7 @@ class Login_Form_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a login form to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -297,8 +291,7 @@ class Login_Form_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * Registers scripts and styles necessary to render this.
@@ -309,8 +302,7 @@ class Login_Form_Element extends Base_Element {
 	public function register_scripts() {
 
 		wp_enqueue_style('wu-admin');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -337,8 +329,7 @@ class Login_Form_Element extends Base_Element {
 			'Login',
 			'Reset Password',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -389,8 +380,7 @@ class Login_Form_Element extends Base_Element {
 			'value_username'         => '',
 			'value_remember'         => false, // Set 'value_remember' to true to default the "Remember me" checkbox to checked.
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -403,13 +393,11 @@ class Login_Form_Element extends Base_Element {
 		$this->logged = is_user_logged_in();
 
 		if ($this->is_reset_password_page()) {
-
 			$rp_path = '/';
 
 			$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
 
 			if (isset($_GET['key']) && isset($_GET['login'])) {
-
 				$value = sprintf('%s:%s', wp_unslash($_GET['login']), wp_unslash($_GET['key']));
 
 				setcookie($rp_cookie, $value, 0, $rp_path, (string) COOKIE_DOMAIN, is_ssl(), true);
@@ -417,10 +405,8 @@ class Login_Form_Element extends Base_Element {
 				wp_safe_redirect(remove_query_arg(array('key', 'login')));
 
 				exit;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		global $post;
 
@@ -428,12 +414,9 @@ class Login_Form_Element extends Base_Element {
 		 * Handles maintenance mode on Elementor.
 		 */
 		if ($post && $post->ID === absint(wu_get_setting('default_login_page', 0))) {
-
 			add_filter('elementor/maintenance_mode/is_login_page', '__return_true');
-
-		} // end if;
-
-	} // end setup;
+		}
+	}
 
 	/**
 	 * Checks if we are in a lost password form page.
@@ -444,8 +427,7 @@ class Login_Form_Element extends Base_Element {
 	public function is_lost_password_page() {
 
 		return wu_request('action') === 'lostpassword';
-
-	} // end is_lost_password_page;
+	}
 
 	/**
 	 * Checks if we are in the email confirm instruction page of a reset password.
@@ -456,8 +438,7 @@ class Login_Form_Element extends Base_Element {
 	public function is_check_email_confirm() {
 
 		return wu_request('checkemail') === 'confirm';
-
-	} // end is_check_email_confirm;
+	}
 
 	/**
 	 * Checks if we are in a reset password page.
@@ -468,8 +449,7 @@ class Login_Form_Element extends Base_Element {
 	public function is_reset_password_page() {
 
 		return wu_request('action') === 'rp' || wu_request('action') === 'resetpass';
-
-	} // end is_reset_password_page;
+	}
 
 	/**
 	 * Checks if we are in the the password rest confirmation page.
@@ -480,8 +460,7 @@ class Login_Form_Element extends Base_Element {
 	public function is_reset_confirmation_page() {
 
 		return wu_request('password-reset') === 'success';
-
-	} // end is_reset_confirmation_page;
+	}
 
 	/**
 	 * Handle custom login redirection
@@ -496,28 +475,22 @@ class Login_Form_Element extends Base_Element {
 	public function handle_redirect($redirect_to, $requested_redirect_to, $user) {
 
 		if (is_wp_error($user)) {
-
 			if (wu_request('wu_login_page_url')) {
-
 				$redirect_to = wu_request('wu_login_page_url');
 				$redirect_to = add_query_arg('error', $user->get_error_code(), $redirect_to);
 
 				if ($user->get_error_code() === 'invalid_username') {
-
 					$redirect_to = add_query_arg('username', wu_request('log'), $redirect_to);
-
-				} // end if;
+				}
 
 				// In this case, WP will not redirect, so we need to do it here
 				wp_redirect($redirect_to);
 
 				exit;
-
-			} // end if;
+			}
 
 			return $redirect_to;
-
-		} // end if;
+		}
 
 		$redirect_type = wu_request('wu_login_form_redirect_type', 'default');
 
@@ -526,24 +499,18 @@ class Login_Form_Element extends Base_Element {
 
 			// query_redirect is the default wp behaviour
 			return $redirect_to;
-
 		} elseif ($redirect_type === 'customer_site') {
-
-			$user_site = get_active_blog_for_user( $user->ID );
+			$user_site = get_active_blog_for_user($user->ID);
 
 			wp_redirect($user_site->siteurl . $requested_redirect_to);
 			exit;
-
 		} elseif ($redirect_type === 'main_site') {
-
 			wp_redirect(network_site_url($requested_redirect_to));
 			exit;
-
-		} // end if;
+		}
 
 		return $redirect_to;
-
-	} // end handle_redirect;
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -554,8 +521,7 @@ class Login_Form_Element extends Base_Element {
 	public function setup_preview() {
 
 		$this->logged = false;
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * Returns the logout URL for the "not you bar".
@@ -568,8 +534,7 @@ class Login_Form_Element extends Base_Element {
 		$redirect_to = wu_get_current_url();
 
 		return wp_logout_url($redirect_to);
-
-	} // end get_logout_url;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -595,7 +560,6 @@ class Login_Form_Element extends Base_Element {
 		 * login URL so the user can re-login with the new password.
 		 */
 		if ($this->is_reset_confirmation_page()) {
-
 			$fields = array(
 				'email-activation-instructions' => array(
 					'type' => 'note',
@@ -603,13 +567,12 @@ class Login_Form_Element extends Base_Element {
 				),
 			);
 
-		/*
-		 * Check if are in the email confirmation instructions page.
-		 *
-		 * If that's the case, we show the instructions.
-		 */
+			/*
+			* Check if are in the email confirmation instructions page.
+			*
+			* If that's the case, we show the instructions.
+			*/
 		} elseif ($this->is_check_email_confirm()) {
-
 			$fields = array(
 				'email-activation-instructions' => array(
 					'type' => 'note',
@@ -621,33 +584,26 @@ class Login_Form_Element extends Base_Element {
 				),
 			);
 
-		/*
-		 * Check if we are in the set new password page.
-		 *
-		 * If that's the case, we show the new password fields
-		 * so the user can set a new password.
-		 */
+			/*
+			* Check if we are in the set new password page.
+			*
+			* If that's the case, we show the new password fields
+			* so the user can set a new password.
+			*/
 		} elseif ($this->is_reset_password_page()) {
-
 			$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
 
-			if (isset($_COOKIE[$rp_cookie]) && 0 < strpos((string) $_COOKIE[$rp_cookie], ':')) {
-
-				list($rp_login, $rp_key) = explode(':', wp_unslash($_COOKIE[$rp_cookie]), 2);
+			if (isset($_COOKIE[ $rp_cookie ]) && 0 < strpos((string) $_COOKIE[ $rp_cookie ], ':')) {
+				list($rp_login, $rp_key) = explode(':', wp_unslash($_COOKIE[ $rp_cookie ]), 2);
 
 				$user = check_password_reset_key($rp_key, $rp_login);
 
-				if (isset($_POST['pass1']) && !hash_equals($rp_key, $_POST['rp_key'])) {
-
+				if (isset($_POST['pass1']) && ! hash_equals($rp_key, $_POST['rp_key'])) {
 					$user = false;
-
-				} // end if;
-
+				}
 			} else {
-
 				$user = false;
-
-			} // end if;
+			}
 
 			$redirect_to = add_query_arg('password-reset', 'success', remove_query_arg(array('action', 'error')));
 
@@ -702,21 +658,18 @@ class Login_Form_Element extends Base_Element {
 				),
 			);
 
-		/*
-		 * Checks if we are in the first reset password page, where the customer requests a reset.
-		 *
-		 * If that's the case, we show the username/email field, so the user can
-		 * get an email with the reset link.
-		 */
+			/*
+			* Checks if we are in the first reset password page, where the customer requests a reset.
+			*
+			* If that's the case, we show the username/email field, so the user can
+			* get an email with the reset link.
+			*/
 		} elseif ($this->is_lost_password_page()) {
-
 			$user_login = wu_request('user_login', '');
 
 			if ($user_login) {
-
 				$user_login = wp_unslash($user_login);
-
-			} // end if;
+			}
 
 			$redirect_to = add_query_arg('checkemail', 'confirm', remove_query_arg(array('action', 'error')));
 
@@ -752,9 +705,7 @@ class Login_Form_Element extends Base_Element {
 					'wrapper_classes' => 'wu-items-end wu-bg-none',
 				),
 			);
-
 		} else {
-
 			$view = 'dashboard-widgets/login-form';
 
 			$fields = array(
@@ -773,14 +724,12 @@ class Login_Form_Element extends Base_Element {
 			);
 
 			if ($atts['remember']) {
-
 				$fields['rememberme'] = array(
 					'type'  => 'toggle',
 					'title' => $atts['label_remember'],
 					'desc'  => $atts['desc_remember'],
 				);
-
-			} // end if;
+			}
 
 			$fields['redirect_to'] = array(
 				'type'  => 'hidden',
@@ -788,19 +737,13 @@ class Login_Form_Element extends Base_Element {
 			);
 
 			if (isset($_GET['redirect_to'])) {
-
 				$atts['redirect_type']          = 'query_redirect';
 				$fields['redirect_to']['value'] = $_GET['redirect_to'];
-
 			} elseif ($atts['redirect_type'] === 'customer_site') {
-
 				$fields['redirect_to']['value'] = $atts['customer_redirect_path'];
-
 			} elseif ($atts['redirect_type'] === 'main_site') {
-
 				$fields['redirect_to']['value'] = $atts['main_redirect_path'];
-
-			} // end if;
+			}
 
 			$fields['wu_login_form_redirect_type'] = array(
 				'type'  => 'hidden',
@@ -821,8 +764,7 @@ class Login_Form_Element extends Base_Element {
 				'classes'         => '',
 				'wrapper_classes' => 'wu-items-end wu-bg-none',
 			);
-
-		} // end if;
+		}
 
 		/*
 		 * Check for error messages
@@ -831,7 +773,6 @@ class Login_Form_Element extends Base_Element {
 		 * at the top of the fields array, to display the errors.
 		 */
 		if (wu_request('error')) {
-
 			$username = wu_request('username', '');
 
 			$error_message_field = array(
@@ -842,8 +783,7 @@ class Login_Form_Element extends Base_Element {
 			);
 
 			$fields = array_merge($error_message_field, $fields);
-
-		} // end if;
+		}
 
 		$fields['wu_login_page_url'] = array(
 			'type'  => 'hidden',
@@ -855,23 +795,25 @@ class Login_Form_Element extends Base_Element {
 		 *
 		 * @since 2.0.0
 		 */
-		$form = new \WP_Ultimo\UI\Form($this->get_id(), $fields, array(
-			'action'                => esc_url(site_url('wp-login.php', 'login_post')),
-			'wrap_in_form_tag'      => true,
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-p-0 wu-m-0',
-			'field_wrapper_classes' => 'wu-box-border wu-items-center wu-flex wu-justify-between wu-py-4 wu-m-0',
-			'html_attr'             => array(
-				'class' => 'wu-w-full',
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			$this->get_id(),
+			$fields,
+			array(
+				'action'                => esc_url(site_url('wp-login.php', 'login_post')),
+				'wrap_in_form_tag'      => true,
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-p-0 wu-m-0',
+				'field_wrapper_classes' => 'wu-box-border wu-items-center wu-flex wu-justify-between wu-py-4 wu-m-0',
+				'html_attr'             => array(
+					'class' => 'wu-w-full',
+				),
+			)
+		);
 
 		$atts['logged']    = $this->logged;
 		$atts['login_url'] = $this->get_logout_url();
 		$atts['form']      = $form;
 
 		return wu_get_template_contents($view, $atts);
-
-	} // end output;
-
-} // end class Login_Form_Element;
+	}
+}

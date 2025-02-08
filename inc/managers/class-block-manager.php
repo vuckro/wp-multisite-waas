@@ -38,8 +38,7 @@ class Block_Manager extends Base_Manager {
 		$hook = version_compare($wp_version, '5.8', '<') ? 'block_categories' : 'block_categories_all';
 
 		add_filter($hook, array($this, 'add_wp_ultimo_block_category'), 1, 2);
-
-	} // end init;
+	}
 
 	/**
 	 * Adds wp-ultimo as a Block category on Gutenberg.
@@ -52,13 +51,14 @@ class Block_Manager extends Base_Manager {
 	 */
 	public function add_wp_ultimo_block_category($categories, $post) {
 
-		return array_merge($categories, array(
+		return array_merge(
+			$categories,
 			array(
-				'slug'  => 'wp-ultimo',
-				'title' => __('Multisite WaaS', 'wp-ultimo'),
-			),
-		));
-
-	} // end add_wp_ultimo_block_category;
-
-} // end class Block_Manager;
+				array(
+					'slug'  => 'wp-ultimo',
+					'title' => __('Multisite WaaS', 'wp-ultimo'),
+				),
+			)
+		);
+	}
+}

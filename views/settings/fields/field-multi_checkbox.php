@@ -6,89 +6,82 @@
  */
 ?>
 <tr id="multiselect-<?php echo $field_slug; ?>">
-    <th scope="row"><label for="<?php echo $field_slug; ?>"><?php echo $field['title']; ?></label> <?php echo WU_Util::tooltip($field['tooltip']); ?></th>
-    <td>
+	<th scope="row"><label for="<?php echo $field_slug; ?>"><?php echo $field['title']; ?></label> <?php echo WU_Util::tooltip($field['tooltip']); ?></th>
+	<td>
 
-      <?php
+		<?php
 
-      // Check if it was selected
-      $settings = wu_get_setting($field_slug);
+		// Check if it was selected
+		$settings = wu_get_setting($field_slug);
 
-      if ($settings === false) {
+		if ($settings === false) {
+			$settings = isset($field['default']) ? $field['default'] : false;
+		}
 
-        $settings = isset($field['default']) ? $field['default'] : false;
+		/**
+		 * Allow multi-select
+		*
+		 * @since 1.5.0
+		 */
 
-      }
+		$sortable_class = isset($field['sortable']) && $field['sortable'] ? 'wu-sortable' : '';
 
-      /**
-       * Allow multi-select
-       * @since 1.5.0
-       */
+		// If sortable, merge settings and list of items
+		if (isset($field['sortable']) && $field['sortable'] && $settings) {
+			$_settings = $settings;
 
-      $sortable_class = isset($field['sortable']) && $field['sortable'] ? 'wu-sortable' : '';
+			foreach ($_settings as $key => &$value) {
+				if ( ! isset($field['options'][ $key ])) {
+					unset($_settings[ $key ]);
 
-      // If sortable, merge settings and list of items
-      if (isset($field['sortable']) && $field['sortable'] && $settings) {
+					continue;
+				} // end if;
 
-        $_settings = $settings;
+				$value = $field['options'][ $key ];
+			} // end foreach;
 
-        foreach ($_settings as $key => &$value) {
+			$field['options'] = $_settings + $field['options'];
+		} // end if;
 
-          if (!isset($field['options'][$key])) {
+		?>
 
-            unset($_settings[$key]);
+		<div class="row <?php echo $sortable_class; ?>">
 
-            continue;
+		<?php
+		/**
+		 * Loop the values
+		 */
+		foreach ($field['options'] as $field_value => $field_name) :
 
-          } // end if;
+			// Check this setting
+			$this_settings = isset($settings[ $field_value ]) ? $settings[ $field_value ] : false;
 
-          $value = $field['options'][$key];
+			?>
 
-        } // end foreach;
+		<div class="wu-col-sm-4" style="margin-bottom: 2px;">
 
-        $field['options'] = $_settings + $field['options'];
+			<label for="multiselect-<?php echo $field_value; ?>">
+			<input <?php checked($this_settings); ?> name="<?php printf('%s[%s]', $field_slug, $field_value); ?>" type="checkbox" id="multiselect-<?php echo $field_value; ?>" value="1">
+			<?php echo $field_name; ?>
+			</label>
 
-      } // end if;
+		</div>
 
-      ?>
+		<?php endforeach; ?>
 
-      <div class="row <?php echo $sortable_class; ?>">
+		</div>
 
-      <?php
-      /**
-       * Loop the values
-       */
-      foreach ($field['options'] as $field_value => $field_name) :
+		<button type="button" data-select-all="multiselect-<?php echo $field_slug; ?>" class="button wu-select-all"><?php _e('Check / Uncheck All', 'wp-ultimo'); ?></button>
 
-        // Check this setting
-        $this_settings = isset($settings[$field_value]) ? $settings[$field_value] : false;
+		<br>
 
-        ?>
+		<?php if ( ! empty($field['desc'])) : ?>
 
-        <div class="wu-col-sm-4" style="margin-bottom: 2px;">
+		<p class="description" id="<?php echo $field_slug; ?>-desc">
+			<?php echo $field['desc']; ?>
+		</p>
 
-          <label for="multiselect-<?php echo $field_value; ?>">
-            <input <?php checked($this_settings); ?> name="<?php echo sprintf('%s[%s]', $field_slug, $field_value); ?>" type="checkbox" id="multiselect-<?php echo $field_value; ?>" value="1">
-            <?php echo $field_name; ?>
-          </label>
+		<?php endif; ?>
 
-        </div>
-
-      <?php endforeach; ?>
-
-      </div>
-
-      <button type="button" data-select-all="multiselect-<?php echo $field_slug; ?>" class="button wu-select-all"><?php _e('Check / Uncheck All', 'wp-ultimo'); ?></button>
-
-      <br>
-
-      <?php if (!empty($field['desc'])) : ?>
-
-        <p class="description" id="<?php echo $field_slug; ?>-desc">
-          <?php echo $field['desc']; ?>
-        </p>
-
-      <?php endif; ?>
-
-    </td>
-  </tr>
+	</td>
+	</tr>

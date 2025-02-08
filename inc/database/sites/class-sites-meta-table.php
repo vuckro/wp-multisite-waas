@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Sites_Meta_Table extends Table {
 
 	/**
-     * Table prefix, including the site prefix.
-     *
-     * @since 1.0.0
-     * @var   string
-     */
+	 * Table prefix, including the site prefix.
+	 *
+	 * @since 1.0.0
+	 * @var   string
+	 */
 	protected $prefix = '';
 
 	/**
@@ -63,8 +63,7 @@ final class Sites_Meta_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema
@@ -76,7 +75,5 @@ final class Sites_Meta_Table extends Table {
 	protected function set_schema() {
 
 		$this->schema = false;
-
-	} // end set_schema;
-
-} // end class Sites_Meta_Table;
+	}
+}

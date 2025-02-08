@@ -23,15 +23,15 @@ defined('ABSPATH') || exit;
 abstract class Base_Admin_Page {
 
 	/**
-     * @var bool
-     */
+	 * @var bool
+	 */
 	protected $edit;
 
 	/**
-     * Holds the ID for this page, this is also used as the page slug.
-     *
-     * @var string
-     */
+	 * Holds the ID for this page, this is also used as the page slug.
+	 *
+	 * @var string
+	 */
 	protected $id;
 
 	/**
@@ -173,12 +173,10 @@ abstract class Base_Admin_Page {
 		 * Adds the page to all the necessary admin panels.
 		 */
 		foreach ($this->supported_panels as $panel => $capability) {
-
 			add_action($panel, array($this, 'add_menu_page'));
 
 			add_action($panel, array($this, 'fix_subdomain_name'), 100);
-
-		} // end foreach;
+		}
 
 		/*
 		 * Delegates further initializations to the child class.
@@ -202,8 +200,7 @@ abstract class Base_Admin_Page {
 		 * @return void
 		 */
 		do_action('wu_page_added', $this->id, $this->page_hook);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns the ID of the admin page.
@@ -214,8 +211,7 @@ abstract class Base_Admin_Page {
 	public function get_id() {
 
 		return $this->id;
-
-	} // end get_id;
+	}
 
 	/**
 	 * Returns the appropriate capability for a this page, depending on the context.
@@ -226,18 +222,13 @@ abstract class Base_Admin_Page {
 	public function get_capability() {
 
 		if (is_user_admin()) {
-
 			return $this->supported_panels['user_admin_menu'];
-
 		} elseif (is_network_admin()) {
-
 			return $this->supported_panels['network_admin_menu'];
-
-		} // end if;
+		}
 
 		return $this->supported_panels['admin_menu'];
-
-	} // end get_capability;
+	}
 
 	/**
 	 * Fix the subdomain name if an option (submenu title) is passed.
@@ -249,13 +240,10 @@ abstract class Base_Admin_Page {
 
 		global $submenu;
 
-		if ($this->get_submenu_title() && $this->type === 'menu' && isset($submenu[$this->id]) && $submenu[$this->id][0][3] === $this->get_title()) {
-
-			$submenu[$this->id][0][0] = $this->get_submenu_title();
-
-		} // end if;
-
-	} // end fix_subdomain_name;
+		if ($this->get_submenu_title() && $this->type === 'menu' && isset($submenu[ $this->id ]) && $submenu[ $this->id ][0][3] === $this->get_title()) {
+			$submenu[ $this->id ][0][0] = $this->get_submenu_title();
+		}
+	}
 
 	/**
 	 * Fix the highlight Menu.
@@ -269,16 +257,13 @@ abstract class Base_Admin_Page {
 		global $plugin_page;
 
 		if ($this->highlight_menu_slug && isset($_GET['page']) && $_GET['page'] === $this->get_id()) {
-
 			$plugin_page = $this->highlight_menu_slug;
 
 			$file = $this->highlight_menu_slug;
-
-		} // end if;
+		}
 
 		return $file;
-
-	} // end fix_menu_highlight;
+	}
 
 	/**
 	 * Install the base hooks for developers
@@ -327,8 +312,7 @@ abstract class Base_Admin_Page {
 		add_filter('parent_file', array($this, 'fix_menu_highlight'), 99);
 
 		add_filter('submenu_file', array($this, 'fix_menu_highlight'), 99);
-
-	} // end install_hooks;
+	}
 
 	/**
 	 * Get the badge value, to append to the menu item title.
@@ -343,8 +327,7 @@ abstract class Base_Admin_Page {
     </span>';
 
 		return $this->badge_count >= 1 ? sprintf($markup, $this->badge_count, $this->badge_count) : '';
-
-	} // end get_badge;
+	}
 
 	/**
 	 * Displays the page content.
@@ -359,13 +342,15 @@ abstract class Base_Admin_Page {
 		 *
 		 * @todo review when possible.
 		 */
-		add_filter('wp_ultimo_render_vars', function($vars) {
+		add_filter(
+			'wp_ultimo_render_vars',
+			function ($vars) {
 
-			$vars['page_title'] = $this->get_title();
+				$vars['page_title'] = $this->get_title();
 
-			return $vars;
-
-		});
+				return $vars;
+			}
+		);
 
 		/**
 		 * Allow plugin developers to add additional content before we print the page.
@@ -407,8 +392,7 @@ abstract class Base_Admin_Page {
 		 * @return void
 		 */
 		do_action("wu_page_{$this->id}_after_render", $this->id, $this);
-
-	} // end display;
+	}
 
 	/**
 	 * Get the menu item, with the badge if necessary.
@@ -419,8 +403,7 @@ abstract class Base_Admin_Page {
 	public function get_menu_label() {
 
 		return $this->get_menu_title() . $this->get_badge();
-
-	} // end get_menu_label;
+	}
 
 	/**
 	 * Adds the menu items using default WordPress functions and handles the side-effects
@@ -439,8 +422,7 @@ abstract class Base_Admin_Page {
 		 * Add the default hooks
 		 */
 		$this->enqueue_default_hooks();
-
-	} // end add_menu_page;
+	}
 
 	/**
 	 * Adds top-level admin page.
@@ -451,22 +433,19 @@ abstract class Base_Admin_Page {
 	public function add_toplevel_menu_page() {
 
 		if (wu_request('id')) {
-
 			$this->edit = true;
-
-		} // end if;
+		}
 
 		return add_menu_page(
-		$this->get_title(),
-		$this->get_menu_label(),
-		$this->get_capability(),
-		$this->id,
-		array($this, 'display'),
-		$this->menu_icon,
-		$this->position
+			$this->get_title(),
+			$this->get_menu_label(),
+			$this->get_capability(),
+			$this->id,
+			array($this, 'display'),
+			$this->menu_icon,
+			$this->position
 		);
-
-	} // end add_toplevel_menu_page;
+	}
 
 	/**
 	 * Adds sub-pages.
@@ -477,21 +456,18 @@ abstract class Base_Admin_Page {
 	public function add_submenu_page() {
 
 		if (wu_request('id')) {
-
 			$this->edit = true;
-
-		} // end if;
+		}
 
 		return add_submenu_page(
-		$this->parent,
-		$this->get_title(),
-		$this->get_menu_label(),
-		$this->get_capability(),
-		$this->id,
-		array($this, 'display')
+			$this->parent,
+			$this->get_title(),
+			$this->get_menu_label(),
+			$this->get_capability(),
+			$this->id,
+			array($this, 'display')
 		);
-
-	} // end add_submenu_page;
+	}
 
 	/**
 	 * Adds WP Multisite WaaS branding to this page, if that's the case.
@@ -502,7 +478,6 @@ abstract class Base_Admin_Page {
 	public function add_branding() {
 
 		if (apply_filters('wp_ultimo_remove_branding', false) === false) {
-
 			add_action('in_admin_header', array($this, 'brand_header'));
 
 			add_action('wu_header_right', array($this, 'add_container_toggle'));
@@ -512,10 +487,8 @@ abstract class Base_Admin_Page {
 			add_filter('admin_footer_text', '__return_empty_string', 1000);
 
 			add_filter('update_footer', '__return_empty_string', 1000);
-
-		} // end if;
-
-	} // end add_branding;
+		}
+	}
 
 	/**
 	 * Adds the Jumper trigger to the admin top pages.
@@ -525,11 +498,13 @@ abstract class Base_Admin_Page {
 	 */
 	public function add_container_toggle() {
 
-		wu_get_template('ui/container-toggle', array(
-			'page' => $this,
-		));
-
-	} // end add_container_toggle;
+		wu_get_template(
+			'ui/container-toggle',
+			array(
+				'page' => $this,
+			)
+		);
+	}
 
 	/**
 	 * Adds the WP Multisite WaaS branding header.
@@ -539,11 +514,13 @@ abstract class Base_Admin_Page {
 	 */
 	public function brand_header() {
 
-		wu_get_template('ui/branding/header', array(
-			'page' => $this,
-		));
-
-	} // end brand_header;
+		wu_get_template(
+			'ui/branding/header',
+			array(
+				'page' => $this,
+			)
+		);
+	}
 
 	/**
 	 * Adds the WP Multisite WaaS branding footer.
@@ -553,11 +530,13 @@ abstract class Base_Admin_Page {
 	 */
 	public function brand_footer() {
 
-		wu_get_template('ui/branding/footer', array(
-			'page' => $this,
-		));
-
-	} // end brand_footer;
+		wu_get_template(
+			'ui/branding/footer',
+			array(
+				'page' => $this,
+			)
+		);
+	}
 
 	/**
 	 * Injects our admin classes to the admin body classes.
@@ -567,37 +546,30 @@ abstract class Base_Admin_Page {
 	 */
 	public function add_admin_body_classes() {
 
-		add_action('admin_body_class', function($classes) {
+		add_action(
+			'admin_body_class',
+			function ($classes) {
 
-			if ($this->hide_admin_notices) {
+				if ($this->hide_admin_notices) {
+					$classes .= ' wu-hide-admin-notices';
+				}
 
-				$classes .= ' wu-hide-admin-notices';
+				if ($this->fold_menu) {
+					$classes .= ' folded';
+				}
 
-			} // end if;
+				if ($this->remove_frame) {
+					$classes .= ' wu-remove-frame folded';
+				}
 
-			if ($this->fold_menu) {
+				if (is_network_admin()) {
+					$classes .= ' wu-network-admin';
+				}
 
-				$classes .= ' folded';
-
-			} // end if;
-
-			if ($this->remove_frame) {
-
-				$classes .= ' wu-remove-frame folded';
-
-			} // end if;
-
-			if (is_network_admin()) {
-
-				$classes .= ' wu-network-admin';
-
-			} // end if;
-
-			return "$classes wu-page-{$this->id} wu-styling hover:wu-styling first:wu-styling odd:wu-styling";
-
-		});
-
-	} // end add_admin_body_classes;
+				return "$classes wu-page-{$this->id} wu-styling hover:wu-styling first:wu-styling odd:wu-styling";
+			}
+		);
+	}
 
 	/**
 	 * Register the default hooks.
@@ -610,7 +582,6 @@ abstract class Base_Admin_Page {
 	final public function enqueue_default_hooks() {
 
 		if ($this->page_hook) {
-
 			add_action("load-$this->page_hook", array($this, 'install_hooks'));
 
 			add_action("load-$this->page_hook", array($this, 'page_loaded'));
@@ -629,10 +600,8 @@ abstract class Base_Admin_Page {
 			 * Add the page to WP Multisite WaaS branding (aka top-bar and footer)
 			 */
 			if (is_network_admin()) {
-
 				add_action("load-$this->page_hook", array($this, 'add_branding'));
-
-			} // end if;
+			}
 
 			/**
 			 * Allow plugin developers to add additional hooks
@@ -641,10 +610,8 @@ abstract class Base_Admin_Page {
 			 * @param string
 			 */
 			do_action('wu_enqueue_extra_hooks', $this->page_hook);
-
-		} // end if;
-
-	} // end enqueue_default_hooks;
+		}
+	}
 
 	/**
 	 * Returns an array with the title links.
@@ -655,14 +622,12 @@ abstract class Base_Admin_Page {
 	public function get_title_links() {
 
 		if (wu_get_documentation_url($this->get_id(), false)) {
-
 			$this->action_links[] = array(
 				'url'   => wu_get_documentation_url($this->get_id()),
 				'label' => __('Documentation'),
 				'icon'  => 'wu-open-book',
 			);
-
-		} // end if;
+		}
 
 		/**
 		 * Allow plugin developers, and ourselves, to add action links to our edit pages
@@ -672,8 +637,7 @@ abstract class Base_Admin_Page {
 		 * @return array
 		 */
 		return apply_filters('wu_page_get_title_links', $this->action_links, $this);
-
-	} // end get_title_links;
+	}
 
 	/**
 	 * Allows child classes to register their own title links.
@@ -684,8 +648,7 @@ abstract class Base_Admin_Page {
 	public function action_links() {
 
 		return array();
-
-	} // end action_links;
+	}
 
 	/**
 	 * Allow child classes to add further initializations.
@@ -693,7 +656,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function init() {} // end init;
+	public function init() {}
 
 	/**
 	 * Allow child classes to add further initializations, but only after the page is loaded.
@@ -701,7 +664,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function page_loaded() {} // end page_loaded;
+	public function page_loaded() {}
 
 	/**
 	 * Allow child classes to add hooks to be run once the page is loaded.
@@ -710,7 +673,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Allow child classes to add screen options; Useful for pages that have list tables.
@@ -718,7 +681,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function screen_options() {} // end screen_options;
+	public function screen_options() {}
 
 	/**
 	 * Allow child classes to register scripts and styles that can be loaded on the output function, for example.
@@ -726,7 +689,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_scripts() {} // end register_scripts;
+	public function register_scripts() {}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -734,7 +697,7 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Allow child classes to register forms, if they need them.
@@ -742,7 +705,7 @@ abstract class Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_forms() {} // end register_forms;
+	public function register_forms() {}
 
 	/**
 	 * Returns the title of the page. Must be declared on the child classes.
@@ -769,8 +732,7 @@ abstract class Base_Admin_Page {
 	public function get_submenu_title() {
 
 		return false;
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -778,6 +740,5 @@ abstract class Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	abstract public function output(); // end output;
-
-} // end class Base_Admin_Page;
+	abstract public function output();
+}

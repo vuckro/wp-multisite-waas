@@ -34,8 +34,7 @@ class Product_Compat {
 		add_filter('wu_product_options_sections', array($this, 'add_legacy_section'), 100, 2);
 
 		add_filter('update_post_metadata', array($this, 'check_update_plan'), 10, 5);
-
-	} // end init;
+	}
 
 	/**
 	 * Saves meta data from old plugins on the new plugin.
@@ -53,22 +52,18 @@ class Product_Compat {
 		/*
 		 * Check if we are in the main site of the network.
 		 */
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Check if we have a new entity with this ID.
 		 */
 		$migrated_product = wu_get_product($object_id);
 
-		if (!$migrated_product) {
-
+		if ( ! $migrated_product) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Prevent double prefixing.
@@ -85,8 +80,7 @@ class Product_Compat {
 		 * returning anything else will prevent meta data from being saved.
 		 */
 		return null;
-
-	} // end check_update_plan;
+	}
 
 	/**
 	 * Injects the compatibility panels to products Advanced Options.
@@ -142,7 +136,5 @@ class Product_Compat {
 		);
 
 		return $sections;
-
-	} // end add_legacy_section;
-
-} // end class Product_Compat;
+	}
+}

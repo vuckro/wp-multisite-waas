@@ -36,11 +36,11 @@ class Limit_Domain_Mapping extends Limit {
 	protected $mode = 'default';
 
 	/**
-     * Allows sub-type limits to set their own default value for enabled.
-     *
-     * @since 2.0.0
-     * @var bool
-     */
+	 * Allows sub-type limits to set their own default value for enabled.
+	 *
+	 * @since 2.0.0
+	 * @var bool
+	 */
 	private bool $enabled_default_value = true;
 
 	/**
@@ -56,8 +56,7 @@ class Limit_Domain_Mapping extends Limit {
 		parent::setup($data);
 
 		$this->mode = wu_get_isset($data, 'mode', 'default');
-
-	} // end setup;
+	}
 
 	/**
 	 * Returns the mode. Can be one of three: default, assign_template and choose_available_templates.
@@ -68,8 +67,7 @@ class Limit_Domain_Mapping extends Limit {
 	public function get_mode() {
 
 		return $this->mode;
-
-	} // end get_mode;
+	}
 
 	/**
 	 * The check method is what gets called when allowed is called.
@@ -89,8 +87,7 @@ class Limit_Domain_Mapping extends Limit {
 		$check = true;
 
 		return $check;
-
-	} // end check;
+	}
 
 	/**
 	 * Returns default permissions.
@@ -105,8 +102,7 @@ class Limit_Domain_Mapping extends Limit {
 		return array(
 			'behavior' => 'available',
 		);
-
-	} // end get_default_permissions;
+	}
 
 	/**
 	 * Returns a default state.
@@ -121,7 +117,5 @@ class Limit_Domain_Mapping extends Limit {
 			'limit'   => null,
 			'mode'    => 'default',
 		);
-
-	} // end default_state;
-
-} // end class Limit_Domain_Mapping;
+	}
+}

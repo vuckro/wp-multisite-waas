@@ -96,8 +96,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	public function get_title() {
 
 		return sprintf(__('Checkout', 'wp-ultimo'));
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -108,8 +107,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	public function get_menu_title() {
 
 		return __('Checkout', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Registers the necessary scripts.
@@ -120,8 +118,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 	public function register_scripts() {
 
 		do_action('wu_checkout_scripts', null, null);
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Overrides the page loaded method.
@@ -134,8 +131,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 		do_action('wu_setup_checkout', null);
 
 		parent::page_loaded();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Returns the sections for this Wizard.
@@ -153,8 +149,7 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 		);
 
 		return $sections;
-
-	} // end get_sections;
+	}
 
 	/**
 	 * Displays the content of the activation section.
@@ -166,13 +161,15 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/centered', array(
-			'screen'  => get_current_screen(),
-			'page'    => $this,
-			'content' => do_shortcode('[wu_checkout slug="wu-checkout"]'),
-		));
-
-	} // end output;
+		wu_get_template(
+			'base/centered',
+			array(
+				'screen'  => get_current_screen(),
+				'page'    => $this,
+				'content' => do_shortcode('[wu_checkout slug="wu-checkout"]'),
+			)
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -185,7 +182,5 @@ class Checkout_Admin_Page extends \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Ad
 		\WP_Ultimo\UI\Current_Membership_Element::get_instance()->as_metabox(get_current_screen()->id);
 
 		\WP_Ultimo\UI\Simple_Text_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_centered_right');
-
-	} // end register_widgets;
-
-} // end class Checkout_Admin_Page;
+	}
+}

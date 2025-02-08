@@ -68,7 +68,7 @@ class Geolocation {
      */
     private static function supports_geolite2(): bool {
         return false; // version_compare( PHP_VERSION, '5.4.0', '>=' );
-    } // end supports_geolite2;
+    }
     /**
      * Check if geolocation is enabled.
      *
@@ -77,7 +77,7 @@ class Geolocation {
      */
     private static function is_geolocation_enabled($current_settings ): bool {
         return in_array( $current_settings, array( 'geolocation', 'geolocation_ajax' ), true );
-    } // end is_geolocation_enabled;
+    }
 
 
     /**
@@ -90,10 +90,10 @@ class Geolocation {
     public static function disable_geolocation_on_legacy_php($default_customer_address ) {
         if ( self::is_geolocation_enabled( $default_customer_address ) ) {
             $default_customer_address = 'base';
-        } // end if;
+        }
 
         return $default_customer_address;
-    } // end disable_geolocation_on_legacy_php;
+    }
 
 
     /**
@@ -104,14 +104,14 @@ class Geolocation {
             // Only download the database from MaxMind if the geolocation function is enabled, or a plugin specifically requests it.
             if ( self::is_geolocation_enabled( get_option( 'wu_default_customer_address' ) ) || apply_filters( 'wu_geolocation_update_database_periodically', false ) ) {
                 add_action( 'wu_geoip_updater', array( __CLASS__, 'update_database' ) );
-            } // end if;
+            }
 
             // Trigger database update when settings are changed to enable geolocation.
             add_filter( 'pre_update_option_wu_default_customer_address', array( __CLASS__, 'maybe_update_database' ), 10, 2 );
         } else {
             add_filter( 'pre_option_wu_default_customer_address', array( __CLASS__, 'disable_geolocation_on_legacy_php' ) );
-        } // end if;
-    } // end init;
+        }
+    }
 
 
     /**
@@ -124,10 +124,10 @@ class Geolocation {
     public static function maybe_update_database($new_value, $old_value ) {
         if ( $new_value !== $old_value && self::is_geolocation_enabled( $new_value ) ) {
             self::update_database();
-        } // end if;
+        }
 
         return $new_value;
-    } // end maybe_update_database;
+    }
 
     /**
      * Get current user IP Address.
@@ -143,9 +143,9 @@ class Geolocation {
             return (string) rest_is_ip_address( trim( (string) current( preg_split( '/,/', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) ) ) ); // WPCS: input var ok, CSRF ok.
         } elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) { // @codingStandardsIgnoreLine
             return sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ); // @codingStandardsIgnoreLine
-        } // end if;
+        }
         return '';
-    } // end get_ip_address;
+    }
 
 
     /**
@@ -161,7 +161,7 @@ class Geolocation {
         if ( '' !== self::get_ip_address() ) {
             $transient_name      = 'external_ip_address_' . self::get_ip_address();
             $external_ip_address = get_transient( $transient_name );
-        } // end if;
+        }
 
         if ( false === $external_ip_address ) {
             $external_ip_address     = '0.0.0.0';
@@ -176,14 +176,14 @@ class Geolocation {
                 if ( !is_wp_error( $response ) && rest_is_ip_address( $response['body'] ) ) {
                     $external_ip_address = apply_filters( 'wu_geolocation_ip_lookup_api_response', ( $response['body'] ), $service_name );
                     break;
-                } // end if;
-            } // end foreach;
+                }
+            }
 
             set_transient( $transient_name, $external_ip_address, WEEK_IN_SECONDS );
-        } // end if;
+        }
 
         return $external_ip_address;
-    } // end get_external_ip_address;
+    }
 
 
     /**
@@ -218,21 +218,21 @@ class Geolocation {
                     $country_code = self::geolocate_via_api( $ip_address );
                 } else {
                     $country_code = '';
-                } // end if;
+                }
 
                 if ( !$country_code && $fallback ) {
                     // May be a local environment - find external IP.
                     return self::geolocate_ip( self::get_external_ip_address(), false, $api_fallback );
-                } // end if;
-            } // end if;
-        } // end if;
+                }
+            }
+        }
 
         return array(
             'ip'      => $ip_address,
             'country' => $country_code,
             'state'   => '',
         );
-    } // end geolocate_ip;
+    }
 
 
     /**
@@ -243,7 +243,7 @@ class Geolocation {
      */
     public static function get_local_database_path($deprecated = '2' ) {
         return apply_filters( 'wu_geolocation_local_database_path', WP_CONTENT_DIR . '/uploads/GeoLite2-Country.mmdb', $deprecated );
-    } // end get_local_database_path;
+    }
 
 
     /**
@@ -257,7 +257,7 @@ class Geolocation {
         if ( !self::supports_geolite2() ) {
             $logger->notice( 'Requires PHP 5.4 to be able to download MaxMind GeoLite2 database', array( 'source' => 'geolocation' ) );
             return;
-        } // end if;
+        }
 
         require_once ABSPATH . 'wp-admin/includes/file.php';
 
@@ -288,7 +288,7 @@ class Geolocation {
                 // Reschedule download of DB.
                 wp_clear_scheduled_hook( 'wu_geoip_updater' );
                 wp_schedule_event( strtotime( 'first tuesday of next month' ), 'monthly', 'wu_geoip_updater' );
-            } // end try;
+            }
             // Delete temp file regardless of success.
             $wp_filesystem->delete( $tmp_database_path );
         } else {
@@ -296,8 +296,8 @@ class Geolocation {
                 'Unable to download GeoIP Database: ' . $tmp_database_path->get_error_message(),
                 array( 'source' => 'geolocation' )
             );
-        } // end if;
-    } // end update_database;
+        }
+    }
 
 
     /**
@@ -310,12 +310,12 @@ class Geolocation {
     private static function geolocate_via_db($ip_address, $database ) {
         if ( !class_exists( 'WC_Geolite_Integration', false ) ) {
             require_once WC_ABSPATH . 'includes/class-wc-geolite-integration.php';
-        } // end if;
+        }
 
         $geolite = new WC_Geolite_Integration( $database );
 
         return $geolite->get_country_iso( $ip_address );
-    } // end geolocate_via_db;
+    }
 
 
     /**
@@ -338,7 +338,7 @@ class Geolocation {
 
             if ( empty( $geoip_services ) ) {
                 return '';
-            } // end if;
+            }
 
             $geoip_services_keys = array_keys( $geoip_services );
 
@@ -361,21 +361,21 @@ class Geolocation {
                         default:
                             $country_code = apply_filters( 'wu_geolocation_geoip_response_' . $service_name, '', $response['body'] );
                             break;
-                    } // end switch;
+                    }
 
                     $country_code = sanitize_text_field( strtoupper( (string) $country_code ) );
 
                     if ( $country_code ) {
                         break;
-                    } // end if;
-                } // end if;
-            } // end foreach;
+                    }
+                }
+            }
 
             set_transient( 'geoip_' . $ip_address, $country_code, WEEK_IN_SECONDS );
-        } // end if;
+        }
 
         return $country_code;
-    } // end geolocate_via_api;
+    }
 
-} // end class Geolocation;
+}
 

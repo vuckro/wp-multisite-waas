@@ -80,8 +80,7 @@ class Country_MY extends Country {
 	public function get_name() {
 
 		return __('Malaysia', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for MY.
@@ -109,7 +108,5 @@ class Country_MY extends Country {
 			'08' => __('Perak', 'wp-ultimo-locations'),
 			'09' => __('Perlis', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_MY;
+	}
+}

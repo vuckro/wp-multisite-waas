@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
-use \WP_Ultimo\Managers\Field_Templates_Manager;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Managers\Field_Templates_Manager;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -25,15 +25,14 @@ defined('ABSPATH') || exit;
 class Signup_Field_Pricing_Table extends Base_Signup_Field {
 
 	/**
-     * Returns the type of the field.
-     *
-     * @since 2.0.0
-     */
+	 * Returns the type of the field.
+	 *
+	 * @since 2.0.0
+	 */
 	public function get_type(): string {
 
 		return 'pricing_table';
-
-	} // end get_type;
+	}
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -42,8 +41,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function is_required(): bool {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -56,8 +54,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Pricing Table', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -70,8 +67,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a pricing table section that customers can use to choose a plan to subscribe to.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -84,8 +80,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a pricing table section that customers can use to choose a plan to subscribe to.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -96,8 +91,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function get_icon(): string {
 
 		return 'dashicons-wu dashicons-wu-columns';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -116,8 +110,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 			'force_different_durations'            => false,
 			'hide_pricing_table_when_pre_selected' => false,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -130,8 +123,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 		return array(
 			// 'name',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -146,8 +138,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 			'name'     => __('Plan Selection', 'wp-ultimo'),
 			'required' => true,
 		);
-
-	} // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of available pricing table templates.
@@ -160,8 +151,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 		$available_templates = Field_Templates_Manager::get_instance()->get_templates_as_options('pricing_table');
 
 		return $available_templates;
-
-	} // end get_pricing_table_templates;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -242,8 +232,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 		// );
 
 		return $editor_fields;
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -256,12 +245,10 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if (wu_get_isset($attributes, 'pricing_table_template') === 'legacy') {
-
 			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
 
 			wp_add_inline_style('legacy-shortcodes', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
-
-		} // end if;
+		}
 
 		$product_list = explode(',', (string) $attributes['pricing_table_products']);
 
@@ -276,10 +263,8 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 		 * Hide when pre-selected.
 		 */
 		if (wu_should_hide_form_field($attributes)) {
-
 			return array();
-
-		} // end if;
+		}
 
 		$template_attributes = array(
 			'products'                  => $products,
@@ -294,7 +279,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 
 		$checkout_fields = array();
 
-		$checkout_fields[$attributes['id']] = array(
+		$checkout_fields[ $attributes['id'] ] = array(
 			'type'              => 'note',
 			'id'                => $attributes['id'],
 			'wrapper_classes'   => wu_get_isset($attributes, 'wrapper_element_classes', ''),
@@ -306,7 +291,5 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 		);
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Pricing_Table;
+	}
+}

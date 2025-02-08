@@ -36,8 +36,7 @@ class Elementor_Compat {
 		add_filter('wu_should_redirect_to_primary_domain', array($this, 'maybe_prevent_redirection'));
 
 		add_action('elementor/widget/shortcode/skins_init', array($this, 'maybe_setup_preview'));
-
-	} // end init;
+	}
 
 	/**
 	 * Makes sure we force elementor to regenerate the styles when necessary.
@@ -48,31 +47,24 @@ class Elementor_Compat {
 	 */
 	public function regenerate_css($site) {
 
-		if (!class_exists('\Elementor\Plugin')) {
-
+		if ( ! class_exists('\Elementor\Plugin')) {
 			return;
+		}
 
-		} // end if;
-
-		if (!isset($site['site_id'])) {
-
+		if ( ! isset($site['site_id'])) {
 			return;
-
-		} // end if;
+		}
 
 		switch_to_blog($site['site_id']);
 
 		$file_manager = \Elementor\Plugin::$instance->files_manager; // phpcs:ignore
 
-		if (!empty($file_manager)) {
-
+		if ( ! empty($file_manager)) {
 			$file_manager->clear_cache();
-
-		} // end if;
+		}
 
 		restore_current_blog();
-
-	} // end regenerate_css;
+	}
 
 	/**
 	 * Prevents redirection to primary domain when in Elementor preview mode.
@@ -85,8 +77,7 @@ class Elementor_Compat {
 	public function maybe_prevent_redirection($should_redirect) {
 
 		return wu_request('elementor-preview', false) === false ? $should_redirect : false;
-
-	} // end maybe_prevent_redirection;
+	}
 
 	/**
 	 * Maybe adds the setup preview for elements inside elementor.
@@ -102,11 +93,7 @@ class Elementor_Compat {
 		);
 
 		if (in_array(wu_request('action'), $elementor_actions, true)) {
-
 			wu_element_setup_preview();
-
-		} // end if;
-
-	} // end maybe_setup_preview;
-
-} // end class Elementor_Compat;
+		}
+	}
+}

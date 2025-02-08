@@ -50,8 +50,7 @@ class Disk_Space_Limits {
 		add_filter('site_option_upload_space_check_disabled', array($this, 'upload_space_check_disabled'));
 
 		add_filter('get_space_allowed', array($this, 'apply_disk_space_limitations'));
-
-	} // end init;
+	}
 
 	/**
 	 * Disables the upload space check if the site has limitations.
@@ -64,15 +63,12 @@ class Disk_Space_Limits {
 	 */
 	public function upload_space_check_disabled($value) {
 
-		if (!$this->should_load()) {
-
+		if ( ! $this->should_load()) {
 			return $value;
-
-		} // end if;
+		}
 
 		return 0;
-
-	} // end upload_space_check_disabled;
+	}
 
 	/**
 	 * Checks if the disk space limitations should be loaded.
@@ -83,10 +79,8 @@ class Disk_Space_Limits {
 	protected function should_load() {
 
 		if ($this->started) {
-
 			return $this->should_load;
-
-		} // end if;
+		}
 
 		$this->started     = true;
 		$this->should_load = true;
@@ -101,21 +95,16 @@ class Disk_Space_Limits {
 		 * @since 1.7.0
 		 * @return bool
 		 */
-		if (!apply_filters('wu_apply_plan_limits', wu_get_current_site()->has_limitations())) {
-
+		if ( ! apply_filters('wu_apply_plan_limits', wu_get_current_site()->has_limitations())) {
 			$this->should_load = false;
+		}
 
-		} // end if;
-
-		if (!wu_get_current_site()->has_module_limitation('disk_space')) {
-
+		if ( ! wu_get_current_site()->has_module_limitation('disk_space')) {
 			$this->should_load = false;
-
-		} // end if;
+		}
 
 		return $this->should_load;
-
-	} // end should_load;
+	}
 
 	/**
 	 * Changes the disk_space to the one on the product.
@@ -127,22 +116,16 @@ class Disk_Space_Limits {
 	 */
 	public function apply_disk_space_limitations($disk_space) {
 
-		if (!$this->should_load()) {
-
+		if ( ! $this->should_load()) {
 			return $disk_space;
-
-		} // end if;
+		}
 
 		$modified_disk_space = wu_get_current_site()->get_limitations()->disk_space->get_limit();
 
 		if (is_numeric($modified_disk_space)) {
-
 			return $modified_disk_space;
-
-		} // end if;
+		}
 
 		return $disk_space;
-
-	} // end apply_disk_space_limitations;
-
-} // end class Disk_Space_Limits;
+	}
+}

@@ -55,8 +55,7 @@ class Limit_Plugins extends Limit {
 		);
 
 		return wu_get_isset($types, $type, false);
-
-	} // end check;
+	}
 
 	/**
 	 * Adds a magic getter for plugins.
@@ -71,8 +70,7 @@ class Limit_Plugins extends Limit {
 		$plugin = (object) wu_get_isset($this->get_limit(), $plugin_name, $this->get_default_permissions($plugin_name));
 
 		return (object) wp_parse_args($plugin, $this->get_default_permissions($plugin_name));
-
-	} // end __get;
+	}
 
 	/**
 	 * Returns a list of plugins by behavior and visibility.
@@ -88,24 +86,22 @@ class Limit_Plugins extends Limit {
 		$search_params = array();
 
 		if ($behavior) {
-
 			$search_params[] = array('behavior', $behavior);
-
-		} // end if;
+		}
 
 		if ($visibility) {
-
 			$search_params[] = array('visibility', $visibility);
+		}
 
-		} // end if;
-
-		$results = \Arrch\Arrch::find((array) $this->get_limit(), array(
-			'where' => $search_params,
-		));
+		$results = \Arrch\Arrch::find(
+			(array) $this->get_limit(),
+			array(
+				'where' => $search_params,
+			)
+		);
 
 		return $results;
-
-	} // end get_by_type;
+	}
 
 	/**
 	 * Returns default permissions.
@@ -121,8 +117,7 @@ class Limit_Plugins extends Limit {
 			'visibility' => 'visible',
 			'behavior'   => 'default',
 		);
-
-	} // end get_default_permissions;
+	}
 
 	/**
 	 * Checks if a theme exists on the current module.
@@ -137,8 +132,7 @@ class Limit_Plugins extends Limit {
 		$results = wu_get_isset($this->get_limit(), $plugin_name, array());
 
 		return wu_get_isset($results, 'visibility', 'not-set') !== 'not-set' || wu_get_isset($results, 'behavior', 'not-set') !== 'not-set';
-
-	} // end exists;
+	}
 
 	/**
 	 * Checks if the module is enabled.
@@ -151,7 +145,5 @@ class Limit_Plugins extends Limit {
 	public function is_enabled($type = '') {
 
 		return true;
-
-	} // end is_enabled;
-
-} // end class Limit_Plugins;
+	}
+}

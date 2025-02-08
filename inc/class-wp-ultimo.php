@@ -20,7 +20,8 @@ defined('ABSPATH') || exit;
  */
 final class WP_Ultimo {
 
-	use \WP_Ultimo\Traits\Singleton, \WP_Ultimo\Traits\WP_Ultimo_Deprecated;
+	use \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Traits\WP_Ultimo_Deprecated;
 
 	/**
 	 * Version of the Plugin.
@@ -154,10 +155,8 @@ final class WP_Ultimo {
 		 * and have no dependencies outside of the classes loaded so far.
 		 */
 		if (WP_Ultimo\Requirements::met() === false || WP_Ultimo\Requirements::run_setup() === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		$this->loaded = true;
 
@@ -211,9 +210,7 @@ final class WP_Ultimo {
 		 * @todo: move this to a manager in the future?
 		 */
 		$this->load_admin_pages();
-
-
-	} // end init;
+	}
 
 	/**
 	 * Returns true if all the requirements are met.
@@ -224,8 +221,7 @@ final class WP_Ultimo {
 	public function is_loaded() {
 
 		return $this->loaded;
-
-	} // end is_loaded;
+	}
 
 	/**
 	 * Setup the plugin text domain to be used in translations.
@@ -239,8 +235,7 @@ final class WP_Ultimo {
 		 */
 		load_plugin_textdomain('wp-ultimo', false, dirname((string) WP_ULTIMO_PLUGIN_BASENAME) . '/lang');
 		load_plugin_textdomain('wp-ultimo-locations', false, dirname((string) WP_ULTIMO_PLUGIN_BASENAME) . '/lang');
-
-	} // end setup_textdomain;
+	}
 
 	/**
 	 * Loads the table objects for our custom tables.
@@ -251,8 +246,7 @@ final class WP_Ultimo {
 	public function setup_tables() {
 
 		$this->tables = \WP_Ultimo\Loaders\Table_Loader::get_instance();
-
-	} // end setup_tables;
+	}
 
 	/**
 	 * Loads public apis that should be on the global scope
@@ -420,12 +414,9 @@ final class WP_Ultimo {
 		 * Admin helper functions
 		 */
 		if (is_admin()) {
-
 			require_once wu_path('inc/functions/admin.php');
-
-		} // end if;
-
-	} // end load_public_apis;
+		}
+	}
 
 	/**
 	 * Load extra the WP Multisite WaaS elements
@@ -562,9 +553,12 @@ final class WP_Ultimo {
 
 		\WP_Ultimo\Checkout\Checkout_Pages::get_instance();
 
-		add_action('init', function() {
-			\WP_Ultimo\Checkout\Legacy_Checkout::get_instance();
-		});
+		add_action(
+			'init',
+			function () {
+				\WP_Ultimo\Checkout\Legacy_Checkout::get_instance();
+			}
+		);
 
 		/*
 		 * Dashboard Statistics
@@ -633,8 +627,7 @@ final class WP_Ultimo {
 		 * Cron Schedules
 		 */
 		\WP_Ultimo\Cron::get_instance();
-
-	} // end load_extra_components;
+	}
 
 	/**
 	 * Load the WP Multisite WaaS Admin Pages.
@@ -798,8 +791,7 @@ final class WP_Ultimo {
 		new WP_Ultimo\Tax\Dashboard_Taxes_Tab();
 
 		do_action('wp_ultimo_admin_pages');
-
-	} // end load_admin_pages;
+	}
 
 	/**
 	 * Load extra the WP Multisite WaaS managers.
@@ -917,7 +909,5 @@ final class WP_Ultimo {
 		 * Loads views overrides
 		 */
 		WP_Ultimo\Views::get_instance();
-
-	} // end load_managers;
-
-} // end class WP_Ultimo;
+	}
+}

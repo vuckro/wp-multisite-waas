@@ -6,10 +6,8 @@
  * @since 2.0.0
  */
 
-if (!defined('WP_UNINSTALL_PLUGIN')) {
-
+if ( ! defined('WP_UNINSTALL_PLUGIN')) {
 	exit;
-
 } // end if;
 
 global $wpdb;
@@ -30,7 +28,6 @@ $wu_settings_uninstall_wipe_tables = isset($wu_settings['uninstall_wipe_tables']
  * Let's do it.
  */
 if ($wu_settings_uninstall_wipe_tables) {
-
 	$wu_tables = array(
 		'customers',
 		'customermeta',
@@ -46,13 +43,12 @@ if ($wu_settings_uninstall_wipe_tables) {
 		'posts',
 		'productmeta',
 		'products',
-		'webhooks'
+		'webhooks',
 	);
 
 	$wu_prefix_table = "{$wpdb->prefix}wu_";
 
 	foreach ($wu_tables as $wu_table) {
-
 		$wu_table_name = $wu_prefix_table . $wu_table;
 
 		$wu_table_version = "wpdb_wu_{$wu_table}_version";
@@ -60,7 +56,6 @@ if ($wu_settings_uninstall_wipe_tables) {
 		$wpdb->query("DROP TABLE IF EXISTS $wu_table_name"); // phpcs:ignore
 
 		delete_network_option(null, $wu_table_version);
-
 	} // end foreach;
 
 	/*
@@ -72,5 +67,4 @@ if ($wu_settings_uninstall_wipe_tables) {
 	delete_network_option(null, 'wu_default_email_template');
 	delete_network_option(null, 'wu_default_system_emails_created');
 	delete_network_option(null, 'wu_default_invoice_template');
-
 } // end if;

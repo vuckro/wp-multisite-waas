@@ -7,69 +7,69 @@
 ?>
 <div class="wu-styling">
 
-  <ul class="md:wu-flex wu-my-0 wu-mx-0">
+	<ul class="md:wu-flex wu-my-0 wu-mx-0">
 
-    <li class="wu-p-2 wu-w-full md:wu-w-full wu-relative">
+	<li class="wu-p-2 wu-w-full md:wu-w-full wu-relative">
 
-      <div>
+		<div>
 
-        <strong class="wu-text-gray-800 wu-text-2xl md:wu-text-xl">
-          <?php echo $new_accounts; ?>
-        </strong>
+		<strong class="wu-text-gray-800 wu-text-2xl md:wu-text-xl">
+			<?php echo $new_accounts; ?>
+		</strong>
 
-      </div>
+		</div>
 
-      <div class="wu-text-sm wu-text-gray-600">
-        <span class="wu-block"><?php _e('New Memberships', 'wp-ultimo'); ?></span>
-      </div>
+		<div class="wu-text-sm wu-text-gray-600">
+		<span class="wu-block"><?php _e('New Memberships', 'wp-ultimo'); ?></span>
+		</div>
 
-    </li>
+	</li>
 
-  </ul>
+	</ul>
 
-  <div class="wu--mx-3 wu--mb-3 wu-mt-2">
+	<div class="wu--mx-3 wu--mb-3 wu-mt-2">
 
 
-  <table class="wp-list-table widefat fixed striped wu-border-t-1 wu-border-l-0 wu-border-r-0">
+	<table class="wp-list-table widefat fixed striped wu-border-t-1 wu-border-l-0 wu-border-r-0">
 
-      <thead>
-        <tr>
-          <th><?php _e('Product Name', 'wp-ultimo'); ?></th>
-          <th class="wu-text-right"><?php _e('New Memberships', 'wp-ultimo'); ?></th>
-        </tr>
-      </thead>
+		<thead>
+		<tr>
+			<th><?php _e('Product Name', 'wp-ultimo'); ?></th>
+			<th class="wu-text-right"><?php _e('New Memberships', 'wp-ultimo'); ?></th>
+		</tr>
+		</thead>
 
-      <tbody>
+		<tbody>
 
-        <?php if ($products) : ?>
+		<?php if ($products) : ?>
 
-          <?php foreach ($products as $product) : ?>
+			<?php foreach ($products as $product) : ?>
 
-            <tr>
-              <td>
-                <?php echo $product->name; ?>
-              </td>
-              <td class="wu-text-right">
-                <?php echo $product->count; ?>
-              </td>
-            </tr>
+			<tr>
+				<td>
+				<?php echo $product->name; ?>
+				</td>
+				<td class="wu-text-right">
+				<?php echo $product->count; ?>
+				</td>
+			</tr>
 
-          <?php endforeach; ?>
+			<?php endforeach; ?>
 
-        <?php else : ?>
+		<?php else : ?>
 
-            <tr>
-              <td colspan="2">
-                <?php _e('No Products found.', 'wp-ultimo'); ?>
-              </td>
-            </tr>
+			<tr>
+				<td colspan="2">
+				<?php _e('No Products found.', 'wp-ultimo'); ?>
+				</td>
+			</tr>
 
-        <?php endif; ?>
+		<?php endif; ?>
 
-      </tbody>
+		</tbody>
 
-  </table>
+	</table>
 
-  </div>
+	</div>
 
 </div>

@@ -55,12 +55,9 @@ class Site_Maintenance_Element extends Base_Element {
 	public function init() {
 
 		if (wu_get_setting('maintenance_mode')) {
-
 			parent::init();
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * The icon of the UI element.
@@ -73,14 +70,11 @@ class Site_Maintenance_Element extends Base_Element {
 	public function get_icon($context = 'block') {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-lock-user';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -95,8 +89,7 @@ class Site_Maintenance_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Site Maintenance', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -112,8 +105,7 @@ class Site_Maintenance_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds the toggle control to turn maintenance mode on.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -158,8 +150,7 @@ class Site_Maintenance_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -186,8 +177,7 @@ class Site_Maintenance_Element extends Base_Element {
 			'Login',
 			'Reset Password',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -209,8 +199,7 @@ class Site_Maintenance_Element extends Base_Element {
 			'title' => __('Toggle Maintenance Mode', 'wp-ultimo'),
 			'desc'  => __('Put your site on maintenance mode. When activated, the front-end will only be accessible to logged users.', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -222,15 +211,12 @@ class Site_Maintenance_Element extends Base_Element {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
-		if (!$this->site || !$this->site->is_customer_allowed()) {
-
+		if ( ! $this->site || ! $this->site->is_customer_allowed()) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
-
-	} // end setup;
+		}
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -241,8 +227,7 @@ class Site_Maintenance_Element extends Base_Element {
 	public function setup_preview() {
 
 		$this->site = wu_mock_site();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * Registers scripts and styles necessary to render this.
@@ -254,14 +239,17 @@ class Site_Maintenance_Element extends Base_Element {
 
 		wp_register_script('wu-site-maintenance', wu_get_asset('site-maintenance.js', 'js'), array('jquery', 'wu-functions'), wu_get_version());
 
-		wp_localize_script('wu-site-maintenance', 'wu_site_maintenance', array(
-			'nonce'   => wp_create_nonce('wu_toggle_maintenance_mode'),
-			'ajaxurl' => wu_ajax_url(),
-		));
+		wp_localize_script(
+			'wu-site-maintenance',
+			'wu_site_maintenance',
+			array(
+				'nonce'   => wp_create_nonce('wu_toggle_maintenance_mode'),
+				'ajaxurl' => wu_ajax_url(),
+			)
+		);
 
 		wp_enqueue_script('wu-site-maintenance');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -296,17 +284,19 @@ class Site_Maintenance_Element extends Base_Element {
 		 *
 		 * @since 2.0.0
 		 */
-		$form = new \WP_Ultimo\UI\Form('maintenance-mode', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-widget-list wu-striped wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-list-none wu-p-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'maintenance-mode',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-widget-list wu-striped wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-list-none wu-p-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(),
+			)
+		);
 
 		$atts['form'] = $form;
 
 		return wu_get_template_contents('dashboard-widgets/site-maintenance', $atts);
-
-	} // end output;
-
-} // end class Site_Maintenance_Element;
+	}
+}

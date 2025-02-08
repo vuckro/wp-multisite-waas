@@ -9,10 +9,10 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Membership;
-use \WP_Ultimo\Models\Payment;
-use \WP_Ultimo\Database\Payments\Payment_Status;
-use \WP_Ultimo\Checkout\Cart;
+use WP_Ultimo\Models\Membership;
+use WP_Ultimo\Models\Payment;
+use WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Checkout\Cart;
 
 /**
  * Returns a membership.
@@ -25,8 +25,7 @@ use \WP_Ultimo\Checkout\Cart;
 function wu_get_membership($membership_id) {
 
 	return Membership::get_by_id($membership_id);
-
-} // end wu_get_membership;
+}
 /**
  * Returns a single membership defined by a particular column and value.
  *
@@ -39,8 +38,7 @@ function wu_get_membership($membership_id) {
 function wu_get_membership_by($column, $value) {
 
 	return Membership::get_by($column, $value);
-
-} // end wu_get_membership_by;
+}
 /**
  * Gets a membership based on the hash.
  *
@@ -52,8 +50,7 @@ function wu_get_membership_by($column, $value) {
 function wu_get_membership_by_hash($hash) {
 
 	return Membership::get_by_hash($hash);
-
-} // end wu_get_membership_by_hash;
+}
 
 /**
  * Queries memberships.
@@ -65,26 +62,23 @@ function wu_get_membership_by_hash($hash) {
  */
 function wu_get_memberships($query = array()) {
 
-	if (!empty($query['search'])) {
+	if ( ! empty($query['search'])) {
+		$customer_ids = wu_get_customers(
+			array(
+				'search' => $query['search'],
+				'fields' => 'ids',
+			)
+		);
 
-		$customer_ids = wu_get_customers(array(
-			'search' => $query['search'],
-			'fields' => 'ids',
-		));
-
-		if (!empty($customer_ids)) {
-
+		if ( ! empty($customer_ids)) {
 			$query['customer_id__in'] = $customer_ids;
 
 			unset($query['search']);
-
-		} // end if;
-
-	} // end if;
+		}
+	}
 
 	return Membership::query($query);
-
-} // end wu_get_memberships;
+}
 /**
  * Creates a new membership.
  *
@@ -98,36 +92,39 @@ function wu_create_membership($membership_data) {
 	* Why do we use shortcode atts here?
 	* Shortcode atts clean the array from not-allowed keys, so we don't need to worry much.
 	*/
-	$membership_data = shortcode_atts(array(
-		'customer_id'             => false,
-		'user_id'                 => false,
-		'migrated_from_id'        => 0,
-		'plan_id'                 => false,
-		'addon_products'          => false,
-		'currency'                => false,
-		'initial_amount'          => false,
-		'recurring'               => false,
-		'duration'                => 1,
-		'duration_unit'           => 'month',
-		'amount'                  => false,
-		'auto_renew'              => false,
-		'times_billed'            => 0,
-		'billing_cycles'          => 0,
-		'gateway_customer_id'     => false,
-		'gateway_subscription_id' => false,
-		'gateway'                 => '',
-		'signup_method'           => '',
-		'upgraded_from'           => false,
-		'disabled'                => false,
-		'status'                  => 'pending',
-		'date_created'            => wu_get_current_time('mysql', true),
-		'date_activate'           => null,
-		'date_trial_end'          => null,
-		'date_renewed'            => null,
-		'date_modified'           => wu_get_current_time('mysql', true),
-		'date_expiration'         => wu_get_current_time('mysql', true),
-		'skip_validation'         => false,
-	), $membership_data);
+	$membership_data = shortcode_atts(
+		array(
+			'customer_id'             => false,
+			'user_id'                 => false,
+			'migrated_from_id'        => 0,
+			'plan_id'                 => false,
+			'addon_products'          => false,
+			'currency'                => false,
+			'initial_amount'          => false,
+			'recurring'               => false,
+			'duration'                => 1,
+			'duration_unit'           => 'month',
+			'amount'                  => false,
+			'auto_renew'              => false,
+			'times_billed'            => 0,
+			'billing_cycles'          => 0,
+			'gateway_customer_id'     => false,
+			'gateway_subscription_id' => false,
+			'gateway'                 => '',
+			'signup_method'           => '',
+			'upgraded_from'           => false,
+			'disabled'                => false,
+			'status'                  => 'pending',
+			'date_created'            => wu_get_current_time('mysql', true),
+			'date_activate'           => null,
+			'date_trial_end'          => null,
+			'date_renewed'            => null,
+			'date_modified'           => wu_get_current_time('mysql', true),
+			'date_expiration'         => wu_get_current_time('mysql', true),
+			'skip_validation'         => false,
+		),
+		$membership_data
+	);
 
 	$membership_data['migrated_from_id'] = is_numeric($membership_data['migrated_from_id']) ? $membership_data['migrated_from_id'] : 0;
 
@@ -136,8 +133,7 @@ function wu_create_membership($membership_data) {
 	$saved = $membership->save();
 
 	return is_wp_error($saved) ? $saved : $membership;
-
-} // end wu_create_membership;
+}
 
 /**
  * Get all customers with a specific membership using the product_id as reference.
@@ -168,8 +164,7 @@ function wu_get_membership_customers($product_id) {
 	is_multisite() && restore_current_blog();
 
 	return $results;
-
-} // end wu_get_membership_customers;
+}
 /**
  * Returns a membership based on the customer gateway ID.
  *
@@ -200,17 +195,14 @@ function wu_get_membership_by_customer_gateway_id($customer_gateway_id, $allowed
 		'order'                   => 'DESC',
 	);
 
-	if (!empty($amount)) {
-
+	if ( ! empty($amount)) {
 		$search_data['initial_amount'] = $amount;
-
-	} // end if;
+	}
 
 	$memberships = wu_get_memberships($search_data);
 
-	return !empty($memberships) ? current($memberships) : false;
-
-} // end wu_get_membership_by_customer_gateway_id;
+	return ! empty($memberships) ? current($memberships) : false;
+}
 
 /**
  * Returns the price for a product in a specific membership.
@@ -229,56 +221,52 @@ function wu_get_membership_product_price($membership, $product_id, $quantity, $o
 	$address = $membership->get_billing_address();
 
 	// Create a Cart with this product
-	$cart = new Cart(array(
-		'duration'      => $membership->get_duration(),
-		'duration_unit' => $membership->get_duration_unit(),
-		'country'       => $address->billing_country,
-		'state'         => $address->billing_state,
-		'city'          => $address->billing_city,
-	));
+	$cart = new Cart(
+		array(
+			'duration'      => $membership->get_duration(),
+			'duration_unit' => $membership->get_duration_unit(),
+			'country'       => $address->billing_country,
+			'state'         => $address->billing_state,
+			'city'          => $address->billing_city,
+		)
+	);
 
 	$discount_code = $membership->get_discount_code();
 
 	if ($discount_code) {
-
 		$cart->add_discount_code($discount_code);
-
-	} // end if;
+	}
 
 	$added = $cart->add_product($product_id, $quantity);
 
-	if (!$added) {
-
+	if ( ! $added) {
 		return $cart->errors;
+	}
 
-	} // end if;
-
-	$payment_data = array_merge($cart->to_payment_data(), array(
-		'customer_id'   => $membership->get_customer_id(),
-		'membership_id' => $membership->get_id(),
-		'gateway'       => $membership->get_gateway(),
-	));
+	$payment_data = array_merge(
+		$cart->to_payment_data(),
+		array(
+			'customer_id'   => $membership->get_customer_id(),
+			'membership_id' => $membership->get_id(),
+			'gateway'       => $membership->get_gateway(),
+		)
+	);
 
 	// create a temporary payment to see the price.
 	$temp_payment = wu_create_payment($payment_data, false);
 
 	if (is_wp_error($temp_payment)) {
-
 		return $temp_payment;
-
-	} // end if;
+	}
 
 	if ($only_recurring) {
-
 		$temp_payment->remove_non_recurring_items();
-
-	} // end if;
+	}
 
 	$temp_payment->recalculate_totals();
 
 	return $temp_payment->get_total();
-
-} // end wu_get_membership_product_price;
+}
 /**
  * Creates a new payment for a membership.
  *
@@ -298,63 +286,53 @@ function wu_membership_create_new_payment($membership, $should_cancel_pending_pa
 	 * pending payment, do that.
 	 */
 	if ($should_cancel_pending_payments) {
-
 		$pending_payment = $membership->get_last_pending_payment();
 
 		/*
 		 * Change pending payment to cancelled.
 		 */
 		if ($pending_payment) {
-
 			$pending_payment->set_status(Payment_Status::CANCELLED);
 			$pending_payment->save();
-
-		} // end if;
-
-	} // end if;
+		}
+	}
 
 	$cart = wu_get_membership_new_cart($membership);
 
-	$payment_data = array_merge($cart->to_payment_data(), array(
-		'customer_id'   => $membership->get_customer_id(),
-		'membership_id' => $membership->get_id(),
-		'gateway'       => $membership->get_gateway(),
-	));
+	$payment_data = array_merge(
+		$cart->to_payment_data(),
+		array(
+			'customer_id'   => $membership->get_customer_id(),
+			'membership_id' => $membership->get_id(),
+			'gateway'       => $membership->get_gateway(),
+		)
+	);
 
 	// We will save the payment after we recalculate the totals.
 	$new_payment = wu_create_payment($payment_data, false);
 
 	if (is_wp_error($new_payment)) {
-
 		return $new_payment;
-
-	} // end if;
+	}
 
 	if ($remove_non_recurring) {
-
 		$new_payment->remove_non_recurring_items();
-
-	} // end if;
+	}
 
 	$new_payment->recalculate_totals();
 
-	if (!$save) {
-
+	if ( ! $save) {
 		return $new_payment;
-
-	} // end if;
+	}
 
 	$status = $new_payment->save();
 
 	if (is_wp_error($status)) {
-
 		return $status;
-
-	} // end if;
+	}
 
 	return $new_payment;
-
-} // end wu_membership_create_new_payment;
+}
 
 /**
  * Creates a full cart based on a membership.
@@ -368,32 +346,29 @@ function wu_get_membership_new_cart($membership) {
 
 	$address = $membership->get_billing_address();
 
-	$cart = new Cart(array(
-		'duration'      => $membership->get_duration(),
-		'duration_unit' => $membership->get_duration_unit(),
-		'country'       => $address->billing_country,
-		'state'         => $address->billing_state,
-		'city'          => $address->billing_city,
-	));
+	$cart = new Cart(
+		array(
+			'duration'      => $membership->get_duration(),
+			'duration_unit' => $membership->get_duration_unit(),
+			'country'       => $address->billing_country,
+			'state'         => $address->billing_state,
+			'city'          => $address->billing_city,
+		)
+	);
 
 	$discount_code = $membership->get_discount_code();
 
 	if ($discount_code) {
-
 		$cart->add_discount_code($discount_code);
-
-	} // end if;
+	}
 
 	foreach ($membership->get_all_products() as $key => $product) {
-
 		$cart->add_product($product['product']->get_id(), $product['quantity']);
-
-	} // end foreach;
+	}
 
 	$difference = $membership->get_amount() - $cart->get_recurring_total();
 
 	if (round(abs($difference), wu_currency_decimal_filter()) > 0) {
-
 		$type_translate = $difference < 0 ? __('credit', 'wp-ultimo') : __('debit', 'wp-ultimo');
 
 		$line_item_params = array(
@@ -414,11 +389,9 @@ function wu_get_membership_new_cart($membership) {
 		$adjustment_line_item = new \WP_Ultimo\Checkout\Line_Item($line_item_params);
 
 		$cart->add_line_item($adjustment_line_item);
-
-	} // end if;
+	}
 
 	if ($membership->get_initial_amount() !== $cart->get_total()) {
-
 		$t = $membership->get_initial_amount();
 		$y = $cart->get_total();
 
@@ -441,15 +414,13 @@ function wu_get_membership_new_cart($membership) {
 		$adjustment_line_item = new \WP_Ultimo\Checkout\Line_Item($line_item_params);
 
 		$cart->add_line_item($adjustment_line_item);
-
-	} // end if;
+	}
 
 	$y = $cart->get_total();
 	$t = $cart->get_recurring_total();
 
 	return $cart;
-
-} // end wu_get_membership_new_cart;
+}
 
 /**
  * Generate the modal link to search for an upgrade path.
@@ -468,36 +439,38 @@ function wu_get_membership_update_url($membership) {
 	$membership_hash = $membership->get_hash();
 
 	if ($url) {
+		return add_query_arg(
+			array(
+				'membership' => $membership_hash,
+			),
+			$url
+		);
+	}
 
-		return add_query_arg(array(
-			'membership' => $membership_hash,
-		), $url);
-
-	} // end if;
-
-	if (!is_main_site()) {
-
+	if ( ! is_main_site()) {
 		return admin_url('admin.php?page=wu-checkout&membership=' . $membership_hash);
-
-	} // end if;
+	}
 
 	$sites = $membership->get_sites(false);
 
 	if (count($sites) > 0) {
-
-		return add_query_arg(array(
-			'page'       => 'wu-checkout',
-			'membership' => $membership_hash,
-		), get_admin_url($sites[0]->get_id()));
-
-	} // end if;
+		return add_query_arg(
+			array(
+				'page'       => 'wu-checkout',
+				'membership' => $membership_hash,
+			),
+			get_admin_url($sites[0]->get_id())
+		);
+	}
 
 	// In last case we use the default register form
 	$url = $checkout_pages->get_page_url('register');
 
-	return add_query_arg(array(
-		'membership' => $membership_hash,
-		'wu_form'    => 'wu-checkout',
-	), $url);
-
-} // end wu_get_membership_update_url;
+	return add_query_arg(
+		array(
+			'membership' => $membership_hash,
+			'wu_form'    => 'wu-checkout',
+		),
+		$url
+	);
+}

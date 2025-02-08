@@ -63,14 +63,11 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	public function get_errors() {
 
 		if ($this->errors === null) {
-
-			$this->errors = new \WP_Error;
-
-		} // end if;
+			$this->errors = new \WP_Error();
+		}
 
 		return $this->errors;
-
-	} // end get_errors;
+	}
 
 	/**
 	 * Register additional hooks to page load such as the action links and the save processing.
@@ -93,22 +90,16 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$this->add_lock_notices();
 
 		if (wu_request('submit_button') === 'delete') {
-
 			$this->process_delete();
-
 		} elseif (wu_request('remove-lock')) {
-
 			$this->remove_lock();
-
 		} else {
 			/*
 			 * Process save, if necessary
 			 */
 			$this->process_save();
-
-		} // end if;
-
-	} // end page_loaded;
+		}
+	}
 
 	/**
 	 * Add some other necessary hooks.
@@ -120,8 +111,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		parent::hooks();
 
 		add_filter('removable_query_args', array($this, 'removable_query_args'));
-
-	} // end hooks;
+	}
 
 	/**
 	 * Adds the wu-new-model to the list of removable query args of WordPress.
@@ -136,8 +126,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$removable_query_args[] = 'wu-new-model';
 
 		return $removable_query_args;
-
-	} // end removable_query_args;
+	}
 
 	/**
 	 * Displays lock notices, if necessary.
@@ -157,18 +146,18 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			$actions = array(
 				'preview' => array(
 					'title' => __('Unlock', 'wp-ultimo'),
-					'url'   => add_query_arg(array(
-						'remove-lock'           => 1,
-						'unlock_wpultimo_nonce' => wp_create_nonce(sprintf('unlocking_%s', $this->object_id)),
-					)),
+					'url'   => add_query_arg(
+						array(
+							'remove-lock'           => 1,
+							'unlock_wpultimo_nonce' => wp_create_nonce(sprintf('unlocking_%s', $this->object_id)),
+						)
+					),
 				),
 			);
 
 			WP_Ultimo()->notices->add($message, 'warning', 'network-admin', false, $actions);
-
-		} // end if;
-
-	} // end add_lock_notices;
+		}
+	}
 
 	/**
 	 * Remove the lock from the object.
@@ -181,7 +170,6 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$unlock_tag = "unlocking_{$this->object_id}";
 
 		if (isset($_REQUEST['remove-lock'])) {
-
 			check_admin_referer($unlock_tag, 'unlock_wpultimo_nonce');
 
 			/**
@@ -196,16 +184,18 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			 */
 			$this->get_object()->unlock();
 
-			wp_redirect(remove_query_arg(array(
-				'remove-lock',
-				'unlock_wpultimo_nonce',
-			)));
+			wp_redirect(
+				remove_query_arg(
+					array(
+						'remove-lock',
+						'unlock_wpultimo_nonce',
+					)
+				)
+			);
 
 			exit;
-
-		} // end if;
-
-	} // end remove_lock;
+		}
+	}
 
 	/**
 	 * Handles saves, after verifying nonces and such. Should not be rewritten by child classes.
@@ -217,8 +207,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 		$saving_tag = "saving_{$this->object_id}";
 
-		if (isset($_REQUEST[$saving_tag])) {
-
+		if (isset($_REQUEST[ $saving_tag ])) {
 			check_admin_referer($saving_tag, '_wpultimo_nonce');
 
 			/**
@@ -234,14 +223,10 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			$status = $this->handle_save();
 
 			if ($status) {
-
 				exit;
-
-			} // end if;
-
-		} // end if;
-
-	} // end process_save;
+			}
+		}
+	}
 
 	/**
 	 * Handles delete, after verifying nonces and such. Should not be rewritten by child classes.
@@ -253,8 +238,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 		$deleting_tag = "deleting_{$this->object_id}";
 
-		if (isset($_REQUEST[$deleting_tag])) {
-
+		if (isset($_REQUEST[ $deleting_tag ])) {
 			check_admin_referer($deleting_tag, 'delete_wpultimo_nonce');
 
 			/**
@@ -268,10 +252,8 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			 * Calls the deleting function
 			 */
 			$this->handle_delete();
-
-		} // end if;
-
-	} // end process_delete;
+		}
+	}
 
 	/**
 	 * Returns the labels to be used on the admin page.
@@ -294,8 +276,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		);
 
 		return apply_filters('wu_edit_admin_page_labels', $default_labels);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Allow child classes to register scripts and styles that can be loaded on the output function, for example.
@@ -322,8 +303,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		wp_enqueue_style('wp-color-picker');
 
 		wp_enqueue_script('wu-selectizer');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Registers widgets to the edit page.
@@ -339,18 +319,18 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 		$screen = get_current_screen();
 
-		$this->add_info_widget('info', array(
-			'title'    => __('Timestamps', 'wp-ultimo'),
-			'position' => 'side-bottom',
-		));
+		$this->add_info_widget(
+			'info',
+			array(
+				'title'    => __('Timestamps', 'wp-ultimo'),
+				'position' => 'side-bottom',
+			)
+		);
 
 		if ($this->edit) {
-
 			$this->add_delete_widget('delete', array());
-
-		} // end if;
-
-	} // end register_widgets;
+		}
+	}
 
 	/**
 	 * Adds a basic widget with info (and fields) to be shown.
@@ -366,14 +346,12 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$created_key = 'date_created';
 
 		if (method_exists($this->get_object(), 'get_date_registered')) {
-
 			$created_key = 'date_registered';
-
-		} // end if;
+		}
 
 		$created_value = call_user_func(array($this->get_object(), "get_$created_key"));
 
-		$atts['fields'][$created_key] = array(
+		$atts['fields'][ $created_key ] = array(
 			'title'         => __('Created at', 'wp-ultimo'),
 			'type'          => 'text-display',
 			'date'          => true,
@@ -390,7 +368,6 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$show_modified = wu_get_isset($atts, 'modified', true);
 
 		if ($this->edit && $show_modified === true) {
-
 			$atts['fields']['date_modified'] = array(
 				'title'         => __('Last Modified at', 'wp-ultimo'),
 				'type'          => 'text-display',
@@ -404,12 +381,10 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 					'data-allow-time' => 'true',
 				),
 			);
-
-		} // end if;
+		}
 
 		$this->add_fields_widget($id, $atts);
-
-	} // end add_info_widget;
+	}
 
 	/**
 	 * Adds a basic widget to display list tables.
@@ -422,50 +397,58 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 */
 	protected function add_list_table_widget($id, $atts = array()) {
 
-		$atts = wp_parse_args($atts, array(
-			'widget_id'    => $id,
-			'before'       => '',
-			'after'        => '',
-			'title'        => __('List Table', 'wp-ultimo'),
-			'position'     => 'advanced',
-			'screen'       => get_current_screen(),
-			'page'         => $this,
-			'labels'       => $this->get_labels(),
-			'object'       => $this->get_object(),
-			'edit'         => true,
-			'table'        => false,
-			'query_filter' => false,
-		));
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'widget_id'    => $id,
+				'before'       => '',
+				'after'        => '',
+				'title'        => __('List Table', 'wp-ultimo'),
+				'position'     => 'advanced',
+				'screen'       => get_current_screen(),
+				'page'         => $this,
+				'labels'       => $this->get_labels(),
+				'object'       => $this->get_object(),
+				'edit'         => true,
+				'table'        => false,
+				'query_filter' => false,
+			)
+		);
 
 		$atts['table']->set_context('widget');
 
 		$table_name = $atts['table']->get_table_id();
 
 		if (is_callable($atts['query_filter'])) {
-
 			add_filter("wu_{$table_name}_get_items", $atts['query_filter']);
+		}
 
-		} // end if;
+		add_filter(
+			'wu_events_list_table_get_columns',
+			function ($columns) {
 
-		add_filter('wu_events_list_table_get_columns', function($columns) {
+				unset($columns['object_type']);
 
-			unset($columns['object_type']);
+				unset($columns['code']);
 
-			unset($columns['code']);
+				return $columns;
+			}
+		);
 
-			return $columns;
+		add_meta_box(
+			"wp-ultimo-list-table-{$id}",
+			$atts['title'],
+			function () use ($atts) {
 
-		});
+				wp_enqueue_script('wu-ajax-list-table');
 
-		add_meta_box("wp-ultimo-list-table-{$id}", $atts['title'], function() use ($atts) {
-
-			wp_enqueue_script('wu-ajax-list-table');
-
-			wu_get_template('base/edit/widget-list-table', $atts);
-
-		}, $atts['screen']->id, $atts['position'], 'default');
-
-	} // end add_list_table_widget;
+				wu_get_template('base/edit/widget-list-table', $atts);
+			},
+			$atts['screen']->id,
+			$atts['position'],
+			'default'
+		);
+	}
 
 	/**
 	 * Adds field widgets to edit pages with the same Form/Field APIs used elsewhere.
@@ -479,52 +462,62 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 */
 	protected function add_fields_widget($id, $atts = array()) {
 
-		$atts = wp_parse_args($atts, array(
-			'widget_id'             => $id,
-			'before'                => '',
-			'after'                 => '',
-			'title'                 => __('Fields', 'wp-ultimo'),
-			'position'              => 'side',
-			'screen'                => get_current_screen(),
-			'fields'                => array(),
-			'html_attr'             => array(),
-			'classes'               => '',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-		));
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'widget_id'             => $id,
+				'before'                => '',
+				'after'                 => '',
+				'title'                 => __('Fields', 'wp-ultimo'),
+				'position'              => 'side',
+				'screen'                => get_current_screen(),
+				'fields'                => array(),
+				'html_attr'             => array(),
+				'classes'               => '',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+			)
+		);
 
-		add_meta_box("wp-ultimo-{$id}-widget", $atts['title'], function() use ($atts) {
+		add_meta_box(
+			"wp-ultimo-{$id}-widget",
+			$atts['title'],
+			function () use ($atts) {
 
-			if (wu_get_isset($atts['html_attr'], 'data-wu-app')) {
+				if (wu_get_isset($atts['html_attr'], 'data-wu-app')) {
+					$atts['fields']['loading'] = array(
+						'type'              => 'note',
+						'desc'              => sprintf('<div class="wu-block wu-text-center wu-blinking-animation wu-text-gray-600 wu-my-1 wu-text-2xs wu-uppercase wu-font-semibold">%s</div>', __('Loading...', 'wp-ultimo')),
+						'wrapper_html_attr' => array(
+							'v-if' => 0,
+						),
+					);
+				}
 
-				$atts['fields']['loading'] = array(
-					'type'              => 'note',
-					'desc'              => sprintf('<div class="wu-block wu-text-center wu-blinking-animation wu-text-gray-600 wu-my-1 wu-text-2xs wu-uppercase wu-font-semibold">%s</div>', __('Loading...', 'wp-ultimo')),
-					'wrapper_html_attr' => array(
-						'v-if' => 0,
-					),
+				/**
+				 * Instantiate the form for the order details.
+				 *
+				 * @since 2.0.0
+				 */
+				$form = new \WP_Ultimo\UI\Form(
+					$atts['widget_id'],
+					$atts['fields'],
+					array(
+						'views'                 => 'admin-pages/fields',
+						'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3 ' . $atts['classes'],
+						'field_wrapper_classes' => $atts['field_wrapper_classes'],
+						'html_attr'             => $atts['html_attr'],
+						'before'                => $atts['before'],
+						'after'                 => $atts['after'],
+					)
 				);
 
-			} // end if;
-
-			/**
-			 * Instantiate the form for the order details.
-			 *
-			 * @since 2.0.0
-			 */
-			$form = new \WP_Ultimo\UI\Form($atts['widget_id'], $atts['fields'], array(
-				'views'                 => 'admin-pages/fields',
-				'classes'               => 'wu-widget-list wu-striped wu-m-0 wu--mt-2 wu--mb-3 wu--mx-3 ' . $atts['classes'],
-				'field_wrapper_classes' => $atts['field_wrapper_classes'],
-				'html_attr'             => $atts['html_attr'],
-				'before'                => $atts['before'],
-				'after'                 => $atts['after'],
-			));
-
-			$form->render();
-
-		}, $atts['screen']->id, $atts['position'], 'default');
-
-	} // end add_fields_widget;
+				$form->render();
+			},
+			$atts['screen']->id,
+			$atts['position'],
+			'default'
+		);
+	}
 
 	/**
 	 * Adds field widgets to edit pages with the same Form/Field APIs used elsewhere.
@@ -538,16 +531,19 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 */
 	protected function add_tabs_widget($id, $atts = array()) {
 
-		$atts = wp_parse_args($atts, array(
-			'widget_id' => $id,
-			'before'    => '',
-			'after'     => '',
-			'title'     => __('Tabs', 'wp-ultimo'),
-			'position'  => 'advanced',
-			'screen'    => get_current_screen(),
-			'sections'  => array(),
-			'html_attr' => array(),
-		));
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'widget_id' => $id,
+				'before'    => '',
+				'after'     => '',
+				'title'     => __('Tabs', 'wp-ultimo'),
+				'position'  => 'advanced',
+				'screen'    => get_current_screen(),
+				'sections'  => array(),
+				'html_attr' => array(),
+			)
+		);
 
 		$current_section = wu_request($id, current(array_keys($atts['sections'])));
 
@@ -558,71 +554,87 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 			'display_all' => false,
 		);
 
-		add_meta_box("wp-ultimo-{$id}-widget", $atts['title'], function() use ($atts) {
+		add_meta_box(
+			"wp-ultimo-{$id}-widget",
+			$atts['title'],
+			function () use ($atts) {
 
-			foreach ($atts['sections'] as $section_id => &$section) {
+				foreach ($atts['sections'] as $section_id => &$section) {
+					$section = wp_parse_args(
+						$section,
+						array(
+							'form'                  => '',
+							'before'                => '',
+							'after'                 => '',
+							'v-show'                => '1',
+							'fields'                => array(),
+							'html_attr'             => array(),
+							'state'                 => array(),
+							'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+						)
+					);
 
-				$section = wp_parse_args($section, array(
-					'form'                  => '',
-					'before'                => '',
-					'after'                 => '',
-					'v-show'                => '1',
-					'fields'                => array(),
-					'html_attr'             => array(),
-					'state'                 => array(),
-					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-				));
+					/**
+					 * Move state ont step up
+					 */
+					$atts['html_attr']['data-state'] = array_merge($atts['html_attr']['data-state'], $section['state']);
 
-				/**
-				 * Move state ont step up
-				 */
-				$atts['html_attr']['data-state'] = array_merge($atts['html_attr']['data-state'], $section['state']);
+					$section['html_attr'] = array(
+						'v-cloak' => 1,
+						'v-show'  => "(section == '{$section_id}' || display_all) && " . $section['v-show'],
+					);
 
-				$section['html_attr'] = array(
-					'v-cloak' => 1,
-					'v-show'  => "(section == '{$section_id}' || display_all) && " . $section['v-show'],
-				);
-
-				/**
-				 * Adds a header field
-				 */
-				$section['fields'] = array_merge(array(
-					$section_id => array(
-						'title'             => $section['title'],
-						'desc'              => $section['desc'],
-						'type'              => 'header',
-						'wrapper_html_attr' => array(
-							'v-show' => 'display_all',
+					/**
+					 * Adds a header field
+					 */
+					$section['fields'] = array_merge(
+						array(
+							$section_id => array(
+								'title'             => $section['title'],
+								'desc'              => $section['desc'],
+								'type'              => 'header',
+								'wrapper_html_attr' => array(
+									'v-show' => 'display_all',
+								),
+							),
 						),
+						$section['fields']
+					);
+
+					/**
+					 * Instantiate the form for the order details.
+					 *
+					 * @since 2.0.0
+					 */
+					$section['form'] = new \WP_Ultimo\UI\Form(
+						$section_id,
+						$section['fields'],
+						array(
+							'views'                 => 'admin-pages/fields',
+							'classes'               => 'wu-widget-list wu-striped wu-m-0 wu-border-solid wu-border-gray-300 wu-border-0 wu-border-b',
+							'field_wrapper_classes' => $section['field_wrapper_classes'],
+							'html_attr'             => $section['html_attr'],
+							'before'                => $section['before'],
+							'after'                 => $section['after'],
+						)
+					);
+				}
+
+				wu_get_template(
+					'base/edit/widget-tabs',
+					array(
+						'sections'  => $atts['sections'],
+						'html_attr' => $atts['html_attr'],
+						'before'    => $atts['before'],
+						'after'     => $atts['after'],
 					)
-				), $section['fields']);
-
-				/**
-				 * Instantiate the form for the order details.
-				 *
-				 * @since 2.0.0
-				 */
-				$section['form'] = new \WP_Ultimo\UI\Form($section_id, $section['fields'], array(
-					'views'                 => 'admin-pages/fields',
-					'classes'               => 'wu-widget-list wu-striped wu-m-0 wu-border-solid wu-border-gray-300 wu-border-0 wu-border-b',
-					'field_wrapper_classes' => $section['field_wrapper_classes'],
-					'html_attr'             => $section['html_attr'],
-					'before'                => $section['before'],
-					'after'                 => $section['after'],
-				));
-
-			} // end foreach;
-
-			wu_get_template('base/edit/widget-tabs', array(
-				'sections'  => $atts['sections'],
-				'html_attr' => $atts['html_attr'],
-				'before'    => $atts['before'],
-				'after'     => $atts['after'],
-			));
-
-		}, $atts['screen']->id, $atts['position'], 'default');
-
-	} // end add_tabs_widget;
+				);
+			},
+			$atts['screen']->id,
+			$atts['position'],
+			'default'
+		);
+	}
 
 	/**
 	 * Adds a generic widget to the admin page.
@@ -635,19 +647,21 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 */
 	protected function add_widget($id, $atts = array()) {
 
-		$atts = wp_parse_args($atts, array(
-			'widget_id' => $id,
-			'before'    => '',
-			'after'     => '',
-			'title'     => __('Fields', 'wp-ultimo'),
-			'screen'    => get_current_screen(),
-			'position'  => 'side',
-			'display'   => '__return_empty_string',
-		));
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'widget_id' => $id,
+				'before'    => '',
+				'after'     => '',
+				'title'     => __('Fields', 'wp-ultimo'),
+				'screen'    => get_current_screen(),
+				'position'  => 'side',
+				'display'   => '__return_empty_string',
+			)
+		);
 
 		add_meta_box("wp-ultimo-{$id}-widget", $atts['title'], $atts['display'], $atts['screen']->id, $atts['position'], 'default');
-
-	} // end add_widget;
+	}
 
 	/**
 	 * Adds a basic save widget.
@@ -678,22 +692,17 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		);
 
 		if (isset($atts['html_attr']['data-wu-app'])) {
-
 			$atts['fields']['submit_save']['wrapper_html_attr']['v-cloak'] = 1;
-
-		} // end if;
+		}
 
 		if ($this->get_object() && $this->edit && $this->get_object()->is_locked()) {
-
 			$atts['fields']['submit_save']['title']                 = __('Locked', 'wp-ultimo');
 			$atts['fields']['submit_save']['value']                 = 'none';
 			$atts['fields']['submit_save']['html_attr']['disabled'] = 'disabled';
-
-		} // end if;
+		}
 
 		$this->add_fields_widget('save', $atts);
-
-	} // end add_save_widget;
+	}
 
 	/**
 	 * Adds a basic delete widget.
@@ -739,7 +748,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 					'delete_modal',
 					array(
 						'id'    => $this->get_object()->get_id(),
-						'model' => $this->get_object()->model
+						'model' => $this->get_object()->model,
 					)
 				),
 			),
@@ -750,8 +759,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$atts['fields']['delete'] = array_merge($default_delete_field_settings, $custom_delete_field_settings);
 
 		$this->add_fields_widget('delete', $atts);
-
-	}  // end add_delete_widget;
+	}
 
 	/**
 	 * Displays the contents of the edit page.
@@ -763,14 +771,16 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/edit', array(
-			'screen' => get_current_screen(),
-			'page'   => $this,
-			'labels' => $this->get_labels(),
-			'object' => $this->get_object(),
-		));
-
-	} // end output;
+		wu_get_template(
+			'base/edit',
+			array(
+				'screen' => get_current_screen(),
+				'page'   => $this,
+				'labels' => $this->get_labels(),
+				'object' => $this->get_object(),
+			)
+		);
+	}
 
 	/**
 	 * Wether or not this pages should have a title field.
@@ -781,8 +791,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	public function has_title() {
 
 		return false;
-
-	} // end has_title;
+	}
 
 	/**
 	 * Wether or not this pages should have an editor field.
@@ -793,8 +802,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	public function has_editor() {
 
 		return false;
-
-	} // end has_editor;
+	}
 
 	/**
 	 * Should return the object being edited, or false.
@@ -805,7 +813,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return \WP_Ultimo\Models\Base_Model
 	 */
-	abstract public function get_object(); // end get_object;
+	abstract public function get_object();
 
 	/**
 	 * Should implement the processes necessary to save the changes made to the object.
@@ -825,44 +833,36 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$object->attributes($_POST);
 
 		if (method_exists($object, 'handle_limitations')) {
-
 			$object->handle_limitations($_POST); // @phpstan-ignore-line
 
-		} // end if;
+		}
 
 		$save = $object->save();
 
 		if (is_wp_error($save)) {
-
 			$errors = implode('<br>', $save->get_error_messages());
 
 			WP_Ultimo()->notices->add($errors, 'error', 'network-admin');
 
 			return false;
-
 		} else {
-
 			$array_params = array(
 				'updated' => 1,
 			);
 
 			if ($this->edit === false) {
-
 				$array_params['id'] = $object->get_id();
 
 				$array_params['wu-new-model'] = true;
-
-			} // end if;
+			}
 
 			$url = add_query_arg($array_params);
 
 			wp_redirect($url);
 
 			return true;
-
-		} // end if;
-
-	} // end handle_save;
+		}
+	}
 
 	/**
 	 * Should implement the processes necessary to delete  the object.
@@ -877,13 +877,12 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$saved = $object->delete();
 
 		if (is_wp_error($saved)) {
-
 			$errors = implode('<br>', $saved->get_error_messages());
 
 			WP_Ultimo()->notices->add($errors, 'error', 'network-admin');
 
 			return;
-		} // end if;
+		}
 
 		$url = str_replace('_', '-', (string) $object->model);
 		$url = wu_network_admin_url("wp-ultimo-{$url}s");
@@ -891,7 +890,5 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		wp_redirect($url);
 
 		exit;
-
-	} // end handle_delete;
-
-} // end class Edit_Admin_Page;
+	}
+}

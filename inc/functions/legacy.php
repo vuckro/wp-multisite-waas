@@ -18,7 +18,7 @@ function WU_Signup() {
 
 	return \WP_Ultimo\Checkout\Legacy_Checkout::get_instance();
 
-} // end WU_Signup;
+}
 
 /**
  *
@@ -31,22 +31,22 @@ if (!function_exists('validate_blog_form')) {
 		$user = '';
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
-		} // end if;
+		}
 
 		return wpmu_validate_blog_signup($_POST['blogname'], $_POST['blog_title'], $user);
-	} // end validate_blog_form;
+	}
 
 
-} // end if;
+}
 
 if (!function_exists('validate_user_form')) {
 
 	function validate_user_form() {
 		return wpmu_validate_user_signup($_POST['user_name'], $_POST['user_email']);
-	} // end validate_user_form;
+	}
 
 
-} // end if;
+}
 
 /**
  * Builds HTML attributes from a PHP array
@@ -62,15 +62,15 @@ function wu_create_html_attributes_from_array($attributes = array()) {
 		if (is_bool($value)) {
 			if ($value) {
 				$output .= $name . ' ';
-			} // end if;
+			}
 		} else {
 			$output .= sprintf('%s="%s"', $name, $value);
-		} // end if;
-	} // end foreach;
+		}
+	}
 
 	return $output;
 
-} // end wu_create_html_attributes_from_array;
+}
 
 /**
  * Display one single option
@@ -85,7 +85,7 @@ function wu_print_signup_field_option($option_value, $option_label, $field = arr
   <option <?php selected(isset($field['default']) && $field['default'] == $option_value); ?> value="<?php echo $option_value; ?>"><?php echo $option_label; ?></option>
 
 	<?php
-} // end wu_print_signup_field_option;
+}
 
 /**
  * Displays the option tags of an select field
@@ -106,7 +106,7 @@ function wu_print_signup_field_options($options, $field = array()) {
 
 				wu_print_signup_field_option($option_value, $option_label, $field);
 
-			} // end foreach;
+			}
 
 			echo '</optgroup>';
 
@@ -114,11 +114,11 @@ function wu_print_signup_field_options($options, $field = array()) {
 
 			wu_print_signup_field_option($option_value, $option_label, $field);
 
-		} // end if;
+		}
 
-	} // end foreach;
+	}
 
-} // end wu_print_signup_field_options;
+}
 
 /**
  * Print sing-up fields
@@ -172,7 +172,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
               return true;
 
-            } // end if;
+            }
 
             value = Array.isArray(value) ? value : [value];
 
@@ -180,7 +180,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
               conditions_met++;
 
-            } // end if;
+            }
 
           });
 
@@ -194,7 +194,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
           } // end
 
-        } // end display_field;
+        }
 
         display_field(target_field, requires, 0);
 
@@ -209,7 +209,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
 		<?php
 
-	} // end if;
+	}
 
 	$wrapper_attributes = '';
 	$attributes         = '';
@@ -221,13 +221,13 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
 		$wrapper_attributes = wu_create_html_attributes_from_array($field['wrapper_attributes']);
 
-	} // end if;
+	}
 
 	if (isset($field['attributes']) && $field['attributes']) {
 
 		$attributes = wu_create_html_attributes_from_array($field['attributes']);
 
-	} // end if;
+	}
 
 	/**
 	 * Switch type for display
@@ -252,7 +252,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 			<?php
 			if ($error_message = $results['errors']->get_error_message($field_slug)) {
 				echo '<p class="error">' . $error_message . '</p>';
-			} // end if;
+			}
 
 			?>
 
@@ -303,7 +303,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 			<?php
 			if ($error_message = $results['errors']->get_error_message($field_slug)) {
 				echo '<p class="error">' . $error_message . '</p>';
-			} // end if;
+			}
 
 			?>
 
@@ -367,7 +367,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 			<?php
 			if ($error_message = $results['errors']->get_error_message($field_slug)) {
 				echo '<p class="error">' . $error_message . '</p>';
-			} // end if;
+			}
 
 			?>
 
@@ -398,7 +398,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 			<?php
 			if ($error_message = $results['errors']->get_error_message($field_slug)) {
 				echo '<p class="error">' . $error_message . '</p>';
-			} // end if;
+			}
 
 			?>
 
@@ -409,9 +409,9 @@ function wu_print_signup_field($field_slug, $field, $results) {
 			<?php
 	        break;
 
-	} // end switch;
+	}
 
-}  // end wu_print_signup_field;
+}
 /**
  * Alias function to allow creation of users for WP Multisite WaaS.
  *
@@ -428,7 +428,7 @@ function wu_create_user(array $user_data, array $plan_data, array $user_meta = a
 
 	return WU_Signup()->create_user($user_data, $plan_data, $user_meta);
 
-} // end wu_create_user;
+}
 
 /**
  * Alias function to allow creation of sites for WP Multisite WaaS.
@@ -446,7 +446,7 @@ function wu_create_site_legacy($user_id, array $site_data, $template_id = false,
 
 	return WU_Signup()->create_site($user_id, $site_data, $template_id, $site_meta);
 
-} // end wu_create_site_legacy;
+}
 /**
  * Alias function that adds a new Step to the sign-up flow
  *
@@ -459,7 +459,7 @@ function wu_add_signup_step($id, $order, array $step) {
 
 	return WU_Signup()->add_signup_step($id, $order, $step);
 
-} // end wu_add_signup_step;
+}
 
 /**
  * Alias function that adds a new field to a step the sign-up flow
@@ -475,4 +475,4 @@ function wu_add_signup_field($step, $id, $order, $field) {
 
 	return WU_Signup()->add_signup_field($step, $id, $order, $field);
 
-} // end wu_add_signup_field;
+}

@@ -21,18 +21,18 @@ defined('ABSPATH') || exit;
 ?>
 <ul class="wu-border-solid wu-border wu-border-gray-300 wu-shadow-sm wu-p-4 wu-flex wu-rounded wu-relative wu-m-0 wu-mb-4 wu-list-none wu-justify-center">
 
-  <?php foreach ($period_options as $index => $period_option) : ?>
+	<?php foreach ($period_options as $index => $period_option) : ?>
 
-    <li class="wu-mx-2">
-      <a 
-        :class="(duration == <?php echo $period_option['duration']; ?> && duration_unit == '<?php echo $period_option['duration_unit']; ?>') || (<?php echo json_encode($index === 0); ?> && duration === '') ? 'wu-font-semibold active' : ''" 
-        v-on:click.prevent="duration = <?php echo $period_option['duration']; ?>; duration_unit = '<?php echo $period_option['duration_unit']; ?>'" 
-        href="#"
-      >
-        <?php echo $period_option['label']; ?>
-      </a>
-    </li>
+	<li class="wu-mx-2">
+		<a 
+		:class="(duration == <?php echo $period_option['duration']; ?> && duration_unit == '<?php echo $period_option['duration_unit']; ?>') || (<?php echo json_encode($index === 0); ?> && duration === '') ? 'wu-font-semibold active' : ''" 
+		v-on:click.prevent="duration = <?php echo $period_option['duration']; ?>; duration_unit = '<?php echo $period_option['duration_unit']; ?>'" 
+		href="#"
+		>
+		<?php echo $period_option['label']; ?>
+		</a>
+	</li>
 
-  <?php endforeach; ?>
+	<?php endforeach; ?>
 
 </ul>

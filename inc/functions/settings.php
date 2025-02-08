@@ -23,8 +23,7 @@ require_once wu_path('inc/functions/options.php');
 function wu_get_all_settings() {
 
 	return WP_Ultimo()->settings->get_all();
-
-} // end wu_get_all_settings;
+}
 
 /**
  * Get a specific settings from the plugin.
@@ -38,8 +37,7 @@ function wu_get_all_settings() {
 function wu_get_setting($setting, $default = false) {
 
 	return WP_Ultimo()->settings->get_setting($setting, $default);
-
-} // end wu_get_setting;
+}
 
 /**
  * Saves a specific setting into the database.
@@ -53,8 +51,7 @@ function wu_get_setting($setting, $default = false) {
 function wu_save_setting($setting, $value) {
 
 	return WP_Ultimo()->settings->save_setting($setting, $value);
-
-} // end wu_save_setting;
+}
 
 /**
  * Adds a new settings section.
@@ -72,8 +69,7 @@ function wu_save_setting($setting, $value) {
 function wu_register_settings_section($section_slug, $atts) {
 
 	WP_Ultimo()->settings->add_section($section_slug, $atts);
-
-} // end wu_register_settings_section;
+}
 
 /**
  * Adds a new field to a settings section.
@@ -91,8 +87,7 @@ function wu_register_settings_section($section_slug, $atts) {
 function wu_register_settings_field($section_slug, $field_slug, $atts, $priority = 10) {
 
 	WP_Ultimo()->settings->add_field($section_slug, $field_slug, $atts, $priority);
-
-} // end wu_register_settings_field;
+}
 
 /**
  * Adds a help side-panel to the settings page.
@@ -106,36 +101,40 @@ function wu_register_settings_field($section_slug, $field_slug, $atts, $priority
 function wu_register_settings_side_panel($section_slug, $atts) {
 
 	if (wu_request('tab', 'general') !== $section_slug && $section_slug !== 'all') {
-
 		return;
+	}
 
-	} // end if;
-
-	$atts = wp_parse_args($atts, array(
-		'title'  => __('Side Panel', 'wp-ultimo'),
-		'render' => '__return_false',
-		'show'   => '__return_true',
-	));
+	$atts = wp_parse_args(
+		$atts,
+		array(
+			'title'  => __('Side Panel', 'wp-ultimo'),
+			'render' => '__return_false',
+			'show'   => '__return_true',
+		)
+	);
 
 	$callback = wu_get_isset($atts, 'show', '__return_true');
 
 	$should_display = is_callable($callback) && call_user_func($callback);
 
-	if (!$should_display) {
-
+	if ( ! $should_display) {
 		return;
-
-	} // end if;
+	}
 
 	$id = sanitize_title($atts['title']);
 
-	add_meta_box("wp-ultimo-{$id}", $atts['title'], function() use ($atts) {
+	add_meta_box(
+		"wp-ultimo-{$id}",
+		$atts['title'],
+		function () use ($atts) {
 
-		call_user_func($atts['render']);
-
-	}, 'wu_settings_admin_page', 'side', 'low');
-
-} // end wu_register_settings_side_panel;
+			call_user_func($atts['render']);
+		},
+		'wu_settings_admin_page',
+		'side',
+		'low'
+	);
+}
 
 /**
  * Retrieve the network custom logo.
@@ -152,24 +151,19 @@ function wu_get_network_logo($size = 'full') {
 	restore_current_blog();
 
 	if ($settings_logo) {
-
 		return $settings_logo[0];
-
-	} // end if;
+	}
 
 	$logo = wu_get_asset('logo.png', 'img');
 
 	$custom_logo = wp_get_attachment_image_src(get_theme_mod('custom_logo'), $size);
 
-	if (!empty($custom_logo)) {
-
+	if ( ! empty($custom_logo)) {
 		$logo = $custom_logo[0];
-
-	} // end if;
+	}
 
 	return apply_filters('wu_get_logo', $logo);
-
-} // end wu_get_network_logo;
+}
 
 /**
  * Retrieve the network custom icon.
@@ -182,5 +176,4 @@ function wu_get_network_favicon($size = '48') {
 	$custom_icon = get_site_icon_url($size, wu_get_asset('badge.png', 'img'), wu_get_main_site_id());
 
 	return $custom_icon;
-
-} // end wu_get_network_favicon;
+}

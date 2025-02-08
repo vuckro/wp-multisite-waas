@@ -104,8 +104,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_author_id() {
 
 		return $this->author_id;
-
-	} // end get_author_id;
+	}
 
 	/**
 	 * Set author ID.
@@ -115,8 +114,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_author_id($author_id) {
 
 		$this->author_id = $author_id;
-
-	} // end set_author_id;
+	}
 
 	/**
 	 * Get post type.
@@ -126,8 +124,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_type() {
 
 		return $this->type;
-
-	} // end get_type;
+	}
 
 	/**
 	 * Set post type.
@@ -137,8 +134,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_type($type) {
 
 		$this->type = $type;
-
-	} // end set_type;
+	}
 
 	/**
 	 * Get post title.
@@ -148,8 +144,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_title() {
 
 		return $this->title;
-
-	} // end get_title;
+	}
 
 	/**
 	 * Set post title.
@@ -159,8 +154,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_title($title) {
 
 		$this->title = $title;
-
-	} // end set_title;
+	}
 
 	/**
 	 * Get post content.
@@ -173,8 +167,7 @@ class Post_Base_Model extends Base_Model {
 		 * Also we need to add the paragraphs and line breaks back.
 		 */
 		return wpautop(stripslashes($this->content));
-
-	} // end get_content;
+	}
 
 	/**
 	 * Set post content.
@@ -184,8 +177,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_content($content) {
 
 		$this->content = $content;
-
-	} // end set_content;
+	}
 
 	/**
 	 * Get post excerpt.
@@ -195,8 +187,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_excerpt() {
 
 		return $this->excerpt;
-
-	} // end get_excerpt;
+	}
 
 	/**
 	 * Set post excerpt.
@@ -206,8 +197,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_excerpt($excerpt) {
 
 		$this->excerpt = $excerpt;
-
-	} // end set_excerpt;
+	}
 
 	/**
 	 * Get post creation date.
@@ -217,8 +207,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_date_created() {
 
 		return $this->date_created;
-
-	} // end get_date_created;
+	}
 
 	/**
 	 * Set post creation date.
@@ -228,8 +217,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_date_created($date_created) {
 
 		$this->date_created = $date_created;
-
-	} // end set_date_created;
+	}
 
 	/**
 	 * Get post last modification date.
@@ -239,8 +227,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_date_modified() {
 
 		return $this->date_modified;
-
-	} // end get_date_modified;
+	}
 
 	/**
 	 * Set post last modification date.
@@ -250,8 +237,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_date_modified($date_modified) {
 
 		$this->date_modified = $date_modified;
-
-	} // end set_date_modified;
+	}
 
 	/**
 	 * Get the post list order.
@@ -261,8 +247,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_list_order() {
 
 		return $this->list_order;
-
-	} // end get_list_order;
+	}
 
 	/**
 	 * Set the post list order.
@@ -272,8 +257,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_list_order($list_order) {
 
 		$this->list_order = $list_order;
-
-	} // end set_list_order;
+	}
 
 	/**
 	 * Get the post status.
@@ -283,8 +267,7 @@ class Post_Base_Model extends Base_Model {
 	public function get_status() {
 
 		return $this->status;
-
-	} // end get_status;
+	}
 
 	/**
 	 * Set the post status.
@@ -294,8 +277,7 @@ class Post_Base_Model extends Base_Model {
 	public function set_status($status) {
 
 		$this->status = $status;
-
-	} // end set_status;
+	}
 
 	/**
 	 * Save (create or update) the model on the database,
@@ -306,13 +288,11 @@ class Post_Base_Model extends Base_Model {
 	 */
 	public function save() {
 
-		if (!$this->author_id) {
-
+		if ( ! $this->author_id) {
 			$this->author_id = get_current_user_id();
+		}
 
-		} // end if;
-
-		if (!$this->status) {
+		if ( ! $this->status) {
 
 			/**
 			 * Filters the object data before it is stored into the database.
@@ -324,11 +304,8 @@ class Post_Base_Model extends Base_Model {
 			 * @param Base_Model $this      The object instance.
 			 */
 			$this->status = apply_filters('wu_post_default_status', 'draft', $this->type, $this);
-
-		} // end if;
+		}
 
 		return parent::save();
-
-	} // end save;
-
-} // end class Post_Base_Model;
+	}
+}

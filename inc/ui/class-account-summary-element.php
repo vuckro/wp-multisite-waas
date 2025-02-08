@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\UI\Base_Element;
+use WP_Ultimo\UI\Base_Element;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -89,14 +89,11 @@ class Account_Summary_Element extends Base_Element {
 	public function get_icon($context = 'block') {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-call-to-action';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -111,8 +108,7 @@ class Account_Summary_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Account Summary', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -128,8 +124,7 @@ class Account_Summary_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a account summary block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -167,8 +162,7 @@ class Account_Summary_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -195,8 +189,7 @@ class Account_Summary_Element extends Base_Element {
 			'Summary',
 			'WP Multisite WaaS',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -217,8 +210,7 @@ class Account_Summary_Element extends Base_Element {
 		return array(
 			'title' => __('About this Site', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -230,13 +222,11 @@ class Account_Summary_Element extends Base_Element {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
-		if (!$this->site || !$this->site->is_customer_allowed()) {
-
+		if ( ! $this->site || ! $this->site->is_customer_allowed()) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->membership = $this->site->get_membership();
 
@@ -260,8 +250,7 @@ class Account_Summary_Element extends Base_Element {
 			'unlimited_space' => $unlimited_space,
 			'message'         => $message,
 		);
-
-	} // end setup;
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -288,8 +277,7 @@ class Account_Summary_Element extends Base_Element {
 			'unlimited_space' => $unlimited_space,
 			'message'         => $message,
 		);
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -315,8 +303,7 @@ class Account_Summary_Element extends Base_Element {
 		$atts['product'] = $this->product;
 
 		return wu_get_template_contents('dashboard-widgets/account-summary', $atts);
-
-	} // end output;
+	}
 
 	/**
 	 * Returns the manage URL for sites, depending on the environment.
@@ -331,7 +318,5 @@ class Account_Summary_Element extends Base_Element {
 		$base_url = \WP_Ultimo\Current::get_manage_url($site_id, 'site');
 
 		return is_admin() ? add_query_arg('page', 'account', $base_url . '/admin.php') : $base_url;
-
-	} // end get_manage_url;
-
-} // end class Account_Summary_Element;
+	}
+}

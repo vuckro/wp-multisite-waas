@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Helpers\Arr;
+use WP_Ultimo\Helpers\Arr;
 
 /**
  * Turns a multi-dimensional array into a flat array.
@@ -24,21 +24,20 @@ function wu_array_flatten($array, $indexes = false) {
 
 	$return = array();
 
-	array_walk_recursive($array, function($x, $index) use (&$return, $indexes) {
+	array_walk_recursive(
+		$array,
+		function ($x, $index) use (&$return, $indexes) {
 
-		if ($indexes) {
+			if ($indexes) {
+				$return[] = $index;
+			}
 
-			$return[] = $index;
-
-		} // end if;
-
-		$return[] = $x;
-
-	});
+			$return[] = $x;
+		}
+	);
 
 	return $return;
-
-} // end wu_array_flatten;
+}
 
 /**
  * Copy from http://www.php.net/manual/en/function.array-merge-recursive.php#92195
@@ -74,30 +73,17 @@ function wu_array_merge_recursive_distinct(array &$array1, array &$array2, $shou
 	$merged = $array1;
 
 	foreach ($array2 as $key => &$value) {
-
-		if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-
-			$merged[$key] = wu_array_merge_recursive_distinct($merged[$key], $value, $should_sum);
-
+		if (is_array($value) && isset($merged[ $key ]) && is_array($merged[ $key ])) {
+			$merged[ $key ] = wu_array_merge_recursive_distinct($merged[ $key ], $value, $should_sum);
+		} elseif (isset($merged[ $key ]) && is_numeric($merged[ $key ]) && is_numeric($value) && $should_sum) {
+				$merged[ $key ] = ((int) $merged[ $key ]) + $value;
 		} else {
-
-			if (isset($merged[$key]) && is_numeric($merged[$key]) && is_numeric($value) && $should_sum) {
-
-				$merged[$key] = ((int) $merged[$key]) + $value;
-
-			} else {
-
-				$merged[$key] = $value;
-
-			} // end if;
-
-		} // end if;
-
-	} // end foreach;
+			$merged[ $key ] = $value;
+		}
+	}
 
 	return $merged;
-
-} // end wu_array_merge_recursive_distinct;
+}
 
 /**
  * Compares two arrays and returns the diff, recursively.
@@ -121,40 +107,25 @@ function wu_array_recursive_diff($array1, $array2, $to_keep = array()) {
 	$array2 = (array) $array2;
 
 	foreach ($array1 as $key => $value) {
-
 		if (array_key_exists($key, $array2)) {
-
 			if (is_array($value)) {
-
-				$array_recursive_diff = wu_array_recursive_diff($value, $array2[$key], $to_keep);
+				$array_recursive_diff = wu_array_recursive_diff($value, $array2[ $key ], $to_keep);
 
 				if (count($array_recursive_diff)) {
+					$arr_return[ $key ] = $array_recursive_diff;
+				}
+			} elseif ((! is_null($value) && $value != $array2[ $key ]) || ($value && $array2[ $key ] && in_array($key, $to_keep, true))) {
+				// phpcs:ignore
 
-					$arr_return[$key] = $array_recursive_diff;
-
-				} // end if;
-
-			} else {
-
-				if ((!is_null($value) && $value != $array2[$key]) || ($value && $array2[$key] && in_array($key, $to_keep, true))) { // phpcs:ignore
-
-					$arr_return[$key] = $value;
-
-				} // end if;
-
-			} // end if;
-
+					$arr_return[ $key ] = $value;
+			}
 		} else {
-
-			$arr_return[$key] = $value;
-
-		} // end if;
-
-	} // end foreach;
+			$arr_return[ $key ] = $value;
+		}
+	}
 
 	return $arr_return;
-
-} // end wu_array_recursive_diff;
+}
 /**
  * Array map implementation to deal with keys.
  *
@@ -170,8 +141,7 @@ function wu_array_map_keys($callable, $array): array {
 	$keys = array_map($callable, $keys);
 
 	return array_combine($keys, $array);
-
-} // end wu_array_map_keys;
+}
 
 /**
  * Converts a key => value array into an array of objects with key and value entries.
@@ -208,17 +178,14 @@ function wu_key_map_to_array($assoc_array, $key_name = 'id', $value_name = 'valu
 	$results = array();
 
 	foreach ($assoc_array as $key => &$value) {
-
 		$results[] = array(
 			$key_name   => $key,
 			$value_name => $value,
 		);
-
-	} // end foreach;
+	}
 
 	return $results;
-
-} // end wu_key_map_to_array;
+}
 
 /**
  * Find a value inside an array by a particular key or property.
@@ -236,8 +203,7 @@ function wu_key_map_to_array($assoc_array, $key_name = 'id', $value_name = 'valu
 function wu_array_find_by($array, $property, $expected, $flag = 0) {
 
 	return Arr::filter_by_property($array, $property, $expected, $flag);
-
-} // end wu_array_find_by;
+}
 
 /**
  * Finds all the values inside an array by a particular key or property.
@@ -254,8 +220,7 @@ function wu_array_find_by($array, $property, $expected, $flag = 0) {
 function wu_array_find_all_by($array, $property, $expected) {
 
 	return wu_array_find_by($array, $property, $expected, Arr::RESULTS_ALL);
-
-} // end wu_array_find_all_by;
+}
 
 /**
  * Finds the first value inside an array by a particular key or property.
@@ -272,8 +237,7 @@ function wu_array_find_all_by($array, $property, $expected) {
 function wu_array_find_first_by($array, $property, $expected) {
 
 	return wu_array_find_by($array, $property, $expected, Arr::RESULTS_FIRST);
-
-} // end wu_array_find_first_by;
+}
 
 /**
  * Finds the last value inside an array by a particular key or property.
@@ -290,5 +254,4 @@ function wu_array_find_first_by($array, $property, $expected) {
 function wu_array_find_last_by($array, $property, $expected) {
 
 	return wu_array_find_by($array, $property, $expected, Arr::RESULTS_LAST);
-
-} // end wu_array_find_last_by;
+}

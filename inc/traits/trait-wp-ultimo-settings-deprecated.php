@@ -21,16 +21,13 @@ trait WP_Ultimo_Settings_Deprecated {
 	 * @return void
 	 */
 	public function handle_legacy_scripts() {
-    /*
-     * Mailchimp: Backwards compatibility.
-     */
+		/*
+		* Mailchimp: Backwards compatibility.
+		*/
 		if (wp_script_is('wu-mailchimp', 'registered')) {
-
 			wp_enqueue_script('wu-mailchimp');
-
-		} // end if;
-
-	} // end handle_legacy_scripts;
+		}
+	}
 
 	/**
 	 * Handle legacy hooks to support old versions of our add-ons.
@@ -42,22 +39,19 @@ trait WP_Ultimo_Settings_Deprecated {
 
 		$legacy_settings = array();
 
-    /*
-     * Fetch Extra Sections
-     */
+		/*
+		* Fetch Extra Sections
+		*/
 		$sections = apply_filters_deprecated('wu_settings_sections', array(array()), '2.0.0', 'wu_register_settings_section()');
 
 		foreach ($sections as $section_key => $section) {
-
 			if ($section_key === 'activation') {
-
 				continue; // No activation stuff;
 
-			} // end if;
+			}
 
 			$legacy_settings = array_merge($legacy_settings, $section['fields']);
-
-		} // end foreach;
+		}
 
 		$filters = array(
 			'wu_settings_section_general',
@@ -71,34 +65,28 @@ trait WP_Ultimo_Settings_Deprecated {
 		);
 
 		foreach ($filters as $filter) {
-
 			$message = __('Adding setting sections directly via filters is no longer supported.');
 
 			$legacy_settings = apply_filters_deprecated($filter, array($legacy_settings), '2.0.0', 'wu_register_settings_field()', $message);
-
-		} // end foreach;
+		}
 
 		if ($legacy_settings) {
-
-			$this->add_section('other', array(
-				'title' => __('Other', 'wp-ultimo'),
-				'desc'  => __('Other', 'wp-ultimo'),
-			));
+			$this->add_section(
+				'other',
+				array(
+					'title' => __('Other', 'wp-ultimo'),
+					'desc'  => __('Other', 'wp-ultimo'),
+				)
+			);
 
 			foreach ($legacy_settings as $setting_key => $setting) {
-
 				if (strpos((string) $setting_key, 'license_key_') !== false) {
-
 					continue; // Remove old license key fields
 
-				} // end if;
+				}
 
 				$this->add_field('other', $setting_key, $setting);
-
-			} // end foreach;
-
-		} // end if;
-
-	} // end handle_legacy_filters;
-
-} // end trait WP_Ultimo_Settings_Deprecated;
+			}
+		}
+	}
+}

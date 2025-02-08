@@ -151,8 +151,7 @@ abstract class Base_Gateway {
 		 * Calls the init code.
 		 */
 		$this->init();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Sets an order.
@@ -169,10 +168,8 @@ abstract class Base_Gateway {
 	public function set_order($order) {
 
 		if ($order === null) {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * The only thing we do is to set the order.
@@ -188,8 +185,7 @@ abstract class Base_Gateway {
 		$this->membership    = $this->order->get_membership();
 		$this->payment       = $this->order->get_payment();
 		$this->discount_code = $this->order->get_discount_code();
-
-	} // end set_order;
+	}
 
 	/**
 	 * Returns the id of the gateway.
@@ -197,11 +193,10 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return string
 	 */
-	public final function get_id() {
+	final public function get_id() {
 
 		return $this->id;
-
-	} // end get_id;
+	}
 
 	/*
 	 * Required Methods.
@@ -307,7 +302,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {} // end init;
+	public function init() {}
 
 	/**
 	 * Adds Settings.
@@ -322,7 +317,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function settings() {} // end settings;
+	public function settings() {}
 
 	/**
 	 * Checkout fields.
@@ -336,7 +331,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function fields() {} // end fields;
+	public function fields() {}
 
 	/**
 	 * Declares support for recurring payments.
@@ -358,8 +353,7 @@ abstract class Base_Gateway {
 	public function supports_recurring() {
 
 		return false;
-
-	} // end supports_recurring;
+	}
 
 	/**
 	 * Declares support for free trials.
@@ -383,8 +377,7 @@ abstract class Base_Gateway {
 	public function supports_free_trials() {
 
 		return false;
-
-	} // end supports_free_trials;
+	}
 
 	/**
 	 * Declares support for recurring amount updates.
@@ -403,8 +396,7 @@ abstract class Base_Gateway {
 	public function supports_amount_update() {
 
 		return false;
-
-	} // end supports_amount_update;
+	}
 
 	/**
 	 * Handles payment method updates.
@@ -412,7 +404,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function update_payment_method() {} // end update_payment_method;
+	public function update_payment_method() {}
 
 	/**
 	 * Defines a public title.
@@ -435,18 +427,15 @@ abstract class Base_Gateway {
 
 		$registered_gateway = wu_get_isset($gateways, $this->get_id());
 
-		if (!$registered_gateway) {
-
+		if ( ! $registered_gateway) {
 			$default = $this->get_id();
 			$default = str_replace('-', ' ', $default);
 
 			return ucwords($default);
-
-		} // end if;
+		}
 
 		return $registered_gateway['title'];
-
-	} // end get_public_title;
+	}
 
 	/**
 	 * Adds additional hooks.
@@ -460,7 +449,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Run preparations before checkout processing.
@@ -481,7 +470,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void|array
 	 */
-	public function run_preflight() {} // end run_preflight;
+	public function run_preflight() {}
 
 	/**
 	 * Registers and Enqueue scripts.
@@ -494,7 +483,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {} // end register_scripts;
+	public function register_scripts() {}
 
 	/**
 	 * Gives gateways a chance to run things before backwards compatible webhooks are run.
@@ -502,7 +491,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.7
 	 * @return void
 	 */
-	public function before_backwards_compatible_webhook() {} // end before_backwards_compatible_webhook;
+	public function before_backwards_compatible_webhook() {}
 
 	/**
 	 * Handles webhook calls.
@@ -518,7 +507,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function process_webhooks() {} // end process_webhooks;
+	public function process_webhooks() {}
 
 	/**
 	 * Handles confirmation windows and extra processing.
@@ -532,7 +521,7 @@ abstract class Base_Gateway {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function process_confirmation() {} // end process_confirmation;
+	public function process_confirmation() {}
 
 	/**
 	 * Returns the external link to view the payment on the payment gateway.
@@ -544,7 +533,7 @@ abstract class Base_Gateway {
 	 * @param string $gateway_payment_id The gateway payment id.
 	 * @return void|string
 	 */
-	public function get_payment_url_on_gateway($gateway_payment_id) {} // end get_payment_url_on_gateway;
+	public function get_payment_url_on_gateway($gateway_payment_id) {}
 
 	/**
 	 * Returns the external link to view the membership on the membership gateway.
@@ -556,7 +545,7 @@ abstract class Base_Gateway {
 	 * @param string $gateway_subscription_id The gateway subscription id.
 	 * @return void|string.
 	 */
-	public function get_subscription_url_on_gateway($gateway_subscription_id) {} // end get_subscription_url_on_gateway;
+	public function get_subscription_url_on_gateway($gateway_subscription_id) {}
 
 	/**
 	 * Returns the external link to view the membership on the membership gateway.
@@ -568,7 +557,7 @@ abstract class Base_Gateway {
 	 * @param string $gateway_customer_id The gateway customer id.
 	 * @return void|string.
 	 */
-	public function get_customer_url_on_gateway($gateway_customer_id) {} // end get_customer_url_on_gateway;
+	public function get_customer_url_on_gateway($gateway_customer_id) {}
 
 	/**
 	 * Reflects membership changes on the gateway.
@@ -589,20 +578,16 @@ abstract class Base_Gateway {
 		$has_duration_change = $membership->get_duration() !== absint(wu_get_isset($original, 'duration')) || $membership->get_duration_unit() !== wu_get_isset($original, 'duration_unit');
 
 		// If there is no change in amount or duration, we don't do anything here.
-		if (!$has_amount_change && !$has_duration_change) {
-
+		if ( ! $has_amount_change && ! $has_duration_change) {
 			return true;
-
-		} // end if;
+		}
 
 		// Cancel the current gateway integration.
 		$cancellation = $this->process_cancellation($membership, $customer);
 
 		if (is_wp_error($cancellation)) {
-
 			return $cancellation;
-
-		} // end if;
+		}
 
 		// Reset the gateway in the membership object.
 		$membership->set_gateway('');
@@ -611,8 +596,7 @@ abstract class Base_Gateway {
 		$membership->set_auto_renew(false);
 
 		return true;
-
-	} // end process_membership_update;
+	}
 
 	/*
 	 * Helper methods
@@ -629,27 +613,20 @@ abstract class Base_Gateway {
 	 */
 	public function get_amount_update_message($to_customer = false) {
 
-		if (!$this->supports_amount_update()) {
-
+		if ( ! $this->supports_amount_update()) {
 			$message = __('The current payment integration will be cancelled.', 'wp-ultimo');
 
 			if ($to_customer) {
-
 				$message .= ' ' . __('You will receive a new invoice on the next billing cycle.', 'wp-ultimo');
-
 			} else {
-
 				$message .= ' ' . __('The customer will receive a new invoice on the next billing cycle.', 'wp-ultimo');
-
-			} // end if;
+			}
 
 			return $message;
-
-		} // end if;
+		}
 
 		return __('The current payment integration will be updated.', 'wp-ultimo');
-
-	} // end get_amount_update_message;
+	}
 
 	/**
 	 * Get the return URL.
@@ -660,39 +637,37 @@ abstract class Base_Gateway {
 	public function get_return_url() {
 
 		if (empty($this->return_url)) {
-
 			$this->return_url = wu_get_current_url();
-
-		} // end if;
+		}
 
 		$return_url = is_admin() ? admin_url('admin.php') : $this->return_url;
 
-		$return_url = remove_query_arg(array(
-			'wu-confirm',
-			'token',
-			'PayerID',
-		), $return_url);
+		$return_url = remove_query_arg(
+			array(
+				'wu-confirm',
+				'token',
+				'PayerID',
+			),
+			$return_url
+		);
 
 		if (is_admin()) {
-
 			$args = array('page' => 'account');
 
 			if ($this->order) {
-
 				$args['updated'] = $this->order->get_cart_type();
-
-			} // end if;
+			}
 
 			$return_url = add_query_arg($args, $return_url);
-
 		} else {
-
-			$return_url = add_query_arg(array(
-				'payment' => $this->payment->get_hash(),
-				'status'  => 'done',
-			), $return_url);
-
-		} // end if;
+			$return_url = add_query_arg(
+				array(
+					'payment' => $this->payment->get_hash(),
+					'status'  => 'done',
+				),
+				$return_url
+			);
+		}
 
 		/**
 		 * Allow developers to change the gateway return URL used after checkout processes.
@@ -703,11 +678,10 @@ abstract class Base_Gateway {
 		 * @param self                      $gateway the gateway instance.
 		 * @param \WP_Ultimo\Models\Payment $payment the WP Multisite WaaS payment instance.
 		 * @param \WP_Ultimo\Checkout\Cart  $cart the current WP Multisite WaaS cart order.
-	   	 * @return string
+		 * @return string
 		 */
 		return apply_filters('wu_return_url', $return_url, $this, $this->payment, $this->order);
-
-	} // end get_return_url;
+	}
 
 	/**
 	 * Get the cancel URL.
@@ -718,16 +692,16 @@ abstract class Base_Gateway {
 	public function get_cancel_url() {
 
 		if (empty($this->cancel_url)) {
-
 			$this->cancel_url = wu_get_current_url();
+		}
 
-		} // end if;
-
-		return add_query_arg(array(
-			'payment' => $this->payment->get_hash(),
-		), $this->cancel_url);
-
-	} // end get_cancel_url;
+		return add_query_arg(
+			array(
+				'payment' => $this->payment->get_hash(),
+			),
+			$this->cancel_url
+		);
+	}
 
 	/**
 	 * Get the confirm URL.
@@ -738,17 +712,17 @@ abstract class Base_Gateway {
 	public function get_confirm_url() {
 
 		if (empty($this->confirm_url)) {
-
 			$this->confirm_url = wu_get_current_url();
+		}
 
-		} // end if;
-
-		return add_query_arg(array(
-			'payment'    => $this->payment->get_hash(),
-			'wu-confirm' => $this->get_id(),
-		), $this->confirm_url);
-
-	} // end get_confirm_url;
+		return add_query_arg(
+			array(
+				'payment'    => $this->payment->get_hash(),
+				'wu-confirm' => $this->get_id(),
+			),
+			$this->confirm_url
+		);
+	}
 
 	/**
 	 * Returns the webhook url for the listener of this gateway events.
@@ -761,8 +735,7 @@ abstract class Base_Gateway {
 		$site_url = defined('WU_GATEWAY_LISTENER_URL') ? WU_GATEWAY_LISTENER_URL : get_site_url(wu_get_main_site_id(), '/');
 
 		return add_query_arg('wu-gateway', $this->get_id(), $site_url);
-
-	} // end get_webhook_listener_url;
+	}
 
 	/**
 	 * Set the payment.
@@ -774,8 +747,7 @@ abstract class Base_Gateway {
 	public function set_payment($payment) {
 
 		$this->payment = $payment;
-
-	} // end set_payment;
+	}
 
 	/**
 	 * Set the membership.
@@ -787,8 +759,7 @@ abstract class Base_Gateway {
 	public function set_membership($membership) {
 
 		$this->membership = $membership;
-
-	} // end set_membership;
+	}
 
 	/**
 	 * Set the customer.
@@ -800,8 +771,7 @@ abstract class Base_Gateway {
 	public function set_customer($customer) {
 
 		$this->customer = $customer;
-
-	} // end set_customer;
+	}
 
 	/**
 	 * Triggers the events related to processing a payment.
@@ -815,14 +785,11 @@ abstract class Base_Gateway {
 	public function trigger_payment_processed($payment, $membership = null) {
 
 		if ($membership === null) {
-
 			$membership = $payment->get_membership();
-
-		} // end if;
+		}
 
 		do_action('wu_gateway_payment_processed', $payment, $membership, $this);
-
-	} // end trigger_payment_processed;
+	}
 
 	/**
 	 * Save a cart for a future swap.
@@ -839,8 +806,7 @@ abstract class Base_Gateway {
 		set_site_transient($swap_id, $cart, DAY_IN_SECONDS);
 
 		return $swap_id;
-
-	} // end save_swap;
+	}
 
 	/**
 	 * Gets a saved swap based on the id.
@@ -853,8 +819,7 @@ abstract class Base_Gateway {
 	public function get_saved_swap($swap_id) {
 
 		return get_site_transient($swap_id);
-
-	} // end get_saved_swap;
+	}
 
 	/**
 	 * Get the compatibility ids for this gateway.
@@ -867,8 +832,7 @@ abstract class Base_Gateway {
 		$all_ids = array_merge(array($this->get_id()), (array) $this->other_ids);
 
 		return array_unique($all_ids);
-
-	} // end get_all_ids;
+	}
 
 	/**
 	 * Returns the backwards compatibility id of the gateway from v1.
@@ -879,7 +843,5 @@ abstract class Base_Gateway {
 	public function get_backwards_compatibility_v1_id() {
 
 		return $this->backwards_compatibility_v1_id;
-
-	} // end get_backwards_compatibility_v1_id;
-
-} // end class Base_Gateway;
+	}
+}

@@ -145,8 +145,7 @@ class Country_TR extends Country {
 	public function get_name() {
 
 		return __('Turkey', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for TR.
@@ -239,7 +238,5 @@ class Country_TR extends Country {
 			'09' => __('Aydın', 'wp-ultimo-locations'),
 			'04' => __('Ağrı', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_TR;
+	}
+}

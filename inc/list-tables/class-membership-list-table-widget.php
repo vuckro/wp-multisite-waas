@@ -12,7 +12,7 @@ namespace WP_Ultimo\List_Tables;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Helpers\Hash;
+use WP_Ultimo\Helpers\Hash;
 
 /**
  * Membership List Table class.
@@ -22,11 +22,11 @@ use \WP_Ultimo\Helpers\Hash;
 class Membership_List_Table_Widget extends Base_List_Table {
 
 	/**
-     * Holds the query class for the object being listed.
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Holds the query class for the object being listed.
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $query_class = '\\WP_Ultimo\\Database\\Memberships\\Membership_Query';
 
 	/**
@@ -36,13 +36,14 @@ class Membership_List_Table_Widget extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Membership', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Memberships', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true                         // does this table support ajax?
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Membership', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Memberships', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                         // does this table support ajax?
+			)
+		);
+	}
 
 	/**
 	 * Uses the query class to return the items to be displayed.
@@ -71,18 +72,14 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		 * Accounts for hashes
 		 */
 		if (isset($query_args['search']) && strlen((string) $query_args['search']) === Hash::LENGTH) {
-
 			$item_id = Hash::decode($query_args['search']);
 
 			if ($item_id) {
-
 				unset($query_args['search']);
 
 				$query_args['id'] = $item_id;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		$query_args = array_merge($query_args, $this->get_extra_query_fields());
 
@@ -91,18 +88,13 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		$function_name = 'wu_get_' . $query_class->get_plural_name();
 
 		if (function_exists($function_name)) {
-
 			$query = $function_name($query_args);
-
 		} else {
-
 			$query = $query_class->query($query_args);
-
-		} // end if;
+		}
 
 		return $query;
-
-	} // end get_items;
+	}
 
 	/**
 	 * Adds the extra search field when the search element is present.
@@ -119,8 +111,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		$_filter_fields['customer_id'] = wu_request('customer_id');
 
 		return $_filter_fields;
-
-	} // end get_extra_query_fields;
+	}
 	/**
 	 * Displays the membership reference code.
 	 *
@@ -144,8 +135,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		$html = "<span class='wu-font-mono'><strong>{$code}</strong></span>";
 
 		return $html . $this->row_actions($actions);
-
-	} // end column_hash;
+	}
 
 	/**
 	 * Displays the status of the membership.
@@ -162,8 +152,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		$class = $item->get_status_class();
 
 		return "<span class='wu-bg-gray-200 wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono $class'>{$label}</span>";
-
-	} // end column_status;
+	}
 
 	/**
 	 * Displays the price of the membership.
@@ -176,15 +165,12 @@ class Membership_List_Table_Widget extends Base_List_Table {
 	public function column_amount($item) {
 
 		if (empty($item->get_amount())) {
-
 			return __('Free', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$amount = wu_format_currency($item->get_amount(), $item->get_currency());
 
 		if ($item->is_recurring()) {
-
 			$duration = $item->get_duration();
 
 			$message = sprintf(
@@ -194,8 +180,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 				$item->get_duration_unit()
 			);
 
-			if (!$item->is_forever_recurring()) {
-
+			if ( ! $item->is_forever_recurring()) {
 				$billing_cycles_message = sprintf(
 					// translators: %s is the number of billing cycles.
 					_n('for %s cycle', 'for %s cycles', $item->get_billing_cycles(), 'wp-ultimo'),
@@ -203,18 +188,13 @@ class Membership_List_Table_Widget extends Base_List_Table {
 				);
 
 				$message .= ' ' . $billing_cycles_message;
-
-			} // end if;
-
+			}
 		} else {
-
 			$message = __('one time payment', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return sprintf('%s<br><small>%s</small>', $amount, $message);
-
-	} // end column_amount;
+	}
 
 	/**
 	 * Displays the customer of the membership.
@@ -228,8 +208,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 
 		$customer = $item->get_customer();
 
-		if (!$customer) {
-
+		if ( ! $customer) {
 			$not_found = __('No customer found', 'wp-ultimo');
 
 			return "<div class='wu-py-1 wu-px-2 wu-flex-grow wu-block wu-rounded wu-items-center wu-border wu-border-solid wu-border-gray-300 wu-bg-gray-100 wu-relative wu-overflow-hidden'>
@@ -238,17 +217,22 @@ class Membership_List_Table_Widget extends Base_List_Table {
 					<span class='wu-block wu-py-3 wu-text-gray-600 wu-text-2xs wu-font-bold wu-uppercase'>{$not_found}</span>
 				</div>
 			</div>";
-
-		} // end if;
+		}
 
 		$url_atts = array(
 			'id' => $customer->get_id(),
 		);
 
-		$avatar = get_avatar($customer->get_user_id(), 32, 'identicon', '', array(
-			'force_display' => true,
-			'class'         => 'wu-rounded-full wu-mr-2',
-		));
+		$avatar = get_avatar(
+			$customer->get_user_id(),
+			32,
+			'identicon',
+			'',
+			array(
+				'force_display' => true,
+				'class'         => 'wu-rounded-full wu-mr-2',
+			)
+		);
 
 		$display_name = $customer->get_display_name();
 
@@ -266,8 +250,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		</a>";
 
 		return $html;
-
-	} // end column_customer;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -285,14 +268,12 @@ class Membership_List_Table_Widget extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 	/**
 	 * Overrides the parent method to include the custom ajax functionality for WP Multisite WaaS.
 	 *
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function _js_vars() {} // end _js_vars;
-
-} // end class Membership_List_Table_Widget;
+	public function _js_vars() {}
+}

@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Domain;
+use WP_Ultimo\Models\Domain;
 
 /**
  * Returns a domain.
@@ -22,8 +22,7 @@ use \WP_Ultimo\Models\Domain;
 function wu_get_domain($domain_id) {
 
 	return \WP_Ultimo\Models\Domain::get_by_id($domain_id);
-
-} // end wu_get_domain;
+}
 
 /**
  * Queries domains.
@@ -36,8 +35,7 @@ function wu_get_domain($domain_id) {
 function wu_get_domains($query = array()) {
 
 	return \WP_Ultimo\Models\Domain::query($query);
-
-} // end wu_get_domains;
+}
 /**
  * Returns a domain based on domain.
  *
@@ -49,8 +47,7 @@ function wu_get_domains($query = array()) {
 function wu_get_domain_by_domain($domain) {
 
 	return \WP_Ultimo\Models\Domain::get_by('domain', $domain);
-
-} // end wu_get_domain_by_domain;
+}
 /**
  * Creates a new domain.
  *
@@ -63,26 +60,27 @@ function wu_get_domain_by_domain($domain) {
  */
 function wu_create_domain($domain_data) {
 
-	$domain_data = wp_parse_args($domain_data, array(
-		'blog_id'        => false,
-		'domain'         => false,
-		'active'         => true,
-		'primary_domain' => false,
-		'secure'         => false,
-		'stage'          => 'checking-dns',
-		'date_created'   => wu_get_current_time('mysql', true),
-		'date_modified'  => wu_get_current_time('mysql', true),
-	));
+	$domain_data = wp_parse_args(
+		$domain_data,
+		array(
+			'blog_id'        => false,
+			'domain'         => false,
+			'active'         => true,
+			'primary_domain' => false,
+			'secure'         => false,
+			'stage'          => 'checking-dns',
+			'date_created'   => wu_get_current_time('mysql', true),
+			'date_modified'  => wu_get_current_time('mysql', true),
+		)
+	);
 
 	$domain = new Domain($domain_data);
 
 	$saved = $domain->save();
 
 	if (is_wp_error($saved)) {
-
 		return $saved;
-
-	} // end if;
+	}
 
 	/*
 	 * Add the processing.
@@ -90,8 +88,7 @@ function wu_create_domain($domain_data) {
 	wu_enqueue_async_action('wu_async_process_domain_stage', array('domain_id' => $domain->get_id()), 'domain');
 
 	return $domain;
-
-} // end wu_create_domain;
+}
 
 /**
  * Restores the original URL for a mapped URL.
@@ -107,7 +104,6 @@ function wu_restore_original_url($url, $blog_id) {
 	$site = wu_get_site($blog_id);
 
 	if ($site) {
-
 		$original_site_url = $site->get_site_url();
 
 		$mapped_domain_url = $site->get_active_site_url();
@@ -117,16 +113,12 @@ function wu_restore_original_url($url, $blog_id) {
 		$mapped_domain = wp_parse_url($mapped_domain_url, PHP_URL_HOST);
 
 		if ($original_domain !== $mapped_domain) {
-
 			$url = str_replace($mapped_domain, $original_domain, $url);
-
-		} // end if;
-
-	} // end if;
+		}
+	}
 
 	return $url;
-
-} // end wu_restore_original_url;
+}
 
 /**
  * Adds the sso tags to a given URL.
@@ -139,8 +131,7 @@ function wu_restore_original_url($url, $blog_id) {
 function wu_with_sso($url) {
 
 	return \WP_Ultimo\SSO\SSO::with_sso($url);
-
-} // end wu_with_sso;
+}
 
 /**
  * Compares the current domain to the main network domain.
@@ -153,5 +144,4 @@ function wu_is_same_domain() {
 	global $current_blog, $current_site;
 
 	return wp_parse_url(wu_get_current_url(), PHP_URL_HOST) === $current_blog->domain && $current_blog->domain === $current_site->domain;
-
-} // end wu_is_same_domain;
+}

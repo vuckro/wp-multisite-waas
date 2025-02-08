@@ -98,14 +98,10 @@ class Post_Query extends Query {
 	 */
 	public function query($query = array()) {
 
-		if (!isset($query['type__in'])) {
-
+		if ( ! isset($query['type__in'])) {
 			$query['type'] = $this->item_name;
-
-		} // end if;
+		}
 
 		return parent::query($query);
-
-	} // end query;
-
-} // end class Post_Query;
+	}
+}

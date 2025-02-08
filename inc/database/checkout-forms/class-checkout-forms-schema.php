@@ -110,5 +110,4 @@ class Checkout_Forms_Schema extends Schema {
 		),
 
 	);
-
-} // end class Checkout_Forms_Schema;
+}

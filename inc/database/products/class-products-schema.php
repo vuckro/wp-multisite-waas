@@ -37,7 +37,7 @@ class Products_Schema extends Schema {
 			'unsigned' => true,
 			'extra'    => 'auto_increment',
 			'primary'  => true,
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -70,14 +70,14 @@ class Products_Schema extends Schema {
 			'name'       => 'name',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		array(
 			'name'       => 'description',
 			'type'       => 'longtext',
 			'default'    => '',
-			'searchable' => true
+			'searchable' => true,
 		),
 
 		array(
@@ -93,7 +93,7 @@ class Products_Schema extends Schema {
 			'type'     => 'varchar',
 			'length'   => '10',
 			'default'  => 'USD',
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -101,7 +101,7 @@ class Products_Schema extends Schema {
 			'type'     => 'varchar',
 			'length'   => '10',
 			'default'  => 'paid',
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -136,7 +136,7 @@ class Products_Schema extends Schema {
 			'unsigned'   => true,
 			'default'    => '0',
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		array(
@@ -151,7 +151,7 @@ class Products_Schema extends Schema {
 			'unsigned'   => true,
 			'default'    => '0',
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		array(
@@ -166,7 +166,7 @@ class Products_Schema extends Schema {
 			'unsigned'   => true,
 			'default'    => '0',
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		array(
@@ -213,9 +213,8 @@ class Products_Schema extends Schema {
 			'name'       => 'type',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 	);
-
-} // end class Products_Schema;
+}

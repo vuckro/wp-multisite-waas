@@ -36,8 +36,7 @@ class Dashboard_Taxes_Tab {
 		add_filter('wu_dashboard_filter_bar', array($this, 'add_tab'));
 
 		add_action('wu_dashboard_taxes_widgets', array($this, 'register_widgets'), 10, 3);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Checks if tax support is enabled or not.
@@ -48,8 +47,7 @@ class Dashboard_Taxes_Tab {
 	protected function is_enabled() {
 
 		return wu_get_setting('enable_taxes');
-
-	} // end is_enabled;
+	}
 
 	/**
 	 * Add_tab to dashboard
@@ -68,8 +66,7 @@ class Dashboard_Taxes_Tab {
 		);
 
 		return $dashboard_filters;
-
-	} // end add_tab;
+	}
 
 	/**
 	 * Renders the disabled message, if taxes are not enabled.
@@ -79,16 +76,20 @@ class Dashboard_Taxes_Tab {
 	 */
 	public function disabled_message() {
 
-		echo wu_render_empty_state(array(
-			'message'     => __('You do not have tax support enabled yet...'),
-			'sub_message' => __('If you need to collect taxes, you\'ll be glad to hear that WP Multisite WaaS offers tax support!'),
-			'link_label'  => __('Enable Tax Support', 'wp-ultimo'),
-			'link_url'    => wu_network_admin_url('wp-ultimo-settings', array(
-				'tab' => 'taxes',
-			)),
-		));
-
-	} // end disabled_message;
+		echo wu_render_empty_state(
+			array(
+				'message'     => __('You do not have tax support enabled yet...'),
+				'sub_message' => __('If you need to collect taxes, you\'ll be glad to hear that WP Multisite WaaS offers tax support!'),
+				'link_label'  => __('Enable Tax Support', 'wp-ultimo'),
+				'link_url'    => wu_network_admin_url(
+					'wp-ultimo-settings',
+					array(
+						'tab' => 'taxes',
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Adds a back link to the taxes without tax.
@@ -109,8 +110,7 @@ class Dashboard_Taxes_Tab {
 		);
 
 		return array_merge($back_link, $links);
-
-	} // end add_back_link;
+	}
 
 	/**
 	 * Register_widgets
@@ -134,8 +134,7 @@ class Dashboard_Taxes_Tab {
 		/*
 		 * Displays an empty page with the option to activate tax support.
 		 */
-		if (!$this->is_enabled()) {
-
+		if ( ! $this->is_enabled()) {
 			add_filter('wu_dashboard_display_filter', '__return_false');
 
 			add_filter('wu_dashboard_display_widgets', '__return_false');
@@ -145,8 +144,7 @@ class Dashboard_Taxes_Tab {
 			add_filter('wu_page_get_title_links', array($this, 'add_back_link'));
 
 			return;
-
-		} // end if;
+		}
 
 		$this->dashboard_page = $dashboard_page;
 
@@ -157,8 +155,7 @@ class Dashboard_Taxes_Tab {
 		add_meta_box('wp-ultimo-taxes-by-day', __('Taxes by Day', 'wp-ultimo'), array($this, 'output_widget_taxes_by_day'), $screen->id, 'side', 'high');
 
 		$this->register_scripts();
-
-	} // end register_widgets;
+	}
 
 	/**
 	 * Registers the necessary scripts to handle the tax graph.
@@ -181,7 +178,7 @@ class Dashboard_Taxes_Tab {
 			'september' => array(),
 			'october'   => array(),
 			'november'  => array(),
-			'december'  => array()
+			'december'  => array(),
 		);
 
 		$data = wu_calculate_taxes_by_month();
@@ -189,38 +186,39 @@ class Dashboard_Taxes_Tab {
 		$index = 1;
 
 		foreach ($payments_per_month as &$month) {
+			$month = $data[ $index ];
 
-			$month = $data[$index];
-
-			$index++;
-
-		} // end foreach;
+			++$index;
+		}
 
 		$month_list = array();
 
 		$current_year = date_i18n('Y');
 
 		for ($i = 1; $i <= 12; $i++) {
-			$month_list[] = date_i18n('M y', mktime(0, 0,0,$i,1, $current_year));
+			$month_list[] = date_i18n('M y', mktime(0, 0, 0, $i, 1, $current_year));
 		}
 
 		wp_register_script('wu-tax-stats', wu_get_asset('tax-statistics.js', 'js'), array('jquery', 'wu-functions', 'wu-ajax-list-table', 'moment', 'wu-block-ui', 'dashboard', 'wu-apex-charts', 'wu-vue-apex-charts'), wu_get_version(), true);
 
-		wp_localize_script('wu-tax-stats', 'wu_tax_statistics_vars', array(
-			'data'       => $payments_per_month,
-			'start_date' => date_i18n('Y-m-d', strtotime((string) wu_request('start_date', '-1 month'))),
-			'end_date'   => date_i18n('Y-m-d', strtotime((string) wu_request('end_date', 'tomorrow'))),
-			'today'      => date_i18n('Y-m-d', strtotime('tomorrow')),
-			'month_list' => $month_list,
-			'i18n'       => array(
-				'net_profit_label' => __('Net Profit', 'wp-ultimo'),
-				'taxes_label'      => __('Taxes Collected', 'wp-ultimo'),
+		wp_localize_script(
+			'wu-tax-stats',
+			'wu_tax_statistics_vars',
+			array(
+				'data'       => $payments_per_month,
+				'start_date' => date_i18n('Y-m-d', strtotime((string) wu_request('start_date', '-1 month'))),
+				'end_date'   => date_i18n('Y-m-d', strtotime((string) wu_request('end_date', 'tomorrow'))),
+				'today'      => date_i18n('Y-m-d', strtotime('tomorrow')),
+				'month_list' => $month_list,
+				'i18n'       => array(
+					'net_profit_label' => __('Net Profit', 'wp-ultimo'),
+					'taxes_label'      => __('Taxes Collected', 'wp-ultimo'),
+				),
 			)
-		));
+		);
 
 		wp_enqueue_script('wu-tax-stats');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Renders the tax graph.
@@ -231,8 +229,7 @@ class Dashboard_Taxes_Tab {
 	public function output_widget_taxes() {
 
 		wu_get_template('dashboard-statistics/widget-tax-graph');
-
-	} // end output_widget_taxes;
+	}
 
 	/**
 	 * Renders the taxes by rate widget.
@@ -244,12 +241,14 @@ class Dashboard_Taxes_Tab {
 
 		$taxes_by_rate = wu_calculate_taxes_by_rate($this->dashboard_page->start_date, $this->dashboard_page->end_date);
 
-		wu_get_template('dashboard-statistics/widget-tax-by-code', array(
-			'taxes_by_rate' => $taxes_by_rate,
-			'page'          => $this->dashboard_page,
-		));
-
-	} // end output_widget_taxes_by_rate;
+		wu_get_template(
+			'dashboard-statistics/widget-tax-by-code',
+			array(
+				'taxes_by_rate' => $taxes_by_rate,
+				'page'          => $this->dashboard_page,
+			)
+		);
+	}
 
 	/**
 	 * Renders the taxes by date widget.
@@ -261,11 +260,12 @@ class Dashboard_Taxes_Tab {
 
 		$taxes_by_day = wu_calculate_taxes_by_day($this->dashboard_page->start_date, $this->dashboard_page->end_date);
 
-		wu_get_template('dashboard-statistics/widget-tax-by-day', array(
-			'taxes_by_day' => $taxes_by_day,
-			'page'         => $this->dashboard_page,
-		));
-
-	} // end output_widget_taxes_by_day;
-
-} // end class Dashboard_Taxes_Tab;
+		wu_get_template(
+			'dashboard-statistics/widget-tax-by-day',
+			array(
+				'taxes_by_day' => $taxes_by_day,
+				'page'         => $this->dashboard_page,
+			)
+		);
+	}
+}

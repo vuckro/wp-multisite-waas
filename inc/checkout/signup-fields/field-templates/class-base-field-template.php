@@ -29,10 +29,10 @@ class Base_Field_Template {
 	 * @var string
 	 */
 	protected $id;
- /**
-  * @var array
-  */
- protected $attributes = array();
+	/**
+	 * @var array
+	 */
+	protected $attributes = array();
 
 	/**
 	 * Field Template Constructor
@@ -41,10 +41,9 @@ class Base_Field_Template {
 	 *
 	 * @param array $attributes The attributes passed to the field.
 	 */
-	public function __construct($attributes = array())
- {
-     $this->attributes = $attributes;
- } // end __construct;
+	public function __construct($attributes = array()) {
+		$this->attributes = $attributes;
+	}
 
 	/**
 	 * The render type for the template.
@@ -66,8 +65,7 @@ class Base_Field_Template {
 	public function get_render_type(): string {
 
 		return 'ajax';
-
- 	} // end get_render_type;
+	}
 
 	/**
 	 * The title of the field template.
@@ -80,8 +78,7 @@ class Base_Field_Template {
 	public function get_title() {
 
 		return __('Field Template', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the field template.
@@ -94,8 +91,7 @@ class Base_Field_Template {
 	public function get_description() {
 
 		return __('Description', 'wp-ultimo');
-
-	} // end get_description;
+	}
 	/**
 	 * The preview image of the field template.
 	 *
@@ -106,8 +102,7 @@ class Base_Field_Template {
 	public function get_preview(): string {
 
 		return '';
-
-	} // end get_preview;
+	}
 
 	/**
 	 * The content of the template.
@@ -117,7 +112,7 @@ class Base_Field_Template {
 	 * @param array $attributes The field template attributes.
 	 * @return void
 	 */
-	public function output($attributes) {} // end output;
+	public function output($attributes) {}
 
 	/**
 	 * Renders the content.
@@ -136,8 +131,7 @@ class Base_Field_Template {
 		$this->output($attributes);
 
 		return ob_get_clean();
-
-	} // end render;
+	}
 
 	/**
 	 * Displays the content on the checkout form as a wrapper.
@@ -153,23 +147,15 @@ class Base_Field_Template {
 	public function render_container($attributes, $signup_field = false) {
 
 		if ($this->get_render_type() === 'ajax') {
-
 			if ($signup_field) {
-
 				$attributes = $signup_field->reduce_attributes($attributes);
-
-			} // end if;
+			}
 
 			$markup = sprintf('<dynamic :template="get_template(\'%s\', %s)"></dynamic>', esc_js($this->id), esc_attr(json_encode($attributes)));
-
 		} else {
-
 			$markup = $this->render($attributes);
-
-		} // end if;
+		}
 
 		return $markup;
-
-	} // end render_container;
-
-} // end class Base_Field_Template;
+	}
+}

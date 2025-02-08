@@ -12,8 +12,8 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Membership;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Models\Membership;
+use WP_Ultimo\Database\Memberships\Membership_Status;
 
 /**
  * WP Multisite WaaS Membership Admin Page.
@@ -67,13 +67,15 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Add new Membership
 		 */
-		wu_register_form('add_new_membership', array(
-			'render'     => array($this, 'render_add_new_membership_modal'),
-			'handler'    => array($this, 'handle_add_new_membership_modal'),
-			'capability' => 'wu_edit_memberships',
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'add_new_membership',
+			array(
+				'render'     => array($this, 'render_add_new_membership_modal'),
+				'handler'    => array($this, 'handle_add_new_membership_modal'),
+				'capability' => 'wu_edit_memberships',
+			)
+		);
+	}
 
 	/**
 	 * Renders the add new customer modal.
@@ -155,22 +157,27 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('add_new_membership', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app'  => 'add_new_membership',
-				'data-on-load' => 'wu_initialize_datepickers',
-				'data-state'   => wu_convert_to_state(array(
-					'lifetime' => 1
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_new_membership',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app'  => 'add_new_membership',
+					'data-on-load' => 'wu_initialize_datepickers',
+					'data-state'   => wu_convert_to_state(
+						array(
+							'lifetime' => 1,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_add_new_membership_modal;
+	}
 
 	/**
 	 * Handles creation of a new memberships.
@@ -187,29 +194,31 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 		$products = explode(',', (string) $products);
 
 		if (empty($products)) {
-
-			wp_send_json_error(new \WP_Error(
-				'empty-products',
-				__('Products can not be empty.', 'wp-ultimo')
-			));
-
-		} // end if;
+			wp_send_json_error(
+				new \WP_Error(
+					'empty-products',
+					__('Products can not be empty.', 'wp-ultimo')
+				)
+			);
+		}
 
 		$customer = wu_get_customer(wu_request('customer_id', 0));
 
 		if (empty($customer)) {
+			wp_send_json_error(
+				new \WP_Error(
+					'customer-not-found',
+					__('The selected customer does not exist.', 'wp-ultimo')
+				)
+			);
+		}
 
-			wp_send_json_error(new \WP_Error(
-				'customer-not-found',
-				__('The selected customer does not exist.', 'wp-ultimo')
-			));
-
-		} // end if;
-
-		$cart = new \WP_Ultimo\Checkout\Cart(array(
-			'products' => $products,
-			'country'  => $customer->get_country(),
-		));
+		$cart = new \WP_Ultimo\Checkout\Cart(
+			array(
+				'products' => $products,
+				'country'  => $customer->get_country(),
+			)
+		);
 
 		$data = $cart->to_membership_data();
 
@@ -222,28 +231,28 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 		$maybe_lifetime = wu_request('lifetime');
 
 		if ($maybe_lifetime) {
-
 			$date_expiration = null;
-
-		} // end if;
+		}
 
 		$data['date_expiration'] = $date_expiration;
 
 		$membership = wu_create_membership($data);
 
 		if (is_wp_error($membership)) {
-
 			wp_send_json_error($membership);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-edit-membership', array(
-				'id' => $membership->get_id(),
-			))
-		));
-
-	} // end handle_add_new_membership_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					'wp-ultimo-edit-membership',
+					array(
+						'id' => $membership->get_id(),
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -257,8 +266,7 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Membership removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Membership', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -269,8 +277,7 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Memberships', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -281,8 +288,7 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Memberships', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -293,8 +299,7 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Memberships', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -312,8 +317,7 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 				'url'     => wu_get_form_url('add_new_membership'),
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -324,7 +328,5 @@ class Membership_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Membership_List_Table();
-
-	} // end table;
-
-} // end class Membership_List_Admin_Page;
+	}
+}

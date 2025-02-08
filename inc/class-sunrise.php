@@ -60,7 +60,7 @@ class Sunrise {
 		 * Domain mapping needs to be loaded
 		 * before anything else.
 		 */
-		\WP_Ultimo\Sunrise::load_domain_mapping();
+		self::load_domain_mapping();
 
 		/**
 		 * Enqueue the main hooks that deal with Sunrise
@@ -73,8 +73,7 @@ class Sunrise {
 		add_action('init', array('\WP_Ultimo\Sunrise', 'maybe_tap_on_init'));
 
 		add_filter('wu_system_info_data', array('\WP_Ultimo\Sunrise', 'system_info'));
-
-	} // end init;
+	}
 
 	/**
 	 * Checks if all the requirements for sunrise loading are in place.
@@ -95,8 +94,7 @@ class Sunrise {
 		$should_load_sunrise = wu_should_load_sunrise();
 
 		return $setup_finished && $should_load_sunrise;
-
-	} // end should_startup;
+	}
 
 	/**
 	 * Load dependencies, if we need them somewhere.
@@ -139,9 +137,7 @@ class Sunrise {
 		require_once __DIR__ . '/class-settings.php';
 		require_once __DIR__ . '/limits/class-plugin-limits.php';
 		require_once __DIR__ . '/limits/class-theme-limits.php';
-
-
-	} // end load_dependencies;
+	}
 
 	/**
 	 * Loads domain mapping before anything else.
@@ -151,11 +147,10 @@ class Sunrise {
 	 */
 	public static function load_domain_mapping() {
 
-		$should_startup = \WP_Ultimo\Sunrise::should_startup();
+		$should_startup = self::should_startup();
 
 		if ($should_startup) {
-
-			\WP_Ultimo\Sunrise::load_dependencies();
+			self::load_dependencies();
 
 			/*
 			 * Primary Domain capabilities
@@ -163,10 +158,8 @@ class Sunrise {
 			\WP_Ultimo\Domain_Mapping\Primary_Domain::get_instance();
 
 			\WP_Ultimo\Domain_Mapping::get_instance();
-
-		} // end if;
-
-	} // end load_domain_mapping;
+		}
+	}
 
 	/**
 	 * Loads the Sunrise components, if needed.
@@ -176,7 +169,7 @@ class Sunrise {
 	 */
 	public static function load() {
 
-		$should_startup = \WP_Ultimo\Sunrise::should_startup();
+		$should_startup = self::should_startup();
 
 		if ($should_startup) {
 			/**
@@ -202,7 +195,7 @@ class Sunrise {
 			/**
 			 * Define the WP Multisite WaaS main debug constant.
 			 */
-			!defined('WP_ULTIMO_DEBUG') && define('WP_ULTIMO_DEBUG', false);
+			! defined('WP_ULTIMO_DEBUG') && define('WP_ULTIMO_DEBUG', false);
 
 			/**
 			 * Check if we are using security mode.
@@ -210,11 +203,8 @@ class Sunrise {
 			$security_mode = (bool) (int) wu_get_setting_early('security_mode');
 
 			if ($security_mode) {
-
 				if (wu_get_isset($_GET, 'wu_secure') === wu_get_security_mode_key()) {
-
 					wu_save_setting_early('security_mode', false);
-
 				} else {
 					/**
 					 *  Disable all plugins except WP Multisite WaaS
@@ -222,14 +212,10 @@ class Sunrise {
 					add_filter('option_active_plugins', fn() => array());
 
 					add_filter('site_option_active_sitewide_plugins', fn($plugins) => array(basename(dirname(__DIR__)) . '/wp-ultimo.php' => 1));
-
-				} // end if;
-
-			} // end if;
-
-		} // end if;
-
-	} // end load;
+				}
+			}
+		}
+	}
 
 	/**
 	 * Adds an additional hook that runs after ms_loaded.
@@ -246,8 +232,7 @@ class Sunrise {
 	public static function loaded() {
 
 		do_action('wu_sunrise_loaded');
-
-	} // end loaded;
+	}
 
 	/**
 	 * Checks if we need to upgrade the sunrise version on wp-content
@@ -262,12 +247,9 @@ class Sunrise {
 		$old_version = defined('WP_ULTIMO_SUNRISE_VERSION') ? WP_ULTIMO_SUNRISE_VERSION : '0.0.1';
 
 		if (version_compare($old_version, self::$version, '<')) {
-
-			\WP_Ultimo\Sunrise::try_upgrade();
-
-		} // end if;
-
-	} // end manage_sunrise_updates;
+			self::try_upgrade();
+		}
+	}
 
 	/**
 	 * Upgrades the sunrise file, if necessary.
@@ -290,49 +272,38 @@ class Sunrise {
 		$location = WP_CONTENT_DIR . '/sunrise.php';
 
 		foreach ($possible_sunrises as $new_file) {
-
-			if (!file_exists($new_file)) {
-
+			if ( ! file_exists($new_file)) {
 				continue;
-
-			} // end if;
+			}
 
 			$sunrise_found = true;
 
 			$copy_results = @copy($new_file, $location); // phpcs:ignore
 
-			if (!$copy_results) {
-
+			if ( ! $copy_results) {
 				$error = error_get_last();
 
 				continue;
-
-			} // end if;
+			}
 
 			wu_log_add('sunrise', __('Sunrise upgrade attempt succeeded.', 'wp-ultimo'));
 
 			return true;
-
-		} // end foreach;
+		}
 
 		if ($sunrise_found === false) {
-
 			$error = array(
 				'message' => __('File not found.', 'wp-ultimo'),
 			);
+		}
 
-		} // end if;
-
-		if (!empty($error)) {
-
+		if ( ! empty($error)) {
 			wu_log_add('sunrise', $error['message'], LogLevel::ERROR);
 
 			/* translators: the placeholder is an error message */
 			return new \WP_Error('error', sprintf(__('Sunrise copy failed: %s', 'wp-ultimo'), $error['message']));
-
-		} // end if;
-
-	} // end try_upgrade;
+		}
+	}
 
 	/**
 	 * Reads the sunrise meta file and loads it to the static cache.
@@ -345,27 +316,22 @@ class Sunrise {
 	 */
 	protected static function read_sunrise_meta() {
 
-		if (is_array(\WP_Ultimo\Sunrise::$sunrise_meta)) {
-
-			return \WP_Ultimo\Sunrise::$sunrise_meta;
-
-		} // end if;
+		if (is_array(self::$sunrise_meta)) {
+			return self::$sunrise_meta;
+		}
 
 		$sunrise_meta = get_network_option(null, 'wu_sunrise_meta', null);
 
 		$existing = array();
 
 		if ($sunrise_meta) {
-
 			$existing = $sunrise_meta;
 
 			self::$sunrise_meta = $existing;
-
-		} // end if;
+		}
 
 		return $existing;
-
-	} // end read_sunrise_meta;
+	}
 
 	/**
 	 * Method for imputing Sunrise data at wp-ultimo-system-info table.
@@ -376,9 +342,10 @@ class Sunrise {
 	 */
 	public static function system_info($sys_info) {
 
-		$data = Sunrise::read_sunrise_meta();
+		$data = self::read_sunrise_meta();
 
-		$sys_info = array_merge($sys_info,
+		$sys_info = array_merge(
+			$sys_info,
 			array(
 				'Sunrise Data' => array(
 					'sunrise-status'           => array(
@@ -389,7 +356,7 @@ class Sunrise {
 					'sunrise-data'             => array(
 						'tooltip' => '',
 						'title'   => 'Version',
-						'value'   => Sunrise::$version
+						'value'   => self::$version,
 					),
 					'sunrise-created'          => array(
 						'tooltip' => '',
@@ -410,14 +377,13 @@ class Sunrise {
 						'tooltip' => '',
 						'title'   => 'Last Modified',
 						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_modified']),
-					)
+					),
 				),
 			)
 		);
 
 		return $sys_info;
-
-	} // end system_info;
+	}
 
 	/**
 	 * Checks if the sunrise extra modules need to be loaded.
@@ -427,11 +393,10 @@ class Sunrise {
 	 */
 	public static function should_load_sunrise() {
 
-		$meta = \WP_Ultimo\Sunrise::read_sunrise_meta();
+		$meta = self::read_sunrise_meta();
 
 		return wu_get_isset($meta, 'active', false);
-
-	}  // end should_load_sunrise;
+	}
 
 	/**
 	 * Makes sure the meta file accurately reflects the state of the main plugin.
@@ -443,9 +408,8 @@ class Sunrise {
 
 		$state = function_exists('WP_Ultimo') && WP_Ultimo()->is_loaded();
 
-		\WP_Ultimo\Sunrise::maybe_tap($state ? 'activating' : 'deactivating');
-
-	} // end maybe_tap_on_init;
+		self::maybe_tap($state ? 'activating' : 'deactivating');
+	}
 
 	/**
 	 * Updates the sunrise meta file, if an update is due.
@@ -457,23 +421,18 @@ class Sunrise {
 	 */
 	public static function maybe_tap($mode = 'activating') {
 
-		$meta = \WP_Ultimo\Sunrise::read_sunrise_meta();
+		$meta = self::read_sunrise_meta();
 
 		$is_active = isset($meta['active']) && $meta['active'];
 
 		if ($is_active && $mode === 'activating') {
-
 			return false;
-
-		} elseif (!$is_active && $mode === 'deactivating') {
-
+		} elseif ( ! $is_active && $mode === 'deactivating') {
 			return false;
+		}
 
-		} // end if;
-
-		return (bool) \WP_Ultimo\Sunrise::tap($mode, $meta);
-
-	} // end maybe_tap;
+		return (bool) self::tap($mode, $meta);
+	}
 
 	/**
 	 * Updates the sunrise meta file.
@@ -488,36 +447,31 @@ class Sunrise {
 
 		$now = gmdate('U');
 
-		$to_save = wp_parse_args($existing, array(
-			'active'           => false,
-			'created'          => $now,
-			'last_activated'   => 'unknown',
-			'last_deactivated' => 'unknown',
-		));
+		$to_save = wp_parse_args(
+			$existing,
+			array(
+				'active'           => false,
+				'created'          => $now,
+				'last_activated'   => 'unknown',
+				'last_deactivated' => 'unknown',
+			)
+		);
 
 		if ($mode === 'activating') {
-
 			$to_save['active']         = true;
 			$to_save['last_activated'] = $now;
-
 		} elseif ($mode === 'deactivating') {
-
 			$to_save['active']           = false;
 			$to_save['last_deactivated'] = $now;
-
 		} else {
-
 			return false;
-
-		} // end if;
+		}
 
 		$to_save['last_modified'] = $now;
 
 		return update_network_option(null, 'wu_sunrise_meta', $to_save);
-
-	} // end tap;
+	}
 
 	// phpcs:ignore
-	private function __construct() {} // end __construct;
-
-} // end class Sunrise;
+	private function __construct() {}
+}

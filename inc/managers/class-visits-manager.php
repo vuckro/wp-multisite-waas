@@ -32,10 +32,9 @@ class Visits_Manager {
 	public function init() {
 
 		if ((bool) wu_get_setting('enable_visits_limiting', true) === false || is_main_site()) {
-
 			return; // Feature not active, bail.
 
-		} // end if;
+		}
 
 		/*
 		 * Due to how caching plugins work, we need to count visits via ajax.
@@ -46,8 +45,7 @@ class Visits_Manager {
 		add_action('wp_enqueue_scripts', array($this, 'enqueue_visit_counter_script'));
 
 		add_action('template_redirect', array($this, 'maybe_lock_site'));
-
-	} // end init;
+	}
 
 	/**
 	 * Check if the limits for visits was set. If that's the case, lock the site.
@@ -59,28 +57,21 @@ class Visits_Manager {
 
 		$site = wu_get_current_site();
 
-		if (!$site) {
-
+		if ( ! $site) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Case unlimited visits
 		 */
 		if (empty($site->get_limitations()->visits->get_limit())) {
-
 			return;
-
-		} // end if;
+		}
 
 		if ($site->has_limitations() && $site->get_visits_count() > $site->get_limitations()->visits->get_limit()) {
-
 			wp_die(__('This site is not available at this time.', 'wp-ultimo'), __('Not available', 'wp-ultimo'), 404);
-
-		} // end if;
-
-	} // end maybe_lock_site;
+		}
+	}
 
 	/**
 	 * Counts visits to network sites.
@@ -98,18 +89,15 @@ class Visits_Manager {
 	public function count_visits() {
 
 		if (is_main_site() && is_admin()) {
-
 			return; // bail on main site.
 
-		} // end if;
+		}
 
 		$site = wu_get_current_site();
 
 		if ($site->get_type() !== 'customer_owned') {
-
 			return;
-
-		} // end if;
+		}
 
 		$visits_manager = new \WP_Ultimo\Objects\Visits($site->get_id());
 
@@ -122,18 +110,15 @@ class Visits_Manager {
 		 * Checks against the limitations.
 		 */
 		if (false) {
-
 			Cache_Manager::get_instance()->flush_known_caches();
 
 			echo 'flushing caches';
 
 			die('2');
-
-		} // end if;
+		}
 
 		die('1');
-
-	} // end count_visits;
+	}
 
 	/**
 	 * Enqueues the visits count script when necessary.
@@ -144,20 +129,21 @@ class Visits_Manager {
 	public function enqueue_visit_counter_script() {
 
 		if (is_user_logged_in()) {
-
 			return; // bail if user is logged in.
 
-		} // end if;
+		}
 
 		wp_register_script('wu-visits-counter', wu_get_asset('visits-counter.js', 'js'), array(), wu_get_version());
 
-		wp_localize_script('wu-visits-counter', 'wu_visits_counter', array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
-			'code'    => wp_create_nonce('wu-visit-counter'),
-		));
+		wp_localize_script(
+			'wu-visits-counter',
+			'wu_visits_counter',
+			array(
+				'ajaxurl' => admin_url('admin-ajax.php'),
+				'code'    => wp_create_nonce('wu-visit-counter'),
+			)
+		);
 
 		wp_enqueue_script('wu-visits-counter');
-
-	} // end enqueue_visit_counter_script;
-
-} // end class Visits_Manager;
+	}
+}

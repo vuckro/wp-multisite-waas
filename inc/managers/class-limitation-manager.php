@@ -14,9 +14,9 @@ namespace WP_Ultimo\Managers;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \Psr\Log\LogLevel;
-use \WP_Ultimo\Objects\Limitations;
-use \WP_Ultimo\Database\Sites\Site_Type;
+use Psr\Log\LogLevel;
+use WP_Ultimo\Objects\Limitations;
+use WP_Ultimo\Database\Sites\Site_Type;
 
 /**
  * Handles processes related to limitations.
@@ -36,10 +36,8 @@ class Limitation_Manager {
 	public function init() {
 
 		if (WP_Ultimo()->is_loaded() === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		add_filter('wu_product_options_sections', array($this, 'add_limitation_sections'), 10, 2);
 
@@ -52,8 +50,7 @@ class Limitation_Manager {
 		add_action('wu_async_handle_plugins', array($this, 'async_handle_plugins'), 10, 5);
 
 		add_action('wu_async_switch_theme', array($this, 'async_switch_theme'), 10, 2);
-
-	} // end init;
+	}
 
 	/**
 	 * Handles async plugin activation and deactivation.
@@ -73,34 +70,25 @@ class Limitation_Manager {
 
 		// Avoid doing anything on the main site.
 		if (wu_get_main_site_id() === $site_id) {
-
 			return $results;
-
-		} // end if;
+		}
 
 		switch_to_blog($site_id);
 
 		if ($action === 'activate') {
-
 			$results = activate_plugins($plugins, '', $network_wide, $silent);
-
 		} elseif ($action === 'deactivate') {
-
 			$results = deactivate_plugins($plugins, $silent, $network_wide);
-
-		} // end if;
+		}
 
 		if (is_wp_error($results)) {
-
 			wu_log_add('plugins', $results, LogLevel::ERROR);
-
-		} // end if;
+		}
 
 		restore_current_blog();
 
 		return $results;
-
-	} // end async_handle_plugins;
+	}
 
 	/**
 	 * Switch themes via Job Queue.
@@ -120,8 +108,7 @@ class Limitation_Manager {
 		restore_current_blog();
 
 		return true;
-
-	} // end async_switch_theme;
+	}
 
 	/**
 	 * Register the modal windows to confirm resetting the limitations.
@@ -131,12 +118,14 @@ class Limitation_Manager {
 	 */
 	public function register_forms() {
 
-		wu_register_form('confirm_limitations_reset', array(
-			'render'  => array($this, 'render_confirm_limitations_reset'),
-			'handler' => array($this, 'handle_confirm_limitations_reset'),
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'confirm_limitations_reset',
+			array(
+				'render'  => array($this, 'render_confirm_limitations_reset'),
+				'handler' => array($this, 'handle_confirm_limitations_reset'),
+			)
+		);
+	}
 
 	/**
 	 * Renders the conformation modal to reset limitations.
@@ -182,17 +171,18 @@ class Limitation_Manager {
 			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
 			'html_attr'             => array(
 				'data-wu-app' => 'reset_limitations',
-				'data-state'  => json_encode(array(
-					'confirmed' => false,
-				)),
+				'data-state'  => json_encode(
+					array(
+						'confirmed' => false,
+					)
+				),
 			),
 		);
 
 		$form = new \WP_Ultimo\UI\Form('reset_limitations', $fields, $form_attributes);
 
 		$form->render();
-
-	} // end render_confirm_limitations_reset;
+	}
 
 	/**
 	 * Handles the reset of permissions.
@@ -206,28 +196,32 @@ class Limitation_Manager {
 
 		$model = wu_request('model');
 
-		if (!$id || !$model) {
-
-			wp_send_json_error(new \WP_Error(
-				'parameters-not-found',
-				__('Required parameters are missing.', 'wp-ultimo')
-			));
-
-		} // end if;
+		if ( ! $id || ! $model) {
+			wp_send_json_error(
+				new \WP_Error(
+					'parameters-not-found',
+					__('Required parameters are missing.', 'wp-ultimo')
+				)
+			);
+		}
 
 		/*
 		 * Remove limitations object
 		 */
 		Limitations::remove_limitations($model, $id);
 
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url("wp-ultimo-edit-{$model}", array(
-				'id'      => $id,
-				'updated' => 1,
-			))
-		));
-
-	} // end handle_confirm_limitations_reset;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					"wp-ultimo-edit-{$model}",
+					array(
+						'id'      => $id,
+						'updated' => 1,
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Returns the type of the object that has limitations.
@@ -242,22 +236,15 @@ class Limitation_Manager {
 		$model = false;
 
 		if (is_a($object, \WP_Ultimo\Models\Site::class)) {
-
 			$model = 'site';
-
 		} elseif (is_a($object, WP_Ultimo\Models\Membership::class)) {
-
 			$model = 'membership';
-
 		} elseif (is_a($object, \WP_Ultimo\Models\Product::class)) {
-
 			$model = 'product';
-
-		} // end if;
+		}
 
 		return apply_filters('wu_limitations_get_object_type', $model);
-
-	} // end get_object_type;
+	}
 
 	/**
 	 * Injects the limitations panels when necessary.
@@ -271,7 +258,6 @@ class Limitation_Manager {
 	public function add_limitation_sections($sections, $object) {
 
 		if ($this->get_object_type($object) === 'site' && $object->get_type() !== Site_Type::CUSTOMER_OWNED) {
-
 			$html = sprintf('<span class="wu--mt-4 wu-p-2 wu-bg-blue-100 wu-text-blue-600 wu-rounded wu-block">%s</span>', __('Limitations are only available for customer-owned sites. You need to change the type to Customer-owned and save this site before the options are shown.', 'wp-ultimo'));
 
 			$sections['sites'] = array(
@@ -282,16 +268,14 @@ class Limitation_Manager {
 					'note' => array(
 						'type'    => 'html',
 						'content' => $html,
-					)
-				)
+					),
+				),
 			);
 
 			return $sections;
-
-		} // end if;
+		}
 
 		if ($this->get_object_type($object) !== 'site') {
-
 			$sections['sites'] = array(
 				'title'  => __('Sites', 'wp-ultimo'),
 				'desc'   => __('Control limitations imposed to the number of sites allowed for memberships attached to this product.', 'wp-ultimo'),
@@ -302,14 +286,12 @@ class Limitation_Manager {
 					'limit_sites' => $object->get_limitations()->sites->is_enabled(),
 				),
 			);
-
-		} // end if;
+		}
 
 		/*
 		 * Add Visits limitation control
 		 */
 		if ((bool) wu_get_setting('enable_visits_limiting', true)) {
-
 			$sections['visits'] = array(
 				'title'  => __('Visits', 'wp-ultimo'),
 				'desc'   => __('Control limitations imposed to the number of unique visitors allowed for memberships attached to this product.', 'wp-ultimo'),
@@ -325,17 +307,15 @@ class Limitation_Manager {
 						'desc'      => __('Toggle this option to enable unique visits limitation.', 'wp-ultimo'),
 						'value'     => 10,
 						'html_attr' => array(
-							'v-model' => 'limit_visits'
+							'v-model' => 'limit_visits',
 						),
 					),
 				),
 			);
 
 			if ($object->model !== 'product') {
-
 				$sections['visits']['fields']['modules_visits_overwrite'] = $this->override_notice($object->get_limitations(false)->visits->has_own_enabled());
-
-			} // end if;
+			}
 
 			$sections['visits']['fields']['modules[visits][limit]'] = array(
 				'type'              => 'number',
@@ -353,17 +333,14 @@ class Limitation_Manager {
 			);
 
 			if ($object->model !== 'product') {
-
 				$sections['visits']['fields']['allowed_visits_overwrite'] = $this->override_notice($object->get_limitations(false)->visits->has_own_limit(), array('limit_visits'));
-
-			} // end if;
+			}
 
 			/*
 			 * If this is a site edit screen, show the current values
 			 * for visits and the reset date
 			 */
 			if ($this->get_object_type($object) === 'site') {
-
 				$sections['visits']['fields']['visits_count'] = array(
 					'type'              => 'text-display',
 					'title'             => __('Current Unique Visits Count this Month', 'wp-ultimo'),
@@ -374,10 +351,8 @@ class Limitation_Manager {
 						'v-cloak' => '1',
 					),
 				);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		$sections['users'] = array(
 			'title'  => __('Users', 'wp-ultimo'),
@@ -393,17 +368,15 @@ class Limitation_Manager {
 					'title'     => __('Limit User', 'wp-ultimo'),
 					'desc'      => __('Enable user limitations for this product.', 'wp-ultimo'),
 					'html_attr' => array(
-						'v-model' => 'limit_users'
+						'v-model' => 'limit_users',
 					),
 				),
 			),
 		);
 
 		if ($object->model !== 'product') {
-
 			$sections['users']['fields']['modules_user_overwrite'] = $this->override_notice($object->get_limitations(false)->users->has_own_enabled());
-
-		} // end if;
+		}
 
 		$this->register_user_fields($sections, $object);
 
@@ -429,10 +402,8 @@ class Limitation_Manager {
 		);
 
 		if ($object->model !== 'product') {
-
 			$sections['post_types']['fields']['post_quota_overwrite'] = $this->override_notice($object->get_limitations(false)->post_types->has_own_enabled());
-
-		} // end if;
+		}
 
 		$sections['post_types']['post_quota_note'] = array(
 			'type'              => 'note',
@@ -467,10 +438,8 @@ class Limitation_Manager {
 		);
 
 		if ($object->model !== 'product') {
-
 			$sections['limit_disk_space']['fields']['disk_space_modules_overwrite'] = $this->override_notice($object->get_limitations(false)->disk_space->has_own_enabled());
-
-		} // end if;
+		}
 
 		$sections['limit_disk_space']['fields']['modules[disk_space][limit]'] = array(
 			'type'              => 'number',
@@ -486,10 +455,8 @@ class Limitation_Manager {
 		);
 
 		if ($object->model !== 'product') {
-
 			$sections['limit_disk_space']['fields']['disk_space_override'] = $this->override_notice($object->get_limitations(false)->disk_space->has_own_limit(), array('limit_disk_space'));
-
-		} // end if;
+		}
 
 		$sections['custom_domain'] = array(
 			'title'  => __('Custom Domains', 'wp-ultimo'),
@@ -516,10 +483,8 @@ class Limitation_Manager {
 		);
 
 		if ($object->model !== 'product') {
-
 			$sections['custom_domain']['fields']['custom_domain_override'] = $this->override_notice($object->get_limitations(false)->domain_mapping->has_own_enabled(), array('allow_domain_mapping'));
-
-		} // end if;
+		}
 
 		$sections['allowed_themes'] = array(
 			'title'  => __('Themes', 'wp-ultimo'),
@@ -554,10 +519,13 @@ class Limitation_Manager {
 			),
 		);
 
-		$reset_url = wu_get_form_url('confirm_limitations_reset', array(
-			'id'    => $object->get_id(),
-			'model' => $object->model,
-		));
+		$reset_url = wu_get_form_url(
+			'confirm_limitations_reset',
+			array(
+				'id'    => $object->get_id(),
+				'model' => $object->model,
+			)
+		);
 
 		$sections['reset_limitations'] = array(
 			'title'  => __('Reset Limitations', 'wp-ultimo'),
@@ -573,8 +541,7 @@ class Limitation_Manager {
 		);
 
 		return $sections;
-
-	} // end add_limitation_sections;
+	}
 
 	/**
 	 * Generates the override notice.
@@ -599,8 +566,7 @@ class Limitation_Manager {
 				'style'   => 'border-top-width: 0 !important',
 			),
 		);
-
-	} // end override_notice;
+	}
 
 	/**
 	 * Register the user roles fields
@@ -618,10 +584,9 @@ class Limitation_Manager {
 		$sections['users']['state']['roles'] = array();
 
 		foreach ($user_roles as $user_role_slug => $user_role) {
+			$sections['users']['state']['roles'][ $user_role_slug ] = $object->get_limitations()->users->{$user_role_slug};
 
-			$sections['users']['state']['roles'][$user_role_slug] = $object->get_limitations()->users->{$user_role_slug};
-
-			$sections['users']['fields']["control_{$user_role_slug}"] = array(
+			$sections['users']['fields'][ "control_{$user_role_slug}" ] = array(
 				'type'              => 'group',
 				'title'             => sprintf(__('Limit %s Role', 'wp-ultimo'), $user_role['name']),
 				'desc'              => sprintf(__('The customer will be able to create %s users(s) of this user role.', 'wp-ultimo'), "{{ roles['{$user_role_slug}'].enabled ? ( parseInt(roles['{$user_role_slug}'].number, 10) ? roles['{$user_role_slug}'].number : '" . __('unlimited', 'wp-ultimo') . "' ) : '" . __('no', 'wp-ultimo') . "' }}"),
@@ -656,14 +621,10 @@ class Limitation_Manager {
 			 * Add override notice.
 			 */
 			if ($object->model !== 'product') {
-
-				$sections['users']['fields']["override_{$user_role_slug}"] = $this->override_notice($object->get_limitations(false)->users->exists($user_role_slug), array('limit_users'));
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end register_user_fields;
+				$sections['users']['fields'][ "override_{$user_role_slug}" ] = $this->override_notice($object->get_limitations(false)->users->exists($user_role_slug), array('limit_users'));
+			}
+		}
+	}
 
 	/**
 	 * Register the post type fields
@@ -681,10 +642,9 @@ class Limitation_Manager {
 		$sections['post_types']['state']['types'] = array();
 
 		foreach ($post_types as $post_type_slug => $post_type) {
+			$sections['post_types']['state']['types'][ $post_type_slug ] = $object->get_limitations()->post_types->{$post_type_slug};
 
-			$sections['post_types']['state']['types'][$post_type_slug] = $object->get_limitations()->post_types->{$post_type_slug};
-
-			$sections['post_types']['fields']["control_{$post_type_slug}"] = array(
+			$sections['post_types']['fields'][ "control_{$post_type_slug}" ] = array(
 				'type'              => 'group',
 				'title'             => sprintf(__('Limit %s', 'wp-ultimo'), $post_type->label),
 				'desc'              => sprintf(__('The customer will be able to create %s post(s) of this post type.', 'wp-ultimo'), "{{ types['{$post_type_slug}'].enabled ? ( parseInt(types['{$post_type_slug}'].number, 10) ? types['{$post_type_slug}'].number : '" . __('unlimited', 'wp-ultimo') . "' ) : '" . __('no', 'wp-ultimo') . "' }}"),
@@ -719,16 +679,15 @@ class Limitation_Manager {
 			 * Add override notice.
 			 */
 			if ($object->model !== 'product') {
-
-				$sections['post_types']['fields']["override_{$post_type_slug}"] = $this->override_notice($object->get_limitations(false)->post_types->exists($post_type_slug), array(
-					'limit_post_types'
-				));
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end register_post_type_fields;
+				$sections['post_types']['fields'][ "override_{$post_type_slug}" ] = $this->override_notice(
+					$object->get_limitations(false)->post_types->exists($post_type_slug),
+					array(
+						'limit_post_types',
+					)
+				);
+			}
+		}
+	}
 
 	/**
 	 * Returns the list of fields for the site tab.
@@ -747,16 +706,14 @@ class Limitation_Manager {
 				'desc'      => __('Enable site limitations for this product.', 'wp-ultimo'),
 				'value'     => $object->get_limitations()->sites->is_enabled(),
 				'html_attr' => array(
-					'v-model' => 'limit_sites'
+					'v-model' => 'limit_sites',
 				),
 			),
 		);
 
 		if ($object->model !== 'product') {
-
 			$fields['sites_overwrite'] = $this->override_notice($object->get_limitations(false)->sites->has_own_enabled());
-
-		} // end if;
+		}
 
 		/*
 		 * Sites not supported on this type
@@ -785,14 +742,11 @@ class Limitation_Manager {
 		);
 
 		if ($object->model !== 'product') {
-
 			$fields['sites_overwrite_2'] = $this->override_notice($object->get_limitations(false)->sites->has_own_limit(), array("get_state_value('product_type', 'none') !== 'service' && limit_sites"));
-
-		} // end if;
+		}
 
 		return apply_filters('wu_limitations_get_sites_fields', $fields, $object, $this);
-
-	} // end get_sites_fields;
+	}
 
 	/**
 	 * Returns the HTML markup for the plugin selector list.
@@ -806,12 +760,14 @@ class Limitation_Manager {
 
 		$all_plugins = $this->get_all_plugins();
 
-		return wu_get_template_contents('limitations/plugin-selector', array(
-			'plugins' => $all_plugins,
-			'object'  => $object,
-		));
-
-	} // end get_plugin_selection_list;
+		return wu_get_template_contents(
+			'limitations/plugin-selector',
+			array(
+				'plugins' => $all_plugins,
+				'object'  => $object,
+			)
+		);
+	}
 
 	/**
 	 * Returns the HTML markup for the plugin selector list.
@@ -826,13 +782,15 @@ class Limitation_Manager {
 
 		$all_themes = $this->get_all_themes();
 
-		return wu_get_template_contents('limitations/theme-selector', array(
-			'section' => $section,
-			'themes'  => $all_themes,
-			'object'  => $object,
-		));
-
-	} // end get_theme_selection_list;
+		return wu_get_template_contents(
+			'limitations/theme-selector',
+			array(
+				'section' => $section,
+				'themes'  => $all_themes,
+				'object'  => $object,
+			)
+		);
+	}
 
 	/**
 	 * Returns a list of all plugins available as options, excluding WP Multisite WaaS.
@@ -849,26 +807,19 @@ class Limitation_Manager {
 		$listed_plugins = array();
 
 		foreach ($all_plugins as $plugin_path => $plugin_info) {
-
 			if (wu_get_isset($plugin_info, 'Network') === true) {
-
 				continue;
-
-			} // end if;
+			}
 
 			if (in_array($plugin_path, $this->plugin_exclusion_list(), true)) {
-
 				continue;
+			}
 
-			} // end if;
-
-			$listed_plugins[$plugin_path] = $plugin_info;
-
-		} // end foreach;
+			$listed_plugins[ $plugin_path ] = $plugin_info;
+		}
 
 		return $listed_plugins;
-
-	} // end get_all_plugins;
+	}
 	/**
 	 * Returns a list of all themes available as options, after filtering.
 	 *
@@ -878,9 +829,8 @@ class Limitation_Manager {
 
 		$all_plugins = wp_get_themes();
 
-		return array_filter($all_plugins, fn($path) => !in_array($path, $this->theme_exclusion_list(), true), ARRAY_FILTER_USE_KEY);
-
-	} // end get_all_themes;
+		return array_filter($all_plugins, fn($path) => ! in_array($path, $this->theme_exclusion_list(), true), ARRAY_FILTER_USE_KEY);
+	}
 
 	/**
 	 * Returns the exclusion list for plugins.
@@ -898,8 +848,7 @@ class Limitation_Manager {
 		);
 
 		return apply_filters('wu_limitations_plugin_exclusion_list', $exclusion_list);
-
-	} // end plugin_exclusion_list;
+	}
 
 	/**
 	 * Returns the exclusion list for themes.
@@ -912,7 +861,5 @@ class Limitation_Manager {
 		$exclusion_list = array();
 
 		return apply_filters('wu_limitations_theme_exclusion_list', $exclusion_list);
-
-	} // end theme_exclusion_list;
-
-} // end class Limitation_Manager;
+	}
+}

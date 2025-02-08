@@ -57,7 +57,7 @@ class Memberships_Schema extends Schema {
 			'length'     => '20',
 			'unsigned'   => true,
 			'default'    => null,
-			'allow_null' => true
+			'allow_null' => true,
 		),
 
 		array(
@@ -76,7 +76,7 @@ class Memberships_Schema extends Schema {
 			'length'     => '20',
 			'unsigned'   => true,
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		// addons
@@ -91,7 +91,7 @@ class Memberships_Schema extends Schema {
 			'type'     => 'varchar',
 			'length'   => '20',
 			'default'  => 'USD',
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -128,7 +128,7 @@ class Memberships_Schema extends Schema {
 			'unsigned'   => true,
 			'default'    => '0',
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		array(
@@ -224,7 +224,7 @@ class Memberships_Schema extends Schema {
 			'type'       => 'smallint',
 			'unsigned'   => true,
 			'default'    => '0',
-			'transition' => true
+			'transition' => true,
 		),
 
 		// times_billed
@@ -234,7 +234,7 @@ class Memberships_Schema extends Schema {
 			'unsigned'   => true,
 			'default'    => '0',
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		// billing_cycles
@@ -243,7 +243,7 @@ class Memberships_Schema extends Schema {
 			'type'     => 'smallint',
 			'unsigned' => true,
 			'default'  => '0',
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		// status
@@ -263,7 +263,7 @@ class Memberships_Schema extends Schema {
 			'default'    => '',
 			'searchable' => true,
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		// gateway_subscription_id
@@ -273,7 +273,7 @@ class Memberships_Schema extends Schema {
 			'default'    => '',
 			'searchable' => true,
 			'sortable'   => true,
-			'transition' => true
+			'transition' => true,
 		),
 
 		// gateway
@@ -298,7 +298,7 @@ class Memberships_Schema extends Schema {
 			'length'     => '32',
 			'default'    => '',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		// upgraded_from
@@ -307,7 +307,7 @@ class Memberships_Schema extends Schema {
 			'type'     => 'bigint',
 			'length'   => '20',
 			'unsigned' => true,
-			'default'  => ''
+			'default'  => '',
 		),
 
 		// date_modified
@@ -317,7 +317,7 @@ class Memberships_Schema extends Schema {
 			'default'    => null,
 			'modified'   => true,
 			'date_query' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		// disabled
@@ -326,9 +326,8 @@ class Memberships_Schema extends Schema {
 			'type'     => 'smallint',
 			'unsigned' => true,
 			'default'  => '',
-			'pattern'  => '%d'
+			'pattern'  => '%d',
 		),
 
 	);
-
-} // end class Memberships_Schema;
+}

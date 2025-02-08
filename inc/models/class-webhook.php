@@ -121,10 +121,9 @@ class Webhook extends Base_Model {
 			'active'           => 'default:1',
 			'hidden'           => 'default:0',
 			'integration'      => 'required|min:2',
-			'date_last_failed' => 'default:'
+			'date_last_failed' => 'default:',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get the value of name.
@@ -134,8 +133,7 @@ class Webhook extends Base_Model {
 	public function get_name() {
 
 		return $this->name;
-
-	} // end get_name;
+	}
 
 	/**
 	 * Set the value of name.
@@ -145,8 +143,7 @@ class Webhook extends Base_Model {
 	public function set_name($name) {
 
 		$this->name = $name;
-
-	} // end set_name;
+	}
 
 	/**
 	 * Get the value of webhook_url.
@@ -156,8 +153,7 @@ class Webhook extends Base_Model {
 	public function get_webhook_url() {
 
 		return $this->webhook_url;
-
-	} // end get_webhook_url;
+	}
 
 	/**
 	 * Set the value of webhook_url.
@@ -167,8 +163,7 @@ class Webhook extends Base_Model {
 	public function set_webhook_url($webhook_url) {
 
 		$this->webhook_url = $webhook_url;
-
-	} // end set_webhook_url;
+	}
 
 	/**
 	 * Get the value of event.
@@ -178,8 +173,7 @@ class Webhook extends Base_Model {
 	public function get_event() {
 
 		return $this->event;
-
-	} // end get_event;
+	}
 
 	/**
 	 * Set the value of event.
@@ -189,8 +183,7 @@ class Webhook extends Base_Model {
 	public function set_event($event) {
 
 		$this->event = $event;
-
-	} // end set_event;
+	}
 
 	/**
 	 * Get the value of event_count.
@@ -200,8 +193,7 @@ class Webhook extends Base_Model {
 	public function get_event_count() {
 
 		return (int) $this->event_count;
-
-	} // end get_event_count;
+	}
 
 	/**
 	 * Set the value of event_count.
@@ -211,8 +203,7 @@ class Webhook extends Base_Model {
 	public function set_event_count($event_count) {
 
 		$this->event_count = $event_count;
-
-	} // end set_event_count;
+	}
 
 	/**
 	 * Check if this particular mapping is active.
@@ -223,8 +214,7 @@ class Webhook extends Base_Model {
 	public function is_active() {
 
 		return (bool) $this->active;
-
-	} // end is_active;
+	}
 
 	/**
 	 * Sets the active state of this model object;
@@ -237,8 +227,7 @@ class Webhook extends Base_Model {
 	public function set_active($active) {
 
 		$this->active = (bool) wu_string_to_bool($active);
-
-	} // end set_active;
+	}
 
 	/**
 	 * Get is this webhook hidden?
@@ -248,8 +237,7 @@ class Webhook extends Base_Model {
 	public function is_hidden() {
 
 		return (bool) $this->hidden;
-
-	} // end is_hidden;
+	}
 
 	/**
 	 * Set is this webhook hidden?
@@ -259,8 +247,7 @@ class Webhook extends Base_Model {
 	public function set_hidden($hidden) {
 
 		$this->hidden = $hidden;
-
-	} // end set_hidden;
+	}
 
 	/**
 	 * Get integration name.
@@ -270,8 +257,7 @@ class Webhook extends Base_Model {
 	public function get_integration() {
 
 		return $this->integration;
-
-	} // end get_integration;
+	}
 
 	/**
 	 * Get date when this was created..
@@ -282,8 +268,7 @@ class Webhook extends Base_Model {
 	public function get_date_created() {
 
 		return $this->date_created;
-
-	} // end get_date_created;
+	}
 
 	/**
 	 * Get date when this was created..
@@ -294,8 +279,7 @@ class Webhook extends Base_Model {
 	public function get_date_last_failed() {
 
 		return $this->date_last_failed;
-
-	} // end get_date_last_failed;
+	}
 
 	/**
 	 * Set date when this was created..
@@ -307,8 +291,7 @@ class Webhook extends Base_Model {
 	public function set_date_created($date_created) {
 
 		$this->date_created = $date_created;
-
-	} // end set_date_created;
+	}
 
 	/**
 	 * Set integration name.
@@ -318,7 +301,5 @@ class Webhook extends Base_Model {
 	public function set_integration($integration) {
 
 		$this->integration = $integration;
-
-	} // end set_integration;
-
-} // end class Webhook;
+	}
+}

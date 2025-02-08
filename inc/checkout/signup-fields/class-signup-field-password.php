@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -32,8 +32,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function get_type() {
 
 		return 'password';
-
-	} // end get_type;
+	}
 
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
@@ -44,8 +43,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function is_required() {
 
 		return true;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Is this a user-related field?
@@ -59,8 +57,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function is_user_field() {
 
 		return true;
-
-	} // end is_user_field;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -73,8 +70,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Password', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -87,8 +83,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a password field, with options for enforcing password strength and adding password confirmation field. This password is then used to create the WordPress user.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -101,8 +96,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a password field, with options for enforcing password strength and adding password confirmation field. This password is then used to create the WordPress user.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 
 	/**
 	 * Returns the icon to be used on the selector.
@@ -115,8 +109,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 	public function get_icon() {
 
 		return 'dashicons-wu-lock1';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -133,8 +126,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 			'password_confirm_field' => false,
 			'password_confirm_label' => __('Confirm Password', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -149,8 +141,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 			'placeholder',
 			'tooltip',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -164,8 +155,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 			'id'       => 'password',
 			'required' => true,
 		);
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -189,8 +179,7 @@ class Signup_Field_Password extends Base_Signup_Field {
 				'value' => 1,
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -205,10 +194,8 @@ class Signup_Field_Password extends Base_Signup_Field {
 		 * Logged in user, bail.
 		 */
 		if (is_user_logged_in()) {
-
 			return array();
-
-		} // end if;
+		}
 
 		$checkout_fields = array();
 
@@ -231,7 +218,6 @@ class Signup_Field_Password extends Base_Signup_Field {
 		);
 
 		if ($attributes['password_confirm_field']) {
-
 			$checkout_fields['password_conf'] = array(
 				'type'              => 'password',
 				'id'                => 'password_conf',
@@ -249,11 +235,8 @@ class Signup_Field_Password extends Base_Signup_Field {
 					'style' => $this->calculate_style_attr(),
 				),
 			);
-
-		} // end if;
+		}
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Password;
+	}
+}

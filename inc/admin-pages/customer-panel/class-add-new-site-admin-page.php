@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages\Customer_Panel;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
+use WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
 
 /**
  * WP Multisite WaaS Add New Site Admin Page.
@@ -20,10 +20,10 @@ use \WP_Ultimo\Admin_Pages\Base_Customer_Facing_Admin_Page;
 class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 
 	/**
-     * Holds the ID for this page, this is also used as the page slug.
-     *
-     * @var string
-     */
+	 * Holds the ID for this page, this is also used as the page slug.
+	 *
+	 * @var string
+	 */
 	protected $id = 'add-new-site';
 
 	/**
@@ -127,12 +127,9 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		$this->register_page_settings();
 
 		if ($this->current_site->get_type() === 'customer_owned') {
-
 			parent::__construct();
-
-		} // end if;
-
-	} // end __construct;
+		}
+	}
 
 	/**
 	 * Loads the current site and membership.
@@ -143,8 +140,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function page_loaded() {
 
 		$this->customer = wu_get_current_customer();
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Allow child classes to add hooks to be run once the page is loaded.
@@ -153,7 +149,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function hooks() {} // end hooks;
+	public function hooks() {}
 
 	/**
 	 * Force the screen options so our customize options show up.
@@ -164,18 +160,18 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function force_screen_options() {
 
 		if (get_current_screen()->id !== 'toplevel_page_sites') {
-
 			return;
-
-		} // end if;
+		}
 
 		// Forces Screen options so we can add our links.
-		add_screen_option('wu_fix', array(
-			'option' => 'test',
-			'value'  => true,
-		));
-
-	} // end force_screen_options;
+		add_screen_option(
+			'wu_fix',
+			array(
+				'option' => 'test',
+				'value'  => true,
+			)
+		);
+	}
 
 	/**
 	 * Allow child classes to add screen options; Useful for pages that have list tables.
@@ -183,7 +179,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function screen_options() {} // end screen_options;
+	public function screen_options() {}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -195,12 +191,15 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 
 		\WP_Ultimo\UI\Simple_Text_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes');
 
-		\WP_Ultimo\UI\Checkout_Element::get_instance()->as_inline_content(get_current_screen()->id, 'wu_dash_before_metaboxes', array(
-			'slug'                   => 'wu-add-new-site',
-			'membership_limitations' => array('sites'),
-		));
-
-	} // end register_widgets;
+		\WP_Ultimo\UI\Checkout_Element::get_instance()->as_inline_content(
+			get_current_screen()->id,
+			'wu_dash_before_metaboxes',
+			array(
+				'slug'                   => 'wu-add-new-site',
+				'membership_limitations' => array('sites'),
+			)
+		);
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -211,8 +210,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_title() {
 
 		return __('Add New Site', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -223,8 +221,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Add New Site', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -235,8 +232,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Add New Site', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -248,12 +244,13 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
-		wu_get_template('base/dash', array(
-			'screen'            => get_current_screen(),
-			'page'              => $this,
-			'has_full_position' => false,
-		));
-
-	} // end output;
-
-} // end class Add_New_Site_Admin_Page;
+		wu_get_template(
+			'base/dash',
+			array(
+				'screen'            => get_current_screen(),
+				'page'              => $this,
+				'has_full_position' => false,
+			)
+		);
+	}
+}

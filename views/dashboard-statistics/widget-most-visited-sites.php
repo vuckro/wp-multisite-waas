@@ -20,8 +20,7 @@ $headers = array(
 );
 
 foreach ($sites as $site_visits) {
-
-	$site_line = $site_visits->site->get_title().' '.get_admin_url($site_visits->site->get_id());
+	$site_line = $site_visits->site->get_title() . ' ' . get_admin_url($site_visits->site->get_id());
 
 	$line = array(
 		$site_line,
@@ -29,14 +28,15 @@ foreach ($sites as $site_visits) {
 	);
 
 	$data[] = $line;
-
 } // end foreach;
 
-$page->render_csv_button(array(
-	'headers' => $headers,
-	'data'    => $data,
-	'slug'    => $slug,
-));
+$page->render_csv_button(
+	array(
+		'headers' => $headers,
+		'data'    => $data,
+		'slug'    => $slug,
+	)
+);
 
 ?>
 
@@ -44,66 +44,66 @@ $page->render_csv_button(array(
 
 </div>
 
-<?php if (!empty($sites)) : ?>
+<?php if ( ! empty($sites)) : ?>
 
-    <div class="wu-advanced-filters wu--mx-3 wu--mb-3 wu-mt-3">
+	<div class="wu-advanced-filters wu--mx-3 wu--mb-3 wu-mt-3">
 
-    <table class="wp-list-table widefat fixed striped wu-border-t-0 wu-border-l-0 wu-border-r-0">
+	<table class="wp-list-table widefat fixed striped wu-border-t-0 wu-border-l-0 wu-border-r-0">
 
-      <thead>
-        <tr>
-          <th class="wu-w-8/12"><?php _e('Site', 'wp-ultimo'); ?></th>
-          <th class="wu-text-right"><?php _e('Visits', 'wp-ultimo'); ?></th>
-        </tr>
-      </thead>
+		<thead>
+		<tr>
+			<th class="wu-w-8/12"><?php _e('Site', 'wp-ultimo'); ?></th>
+			<th class="wu-text-right"><?php _e('Visits', 'wp-ultimo'); ?></th>
+		</tr>
+		</thead>
 
-      <tbody>
+		<tbody>
 
-	      <?php foreach ($sites as $site_visits) : ?>
+			<?php foreach ($sites as $site_visits) : ?>
 
-          <tr>
-            <td class="wu-align-middle">
-              <span class="wu-uppercase wu-text-xs wu-text-gray-700 wu-font-bold">
-		            <?php echo $site_visits->site->get_title(); ?>
-              </span>
+			<tr>
+			<td class="wu-align-middle">
+				<span class="wu-uppercase wu-text-xs wu-text-gray-700 wu-font-bold">
+					<?php echo $site_visits->site->get_title(); ?>
+				</span>
 
-              <div class="sm:wu-flex">          
+				<div class="sm:wu-flex">          
 
-                <a title="<?php _e('Homepage', 'wp-ultimo'); ?>" href="<?php echo esc_attr(get_home_url($site_visits->site->get_id())); ?>" class="wu-no-underline wu-flex wu-items-center wu-text-xs wp-ui-text-highlight">
+				<a title="<?php _e('Homepage', 'wp-ultimo'); ?>" href="<?php echo esc_attr(get_home_url($site_visits->site->get_id())); ?>" class="wu-no-underline wu-flex wu-items-center wu-text-xs wp-ui-text-highlight">
 
-                  <span class="dashicons-wu-link1 wu-align-middle wu-mr-1"></span>
-                  <?php _e('Homepage', 'wp-ultimo'); ?>
+					<span class="dashicons-wu-link1 wu-align-middle wu-mr-1"></span>
+					<?php _e('Homepage', 'wp-ultimo'); ?>
 
-                </a>
+				</a>
 
-                <a title="<?php _e('Dashboard', 'wp-ultimo'); ?>" href="<?php echo esc_attr(get_admin_url($site_visits->site->get_id())); ?>" class="wu-no-underline wu-flex wu-items-center wu-text-xs wp-ui-text-highlight sm:wu-mt-0 sm:wu-ml-6">
+				<a title="<?php _e('Dashboard', 'wp-ultimo'); ?>" href="<?php echo esc_attr(get_admin_url($site_visits->site->get_id())); ?>" class="wu-no-underline wu-flex wu-items-center wu-text-xs wp-ui-text-highlight sm:wu-mt-0 sm:wu-ml-6">
 
-                  <span class="dashicons-wu-browser wu-align-middle wu-mr-1"></span>
-                  <?php _e('Dashboard', 'wp-ultimo'); ?>
+					<span class="dashicons-wu-browser wu-align-middle wu-mr-1"></span>
+					<?php _e('Dashboard', 'wp-ultimo'); ?>
 
-                </a>
+				</a>
 
-              </div>
-            </td>
-            <td class="wu-align-middle wu-text-right">
-              <?php echo sprintf(_n('%d visit', '%d visits', $site_visits->count, 'wp-ultimo'), $site_visits->count); ?>
-            </td>
-          </tr>
+				</div>
+			</td>
+			<td class="wu-align-middle wu-text-right">
+				<?php printf(_n('%d visit', '%d visits', $site_visits->count, 'wp-ultimo'), $site_visits->count); ?>
+			</td>
+			</tr>
 
-        <?php endforeach; ?>
+		<?php endforeach; ?>
 
-      </tbody>
+		</tbody>
 
-    </table>
+	</table>
 
-  </div>
+	</div>
 
 <?php else : ?>
 
-  <div class="wu-bg-gray-100 wu-p-4 wu-rounded wu-mt-6">
+	<div class="wu-bg-gray-100 wu-p-4 wu-rounded wu-mt-6">
 
-    <?php _e('No visits registered in this period.', 'wp-ultimo'); ?>
+	<?php _e('No visits registered in this period.', 'wp-ultimo'); ?>
 
-  </div>
+	</div>
 
 <?php endif; ?>

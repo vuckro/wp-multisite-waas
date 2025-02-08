@@ -35,8 +35,7 @@ class Site_List_Table extends Parent_Site_List_Table {
 		);
 
 		$this->current_mode = 'grid';
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -47,8 +46,7 @@ class Site_List_Table extends Parent_Site_List_Table {
 	public function get_columns() {
 
 		return array();
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Clears filters.
@@ -61,8 +59,7 @@ class Site_List_Table extends Parent_Site_List_Table {
 			'filters'      => array(),
 			'date_filters' => array(),
 		);
-
-	} // end get_filters;
+	}
 
 	/**
 	 * Clears views.
@@ -80,8 +77,7 @@ class Site_List_Table extends Parent_Site_List_Table {
 				'count' => 0,
 			),
 		);
-
-	} // end get_views;
+	}
 
 	/**
 	 * Get the extra fields based on the request.
@@ -93,13 +89,11 @@ class Site_List_Table extends Parent_Site_List_Table {
 
 		$customer = wu_get_current_customer();
 
-		if (!$customer) {
-
+		if ( ! $customer) {
 			return array(
 				'blog_id__in' => array('null_id'), // pass absurd value to make sure the query returns nothing.
 			);
-
-		} // end if;
+		}
 
 		$fields = parent::get_extra_fields();
 
@@ -113,7 +107,5 @@ class Site_List_Table extends Parent_Site_List_Table {
 		);
 
 		return $fields;
-
-	} // end get_extra_fields;
-
-} // end class Site_List_Table;
+	}
+}

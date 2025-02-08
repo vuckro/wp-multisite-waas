@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Installers;
 
-use \WP_Ultimo\Logger;
+use WP_Ultimo\Logger;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -42,8 +42,7 @@ class Default_Content_Installer extends Base_Installer {
 		require_once wu_path('inc/functions/product.php');
 
 		require_once wu_path('inc/functions/checkout-form.php');
-
-	} // end init;
+	}
 
 	/**
 	 * Checks if we already created a template site.
@@ -58,8 +57,7 @@ class Default_Content_Installer extends Base_Installer {
 		$d = wu_get_site_domain_and_path('template');
 
 		return domain_exists($d->domain, $d->path, get_current_network_id());
-
-	} // end done_creating_template_site;
+	}
 
 	/**
 	 * Checks if we already created the base products.
@@ -73,15 +71,12 @@ class Default_Content_Installer extends Base_Installer {
 		 */
 		$has_tables_installed = \WP_Ultimo\Loaders\Table_Loader::get_instance()->is_installed();
 
-		if (!$has_tables_installed) {
-
+		if ( ! $has_tables_installed) {
 			return false;
+		}
 
-		} // end if;
-
-		return !empty(wu_get_plans());
-
-	} // end done_creating_products;
+		return ! empty(wu_get_plans());
+	}
 
 	/**
 	 * Checks if we already created the base checkout form.
@@ -95,15 +90,12 @@ class Default_Content_Installer extends Base_Installer {
 		 */
 		$has_tables_installed = \WP_Ultimo\Loaders\Table_Loader::get_instance()->is_installed();
 
-		if (!$has_tables_installed) {
-
+		if ( ! $has_tables_installed) {
 			return false;
+		}
 
-		} // end if;
-
-		return !empty(wu_get_checkout_forms());
-
-	} // end done_creating_checkout_forms;
+		return ! empty(wu_get_checkout_forms());
+	}
 
 	/**
 	 * Checks if we already created the system emails and the template email.
@@ -117,15 +109,12 @@ class Default_Content_Installer extends Base_Installer {
 		 */
 		$has_tables_installed = \WP_Ultimo\Loaders\Table_Loader::get_instance()->is_installed();
 
-		if (!$has_tables_installed) {
-
+		if ( ! $has_tables_installed) {
 			return false;
+		}
 
-		} // end if;
-
-		return !empty(wu_get_all_system_emails());
-
-	} // end done_creating_emails;
+		return ! empty(wu_get_all_system_emails());
+	}
 
 	/**
 	 * Checks if we already created the custom login page.
@@ -137,17 +126,14 @@ class Default_Content_Installer extends Base_Installer {
 
 		$page_id = wu_get_setting('default_login_page');
 
-		if (!$page_id) {
-
+		if ( ! $page_id) {
 			return false;
-
-		} // end if;
+		}
 
 		$page = get_post($page_id);
 
-		return !empty($page);
-
-	} // end done_creating_login_page;
+		return ! empty($page);
+	}
 
 	/**
 	 * Returns the list of migration steps.
@@ -210,8 +196,7 @@ class Default_Content_Installer extends Base_Installer {
 		);
 
 		return $steps;
-
-	} // end get_steps;
+	}
 
 	// Default_Content_Installers start below
 
@@ -236,20 +221,15 @@ class Default_Content_Installer extends Base_Installer {
 		$status = wu_create_site($template_site);
 
 		if (is_wp_error($status)) {
-
 			throw new \Exception($status->get_error_message());
+		}
 
-		} // end if;
-
-		if (!$status) {
-
+		if ( ! $status) {
 			$error_message = __('Template Site was not created. Maybe a site with the /template path already exists?', 'wp-ultimo');
 
 			throw new \Exception($error_message);
-
-		} // end if;
-
-	} // end _install_create_template_site;
+		}
+	}
 
 	/**
 	 * Creates a example products.
@@ -333,22 +313,17 @@ class Default_Content_Installer extends Base_Installer {
 		);
 
 		foreach ($products as $product_data) {
-
 			$status = wu_create_product($product_data);
 
 			if (is_wp_error($status)) {
-
 				throw new \Exception($status->get_error_message());
+			}
 
-			} // end if;
-
-			$status->set_featured_image_id($images[$product_data['slug']]);
+			$status->set_featured_image_id($images[ $product_data['slug'] ]);
 
 			$status->save();
-
-		} // end foreach;
-
-	} // end _install_create_products;
+		}
+	}
 
 	/**
 	 * Creates a new checkout form as an example.
@@ -368,16 +343,12 @@ class Default_Content_Installer extends Base_Installer {
 		$status = wu_create_checkout_form($checkout_form);
 
 		if (is_wp_error($status)) {
-
 			throw new \Exception($status->get_error_message());
-
 		} else {
-
 			$status->use_template('single-step');
 
 			$status->save();
-
-		} // end if;
+		}
 
 		$post_content = '
 			<!-- wp:shortcode -->
@@ -400,17 +371,14 @@ class Default_Content_Installer extends Base_Installer {
 		$page_id = wp_insert_post($post_details);
 
 		if (is_wp_error($page_id)) {
-
 			throw new \Exception($page_id->get_error_message());
-
-		} // end if;
+		}
 
 		/*
 		 * Set page as the default registration page.
 		 */
 		wu_save_setting('default_registration_page', $page_id);
-
-	} // end _install_create_checkout;
+	}
 
 	/**
 	 * Creates the template email, invoice template and system emails.
@@ -422,8 +390,7 @@ class Default_Content_Installer extends Base_Installer {
 	public function _install_create_emails() {
 
 		\WP_Ultimo\Managers\Email_Manager::get_instance()->create_all_system_emails();
-
-	} // end _install_create_emails;
+	}
 
 	/**
 	 * Creates custom login page.
@@ -451,10 +418,8 @@ class Default_Content_Installer extends Base_Installer {
 		$page_id = wp_insert_post($page_args);
 
 		if (is_wp_error($page_id)) {
-
 			throw new \Exception($page_id->get_error_message());
-
-		} // end if;
+		}
 
 		/*
 		 * Enable a custom login page.
@@ -465,7 +430,5 @@ class Default_Content_Installer extends Base_Installer {
 		 * Set page as the default login page.
 		 */
 		wu_save_setting('default_login_page', $page_id);
-
-	} // end _install_create_login_page;
-
-} // end class Default_Content_Installer;
+	}
+}

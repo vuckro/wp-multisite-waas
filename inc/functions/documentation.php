@@ -21,5 +21,4 @@ defined('ABSPATH') || exit;
 function wu_get_documentation_url($slug, $return_default = true) {
 
 	return \WP_Ultimo\Documentation::get_instance()->get_link($slug, $return_default);
-
-} // end wu_get_documentation_url;
+}

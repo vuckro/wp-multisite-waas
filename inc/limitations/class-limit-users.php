@@ -26,5 +26,4 @@ class Limit_Users extends Limit_Subtype {
 	 * @var string
 	 */
 	protected $id = 'users';
-
-} // end class Limit_Users;
+}

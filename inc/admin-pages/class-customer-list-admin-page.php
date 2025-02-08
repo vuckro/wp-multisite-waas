@@ -51,8 +51,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		parent::init();
 
 		add_action('plugins_loaded', array($this, 'export_customers'));
-
-	} // end init;
+	}
 
 	/**
 	 * Export customers in .csv file
@@ -63,49 +62,47 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	public function export_customers() {
 
 		if (wu_request('wu_action') !== 'wu_export_customers') {
-
 			return;
+		}
 
-		} // end if;
-
-		if (!wp_verify_nonce(wu_request('nonce'), 'wu_export_customers')) {
-
+		if ( ! wp_verify_nonce(wu_request('nonce'), 'wu_export_customers')) {
 			wp_die(__('You do not have permissions to access this file.', 'wp-ultimo'));
+		}
 
-		} // end if;
+		$customer_data = array_map(
+			function ($customer) {
 
-		$customer_data = array_map(function($customer) {
+				$memberships = $customer->get_memberships();
 
-			$memberships = $customer->get_memberships();
+				$membership_amount = count($memberships);
 
-			$membership_amount = count($memberships);
+				$memberships_ids = array_map(fn($membership) => $membership->get_id(), $memberships);
 
-			$memberships_ids = array_map(fn($membership) => $membership->get_id(), $memberships);
+				$billing_address = array_map(fn($field) => $field['value'], $customer->get_billing_address()->get_fields());
 
-			$billing_address = array_map(fn($field) => $field['value'], $customer->get_billing_address()->get_fields());
-
-			return array_merge(
-				array(
-					$customer->get_id(),
-					$customer->get_user_id(),
-					$customer->get_hash(),
-					$customer->get_email_verification(),
-					$customer->get_user()->user_email,
-					$customer->has_trialed(),
-					$customer->get_last_ip(),
-					$customer->is_vip(),
-					$customer->get_signup_form(),
-					$membership_amount,
-					implode('|', $memberships_ids),
-				),
-				$billing_address,
-				array(
-					$customer->get_last_login(),
-					$customer->get_date_registered(),
-				)
-			);
-
-		}, wu_get_customers());
+				return array_merge(
+					array(
+						$customer->get_id(),
+						$customer->get_user_id(),
+						$customer->get_hash(),
+						$customer->get_email_verification(),
+						$customer->get_user()->user_email,
+						$customer->has_trialed(),
+						$customer->get_last_ip(),
+						$customer->is_vip(),
+						$customer->get_signup_form(),
+						$membership_amount,
+						implode('|', $memberships_ids),
+					),
+					$billing_address,
+					array(
+						$customer->get_last_login(),
+						$customer->get_date_registered(),
+					)
+				);
+			},
+			wu_get_customers()
+		);
 
 		$billing_fields = array_keys(\WP_Ultimo\Objects\Billing_Address::fields());
 
@@ -135,8 +132,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		wu_generate_csv($file_name, array_merge(array($headers), $customer_data));
 
 		die;
-
-	} // end export_customers;
+	}
 
 	/**
 	 * Holds the admin panels where this page should be displayed, as well as which capability to require.
@@ -162,13 +158,15 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Add new Customer
 		 */
-		wu_register_form('add_new_customer', array(
-			'render'     => array($this, 'render_add_new_customer_modal'),
-			'handler'    => array($this, 'handle_add_new_customer_modal'),
-			'capability' => 'wu_invite_customers',
-		));
-
-	} // end register_forms;
+		wu_register_form(
+			'add_new_customer',
+			array(
+				'render'     => array($this, 'render_add_new_customer_modal'),
+				'handler'    => array($this, 'handle_add_new_customer_modal'),
+				'capability' => 'wu_invite_customers',
+			)
+		);
+	}
 
 	/**
 	 * Renders the add new customer modal.
@@ -253,22 +251,27 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('add_new_customer', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'add_new_customer',
-				'data-state'  => json_encode(array(
-					'set_password' => false,
-					'type'         => 'existing',
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_new_customer',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'add_new_customer',
+					'data-state'  => json_encode(
+						array(
+							'set_password' => false,
+							'type'         => 'existing',
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_add_new_customer_modal;
+	}
 
 	/**
 	 * Handles creation of a new customer.
@@ -279,21 +282,17 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	public function handle_add_new_customer_modal() {
 
 		if (wu_request('type', 'existing') === 'new') {
-
 			$customer_data = array(
 				'email'    => wu_request('email_address'),
 				'username' => wu_request('username'),
 				'password' => wu_request('password', false),
 				'meta'     => array(),
 			);
-
 		} else {
-
 			$customer_data = array(
 				'user_id' => wu_request('user_id', 0),
 			);
-
-		} // end if;
+		}
 
 		/*
 			* Tries to create the customer
@@ -301,18 +300,20 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		$customer = wu_create_customer($customer_data);
 
 		if (is_wp_error($customer)) {
-
 			wp_send_json_error($customer);
+		}
 
-		} // end if;
-
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url('wp-ultimo-edit-customer', array(
-				'id' => $customer->get_id(),
-			))
-		));
-
-	} // end handle_add_new_customer_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					'wp-ultimo-edit-customer',
+					array(
+						'id' => $customer->get_id(),
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -320,7 +321,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -334,8 +335,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Customer removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Customer', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -346,8 +346,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Customers', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -358,8 +357,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Customers', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -370,8 +368,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Customers', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -391,14 +388,15 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 			array(
 				'label' => __('Export as CSV', 'wp-ultimo'),
 				'icon'  => 'wu-export',
-				'url'   => add_query_arg(array(
-					'wu_action' => 'wu_export_customers',
-					'nonce'     => wp_create_nonce('wu_export_customers'),
-				)),
+				'url'   => add_query_arg(
+					array(
+						'wu_action' => 'wu_export_customers',
+						'nonce'     => wp_create_nonce('wu_export_customers'),
+					)
+				),
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -409,7 +407,5 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Customer_List_Table();
-
-	} // end table;
-
-} // end class Customer_List_Admin_Page;
+	}
+}

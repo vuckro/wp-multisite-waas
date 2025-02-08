@@ -28,13 +28,11 @@ trait WP_Ultimo_Site_Deprecated {
 		$value = null;
 
 		switch ($key) {
-
 			case 'site_owner_id':
 				$customer = $this->get_customer();
 				$value    = $customer ? $customer->get_user_id() : false;
 				break;
-
-		} // end switch;
+		}
 
 		/**
 		 * Let developers know that this is not going to be supported in the future.
@@ -44,8 +42,7 @@ trait WP_Ultimo_Site_Deprecated {
 		_doing_it_wrong($key, __('Product keys should not be accessed directly', 'wp-ultimo'), '2.0.0');
 
 		return $value;
-
-	} // end __get;
+	}
 
 	/**
 	 * Deprecated: get_subscription.
@@ -59,7 +56,5 @@ trait WP_Ultimo_Site_Deprecated {
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site::get_membership()');
 
 		return $this->get_membership();
-
-	} // end get_subscription;
-
-} // end trait WP_Ultimo_Site_Deprecated;
+	}
+}

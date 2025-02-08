@@ -7,6 +7,6 @@
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-  <?php $form->render(); ?>
+	<?php $form->render(); ?>
 
 </div>

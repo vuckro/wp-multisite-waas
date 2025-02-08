@@ -32,16 +32,13 @@ class Light_Ajax {
 	public function __construct() {
 
 		if (isset($_REQUEST['wu-ajax'])) {
-
 			$action = $this->get_when_to_run();
 
 			wu_x_header("X-Ultimo-Ajax-When: $action");
 
 			add_action($action, array($this, 'process_light_ajax'), 20);
-
-		} // end if;
-
-	} // end __construct;
+		}
+	}
 
 	/**
 	 * Actions that can ignore the referer check.
@@ -51,25 +48,27 @@ class Light_Ajax {
 	 */
 	protected function should_skip_referer_check(): bool {
 
-		$allowed_actions = apply_filters('wu_light_ajax_should_skip_referer_check', array(
+		$allowed_actions = apply_filters(
+			'wu_light_ajax_should_skip_referer_check',
+			array(
 
-			/**
-			 * Checkout Form Actions
-			 *
-			 * They're here because in some cases,
-			 * the caching settings might prevent nonces from
-			 * being properly refreshed, which could cause 403
-			 * errors with the actions below.
-			 */
-			'wu_render_field_template',
-			'wu_create_order',
-			'wu_validate_form',
+				/**
+				 * Checkout Form Actions
+				 *
+				 * They're here because in some cases,
+				 * the caching settings might prevent nonces from
+				 * being properly refreshed, which could cause 403
+				 * errors with the actions below.
+				 */
+				'wu_render_field_template',
+				'wu_create_order',
+				'wu_validate_form',
 
-		));
+			)
+		);
 
 		return in_array(wu_request('action', 'no-action'), $allowed_actions, true);
-
-	} // end should_skip_referer_check;
+	}
 
 	/**
 	 * Gets the hook we should use to attach the light ajax runner to.
@@ -92,18 +91,20 @@ class Light_Ajax {
 		 * @since 2.0.0
 		 * @return array The hook list.
 		 */
-		$allowed_list = apply_filters('wu_light_ajax_allowed_hooks', array(
-			'plugins_loaded',
-			'setup_theme',
-			'after_setup_theme',
-			'init',
-		));
+		$allowed_list = apply_filters(
+			'wu_light_ajax_allowed_hooks',
+			array(
+				'plugins_loaded',
+				'setup_theme',
+				'after_setup_theme',
+				'init',
+			)
+		);
 
 		$action = isset($_REQUEST['wu-when']) ? base64_decode((string) $_REQUEST['wu-when']) : 'plugins_loaded';
 
 		return in_array($action, $allowed_list, true) ? $action : 'plugins_loaded';
-
-	} // end get_when_to_run;
+	}
 
 	/**
 	 * Adds an wu_ajax handler.
@@ -138,12 +139,10 @@ class Light_Ajax {
 		header('X-Robots-Tag: noindex');
 
 		if (empty($_REQUEST['action'])) {
-
 			status_header(400);
 
 			die('0');
-
-		} // end if;
+		}
 
 		send_nosniff_header();
 
@@ -155,17 +154,11 @@ class Light_Ajax {
 		$action = esc_attr(trim((string) $_REQUEST['action']));
 
 		if (is_user_logged_in()) {
-
 			do_action('wu_ajax_' . $action); // phpcs:ignore
-
 		} else {
-
 			do_action('wu_ajax_nopriv_' . $action); // phpcs:ignore
-
-		} // end if;
+		}
 
 		die('1');
-
-	} // end process_light_ajax;
-
-} // end class Light_Ajax;
+	}
+}

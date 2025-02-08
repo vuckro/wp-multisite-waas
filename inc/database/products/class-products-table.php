@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Products_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'products';
 
 	/**
@@ -66,8 +66,7 @@ final class Products_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema
@@ -101,8 +100,7 @@ final class Products_Table extends Table {
 			date_created datetime NULL,
 			date_modified datetime NULL,
 			PRIMARY KEY (id)";
-
-	} // end set_schema;
+	}
 
 	/**
 	 * Adds the product_group column.
@@ -119,17 +117,14 @@ final class Products_Table extends Table {
 
 		// Maybe add column
 		if (empty($result)) {
-
 			$query = "ALTER TABLE {$this->table_name} ADD COLUMN `product_group` varchar(20) default '' AFTER `description`;";
 
 			$result = $this->get_db()->query($query);
-
-		} // end if;
+		}
 
 		// Return success/fail
 		return $this->is_success($result);
-
-	} // end __20210419;
+	}
 
 	/**
 	 * Adds the product_group column.
@@ -143,27 +138,22 @@ final class Products_Table extends Table {
 
 		// Maybe add column
 		if (empty($result)) {
-
 			$query_set = "SET sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';";
 
 			$result_set = $this->get_db()->query($query_set);
 
 			if ($this->is_success($result_set) === false) {
-
 				return false;
-
-			} // end if;
+			}
 
 			$query = "ALTER TABLE {$this->table_name} ADD COLUMN `product_group` varchar(20) default '' AFTER `description`;";
 
 			$result = $this->get_db()->query($query);
-
-		} // end if;
+		}
 
 		// Return success/fail
 		return $this->is_success($result);
-
-	} // end __20210607;
+	}
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *
@@ -177,21 +167,15 @@ final class Products_Table extends Table {
 		);
 
 		foreach ($null_columns as $column) {
-
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";
 
 			$result = $this->get_db()->query($query);
 
-			if (!$this->is_success($result)) {
-
+			if ( ! $this->is_success($result)) {
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return true;
-
-	} // end __20230601;
-
-} // end class Products_Table;
+	}
+}

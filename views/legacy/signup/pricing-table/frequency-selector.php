@@ -15,8 +15,8 @@
  * @version     1.0.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
@@ -25,29 +25,33 @@ if (!defined('ABSPATH')) {
 
 <ul class="wu-plans-frequency-selector">
 
-  <?php
+	<?php
 
-  $prices = array(
-    1  => __('Monthly', 'wp-ultimo'), 
-    3  => __('Quarterly', 'wp-ultimo'), 
-    12 => __('Yearly', 'wp-ultimo'), 
-  );
+	$prices = array(
+		1  => __('Monthly', 'wp-ultimo'),
+		3  => __('Quarterly', 'wp-ultimo'),
+		12 => __('Yearly', 'wp-ultimo'),
+	);
 
-  $first = true;
+	$first = true;
 
-  foreach ($prices as $type => $name) : 
+	foreach ($prices as $type => $name) :
+		if ( ! wu_get_setting('enable_price_' . $type, true)) {
+			continue;
+		}
 
-    if (!wu_get_setting('enable_price_'.$type, true)) continue; 
+		?>
 
-  ?>
+	<li>
+	<a class="<?php echo $first ? 'active first' : ''; ?>" data-frequency-selector="<?php echo $type; ?>" href="#">
+		<?php echo $name; ?>
+	</a>
+	</li>
 
-  <li>
-    <a class="<?php echo $first ? 'active first' : ''; ?>" data-frequency-selector="<?php echo $type; ?>" href="#">
-      <?php echo $name; ?>
-    </a>
-  </li>
-
-  <?php $first = false; endforeach; ?>
+		<?php
+		$first = false;
+endforeach;
+	?>
 
 </ul>
 

@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Models\Product;
+use WP_Ultimo\Models\Product;
 
 /**
  * Returns a product.
@@ -22,14 +22,11 @@ use \WP_Ultimo\Models\Product;
 function wu_get_product($product_id_or_slug) {
 
 	if (is_numeric($product_id_or_slug) === false) {
-
 		return wu_get_product_by_slug($product_id_or_slug);
-
-	} // end if;
+	}
 
 	return Product::get_by_id($product_id_or_slug);
-
-} // end wu_get_product;
+}
 
 /**
  * Queries products.
@@ -42,8 +39,7 @@ function wu_get_product($product_id_or_slug) {
 function wu_get_products($query = array()) {
 
 	return Product::query($query);
-
-} // end wu_get_products;
+}
 
 /**
  * Queries plans.
@@ -64,8 +60,7 @@ function wu_get_plans($query = array()) {
 	$query['orderby'] = 'list_order';
 
 	return Product::query($query);
-
-} // end wu_get_plans;
+}
 
 /**
  * Returns the list of plans as ID -> Name.
@@ -78,14 +73,11 @@ function wu_get_plans_as_options() {
 	$options = array();
 
 	foreach (wu_get_plans() as $plan) {
-
-		$options[$plan->get_id()] = $plan->get_name();
-
-	} // end foreach;
+		$options[ $plan->get_id() ] = $plan->get_name();
+	}
 
 	return $options;
-
-} // end wu_get_plans_as_options;
+}
 
 /**
  * Returns a product based on slug.
@@ -98,8 +90,7 @@ function wu_get_plans_as_options() {
 function wu_get_product_by_slug($product_slug) {
 
 	return Product::get_by('slug', $product_slug);
-
-} // end wu_get_product_by_slug;
+}
 /**
  * Returns a single product defined by a particular column and value.
  *
@@ -112,8 +103,7 @@ function wu_get_product_by_slug($product_slug) {
 function wu_get_product_by($column, $value) {
 
 	return Product::get_by($column, $value);
-
-} // end wu_get_product_by;
+}
 
 /**
  * Creates a new product.
@@ -125,40 +115,42 @@ function wu_get_product_by($column, $value) {
  */
 function wu_create_product($product_data) {
 
-	$product_data = wp_parse_args($product_data, array(
-		'name'                => false,
-		'description'         => false,
-		'currency'            => false,
-		'pricing_type'        => false,
-		'setup_fee'           => false,
-		'parent_id'           => 0,
-		'slug'                => false,
-		'recurring'           => false,
-		'trial_duration'      => 0,
-		'trial_duration_unit' => 'day',
-		'duration'            => 1,
-		'duration_unit'       => 'day',
-		'amount'              => false,
-		'billing_cycles'      => false,
-		'active'              => false,
-		'type'                => false,
-		'featured_image_id'   => 0,
-		'list_order'          => 0,
-		'date_created'        => wu_get_current_time('mysql', true),
-		'date_modified'       => wu_get_current_time('mysql', true),
-		'migrated_from_id'    => 0,
-		'meta'                => array(),
-		'available_addons'    => array(),
-		'group'               => '',
-	));
+	$product_data = wp_parse_args(
+		$product_data,
+		array(
+			'name'                => false,
+			'description'         => false,
+			'currency'            => false,
+			'pricing_type'        => false,
+			'setup_fee'           => false,
+			'parent_id'           => 0,
+			'slug'                => false,
+			'recurring'           => false,
+			'trial_duration'      => 0,
+			'trial_duration_unit' => 'day',
+			'duration'            => 1,
+			'duration_unit'       => 'day',
+			'amount'              => false,
+			'billing_cycles'      => false,
+			'active'              => false,
+			'type'                => false,
+			'featured_image_id'   => 0,
+			'list_order'          => 0,
+			'date_created'        => wu_get_current_time('mysql', true),
+			'date_modified'       => wu_get_current_time('mysql', true),
+			'migrated_from_id'    => 0,
+			'meta'                => array(),
+			'available_addons'    => array(),
+			'group'               => '',
+		)
+	);
 
 	$product = new Product($product_data);
 
 	$saved = $product->save();
 
 	return is_wp_error($saved) ? $saved : $product;
-
-} // end wu_create_product;
+}
 /**
  * Returns a list of available product groups.
  *
@@ -173,8 +165,7 @@ function wu_get_product_groups(): array {
 	$results = array_column($wpdb->get_results($query, ARRAY_A), 'product_group'); // phpcs:ignore
 
 	return array_combine($results, $results);
-
-} // end wu_get_product_groups;
+}
 
 /**
  * Takes a list of product objects and separates them into plan and addons.
@@ -189,31 +180,20 @@ function wu_segregate_products($products) {
 	$results = array(false, array());
 
 	foreach ($products as $product) {
-
 		if (is_a($product, Product::class) === false) {
-
 			$product = wu_get_product($product);
 
-			if (!$product) {
-
+			if ( ! $product) {
 				continue;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		if ($product->get_type() === 'plan' && $results[0] === false) {
-
 			$results[0] = $product;
-
 		} else {
-
 			$results[1][] = $product;
-
-		} // end if;
-
-	} // end foreach;
+		}
+	}
 
 	return $results;
-
-} // end wu_segregate_products;
+}

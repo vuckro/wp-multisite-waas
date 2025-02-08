@@ -10,7 +10,7 @@
 		id="wu_form"
 		method="post"
 		class="wu_checkout_form_<?php echo esc_attr($checkout_form_name); ?> wu-relative"
-		<?php echo isset($checkout_form_action) ? 'action="'.esc_attr($checkout_form_action).'"' : ''; ?>
+		<?php echo isset($checkout_form_action) ? 'action="' . esc_attr($checkout_form_action) . '"' : ''; ?>
 	>
 
 		<?php
@@ -25,18 +25,22 @@
 		 *
 		 * @since 2.0.0
 		 */
-		$form = new \WP_Ultimo\UI\Form("checkout-{$step_name}", $final_fields, array(
-			'title'                 => $display_title ? $step['name'] : '',
-			'views'                 => 'checkout/fields',
-			'classes'               => wu_get_isset($step, 'classes', '').' wu-grid wu-grid-cols-2 wu-gap-4',
-			'field_wrapper_classes' => 'wu-col-span-2',
-			'html_attr'             => array(
-				'id' => wu_get_isset($step, 'element_id') ? wu_get_isset($step, 'element_id') : "wu-step-{$step_name}",
-			),
-			'variables'             => array(
-				'step' => (object) $step,
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			"checkout-{$step_name}",
+			$final_fields,
+			array(
+				'title'                 => $display_title ? $step['name'] : '',
+				'views'                 => 'checkout/fields',
+				'classes'               => wu_get_isset($step, 'classes', '') . ' wu-grid wu-grid-cols-2 wu-gap-4',
+				'field_wrapper_classes' => 'wu-col-span-2',
+				'html_attr'             => array(
+					'id' => wu_get_isset($step, 'element_id') ? wu_get_isset($step, 'element_id') : "wu-step-{$step_name}",
+				),
+				'variables'             => array(
+					'step' => (object) $step,
+				),
+			)
+		);
 
 		/**
 		 * Render form fields.

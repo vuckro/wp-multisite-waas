@@ -185,8 +185,7 @@ class Discount_Code extends Base_Model {
 			'allowed_products'  => 'array',
 			'limit_products'    => 'default:0',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get name of the discount code.
@@ -197,8 +196,7 @@ class Discount_Code extends Base_Model {
 	public function get_name() {
 
 		return $this->name;
-
-	} // end get_name;
+	}
 
 	/**
 	 * Set name of the discount code.
@@ -210,8 +208,7 @@ class Discount_Code extends Base_Model {
 	public function set_name($name) {
 
 		$this->name = $name;
-
-	} // end set_name;
+	}
 
 	/**
 	 * Get code to redeem the discount code.
@@ -222,8 +219,7 @@ class Discount_Code extends Base_Model {
 	public function get_code() {
 
 		return $this->code;
-
-	} // end get_code;
+	}
 
 	/**
 	 * Set code to redeem the discount code.
@@ -235,8 +231,7 @@ class Discount_Code extends Base_Model {
 	public function set_code($code) {
 
 		$this->code = $code;
-
-	} // end set_code;
+	}
 
 	/**
 	 * Get text describing the coupon code. Useful for identifying it.
@@ -247,8 +242,7 @@ class Discount_Code extends Base_Model {
 	public function get_description() {
 
 		return $this->description;
-
-	} // end get_description;
+	}
 
 	/**
 	 * Set text describing the coupon code. Useful for identifying it.
@@ -260,8 +254,7 @@ class Discount_Code extends Base_Model {
 	public function set_description($description) {
 
 		$this->description = $description;
-
-	} // end set_description;
+	}
 
 	/**
 	 * Get number of times this discount was applied.
@@ -272,8 +265,7 @@ class Discount_Code extends Base_Model {
 	public function get_uses() {
 
 		return (int) $this->uses;
-
-	} // end get_uses;
+	}
 
 	/**
 	 * Set number of times this discount was applied.
@@ -285,8 +277,7 @@ class Discount_Code extends Base_Model {
 	public function set_uses($uses) {
 
 		$this->uses = (int) $uses;
-
-	} // end set_uses;
+	}
 
 	/**
 	 * Add uses to this discount code.
@@ -300,8 +291,7 @@ class Discount_Code extends Base_Model {
 		$use_count = (int) $this->get_uses();
 
 		$this->set_uses($use_count + (int) $uses);
-
-	} // end add_use;
+	}
 
 	/**
 	 * Get the number of times this discount can be used before becoming inactive.
@@ -312,8 +302,7 @@ class Discount_Code extends Base_Model {
 	public function get_max_uses() {
 
 		return (int) $this->max_uses;
-
-	} // end get_max_uses;
+	}
 
 	/**
 	 * Set the number of times this discount can be used before becoming inactive.
@@ -325,8 +314,7 @@ class Discount_Code extends Base_Model {
 	public function set_max_uses($max_uses) {
 
 		$this->max_uses = (int) $max_uses;
-
-	} // end set_max_uses;
+	}
 
 	/**
 	 * Checks if the given discount code has a number of max uses.
@@ -337,8 +325,7 @@ class Discount_Code extends Base_Model {
 	public function has_max_uses() {
 
 		return $this->get_max_uses() > 0;
-
-	} // end has_max_uses;
+	}
 
 	/**
 	 * Get if we should apply this coupon to renewals as well.
@@ -349,8 +336,7 @@ class Discount_Code extends Base_Model {
 	public function should_apply_to_renewals() {
 
 		return (bool) $this->apply_to_renewals;
-
-	} // end should_apply_to_renewals;
+	}
 
 	/**
 	 * Set if we should apply this coupon to renewals as well.
@@ -362,8 +348,7 @@ class Discount_Code extends Base_Model {
 	public function set_apply_to_renewals($apply_to_renewals) {
 
 		$this->apply_to_renewals = (bool) $apply_to_renewals;
-
-	} // end set_apply_to_renewals;
+	}
 
 	/**
 	 * Get type of the discount. Can be a percentage or absolute.
@@ -374,8 +359,7 @@ class Discount_Code extends Base_Model {
 	public function get_type() {
 
 		return $this->type;
-
-	} // end get_type;
+	}
 
 	/**
 	 * Set type of the discount. Can be a percentage or absolute.
@@ -388,8 +372,7 @@ class Discount_Code extends Base_Model {
 	public function set_type($type) {
 
 		$this->type = $type;
-
-	} // end set_type;
+	}
 
 	/**
 	 * Get amount discounted in cents.
@@ -400,8 +383,7 @@ class Discount_Code extends Base_Model {
 	public function get_value() {
 
 		return (float) $this->value;
-
-	} // end get_value;
+	}
 
 	/**
 	 * Set amount discounted in cents.
@@ -413,8 +395,7 @@ class Discount_Code extends Base_Model {
 	public function set_value($value) {
 
 		$this->value = $value;
-
-	} // end set_value;
+	}
 
 	/**
 	 * Get type of the discount for the setup fee value. Can be a percentage or absolute.
@@ -425,8 +406,7 @@ class Discount_Code extends Base_Model {
 	public function get_setup_fee_type() {
 
 		return $this->setup_fee_type;
-
-	} // end get_setup_fee_type;
+	}
 
 	/**
 	 * Set type of the discount for the setup fee value. Can be a percentage or absolute.
@@ -439,8 +419,7 @@ class Discount_Code extends Base_Model {
 	public function set_setup_fee_type($setup_fee_type) {
 
 		$this->setup_fee_type = $setup_fee_type;
-
-	} // end set_setup_fee_type;
+	}
 
 	/**
 	 * Get amount discounted fpr setup fees in cents.
@@ -451,8 +430,7 @@ class Discount_Code extends Base_Model {
 	public function get_setup_fee_value() {
 
 		return (float) $this->setup_fee_value;
-
-	} // end get_setup_fee_value;
+	}
 
 	/**
 	 * Set amount discounted for setup fees in cents.
@@ -464,8 +442,7 @@ class Discount_Code extends Base_Model {
 	public function set_setup_fee_value($setup_fee_value) {
 
 		$this->setup_fee_value = $setup_fee_value;
-
-	} // end set_setup_fee_value;
+	}
 
 	/**
 	 * Get if this coupon code is active or not.
@@ -476,8 +453,7 @@ class Discount_Code extends Base_Model {
 	public function is_active() {
 
 		return (bool) $this->active;
-
-	} // end is_active;
+	}
 
 	/**
 	 * Checks if a given coupon code is valid and can be applied.
@@ -489,19 +465,15 @@ class Discount_Code extends Base_Model {
 	public function is_valid($product = false) {
 
 		if ($this->is_active() === false) {
-
 			return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		/*
 		 * Check for uses
 		 */
 		if ($this->has_max_uses() && $this->get_uses() >= $this->get_max_uses()) {
-
 			return new \WP_Error('discount_code', __('This discount code was already redeemed the maximum amount of times allowed.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		/*
 		 * Fist, check date boundaries.
@@ -512,62 +484,43 @@ class Discount_Code extends Base_Model {
 		$now = wu_date();
 
 		if ($start_date) {
-
 			$start_date_instance = wu_date($start_date);
 
 			if ($now < $start_date_instance) {
-
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
 
-				return new \WP_Error( 'discount_code', __( 'The coupon code is not valid yet.', 'wp-ultimo' ) );
-
-			} // end if;
-
-		} // end if;
+				return new \WP_Error('discount_code', __('The coupon code is not valid yet.', 'wp-ultimo'));
+			}
+		}
 
 		if ($expiration_date) {
-
 			$expiration_date_instance = wu_date($expiration_date);
 
 			if ($now > $expiration_date_instance) {
-
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
+			}
+		}
 
-			} // end if;
-
-		} // end if;
-
-		if (!$this->get_limit_products()) {
-
+		if ( ! $this->get_limit_products()) {
 			return true;
+		}
 
-		} // end if;
-
-		if (!empty($product)) {
-
+		if ( ! empty($product)) {
 			if (is_a($product, '\WP_Ultimo\Models\Product')) {
-
 				$product_id = $product->get_id();
-
 			} elseif (is_numeric($product)) {
-
 				$product_id = $product;
-
-			} // end if;
+			}
 
 			$allowed = $this->get_limit_products() && in_array($product_id, $this->get_allowed_products()); // phpcs:ignore
 
 			if ($allowed === false) {
-
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return true;
-
-	} // end is_valid;
+	}
 
 	/**
 	 * Checks if this discount applies just for the first payment.
@@ -578,8 +531,7 @@ class Discount_Code extends Base_Model {
 	public function is_one_time() {
 
 		return (bool) $this->should_apply_to_renewals();
-
-	} // end is_one_time;
+	}
 
 	/**
 	 * Set if this coupon code is active or not.
@@ -591,8 +543,7 @@ class Discount_Code extends Base_Model {
 	public function set_active($active) {
 
 		$this->active = (bool) $active;
-
-	} // end set_active;
+	}
 
 	/**
 	 * Get start date for the coupon code to be considered valid.
@@ -602,15 +553,12 @@ class Discount_Code extends Base_Model {
 	 */
 	public function get_date_start() {
 
-		if (!wu_validate_date($this->date_start)) {
-
+		if ( ! wu_validate_date($this->date_start)) {
 			return '';
-
-		} // end if;
+		}
 
 		return $this->date_start;
-
-	} // end get_date_start;
+	}
 
 	/**
 	 * Set start date for the coupon code to be considered valid.
@@ -622,8 +570,7 @@ class Discount_Code extends Base_Model {
 	public function set_date_start($date_start) {
 
 		$this->date_start = $date_start;
-
-	} // end set_date_start;
+	}
 
 	/**
 	 * Get expiration date for the coupon code.
@@ -633,15 +580,12 @@ class Discount_Code extends Base_Model {
 	 */
 	public function get_date_expiration() {
 
-		if (!wu_validate_date($this->date_expiration)) {
-
+		if ( ! wu_validate_date($this->date_expiration)) {
 			return '';
-
-		} // end if;
+		}
 
 		return $this->date_expiration;
-
-	} // end get_date_expiration;
+	}
 
 	/**
 	 * Set expiration date for the coupon code.
@@ -653,8 +597,7 @@ class Discount_Code extends Base_Model {
 	public function set_date_expiration($date_expiration) {
 
 		$this->date_expiration = $date_expiration;
-
-	} // end set_date_expiration;
+	}
 
 	/**
 	 * Get date when this discount code was created.
@@ -665,8 +608,7 @@ class Discount_Code extends Base_Model {
 	public function get_date_created() {
 
 		return $this->date_created;
-
-	} // end get_date_created;
+	}
 
 	/**
 	 * Set date when this discount code was created.
@@ -678,8 +620,7 @@ class Discount_Code extends Base_Model {
 	public function set_date_created($date_created) {
 
 		$this->date_created = $date_created;
-
-	} // end set_date_created;
+	}
 	/**
 	 * Returns a text describing the discount code values.
 	 *
@@ -690,44 +631,35 @@ class Discount_Code extends Base_Model {
 		$description = array();
 
 		if ($this->get_value() > 0) {
-
 			$value = wu_format_currency($this->get_value());
 
 			if ($this->get_type() === 'percentage') {
-
 				$value = $this->get_value() . '%';
-
-			} // end if;
+			}
 
 			$description[] = sprintf(
 				// translators: placeholder is the value off. Can be wither $X.XX or X%
 				__('%1$s OFF on Subscriptions', 'wp-ultimo'),
 				$value
 			);
-
-		} // end if;
+		}
 
 		if ($this->get_setup_fee_value() > 0) {
-
 			$setup_fee_value = wu_format_currency($this->get_setup_fee_value());
 
 			if ($this->get_setup_fee_type() === 'percentage') {
-
 				$setup_fee_value = $this->get_setup_fee_value() . '%';
-
-			} // end if;
+			}
 
 			$description[] = sprintf(
 				// translators: placeholder is the value off. Can be wither $X.XX or X%
 				__('%1$s OFF on Setup Fees', 'wp-ultimo'),
 				$setup_fee_value
 			);
-
-		} // end if;
+		}
 
 		return implode(' ' . __('and', 'wp-ultimo') . ' ', $description);
-
-	} // end get_discount_description;
+	}
 
 	/**
 	 * Transform the object into an assoc array.
@@ -742,8 +674,7 @@ class Discount_Code extends Base_Model {
 		$array['discount_description'] = $this->get_discount_description();
 
 		return $array;
-
-	} // end to_array;
+	}
 
 	/**
 	 * Save (create or update) the model on the database.
@@ -756,23 +687,18 @@ class Discount_Code extends Base_Model {
 
 		$results = parent::save();
 
-		if (!is_wp_error($results) && has_action('wp_ultimo_coupon_after_save')) {
-
+		if ( ! is_wp_error($results) && has_action('wp_ultimo_coupon_after_save')) {
 			if (did_action('wp_ultimo_coupon_after_save')) {
-
 				return $results;
-
-			} // end if;
+			}
 
 			$compat_coupon = $this;
 
 			do_action_deprecated('wp_ultimo_coupon_after_save', array($compat_coupon), '2.0.0', 'wu_discount_code_post_save');
-
-		} // end if;
+		}
 
 		return $results;
-
-	} // end save;
+	}
 
 	/**
 	 * Get holds the list of allowed products.
@@ -783,14 +709,11 @@ class Discount_Code extends Base_Model {
 	public function get_allowed_products() {
 
 		if ($this->allowed_products === null) {
-
 			$this->allowed_products = $this->get_meta('wu_allowed_products', array());
-
-		} // end if;
+		}
 
 		return (array) $this->allowed_products;
-
-	} // end get_allowed_products;
+	}
 
 	/**
 	 * Set holds the list of allowed products.
@@ -804,8 +727,7 @@ class Discount_Code extends Base_Model {
 		$this->meta['wu_allowed_products'] = (array) $allowed_products;
 
 		$this->allowed_products = $this->meta['wu_allowed_products'];
-
-	} // end set_allowed_products;
+	}
 
 	/**
 	 * Get if we should check for products or not.
@@ -816,14 +738,11 @@ class Discount_Code extends Base_Model {
 	public function get_limit_products() {
 
 		if ($this->limit_products === null) {
-
 			$this->limit_products = $this->get_meta('wu_limit_products', false);
-
-		} // end if;
+		}
 
 		return (bool) $this->limit_products;
-
-	} // end get_limit_products;
+	}
 
 	/**
 	 * Set if we should check for products or not.
@@ -837,7 +756,5 @@ class Discount_Code extends Base_Model {
 		$this->meta['wu_limit_products'] = (bool) $limit_products;
 
 		$this->limit_products = $this->meta['wu_limit_products'];
-
-	} // end set_limit_products;
-
-} // end class Discount_Code;
+	}
+}

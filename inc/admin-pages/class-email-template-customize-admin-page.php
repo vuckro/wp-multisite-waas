@@ -81,8 +81,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		parent::init();
 
 		add_action('wp_ajax_wu-email-template-preview', array($this, 'email_template_preview'));
-
-	} // end init;
+	}
 
 	/**
 	 * Return the page object
@@ -94,8 +93,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_object() {
 
 		return $this;
-
-	} // end get_object;
+	}
 
 	/**
 	 * Renders the preview of a given form being customized.
@@ -107,12 +105,12 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$object = $this;
 
-		$content = wpautop('
+		$content = wpautop(
+			'
 
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nulla diam, iaculis sit amet tellus sit amet, tempus hendrerit risus. Proin elementum aliquet lorem ut cursus. Ut varius pharetra magna, eu malesuada metus feugiat id. Aenean cursus purus et massa commodo pretium id ut erat. Suspendisse erat odio, auctor ac elit eget, rhoncus iaculis nulla. Aliquam turpis leo, egestas eget dui a, imperdiet ullamcorper felis. Suspendisse ut lacinia mauris.
 
 			Phasellus vitae diam euismod diam tristique faucibus. Proin gravida, augue in molestie porttitor, orci justo aliquam mauris, et commodo mauris nisi vitae tortor. Mauris vulputate fringilla purus et finibus. Duis lacus turpis, tincidunt vel dui ac, fermentum aliquet dolor. Donec auctor tristique consequat. In pharetra lacus quis mi dictum, ut dapibus eros bibendum. Donec tristique nibh ac sem bibendum, at feugiat turpis molestie. Suspendisse eget eleifend nunc. Sed tempor varius nisi non tincidunt. Sed leo arcu, feugiat dapibus sollicitudin a, tincidunt eu ligula. Nam ut arcu id arcu auctor vulputate non molestie quam. Nunc non diam mauris. Praesent erat est, posuere sit amet hendrerit non, molestie eget sem. Cras ac tempor est.'
-
 		);
 
 		$content .= '<table cellpadding="0" cellspacing="0" style="width:100%; font-family:Roboto,HelveticaNeue,sans-serif; font-size: 15px">
@@ -149,37 +147,39 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		/*
 		 * use arbitrary field to determine if this is the first request for the preview.
 		 */
-		$first_request = !wu_request('background_color');
+		$first_request = ! wu_request('background_color');
 
-		wu_get_template('broadcast/emails/base', array(
-			'site_name'         => get_network_option(null, 'site_name'),
-			'site_url'          => get_site_url(),
-			'logo_url'          => wu_get_network_logo(),
-			'content'           => $content,
-			'subject'           => __('Sample Subject', 'wp-ultimo'),
-			'is_editor'         => true,
-			'template_settings' => array(
-				'use_custom_logo'         => wu_string_to_bool(wu_request('use_custom_logo', $first_request ? $object->get_setting('use_custom_logo', false) : false)),
-				'custom_logo'             => wu_request('custom_logo', $object->get_setting('custom_logo', false)),
-				'background_color'        => wu_request('background_color', $object->get_setting('background_color', '#f9f9f9')),
-				'title_color'             => wu_request('title_color', $object->get_setting('title_color', '#000000')),
-				'title_size'              => wu_request('title_size', $object->get_setting('title_size', 'h3')),
-				'title_align'             => wu_request('title_align', $object->get_setting('title_align', 'center')),
-				'title_font'              => wu_request('title_font', $object->get_setting('title_font', 'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif')),
-				'content_color'           => wu_request('content_color', $object->get_setting('content_color', '#000000')),
-				'content_align'           => wu_request('content_align', $object->get_setting('content_align', 'left')),
-				'content_font'            => wu_request('content_font', $object->get_setting('content_font', 'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif')),
-				'footer_text'             => wu_request('footer_text', $object->get_setting('footer_text', '')),
-				'footer_font'             => wu_request('footer_font', $object->get_setting('footer_font', 'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif')),
-				'footer_color'            => wu_request('footer_color', $object->get_setting('footer_color', '#000000')),
-				'footer_align'            => wu_request('footer_align', $object->get_setting('footer_align', 'center')),
-				'display_company_address' => wu_string_to_bool(wu_request('display_company_address', $first_request ? $object->get_setting('display_company_address', true) : false)),
+		wu_get_template(
+			'broadcast/emails/base',
+			array(
+				'site_name'         => get_network_option(null, 'site_name'),
+				'site_url'          => get_site_url(),
+				'logo_url'          => wu_get_network_logo(),
+				'content'           => $content,
+				'subject'           => __('Sample Subject', 'wp-ultimo'),
+				'is_editor'         => true,
+				'template_settings' => array(
+					'use_custom_logo'         => wu_string_to_bool(wu_request('use_custom_logo', $first_request ? $object->get_setting('use_custom_logo', false) : false)),
+					'custom_logo'             => wu_request('custom_logo', $object->get_setting('custom_logo', false)),
+					'background_color'        => wu_request('background_color', $object->get_setting('background_color', '#f9f9f9')),
+					'title_color'             => wu_request('title_color', $object->get_setting('title_color', '#000000')),
+					'title_size'              => wu_request('title_size', $object->get_setting('title_size', 'h3')),
+					'title_align'             => wu_request('title_align', $object->get_setting('title_align', 'center')),
+					'title_font'              => wu_request('title_font', $object->get_setting('title_font', 'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif')),
+					'content_color'           => wu_request('content_color', $object->get_setting('content_color', '#000000')),
+					'content_align'           => wu_request('content_align', $object->get_setting('content_align', 'left')),
+					'content_font'            => wu_request('content_font', $object->get_setting('content_font', 'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif')),
+					'footer_text'             => wu_request('footer_text', $object->get_setting('footer_text', '')),
+					'footer_font'             => wu_request('footer_font', $object->get_setting('footer_font', 'Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif')),
+					'footer_color'            => wu_request('footer_color', $object->get_setting('footer_color', '#000000')),
+					'footer_align'            => wu_request('footer_align', $object->get_setting('footer_align', 'center')),
+					'display_company_address' => wu_string_to_bool(wu_request('display_company_address', $first_request ? $object->get_setting('display_company_address', true) : false)),
+				),
 			)
-		));
+		);
 
 		die;
-
-	} // end email_template_preview;
+	}
 
 	/**
 	 * Returns the preview URL. This is then added to the iframe.
@@ -191,12 +191,14 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$url = get_admin_url(wu_get_main_site_id(), 'admin-ajax.php');
 
-		return add_query_arg(array(
-			'action'     => 'wu-email-template-preview',
-			'customizer' => 1,
-		), $url);
-
-	} // end get_preview_url;
+		return add_query_arg(
+			array(
+				'action'     => 'wu-email-template-preview',
+				'customizer' => 1,
+			),
+			$url
+		);
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -206,18 +208,21 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function register_widgets() {
 
-		$this->add_save_widget('save', array(
-			'html_attr' => array(
-				'data-wu-app' => 'save',
-				'data-state'  => wu_convert_to_state(),
-			),
-			'fields'    => array(
-				'note' => array(
-					'type' => 'note',
-					'desc' => __('System emails and broadcasts will be sent using this template.', 'wp-ultimo'),
+		$this->add_save_widget(
+			'save',
+			array(
+				'html_attr' => array(
+					'data-wu-app' => 'save',
+					'data-state'  => wu_convert_to_state(),
+				),
+				'fields'    => array(
+					'note' => array(
+						'type' => 'note',
+						'desc' => __('System emails and broadcasts will be sent using this template.', 'wp-ultimo'),
+					),
 				),
 			)
-		));
+		);
 
 		$settings = $this->get_attributes();
 
@@ -473,24 +478,29 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			),
 		);
 
-		$state = array_merge($settings, array(
-			'tab'     => 'header',
-			'refresh' => true,
-		));
+		$state = array_merge(
+			$settings,
+			array(
+				'tab'     => 'header',
+				'refresh' => true,
+			)
+		);
 
-		$this->add_fields_widget('customizer', array(
-			'title'     => __('Customizer', 'wp-ultimo'),
-			'position'  => 'side',
-			'fields'    => $fields,
-			'html_attr' => array(
-				'style'                    => 'margin-top: -6px;',
-				'data-wu-app'              => 'email_template_customizer',
-				'data-wu-customizer-panel' => true,
-				'data-state'               => json_encode($state),
-			),
-		));
-
-	} // end register_widgets;
+		$this->add_fields_widget(
+			'customizer',
+			array(
+				'title'     => __('Customizer', 'wp-ultimo'),
+				'position'  => 'side',
+				'fields'    => $fields,
+				'html_attr' => array(
+					'style'                    => 'margin-top: -6px;',
+					'data-wu-app'              => 'email_template_customizer',
+					'data-wu-customizer-panel' => true,
+					'data-state'               => json_encode($state),
+				),
+			)
+		);
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -501,8 +511,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_title() {
 
 		return __('Customize Email Template:', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -513,8 +522,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Customize Email Template', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -525,8 +533,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function action_links() {
 
 		return array();
-
-	} // end action_links;
+	}
 
 	/**
 	 * Returns the labels to be used on the admin page.
@@ -548,8 +555,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'delete_button_label' => __('Delete Email Template', 'wp-ultimo'),
 			'delete_description'  => __('Be careful. This action is irreversible.', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Should implement the processes necessary to save the changes made to the object.
@@ -574,8 +580,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		wp_redirect($url);
 
 		exit;
-
-	} // end handle_save;
+	}
 
 	/**
 	 * Get the value of attributes.
@@ -590,8 +595,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		$attributes = wp_parse_args($saved_atts, $this->get_default_settings());
 
 		return $attributes;
-
-	} // end get_attributes;
+	}
 
 	/**
 	 * Gets the default email template settings.
@@ -618,8 +622,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			'footer_color'            => '#000000',
 			'footer_align'            => 'center',
 		);
-
-	} // end get_default_settings;
+	}
 
 	/**
 	 * Returns the list of saved settings to customize the email template.
@@ -631,8 +634,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public static function get_settings() {
 
 		return wu_get_option('email_template', array());
-
-	} // end get_settings;
+	}
 
 	/**
 	 * Returns a specitic email template setting.
@@ -646,24 +648,17 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function get_setting($setting, $default = false) {
 
 		if ($setting) {
-
 			$return = wu_get_option('email_template', array());
 
-			if ($return && isset($return[$setting])) {
-
-				$return = $return[$setting];
-
+			if ($return && isset($return[ $setting ])) {
+				$return = $return[ $setting ];
 			} else {
-
 				$return = $default;
-
-			} // end if;
+			}
 
 			return $return;
-
-		} // end if;
-
-	} // end get_setting;
+		}
+	}
 
 	/**
 	 * Save settings.
@@ -678,17 +673,11 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 		$allowed_keys = $this->get_attributes();
 
 		foreach ($settings_to_save as $setting_to_save => $value) {
-
-			if (!array_key_exists($setting_to_save, $allowed_keys)) {
-
-				unset($settings_to_save[$setting_to_save]);
-
-			} // end if;
-
-		} // end foreach;
+			if ( ! array_key_exists($setting_to_save, $allowed_keys)) {
+				unset($settings_to_save[ $setting_to_save ]);
+			}
+		}
 
 		return wu_save_option('email_template', $settings_to_save);
-
-	} // end save_settings;
-
-} // end class Email_Template_Customize_Admin_Page;
+	}
+}

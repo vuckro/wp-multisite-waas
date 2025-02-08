@@ -38,10 +38,10 @@ defined('ABSPATH') || exit;
 
 if ( defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING ) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( is_plugin_active( 'wp-ultimo/wp-ultimo.php' ) ) {
+	if ( is_plugin_active('wp-ultimo/wp-ultimo.php') ) {
 		// old plugin still installed and active with the old name and path
 		// and the user is trying to activate this plugin. So deactivate and return.
-		deactivate_plugins( 'wp-ultimo/wp-ultimo.php', true, true);
+		deactivate_plugins('wp-ultimo/wp-ultimo.php', true, true);
 
 		if ( file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
 			// We must override the old sunrise file or more name conflicts will occur.
@@ -51,7 +51,7 @@ if ( defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING ) {
 	}
 }
 
-if (!defined('WP_ULTIMO_PLUGIN_FILE')) {
+if ( ! defined('WP_ULTIMO_PLUGIN_FILE')) {
 	define('WP_ULTIMO_PLUGIN_FILE', __FILE__);
 }
 
@@ -82,9 +82,7 @@ if ( ! function_exists('WP_Ultimo')) {
 	 * @since 2.0.0
 	 */
 	function WP_Ultimo() { // phpcs:ignore
-
 		return WP_Ultimo::get_instance();
-
 	} // end WP_Ultimo;
 }
 // Initialize and set to global for back-compat

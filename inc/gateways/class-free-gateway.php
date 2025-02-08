@@ -12,8 +12,8 @@
 namespace WP_Ultimo\Gateways;
 
 use WP_Ultimo\Gateways\Base_Gateway;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
-use \WP_Ultimo\Database\Payments\Payment_Status;
+use WP_Ultimo\Database\Memberships\Membership_Status;
+use WP_Ultimo\Database\Payments\Payment_Status;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -79,7 +79,6 @@ class Free_Gateway extends Base_Gateway {
 			$status = $membership->save();
 
 			return;
-
 		} elseif ($type === 'upgrade' || $type === 'downgrade' || $type === 'addon') {
 			/*
 			 * A change to another free membership
@@ -89,16 +88,14 @@ class Free_Gateway extends Base_Gateway {
 			$membership->swap($cart);
 
 			$membership->set_status(Membership_Status::ACTIVE);
-
-		} // end if;
+		}
 
 		$membership->save();
 
 		$payment->set_status(Payment_Status::COMPLETED);
 
 		$payment->save();
-
-	} // end process_checkout;
+	}
 
 	/**
 	 * Process a cancellation.
@@ -120,7 +117,7 @@ class Free_Gateway extends Base_Gateway {
 	 * @param \WP_Ultimo\Models\Customer   $customer The customer checking out.
 	 * @return void
 	 */
-	public function process_cancellation($membership, $customer) {} // end process_cancellation;
+	public function process_cancellation($membership, $customer) {}
 
 	/**
 	 * Process a refund.
@@ -144,6 +141,5 @@ class Free_Gateway extends Base_Gateway {
 	 * @param \WP_Ultimo\Models\Customer   $customer The customer checking out.
 	 * @return void
 	 */
-	public function process_refund($amount, $payment, $membership, $customer) {} // end process_refund;
-
-} // end class Free_Gateway;
+	public function process_refund($amount, $payment, $membership, $customer) {}
+}

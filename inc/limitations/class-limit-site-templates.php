@@ -36,11 +36,11 @@ class Limit_Site_Templates extends Limit {
 	protected $mode = 'default';
 
 	/**
-     * Allows sub-type limits to set their own default value for enabled.
-     *
-     * @since 2.0.0
-     * @var bool
-     */
+	 * Allows sub-type limits to set their own default value for enabled.
+	 *
+	 * @since 2.0.0
+	 * @var bool
+	 */
 	private bool $enabled_default_value = true;
 
 	/**
@@ -56,8 +56,7 @@ class Limit_Site_Templates extends Limit {
 		parent::setup($data);
 
 		$this->mode = wu_get_isset($data, 'mode', 'default');
-
-	} // end setup;
+	}
 
 	/**
 	 * Returns the mode. Can be one of three: default, assign_template and choose_available_templates.
@@ -68,8 +67,7 @@ class Limit_Site_Templates extends Limit {
 	public function get_mode() {
 
 		return $this->mode;
-
-	} // end get_mode;
+	}
 
 	/**
 	 * The check method is what gets called when allowed is called.
@@ -95,8 +93,7 @@ class Limit_Site_Templates extends Limit {
 		);
 
 		return wu_get_isset($types, $type, true);
-
-	} // end check;
+	}
 
 	/**
 	 * Adds a magic getter for themes.
@@ -113,8 +110,7 @@ class Limit_Site_Templates extends Limit {
 		$template = (object) wu_get_isset($this->get_limit(), $template_id, $this->get_default_permissions($template_id));
 
 		return (object) wp_parse_args($template, $this->get_default_permissions($template_id));
-
-	} // end __get;
+	}
 
 	/**
 	 * Returns default permissions.
@@ -129,8 +125,7 @@ class Limit_Site_Templates extends Limit {
 		return array(
 			'behavior' => 'available',
 		);
-
-	} // end get_default_permissions;
+	}
 
 	/**
 	 * Checks if a theme exists on the current module.
@@ -147,8 +142,7 @@ class Limit_Site_Templates extends Limit {
 		$results = wu_get_isset($this->get_limit(), $template_id, array());
 
 		return wu_get_isset($results, 'behavior', 'not-set') !== 'not-set';
-
-	} // end exists;
+	}
 
 	/**
 	 * Get all themes.
@@ -161,8 +155,7 @@ class Limit_Site_Templates extends Limit {
 		$templates = (array) $this->get_limit();
 
 		return array_keys($templates);
-
-	} // end get_all_templates;
+	}
 
 	/**
 	 * Get available themes.
@@ -174,31 +167,24 @@ class Limit_Site_Templates extends Limit {
 
 		$limits = $this->get_limit();
 
-		if (!$limits) {
-
+		if ( ! $limits) {
 			return false;
-
-		} // end if;
+		}
 
 		$limits = (array) $limits;
 
 		$available = array();
 
 		foreach ($limits as $site_id => $site_settings) {
-
 			$site_settings = (object) $site_settings;
 
 			if ($site_settings->behavior === 'available' || $site_settings->behavior === 'pre_selected' || $this->mode === 'default') {
-
 				$available[] = $site_id;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $available;
-
-	} // end get_available_site_templates;
+	}
 
 	/**
 	 * Get the forced active theme for the current limitations.
@@ -212,27 +198,20 @@ class Limit_Site_Templates extends Limit {
 
 		$pre_selected_site_template = false;
 
-		if (!$limits) {
-
+		if ( ! $limits) {
 			return $pre_selected_site_template;
-
-		} // end if;
+		}
 
 		foreach ($limits as $site_id => $site_settings) {
-
 			$site_settings = (object) $site_settings;
 
 			if ($site_settings->behavior === 'pre_selected') {
-
 				$pre_selected_site_template = $site_id;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $pre_selected_site_template;
-
-	} // end get_pre_selected_site_template;
+	}
 
 	/**
 	 * Handles limits on post submission.
@@ -245,8 +224,7 @@ class Limit_Site_Templates extends Limit {
 		$module = wu_get_isset($_POST['modules'], $this->id, array());
 
 		return wu_get_isset($module, 'limit', $this->get_limit());
-
-	} // end handle_limit;
+	}
 
 	/**
 	 * Handles other elements when saving. Used for custom attributes.
@@ -263,8 +241,7 @@ class Limit_Site_Templates extends Limit {
 		$module['mode'] = wu_get_isset($_module, 'mode', 'default');
 
 		return $module;
-
-	} // end handle_others;
+	}
 
 	/**
 	 * Returns a default state.
@@ -279,7 +256,5 @@ class Limit_Site_Templates extends Limit {
 			'limit'   => null,
 			'mode'    => 'default',
 		);
-
-	} // end default_state;
-
-} // end class Limit_Site_Templates;
+	}
+}

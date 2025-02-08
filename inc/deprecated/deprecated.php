@@ -34,8 +34,7 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'WP_Ultimo()->settings->get_sections()');
 
 		return WP_Ultimo()->settings->get_sections();
-
-	} // end get_sections;
+	}
 
 	/**
 	 * Deprecated: Get all the settings from the plugin.
@@ -49,8 +48,7 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_all_settings()');
 
 		return wu_get_all_settings();
-
-	} // end get_settings;
+	}
 
 	/**
 	 * Deprecated: Handles the saving of the settings after the save button is pressed.
@@ -66,8 +64,7 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'WP_Ultimo()->settings->save_settings()');
 
 		return WP_Ultimo()->settings->save_settings(array(), $reset);
-
-	} // end save_settings;
+	}
 
 	/**
 	 * Deprecated: Get a specific settings from the plugin.
@@ -85,8 +82,7 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_setting()');
 
 		return wu_get_setting($setting, $default);
-
-	} // end get_setting;
+	}
 
 	/**
 	 * Deprecated: Saves a specific setting into the database.
@@ -100,8 +96,7 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_save_setting()');
 
 		return wu_save_setting($setting, $value);
-
-	} // end save_setting;
+	}
 
 	/**
 	 * Deprecated: Returns the image being used as a logo.
@@ -121,8 +116,7 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_network_logo()');
 
 		return wu_get_network_logo($size);
-
-	} // end get_logo;
+	}
 
 	/**
 	 * Deprecated: Return the countries list.
@@ -135,10 +129,8 @@ class WU_Settings {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_countries()');
 
 		return wu_get_countries();
-
-	} // end get_countries;
-
-} // end class WU_Settings;
+	}
+}
 
 /**
  * Deprecated: WU_Page
@@ -168,18 +160,21 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_send_mail()');
 
-		$this->attributes = wp_parse_args($atts, array(
-			'badge_count'   => 0,
-			'position'      => 10,
-			'submenu_title' => false,
-			'id'            => 'wp-ultimo-page',
-			'type'          => 'menu',
-			'parent'        => 'wp-ultimo',
-			'capability'    => 'manage_network',
-			'menu_icon'     => 'dashicons-menu',
-			'title'         => __('Admin Page', 'wp-ultimo'),
-			'menu_title'    => __('Admin Page', 'wp-ultimo'),
-		));
+		$this->attributes = wp_parse_args(
+			$atts,
+			array(
+				'badge_count'   => 0,
+				'position'      => 10,
+				'submenu_title' => false,
+				'id'            => 'wp-ultimo-page',
+				'type'          => 'menu',
+				'parent'        => 'wp-ultimo',
+				'capability'    => 'manage_network',
+				'menu_icon'     => 'dashicons-menu',
+				'title'         => __('Admin Page', 'wp-ultimo'),
+				'menu_title'    => __('Admin Page', 'wp-ultimo'),
+			)
+		);
 
 		/*
 		 * Sets the defaults.
@@ -192,8 +187,7 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 		$this->id          = $this->attributes['id'] . '-one';
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns the title of the page. Must be declared on the child classes.
@@ -204,8 +198,7 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 	public function get_title() {
 
 		return $this->attributes['title'];
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page. Must be declared on the child classes.
@@ -216,8 +209,7 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 	public function get_menu_title() {
 
 		return $this->attributes['menu_title'];
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -225,9 +217,8 @@ class WU_Page extends \WP_Ultimo\Admin_Pages\Base_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function output() {} // end output;
-
-} // end class WU_Page;
+	public function output() {}
+}
 
 /**
  * Deprecated: WU_Site_Templates
@@ -249,10 +240,8 @@ class WU_Site_Templates {
 		_deprecated_function(__METHOD__, '2.0.0', 'WP_Ultimo\UI\Template_Previewer::get_instance()->get_preview_url()');
 
 		return \WP_Ultimo\UI\Template_Previewer::get_instance()->get_preview_url($site_id);
-
-	} // end get_template_preview_url;
-
-} // end class WU_Site_Templates;
+	}
+}
 
 /**
  * Deprecated: WU_Mail
@@ -297,12 +286,11 @@ class WU_Mail {
 			'site_url'    => get_site_url(wu_get_main_site_id()),
 			'attachments' => $attachments,
 			'type'        => $html ? 'html' : 'plain',
-			'bcc'         => $bcc
+			'bcc'         => $bcc,
 		);
 
 		return wu_send_mail($from, $to, $args);
-
-	} // end send_mail;
+	}
 
 	/**
 	 * Deprecated: Send an email template registered in our framework.
@@ -318,8 +306,7 @@ class WU_Mail {
 	public function send_template($slug, $to, $shortcodes, $attachments = array()) {
 
 		_deprecated_function(__METHOD__, '2.0.0');
-
-	} // end send_template;
+	}
 
 	/**
 	 * Deprecated: Register template of a certain email.
@@ -333,10 +320,8 @@ class WU_Mail {
 	public function register_template($slug, $args) {
 
 		_deprecated_function(__METHOD__, '2.0.0');
-
-	} // end register_template;
-
-} // end class WU_Mail;
+	}
+}
 
 /**
  * Deprecated: Returns the WU_Mail instance.
@@ -350,8 +335,7 @@ function WU_Mail() { // phpcs:ignore
 	_deprecated_function(__METHOD__, '2.0.0');
 
 	return WU_Mail::get_instance();
-
-} // end WU_Mail;
+}
 
 /**
  * Deprecated: WU_Plans class.
@@ -368,9 +352,8 @@ class WU_Plans {
 	 */
 	public static function get_instance() {
 
-		return new self;
-
-	} // end get_instance;
+		return new self();
+	}
 
 	/**
 	 * Deprecated: WP_Plans::get_plans().
@@ -385,8 +368,7 @@ class WU_Plans {
 		$plans = wu_get_plans();
 
 		return $plans;
-
-	} // end get_plans;
+	}
 
 	/**
 	 * Deprecated: WU_Plans::get_most_popular_plan()
@@ -404,10 +386,8 @@ class WU_Plans {
 		$plans = wu_get_plans();
 
 		return $plans ? $plans[0] : false;
-
-	} // end get_most_popular_plan;
-
-} // end class WU_Plans;
+	}
+}
 
 /**
  * Deprecated: WU_Multi_Network
@@ -436,10 +416,8 @@ class WU_Multi_Network {
 		_deprecated_function(__CLASS__ . "::$method_name()", '2.0.0');
 
 		return false;
-
-	} // end __callStatic;
-
-} // end class WU_Multi_Network;
+	}
+}
 
 /**
  * Deprecated: WU_Help_Pointers
@@ -462,10 +440,8 @@ class WU_Help_Pointers {
 	public function __construct($pntrs = array()) {
 
 		_deprecated_function(__CLASS__, '2.0.0');
-
-	} // end __construct;
-
-} // end class WU_Help_Pointers;
+	}
+}
 
 /**
  * Deprecated: WU_Util
@@ -478,17 +454,16 @@ class WU_Help_Pointers {
 class WU_Util {
 
 	/**
-     * Deprecated: is_login_page()
-     *
-     * @deprecated 2.0.0
-     */
+	 * Deprecated: is_login_page()
+	 *
+	 * @deprecated 2.0.0
+	 */
 	public static function is_login_page(): bool {
 
 		_deprecated_function(__METHOD__, '2.0.0');
 
 		return false;
-
-	} // end is_login_page;
+	}
 
 	/**
 	 * Deprecated: format_megabytes
@@ -504,8 +479,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'size_format()');
 
 		return size_format($size * MB_IN_BYTES);
-
-	} // end format_megabytes;
+	}
 
 	/**
 	 * Deprecated: to_float
@@ -520,8 +494,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_to_float()');
 
 		return wu_to_float($num);
-
-	} // end to_float;
+	}
 
 	/**
 	 * Deprecated: tooltip
@@ -537,8 +510,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_tooltip()');
 
 		return wu_tooltip($text, $icon);
-
-	} // end tooltip;
+	}
 
 	/**
 	 * Deprecated: wp_die
@@ -557,8 +529,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'wp_die()');
 
 		wp_die($message, $title, $args);
-
-	} // end wp_die;
+	}
 
 	/**
 	 * Deprecated: display_alert
@@ -574,8 +545,7 @@ class WU_Util {
 	public static function display_alert($title, $message, $type = 'success', $arguments = false) {
 
 		_deprecated_function(__METHOD__, '2.0.0');
-
-	} // end display_alert;
+	}
 
 	/**
 	 * Deprecated: registers_today
@@ -587,18 +557,19 @@ class WU_Util {
 
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_customers() w/ count = true');
 
-		$signups = wu_get_customers(array(
-			'count'      => true,
-			'date_query' => array(
-				'column'    => 'date_registered',
-				'after'     => 'today',
-				'inclusive' => true,
-			),
-		));
+		$signups = wu_get_customers(
+			array(
+				'count'      => true,
+				'date_query' => array(
+					'column'    => 'date_registered',
+					'after'     => 'today',
+					'inclusive' => true,
+				),
+			)
+		);
 
 		return $signups;
-
-	} // end registers_today;
+	}
 	/**
 	 * Deprecated: users_on_trial
 	 *
@@ -609,8 +580,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '1.5.3');
 
 		return 0;
-
-	} // end users_on_trial;
+	}
 
 	/**
 	 * Deprecated: array_filter_key
@@ -629,8 +599,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0');
 
 		return $array;
-
-	} // end array_filter_key;
+	}
 
 	/**
 	 * Deprecated: generate_csv
@@ -646,8 +615,7 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_generate_csv()');
 
 		wu_generate_csv($file_name, $data);
-
-	} // end generate_csv;
+	}
 
 	/**
 	 * Deprecated: color
@@ -662,10 +630,8 @@ class WU_Util {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_color()');
 
 		return wu_color($hex);
-
-	} // end color;
-
-} // end class WU_Util;
+	}
+}
 
 /**
  * Deprecated: WU_Logger
@@ -691,22 +657,16 @@ class WU_Logger {
 		$alternative = "\\WP_Ultimo\\Logger::$method_name";
 
 		if ($method_name === 'add') {
-
 			$alternative = 'wu_log_add';
-
 		} elseif ($method_name === 'clear') {
-
 			$alternative = 'wu_log_clear';
-
-		} // end if;
+		}
 
 		_deprecated_function(__CLASS__ . "::$method_name()", '2.0.0', "$alternative()");
 
 		return call_user_func_array($alternative, $args);
-
-	} // end __callStatic;
-
-} // end class WU_Logger;
+	}
+}
 
 /**
  * Deprecated: WU_Links
@@ -730,10 +690,8 @@ class WU_Links {
 		_deprecated_function(__METHOD__, '2.0.0', 'wu_get_documentation_url()');
 
 		return wu_get_documentation_url($slug);
-
-	} // end get_link;
-
-} // end class WU_Links;
+	}
+}
 
 /*
  * Models
@@ -758,22 +716,16 @@ class WU_Site extends \WP_Ultimo\Models\Site {
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site');
 
 		if (is_numeric($object)) {
-
 			$object = wu_get_site($object);
-
-		} // end if;
+		}
 
 		if ($object) {
-
 			$object = get_object_vars($object);
-
-		} // end if;
+		}
 
 		parent::__construct($object);
-
-	} // end __construct;
-
-} // end class WU_Site;
+	}
+}
 
 /**
  * Deprecated: WU_Site_Template
@@ -794,22 +746,16 @@ class WU_Site_Template extends \WP_Ultimo\Models\Site {
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Site');
 
 		if (is_numeric($object)) {
-
 			$object = wu_get_site($object);
-
-		} // end if;
+		}
 
 		if ($object) {
-
 			$object = get_object_vars($object);
-
-		} // end if;
+		}
 
 		parent::__construct($object);
-
-	} // end __construct;
-
-} // end class WU_Site_Template;
+	}
+}
 
 /**
  * Deprecated: WU_Site_Template
@@ -826,10 +772,8 @@ class WU_Site_Owner {
 	public function __construct() {
 
 		_deprecated_function(__CLASS__, '2.0.0');
-
-	} // end __construct;
-
-} // end class WU_Site_Owner;
+	}
+}
 
 /**
  * Deprecated Trait.
@@ -849,16 +793,13 @@ trait WU_Deprecated_Model {
 	public function __set($key, $value) {
 
 		if (method_exists($this, "set_$key")) {
-
 			call_user_func(array($this, "set_$key"), $value);
-
-		} // end if;
+		}
 
 		$this->{$key} = $value;
 
 		$this->after_set($key, $value);
-
-	} // end __set;
+	}
 
 	/**
 	 * Generic get method to bypass the protected status of the new models.
@@ -870,14 +811,11 @@ trait WU_Deprecated_Model {
 	public function __get($key) {
 
 		if (method_exists($this, "get_$key")) {
-
 			return call_user_func(array($this, "get_$key"));
-
-		} // end if;
+		}
 
 		return false;
-
-	} // end __get;
+	}
 
 	/**
 	 * Generic method to bypass the protected status of the new models.
@@ -887,9 +825,8 @@ trait WU_Deprecated_Model {
 	 * @param string $key The key to set.
 	 * @param mixed  $value The value to set.
 	 */
-	public function after_set($key, $value) {} // end after_set;
-
-} // end trait WU_Deprecated_Model;
+	public function after_set($key, $value) {}
+}
 
 /**
  * Deprecated: WU_Coupon
@@ -912,28 +849,19 @@ class WU_Coupon extends \WP_Ultimo\Models\Discount_Code {
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Discount_Code');
 
 		if (is_numeric($object)) {
-
 			$object = wu_get_discount_code($object);
-
-		} // end if;
-
-		if ($object) {
-
-			$object = get_object_vars($object);
-
-		} // end if;
-
-		if (is_array($object)) {
-
-			foreach ($object as $att => $value) {
-
-				$this->{$att} = $value;
-
-			} // end foreach;
-
 		}
 
-	} // end __construct;
+		if ($object) {
+			$object = get_object_vars($object);
+		}
+
+		if (is_array($object)) {
+			foreach ($object as $att => $value) {
+				$this->{$att} = $value;
+			}
+		}
+	}
 
 	/**
 	 * Generic method to bypass the protected status of the new models.
@@ -946,18 +874,14 @@ class WU_Coupon extends \WP_Ultimo\Models\Discount_Code {
 	public function after_set($key, $value) {
 
 		if ($key === 'title') {
-
 			$this->set_code($value);
 
 			$this->set_name($value);
 
 			$this->set_description($value);
-
-		} // end if;
-
-	} // end after_set;
-
-} // end class WU_Coupon;
+		}
+	}
+}
 
 /**
  * Deprecated: WU_Plan
@@ -980,32 +904,23 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Product');
 
 		if (is_numeric($object)) {
-
 			$object = wu_get_product($object);
-
-		} // end if;
+		}
 
 		if ($object) {
-
 			$object = get_object_vars($object);
-
-		} // end if;
+		}
 
 		if (is_array($object)) {
-
 			foreach ($object as $att => $value) {
-
 				$this->{$att} = $value;
-
-			} // end foreach;
-
-		} // end if;
+			}
+		}
 
 		$this->set_slug(uniqid());
 
 		parent::__construct($object);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Generic get method to bypass the protected status of the new models.
@@ -1017,20 +932,15 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 	public function __get($key) {
 
 		if ($key === 'price_1') {
-
 			return $this->get_amount();
-
-		} // end if;
+		}
 
 		if (method_exists($this, "get_$key")) {
-
 			return call_user_func(array($this, "get_$key"));
-
-		} // end if;
+		}
 
 		return $this->get_meta('wpu_' . $key, false);
-
-	} // end __get;
+	}
 
 	/**
 	 * Generic method to bypass the protected status of the new models.
@@ -1043,14 +953,10 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 	public function after_set($key, $value) {
 
 		if ($key === 'price_1') {
-
 			$this->set_amount($value);
-
-		} // end if;
-
-	} // end after_set;
-
-} // end class WU_Plan;
+		}
+	}
+}
 
 /**
  * Deprecated: WU_Subscription
@@ -1073,20 +979,15 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Models\Membership');
 
 		if (is_numeric($object)) {
-
 			$object = wu_get_membership($object);
-
-		} // end if;
+		}
 
 		if ($object) {
-
 			$object = get_object_vars($object);
-
-		} // end if;
+		}
 
 		parent::__construct($object);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Generic method to bypass the protected status of the new models.
@@ -1096,7 +997,7 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 	 * @param string $key The key to set.
 	 * @param mixed  $value The value to set.
 	 */
-	public function after_set($key, $value) {} // end after_set;
+	public function after_set($key, $value) {}
 
 	/**
 	 * Deprecated: Add a valid coupon code to the subscription.
@@ -1107,8 +1008,7 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 	public function apply_coupon_code($coupon_code = null) {
 
 		_deprecated_function(__METHOD__, '2.0.0');
-
-	} // end apply_coupon_code;
+	}
 
 	/**
 	 * Deprecated: Add a valid coupon code to the subscription.
@@ -1118,10 +1018,8 @@ class WU_Subscription extends \WP_Ultimo\Models\Membership {
 	public function get_price_after_coupon_code() {
 
 		_deprecated_function(__METHOD__, '2.0.0');
-
-	} // end get_price_after_coupon_code;
-
-} // end class WU_Subscription;
+	}
+}
 
 /**
  * Deprecated: WU_Signup
@@ -1136,10 +1034,8 @@ class WU_Signup extends \WP_Ultimo\Checkout\Legacy_Checkout {
 	public function __construct() {
 
 		_deprecated_function(__CLASS__, '2.0.0', '\WP_Ultimo\Checkout\Legacy_Checkout');
-
-	} // end __construct;
-
-} // end class WU_Signup;
+	}
+}
 
 /**
  * Deprecated: WU_Gateway
@@ -1148,7 +1044,7 @@ class WU_Signup extends \WP_Ultimo\Checkout\Legacy_Checkout {
  */
 abstract class WU_Gateway {
 
-} // end class WU_Gateway;
+}
 
 /**
  * Deprecated: WU_Site_Hooks
@@ -1174,8 +1070,7 @@ class WU_Site_Hooks {
 		_deprecated_function(__CLASS__, '2.0.0');
 
 		return array();
-
-	} // end get_available_templates;
+	}
 
 	/**
 	 * Deprecated: Duplicates our template site in the creation of the new user site.
@@ -1207,8 +1102,7 @@ class WU_Site_Hooks {
 		);
 
 		return \WP_Ultimo\Helpers\Site_Duplicator::duplicate_site($site_to_duplicate, $title, $arguments);
-
-	} // end duplicate_site;
+	}
 
 	/**
 	 * Deprecated: Returns the preview URL to a given site id.
@@ -1224,17 +1118,13 @@ class WU_Site_Hooks {
 
 		$site = wu_get_site($site_id);
 
-		if (!$site) {
-
+		if ( ! $site) {
 			return '';
-
-		} // end if;
+		}
 
 		return $site->get_featured_image();
-
-	} // end get_template_preview_url;
-
-} // end class WU_Site_Hooks;
+	}
+}
 
 /**
  * Deprecated: WU_Transactions
@@ -1258,10 +1148,8 @@ class WU_Transactions {
 		$date = new \DateTime();
 
 		return $type === 'mysql' ? $date->format('Y-m-d H:i:s') : $date->format('U');
-
-	} // end get_current_time;
-
-} // end class WU_Transactions;
+	}
+}
 /*
  * Functions
  */
@@ -1281,21 +1169,16 @@ function wu_get_coupon($coupon_code, $return_invalid = false) {
 
 	$discount_code = wu_get_discount_code_by_code($coupon_code);
 
-	if (!$discount_code) {
-
+	if ( ! $discount_code) {
 		return false;
+	}
 
-	} // end if;
-
-	if (!$return_invalid && !$discount_code->is_valid()) {
-
+	if ( ! $return_invalid && ! $discount_code->is_valid()) {
 		return false;
-
-	} // end if;
+	}
 
 	return new WU_Coupon($discount_code);
-
-} // end wu_get_coupon;
+}
 
 /**
  * Deprecated: Returns a plan based on the id passed
@@ -1311,15 +1194,12 @@ function wu_get_plan($plan_id) {
 
 	$plan = wu_get_product($plan_id);
 
-	if (!$plan) {
-
+	if ( ! $plan) {
 		return false;
-
-	} // end if;
+	}
 
 	return new WU_Plan($plan);
-
-} // end wu_get_plan;
+}
 
 /**
  * Deprecated: Gets a plan by its slug.
@@ -1335,8 +1215,7 @@ function wu_get_plan_by_slug($plan_slug) {
 	_deprecated_function(__FUNCTION__, '2.0.0', 'wu_get_product_by_slug()');
 
 	return wu_get_product_by_slug($plan_slug);
-
-} // end wu_get_plan_by_slug;
+}
 /**
  * Deprecated: Returns a subscription object based on the user.
  *
@@ -1354,8 +1233,7 @@ function wu_get_subscription($user_id) {
 	_deprecated_function(__FUNCTION__, '2.0.0', 'wu_get_membership_by()');
 
 	return wu_get_membership_by('user_id', $user_id);
-
-} // end wu_get_subscription;
+}
 /**
  * Deprecated: Returns a subscription object based on the integration key.
  *
@@ -1369,8 +1247,7 @@ function wu_get_subscription_by_integration_key($integration_key) {
 	_deprecated_function(__FUNCTION__, '2.0.0', 'wu_get_membership_by()');
 
 	return wu_get_membership_by('gateway_subscription_id', $integration_key);
-
-} // end wu_get_subscription_by_integration_key;
+}
 /**
  * Deprecated: Return a subscription object based on the current user.
  *
@@ -1385,8 +1262,7 @@ function wu_get_current_subscription() {
 	_deprecated_function(__FUNCTION__, '2.0.0', 'wu_get_membership_by()');
 
 	return wu_get_membership_by('user_id', $user_id);
-
-} // end wu_get_current_subscription;
+}
 
 /**
  * Deprecated: Checks if the current user is an active subscriber.
@@ -1405,18 +1281,13 @@ function wu_is_active_subscriber($user_id = false) {
 	_deprecated_function(__FUNCTION__, '2.0.0');
 
 	if ($user_id === false) {
-
 		$membership = wu_get_current_site()->get_membership();
-
 	} else {
-
 		$membership = wu_get_membership_by('user_id', get_current_user_id());
-
-	} // end if;
+	}
 
 	return $membership && $membership->is_active();
-
-}  // end wu_is_active_subscriber;
+}
 
 /**
  * Deprecated: Checks if a given user is a customer of a given plan.
@@ -1440,16 +1311,13 @@ function wu_has_plan($user_id, $plan_id) {
 	 * to prevent a fatal error.
 	 */
 	if (function_exists('wu_get_membership_by') === false) {
-
 		return false;
-
-	} // end if;
+	}
 
 	$membership = wu_get_membership_by('user_id', $user_id);
 
 	return $membership && absint($membership->get_plan_id()) === absint($plan_id);
-
-} // end wu_has_plan;
+}
 
 /**
  * Deprecated: Returns the gateway being used by the current user at the moment.
@@ -1466,8 +1334,7 @@ function wu_get_active_gateway() {
 	$active_gateways = wu_get_active_gateways();
 
 	return reset($active_gateways);
-
-} // end wu_get_active_gateway;
+}
 /**
  * Deprecated: Generates the price description.
  *
@@ -1483,8 +1350,7 @@ function wu_get_interval_string($price = null, $interval = null, $extended = nul
 	_deprecated_function(__FUNCTION__, '2.0.0', '\WP_Ultimo\Models\Product::get_price_description()');
 
 	return '';
-
-} // end wu_get_interval_string;
+}
 
 /**
  * Deprecated: get_wu_currencies.
@@ -1499,8 +1365,7 @@ function get_wu_currencies() { // phpcs:ignore
 	_deprecated_function(__FUNCTION__, '2.0.0', 'wu_get_currencies()');
 
 	return wu_get_currencies();
-
-} // end get_wu_currencies;
+}
 
 /**
  * Deprecated: get_wu_currency_symbol.
@@ -1516,5 +1381,4 @@ function get_wu_currency_symbol($currency = '') { // phpcs:ignore
 	_deprecated_function(__FUNCTION__, '2.0.0', 'wu_get_currency_symbol()');
 
 	return wu_get_currency_symbol($currency);
-
-} // end get_wu_currency_symbol;
+}

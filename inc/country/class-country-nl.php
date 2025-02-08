@@ -76,8 +76,7 @@ class Country_NL extends Country {
 	public function get_name() {
 
 		return __('Netherlands', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for NL.
@@ -104,7 +103,5 @@ class Country_NL extends Country {
 			'UT'  => __('Utrecht', 'wp-ultimo-locations'),
 			'ZE'  => __('Zeeland', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_NL;
+	}
+}

@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\List_Tables;
 
-use \WP_Ultimo\Models\Event;
+use WP_Ultimo\Models\Event;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -36,13 +36,14 @@ class Event_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Event', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Events', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true                       // does this table support ajax?
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Event', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Events', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                       // does this table support ajax?
+			)
+		);
+	}
 
 	/**
 	 * Returns the markup for the object_type column.
@@ -57,8 +58,7 @@ class Event_List_Table extends Base_List_Table {
 		$object_type = $item->get_object_type();
 
 		return "<span class='wu-py-1 wu-px-2 wu-bg-gray-200 wu-rounded-sm wu-leading-none wu-text-gray-700 wu-text-xs wu-font-mono'>{$object_type}</span>";
-
-	} // end column_object_type;
+	}
 
 	/**
 	 * Returns the markup for the initiator column.
@@ -79,7 +79,6 @@ class Event_List_Table extends Base_List_Table {
 		$object_label_tooltip = substr($object_severity_label, 0, 1);
 
 		if ($object_initiator === 'system') {
-
 			$avatar = '<span class="dashicons-wu-tools wu-text-gray-700 wu-text-xl"></span>';
 
 			$system_text = ucfirst($object_initiator);
@@ -98,13 +97,17 @@ class Event_List_Table extends Base_List_Table {
 				</div>
 			</div>";
 			// phpcs:enable
-
 		} elseif ($object_initiator === 'manual') {
-
-			$avatar = get_avatar($item->get_author_id(), 32, 'identicon', '', array(
-				'force_display' => true,
-				'class'         => 'wu-rounded-full',
-			));
+			$avatar = get_avatar(
+				$item->get_author_id(),
+				32,
+				'identicon',
+				'',
+				array(
+					'force_display' => true,
+					'class'         => 'wu-rounded-full',
+				)
+			);
 
 			$display_name = $item->get_author_display_name();
 
@@ -133,9 +136,7 @@ class Event_List_Table extends Base_List_Table {
 					<small>{$email}</small>
 				</div>
 			</a>";
-
 		} else {
-
 			$not_found = __('No initiator found', 'wp-ultimo');
 
 			$html = "<div class='wu-table-card  wu-text-gray-700 wu-py-1 wu-px-2 wu-flex wu-flex-grow wu-rounded wu-items-center wu-border wu-border-solid wu-border-gray-300 wu-relative wu-overflow-hidden'>
@@ -144,12 +145,10 @@ class Event_List_Table extends Base_List_Table {
 					<span class='wu-block wu-py-3 wu-text-gray-600 wu-text-2xs wu-font-bold wu-uppercase'>{$not_found}</span>
 				</div>
 			</div>";
-
-		} // end if;
+		}
 
 		return $html;
-
-	} // end column_initiator;
+	}
 
 	/**
 	 * Returns the markup for the initiator column.
@@ -164,8 +163,7 @@ class Event_List_Table extends Base_List_Table {
 		$object_slug = $item->get_slug();
 
 		return "<span class='wu-py-1 wu-px-2 wu-bg-gray-200 wu-rounded-sm wu-text-gray-700 wu-text-xs wu-font-mono'>{$object_slug}</span>";
-
-	} // end column_slug;
+	}
 	/**
 	 * Returns the markup for the message column.
 	 *
@@ -179,7 +177,7 @@ class Event_List_Table extends Base_List_Table {
 
 		$url_atts = array(
 			'id'    => $item->get_id(),
-			'model' => 'event'
+			'model' => 'event',
 		);
 
 		$actions = array(
@@ -196,8 +194,7 @@ class Event_List_Table extends Base_List_Table {
 		);
 
 		return $message . $this->row_actions($actions);
-
-	} // end column_message;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -218,8 +215,7 @@ class Event_List_Table extends Base_List_Table {
 		);
 
 		return apply_filters('wu_events_list_table_get_columns', $columns, $this);
-
-	} // end get_columns;
+	}
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -247,7 +243,5 @@ class Event_List_Table extends Base_List_Table {
 				),
 			),
 		);
-
-	} // end get_filters;
-
-} // end class Event_List_Table;
+	}
+}

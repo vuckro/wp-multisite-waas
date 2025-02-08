@@ -77,8 +77,7 @@ class Country_FR extends Country {
 	public function get_name() {
 
 		return __('France', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for FR.
@@ -213,7 +212,5 @@ class Country_FR extends Country {
 			'WF'  => __('Wallis and Futuna', 'wp-ultimo-locations'),
 			'IDF' => __('Île-de-France', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_FR;
+	}
+}

@@ -74,14 +74,11 @@ class My_Sites_Element extends Base_Element {
 	public function get_icon($context = 'block') {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -96,8 +93,7 @@ class My_Sites_Element extends Base_Element {
 	public function get_title() {
 
 		return __('My Sites', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -113,8 +109,7 @@ class My_Sites_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a block to display the sites owned by the current customer.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -168,19 +163,19 @@ class My_Sites_Element extends Base_Element {
 			),
 		);
 
-		$pages = get_pages(array(
-			'exclude' => array(get_the_ID()),
-		));
+		$pages = get_pages(
+			array(
+				'exclude' => array(get_the_ID()),
+			)
+		);
 
 		$pages = $pages ? $pages : array();
 
 		$pages_list = array(0 => __('Current Page', 'wp-ultimo'));
 
 		foreach ($pages as $page) {
-
-			$pages_list[$page->ID] = $page->post_title;
-
-		} // end foreach;
+			$pages_list[ $page->ID ] = $page->post_title;
+		}
 
 		$fields['custom_manage_page'] = array(
 			'type'     => 'select',
@@ -213,8 +208,7 @@ class My_Sites_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -242,8 +236,7 @@ class My_Sites_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -268,8 +261,7 @@ class My_Sites_Element extends Base_Element {
 			'custom_manage_page' => 0,
 			'site_show'          => 'owned',
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Loads the necessary scripts and styles for this element.
@@ -280,8 +272,7 @@ class My_Sites_Element extends Base_Element {
 	public function register_scripts() {
 
 		wp_enqueue_style('wu-admin');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -293,17 +284,14 @@ class My_Sites_Element extends Base_Element {
 
 		global $wpdb;
 
-		if (!is_user_logged_in() || WP_Ultimo()->currents->is_site_set_via_request()) {
-
+		if ( ! is_user_logged_in() || WP_Ultimo()->currents->is_site_set_via_request()) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->customer = WP_Ultimo()->currents->get_customer();
-
-	} // end setup;
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -319,8 +307,7 @@ class My_Sites_Element extends Base_Element {
 			wu_mock_site(1),
 			wu_mock_site(2),
 		);
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -342,8 +329,7 @@ class My_Sites_Element extends Base_Element {
 		$atts['sites'] = $this->get_sites(wu_get_isset($atts, 'site_show'));
 
 		return wu_get_template_contents('dashboard-widgets/my-sites', $atts);
-
-	} // end output;
+	}
 
 	/**
 	 * Get sites to display on widget
@@ -353,46 +339,42 @@ class My_Sites_Element extends Base_Element {
 	 */
 	protected function get_sites(?string $show = null): array {
 
-		if (!empty($this->sites)) {
-
+		if ( ! empty($this->sites)) {
 			return $this->sites;
-
 		}
 
 		$this->sites = apply_filters('wp_ultimo_pre_my_sites_sites', array(), $show);
 
-		if (!empty($this->sites)) {
-
+		if ( ! empty($this->sites)) {
 			return $this->sites;
-
 		}
 
-		if (!empty($this->customer)) {
-
+		if ( ! empty($this->customer)) {
 			$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending', array('customer_id' => $this->customer->get_id()));
 
 			$customer_sites = array_reduce(
 				$this->customer->get_sites(),
 				function ($customer_sites, $site) {
-					$customer_sites[$site->get_id()] = $site;
+					$customer_sites[ $site->get_id() ] = $site;
 					return $customer_sites;
 				}
 			);
 		}
 
 		if ($show === 'all') {
-
 			$wp_user_sites = get_blogs_of_user(get_current_user_id());
 
-			$user_sites = array_reduce($wp_user_sites, function($user_sites, $wp_site) use ($customer_sites) {
-				if (!array_key_exists($wp_site->userblog_id, $customer_sites ?? array()) && $wp_site->userblog_id !== get_main_site_id()) {
-					$wu_site = wu_get_site($wp_site->userblog_id);
-					$wu_site->set_membership_id(0);
-					$user_sites[$wp_site->userblog_id] = $wu_site;
+			$user_sites = array_reduce(
+				$wp_user_sites,
+				function ($user_sites, $wp_site) use ($customer_sites) {
+					if ( ! array_key_exists($wp_site->userblog_id, $customer_sites ?? array()) && $wp_site->userblog_id !== get_main_site_id()) {
+						$wu_site = wu_get_site($wp_site->userblog_id);
+						$wu_site->set_membership_id(0);
+						$user_sites[ $wp_site->userblog_id ] = $wu_site;
+					}
+					return $user_sites;
 				}
-				return $user_sites;
-			});
-
+			);
 		}
 
 		$sites = array_merge(
@@ -404,8 +386,7 @@ class My_Sites_Element extends Base_Element {
 		$this->sites = apply_filters('wp_ultimo_after_my_sites_sites', $sites, $show);
 
 		return $this->sites;
-
-	} // end get_sites;
+	}
 
 
 	/**
@@ -421,28 +402,26 @@ class My_Sites_Element extends Base_Element {
 	public function get_manage_url($site_id, $type = 'default', $custom_page_id = 0) {
 
 		if ($type === 'wp_admin') {
-
 			return get_admin_url($site_id);
-
-		} // end if;
+		}
 
 		if ($type === 'custom_page') {
-
 			$custom_page = get_page_link($custom_page_id);
 
 			$url_param = \WP_Ultimo\Current::param_key('site');
 
 			$site_hash = \WP_Ultimo\Helpers\Hash::encode($site_id, 'site');
 
-			return add_query_arg(array(
-				$url_param => $site_hash,
-			), $custom_page);
-
-		} // end if;
+			return add_query_arg(
+				array(
+					$url_param => $site_hash,
+				),
+				$custom_page
+			);
+		}
 
 		return \WP_Ultimo\Current::get_manage_url($site_id, 'site');
-
-	} // end get_manage_url;
+	}
 
 	/**
 	 * Returns the new site URL for site creation.
@@ -460,35 +439,31 @@ class My_Sites_Element extends Base_Element {
 		$url = $checkout_pages->get_page_url('new_site');
 
 		if ($membership) {
-
 			if ($url) {
-
-				return add_query_arg(array(
-					'membership' => $membership->get_hash(),
-				), $url);
-
-			} // end if;
+				return add_query_arg(
+					array(
+						'membership' => $membership->get_hash(),
+					),
+					$url
+				);
+			}
 
 			if (is_main_site()) {
-
 				$sites = $membership->get_sites(false);
 
-				if (!empty($sites)) {
-
-					return add_query_arg(array(
-						'page' => 'add-new-site',
-					), get_admin_url($sites[0]->get_id()));
-
-				} // end if;
+				if ( ! empty($sites)) {
+					return add_query_arg(
+						array(
+							'page' => 'add-new-site',
+						),
+						get_admin_url($sites[0]->get_id())
+					);
+				}
 
 				return '';
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return admin_url('admin.php?page=add-new-site');
-
-	} // end get_new_site_url;
-
-} // end class My_Sites_Element;
+	}
+}

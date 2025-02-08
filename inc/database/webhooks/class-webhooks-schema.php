@@ -132,5 +132,4 @@ class Webhooks_Schema extends Schema {
 		),
 
 	);
-
-} // end class Webhooks_Schema;
+}

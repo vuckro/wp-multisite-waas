@@ -9,9 +9,9 @@
 
 namespace WP_Ultimo\Checkout;
 
-use \WP_Ultimo\Checkout\Line_Item;
-use \WP_Ultimo\Database\Memberships\Membership_Status;
-use \Arrch\Arrch as Array_Search;
+use WP_Ultimo\Checkout\Line_Item;
+use WP_Ultimo\Database\Memberships\Membership_Status;
+use Arrch\Arrch as Array_Search;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -39,16 +39,16 @@ class Cart implements \JsonSerializable {
 	public $errors;
 
 	/**
-  * Cart Attributes.
-  *
-  * List of attributes passed to the
-  * constructor.
-  *
-  * @since 2.0.0
-  * @var object
-  * @readonly
-  */
- private \stdClass $attributes;
+	 * Cart Attributes.
+	 *
+	 * List of attributes passed to the
+	 * constructor.
+	 *
+	 * @since 2.0.0
+	 * @var object
+	 * @readonly
+	 */
+	private \stdClass $attributes;
 
 	/**
 	 * Type of registration: new, renewal, upgrade, downgrade, retry, and display.
@@ -254,66 +254,69 @@ class Cart implements \JsonSerializable {
 		 * Since we're passing over the entire $_POST array
 		 * this helps us to keep things cleaner and secure.
 		 */
-		$args = shortcode_atts(array(
+		$args = shortcode_atts(
+			array(
 
-			/*
-			 * Cart Type.
-			 */
-			'cart_type'     => 'new',
+				/*
+				 * Cart Type.
+				 */
+				'cart_type'     => 'new',
 
-			/*
-			 * The list of products being bought.
-			 */
-			'products'      => array(),
+				/*
+				 * The list of products being bought.
+				 */
+				'products'      => array(),
 
-			/*
-			 * The duration parameters
-			 * This will dictate which price variations we are going to use.
-			 */
-			'duration'      => false,
-			'duration_unit' => false,
+				/*
+				 * The duration parameters
+				 * This will dictate which price variations we are going to use.
+				 */
+				'duration'      => false,
+				'duration_unit' => false,
 
-			/*
-			 * The membership ID.
-			 * This is passed when we want to handle a upgrade/downgrade/addon.
-			 */
-			'membership_id' => false,
+				/*
+				 * The membership ID.
+				 * This is passed when we want to handle a upgrade/downgrade/addon.
+				 */
+				'membership_id' => false,
 
-			/*
-			 * Payment ID.
-			 * This is passed when we are trying to recovered a abandoned/pending payment.
-			 */
-			'payment_id'    => false,
+				/*
+				 * Payment ID.
+				 * This is passed when we are trying to recovered a abandoned/pending payment.
+				 */
+				'payment_id'    => false,
 
-			/*
-			 * The discount code to be used.
-			 */
-			'discount_code' => false,
+				/*
+				 * The discount code to be used.
+				 */
+				'discount_code' => false,
 
-			/*
-			 * If we should auto-renew or not.
-			 */
-			'auto_renew'    => true,
+				/*
+				 * If we should auto-renew or not.
+				 */
+				'auto_renew'    => true,
 
-			/*
-			 * The country, state, and city of the customer.
-			 * Used for taxation purposes.
-			 */
-			'country'       => '',
-			'state'         => '',
-			'city'          => '',
+				/*
+				 * The country, state, and city of the customer.
+				 * Used for taxation purposes.
+				 */
+				'country'       => '',
+				'state'         => '',
+				'city'          => '',
 
-			/*
-			 * Currency
-			 */
-			'currency'      => '',
+				/*
+				 * Currency
+				 */
+				'currency'      => '',
 
-		), $args);
+			),
+			$args
+		);
 
 		/*
 		 * Checks for errors
 		 */
-		$this->errors = new \WP_Error;
+		$this->errors = new \WP_Error();
 
 		/*
 		 * Save arguments in memory
@@ -363,11 +366,9 @@ class Cart implements \JsonSerializable {
 		 * This setting can be forced if the settings say so,
 		 * so we only set it if that is not enabled.
 		 */
-		if (!wu_get_setting('force_auto_renew', true)) {
-
+		if ( ! wu_get_setting('force_auto_renew', true)) {
 			$this->auto_renew = wu_string_to_bool($this->attributes->auto_renew);
-
-		} // end if;
+		}
 
 		/*
 		 * Calculate-totals.
@@ -385,23 +386,21 @@ class Cart implements \JsonSerializable {
 		 * @param $this \WP_Ultimo\Checkout\Cart The cart object.
 		 */
 		do_action('wu_cart_after_setup', $this); // @phpstan-ignore-line
-
-	} // end __construct;
+	}
 
 	/**
 	 * Get additional parameters set by integrations and add-ons.
 	 *
-	 * @since 2.0.0
-	 *
 	 * @param string  $key The parameter key.
-	 * @param boolean $default The default value.
+	 * @param boolean $default_value The default value.
+	 *
 	 * @return mixed
+	 * @since 2.0.0
 	 */
-	public function get_param($key, $default = false) {
+	public function get_param($key, $default_value = false) {
 
-		return wu_get_isset($this->attributes, $key, $default);
-
-	} // end get_param;
+		return wu_get_isset($this->attributes, $key, $default_value);
+	}
 
 	/**
 	 * Set additional parameters set by integrations and add-ons.
@@ -417,8 +416,7 @@ class Cart implements \JsonSerializable {
 		$this->extra[] = $key;
 
 		$this->attributes->{$key} = $value;
-
-	} // end set_param;
+	}
 
 	/**
 	 * Gets the tax exempt status of the current cart.
@@ -429,8 +427,7 @@ class Cart implements \JsonSerializable {
 	public function is_tax_exempt() {
 
 		return apply_filters('wu_cart_is_tax_exempt', false, $this);
-
-	} // end is_tax_exempt;
+	}
 
 	/**
 	 * Builds the cart.
@@ -454,10 +451,8 @@ class Cart implements \JsonSerializable {
 		 * in order to build the proper cart.
 		 */
 		if ($is_recovery_cart) {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * The next step is to deal with membership changes.
@@ -470,10 +465,8 @@ class Cart implements \JsonSerializable {
 		 * we can return as our work is done.
 		 */
 		if ($is_membership_change) {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Otherwise, we add the the products normally,
@@ -482,18 +475,14 @@ class Cart implements \JsonSerializable {
 		$this->cart_type = 'new';
 
 		if (is_array($this->attributes->products)) {
-		    /*
+			/*
 			 * Otherwise, we add the products to build the cart.
 			 */
 			foreach ($this->attributes->products as $product_id) {
-
 				$this->add_product($product_id);
-
-			} // end foreach;
-
-		} // end if;
-
-	} // end build_cart;
+			}
+		}
+	}
 
 	/**
 	 * Creates a string that describes the cart.
@@ -509,35 +498,28 @@ class Cart implements \JsonSerializable {
 	 */
 	public function get_cart_descriptor() {
 
-		if (!empty($this->cart_descriptor)) {
-
+		if ( ! empty($this->cart_descriptor)) {
 			return $this->cart_descriptor;
-
-		} // end if;
+		}
 
 		$desc = wu_get_setting('company_name', __('Subscription', 'wp-ultimo'));
 
 		$products = array();
 
 		foreach ($this->get_line_items() as $line_item) {
-
 			$product = $line_item->get_product();
 
-			if (!$product) {
-
+			if ( ! $product) {
 				continue;
-
-			} // end if;
+			}
 
 			$products[] = $line_item->get_title();
-
-		} // end foreach;
+		}
 
 		$descriptor = $desc . ' - ' . implode(', ', $products);
 
 		return trim($descriptor);
-
-	} // end get_cart_descriptor;
+	}
 
 	/**
 	 * Set a custom cart descriptor.
@@ -550,8 +532,7 @@ class Cart implements \JsonSerializable {
 	public function set_cart_descriptor($descriptor) {
 
 		$this->cart_descriptor = $descriptor;
-
-	} // end set_cart_descriptor;
+	}
 	/**
 	 * Decides if we are trying to recover a payment.
 	 *
@@ -565,23 +546,19 @@ class Cart implements \JsonSerializable {
 		 * are not trying to recover a payment.
 		 */
 		if (empty($payment_id)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Now, let's try to fetch the payment in question.
 		 */
 		$payment = wu_get_payment($payment_id);
 
-		if (!$payment) {
-
+		if ( ! $payment) {
 			$this->errors->add('payment_not_found', __('The payment in question was not found.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * The payment exists, set it globally.
@@ -605,25 +582,21 @@ class Cart implements \JsonSerializable {
 		 * a payment can pay it. Let's check for that.
 		 */
 		if (empty($this->customer) || $this->customer->get_id() !== $payment->get_customer_id()) {
-
 			$this->errors->add('lacks_permission', __('You are not allowed to modify this payment.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * Sets the membership as well, to prevent issues
 		 */
 		$membership = $payment->get_membership();
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$this->errors->add('membership_not_found', __('The membership in question was not found.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		if ($payment->get_discount_code()) {
 			/**
@@ -632,16 +605,11 @@ class Cart implements \JsonSerializable {
 			$discount_code = $membership->get_discount_code();
 
 			if ($discount_code && $discount_code->get_code() === $payment->get_discount_code()) {
-
 				$this->add_discount_code($discount_code);
-
 			} else {
-
 				$this->add_discount_code($payment->get_discount_code());
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		/*
 		 * Sets membership globally.
@@ -654,25 +622,19 @@ class Cart implements \JsonSerializable {
 		 * Finally, copy the line items from the payment.
 		 */
 		foreach ($payment->get_line_items() as $line_item) {
-
 			$product = $line_item->get_product();
 
 			if ($product) {
-
 				if ($product->is_recurring() && ($this->duration_unit !== $product->get_duration_unit() || $this->duration !== $product->get_duration())) {
-
 					$product_variation = $product->get_as_variation($this->duration, $this->duration_unit);
 
 					/*
 					 * Checks if the variation exists before re-setting the product.
 					 */
 					if ($product_variation) {
-
 						$product = $product_variation;
-
-					} // end if;
-
-				} // end if;
+					}
+				}
 
 				$this->products[] = $product;
 
@@ -682,22 +644,17 @@ class Cart implements \JsonSerializable {
 					 * another one.
 					 */
 					if (empty($this->plan_id)) {
-
 						$this->plan_id        = $product->get_id();
 						$this->billing_cycles = $product->get_billing_cycles();
 
 						$this->duration      = $line_item->get_duration();
 						$this->duration_unit = $line_item->get_duration_unit();
-
-					} // end if;
-
-				} // end if;
-
-			} // end if;
+					}
+				}
+			}
 
 			$this->add_line_item($line_item);
-
-		} // end foreach;
+		}
 
 		/*
 		 * If the payment is completed
@@ -709,8 +666,7 @@ class Cart implements \JsonSerializable {
 			 * We should return false to continue in case of membership updates.
 			 */
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Check for payment status.
@@ -718,28 +674,27 @@ class Cart implements \JsonSerializable {
 		 * We want to make sure we only allow for repayment of pending,
 		 * cancelled, or abandoned payments
 		 */
-		$allowed_status = apply_filters('wu_cart_set_payment_allowed_status', array(
-			'pending',
-		));
+		$allowed_status = apply_filters(
+			'wu_cart_set_payment_allowed_status',
+			array(
+				'pending',
+			)
+		);
 
-		if (!in_array($payment->get_status(), $allowed_status, true)) {
-
+		if ( ! in_array($payment->get_status(), $allowed_status, true)) {
 			$this->errors->add('invalid_status', __('The payment in question has an invalid status.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * If the membership is active or is
 		 * already in trial this can't be a
 		 * retry, so we skip the rest.
 		 */
-		if ($membership->is_active() || ($membership->get_status() === Membership_Status::TRIALING && !$this->has_trial())) {
-
+		if ($membership->is_active() || ($membership->get_status() === Membership_Status::TRIALING && ! $this->has_trial())) {
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * We got here, that means
@@ -751,8 +706,7 @@ class Cart implements \JsonSerializable {
 		$this->cart_type = 'retry';
 
 		return true;
-
-	} // end build_from_payment;
+	}
 	/**
 	 * Uses the membership to decide if this is a upgrade/downgrade/addon cart.
 	 *
@@ -766,10 +720,8 @@ class Cart implements \JsonSerializable {
 		 * are not trying to change a membership.
 		 */
 		if (empty($membership_id)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * We got here, that means
@@ -787,13 +739,11 @@ class Cart implements \JsonSerializable {
 		 */
 		$membership = wu_get_membership($membership_id);
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			$this->errors->add('membership_not_found', __('The membership in question was not found.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * The membership exists, set it globally.
@@ -810,12 +760,10 @@ class Cart implements \JsonSerializable {
 		 * Only the customer that owns a membership can change it.
 		 */
 		if (empty($this->customer) || $this->customer->get_id() !== $membership->get_customer_id()) {
-
 			$this->errors->add('lacks_permission', __('You are not allowed to modify this membership.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * Adds the country to calculate taxes.
@@ -835,7 +783,6 @@ class Cart implements \JsonSerializable {
 		 * being added, and process those.
 		 */
 		if (empty($this->attributes->products)) {
-
 			if ($this->payment) {
 				/**
 				 *  If we do not have any change but we have a already
@@ -843,23 +790,19 @@ class Cart implements \JsonSerializable {
 				 *  for this.
 				 */
 				return false;
-
-			} // end if;
+			}
 
 			$this->errors->add('no_changes', __('This cart proposes no changes to the current membership.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * Otherwise, we add the products to build the cart.
 		 */
 		foreach ($this->attributes->products as $product_id) {
-
 			$this->add_product($product_id);
-
-		} // end foreach;
+		}
 
 		/*
 		 * With products added, let's check if this is an addon.
@@ -870,14 +813,11 @@ class Cart implements \JsonSerializable {
 		 * must be added to the membership.
 		 */
 		if (empty($this->plan_id)) {
-
 			if (count($this->products) === 0) {
-
 				$this->errors->add('no_changes', __('This cart proposes no changes to the current membership.', 'wp-ultimo'));
 
 				return true;
-
-			} // end if;
+			}
 
 			/*
 			 * Set the type to addon.
@@ -890,12 +830,10 @@ class Cart implements \JsonSerializable {
 			 */
 			$plan_product = $membership->get_plan();
 
-			if ($plan_product && !$membership->is_free()) {
-
+			if ($plan_product && ! $membership->is_free()) {
 				$this->duration      = $plan_product->get_duration();
 				$this->duration_unit = $plan_product->get_duration_unit();
-
-			} // end if;
+			}
 
 			/*
 			 * Checks the membership to see if we need to add back the
@@ -920,8 +858,7 @@ class Cart implements \JsonSerializable {
 			$this->calculate_prorate_credits();
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * With products added, let's check if the plan is changing.
@@ -938,10 +875,8 @@ class Cart implements \JsonSerializable {
 		$is_plan_change = false;
 
 		if ($membership->get_plan_id() !== $this->plan_id || $this->duration_unit !== $membership->get_duration_unit() || $this->duration !== $membership->get_duration()) {
-
 			$is_plan_change = true;
-
-		} // end if;
+		}
 
 		/*
 		 * Checks for periodicity changes.
@@ -950,17 +885,15 @@ class Cart implements \JsonSerializable {
 		$new_periodicity = sprintf('%s-%s', $this->duration, $this->duration_unit);
 
 		if ($old_periodicity !== $new_periodicity) {
-
 			$is_plan_change = true;
-
-		} // end if;
+		}
 
 		/*
 		 * If there is no plan change, but the product count is > 1
 		 * We know that there is another product in this cart other than the
 		 * plan, so this is again an addon cart.
 		 */
-		if (count($this->products) > 1 && $is_plan_change === false) {
+		if (count($this->products) > 1 && false === $is_plan_change) {
 			/*
 			 * Set the type to addon.
 			 */
@@ -972,12 +905,10 @@ class Cart implements \JsonSerializable {
 			 */
 			$plan_product = $membership->get_plan();
 
-			if ($plan_product && !$membership->is_free()) {
-
+			if ($plan_product && ! $membership->is_free()) {
 				$this->duration      = $plan_product->get_duration();
 				$this->duration_unit = $plan_product->get_duration_unit();
-
-			} // end if;
+			}
 
 			/*
 			 * Checks the membership to see if we need to add back the
@@ -995,28 +926,25 @@ class Cart implements \JsonSerializable {
 			$this->calculate_prorate_credits();
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * We'll probably never enter in this if, but we
 		 * hev it here to prevent bugs.
 		 */
-		if (!$is_plan_change || ($this->get_plan_id() === $membership->get_plan_id() && $this->duration_unit === $membership->get_duration_unit() && $this->duration === $membership->get_duration())) {
-
+		if ( ! $is_plan_change || ($this->get_plan_id() === $membership->get_plan_id() && $this->duration_unit === $membership->get_duration_unit() && $this->duration === $membership->get_duration())) {
 			$this->products   = array();
 			$this->line_items = array();
 
 			$this->errors->add('no_changes', __('This cart proposes no changes to the current membership.', 'wp-ultimo'));
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * Upgrade to Lifetime.
 		 */
-		if (!$this->has_recurring() && !$this->is_free()) {
+		if ( ! $this->has_recurring() && ! $this->is_free()) {
 			/*
 			 * Adds the credit line, after
 			 * calculating pro-rate.
@@ -1024,8 +952,7 @@ class Cart implements \JsonSerializable {
 			$this->calculate_prorate_credits();
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * If we get to this point, we know that this is either
@@ -1048,14 +975,12 @@ class Cart implements \JsonSerializable {
 		 * when setting a downgrade cart.
 		 */
 		if ($days_in_old_cycle !== $days_in_new_cycle) {
-
 			$old_plan = $membership->get_plan();
 			$new_plan = $this->get_plan();
 
 			$variations = $this->search_for_same_period_plans($old_plan, $new_plan);
 
 			if ($variations) {
-
 				$old_plan = $variations[0];
 				$new_plan = $variations[1];
 
@@ -1064,13 +989,10 @@ class Cart implements \JsonSerializable {
 
 				$old_price_per_day = $days_in_old_cycle_plan > 0 ? $old_plan->get_amount() / $days_in_old_cycle_plan : $old_plan->get_amount();
 				$new_price_per_day = $days_in_new_cycle_plan > 0 ? $new_plan->get_amount() / $days_in_new_cycle_plan : $new_plan->get_amount();
+			}
+		}
 
-			} // end if;
-
-		} // end if;
-
-		if (!$membership->is_free() && $old_price_per_day < $new_price_per_day && $days_in_old_cycle > $days_in_new_cycle && $membership->get_status() === Membership_Status::ACTIVE) {
-
+		if ( ! $membership->is_free() && $old_price_per_day < $new_price_per_day && $days_in_old_cycle > $days_in_new_cycle && $membership->get_status() === Membership_Status::ACTIVE) {
 			$this->products   = array();
 			$this->line_items = array();
 
@@ -1087,128 +1009,108 @@ class Cart implements \JsonSerializable {
 			$this->errors->add('no_changes', $message);
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * If is the same product and the customer will start to pay less
 		 * or if is not the same product and the price per day is smaller
 		 * this is a downgrade
 		 */
-		if (($is_same_product && $membership->get_amount() > $this->get_recurring_total()) || (!$is_same_product && $old_price_per_day > $new_price_per_day)) {
-
+		if (($is_same_product && $membership->get_amount() > $this->get_recurring_total()) || (! $is_same_product && $old_price_per_day > $new_price_per_day)) {
 			$this->cart_type = 'downgrade';
 
 			// If membership is active or trialing we will schendule the swap
 			if ($membership->is_active() || $membership->get_status() === Membership_Status::TRIALING) {
-
-				$line_item_params = apply_filters('wu_checkout_credit_line_item_params', array(
-					'type'         => 'credit',
-					'title'        => __('Scheduled Swap Credit', 'wp-ultimo'),
-					'description'  => __('Swap scheduled to next billing cycle.', 'wp-ultimo'),
-					'discountable' => false,
-					'taxable'      => false,
-					'quantity'     => 1,
-					'unit_price'   => - $this->get_total(),
-				));
+				$line_item_params = apply_filters(
+					'wu_checkout_credit_line_item_params',
+					array(
+						'type'         => 'credit',
+						'title'        => __('Scheduled Swap Credit', 'wp-ultimo'),
+						'description'  => __('Swap scheduled to next billing cycle.', 'wp-ultimo'),
+						'discountable' => false,
+						'taxable'      => false,
+						'quantity'     => 1,
+						'unit_price'   => - $this->get_total(),
+					)
+				);
 
 				$credit_line_item = new Line_Item($line_item_params);
 
 				$this->add_line_item($credit_line_item);
+			}
+		}
 
-			} // end if;
-
-		} // end if;
-
-		// If this is a upgrade, we need to prorate the current amount
-		if ($this->cart_type === 'upgrade') {
-
+		// If this is an upgrade, we need to prorate the current amount
+		if ('upgrade' === $this->cart_type) {
 			$this->calculate_prorate_credits();
-
-		} // end if;
+		}
 
 		/*
 		 * All set!
 		 */
 		return true;
-
-	} // end build_from_membership;
- /**
-  * Search for variations of the plans with same duration.
-  *
-  * @since 2.0.20
-  * @param \WP_Ultimo\Models\Product $plan_a The first plan without variations.
-  * @param \WP_Ultimo\Models\Product $plan_b The second plan without variations.
-  * @return mixed[]|false
-  */
- protected function search_for_same_period_plans($plan_a, $plan_b) {
+	}
+	/**
+	 * Search for variations of the plans with same duration.
+	 *
+	 * @since 2.0.20
+	 * @param \WP_Ultimo\Models\Product $plan_a The first plan without variations.
+	 * @param \WP_Ultimo\Models\Product $plan_b The second plan without variations.
+	 * @return mixed[]|false
+	 */
+	protected function search_for_same_period_plans($plan_a, $plan_b) {
 
 		if ($plan_a->get_duration_unit() === $plan_b->get_duration_unit() && $plan_a->get_duration() === $plan_b->get_duration()) {
-
 			return array(
 				$plan_a,
 				$plan_b,
 			);
-
-		} // end if;
+		}
 
 		$plan_a_variation = $plan_a->get_as_variation($plan_b->get_duration(), $plan_b->get_duration_unit());
 
 		if ($plan_a_variation) {
-
 			return array(
 				$plan_a_variation,
 				$plan_b,
 			);
-
-		} // end if;
+		}
 
 		$plan_b_variation = $plan_b->get_as_variation($plan_a->get_duration(), $plan_a->get_duration_unit());
 
 		if ($plan_b_variation) {
-
 			return array(
 				$plan_a,
 				$plan_b_variation,
 			);
-
-		} // end if;
+		}
 
 		if ($this->duration_unit && $this->duration && ($this->duration_unit !== $plan_b->get_duration_unit() || $this->duration !== $plan_b->get_duration())) {
-
 			$plan_a_variation = $plan_a->get_as_variation($this->duration, $this->duration_unit);
 
-			if (!$plan_a_variation) {
-
+			if ( ! $plan_a_variation) {
 				return false;
-
-			} // end if;
+			}
 
 			if ($plan_b->get_duration_unit() === $plan_a_variation->get_duration_unit() && $plan_b->get_duration() === $plan_a_variation->get_duration()) {
-
 				return array(
 					$plan_a_variation,
 					$plan_b,
 				);
-
-			} // end if;
+			}
 
 			$plan_b_variation = $plan_b->get_as_variation($this->duration, $this->duration_unit);
 
 			if ($plan_b_variation) {
-
 				return array(
 					$plan_a_variation,
 					$plan_b_variation,
 				);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return false;
-
-	} // end search_for_same_period_plans;
+	}
 
 	/**
 	 * Calculate pro-rate credits.
@@ -1228,17 +1130,12 @@ class Cart implements \JsonSerializable {
 		 * If the membership is in trial period theres nothing to prorate.
 		 */
 		if ($this->membership->get_status() === Membership_Status::TRIALING) {
-
 			return;
+		}
 
-		} // end if;
-
-		if ($this->membership->is_lifetime() || !$this->membership->is_recurring()) {
-
+		if ($this->membership->is_lifetime() || ! $this->membership->is_recurring()) {
 			$credit = $this->membership->get_initial_amount();
-
 		} else {
-
 			$days_unused = $this->membership->get_remaining_days_in_cycle();
 
 			$days_in_old_cycle = wu_get_days_in_cycle($this->membership->get_duration_unit(), $this->membership->get_duration());
@@ -1248,21 +1145,16 @@ class Cart implements \JsonSerializable {
 			$credit = $days_unused * $old_price_per_day;
 
 			if ($credit > $this->membership->get_amount()) {
-
 				$credit = $this->membership->get_amount();
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		/*
 		 * No credits
 		 */
 		if (empty($credit)) {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Checks if we need to add back the value of the
@@ -1270,43 +1162,39 @@ class Cart implements \JsonSerializable {
 		 */
 		$has_setup_fee = $this->get_line_items_by_type('fee');
 
-		if (!empty($has_setup_fee) || $this->get_cart_type() === 'upgrade') {
-
+		if ( ! empty($has_setup_fee) || $this->get_cart_type() === 'upgrade') {
 			$old_plan = $this->membership->get_plan();
 
 			$new_plan = $this->get_plan();
 
 			if ($old_plan && $new_plan) {
-
 				$old_setup_fee = $old_plan->get_setup_fee();
 				$new_setup_fee = $new_plan->get_setup_fee();
 
 				$fee_credit = $old_setup_fee < $new_setup_fee ? $old_setup_fee : $new_setup_fee;
 
 				if ($fee_credit > 0) {
-
-					$new_line_item = new Line_Item(array(
-						'product'     => $old_plan,
-						'type'        => 'fee',
-						'description' => '--',
-						'title'       => '',
-						'taxable'     => $old_plan->is_taxable(),
-						'recurring'   => false,
-						'unit_price'  => $fee_credit,
-						'quantity'    => 1,
-					));
+					$new_line_item = new Line_Item(
+						array(
+							'product'     => $old_plan,
+							'type'        => 'fee',
+							'description' => '--',
+							'title'       => '',
+							'taxable'     => $old_plan->is_taxable(),
+							'recurring'   => false,
+							'unit_price'  => $fee_credit,
+							'quantity'    => 1,
+						)
+					);
 
 					$new_line_item = $this->apply_taxes_to_item($new_line_item);
 
 					$new_line_item->recalculate_totals();
 
 					$credit += $new_line_item->get_total();
-
-				} // end if;
-
-			} // end if;
-
-		} // end if;
+				}
+			}
+		}
 
 		/**
 		 * Allow plugin developers to meddle with the credit value.
@@ -1324,20 +1212,21 @@ class Cart implements \JsonSerializable {
 		 * No credits
 		 */
 		if (empty($credit)) {
-
 			return;
+		}
 
-		} // end if;
-
-		$line_item_params = apply_filters('wu_checkout_credit_line_item_params', array(
-			'type'         => 'credit',
-			'title'        => __('Credit', 'wp-ultimo'),
-			'description'  => __('Prorated amount based on the previous membership.', 'wp-ultimo'),
-			'discountable' => false,
-			'taxable'      => false,
-			'quantity'     => 1,
-			'unit_price'   => - $credit,
-		));
+		$line_item_params = apply_filters(
+			'wu_checkout_credit_line_item_params',
+			array(
+				'type'         => 'credit',
+				'title'        => __('Credit', 'wp-ultimo'),
+				'description'  => __('Prorated amount based on the previous membership.', 'wp-ultimo'),
+				'discountable' => false,
+				'taxable'      => false,
+				'quantity'     => 1,
+				'unit_price'   => - $credit,
+			)
+		);
 
 		/*
 		 * Finally, we add the credit to the purchase.
@@ -1345,8 +1234,7 @@ class Cart implements \JsonSerializable {
 		$credit_line_item = new Line_Item($line_item_params);
 
 		$this->add_line_item($credit_line_item);
-
-	} // end calculate_prorate_credits;
+	}
 	/**
 	 * Adds a discount code to the cart.
 	 *
@@ -1357,10 +1245,8 @@ class Cart implements \JsonSerializable {
 	protected function set_discount_code($code): bool {
 
 		if (empty($code)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		$code = strtoupper($code);
 
@@ -1372,18 +1258,15 @@ class Cart implements \JsonSerializable {
 			$this->errors->add('discount_code', sprintf(__('The code %s do not exist or is no longer valid.', 'wp-ultimo'), $code));
 
 			return false;
-
-		} // end if;
+		}
 
 		$is_valid = $discount_code->is_valid();
 
 		if (is_wp_error($is_valid)) {
-
 			$this->errors->merge_from($is_valid);
 
 			return false;
-
-		} // end if;
+		}
 
 		/*
 		 * Set the coupon
@@ -1391,8 +1274,7 @@ class Cart implements \JsonSerializable {
 		$this->discount_code = $discount_code;
 
 		return true;
-
-	} // end set_discount_code;
+	}
 
 	/**
 	 * Returns the current errors.
@@ -1403,8 +1285,7 @@ class Cart implements \JsonSerializable {
 	public function get_errors() {
 
 		return $this->errors;
-
-	} // end get_errors;
+	}
 
 	/**
 	 * For an order to be valid, all the recurring products must have the same
@@ -1422,24 +1303,19 @@ class Cart implements \JsonSerializable {
 		 * the setup, bail.
 		 */
 		if ($this->errors->has_errors()) {
-
 			return false;
-
-		} // end if;
+		}
 
 		$interval = null;
 
 		foreach ($this->line_items as $line_item) {
-
 			$duration      = $line_item->get_duration();
 			$duration_unit = $line_item->get_duration_unit();
 			$cycles        = $line_item->get_billing_cycles();
 
-			if (!$line_item->is_recurring()) {
-
+			if ( ! $line_item->is_recurring()) {
 				continue;
-
-			} // end if;
+			}
 
 			/*
 			 * Create a key that will tell us if something changes.
@@ -1454,25 +1330,20 @@ class Cart implements \JsonSerializable {
 			 */
 			$line_item_interval = "{$duration}-{$duration_unit}-{$cycles}";
 
-			if (!$interval) {
-
+			if ( ! $interval) {
 				$interval = $line_item_interval;
-
-			} // end if;
+			}
 
 			if ($line_item_interval !== $interval) {
-
+				// translators: two intervals
 				$this->errors->add('wrong', sprintf(__('Interval %1$s and %2$s do not match.', 'wp-ultimo'), $line_item_interval, $interval));
 
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $is_valid;
-
-	}  // end is_valid;
+	}
 
 	/**
 	 * Checks if this order is free.
@@ -1487,8 +1358,7 @@ class Cart implements \JsonSerializable {
 	public function is_free() {
 
 		return empty($this->get_total());
-
-	} // end is_free;
+	}
 
 	/**
 	 * Checks if we need to collect a payment method.
@@ -1504,18 +1374,13 @@ class Cart implements \JsonSerializable {
 		$should_collect_payment = true;
 
 		if ($this->is_free() && $this->get_recurring_total() === 0.0) {
-
 			$should_collect_payment = false;
-
 		} elseif ($this->has_trial()) {
-
-			$should_collect_payment = !wu_get_setting('allow_trial_without_payment_method', false);
-
-		} // end if;
+			$should_collect_payment = ! wu_get_setting('allow_trial_without_payment_method', false);
+		}
 
 		return (bool) apply_filters('wu_cart_should_collect_payment', $should_collect_payment, $this);
-
-	} // end should_collect_payment;
+	}
 
 	/**
 	 * Checks if the cart has a plan.
@@ -1526,8 +1391,7 @@ class Cart implements \JsonSerializable {
 	public function has_plan() {
 
 		return (bool) $this->get_plan();
-
-	} // end has_plan;
+	}
 
 	/**
 	 * Returns the cart plan.
@@ -1538,8 +1402,7 @@ class Cart implements \JsonSerializable {
 	public function get_plan() {
 
 		return wu_get_product((int) $this->plan_id);
-
-	} // end get_plan;
+	}
 
 	/**
 	 * Returns the recurring products added to the cart.
@@ -1550,8 +1413,7 @@ class Cart implements \JsonSerializable {
 	public function get_recurring_products() {
 
 		return $this->recurring_products;
-
-	} // end get_recurring_products;
+	}
 
 	/**
 	 * Returns the non-recurring products added to the cart.
@@ -1562,8 +1424,7 @@ class Cart implements \JsonSerializable {
 	public function get_non_recurring_products() {
 
 		return $this->additional_products;
-
-	} // end get_non_recurring_products;
+	}
 
 	/**
 	 * Returns an array containing all products added to the cart, recurring or not.
@@ -1574,8 +1435,7 @@ class Cart implements \JsonSerializable {
 	public function get_all_products() {
 
 		return $this->products;
-
-	} // end get_all_products;
+	}
 
 	/**
 	 * Returns the duration value for this cart.
@@ -1586,8 +1446,7 @@ class Cart implements \JsonSerializable {
 	public function get_duration() {
 
 		return $this->duration;
-
-	} // end get_duration;
+	}
 
 	/**
 	 * Returns the duration unit for this cart.
@@ -1598,8 +1457,7 @@ class Cart implements \JsonSerializable {
 	public function get_duration_unit() {
 
 		return $this->duration_unit;
-
-	} // end get_duration_unit;
+	}
 
 	/**
 	 * Add a new line item.
@@ -1611,29 +1469,22 @@ class Cart implements \JsonSerializable {
 	 */
 	public function add_line_item($line_item) {
 
-		if (!is_a($line_item, '\WP_Ultimo\Checkout\Line_Item')) {
-
+		if ( ! is_a($line_item, '\WP_Ultimo\Checkout\Line_Item')) {
 			return;
-
-		} // end if;
+		}
 
 		if ($line_item->is_discountable()) {
-
 			$line_item = $this->apply_discounts_to_item($line_item);
-
-		} // end if;
+		}
 
 		if ($line_item->is_taxable()) {
-
 			$line_item = $this->apply_taxes_to_item($line_item);
+		}
 
-		} // end if;
-
-		$this->line_items[$line_item->get_id()] = $line_item;
+		$this->line_items[ $line_item->get_id() ] = $line_item;
 
 		krsort($this->line_items);
-
-	} // end add_line_item;
+	}
 	/**
 	 * Adds a new product to the cart.
 	 *
@@ -1646,52 +1497,43 @@ class Cart implements \JsonSerializable {
 
 		$product = is_numeric($product_id_or_slug) ? wu_get_product($product_id_or_slug) : wu_get_product_by_slug($product_id_or_slug);
 
-		if (!$product) {
-
+		if ( ! $product) {
 			$message = __('The product you are trying to add does not exist.', 'wp-ultimo');
 
 			$this->errors->add('missing-product', $message);
 
 			return false;
-
-		} // end if;
+		}
 
 		// Here we check if the product is recurring and if so, get the correct variation
-		if ($product->is_recurring() && !empty($this->duration) && ($this->duration !== $product->get_duration() || $this->duration_unit !== $product->get_duration_unit())) {
-
+		if ($product->is_recurring() && ! empty($this->duration) && ($this->duration !== $product->get_duration() || $this->duration_unit !== $product->get_duration_unit())) {
 			$product = $product->get_as_variation($this->duration, $this->duration_unit);
 
-			if (!$product) {
-
+			if ( ! $product) {
 				$message = __('The product you are trying to add does not exist for the selected duration.', 'wp-ultimo');
 
 				$this->errors->add('missing-price-variations', $message);
 
 				return false;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		if ($product->get_type() === 'plan') {
 			/*
 			 * If we already have a plan, we can't add
 			 * another one. Bail.
 			 */
-			if (!empty($this->plan_id)) {
-
+			if ( ! empty($this->plan_id)) {
 				$message = __('Theres already a plan in this membership.', 'wp-ultimo');
 
 				$this->errors->add('plan-already-added', $message);
 
 				return false;
-
-			} // end if;
+			}
 
 			$this->plan_id        = $product->get_id();
 			$this->billing_cycles = $product->get_billing_cycles();
-
-		} // end if;
+		}
 
 		/*
 		 * We only try to reset the duration and such if
@@ -1701,17 +1543,13 @@ class Cart implements \JsonSerializable {
 		 * want access this to fetch price variations.
 		 */
 		if (empty($this->duration) || $product->is_recurring() === false) {
-
 			$this->duration      = $product->get_duration();
 			$this->duration_unit = $product->get_duration_unit();
-
-		} // end if;
+		}
 
 		if (empty($this->currency)) {
-
 			$this->currency = $product->get_currency();
-
-		} // end if;
+		}
 
 		/*
 		 * Set product amount in here, because
@@ -1733,19 +1571,15 @@ class Cart implements \JsonSerializable {
 		 * the cart.
 		 */
 		if ($product->is_free() === false) {
-
 			if (absint($this->duration) !== $product->get_duration() || $this->duration_unit !== $product->get_duration_unit()) {
-
 				$price_variation = $product->get_price_variation($this->duration, $this->duration_unit);
 
 				if ($price_variation) {
-
 					$price_variation = (object) $price_variation;
 
 					$amount        = $price_variation->amount;
 					$duration      = $price_variation->duration;
 					$duration_unit = $price_variation->duration_unit;
-
 				} else {
 					/*
 					 * This product does not have a valid
@@ -1757,28 +1591,30 @@ class Cart implements \JsonSerializable {
 					$this->errors->add('missing-price-variations', $message);
 
 					return false;
+				}
+			}
+		}
 
-				} // end if;
-
-			} // end if;
-
-		} // end if;
-
-		$line_item_data = apply_filters('wu_add_product_line_item', array(
-			'product'       => $product,
-			'quantity'      => $quantity,
-			'unit_price'    => $amount,
-			'duration'      => $duration,
-			'duration_unit' => $duration_unit,
-		), $product, $duration, $duration_unit, $this);
+		$line_item_data = apply_filters(
+			'wu_add_product_line_item',
+			array(
+				'product'       => $product,
+				'quantity'      => $quantity,
+				'unit_price'    => $amount,
+				'duration'      => $duration,
+				'duration_unit' => $duration_unit,
+			),
+			$product,
+			$duration,
+			$duration_unit,
+			$this
+		);
 
 		$this->products[] = $product;
 
 		if (empty($line_item_data)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		$line_item = new Line_Item($line_item_data);
 
@@ -1793,10 +1629,8 @@ class Cart implements \JsonSerializable {
 		 * Signup Fees
 		 */
 		if (empty($product->get_setup_fee())) {
-
 			return true;
-
-		} // end if;
+		}
 
 		$add_signup_fee = 'renewal' !== $this->get_cart_type();
 
@@ -1811,11 +1645,9 @@ class Cart implements \JsonSerializable {
 		 */
 		$add_signup_fee = apply_filters('wu_apply_signup_fee', $add_signup_fee, $product, $this); // @phpstan-ignore-line
 
-		if (!$add_signup_fee) {
-
+		if ( ! $add_signup_fee) {
 			return true;
-
-		} // end if;
+		}
 
 		// translators: placeholder is the product name.
 		$description = ($product->get_setup_fee() > 0) ? __('Signup Fee for %s', 'wp-ultimo') : __('Signup Credit for %s', 'wp-ultimo');
@@ -1832,24 +1664,28 @@ class Cart implements \JsonSerializable {
 		 * @param \WP_Ultimo\Checkout\Cart $cart The cart object.
 		 * @return array
 		 */
-		$setup_fee_line_item = apply_filters('wu_add_product_setup_fee_line_item', array(
-			'product'     => $product,
-			'type'        => 'fee',
-			'description' => '--',
-			'title'       => $description,
-			'taxable'     => $product->is_taxable(),
-			'recurring'   => false,
-			'unit_price'  => $product->get_setup_fee(),
-			'quantity'    => $quantity,
-		), $product, $this);
+		$setup_fee_line_item = apply_filters(
+			'wu_add_product_setup_fee_line_item',
+			array(
+				'product'     => $product,
+				'type'        => 'fee',
+				'description' => '--',
+				'title'       => $description,
+				'taxable'     => $product->is_taxable(),
+				'recurring'   => false,
+				'unit_price'  => $product->get_setup_fee(),
+				'quantity'    => $quantity,
+			),
+			$product,
+			$this
+		);
 
 		$setup_fee_line_item = new Line_Item($setup_fee_line_item);
 
 		$this->add_line_item($setup_fee_line_item);
 
 		return true;
-
-	} // end add_product;
+	}
 
 	/**
 	 * Returns an array containing the subtotal per tax rate.
@@ -1864,24 +1700,19 @@ class Cart implements \JsonSerializable {
 		$tax_brackets = array();
 
 		foreach ($line_items as $line_item) {
-
 			$tax_bracket = $line_item->get_tax_rate();
 
-			if (isset($tax_brackets[$tax_bracket])) {
-
-				$tax_brackets[$tax_bracket] += $line_item->get_tax_total();
+			if (isset($tax_brackets[ $tax_bracket ])) {
+				$tax_brackets[ $tax_bracket ] += $line_item->get_tax_total();
 
 				continue;
+			}
 
-			} // end if;
-
-			$tax_brackets[$tax_bracket] = $line_item->get_tax_total();
-
-		} // end foreach;
+			$tax_brackets[ $tax_bracket ] = $line_item->get_tax_total();
+		}
 
 		return $tax_brackets;
-
-	} // end get_tax_breakthrough;
+	}
 
 	/**
 	 * Determine whether or not the level being registered for has a trial that the current user is eligible
@@ -1896,39 +1727,30 @@ class Cart implements \JsonSerializable {
 		$products = $this->get_all_products();
 
 		if (empty($products)) {
-
 			return false;
-
-		} // end if;
+		}
 
 		$is_trial = $this->get_billing_start_date();
 
-		if (!$is_trial) {
-
+		if ( ! $is_trial) {
 			return false;
-
-		} // end if;
+		}
 
 		// There is a trial, but let's check eligibility.
 		$customer = wu_get_current_customer();
 
 		// No customer, which means they're brand new, which means they're eligible.
 		if (empty($customer)) {
-
 			return true;
-
-		} // end if;
+		}
 
 		// Check if this is the initial membership payment with trial
 		if ($this->membership && $this->payment && $this->membership->is_trialing()) {
-
 			return empty($this->payment->get_total());
+		}
 
-		} // end if;
-
-		return !$customer->has_trialed();
-
-	} // end has_trial;
+		return ! $customer->has_trialed();
+	}
 
 	/**
 	 * Get the recovered payment object.
@@ -1939,8 +1761,7 @@ class Cart implements \JsonSerializable {
 	public function get_recovered_payment() {
 
 		return $this->recovered_payment;
-
-	} // end get_recovered_payment;
+	}
 	/**
 	 * Add discount to the order.
 	 *
@@ -1951,37 +1772,31 @@ class Cart implements \JsonSerializable {
 	public function add_discount_code($code): bool {
 
 		if (is_a($code, \WP_Ultimo\Models\Discount_Code::class)) {
-
 			$this->discount_code = $code;
 
 			return true;
-
-		} // end if;
+		}
 
 		$discount_code = wu_get_discount_code_by_code($code);
 
-		if (!$discount_code) {
-
+		if ( ! $discount_code) {
 			return false;
-
-		} // end if;
+		}
 
 		$this->discount_code = $discount_code;
 
 		return true;
-
-	} // end add_discount_code;
- /**
-  * Get registration discounts.
-  *
-  * @since 2.5
-  * @return mixed[]|bool
-  */
- public function get_discounts() {
+	}
+	/**
+	 * Get registration discounts.
+	 *
+	 * @since 2.5
+	 * @return mixed[]|bool
+	 */
+	public function get_discounts() {
 
 		return $this->get_line_items_by_type('discount');
-
-	} // end get_discounts;
+	}
 
 	/**
 	 * Checks if the cart has any discounts applied.
@@ -1992,8 +1807,7 @@ class Cart implements \JsonSerializable {
 	public function has_discount() {
 
 		return $this->get_total_discounts() > 0;
-
-	} // end has_discount;
+	}
 
 	/**
 	 * Returns a list of line items based on the line item type.
@@ -2011,26 +1825,27 @@ class Cart implements \JsonSerializable {
 		// Cast to array recursively
 		$line_items = json_decode(json_encode($this->line_items), true);
 
-		$line_items = Array_Search::find($line_items, array(
-			'where' => $where_clauses,
-		));
+		$line_items = Array_Search::find(
+			$line_items,
+			array(
+				'where' => $where_clauses,
+			)
+		);
 
 		$ids = array_keys($line_items);
 
 		return array_filter($this->line_items, fn($id) => in_array($id, $ids, true), ARRAY_FILTER_USE_KEY);
-
-	} // end get_line_items_by_type;
- /**
-  * Get registration fees.
-  *
-  * @since 2.0.0
-  * @return mixed[]|bool
-  */
- public function get_fees() {
+	}
+	/**
+	 * Get registration fees.
+	 *
+	 * @since 2.0.0
+	 * @return mixed[]|bool
+	 */
+	public function get_fees() {
 
 		return $this->get_line_items_by_type('fees');
-
-	} // end get_fees;
+	}
 
 	/**
 	 * Calculates the total tax amount.
@@ -2044,14 +1859,11 @@ class Cart implements \JsonSerializable {
 		$total_taxes = 0;
 
 		foreach ($this->line_items as $line_item) {
-
 			$total_taxes += $line_item->get_tax_total();
-
-		} // end foreach;
+		}
 
 		return $total_taxes;
-
-	} // end get_total_taxes;
+	}
 
 	/**
 	 * Get the total number of fees.
@@ -2067,37 +1879,28 @@ class Cart implements \JsonSerializable {
 
 		$line_items = $this->get_fees();
 
-		if (!$line_items) {
-
+		if ( ! $line_items) {
 			return 0;
-
-		} // end if;
+		}
 
 		$fees = 0;
 
 		foreach ($line_items as $fee) {
-
-			if ($only_recurring && !$fee->is_recurring()) {
-
+			if ($only_recurring && ! $fee->is_recurring()) {
 				continue;
-
-			} // end if;
+			}
 
 			$fees += $fee->get_total();
-
-		} // end foreach;
+		}
 
 		// if total is present, make sure that any negative fees are not
 		// greater than the total.
 		if ($total && ($fees + $total) < 0) {
-
 			$fees = -1 * $total;
-
-		} // end if;
+		}
 
 		return apply_filters('wu_cart_get_total_fees', (float) $fees, $total, $only_recurring, $this);
-
-	} // end get_total_fees;
+	}
 
 	/**
 	 * Get the total proration amount.
@@ -2109,29 +1912,22 @@ class Cart implements \JsonSerializable {
 	 */
 	public function get_proration_credits() {
 
-		if (!$this->get_fees()) {
-
+		if ( ! $this->get_fees()) {
 			return 0;
-
-		} // end if;
+		}
 
 		$proration = 0;
 
 		foreach ($this->get_fees() as $fee) {
-
-			if (!$fee['proration']) {
-
+			if ( ! $fee['proration']) {
 				continue;
-
-			} // end if;
+			}
 
 			$proration += $fee['amount'];
-
-		} // end foreach;
+		}
 
 		return apply_filters('wu_cart_get_proration_fees', (float) $proration, $this);
-
-	} // end get_proration_credits;
+	}
 
 	/**
 	 * Get the total discounts.
@@ -2144,16 +1940,13 @@ class Cart implements \JsonSerializable {
 		$total_discount = 0;
 
 		foreach ($this->line_items as $line_item) {
-
 			$total_discount -= $line_item->get_discount_total();
-
-		} // end foreach;
+		}
 
 		$total_discount = round($total_discount, wu_currency_decimal_filter());
 
 		return apply_filters('wu_cart_get_total_discounts', $total_discount, $this);
-
-	} // end get_total_discounts;
+	}
 
 	/**
 	 * Gets the subtotal value of the cart.
@@ -2171,22 +1964,16 @@ class Cart implements \JsonSerializable {
 		);
 
 		foreach ($this->line_items as $line_item) {
-
 			if (in_array($line_item->get_type(), $exclude_types, true)) {
-
 				continue;
-
-			} // end if;
+			}
 
 			$subtotal += $line_item->get_subtotal();
-
-		} // end foreach;
+		}
 
 		if (0 > $subtotal) {
-
 			$subtotal = 0;
-
-		} // end if;
+		}
 
 		$subtotal = round($subtotal, wu_currency_decimal_filter());
 
@@ -2197,8 +1984,7 @@ class Cart implements \JsonSerializable {
 		 * @param \WP_Ultimo\Checkout\Cart $this Cart object.
 		 */
 		return apply_filters('wu_cart_get_subtotal', floatval($subtotal), $this); // @phpstan-ignore-line
-
-	} // end get_subtotal;
+	}
 
 	/**
 	 * Get the registration total due today.
@@ -2211,16 +1997,12 @@ class Cart implements \JsonSerializable {
 		$total = 0;
 
 		foreach ($this->line_items as $line_item) {
-
 			$total += $line_item->get_total();
-
-		} // end foreach;
+		}
 
 		if (0 > $total) {
-
 			$total = 0;
-
-		} // end if;
+		}
 
 		$total = round($total, wu_currency_decimal_filter());
 
@@ -2231,8 +2013,7 @@ class Cart implements \JsonSerializable {
 		 * @param \WP_Ultimo\Checkout\Cart $this Cart object.
 		 */
 		return apply_filters('wu_cart_get_total', floatval($total), $this); // @phpstan-ignore-line
-
-	} // end get_total;
+	}
 
 	/**
 	 * Get the registration recurring total.
@@ -2245,43 +2026,35 @@ class Cart implements \JsonSerializable {
 		$total = 0;
 
 		foreach ($this->line_items as $line_item) {
-
-			if (!$line_item->is_recurring()) {
-
+			if ( ! $line_item->is_recurring()) {
 				continue;
-
-			} // end if;
+			}
 
 			/*
 			 * Check for coupon codes
 			 */
-			if ($line_item->get_discount_total() > 0 && !$line_item->should_apply_discount_to_renewals()) {
-
+			if ($line_item->get_discount_total() > 0 && ! $line_item->should_apply_discount_to_renewals()) {
 				$new_line_item = clone $line_item;
 
-				$new_line_item->attributes(array(
-					'discount_rate' => 0,
-				));
+				$new_line_item->attributes(
+					array(
+						'discount_rate' => 0,
+					)
+				);
 
 				$new_line_item->recalculate_totals();
 
 				$amount = $new_line_item->get_total();
-
 			} else {
-
 				$amount = $line_item->get_total();
-
-			} // end if;
+			}
 
 			$total += $amount;
-
-		} // end foreach;
+		}
 
 		if (0 > $total) {
-
 			$total = 0;
-
-		} // end if;
+		}
 
 		$total = round($total, wu_currency_decimal_filter());
 
@@ -2292,8 +2065,7 @@ class Cart implements \JsonSerializable {
 		 * @param \WP_Ultimo\Checkout\Cart $this Cart object.
 		 */
 		return apply_filters('wu_cart_get_recurring_total', floatval($total), $this); // @phpstan-ignore-line
-
-	} // end get_recurring_total;
+	}
 
 	/**
 	 * Gets the recurring subtotal, before taxes.
@@ -2306,22 +2078,16 @@ class Cart implements \JsonSerializable {
 		$subtotal = 0;
 
 		foreach ($this->line_items as $line_item) {
-
-			if (!$line_item->is_recurring()) {
-
+			if ( ! $line_item->is_recurring()) {
 				continue;
-
-			} // end if;
+			}
 
 			$subtotal += $line_item->get_subtotal();
-
-		} // end foreach;
+		}
 
 		if (0 > $subtotal) {
-
 			$subtotal = 0;
-
-		} // end if;
+		}
 
 		$subtotal = round($subtotal, wu_currency_decimal_filter());
 
@@ -2332,8 +2098,7 @@ class Cart implements \JsonSerializable {
 		 * @param \WP_Ultimo\Checkout\Cart $this Cart object.
 		 */
 		return apply_filters('wu_cart_get_recurring_total', floatval($subtotal), $this); // @phpstan-ignore-line
-
-	}  // end get_recurring_subtotal;
+	}
 
 	/**
 	 * Returns the timestamp of the end of the trial period.
@@ -2343,11 +2108,9 @@ class Cart implements \JsonSerializable {
 	 */
 	public function get_billing_start_date() {
 
-		if ($this->is_free() && !$this->has_recurring()) {
-
+		if ($this->is_free() && ! $this->has_recurring()) {
 			return null;
-
-		} // end if;
+		}
 
 		/*
 		 * Set extremely high value at first to prevent any change of errors.
@@ -2355,67 +2118,51 @@ class Cart implements \JsonSerializable {
 		$smallest_trial = 300 * YEAR_IN_SECONDS;
 
 		foreach ($this->get_all_products() as $product) {
-
-			if (!$product->has_trial()) {
-
+			if ( ! $product->has_trial()) {
 				$smallest_trial = 0;
-
-			} // end if;
+			}
 
 			$duration = $product->get_trial_duration();
 
 			$duration_unit = $product->get_trial_duration_unit();
 
 			if ($duration && $duration_unit) {
-
 				$trial_period = strtotime("+$duration $duration_unit");
 
 				if ($trial_period < $smallest_trial) {
-
 					$smallest_trial = $trial_period;
-
-				} // end if;
-
-			} // end if;
-
-		} // end foreach;
+				}
+			}
+		}
 
 		return $smallest_trial;
-
-	} // end get_billing_start_date;
- /**
-  * Returns the timestamp of the next charge, if recurring.
-  *
-  * @since 2.0.0
-  * @return string|false
-  */
- public function get_billing_next_charge_date() {
+	}
+	/**
+	 * Returns the timestamp of the next charge, if recurring.
+	 *
+	 * @since 2.0.0
+	 * @return string|false
+	 */
+	public function get_billing_next_charge_date() {
 		/*
 		 * Set extremely high value at first to prevent any chance of errors.
 		 */
 		$smallest_next_charge = 300 * YEAR_IN_SECONDS;
 
 		if ($this->get_cart_type() === 'downgrade') {
-
 			$membership = $this->membership;
 
 			if ($membership->is_active() || $membership->get_status() === Membership_Status::TRIALING) {
-
 				$next_charge = strtotime($membership->get_date_expiration());
 
 				return $next_charge;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		foreach ($this->get_all_products() as $product) {
-
-			if (!$product->is_recurring() || ($product->has_trial() && $this->has_trial())) {
-
+			if ( ! $product->is_recurring() || ($product->has_trial() && $this->has_trial())) {
 				continue;
-
-			} // end if;
+			}
 
 			$duration = $product->get_duration();
 
@@ -2424,16 +2171,12 @@ class Cart implements \JsonSerializable {
 			$next_charge = strtotime("+$duration $duration_unit");
 
 			if ($next_charge < $smallest_next_charge) {
-
 				$smallest_next_charge = $next_charge;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $smallest_next_charge;
-
-	}  // end get_billing_next_charge_date;
+	}
 
 	/**
 	 * Checks if the order is recurring or not.
@@ -2444,8 +2187,7 @@ class Cart implements \JsonSerializable {
 	public function has_recurring() {
 
 		return $this->get_recurring_total() > 0;
-
-	} // end has_recurring;
+	}
 
 	/**
 	 * Returns an array with all types of line-items of the cart.
@@ -2456,8 +2198,7 @@ class Cart implements \JsonSerializable {
 	public function get_line_items() {
 
 		return $this->line_items;
-
-	} // end get_line_items;
+	}
 
 	/**
 	 * Apply discounts to a line item.
@@ -2472,52 +2213,45 @@ class Cart implements \JsonSerializable {
 		/**
 		 * Product is not taxable, bail.
 		 */
-		if (!$line_item->is_discountable() || !$this->discount_code) {
-
+		if ( ! $line_item->is_discountable() || ! $this->discount_code) {
 			return $line_item;
-
-		} // end if;
+		}
 
 		if (is_wp_error($this->discount_code->is_valid($line_item->get_product_id()))) {
-
 			return $line_item;
-
-		} // end if;
+		}
 
 		/**
 		 * Should apply to fees?
 		 */
 		if ($line_item->get_type() === 'fee') {
-
 			if ($this->discount_code->get_setup_fee_value() <= 0) {
-
 				return $line_item;
+			}
 
-			} // end if;
-
-			$line_item->attributes(array(
-				'discount_rate'              => $this->discount_code->get_setup_fee_value(),
-				'discount_type'              => $this->discount_code->get_setup_fee_type(),
-				'apply_discount_to_renewals' => false,
-				'discount_label'             => strtoupper($this->discount_code->get_code()),
-			));
-
+			$line_item->attributes(
+				array(
+					'discount_rate'              => $this->discount_code->get_setup_fee_value(),
+					'discount_type'              => $this->discount_code->get_setup_fee_type(),
+					'apply_discount_to_renewals' => false,
+					'discount_label'             => strtoupper($this->discount_code->get_code()),
+				)
+			);
 		} else {
-
-			$line_item->attributes(array(
-				'discount_rate'              => $this->discount_code->get_value(),
-				'discount_type'              => $this->discount_code->get_type(),
-				'apply_discount_to_renewals' => $this->discount_code->should_apply_to_renewals(),
-				'discount_label'             => strtoupper($this->discount_code->get_code()),
-			));
-
-		} // end if;
+			$line_item->attributes(
+				array(
+					'discount_rate'              => $this->discount_code->get_value(),
+					'discount_type'              => $this->discount_code->get_type(),
+					'apply_discount_to_renewals' => $this->discount_code->should_apply_to_renewals(),
+					'discount_label'             => strtoupper($this->discount_code->get_code()),
+				)
+			);
+		}
 
 		$line_item->recalculate_totals();
 
 		return $line_item;
-
-	} // end apply_discounts_to_item;
+	}
 
 	/**
 	 * Apply taxes to a line item.
@@ -2532,63 +2266,54 @@ class Cart implements \JsonSerializable {
 		/**
 		 * Tax collection is not enabled
 		 */
-		if (!wu_should_collect_taxes()) {
-
+		if ( ! wu_should_collect_taxes()) {
 			return $line_item;
-
-		} // end if;
+		}
 
 		/**
 		 * Product is not taxable, bail.
 		 */
-		if (!$line_item->is_taxable()) {
-
+		if ( ! $line_item->is_taxable()) {
 			return $line_item;
-
-		} // end if;
+		}
 
 		$tax_category = $line_item->get_tax_category();
 
 		/**
 		 * No tax category, bail.
 		 */
-		if (!$tax_category) {
-
+		if ( ! $tax_category) {
 			return $line_item;
-
-		} // end if;
+		}
 
 		$tax_rates = apply_filters('wu_cart_applicable_tax_rates', wu_get_applicable_tax_rates($this->country, $tax_category, $this->state, $this->city), $this->country, $tax_category, $this);
 
 		if (empty($tax_rates)) {
-
 			return $line_item;
-
-		} // end if;
+		}
 
 		foreach ($tax_rates as $applicable_tax_rate) {
-
 			$tax_type  = 'percentage';
 			$tax_rate  = $applicable_tax_rate['tax_rate'];
 			$tax_label = $applicable_tax_rate['title'];
 
 			continue;
+		}
 
-		} // end foreach;
-
-		$line_item->attributes(array(
-			'tax_rate'      => $tax_rate ?? 0,
-			'tax_type'      => $tax_type ?? 'percentage',
-			'tax_label'     => $tax_label ?? '',
-			'tax_inclusive' => wu_get_setting('inclusive_tax', false),
-			'tax_exempt'    => $this->is_tax_exempt(),
-		));
+		$line_item->attributes(
+			array(
+				'tax_rate'      => $tax_rate ?? 0,
+				'tax_type'      => $tax_type ?? 'percentage',
+				'tax_label'     => $tax_label ?? '',
+				'tax_inclusive' => wu_get_setting('inclusive_tax', false),
+				'tax_exempt'    => $this->is_tax_exempt(),
+			)
+		);
 
 		$line_item->recalculate_totals();
 
 		return $line_item;
-
-	} // end apply_taxes_to_item;
+	}
 
 	/**
 	 * Calculates the totals of the cart and return them.
@@ -2609,8 +2334,7 @@ class Cart implements \JsonSerializable {
 			'total_discounts' => $this->get_total_discounts(),
 			'total'           => $this->get_total(),
 		);
-
-	} // end calculate_totals;
+	}
 
 	/**
 	 * Used for serialization purposes.
@@ -2621,8 +2345,7 @@ class Cart implements \JsonSerializable {
 	public function jsonSerialize(): string {
 
 		return json_encode($this->done());
-
-	} // end jsonSerialize;
+	}
 
 	/**
 	 * Get the list of extra parameters.
@@ -2635,14 +2358,11 @@ class Cart implements \JsonSerializable {
 		$extra_params = array();
 
 		foreach ($this->extra as $key) {
-
-			$extra_params[$key] = $this->get_param($key);
-
-		} // end foreach;
+			$extra_params[ $key ] = $this->get_param($key);
+		}
 
 		return apply_filters('wu_cart_get_extra_params', $extra_params, $this);
-
-	} // end get_extra_params;
+	}
 
 	/**
 	 * Implements our on json_decode version of this object. Useful for use in vue.js.
@@ -2657,21 +2377,15 @@ class Cart implements \JsonSerializable {
 		$errors = array();
 
 		if ($this->errors->has_errors()) {
-
 			foreach ($this->errors as $code => $messages) {
-
 				foreach ($messages as $message) {
-
 					$errors[] = array(
 						'code'    => $code,
 						'message' => $message,
 					);
-
-				} // end foreach;
-
-			} // end foreach;
-
-		} // end if;
+				}
+			}
+		}
 
 		return (object) array(
 
@@ -2699,8 +2413,7 @@ class Cart implements \JsonSerializable {
 			),
 
 		);
-
-	} // end done;
+	}
 
 	/**
 	 * Converts the current cart to an array of membership elements.
@@ -2712,36 +2425,38 @@ class Cart implements \JsonSerializable {
 
 		$membership_data = array();
 
-		$all_additional_products = $this->get_line_items_by_type('product', array(
-			array('product_id', '!=', $this->get_plan_id()),
-		));
+		$all_additional_products = $this->get_line_items_by_type(
+			'product',
+			array(
+				array('product_id', '!=', $this->get_plan_id()),
+			)
+		);
 
 		$addon_list = array();
 
 		foreach ($all_additional_products as $line_item) {
+			$addon_list[ $line_item->get_product_id() ] = $line_item->get_quantity();
+		}
 
-			$addon_list[$line_item->get_product_id()] = $line_item->get_quantity();
-
-		} // end foreach;
-
-		$membership_data = array_merge(array(
-			'recurring'      => $this->has_recurring(),
-			'plan_id'        => $this->get_plan() ? $this->get_plan()->get_id() : 0,
-			'initial_amount' => $this->get_total(),
-			'addon_products' => $addon_list,
-			'currency'       => $this->get_currency(),
-			'duration'       => $this->get_duration(),
-			'duration_unit'  => $this->get_duration_unit(),
-			'amount'         => $this->get_recurring_total(),
-			'times_billed'   => 0,
-			'billing_cycles' => $this->get_plan() ? $this->get_plan()->get_billing_cycles() : 0,
-			'auto_renew'     => false, // @todo: revisit
-			'upgraded_from'  => false, // @todo: revisit
-		));
+		$membership_data = array_merge(
+			array(
+				'recurring'      => $this->has_recurring(),
+				'plan_id'        => $this->get_plan() ? $this->get_plan()->get_id() : 0,
+				'initial_amount' => $this->get_total(),
+				'addon_products' => $addon_list,
+				'currency'       => $this->get_currency(),
+				'duration'       => $this->get_duration(),
+				'duration_unit'  => $this->get_duration_unit(),
+				'amount'         => $this->get_recurring_total(),
+				'times_billed'   => 0,
+				'billing_cycles' => $this->get_plan() ? $this->get_plan()->get_billing_cycles() : 0,
+				'auto_renew'     => false, // @todo: revisit
+				'upgraded_from'  => false, // @todo: revisit
+			)
+		);
 
 		return $membership_data;
-
-	} // end to_membership_data;
+	}
 
 	/**
 	 * Converts the current cart to a payment data array.
@@ -2766,8 +2481,7 @@ class Cart implements \JsonSerializable {
 		);
 
 		return $payment_data;
-
-	} // end to_payment_data;
+	}
 
 	/**
 	 * Get the value of discount_code
@@ -2778,8 +2492,7 @@ class Cart implements \JsonSerializable {
 	public function get_discount_code() {
 
 		return $this->discount_code;
-
-	} // end get_discount_code;
+	}
 
 	/**
 	 * Get the value of plan_id
@@ -2790,8 +2503,7 @@ class Cart implements \JsonSerializable {
 	public function get_plan_id() {
 
 		return $this->plan_id;
-
-	} // end get_plan_id;
+	}
 
 	/**
 	 * Get the currency code.
@@ -2802,8 +2514,7 @@ class Cart implements \JsonSerializable {
 	public function get_currency() {
 
 		return $this->currency;
-
-	} // end get_currency;
+	}
 
 	/**
 	 * Set the currency.
@@ -2815,8 +2526,7 @@ class Cart implements \JsonSerializable {
 	public function set_currency($currency) {
 
 		$this->currency = $currency;
-
-	} // end set_currency;
+	}
 
 	/**
 	 * Get the cart membership.
@@ -2827,8 +2537,7 @@ class Cart implements \JsonSerializable {
 	public function get_membership() {
 
 		return $this->membership;
-
-	} // end get_membership;
+	}
 
 	/**
 	 * Get the cart payment.
@@ -2839,8 +2548,7 @@ class Cart implements \JsonSerializable {
 	public function get_payment() {
 
 		return $this->payment;
-
-	} // end get_payment;
+	}
 
 	/**
 	 * Get the cart customer.
@@ -2851,8 +2559,7 @@ class Cart implements \JsonSerializable {
 	public function get_customer() {
 
 		return $this->customer;
-
-	} // end get_customer;
+	}
 
 	/**
 	 * Set the cart membership.
@@ -2864,8 +2571,7 @@ class Cart implements \JsonSerializable {
 	public function set_membership($membership) {
 
 		$this->membership = $membership;
-
-	} // end set_membership;
+	}
 
 	/**
 	 * Set the cart customer.
@@ -2877,8 +2583,7 @@ class Cart implements \JsonSerializable {
 	public function set_customer($customer) {
 
 		$this->customer = $customer;
-
-	} // end set_customer;
+	}
 
 	/**
 	 * Set the cart payment.
@@ -2890,8 +2595,7 @@ class Cart implements \JsonSerializable {
 	public function set_payment($payment) {
 
 		$this->payment = $payment;
-
-	} // end set_payment;
+	}
 
 	/**
 	 * Get the value of auto_renew.
@@ -2902,8 +2606,7 @@ class Cart implements \JsonSerializable {
 	public function should_auto_renew() {
 
 		return $this->auto_renew === 'yes' || $this->auto_renew === true;
-
-	} // end should_auto_renew;
+	}
 
 	/**
 	 * Get the cart type.
@@ -2914,8 +2617,7 @@ class Cart implements \JsonSerializable {
 	public function get_cart_type() {
 
 		return $this->cart_type;
-
-	} // end get_cart_type;
+	}
 
 	/**
 	 * Get the country of the customer.
@@ -2926,8 +2628,7 @@ class Cart implements \JsonSerializable {
 	public function get_country() {
 
 		return $this->country;
-
-	} // end get_country;
+	}
 
 	/**
 	 * Set the country of the customer.
@@ -2939,8 +2640,7 @@ class Cart implements \JsonSerializable {
 	public function set_country($country) {
 
 		$this->country = $country;
-
-	} // end set_country;
+	}
 
 	/**
 	 * Builds a cart URL that we can use with the browser history APIs.
@@ -2955,41 +2655,32 @@ class Cart implements \JsonSerializable {
 		$plan = wu_get_product($this->plan_id);
 
 		if ($plan) {
-
 			$base_url .= $plan->get_slug();
-
-		} // end if;
+		}
 
 		if ($this->duration && absint($this->duration) !== 1) {
-
 			$base_url .= "/{$this->duration}";
+		}
 
-		} // end if;
-
-		if ($this->duration_unit && $this->duration_unit !== 'month') {
-
+		if ($this->duration_unit && 'month' !== $this->duration_unit) {
 			$base_url .= "/{$this->duration_unit}";
-
-		} // end if;
+		}
 
 		$all_products = $this->products;
 
 		$products_list = array();
 
 		foreach ($all_products as $product) {
-
 			if ($product->get_id() !== $this->plan_id) {
-
 				$products_list[] = $product->get_slug();
+			}
+		}
 
-			} // end if;
-
-		} // end foreach;
-
-		return add_query_arg(array(
-			'products' => $products_list,
-		), $base_url);
-
-	} // end get_cart_url;
-
-} // end class Cart;
+		return add_query_arg(
+			array(
+				'products' => $products_list,
+			),
+			$base_url
+		);
+	}
+}

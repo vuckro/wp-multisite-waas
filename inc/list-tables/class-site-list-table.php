@@ -20,11 +20,11 @@ defined('ABSPATH') || exit;
 class Site_List_Table extends Base_List_Table {
 
 	/**
-     * Holds the query class for the object being listed.
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Holds the query class for the object being listed.
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $query_class = '\\WP_Ultimo\\Database\\Sites\\Site_Query';
 
 	/**
@@ -39,17 +39,18 @@ class Site_List_Table extends Base_List_Table {
 			'list' => __('List View'),
 		);
 
-		parent::__construct(array(
-			'singular' => __('Site', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Sites', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true,                     // does this table support ajax?
-			'add_new'  => array(
-				'url'     => wu_get_form_url('add_new_site'),
-				'classes' => 'wubox',
-			),
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Site', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Sites', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                     // does this table support ajax?
+				'add_new'  => array(
+					'url'     => wu_get_form_url('add_new_site'),
+					'classes' => 'wubox',
+				),
+			)
+		);
+	}
 
 	/**
 	 * Overrides the parent method to add pending sites.
@@ -66,12 +67,10 @@ class Site_List_Table extends Base_List_Table {
 		$type = wu_request('type');
 
 		if ($type === 'pending') {
-
 			$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending');
 
 			return $count ? count($pending_sites) : $pending_sites;
-
-		} // end if;
+		}
 
 		$query = array(
 			'number' => $per_page,
@@ -81,21 +80,18 @@ class Site_List_Table extends Base_List_Table {
 		);
 
 		if ($type && $type !== 'all') {
-
 			$query['meta_query'] = array(
 				'type' => array(
 					'key'   => 'wu_type',
 					'value' => $type,
 				),
 			);
-
-		} // end if;
+		}
 
 		$query = apply_filters("wu_{$this->id}_get_items", $query, $this);
 
 		return wu_get_sites($query);
-
-	} // end get_items;
+	}
 	/**
 	 * Render the bulk edit checkbox.
 	 *
@@ -104,14 +100,11 @@ class Site_List_Table extends Base_List_Table {
 	public function column_cb($item): string {
 
 		if ($item->get_type() === 'pending') {
-
 			return sprintf('<input type="checkbox" name="bulk-delete[]" value="%s" />', $item->get_membership_id());
-
-		} // end if;
+		}
 
 		return sprintf('<input type="checkbox" name="bulk-delete[]" value="%s" />', $item->get_id());
-
-	} // end column_cb;
+	}
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -123,7 +116,7 @@ class Site_List_Table extends Base_List_Table {
 
 		$url_atts = array(
 			'id'    => $item->get_id(),
-			'model' => 'site'
+			'model' => 'site',
 		);
 
 		$title = $item->get_title();
@@ -156,13 +149,13 @@ class Site_List_Table extends Base_List_Table {
 		);
 
 		if ($item->get_type() === 'pending') {
-
 			$actions = array(
 				'duplicate' => sprintf(
 					'<a title="%s" class="wubox" href="%s">%s</a>',
 					__('Publish Site', 'wp-ultimo'),
 					wu_get_form_url(
-						'publish_pending_site', array('membership_id' => $item->get_membership_id())
+						'publish_pending_site',
+						array('membership_id' => $item->get_membership_id())
 					),
 					__('Publish', 'wp-ultimo')
 				),
@@ -174,21 +167,24 @@ class Site_List_Table extends Base_List_Table {
 						array(
 							'id'          => $item->get_membership_id(),
 							'model'       => 'membership_meta_pending_site',
-							'redirect_to' => urlencode((string) wu_network_admin_url('wp-ultimo-sites', array(
-								'type' => 'pending',
-								'page' => wu_request('page', 1),
-							))),
+							'redirect_to' => urlencode(
+								(string) wu_network_admin_url(
+									'wp-ultimo-sites',
+									array(
+										'type' => 'pending',
+										'page' => wu_request('page', 1),
+									)
+								)
+							),
 						)
 					),
 					__('Delete', 'wp-ultimo')
 				),
 			);
-
-		} // end if;
+		}
 
 		return $title . sprintf('<span class="wu-block">%s</span>', make_clickable($item->get_active_site_url())) . $this->row_actions($actions);
-
-	} // end column_path;
+	}
 	/**
 	 * Returns the date of the customer registration.
 	 *
@@ -201,8 +197,7 @@ class Site_List_Table extends Base_List_Table {
 		$time = strtotime((string) $item->get_last_login(false));
 
 		return $item->get_date_registered() . sprintf('<br><small>%s</small>', human_time_diff($time));
-
-	} // end column_date_registered;
+	}
 
 	/**
 	 * Returns the blog_id.
@@ -215,8 +210,7 @@ class Site_List_Table extends Base_List_Table {
 	public function column_blog_id($item) {
 
 		return $item->get_type() === \WP_Ultimo\Database\Sites\Site_Type::PENDING ? '--' : $item->get_blog_id();
-
-	} // end column_blog_id;
+	}
 
 	/**
 	 * Displays the type of the site.
@@ -233,8 +227,7 @@ class Site_List_Table extends Base_List_Table {
 		$class = $item->get_type_class();
 
 		return "<span class='wu-bg-gray-200 wu-py-1 wu-px-2 wu-leading-none wu-rounded-sm wu-text-xs wu-font-mono $class'>{$label}</span>";
-
-	} // end column_type;
+	}
 	/**
 	 * Column for the domains associated with this site.
 	 *
@@ -244,10 +237,12 @@ class Site_List_Table extends Base_List_Table {
 	 */
 	public function column_domains($item): string {
 
-		$domain = wu_get_domains(array(
-			'blog_id' => $item->get_id(),
-			'count'   => true,
-		));
+		$domain = wu_get_domains(
+			array(
+				'blog_id' => $item->get_id(),
+				'count'   => true,
+			)
+		);
 
 		$url_atts = array(
 			'blog_id' => $item->get_id(),
@@ -258,8 +253,7 @@ class Site_List_Table extends Base_List_Table {
 		);
 
 		return $domain . $this->row_actions($actions);
-
-	} // end column_domains;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -281,8 +275,7 @@ class Site_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Renders the customer card for grid mode.
@@ -294,12 +287,14 @@ class Site_List_Table extends Base_List_Table {
 	 */
 	public function single_row_grid($item) {
 
-		wu_get_template('base/sites/grid-item', array(
-			'item'       => $item,
-			'list_table' => $this,
-		));
-
-	} // end single_row_grid;
+		wu_get_template(
+			'base/sites/grid-item',
+			array(
+				'item'       => $item,
+				'list_table' => $this,
+			)
+		);
+	}
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -328,8 +323,7 @@ class Site_List_Table extends Base_List_Table {
 				),
 			),
 		);
-
-	} // end get_filters;
+	}
 
 	/**
 	 * Returns the pre-selected filters on the filter bar.
@@ -365,8 +359,7 @@ class Site_List_Table extends Base_List_Table {
 				'count' => 0,
 			),
 		);
-
-	} // end get_views;
+	}
 
 	/**
 	 * Returns an associative array containing the bulk action
@@ -379,11 +372,10 @@ class Site_List_Table extends Base_List_Table {
 			'screenshot' => __('Take Screenshot', 'wp-ultimo'),
 		);
 
-		$actions[wu_request('type', 'all') === 'pending' ? 'delete-pending' : 'delete'] = __('Delete', 'wp-ultimo');
+		$actions[ wu_request('type', 'all') === 'pending' ? 'delete-pending' : 'delete' ] = __('Delete', 'wp-ultimo');
 
 		return $actions;
-
-	} // end get_bulk_actions;
+	}
 
 	/**
 	 * Handles the bulk processing.
@@ -396,18 +388,15 @@ class Site_List_Table extends Base_List_Table {
 		$action = $this->current_action();
 
 		if ($action === 'duplicate') {
-
 			$site_id = wu_request('id');
 
 			$site = wu_get_site($site_id);
 
-			if (!$site) {
-
+			if ( ! $site) {
 				WP_Ultimo()->notices->add(__('Site not found.', 'wp-ultimo'), 'error', 'network-admin');
 
 				return;
-
-			} // end if;
+			}
 
 			$new_site = $site->duplicate();
 
@@ -428,24 +417,22 @@ class Site_List_Table extends Base_List_Table {
 			$result = $new_site->save();
 
 			if (is_wp_error($result)) {
-
 				WP_Ultimo()->notices->add($result->get_error_message(), 'error', 'network-admin');
 
 				return;
+			}
 
-			} // end if;
-
-			$redirect_url = wu_network_admin_url('wp-ultimo-edit-site', array(
-				'id'      => $new_site->get_id(),
-				'updated' => 1,
-			));
+			$redirect_url = wu_network_admin_url(
+				'wp-ultimo-edit-site',
+				array(
+					'id'      => $new_site->get_id(),
+					'updated' => 1,
+				)
+			);
 
 			wp_redirect($redirect_url);
 
 			exit;
-
-		} // end if;
-
-	} // end process_single_action;
-
-} // end class Site_List_Table;
+		}
+	}
+}

@@ -8,57 +8,65 @@
 ?>
 <li class="<?php echo esc_attr(trim($field->wrapper_classes)); ?>" <?php echo $field->get_wrapper_html_attributes(); ?>>
 
-  <div class="wu-block wu-w-full">
+	<div class="wu-block wu-w-full">
 
-    <?php
+	<?php
 
-    /**
-     * Adds the partial title template.
-     * @since 2.0.0
-     */
-    wu_get_template('admin-pages/fields/partials/field-title', array(
-      'field' => $field,
-    ));
+	/**
+	 * Adds the partial title template.
+	 *
+	 * @since 2.0.0
+	 */
+	wu_get_template(
+		'admin-pages/fields/partials/field-title',
+		array(
+			'field' => $field,
+		)
+	);
 
-    ?>
+	?>
 
-    <select class="wu_select_icon" name="<?php echo esc_attr($field->id); ?>">
+	<select class="wu_select_icon" name="<?php echo esc_attr($field->id); ?>">
 
-        <option value=""><?php echo __('No Icon','wp-ultimo'); ?></option>
+		<option value=""><?php echo __('No Icon', 'wp-ultimo'); ?></option>
 
-        <?php foreach (wu_get_icons_list() as $category_label => $category_array) : ?>
+		<?php foreach (wu_get_icons_list() as $category_label => $category_array) : ?>
 
-          <optgroup label="<?php echo $category_label; ?>">
+			<optgroup label="<?php echo $category_label; ?>">
 
-            <?php foreach ($category_array as $option_key => $option_value) : ?>
+			<?php foreach ($category_array as $option_key => $option_value) : ?>
 
-              <option
-                value="<?php echo esc_attr($option_value); ?>"
-                <?php selected($field->value, $option_value); ?>
-              >
-                <?php echo $option_value; ?>
-              </option>
+				<option
+				value="<?php echo esc_attr($option_value); ?>"
+				<?php selected($field->value, $option_value); ?>
+				>
+				<?php echo $option_value; ?>
+				</option>
 
-            <?php endforeach; ?>
+			<?php endforeach; ?>
 
-          </optgroup>
+			</optgroup>
 
-        <?php endforeach; ?>
+		<?php endforeach; ?>
 
-    </select>
+	</select>
 
-    <?php
+	<?php
 
-    /**
-     * Adds the partial title template.
-     * @since 2.0.0
-     */
-    wu_get_template('admin-pages/fields/partials/field-description', array(
-      'field' => $field,
-    ));
+	/**
+	 * Adds the partial title template.
+	 *
+	 * @since 2.0.0
+	 */
+	wu_get_template(
+		'admin-pages/fields/partials/field-description',
+		array(
+			'field' => $field,
+		)
+	);
 
-    ?>
+	?>
 
-  </div>
+	</div>
 
 </li>

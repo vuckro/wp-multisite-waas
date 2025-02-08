@@ -41,8 +41,7 @@ class Tours {
 		add_action('admin_enqueue_scripts', array($this, 'register_scripts'));
 
 		add_action('in_admin_footer', array($this, 'enqueue_scripts'));
-
-	} // end __construct;
+	}
 
 	/**
 	 * Mark the tour as finished for a particular user.
@@ -57,16 +56,13 @@ class Tours {
 		$id = wu_request('tour_id');
 
 		if ($id) {
-
 			set_user_setting("wu_tour_$id", true);
 
 			wp_send_json_success();
-
-		} // end if;
+		}
 
 		wp_send_json_error();
-
-	} // end mark_as_finished;
+	}
 
 	/**
 	 * Register the necessary scripts.
@@ -79,8 +75,7 @@ class Tours {
 		WP_Ultimo()->scripts->register_script('wu-shepherd', wu_get_asset('lib/shepherd.js', 'js'), array());
 
 		WP_Ultimo()->scripts->register_script('wu-tours', wu_get_asset('tours.js', 'js'), array('wu-shepherd', 'underscore'));
-
-	}  // end register_scripts;
+	}
 
 	/**
 	 * Enqueues the scripts, if we need to.
@@ -91,23 +86,24 @@ class Tours {
 	public function enqueue_scripts() {
 
 		if ($this->has_tours()) {
-
 			wp_localize_script('wu-tours', 'wu_tours', $this->tours);
 
-			wp_localize_script('wu-tours', 'wu_tours_vars', array(
-				'ajaxurl' => wu_ajax_url(),
-				'nonce'   => wp_create_nonce('wu_tour_finished'),
-				'i18n'    => array(
-					'next'   => __('Next', 'wp-ultimo'),
-					'finish' => __('Close', 'wp-ultimo')
-				),
-			));
+			wp_localize_script(
+				'wu-tours',
+				'wu_tours_vars',
+				array(
+					'ajaxurl' => wu_ajax_url(),
+					'nonce'   => wp_create_nonce('wu_tour_finished'),
+					'i18n'    => array(
+						'next'   => __('Next', 'wp-ultimo'),
+						'finish' => __('Close', 'wp-ultimo'),
+					),
+				)
+			);
 
 			wp_enqueue_script('wu-tours');
-
-		} // end if;
-
-	}  // end enqueue_scripts;
+		}
+	}
 
 	/**
 	 * Checks if we have registered tours.
@@ -117,9 +113,8 @@ class Tours {
 	 */
 	public function has_tours() {
 
-		return !empty($this->tours);
-
-	} // end has_tours;
+		return ! empty($this->tours);
+	}
 
 	/**
 	 * Register a new tour.
@@ -136,41 +131,33 @@ class Tours {
 	public function create_tour($id, $steps = array(), $once = true) {
 
 		if (did_action('in_admin_header')) {
-
 			return;
+		}
 
-		} // end if;
+		add_action(
+			'in_admin_header',
+			function () use ($id, $steps, $once) {
 
-		add_action('in_admin_header', function() use ($id, $steps, $once) {
+				$force_hide = wu_get_setting('hide_tours', false);
 
-			$force_hide = wu_get_setting('hide_tours', false);
+				if ($force_hide) {
+					return;
+				}
 
-			if ($force_hide) {
+				$finished = (bool) get_user_setting("wu_tour_$id", false);
 
-				return;
+				$finished = apply_filters('wu_tour_finished', $finished, $id, get_current_user_id());
 
-			} // end if;
+				if ( ! $finished || ! $once) {
+					foreach ($steps as &$step) {
+						$step['text'] = is_array($step['text']) ? implode('</p><p>', $step['text']) : $step['text'];
 
-			$finished = (bool) get_user_setting("wu_tour_$id", false);
+						$step['text'] = sprintf('<p>%s</p>', $step['text']);
+					}
 
-			$finished = apply_filters('wu_tour_finished', $finished, $id, get_current_user_id());
-
-			if (!$finished || !$once) {
-
-				foreach ($steps as &$step) {
-
-					$step['text'] = is_array($step['text']) ? implode('</p><p>', $step['text']) : $step['text'];
-
-					$step['text'] = sprintf('<p>%s</p>', $step['text']);
-
-				} // end foreach;
-
-				$this->tours[$id] = $steps;
-
-			} // end if;
-
-		});
-
-	} // end create_tour;
-
-} // end class Tours;
+					$this->tours[ $id ] = $steps;
+				}
+			}
+		);
+	}
+}

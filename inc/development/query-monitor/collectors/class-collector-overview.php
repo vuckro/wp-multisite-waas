@@ -35,8 +35,7 @@ class Collector_Overview extends \QM_Collector {
 	public function set_up() {
 
 		parent::set_up();
-
-	} // end set_up;
+	}
 
 	/**
 	 * Tear down routines.
@@ -47,8 +46,7 @@ class Collector_Overview extends \QM_Collector {
 	public function tear_down() {
 
 		parent::tear_down();
-
-	} // end tear_down;
+	}
 
 	/**
 	 * Process the collection.
@@ -62,7 +60,5 @@ class Collector_Overview extends \QM_Collector {
 	public function process() {
 
 		$this->data = $_REQUEST;
-
-	} // end process;
-
-} // end class Collector_Overview;
+	}
+}

@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
-use \WP_Ultimo\Managers\Field_Templates_Manager;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Managers\Field_Templates_Manager;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -33,8 +33,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	public function get_type() {
 
 		return 'order_bump';
-
-	} // end get_type;
+	}
 
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
@@ -45,8 +44,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	public function is_required() {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -59,8 +57,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Order Bump', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -73,8 +70,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a product offer that the customer can click to add to the current cart.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -87,8 +83,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a product offer that the customer can click to add to the current cart.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 
 	/**
 	 * Returns the icon to be used on the selector.
@@ -101,8 +96,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 	public function get_icon() {
 
 		return 'dashicons-wu-gift';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -119,8 +113,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 			'order_bump_template'         => 'simple',
 			'display_product_description' => 0,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -134,8 +127,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 			// 'id',
 			'name',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -148,8 +140,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 		return array(
 			'order_bump_template' => 'simple',
 		);
-
-	} // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of available pricing table templates.
@@ -162,8 +153,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 		$available_templates = Field_Templates_Manager::get_instance()->get_templates_as_options('order_bump');
 
 		return $available_templates;
-
-	} // end get_templates;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -233,8 +223,7 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 		// );
 
 		return $editor_fields;
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -250,11 +239,9 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 
 		$product = is_numeric($product_id) ? wu_get_product($product_id) : wu_get_product_by_slug($product_id);
 
-		if (!$product) {
-
+		if ( ! $product) {
 			return array();
-
-		} // end if;
+		}
 
 		$attributes['product'] = $product;
 
@@ -269,7 +256,5 @@ class Signup_Field_Order_Bump extends Base_Signup_Field {
 				'wrapper_classes' => $attributes['element_classes'],
 			),
 		);
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Order_Bump;
+	}
+}

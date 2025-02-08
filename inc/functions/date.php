@@ -21,28 +21,19 @@ defined('ABSPATH') || exit;
 function wu_validate_date($date, $format = 'Y-m-d H:i:s') {
 
 	if (is_null($date)) {
-
 		return true;
-
-	} elseif (!$date) {
-
+	} elseif ( ! $date) {
 		return false;
-
-	} // end if;
+	}
 
 	try {
-
 		$d = \DateTime::createFromFormat($format, $date);
-
 	} catch (\Throwable $exception) {
-
 		return false;
-
-	} // end try;
+	}
 
 	return $d && $d->format($format) === $date;
-
-} // end wu_validate_date;
+}
 
 /**
  * Returns a Carbon object to deal with dates in a more compelling way.
@@ -59,13 +50,12 @@ function wu_validate_date($date, $format = 'Y-m-d H:i:s') {
  */
 function wu_date($date = false) {
 
-	if (!wu_validate_date($date)) {
+	if ( ! wu_validate_date($date)) {
 		$date = date_i18n('Y-m-d H:i:s');
 	}
 
 	return \DateTime::createFromFormat('Y-m-d H:i:s', $date);
-
-} // end wu_date;
+}
 
 /**
  * Returns how many days ago the first date was in relation to the second date.
@@ -87,8 +77,7 @@ function wu_get_days_ago($date_1, $date_2 = false) {
 	$dateIntervar = $datetime_1->diff($datetime_2, false);
 
 	return - $dateIntervar->days;
-
-} // end wu_get_days_ago;
+}
 
 /**
  * Returns the current time from the network
@@ -106,8 +95,7 @@ function wu_get_current_time($type = 'mysql', $gmt = false) {
 	restore_current_blog();
 
 	return $time;
-
-} // end wu_get_current_time;
+}
 
 /**
  * Returns a more user friendly version of the duration unit string.
@@ -123,23 +111,22 @@ function wu_filter_duration_unit($unit, $length) {
 	$new_unit = '';
 
 	switch ($unit) {
-     case 'day':
-         $new_unit = $length > 1 ? __('Days', 'wp-ultimo') : __('Day', 'wp-ultimo');
-         break;
-     case 'month':
-         $new_unit = $length > 1 ? __('Months', 'wp-ultimo') : __('Month', 'wp-ultimo');
-         break;
-     case 'year':
-         $new_unit = $length > 1 ? __('Years', 'wp-ultimo') : __('Year', 'wp-ultimo');
-         break;
-     default:
-         $new_unit = $new_unit;
-         break;
- }
+		case 'day':
+			$new_unit = $length > 1 ? __('Days', 'wp-ultimo') : __('Day', 'wp-ultimo');
+			break;
+		case 'month':
+			$new_unit = $length > 1 ? __('Months', 'wp-ultimo') : __('Month', 'wp-ultimo');
+			break;
+		case 'year':
+			$new_unit = $length > 1 ? __('Years', 'wp-ultimo') : __('Year', 'wp-ultimo');
+			break;
+		default:
+			$new_unit = $new_unit;
+			break;
+	}
 
 	return $new_unit;
-
-} // end wu_filter_duration_unit;
+}
 /**
  * Get the human time diff.
  *
@@ -159,20 +146,16 @@ function wu_human_time_diff($from, $limit = '-5 days', $to = false): string {
 
 		// translators: %s: date.
 		return sprintf(__('on %s', 'wp-ultimo'), date_i18n(get_option('date_format'), $timestamp_from));
-
-	} // end if;
+	}
 
 	if ($to === false) {
-
 		$to = wu_get_current_time('timestamp'); // phpcs:ignore
-
-	} // end if;
+	}
 
 	$placeholder = wu_get_current_time('timestamp') > $timestamp_from ? __('%s ago', 'wp-ultimo') : __('In %s', 'wp-ultimo'); // phpcs:ignore
 
 	return sprintf($placeholder, human_time_diff($timestamp_from, $to));
-
-} // end wu_human_time_diff;
+}
 
 /**
  * Converts php DateTime format to Javascript Moment format.
@@ -227,11 +210,8 @@ function wu_convert_php_date_format_to_moment_js_format($php_date_format): strin
 
 	// Converts escaped characters.
 	foreach ($replacements as $from => $to) {
-
-		$replacements['\\' . $from] = '[' . $from . ']';
-
-	} // end foreach;
+		$replacements[ '\\' . $from ] = '[' . $from . ']';
+	}
 
 	return strtr($php_date_format, $replacements);
-
-} // end wu_convert_php_date_format_to_moment_js_format;
+}

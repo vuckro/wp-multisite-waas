@@ -24,7 +24,9 @@ defined('ABSPATH') || exit;
  */
 class Discount_Code_Manager extends Base_Manager {
 
-	use \WP_Ultimo\Apis\Rest_Api, \WP_Ultimo\Apis\WP_CLI, \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Apis\Rest_Api;
+	use \WP_Ultimo\Apis\WP_CLI;
+	use \WP_Ultimo\Traits\Singleton;
 
 	/**
 	 * The manager slug.
@@ -55,8 +57,7 @@ class Discount_Code_Manager extends Base_Manager {
 		$this->enable_wp_cli();
 
 		add_action('wu_gateway_payment_processed', array($this, 'maybe_add_use_on_payment_received'));
-
-	} // end init;
+	}
 
 	/**
 	 * Listens for payments received in order to increase the discount code uses.
@@ -68,11 +69,9 @@ class Discount_Code_Manager extends Base_Manager {
 	 */
 	public function maybe_add_use_on_payment_received($payment) {
 
-		if (!$payment) {
-
+		if ( ! $payment) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Try to fetch the original cart of the payment.
@@ -82,18 +81,14 @@ class Discount_Code_Manager extends Base_Manager {
 		$original_cart = $payment->get_meta('wu_original_cart');
 
 		if (is_a($original_cart, \WP_Ultimo\Checkout\Cart::class) === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		$discount_code = $original_cart->get_discount_code();
 
-		if (!$discount_code) {
-
+		if ( ! $discount_code) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Refetch the object, as the original version
@@ -102,13 +97,9 @@ class Discount_Code_Manager extends Base_Manager {
 		$discount_code = wu_get_discount_code($discount_code->get_id());
 
 		if ($discount_code) {
-
 			$discount_code->add_use();
 
 			$discount_code->save();
-
-		} // end if;
-
-	} // end maybe_add_use_on_payment_received;
-
-} // end class Discount_Code_Manager;
+		}
+	}
+}

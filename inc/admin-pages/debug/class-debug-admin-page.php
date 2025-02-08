@@ -89,8 +89,7 @@ class Debug_Admin_Page extends Base_Admin_Page {
 			'normal',
 			null
 		);
-
-	} // end register_widgets;
+	}
 
 	/**
 	 * Renders the list of WP Multisite WaaS registered pages.
@@ -105,18 +104,19 @@ class Debug_Admin_Page extends Base_Admin_Page {
 		echo '<ul class="wu-flex wu-flex-wrap wu--mx-1">';
 
 		foreach ($pages as $page_id => $url) {
-
-			echo sprintf('
+			printf(
+				'
 				<li class="wu-w-1/2 wu-box-border">
 					<a class="wu-mx-1 wu-block wu-p-2 wu-box-border wu-border wu-border-gray-400 wu-border-solid wu-rounded" href="%s">%s</a>
 				</li>
-			', $url, $page_id);
-
-		} // end foreach;
+			',
+				$url,
+				$page_id
+			);
+		}
 
 		echo '</ul>';
-
-	} // end render_debug_pages;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -127,8 +127,7 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	public function get_title() {
 
 		return __('Registered Pages', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -139,8 +138,7 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Registered Pages', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -151,8 +149,7 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Registered Pages', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -162,12 +159,13 @@ class Debug_Admin_Page extends Base_Admin_Page {
 	 */
 	public function output() {
 
-		wu_get_template('base/dash', array(
-			'page'              => $this,
-			'screen'            => get_current_screen(),
-			'has_full_position' => false,
-		));
-
-	} // end output;
-
-} // end class Debug_Admin_Page;
+		wu_get_template(
+			'base/dash',
+			array(
+				'page'              => $this,
+				'screen'            => get_current_screen(),
+				'has_full_position' => false,
+			)
+		);
+	}
+}

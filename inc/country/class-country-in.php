@@ -100,8 +100,7 @@ class Country_IN extends Country {
 	public function get_name() {
 
 		return __('India', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for IN.
@@ -149,7 +148,5 @@ class Country_IN extends Country {
 			'UT' => __('Uttarakhand', 'wp-ultimo-locations'),
 			'WB' => __('West Bengal', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_IN;
+	}
+}

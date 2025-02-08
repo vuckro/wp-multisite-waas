@@ -12,10 +12,10 @@
 namespace WP_Ultimo\Managers;
 
 use Psr\Log\LogLevel;
-use \WP_Ultimo\Managers\Base_Manager;
-use \WP_Ultimo\Models\Email;
-use \WP_Ultimo\Helpers\Sender;
-use \WP_Ultimo\Models\Base_Model;
+use WP_Ultimo\Managers\Base_Manager;
+use WP_Ultimo\Models\Email;
+use WP_Ultimo\Helpers\Sender;
+use WP_Ultimo\Models\Base_Model;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -27,7 +27,9 @@ defined('ABSPATH') || exit;
  */
 class Email_Manager extends Base_Manager {
 
-	use \WP_Ultimo\Apis\Rest_Api, \WP_Ultimo\Apis\WP_CLI, \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Apis\Rest_Api;
+	use \WP_Ultimo\Apis\WP_CLI;
+	use \WP_Ultimo\Traits\Singleton;
 
 	/**
 	 * The manager slug.
@@ -65,9 +67,12 @@ class Email_Manager extends Base_Manager {
 
 		$this->enable_wp_cli();
 
-		add_action('init', function () {
-			$this->register_all_default_system_emails();
-		});
+		add_action(
+			'init',
+			function () {
+				$this->register_all_default_system_emails();
+			}
+		);
 
 		/*
 		 * Adds the Email fields
@@ -87,8 +92,7 @@ class Email_Manager extends Base_Manager {
 		add_action('wp_mail_failed', array($this, 'log_mailer_failure'));
 
 		add_action('wp_ajax_wu_get_event_payload_placeholders', array($this, 'get_event_placeholders'));
-
-	} // end init;
+	}
 
 	/**
 	 * Send the email related to the current event.
@@ -99,9 +103,11 @@ class Email_Manager extends Base_Manager {
 	 */
 	public function send_system_email($slug, $payload) {
 
-		$all_emails = wu_get_emails(array(
-			'event' => $slug,
-		));
+		$all_emails = wu_get_emails(
+			array(
+				'event' => $slug,
+			)
+		);
 
 		$original_from = array(
 			'name'  => wu_get_setting('from_name'),
@@ -112,19 +118,14 @@ class Email_Manager extends Base_Manager {
 		 * Loop through all the emails registered.
 		 */
 		foreach ($all_emails as $email) {
-
 			if ($email->get_custom_sender()) {
-
 				$from = array(
 					'name'  => $email->get_custom_sender_name(),
 					'email' => $email->get_custom_sender_email(),
 				);
-
 			} else {
-
 				$from = $original_from;
-
-			} // end if;
+			}
 
 			/*
 			 * Compiles the target list.
@@ -132,12 +133,10 @@ class Email_Manager extends Base_Manager {
 			$to = $email->get_target_list($payload);
 
 			if (empty($to)) {
-
 				wu_log_add('mailer', __('No targets found.', 'wp-ultimo'));
 
 				return;
-
-			} // end if;
+			}
 
 			$args = array(
 				'style'   => $email->get_style(),
@@ -150,26 +149,20 @@ class Email_Manager extends Base_Manager {
 			 * Add the invoice attachment, if need be.
 			 */
 			if (wu_get_isset($payload, 'payment_invoice_url') && wu_get_setting('attach_invoice_pdf', true)) {
-
 				$file_name = 'invoice-' . $payload['payment_reference_code'] . '.pdf';
 
 				$this->attach_file_by_url($payload['payment_invoice_url'], $file_name, $args['subject']);
-
-			} // end if;
+			}
 
 			$when_to_send = $email->get_when_to_send();
 
 			if ($when_to_send) {
-
 				$args['schedule'] = $when_to_send;
-
-			} // end if;
+			}
 
 			Sender::send_mail($from, $to, $args);
-
-		} // end foreach;
-
-	} // end send_system_email;
+		}
+	}
 
 	/**
 	 * Attach a file by a URL
@@ -183,34 +176,35 @@ class Email_Manager extends Base_Manager {
 	 */
 	public function attach_file_by_url($file_url, $file_name, $email_subject = '') {
 
-		add_action('phpmailer_init', function($mail) use ($file_url, $file_name, $email_subject) {
+		add_action(
+			'phpmailer_init',
+			function ($mail) use ($file_url, $file_name, $email_subject) {
 
 			if ($email_subject && $mail->Subject !== $email_subject) { // phpcs:ignore
 
-				return;
+					return;
+				}
 
-			} // end if;
+				$response = wp_remote_get(
+					$file_url,
+					array(
+						'timeout' => 50,
+					)
+				);
 
-			$response = wp_remote_get($file_url, array(
-				'timeout' => 50,
-			));
+				if (is_wp_error($response)) {
+					return;
+				}
 
-			if (is_wp_error($response)) {
+				$file = wp_remote_retrieve_body($response);
 
-				return;
-
-			} // end if;
-
-			$file = wp_remote_retrieve_body($response);
-
-			/*
-			 * Use the default PHPMailer APIs to attach the file.
-			 */
-			$mail->addStringAttachment($file, $file_name);
-
-		});
-
-	} // end attach_file_by_url;
+				/*
+				* Use the default PHPMailer APIs to attach the file.
+				*/
+				$mail->addStringAttachment($file, $file_name);
+			}
+		);
+	}
 
 	/**
 	 * Add all email fields.
@@ -220,71 +214,98 @@ class Email_Manager extends Base_Manager {
 	 */
 	public function add_email_fields() {
 
-		wu_register_settings_field('emails', 'sender_header', array(
-			'title' => __('Sender Settings', 'wp-ultimo'),
-			'desc'  => __('Change the settings of the email headers, like from and name.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
+		wu_register_settings_field(
+			'emails',
+			'sender_header',
+			array(
+				'title' => __('Sender Settings', 'wp-ultimo'),
+				'desc'  => __('Change the settings of the email headers, like from and name.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('emails', 'from_name', array(
-			'title'       => __('"From" Name', 'wp-ultimo'),
-			'desc'        => __('How the sender name will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
-			'type'        => 'text',
-			'placeholder' => get_network_option(null, 'site_name'),
-			'default'     => get_network_option(null, 'site_name'),
-			'html_attr'   => array(
-				'v-model' => 'from_name',
-			),
-		));
+		wu_register_settings_field(
+			'emails',
+			'from_name',
+			array(
+				'title'       => __('"From" Name', 'wp-ultimo'),
+				'desc'        => __('How the sender name will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
+				'type'        => 'text',
+				'placeholder' => get_network_option(null, 'site_name'),
+				'default'     => get_network_option(null, 'site_name'),
+				'html_attr'   => array(
+					'v-model' => 'from_name',
+				),
+			)
+		);
 
-		wu_register_settings_field('emails', 'from_email', array(
-			'title'       => __('"From" E-mail', 'wp-ultimo'),
-			'desc'        => __('How the sender email will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
-			'type'        => 'email',
-			'placeholder' => get_network_option(null, 'admin_email'),
-			'default'     => get_network_option(null, 'admin_email'),
-			'html_attr'   => array(
-				'v-model' => 'from_email',
-			),
-		));
+		wu_register_settings_field(
+			'emails',
+			'from_email',
+			array(
+				'title'       => __('"From" E-mail', 'wp-ultimo'),
+				'desc'        => __('How the sender email will appear in emails sent by WP Multisite WaaS.', 'wp-ultimo'),
+				'type'        => 'email',
+				'placeholder' => get_network_option(null, 'admin_email'),
+				'default'     => get_network_option(null, 'admin_email'),
+				'html_attr'   => array(
+					'v-model' => 'from_email',
+				),
+			)
+		);
 
-		wu_register_settings_field('emails', 'template_header', array(
-			'title' => __('Template Settings', 'wp-ultimo'),
-			'desc'  => __('Change the settings of the email templates.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
+		wu_register_settings_field(
+			'emails',
+			'template_header',
+			array(
+				'title' => __('Template Settings', 'wp-ultimo'),
+				'desc'  => __('Change the settings of the email templates.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('emails', 'email_template_type', array(
-			'title'     => __('Email Templates Style', 'wp-ultimo'),
-			'desc'      => __('Choose if email body will be sent using the HTML template or in plain text.', 'wp-ultimo'),
-			'type'      => 'select',
-			'default'   => 'html',
-			'options'   => array(
-				'html'  => __('HTML Emails', 'wp-ultimo'),
-				'plain' => __('Plain Emails', 'wp-ultimo'),
-			),
-			'html_attr' => array(
-				'v-model' => 'emails_template',
-			),
-		));
+		wu_register_settings_field(
+			'emails',
+			'email_template_type',
+			array(
+				'title'     => __('Email Templates Style', 'wp-ultimo'),
+				'desc'      => __('Choose if email body will be sent using the HTML template or in plain text.', 'wp-ultimo'),
+				'type'      => 'select',
+				'default'   => 'html',
+				'options'   => array(
+					'html'  => __('HTML Emails', 'wp-ultimo'),
+					'plain' => __('Plain Emails', 'wp-ultimo'),
+				),
+				'html_attr' => array(
+					'v-model' => 'emails_template',
+				),
+			)
+		);
 
-		wu_register_settings_field('emails', 'expiring_header', array(
-			'title' => __('Expiring Notification Settings', 'wp-ultimo'),
-			'desc'  => __('Change the settings for the expiring notification (trials and subscriptions) emails.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
+		wu_register_settings_field(
+			'emails',
+			'expiring_header',
+			array(
+				'title' => __('Expiring Notification Settings', 'wp-ultimo'),
+				'desc'  => __('Change the settings for the expiring notification (trials and subscriptions) emails.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('emails', 'expiring_days', array(
-			'title'       => __('Days to Expire', 'wp-ultimo'),
-			'desc'        => __('Select when we should send the notification email. If you select 3 days, for example, a notification email will be sent to every membership (or trial period) expiring in the next 3 days. Memberships are checked hourly.', 'wp-ultimo'),
-			'type'        => 'number',
-			'placeholder' => __('e.g. 3', 'wp-ultimo'),
-			'html_attr'   => array(
-				'v-model' => 'expiring_days',
-			),
-		));
-
-	} // end add_email_fields;
+		wu_register_settings_field(
+			'emails',
+			'expiring_days',
+			array(
+				'title'       => __('Days to Expire', 'wp-ultimo'),
+				'desc'        => __('Select when we should send the notification email. If you select 3 days, for example, a notification email will be sent to every membership (or trial period) expiring in the next 3 days. Memberships are checked hourly.', 'wp-ultimo'),
+				'type'        => 'number',
+				'placeholder' => __('e.g. 3', 'wp-ultimo'),
+				'html_attr'   => array(
+					'v-model' => 'expiring_days',
+				),
+			)
+		);
+	}
 
 	/**
 	 * Register in the global variable all the default system emails.
@@ -296,9 +317,8 @@ class Email_Manager extends Base_Manager {
 	 */
 	public function register_default_system_email($args) {
 
-		$this->registered_default_system_emails[$args['slug']] = $args;
-
-	} // end register_default_system_email;
+		$this->registered_default_system_emails[ $args['slug'] ] = $args;
+	}
 
 	/**
 	 * Create a system email.
@@ -311,33 +331,33 @@ class Email_Manager extends Base_Manager {
 	public function create_system_email($args) {
 
 		if ($this->is_created($args['slug'])) {
-
 			return;
+		}
 
-		} // end if;
-
-		$email_args = wp_parse_args($args, array(
-			'event'              => '',
-			'title'              => '',
-			'content'            => '',
-			'slug'               => '',
-			'target'             => 'admin',
-			'style'              => 'use_default',
-			'send_copy_to_admin' => true,
-			'active'             => true,
-			'legacy'             => false,
-			'date_registered'    => wu_get_current_time('mysql', true),
-			'date_modified'      => wu_get_current_time('mysql', true),
-			'status'             => 'publish'
-		));
+		$email_args = wp_parse_args(
+			$args,
+			array(
+				'event'              => '',
+				'title'              => '',
+				'content'            => '',
+				'slug'               => '',
+				'target'             => 'admin',
+				'style'              => 'use_default',
+				'send_copy_to_admin' => true,
+				'active'             => true,
+				'legacy'             => false,
+				'date_registered'    => wu_get_current_time('mysql', true),
+				'date_modified'      => wu_get_current_time('mysql', true),
+				'status'             => 'publish',
+			)
+		);
 
 		$email = new Email($email_args);
 
 		$saved = $email->save();
 
 		return is_wp_error($saved) ? $saved : $email;
-
-	} // end create_system_email;
+	}
 
 	/**
 	 * Register all default system emails.
@@ -351,12 +371,9 @@ class Email_Manager extends Base_Manager {
 		$system_emails = wu_get_default_system_emails();
 
 		foreach ($system_emails as $email_key => $email_value) {
-
 			$this->create_system_email($email_value);
-
-		} // end foreach;
-
-	} // end create_all_system_emails;
+		}
+	}
 
 	/**
 	 * Register all default system emails.
@@ -369,83 +386,96 @@ class Email_Manager extends Base_Manager {
 		/*
 		 * Payment Successful - Admin
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'payment_received',
-			'slug'    => 'payment_received_admin',
-			'target'  => 'admin',
-			'title'   => __('You got a new payment!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/admin/payment-received'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'payment_received',
+				'slug'    => 'payment_received_admin',
+				'target'  => 'admin',
+				'title'   => __('You got a new payment!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/admin/payment-received'),
+			)
+		);
 
 		/*
 		 * Payment Successful - Customer
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'payment_received',
-			'slug'    => 'payment_received_customer',
-			'target'  => 'customer',
-			'title'   => __('We got your payment!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/customer/payment-received'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'payment_received',
+				'slug'    => 'payment_received_customer',
+				'target'  => 'customer',
+				'title'   => __('We got your payment!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/customer/payment-received'),
+			)
+		);
 
 		/*
 		 * Site Published - Admin
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'site_published',
-			'target'  => 'admin',
-			'slug'    => 'site_published_admin',
-			'title'   => __('A new site was created on your Network!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/admin/site-published'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'site_published',
+				'target'  => 'admin',
+				'slug'    => 'site_published_admin',
+				'title'   => __('A new site was created on your Network!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/admin/site-published'),
+			)
+		);
 
 		/*
 		 * Site Published - Customer
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'site_published',
-			'target'  => 'customer',
-			'slug'    => 'site_published_customer',
-			'title'   => __('Your site is ready!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/customer/site-published'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'site_published',
+				'target'  => 'customer',
+				'slug'    => 'site_published_customer',
+				'title'   => __('Your site is ready!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/customer/site-published'),
+			)
+		);
 
 		/*
 		 * Site Published - Customer
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'confirm_email_address',
-			'target'  => 'customer',
-			'slug'    => 'confirm_email_address',
-			'title'   => __('Confirm your email address!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/customer/confirm-email-address'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'confirm_email_address',
+				'target'  => 'customer',
+				'slug'    => 'confirm_email_address',
+				'title'   => __('Confirm your email address!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/customer/confirm-email-address'),
+			)
+		);
 
 		/*
 		 * Domain Created - Admin
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'domain_created',
-			'target'  => 'admin',
-			'slug'    => 'domain_created_admin',
-			'title'   => __('A new domain was added to your Network!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/admin/domain-created'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'domain_created',
+				'target'  => 'admin',
+				'slug'    => 'domain_created_admin',
+				'title'   => __('A new domain was added to your Network!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/admin/domain-created'),
+			)
+		);
 
 		/*
 		 * Pending Renewal Payment Created - Customer
 		 */
-		$this->register_default_system_email(array(
-			'event'   => 'renewal_payment_created',
-			'target'  => 'customer',
-			'slug'    => 'renewal_payment_created',
-			'title'   => __('You have a new pending payment!', 'wp-ultimo'),
-			'content' => wu_get_template_contents('emails/customer/renewal-payment-created'),
-		));
+		$this->register_default_system_email(
+			array(
+				'event'   => 'renewal_payment_created',
+				'target'  => 'customer',
+				'slug'    => 'renewal_payment_created',
+				'title'   => __('You have a new pending payment!', 'wp-ultimo'),
+				'content' => wu_get_template_contents('emails/customer/renewal-payment-created'),
+			)
+		);
 
 		do_action('wu_system_emails_after_register');
-
-	} // end register_all_default_system_emails;
+	}
 
 	/**
 	 * Get a single or all default registered system emails.
@@ -457,15 +487,12 @@ class Email_Manager extends Base_Manager {
 	 */
 	public function get_default_system_emails($slug = '') {
 
-		if ($slug && isset($this->registered_default_system_emails[$slug])) {
-
-			return $this->registered_default_system_emails[$slug];
-
-		} // end if;
+		if ($slug && isset($this->registered_default_system_emails[ $slug ])) {
+			return $this->registered_default_system_emails[ $slug ];
+		}
 
 		return $this->registered_default_system_emails;
-
-	} // end get_default_system_emails;
+	}
 
 	/**
 	 * Check if the system email already exists.
@@ -476,8 +503,7 @@ class Email_Manager extends Base_Manager {
 	public function is_created($slug): bool {
 
 		return (bool) wu_get_email_by('slug', $slug);
-
-	} // end is_created;
+	}
 
 	/**
 	 * Get the default template email.
@@ -492,43 +518,30 @@ class Email_Manager extends Base_Manager {
 		$placeholders = array();
 
 		if (wu_request('email_event')) {
-
 			$slug = wu_request('email_event');
-
-		} // end if;
+		}
 
 		if ($slug) {
-
 			$event = wu_get_event_type($slug);
 
 			if ($event) {
-
 				foreach (wu_maybe_lazy_load_payload($event['payload']) as $placeholder => $value) {
-
 					$name = ucwords(str_replace('_', ' ', $placeholder));
 
 					$placeholders[] = array(
 						'name'        => $name,
-						'placeholder' => $placeholder
+						'placeholder' => $placeholder,
 					);
-
-				} // end foreach;
-
-			} // end if;
-
-		} // end if;
+				}
+			}
+		}
 
 		if (wu_request('email_event')) {
-
 			wp_send_json($placeholders);
-
 		} else {
-
 			return $placeholders;
-
-		} // end if;
-
-	} // end get_event_placeholders;
+		}
+	}
 
 	/**
 	 * Sends a schedule email.
@@ -545,8 +558,7 @@ class Email_Manager extends Base_Manager {
 	public function send_schedule_system_email($to, $subject, $template, $headers, $attachments) {
 
 		return Sender::send_mail($to, $subject, $template, $headers, $attachments);
-
-	} // end send_schedule_system_email;
+	}
 
 	/**
 	 * Log failures on the WordPress mailer, just so we have a copy of the issues for debugging.
@@ -559,11 +571,7 @@ class Email_Manager extends Base_Manager {
 	public function log_mailer_failure($error) {
 
 		if (is_wp_error($error)) {
-
 			wu_log_add('mailer-errors', $error->get_error_message(), LogLevel::ERROR);
-
-		} // end if;
-
-	} // end log_mailer_failure;
-
-} // end class Email_Manager;
+		}
+	}
+}

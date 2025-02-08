@@ -11,11 +11,11 @@
 
 namespace WP_Ultimo\Managers;
 
-use \WP_Ultimo\Managers\Base_Manager;
-use \WP_Ultimo\Models\Payment;
-use \WP_Ultimo\Logger;
-use \WP_Ultimo\Invoices\Invoice;
-use \WP_Ultimo\Checkout\Cart;
+use WP_Ultimo\Managers\Base_Manager;
+use WP_Ultimo\Models\Payment;
+use WP_Ultimo\Logger;
+use WP_Ultimo\Invoices\Invoice;
+use WP_Ultimo\Checkout\Cart;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -27,7 +27,9 @@ defined('ABSPATH') || exit;
  */
 class Payment_Manager extends Base_Manager {
 
-	use \WP_Ultimo\Apis\Rest_Api, \WP_Ultimo\Apis\WP_CLI, \WP_Ultimo\Traits\Singleton;
+	use \WP_Ultimo\Apis\Rest_Api;
+	use \WP_Ultimo\Apis\WP_CLI;
+	use \WP_Ultimo\Traits\Singleton;
 
 	/**
 	 * The manager slug.
@@ -59,11 +61,16 @@ class Payment_Manager extends Base_Manager {
 
 		$this->register_forms();
 
-		add_action('init', function () {
-			Event_Manager::register_model_events( 'payment',
-				__( 'Payment', 'wp-ultimo' ),
-				array( 'created', 'updated' ) );
-		});
+		add_action(
+			'init',
+			function () {
+				Event_Manager::register_model_events(
+					'payment',
+					__('Payment', 'wp-ultimo'),
+					array('created', 'updated')
+				);
+			}
+		);
 		add_action('wp_login', array($this, 'check_pending_payments'), 10);
 
 		add_action('wp_enqueue_scripts', array($this, 'show_pending_payments'), 10);
@@ -79,8 +86,7 @@ class Payment_Manager extends Base_Manager {
 		add_action('wu_gateway_payment_processed', array($this, 'handle_payment_success'), 10, 3);
 
 		add_action('wu_transition_payment_status', array($this, 'transition_payment_status'), 10, 3);
-
-	} // end init;
+	}
 
 	/**
 	 * Triggers the do_event of the payment successful.
@@ -101,8 +107,7 @@ class Payment_Manager extends Base_Manager {
 		);
 
 		wu_do_event('payment_received', $payload);
-
-	} // end handle_payment_success;
+	}
 
 	/**
 	 * Check if current customer haves pending payments
@@ -112,47 +117,34 @@ class Payment_Manager extends Base_Manager {
 	 */
 	public function check_pending_payments($user) {
 
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			return;
+		}
 
-		} // end if;
-
-		if (!is_a($user, '\WP_User')) {
-
+		if ( ! is_a($user, '\WP_User')) {
 			$user = get_user_by('login', $user);
+		}
 
-		} // end if;
-
-		if (!$user) {
-
+		if ( ! $user) {
 			return;
-
-		} // end if;
+		}
 
 		$customer = wu_get_customer_by_user_id($user->ID);
 
-		if (!$customer) {
-
+		if ( ! $customer) {
 			return;
-
-		} // end if;
+		}
 
 		foreach ($customer->get_memberships() as $membership) {
-
 			$pending_payment = $membership->get_last_pending_payment();
 
 			if ($pending_payment) {
-
 				add_user_meta($user->ID, 'wu_show_pending_payment_popup', true, true);
 
 				break;
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end check_pending_payments;
+			}
+		}
+	}
 
 	/**
 	 * Add and trigger a popup in screen with the pending payments
@@ -161,21 +153,17 @@ class Payment_Manager extends Base_Manager {
 	 */
 	public function show_pending_payments() {
 
-		if (!is_user_logged_in()) {
-
+		if ( ! is_user_logged_in()) {
 			return;
-
-		} // end if;
+		}
 
 		$user_id = get_current_user_id();
 
 		$show_pending_payment = get_user_meta($user_id, 'wu_show_pending_payment_popup', true);
 
-		if (!$show_pending_payment) {
-
+		if ( ! $show_pending_payment) {
 			return;
-
-		} // end if;
+		}
 
 		wp_enqueue_style('dashicons');
 		wp_enqueue_style('wu-admin');
@@ -184,12 +172,11 @@ class Payment_Manager extends Base_Manager {
 		$form_title = __('Pending Payments', 'wp-ultimo');
 		$form_url   = wu_get_form_url('pending_payments');
 
-		wp_add_inline_script( 'wubox', "document.addEventListener('DOMContentLoaded', function(){wubox.show('$form_title', '$form_url');});" );
+		wp_add_inline_script('wubox', "document.addEventListener('DOMContentLoaded', function(){wubox.show('$form_title', '$form_url');});");
 
 		// Show only after user login
 		delete_user_meta($user_id, 'wu_show_pending_payment_popup');
-
-	} // end show_pending_payments;
+	}
 
 	/**
 	 * Register the form showing the pending payments of current customer
@@ -199,15 +186,15 @@ class Payment_Manager extends Base_Manager {
 	public function register_forms() {
 
 		if (function_exists('wu_register_form')) {
-
-			wu_register_form('pending_payments', array(
-				'render'     => array($this, 'render_pending_payments'),
-				'capability' => 'exist',
-			));
-
-		} // end if;
-
-	} // end register_forms;
+			wu_register_form(
+				'pending_payments',
+				array(
+					'render'     => array($this, 'render_pending_payments'),
+					'capability' => 'exist',
+				)
+			);
+		}
+	}
 
 	/**
 	 * Add customerr pending payments
@@ -216,37 +203,29 @@ class Payment_Manager extends Base_Manager {
 	 */
 	public function render_pending_payments() {
 
-		if (!is_user_logged_in()) {
-
+		if ( ! is_user_logged_in()) {
 			return;
-
-		} // end if;
+		}
 
 		$user_id = get_current_user_id();
 
 		$customer = wu_get_customer_by_user_id($user_id);
 
-		if (!$customer) {
-
+		if ( ! $customer) {
 			return;
-
-		} // end if;
+		}
 
 		$pending_payments = array();
 
 		foreach ($customer->get_memberships() as $membership) {
-
 			$pending_payment = $membership->get_last_pending_payment();
 
 			if ($pending_payment) {
-
 				$pending_payments[] = $pending_payment;
+			}
+		}
 
-			} // end if;
-
-		} // end foreach;
-
-		$message = !empty($pending_payments) ? __('You have pending payments on your account!', 'wp-ultimo') : __('You do not have pending payments on your account!', 'wp-ultimo');
+		$message = ! empty($pending_payments) ? __('You have pending payments on your account!', 'wp-ultimo') : __('You do not have pending payments on your account!', 'wp-ultimo');
 
 		/**
 		 * Allow user to change the message about the pending payments.
@@ -269,7 +248,6 @@ class Payment_Manager extends Base_Manager {
 		);
 
 		foreach ($pending_payments as $payment) {
-
 			$slug = $payment->get_hash();
 
 			$url = $payment->get_payment_url();
@@ -283,18 +261,20 @@ class Payment_Manager extends Base_Manager {
 				'title' => $title,
 				'desc'  => $html,
 			);
+		}
 
-		} // end foreach;
-
-		$form = new \WP_Ultimo\UI\Form('pending-payments', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'pending-payments',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+			)
+		);
 
 		$form->render();
-
-	} // end render_pending_payments;
+	}
 
 	/**
 	 * Adds an init endpoint to render the invoices.
@@ -309,19 +289,16 @@ class Payment_Manager extends Base_Manager {
 			/*
 			 * Validates nonce.
 			 */
-			if (!wp_verify_nonce(wu_request('key'), 'see_invoice')) {
+			if ( ! wp_verify_nonce(wu_request('key'), 'see_invoice')) {
 
 				// wp_die(__('You do not have permissions to access this file.', 'wp-ultimo'));
-
-			} // end if;
+			}
 
 			$payment = wu_get_payment_by_hash(wu_request('reference'));
 
-			if (!$payment) {
-
+			if ( ! $payment) {
 				wp_die(__('This invoice does not exist.', 'wp-ultimo'));
-
-			} // end if;
+			}
 
 			$invoice = new Invoice($payment);
 
@@ -331,10 +308,8 @@ class Payment_Manager extends Base_Manager {
 			$invoice->print_file();
 
 			exit;
-
-		} // end if;
-
-	} // end invoice_viewer;
+		}
+	}
 
 	/**
 	 * Transfer a payment from a user to another.
@@ -353,11 +328,9 @@ class Payment_Manager extends Base_Manager {
 
 		$target_customer = wu_get_customer($target_customer_id);
 
-		if (!$payment || !$target_customer || $payment->get_customer_id() === $target_customer->get_id()) {
-
+		if ( ! $payment || ! $target_customer || $payment->get_customer_id() === $target_customer->get_id()) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$wpdb->query('START TRANSACTION');
 
@@ -371,26 +344,20 @@ class Payment_Manager extends Base_Manager {
 			$saved = $payment->save();
 
 			if (is_wp_error($saved)) {
-
 				$wpdb->query('ROLLBACK');
 
 				return $saved;
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('exception', $e->getMessage());
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		return true;
-
-	} // end async_transfer_payment;
+	}
 
 	/**
 	 * Delete a payment.
@@ -406,11 +373,9 @@ class Payment_Manager extends Base_Manager {
 
 		$payment = wu_get_payment($payment_id);
 
-		if (!$payment) {
-
+		if ( ! $payment) {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$wpdb->query('START TRANSACTION');
 
@@ -422,26 +387,20 @@ class Payment_Manager extends Base_Manager {
 			$saved = $payment->delete();
 
 			if (is_wp_error($saved)) {
-
 				$wpdb->query('ROLLBACK');
 
 				return $saved;
-
-			} // end if;
-
+			}
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error('exception', $e->getMessage());
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		return true;
-
-	} // end async_delete_payment;
+	}
 
 	/**
 	 * Watches the change in payment status to take action when needed.
@@ -459,19 +418,15 @@ class Payment_Manager extends Base_Manager {
 			'completed',
 		);
 
-		if (!in_array($new_status, $completable_statuses, true)) {
-
+		if ( ! in_array($new_status, $completable_statuses, true)) {
 			return;
-
-		} // end if;
+		}
 
 		$payment = wu_get_payment($payment_id);
 
-		if (!$payment || $payment->get_saved_invoice_number()) {
-
+		if ( ! $payment || $payment->get_saved_invoice_number()) {
 			return;
-
-		} // end if;
+		}
 
 		$current_invoice_number = absint(wu_get_setting('next_invoice_number', 1));
 
@@ -480,7 +435,5 @@ class Payment_Manager extends Base_Manager {
 		$payment->save();
 
 		return wu_save_setting('next_invoice_number', $current_invoice_number + 1);
-
-	} // end transition_payment_status;
-
-} // end class Payment_Manager;
+	}
+}

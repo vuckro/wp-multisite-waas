@@ -80,8 +80,7 @@ class Country_DE extends Country {
 	public function get_name() {
 
 		return __('Germany', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for DE.
@@ -109,7 +108,5 @@ class Country_DE extends Country {
 			'SH' => __('Schleswig-Holstein', 'wp-ultimo-locations'),
 			'TH' => __('Thuringia', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_DE;
+	}
+}

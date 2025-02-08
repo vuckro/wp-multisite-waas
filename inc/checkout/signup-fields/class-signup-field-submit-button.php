@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -32,8 +32,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function get_type() {
 
 		return 'submit_button';
-
-	} // end get_type;
+	}
 
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
@@ -44,8 +43,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function is_required() {
 
 		return true;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -58,8 +56,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Submit Button', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -72,8 +69,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a submit button. This is required to finalize single-step checkout forms or to navigate to the next step on multi-step checkout forms.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -86,8 +82,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a submit button. This is required to finalize single-step checkout forms or to navigate to the next step on multi-step checkout forms.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 
 	/**
 	 * Returns the icon to be used on the selector.
@@ -100,8 +95,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function get_icon() {
 
 		return 'dashicons-wu-zap';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -118,8 +112,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 			'enable_go_back_button' => false,
 			'back_button_label'     => __('&larr; Go Back', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -133,8 +126,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 			'id',
 			'name',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -145,8 +137,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 	public function force_attributes() {
 
 		return array();
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -179,8 +170,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 				),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -196,7 +186,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 
 		$fields = array();
 
-		$fields[$attributes['id'] . '_errors'] = array(
+		$fields[ $attributes['id'] . '_errors' ] = array(
 			'type'              => 'html',
 			'wrapper_classes'   => 'wu_submit_button_errors wu-clear-both',
 			'content'           => '<span v-cloak class="wu-block wu-bg-red-100 wu-p-2 wu-mb-4" v-html="get_errors().join(' . esc_js(json_encode('<br>')) . ')"></span>',
@@ -205,7 +195,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 			),
 		);
 
-		$fields[$attributes['id'] . '_group'] = array(
+		$fields[ $attributes['id'] . '_group' ] = array(
 			'type'            => 'group',
 			'raw'             => true,
 			'default'         => array(),
@@ -216,14 +206,12 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 		$button_wrapper_classes = 'wu_submit_button';
 
 		if ($attributes['enable_go_back_button']) {
-
 			$steps = \WP_Ultimo\Checkout\Checkout::get_instance()->steps;
 
 			$is_first_step = isset($steps[0]) && $steps[0]['id'] === $attributes['step'];
 
-			if (!$is_first_step) {
-
-				$fields[$attributes['id'] . '_group']['fields'][$attributes['id'] . '_go_back'] = array(
+			if ( ! $is_first_step) {
+				$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] . '_go_back' ] = array(
 					'type'            => 'html',
 					'wrapper_classes' => 'md:wu-w-1/2 wu-box-border wu-float-left wu--mt-4',
 					'id'              => $attributes['id'] . '_go_back',
@@ -231,12 +219,10 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 				);
 
 				$button_wrapper_classes .= ' md:wu-w-1/2 wu-box-border wu-float-left wu-text-right';
+			}
+		}
 
-			} // end if;
-
-		} // end if;
-
-		$fields[$attributes['id'] . '_group']['fields'][$attributes['id']] = array(
+		$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] ] = array(
 			'type'            => 'submit',
 			'wrapper_classes' => trim($button_wrapper_classes . ' ' . wu_get_isset($attributes, 'wrapper_element_classes', '')),
 			'classes'         => trim('button button-primary btn-primary' . ' ' . wu_get_isset($attributes, 'element_classes', '')),
@@ -245,15 +231,11 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 		);
 
 		if ($attributes['enable_go_back_button']) {
-
-			$fields[$attributes['id'] . '_clear'] = array(
+			$fields[ $attributes['id'] . '_clear' ] = array(
 				'type' => 'clear',
 			);
-
-		} // end if;
+		}
 
 		return $fields;
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Submit_Button;
+	}
+}

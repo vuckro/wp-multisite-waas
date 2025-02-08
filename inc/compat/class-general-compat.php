@@ -35,14 +35,14 @@ class General_Compat {
 		 * Woocommerce
 		 *
 		 * Removes the default woocommerce hook on switch_blog to another more performant
-     *
+	 *
 		 * @see https://wordpress.org/plugins/woocommerce/
 		 */
 		add_action('woocommerce_loaded', array($this, 'replace_wc_wpdb_table_fix'));
 
 		/**
 		 * WP Typography.
-     *
+	 *
 		 * @see https://de.wordpress.org/plugins/wp-typography/
 		 */
 		add_action('load-settings_page_wp-typography', array($this, 'add_wp_typography_warning_message'));
@@ -67,7 +67,7 @@ class General_Compat {
 
 		/**
 		 * WP Hide Pro
-     *
+	 *
 		 * @see https://wp-hide.com/
 		 */
 		add_filter('wu_append_preview_parameter', array($this, 'fix_wp_hide_preview_url'));
@@ -142,15 +142,16 @@ class General_Compat {
 		 * @since 2.0.0
 		 * @see https://getkeypress.com/dns-manager/
 		 */
-		add_action('wu_before_pending_site_published', function() {
+		add_action(
+			'wu_before_pending_site_published',
+			function () {
 
-			if (function_exists('KPDNS')) {
-
-				KPDNS(); // phpcs:ignore
-
-			} // end if;
-
-		}, 5); // need to hook before 10
+				if (function_exists('KPDNS')) {
+					KPDNS(); // phpcs:ignore
+				}
+			},
+			5
+		); // need to hook before 10
 
 		/**
 		 * Perfmatters.
@@ -167,17 +168,16 @@ class General_Compat {
 		 *
 		 * @since 2.0.5
 		 */
-		add_action('wp', function() {
+		add_action(
+			'wp',
+			function () {
 
-			if (wu_request('et_pb_preview')) {
-
-				wu_element_setup_preview();
-
-			} // end if;
-
-		});
-
-	} // end init;
+				if (wu_request('et_pb_preview')) {
+					wu_element_setup_preview();
+				}
+			}
+		);
+	}
 
 	/**
 	 * Fixes a performance problem with Woocommerce.
@@ -205,22 +205,20 @@ class General_Compat {
 		);
 
 		foreach ( $tables as $name => $table ) {
-
 			$wpdb->tables[] = $table;
+		}
 
-		} // end foreach;
+		add_action(
+			'switch_blog',
+			function () use ($wpdb, $tables) {
 
-		add_action('switch_blog', function() use ($wpdb, $tables) {
-
-			foreach ( $tables as $name => $table ) {
-
-				$wpdb->$name = $wpdb->prefix . $table;
-
-			} // end foreach;
-
-		}, 0);
-
-	} // end replace_wc_wpdb_table_fix;
+				foreach ( $tables as $name => $table ) {
+					$wpdb->$name = $wpdb->prefix . $table;
+				}
+			},
+			0
+		);
+	}
 
 	/**
 	 * Fixes incompatibility with the plugin WP Typography.
@@ -244,8 +242,7 @@ class General_Compat {
 		$settings['smartQuotes'] = false;
 
 		return $settings;
-
-	} // end fix_wp_typography;
+	}
 
 	/**
 	 * Adds a warning message to let customers know why smart quotes are not working.
@@ -256,8 +253,7 @@ class General_Compat {
 	public function add_wp_typography_warning_message() {
 
 		WP_Ultimo()->notices->add(__('WP Typography "Smart Quotes" replacement is not compatible with WP Multisite WaaS and will be automatically disabled.', 'wp-ultimo'), 'warning');
-
-	} // end add_wp_typography_warning_message;
+	}
 
 	/**
 	 * Fixes brizy media URLs while on Ultimo's template preview
@@ -278,8 +274,7 @@ class General_Compat {
 	public function fix_brizy_preview_url($value) {
 
 		return class_exists('Brizy_Editor') ? false : $value;
-
-	} // end fix_brizy_preview_url;
+	}
 
 	/**
 	 * Fix the Brizy editor with domain mapping.
@@ -292,20 +287,15 @@ class General_Compat {
 	public function fix_brizy_editor_screen($should_redirect) {
 
 		if (class_exists('\Brizy_Editor')) {
-
 			$key = \Brizy_Editor::prefix('-edit-iframe');
 
 			if (wu_request($key, null) !== null) {
-
 				return false;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $should_redirect;
-
-	} // end fix_brizy_editor_screen;
+	}
 
 	/**
 	 * Fix the Divi editor with domain mapping.
@@ -318,14 +308,11 @@ class General_Compat {
 	public function fix_divi_editor_screen(bool $should_redirect): bool {
 
 		if (isset($_GET['et_fb']) && (bool) $_GET['et_fb']) {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $should_redirect;
-
-	}  // end fix_divi_editor_screen;
+	}
 
 	/**
 	 * Fixes WP Hide Pro URLs while on Ultimo's template preview
@@ -337,8 +324,7 @@ class General_Compat {
 	public function fix_wp_hide_preview_url($value) {
 
 		return class_exists('WPH') ? false : $value;
-
-	} // end fix_wp_hide_preview_url;
+	}
 
 	/**
 	 * Fix the load URL for WP Frontend Admin.
@@ -353,8 +339,7 @@ class General_Compat {
 	public function fix_frontend_admin_loading_url($final_url, $page_path_only, $blog_id) {
 
 		return wu_restore_original_url($final_url, $blog_id);
-
-	} // end fix_frontend_admin_loading_url;
+	}
 
 	/**
 	 * Oxygen renders things very strangely, so we need to handle it separately.
@@ -369,10 +354,8 @@ class General_Compat {
 	public function maybe_parse_oxygen_content($should_enqueue, $post, $shortcode_tag) {
 
 		if (function_exists('oxygen_vsb_current_user_can_access') === false) {
-
 			return $should_enqueue;
-
-		} // end if;
+		}
 
 		$shortcode_content = get_post_meta($post->ID, 'ct_builder_shortcodes', true);
 
@@ -382,17 +365,14 @@ class General_Compat {
 		 * Oxygen now base64 encodes shortcodes for some reason...
 		 * Supporting third-party page builders is such a pain.
 		 */
-		if (!$has_shortcode) {
-
+		if ( ! $has_shortcode) {
 			$base64 = base64_encode("[$shortcode_tag]");
 
 			$has_shortcode = strpos((string) $shortcode_content, $base64);
-
-		} // end if;
+		}
 
 		return $has_shortcode;
-
-	} // end maybe_parse_oxygen_content;
+	}
 
 	/**
 	 * Prevent Oxygen from removing the real wp_head hook from the template
@@ -403,13 +383,15 @@ class General_Compat {
 	 */
 	public function prevent_oxygen_cleanup_on_template_previewer() {
 
-		add_action('wp_head', function() {
+		add_action(
+			'wp_head',
+			function () {
 
-			remove_action('wp_head', 'oxy_print_cached_css', 999999);
-
-		}, 10);
-
-	} // end prevent_oxygen_cleanup_on_template_previewer;
+				remove_action('wp_head', 'oxy_print_cached_css', 999999);
+			},
+			10
+		);
+	}
 
 	/**
 	 * Adds SSO to WP Maintenance Mode.
@@ -422,8 +404,7 @@ class General_Compat {
 	public function add_sso_to_maintenance_mode($sso) {
 
 		add_action('wpmm_head', array($sso, 'enqueue_script'));
-
-	} // end add_sso_to_maintenance_mode;
+	}
 
 	/**
 	 * Run wp action on template previewer to prevent some errors like
@@ -434,12 +415,11 @@ class General_Compat {
 	public function run_wp_on_template_previewer() {
 
 		if (class_exists('Avada')) {
-
 			do_action('wp'); //phpcs:disable
 
-		} // end if;
+		}
 
-	} // end run_wp_on_template_previewer;
+	}
 
 	/**
 	 * Run wp action on template previewer to prevent some errors like
@@ -467,13 +447,13 @@ class General_Compat {
 
 				fusion_reset_all_caches();
 
-			} // end if;
+			}
 
-		} // end if;
+		}
 
 		restore_current_blog();
 
-	} // end clear_avada_cache;
+	}
 
 	/**
 	 * Fix the FluentCRM Pro on site duplication due to fc_meta table not exist
@@ -491,9 +471,9 @@ class General_Compat {
 			// Here we use this function due FluentCrm($class_name) returns an instance not working with remove_action
 			$this->hard_remove_action('set_user_role', array($class_name, 'maybeAutoAlterTags'), 11);
 
-		} // end if;
+		}
 
-	} // end fix_fluent_pro_site_duplication;
+	}
 
 	/**
 	 * Removes RankMath and RankMath Pro Installer::wpmu_new_blog action
@@ -517,11 +497,11 @@ class General_Compat {
 				$this->hard_remove_action('wpmu_new_blog', array($class_name, 'activate_blog'), 10);
 				$this->hard_remove_action('wp_initialize_site', array($class_name, 'initialize_site'), 10);
 
-			} // end if;
+			}
 
-		} // end foreach;
+		}
 
-	} // end fix_rank_math_site_creation;
+	}
 
 	/**
 	 * Removes WP E-Signature and WP E-Signature Business add-ons
@@ -545,11 +525,11 @@ class General_Compat {
 				// WP E-Signature does not provide a instance of the activation class
 				$this->hard_remove_action('wpmu_new_blog', array($class_name, 'activate_new_site'), 10);
 
-			} // end if;
+			}
 
-		} // end foreach;
+		}
 
-	} // end fix_wp_e_signature_site_creation;
+	}
 
 	/**
 	 * A way to remove an action if instance is not available
@@ -569,7 +549,7 @@ class General_Compat {
 
 			return;
 
-		} // end if;
+		}
 
 		$handler_id = '';
 
@@ -579,19 +559,19 @@ class General_Compat {
 
 				$handler_id = $handler_key;
 
-			} // end if;
+			}
 
-		} // end foreach;
+		}
 
 		if (!empty($handler_id)) {
 
 			remove_filter( $tag, $handler_id, $priority );
 
-		} // end if;
+		}
 
 		return;
 
-	} // end hard_remove_action;
+	}
 
 	/**
 	 * Remove action from perfamatters that disabled password strength meter script.
@@ -605,8 +585,8 @@ class General_Compat {
 
 			remove_action('wp_print_scripts', 'perfmatters_disable_password_strength_meter', 100);
 
-		} // end if;
+		}
 
-	} // end remove_perfmatters_checkout_dep;
+	}
 
-} // end class General_Compat;
+}

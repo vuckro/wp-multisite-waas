@@ -49,14 +49,11 @@ class Payment_Methods_Element extends Base_Element {
 	public function get_icon($context = 'block') {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -71,8 +68,7 @@ class Payment_Methods_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Payment Methods', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -88,8 +84,7 @@ class Payment_Methods_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a checkout form block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -135,8 +130,7 @@ class Payment_Methods_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -164,8 +158,7 @@ class Payment_Methods_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -184,8 +177,7 @@ class Payment_Methods_Element extends Base_Element {
 	public function defaults() {
 
 		return array();
-
-	} // end defaults;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -203,7 +195,5 @@ class Payment_Methods_Element extends Base_Element {
 	public function output($atts, $content = null) {
 
 		return 'lol';
-
-	} // end output;
-
-} // end class Payment_Methods_Element;
+	}
+}

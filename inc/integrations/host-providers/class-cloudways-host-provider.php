@@ -92,8 +92,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		// Add the action to sync domains SSL.
 		add_action('wu_domain_manager_dns_propagation_finished', array($this, 'request_ssl'), 10, 0);
-
-	} // end init;
+	}
 
 	/**
 	 * Runs a request to Cloudways API to install SSL, after ensuring that the domain is already mapped.
@@ -105,29 +104,25 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		/**
 		 * If the integration is not active, bail.
 		 */
-		if (!$this->is_enabled()) {
-
+		if ( ! $this->is_enabled()) {
 			return;
-
-		} // end if;
+		}
 
 		$all_domains = $this->get_domains();
 
-		$ssl_response = $this->send_cloudways_request('/security/lets_encrypt_install', array(
-			'ssl_domains' => $this->get_valid_ssl_domains($all_domains),
-		));
+		$ssl_response = $this->send_cloudways_request(
+			'/security/lets_encrypt_install',
+			array(
+				'ssl_domains' => $this->get_valid_ssl_domains($all_domains),
+			)
+		);
 
 		if (is_wp_error($ssl_response)) {
-
 			wu_log_add('integration-cloudways', '[SSL]' . $ssl_response->get_error_message(), LogLevel::ERROR);
-
 		} else {
-
 			wu_log_add('integration-cloudways', '[SSL]' . print_r($ssl_response, true));
-
-		} // end if;
-
-	} // end request_ssl;
+		}
+	}
 	/**
 	 * Picks up on tips that a given host provider is being used.
 	 *
@@ -138,8 +133,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	public function detect(): bool {
 
 		return strpos(ABSPATH, 'cloudways') !== false;
-
-	} // end detect;
+	}
 
 	/**
 	 * Returns the list of installation fields.
@@ -177,8 +171,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 				'placeholder' => __('e.g. *.test.com, test.com', 'wp-ultimo'),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -191,8 +184,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	public function on_add_domain($domain, $site_id) {
 
 		$this->sync_domains();
-
-	} // end on_add_domain;
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -205,8 +197,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	public function on_remove_domain($domain, $site_id) {
 
 		$this->sync_domains();
-
-	} // end on_remove_domain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -219,8 +210,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @return void
 	 */
 	public function on_add_subdomain($subdomain, $site_id) {
-
-	} // end on_add_subdomain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -233,8 +223,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @return void
 	 */
 	public function on_remove_subdomain($subdomain, $site_id) {
-
-	} // end on_remove_subdomain;
+	}
 
 	/**
 	 * Syncs the domains with the Cloudways API.
@@ -246,21 +235,19 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		$all_domains = $this->get_domains();
 
-		$alias_response = $this->send_cloudways_request('/app/manage/aliases', array(
-			'aliases' => $all_domains,
-		));
+		$alias_response = $this->send_cloudways_request(
+			'/app/manage/aliases',
+			array(
+				'aliases' => $all_domains,
+			)
+		);
 
 		if (is_wp_error($alias_response)) {
-
 			wu_log_add('integration-cloudways', '[Alias]' . $alias_response->get_error_message(), LogLevel::ERROR);
-
 		} else {
-
 			wu_log_add('integration-cloudways', '[Alias]' . print_r($alias_response, true));
-
-		} // end if;
-
-	} // end sync_domains;
+		}
+	}
 	/**
 	 * Returns an array of valid SSL domains to be used with the Cloudways API based on a list of domains.
 	 *
@@ -269,17 +256,19 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 */
 	private function get_valid_ssl_domains($domains): array {
 
-		$ssl_domains = array_unique(array_map(function($domain) {
+		$ssl_domains = array_unique(
+			array_map(
+				function ($domain) {
 
-			if (strncmp($domain, '*.', strlen('*.')) === 0) {
+					if (strncmp($domain, '*.', strlen('*.')) === 0) {
+						$domain = str_replace('*.', '', $domain);
+					}
 
-				$domain = str_replace('*.', '', $domain);
-
-			}
-
-			return $domain;
-
-		}, $domains));
+					return $domain;
+				},
+				$domains
+			)
+		);
 
 		$ssl_valid_domains = $this->check_domain_dns($ssl_domains, Helper::get_network_public_ip());
 
@@ -289,8 +278,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$ssl_valid_domains[] = $main_domain;
 
 		return array_values(array_unique(array_filter($ssl_valid_domains)));
-
-	} // end get_valid_ssl_domains;
+	}
 	/**
 	 * Returns an array of all domains that should be added to Cloudways.
 	 *
@@ -302,20 +290,15 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$domain_list = $this->get_domain_list();
 
 		foreach ($domain_list as $naked_domain) {
-
 			if (strncmp((string) $naked_domain, 'www.', strlen('www.')) !== 0 && strncmp((string) $naked_domain, '*.', strlen('*.')) !== 0) {
-
 				$domain_list[] = 'www.' . $naked_domain;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		sort($domain_list);
 
 		return array_values(array_unique(array_filter($domain_list)));
-
-	} // end get_domains;
+	}
 
 	/**
 	 * Validates the DNS records for the domains.
@@ -334,35 +317,25 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 			$response = wp_remote_get('https://dns.google/resolve?name=' . $domain_name);
 
 			if (is_wp_error($response)) {
-
 				wu_log_add('integration-cloudways', $response->get_error_message(), LogLevel::ERROR);
 
 				continue;
-
-			} // end if;
+			}
 
 			$data = json_decode(wp_remote_retrieve_body($response), true);
 
 			if (isset($data['Answer'])) {
-
 				foreach ($data['Answer'] as $answer) {
-
 					if ($answer['data'] === $network_ip) {
-
 						$valid_domains[] = $domain_name;
 						break;
-
-					} // end if;
-
-				} // end foreach;
-
-			} // end if;
-
-		} // end foreach;
+					}
+				}
+			}
+		}
 
 		return $valid_domains;
-
-	} // end check_domain_dns;
+	}
 
 	/**
 	 * Tests the connection with the Cloudways API.
@@ -375,14 +348,11 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$response = $this->send_cloudways_request('/app/manage/fpm_setting', array(), 'GET');
 
 		if (is_wp_error($response) || wu_get_isset($response, 'error')) {
-
 			wp_send_json_error($response);
-
-		} // end if;
+		}
 
 		wp_send_json_success($response);
-
-	} // end test_connection;
+	}
 
 	/**
 	 * Returns an array of all the mapped domains currently on the network
@@ -396,7 +366,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		$final_domain_list = array();
 
-    // Prepare the query
+		// Prepare the query
 		$query = "SELECT domain FROM {$wpdb->base_prefix}wu_domain_mappings";
 
 		// Suppress errors in case the table doesn't exist.
@@ -405,22 +375,17 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$mappings = $wpdb->get_col($query, 0); // phpcs:ignore
 
 		foreach ($mappings as $domain) {
-
 			$final_domain_list[] = $domain;
 
 			if (strncmp((string) $domain, 'www.', strlen('www.')) !== 0) {
-
 				$final_domain_list[] = "www.$domain";
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$wpdb->suppress_errors($suppress);
 
 		return $final_domain_list;
-
-	} // end get_all_mapped_domains;
+	}
 
 	/**
 	 * Get extra domains for Cloudways
@@ -435,16 +400,13 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$extra_domains = defined('WU_CLOUDWAYS_EXTRA_DOMAINS') && WU_CLOUDWAYS_EXTRA_DOMAINS;
 
 		if ($extra_domains) {
-
 			$extra_domains_list = array_filter(array_map('trim', explode(',', (string) WU_CLOUDWAYS_EXTRA_DOMAINS)));
 
 			$domain_list = array_merge($domain_list, $extra_domains_list);
-
-		} // end if;
+		}
 
 		return $domain_list;
-
-	} // end get_domain_list;
+	}
 
 	/**
 	 * Fetches and saves a Cloudways access token.
@@ -456,42 +418,38 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		$token = get_site_transient('wu_cloudways_token');
 
-		if (!$token) {
+		if ( ! $token) {
+			$response = wp_remote_post(
+				'https://api.cloudways.com/api/v1/oauth/access_token',
+				array(
+					'blocking' => true,
+					'method'   => 'POST',
+					'headers'  => array(
+						'cache-control' => 'no-cache',
+						'content-type'  => 'application/x-www-form-urlencoded',
+					),
+					'body'     => array(
+						'email'   => defined('WU_CLOUDWAYS_EMAIL') ? WU_CLOUDWAYS_EMAIL : '',
+						'api_key' => defined('WU_CLOUDWAYS_API_KEY') ? WU_CLOUDWAYS_API_KEY : '',
+					),
+				)
+			);
 
-			$response = wp_remote_post('https://api.cloudways.com/api/v1/oauth/access_token', array(
-				'blocking' => true,
-				'method'   => 'POST',
-				'headers'  => array(
-					'cache-control' => 'no-cache',
-					'content-type'  => 'application/x-www-form-urlencoded',
-				),
-				'body'     => array(
-					'email'   => defined('WU_CLOUDWAYS_EMAIL') ? WU_CLOUDWAYS_EMAIL : '',
-					'api_key' => defined('WU_CLOUDWAYS_API_KEY') ? WU_CLOUDWAYS_API_KEY : '',
-				),
-			));
-
-			if (!is_wp_error($response)) {
-
+			if ( ! is_wp_error($response)) {
 				$body = json_decode(wp_remote_retrieve_body($response), true);
 
 				if (isset($body['access_token'])) {
-
 					$expires_in = isset($body['expires_in']) ? $body['expires_in'] : 50 * MINUTE_IN_SECONDS;
 
 					set_site_transient('wu_cloudways_token', $body['access_token'], $expires_in);
 
 					$token = $body['access_token'];
-
-				} // end if;
-
-			} // end if;
-
-		} // end if;
+				}
+			}
+		}
 
 		return $token;
-
-	} // end get_cloudways_access_token;
+	}
 
 	/**
 	 * Sends a request to the Cloudways API.
@@ -501,7 +459,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	 * @param string $endpoint The API endpoint.
 	 * @param array  $data The data to send.
 	 * @param string $method The HTTP verb.
-     * @return object|\WP_Error
+	 * @return object|\WP_Error
 	 */
 	protected function send_cloudways_request($endpoint, $data = array(), $method = 'POST'): object {
 
@@ -512,44 +470,43 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 		$endpoint_url = "https://api.cloudways.com/api/v1$endpoint";
 
 		if ($method === 'GET') {
-
-			$endpoint_url = add_query_arg(array(
-				'server_id' => defined('WU_CLOUDWAYS_SERVER_ID') ? WU_CLOUDWAYS_SERVER_ID : '',
-				'app_id'    => defined('WU_CLOUDWAYS_APP_ID') ? WU_CLOUDWAYS_APP_ID : '',
-			), $endpoint_url);
-
+			$endpoint_url = add_query_arg(
+				array(
+					'server_id' => defined('WU_CLOUDWAYS_SERVER_ID') ? WU_CLOUDWAYS_SERVER_ID : '',
+					'app_id'    => defined('WU_CLOUDWAYS_APP_ID') ? WU_CLOUDWAYS_APP_ID : '',
+				),
+				$endpoint_url
+			);
 		} else {
-
 			$data['server_id'] = defined('WU_CLOUDWAYS_SERVER_ID') ? WU_CLOUDWAYS_SERVER_ID : '';
 			$data['app_id']    = defined('WU_CLOUDWAYS_APP_ID') ? WU_CLOUDWAYS_APP_ID : '';
 			$data['ssl_email'] = defined('WU_CLOUDWAYS_EMAIL') ? WU_CLOUDWAYS_EMAIL : '';
 			$data['wild_card'] = false;
+		}
 
-		} // end if;
-
-		$response = wp_remote_post($endpoint_url, array(
-			'blocking' => true,
-			'method'   => $method,
-			'timeout'  => 45,
-			'body'     => $data,
-			'headers'  => array(
-				'cache-control' => 'no-cache',
-				'content-type'  => 'application/x-www-form-urlencoded',
-				'authorization' => "Bearer $token",
-			),
-		));
+		$response = wp_remote_post(
+			$endpoint_url,
+			array(
+				'blocking' => true,
+				'method'   => $method,
+				'timeout'  => 45,
+				'body'     => $data,
+				'headers'  => array(
+					'cache-control' => 'no-cache',
+					'content-type'  => 'application/x-www-form-urlencoded',
+					'authorization' => "Bearer $token",
+				),
+			)
+		);
 
 		if (is_wp_error($response)) {
-
 			return $response;
-
-		} // end if;
+		}
 
 		$response_data = wp_remote_retrieve_body($response);
 
 		return json_decode($response_data);
-
-	} // end send_cloudways_request;
+	}
 
 	/**
 	 * Renders the instructions content.
@@ -560,8 +517,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	public function get_instructions() {
 
 		wu_get_template('wizards/host-integrations/cloudways-instructions');
-
-	} // end get_instructions;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -572,8 +528,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __('Focus on your business and avoid all the web hosting hassles. Our managed hosting guarantees unmatched performance, reliability and choice with 24/7 support that acts as your extended team, making Cloudways an ultimate choice for growing agencies and e-commerce businesses.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -584,7 +539,5 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('cloudways.png', 'img/hosts');
-
-	} // end get_logo;
-
-} // end class Cloudways_Host_Provider;
+	}
+}

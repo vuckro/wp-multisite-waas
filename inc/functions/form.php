@@ -9,7 +9,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Managers\Form_Manager;
+use WP_Ultimo\Managers\Form_Manager;
 
 /**
  * Registers a new Ajax Form.
@@ -28,8 +28,7 @@ use \WP_Ultimo\Managers\Form_Manager;
 function wu_register_form($form_id, $atts = array()) {
 
 	return Form_Manager::get_instance()->register_form($form_id, $atts);
-
-} // end wu_register_form;
+}
 
 /**
  * Returns the ajax URL for a given form.
@@ -45,21 +44,21 @@ function wu_register_form($form_id, $atts = array()) {
 function wu_get_form_url($form_id, $atts = array(), $inline = false) {
 
 	if ($inline) {
-
-		$atts = wp_parse_args($atts, array(
-			'inlineId' => $form_id,
-			'width'    => '400',
-			'height'   => '360',
-		));
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'inlineId' => $form_id,
+				'width'    => '400',
+				'height'   => '360',
+			)
+		);
 
 		// TB_inline?height=300&width=300&inlineId=wu-add-field
 		return add_query_arg($atts, '#TB_inline');
-
-	} // end if;
+	}
 
 	return Form_Manager::get_instance()->get_form_url($form_id, $atts, $inline);
-
-} // end wu_get_form_url;
+}
 
 /**
  * Adds our fork of the thickbox script.
@@ -70,5 +69,4 @@ function wu_get_form_url($form_id, $atts = array(), $inline = false) {
 function add_wubox() { // phpcs:ignore
 
 	wp_enqueue_script('wubox');
-
-} // end add_wubox;
+}

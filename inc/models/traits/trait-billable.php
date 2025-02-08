@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Models\Traits;
 
-use \WP_Ultimo\Objects\Billing_Address;
+use WP_Ultimo\Objects\Billing_Address;
 
 /**
  * Singleton trait.
@@ -44,16 +44,13 @@ trait Billable {
 	public function get_billing_address() {
 
 		if ($this->billing_address === null) {
-
 			$billing_address = $this->get_meta('wu_billing_address');
 
 			$this->billing_address = is_a($billing_address, '\WP_Ultimo\Objects\Billing_Address') ? $billing_address : $this->get_default_billing_address();
-
-		} // end if;
+		}
 
 		return $this->billing_address;
-
-	} // end get_billing_address;
+	}
 
 	/**
 	 * Sets the billing address.
@@ -66,15 +63,11 @@ trait Billable {
 	public function set_billing_address($billing_address) {
 
 		if (is_array($billing_address)) {
-
 			$billing_address = new Billing_Address($billing_address);
-
-		} // end if;
+		}
 
 		$this->meta['wu_billing_address'] = $billing_address;
 
 		$this->billing_address = $billing_address;
-
-	} // end set_billing_address;
-
-} // end trait Billable;
+	}
+}

@@ -28,17 +28,14 @@ trait Singleton {
 	 */
 	public static function get_instance() {
 
-		if (!static::$instance instanceof static) {
-
+		if ( ! static::$instance instanceof static) {
 			static::$instance = new static();
 
 			static::$instance->init();
-
-		} // end if;
+		}
 
 		return static::$instance;
-
-	} // end get_instance;
+	}
 
 	/**
 	 * Runs only once, at the first instantiation of the Singleton.
@@ -49,8 +46,7 @@ trait Singleton {
 	public function init() {
 
 		$this->has_parents() && method_exists(get_parent_class($this), 'init') && parent::init();
-
-	} // end init;
+	}
 
 	/**
 	 * Check if the current class has parents.
@@ -61,7 +57,5 @@ trait Singleton {
 	public function has_parents() {
 
 		return (bool) class_parents($this);
-
-	} // end has_parents;
-
-} // end trait Singleton;
+	}
+}

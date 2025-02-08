@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Installers;
 
-use \WP_Ultimo\Integrations\Host_Providers\Closte_Host_Provider;
+use WP_Ultimo\Integrations\Host_Providers\Closte_Host_Provider;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -31,30 +31,28 @@ class Core_Installer extends Base_Installer {
 	 */
 	public function init() {
 
-		add_filter('wu_core_installer_install_sunrise', function() {
+		add_filter(
+			'wu_core_installer_install_sunrise',
+			function () {
 
-			$is_closte = defined('CLOSTE_CLIENT_API_KEY') && CLOSTE_CLIENT_API_KEY;
+				$is_closte = defined('CLOSTE_CLIENT_API_KEY') && CLOSTE_CLIENT_API_KEY;
 
-			if ($is_closte) {
+				if ($is_closte) {
+					if ( ! (defined('SUNRISE') && SUNRISE)) {
 
-				if (!(defined('SUNRISE') && SUNRISE)) {
+						// translators: %s is a URL to a documentation link.
+						$closte_message = sprintf(__('You are using Closte and they prevent the wp-config.php file from being written to. <a href="%s" target="_blank">Follow these instructions to do it manually</a>.', 'wp-ultimo'), wu_get_documentation_url('wp-ultimo-closte-config'));
 
-					// translators: %s is a URL to a documentation link.
-					$closte_message = sprintf(__('You are using Closte and they prevent the wp-config.php file from being written to. <a href="%s" target="_blank">Follow these instructions to do it manually</a>.', 'wp-ultimo' ), wu_get_documentation_url('wp-ultimo-closte-config'));
+						throw new \Exception($closte_message);
+					}
 
-					throw new \Exception($closte_message);
+					return true;
+				}
 
-				} // end if;
-
-				return true;
-
-			} // end if;
-
-			return false;
-
-		});
-
-	} // end init;
+				return false;
+			}
+		);
+	}
 
 	/**
 	 * Returns the list of migration steps.
@@ -89,8 +87,7 @@ class Core_Installer extends Base_Installer {
 		);
 
 		return $steps;
-
-	}  // end get_steps;
+	}
 
 	/**
 	 * Installs our custom database tables.
@@ -112,10 +109,8 @@ class Core_Installer extends Base_Installer {
 			);
 
 			if (in_array($table_name, $exclude_list, true)) {
-
 				continue;
-
-			} // end if;
+			}
 
 			$success = $table->install();
 
@@ -125,12 +120,9 @@ class Core_Installer extends Base_Installer {
 				$error_message = sprintf(__('Installation of the table %s failed', 'wp-ultimo'), $table->get_name());
 
 				throw new \Exception($error_message);
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end _install_database_tables;
+			}
+		}
+	}
 
 	/**
 	 * Copies the sunrise.php file and adds the SUNRISE constant.
@@ -144,10 +136,8 @@ class Core_Installer extends Base_Installer {
 		$copy = \WP_Ultimo\Sunrise::try_upgrade();
 
 		if (is_wp_error($copy)) {
-
 			throw new \Exception($copy->get_error_message());
-
-		} // end if;
+		}
 
 		/**
 		 * Allow host providers to install the constant differently.
@@ -160,19 +150,13 @@ class Core_Installer extends Base_Installer {
 		$short_circuit = apply_filters('wu_core_installer_install_sunrise', false);
 
 		if ($short_circuit) {
-
 			return;
-
-		} // end if;
+		}
 
 		$success = \WP_Ultimo\Helpers\WP_Config::get_instance()->inject_wp_config_constant('SUNRISE', true);
 
 		if (is_wp_error($success)) {
-
 			throw new \Exception($success->get_error_message());
-
-		} // end if;
-
-	} // end _install_sunrise;
-
-} // end class Core_Installer;
+		}
+	}
+}

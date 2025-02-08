@@ -111,8 +111,7 @@ class Country_JP extends Country {
 	public function get_name() {
 
 		return __('Japan', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for JP.
@@ -171,7 +170,5 @@ class Country_JP extends Country {
 			'09' => __('Tochigi Prefecture', 'wp-ultimo-locations'),
 			'06' => __('Yamagata Prefecture', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_JP;
+	}
+}

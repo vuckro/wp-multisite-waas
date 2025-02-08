@@ -23,10 +23,10 @@ class Visits {
 	 * Key to save on the database.
 	 */
 	const KEY = 'wu_visits';
- /**
-  * @var int
-  */
- protected $site_id;
+	/**
+	 * @var int
+	 */
+	protected $site_id;
 
 	/**
 	 * Sets the current site to manage.
@@ -35,10 +35,9 @@ class Visits {
 	 *
 	 * @param int $site_id The current site id.
 	 */
-	public function __construct($site_id)
- {
-     $this->site_id = $site_id;
- } // end __construct;
+	public function __construct($site_id) {
+		$this->site_id = $site_id;
+	}
 	/**
 	 * Returns the meta key to save visits.
 	 *
@@ -49,8 +48,7 @@ class Visits {
 	protected function get_meta_key($day): string {
 
 		return sprintf('%s_%s', self::KEY, $day);
-
-	} // end get_meta_key;
+	}
 
 	/**
 	 * Adds visits to a site count.
@@ -63,11 +61,9 @@ class Visits {
 	 */
 	public function add_visit($count = 1, $day = false) {
 
-		if (!$day) {
-
+		if ( ! $day) {
 			$day = gmdate('Ymd');
-
-		} // end if;
+		}
 
 		$key = $this->get_meta_key($day);
 
@@ -76,8 +72,7 @@ class Visits {
 		$new_value = $current_value + $count;
 
 		return update_site_meta($this->site_id, $key, $new_value);
-
-	} // end add_visit;
+	}
 
 	/**
 	 * Returns an array of the dates and counts by day.
@@ -92,29 +87,27 @@ class Visits {
 
 		global $wpdb;
 
-		if (!$start_date) {
-
+		if ( ! $start_date) {
 			$start_date = wu_get_current_time('mysql', true);
+		}
 
-		} // end if;
-
-		if (!$end_date) {
-
+		if ( ! $end_date) {
 			$end_date = wu_get_current_time('mysql', true);
+		}
 
-		} // end if;
-
-		$query = $wpdb->prepare("
+		$query = $wpdb->prepare(
+			"
       SELECT meta_value as count, str_to_date(meta_key, 'wu_visits_%%Y%%m%%d') as day, blog_id as site_id
       FROM {$wpdb->base_prefix}blogmeta 
       WHERE blog_id = %d
-    ", $this->site_id);
+    ",
+			$this->site_id
+		);
 
 		$query .= $wpdb->prepare(" AND str_to_date(meta_key, 'wu_visits_%%Y%%m%%d') BETWEEN %s AND %s", gmdate('Y-m-d', strtotime($start_date)), gmdate('Y-m-d', strtotime($end_date)));
 
 		return $wpdb->get_results($query); // phpcs:ignore
-
-	} // end get_visits;
+	}
 
 	/**
 	 * The total visits for the current site.
@@ -129,29 +122,27 @@ class Visits {
 
 		global $wpdb;
 
-		if (!$start_date) {
-
+		if ( ! $start_date) {
 			$start_date = wu_get_current_time('mysql', true);
+		}
 
-		} // end if;
-
-		if (!$end_date) {
-
+		if ( ! $end_date) {
 			$end_date = wu_get_current_time('mysql', true);
+		}
 
-		} // end if;
-
-		$query = $wpdb->prepare("
+		$query = $wpdb->prepare(
+			"
       SELECT SUM(meta_value) as count
       FROM {$wpdb->base_prefix}blogmeta 
       WHERE blog_id = %d
-    ", $this->site_id);
+    ",
+			$this->site_id
+		);
 
 		$query .= $wpdb->prepare(" AND str_to_date(meta_key, 'wu_visits_%%Y%%m%%d') BETWEEN %s AND %s", gmdate('Y-m-d', strtotime($start_date)), gmdate('Y-m-d', strtotime($end_date)));
 
 		return (int) $wpdb->get_var($query); // phpcs:ignore
-
-	} // end get_visit_total;
+	}
 
 	/**
 	 * Get sites by visit count.
@@ -167,17 +158,13 @@ class Visits {
 
 		global $wpdb;
 
-		if (!$start_date) {
-
+		if ( ! $start_date) {
 			$start_date = wu_get_current_time('mysql', true);
+		}
 
-		} // end if;
-
-		if (!$end_date) {
-
+		if ( ! $end_date) {
 			$end_date = wu_get_current_time('mysql', true);
-
-		} // end if;
+		}
 
 		$sub_query = "
       SELECT SUM(meta_value) as count, blog_id
@@ -200,7 +187,5 @@ class Visits {
     // phpcs:enable
 
 		return $wpdb->get_results($query); // phpcs:ignore
-
-	} // end get_sites_by_visit_count;
-
-} // end class Visits;
+	}
+}

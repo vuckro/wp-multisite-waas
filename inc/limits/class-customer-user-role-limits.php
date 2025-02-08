@@ -36,13 +36,10 @@ class Customer_User_Role_Limits {
 
 		add_filter('editable_roles', array($this, 'filter_editable_roles'));
 
-		if (!wu_get_current_site()->has_module_limitation('customer_user_role')) {
-
+		if ( ! wu_get_current_site()->has_module_limitation('customer_user_role')) {
 			return;
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * Block new user page if limit has reached.
@@ -52,24 +49,18 @@ class Customer_User_Role_Limits {
 	public function block_new_user_page() {
 
 		if (is_super_admin()) {
-
 			return;
-
-		} // end if;
+		}
 
 		$screen = get_current_screen();
 
-		if (!$screen || $screen->id !== 'user') {
-
+		if ( ! $screen || $screen->id !== 'user') {
 			return;
+		}
 
-		} // end if;
-
-		if (!empty(get_editable_roles())) {
-
+		if ( ! empty(get_editable_roles())) {
 			return;
-
-		} // end if;
+		}
 
 		$message = __('You reached your membership users limit.', 'wp-ultimo');
 
@@ -81,8 +72,7 @@ class Customer_User_Role_Limits {
 		$message = apply_filters('wu_users_membership_limit_message', $message);
 
 		wp_die($message, __('Limit Reached', 'wp-ultimo'), array('back_link' => true));
-
-	} // end block_new_user_page;
+	}
 
 	/**
 	 * Filters editable roles offered as options on limitations.
@@ -94,20 +84,16 @@ class Customer_User_Role_Limits {
 	 */
 	public function filter_editable_roles($roles) {
 
-		if (!wu_get_current_site()->has_module_limitation('users') || is_super_admin()) {
-
+		if ( ! wu_get_current_site()->has_module_limitation('users') || is_super_admin()) {
 			return $roles;
-
-		} // end if;
+		}
 
 		$users_limitation = wu_get_current_site()->get_limitations()->users;
 
 		foreach ($roles as $role => $details) {
-
 			$limit = $users_limitation->{$role};
 
 			if (property_exists($limit, 'enabled') && $limit->enabled) {
-
 				$user_list = get_users(array('role' => $role));
 
 				$count = (int) count($user_list);
@@ -115,22 +101,15 @@ class Customer_User_Role_Limits {
 				$limit = (int) wu_get_current_site()->get_limitations()->users->{$role}->number;
 
 				if (0 !== $limit && $count >= $limit) {
-
-					unset($roles[$role]);
-
-				} // end if;
-
+					unset($roles[ $role ]);
+				}
 			} else {
-
-				unset($roles[$role]);
-
-			} // end if;
-
-		} // end foreach;
+				unset($roles[ $role ]);
+			}
+		}
 
 		return $roles;
-
-	} // end filter_editable_roles;
+	}
 
 	/**
 	 * Updates the site user roles after a up/downgrade.
@@ -145,27 +124,19 @@ class Customer_User_Role_Limits {
 		$membership = wu_get_membership($membership_id);
 
 		if ($membership) {
-
 			$customer = $membership->get_customer();
 
-			if (!$customer) {
-
+			if ( ! $customer) {
 				return;
-
-			} // end if;
+			}
 
 			$sites = $membership->get_sites(false);
 
 			$role = $membership->get_limitations()->customer_user_role->get_limit();
 
 			foreach ($sites as $site) {
-
 				add_user_to_blog($site->get_id(), $customer->get_user_id(), $role);
-
-			} // end foreach;
-
-		} // end if;
-
-	} // end update_site_user_roles;
-
-} // end class Customer_User_Role_Limits;
+			}
+		}
+	}
+}

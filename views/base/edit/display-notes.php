@@ -8,12 +8,16 @@
 
 <?php if (empty($notes)) : ?>
 
-	<?php echo wu_render_empty_state(array(
-		'message'                  => __("No notes yet.", 'wp-ultimo'),
-		'sub_message'              => __('Use the "Add new Note" to create the first one.', 'wp-ultimo'),
-		'link_url'                 => false,
-		'display_background_image' => false,
-	)); ?>
+	<?php
+	echo wu_render_empty_state(
+		array(
+			'message'                  => __('No notes yet.', 'wp-ultimo'),
+			'sub_message'              => __('Use the "Add new Note" to create the first one.', 'wp-ultimo'),
+			'link_url'                 => false,
+			'display_background_image' => false,
+		)
+	);
+	?>
 
 <?php else : ?>
 
@@ -33,7 +37,21 @@
 
 				<div class="wu-flex wu-overflow-hidden wu-ml-3 wu-mt-1">
 
-					<?php echo wp_kses_post(get_avatar($note->author_id, 20, 'identicon', '', array('force_display' => true, 'class' => 'wu-rounded-full wu-mr-2'))); ?> <?php echo $user->display_name; ?>
+					<?php
+					echo wp_kses_post(
+						get_avatar(
+							$note->author_id,
+							20,
+							'identicon',
+							'',
+							array(
+								'force_display' => true,
+								'class'         => 'wu-rounded-full wu-mr-2',
+							)
+						)
+					);
+					?>
+					<?php echo $user->display_name; ?>
 
 				</div>
 
@@ -47,12 +65,14 @@
 
 					<?php if (current_user_can('delete_notes')) : ?>
 
-						<?php $modal_atts = array(
+						<?php
+						$modal_atts = array(
 							'object_id' => wu_request('id'),
 							'model'     => $model,
 							'note_id'   => $note->note_id,
 							'height'    => 306,
-						); ?>
+						);
+						?>
 
 						<span class="wu-ml-2">
 

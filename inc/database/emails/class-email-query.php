@@ -78,7 +78,5 @@ class Email_Query extends Post_Query {
 		$query['type__in'] = array('system_email');
 
 		return parent::query($query);
-
-	} // end query;
-
-} // end class Email_Query;
+	}
+}

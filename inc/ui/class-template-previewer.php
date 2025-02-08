@@ -45,8 +45,7 @@ class Template_Previewer {
 	public function init() {
 
 		add_action('wp_ultimo_load', array($this, 'hooks'));
-
-	} // end init;
+	}
 
 	/**
 	 * Hooks into WordPress to add the template preview.
@@ -71,11 +70,9 @@ class Template_Previewer {
 			add_action('send_headers', array($this, 'send_cross_origin_headers'), 1000);
 
 			return;
-
-		} // end if;
+		}
 
 		if ($this->is_template_previewer()) {
-
 			add_action('init', array($this, 'template_previewer'));
 
 			add_action('wp_enqueue_scripts', array($this, 'register_scripts'));
@@ -89,10 +86,8 @@ class Template_Previewer {
 			 * @param self $template_previewer Instance of the current class.
 			 */
 			do_action('wu_template_previewer', $this);
-
-		} // end if;
-
-	} // end hooks;
+		}
+	}
 
 	/**
 	 * Send the cross origin headers to allow iframes to be loaded.
@@ -109,8 +104,7 @@ class Template_Previewer {
 		send_origin_headers();
 
 		header_remove('X-Frame-Options');
-
-	} // end send_cross_origin_headers;
+	}
 
 	/**
 	 * Register the necessary scripts.
@@ -130,25 +124,34 @@ class Template_Previewer {
 
 		wp_register_script('wu-template-previewer', wu_get_asset('template-previewer.js', 'js'), array(), wu_get_version());
 
-		wp_localize_script('wu-template-previewer', 'wu_template_previewer', array(
-			'domain'           => str_replace('www.', '', (string) $current_site->domain),
-			'current_template' => wu_request($this->get_preview_parameter(), false),
-			'current_url'      => wu_get_current_url(),
-			'query_parameter'  => $this->get_preview_parameter(),
-		));
+		wp_localize_script(
+			'wu-template-previewer',
+			'wu_template_previewer',
+			array(
+				'domain'           => str_replace('www.', '', (string) $current_site->domain),
+				'current_template' => wu_request($this->get_preview_parameter(), false),
+				'current_url'      => wu_get_current_url(),
+				'query_parameter'  => $this->get_preview_parameter(),
+			)
+		);
 
 		wp_enqueue_script('wu-template-previewer');
 
 		wp_enqueue_style('wu-template-previewer', wu_get_asset('template-previewer.css', 'css'), array(), wu_get_version());
 
-		wp_add_inline_style('wu-template-previewer', wu_get_template_contents('dynamic-styles/template-previewer', array(
-			'bg_color'        => $bg_color,
-			'button_bg_color' => $button_bg_color,
-		)));
+		wp_add_inline_style(
+			'wu-template-previewer',
+			wu_get_template_contents(
+				'dynamic-styles/template-previewer',
+				array(
+					'bg_color'        => $bg_color,
+					'button_bg_color' => $button_bg_color,
+				)
+			)
+		);
 
 		wp_enqueue_style('dashicons');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Remove the unnecessary styles added by themes and other plugins.
@@ -165,8 +168,7 @@ class Template_Previewer {
 			'wu-template-previewer',
 			'dashicons',
 		);
-
-	} // end remove_unnecessary_styles;
+	}
 
 	/**
 	 * Append preview parameter.
@@ -189,20 +191,15 @@ class Template_Previewer {
 		);
 
 		if (in_array($orig_scheme, $allowed_schemes, true) === false) {
-
 			return $url;
-
-		} // end if;
+		}
 
 		if (apply_filters('wu_append_preview_parameter', true, $this) === false) {
-
 			return $url;
-
-		} // end if;
+		}
 
 		return add_query_arg('wu-preview', 1, $url);
-
-	} // end append_preview_parameter;
+	}
 
 	/**
 	 * Returns the preview URL for the template previewer.
@@ -219,14 +216,11 @@ class Template_Previewer {
 		);
 
 		if (wu_request('open')) {
-
 			$args['open'] = 1;
-
-		} // end if;
+		}
 
 		return add_query_arg($args, home_url());
-
-	} // end get_preview_url;
+	}
 
 	/**
 	 * Template Previewer code
@@ -245,11 +239,9 @@ class Template_Previewer {
 		/**
 		 * Check if this is a site template
 		 */
-		if (!$selected_template || ($selected_template->get_type() !== Site_Type::SITE_TEMPLATE && !wu_request('customizer'))) {
-
+		if ( ! $selected_template || ($selected_template->get_type() !== Site_Type::SITE_TEMPLATE && ! wu_request('customizer'))) {
 			wp_die(__('This template is not available', 'wp-ultimo'));
-
-		} // end if;
+		}
 
 		$categories = array();
 
@@ -262,15 +254,14 @@ class Template_Previewer {
 			'tp'                => $this,
 		);
 
-		$products_ids = isset($_COOKIE['wu_selected_products']) ? explode( ',', (string) $_COOKIE['wu_selected_products']) : array();
+		$products_ids = isset($_COOKIE['wu_selected_products']) ? explode(',', (string) $_COOKIE['wu_selected_products']) : array();
 
 		$products = array_map('wu_get_product', $products_ids);
 
 		// clear array
 		$products = array_filter($products);
 
-		if (!empty($products)) {
-
+		if ( ! empty($products)) {
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
 			list($plan, $additional_products) = wu_segregate_products($products);
@@ -278,13 +269,10 @@ class Template_Previewer {
 			$products = array_merge(array($plan), $additional_products);
 
 			foreach ($products as $product) {
-
 				$limits = $limits->merge($product->get_limitations());
-
-			} // end foreach;
+			}
 
 			if ($limits->site_templates->get_mode() !== 'default') {
-
 				$site_ids = $limits->site_templates->get_available_site_templates();
 
 				$render_parameters['templates'] = array_map('wu_get_site', $site_ids);
@@ -293,8 +281,7 @@ class Template_Previewer {
 				 * Check if the current site is a member of
 				 * the list of available templates
 				 */
-				if (!in_array($selected_template->get_id(), $site_ids, true)) {
-
+				if ( ! in_array($selected_template->get_id(), $site_ids, true)) {
 					$redirect_to = wu_get_current_url();
 
 					$redirect_to = add_query_arg($this->get_preview_parameter(), current($site_ids), $redirect_to);
@@ -302,18 +289,13 @@ class Template_Previewer {
 					wp_redirect($redirect_to);
 
 					exit;
+				}
+			}
+		}
 
-				} // end if;
-
-			} // end if;
-
-		} // end if;
-
-		if (!isset($render_parameters['templates'])) {
-
+		if ( ! isset($render_parameters['templates'])) {
 			$render_parameters['templates'] = wu_get_site_templates();
-
-		} // end if;
+		}
 
 		$render_parameters['templates'] = array_filter((array) $render_parameters['templates'], fn($site) => $site->is_active());
 
@@ -322,8 +304,7 @@ class Template_Previewer {
 		wu_get_template('ui/template-previewer', $render_parameters);
 
 		exit;
-
-	} // end template_previewer;
+	}
 
 	/**
 	 * Returns the preview parameter, so admins can change it.
@@ -336,8 +317,7 @@ class Template_Previewer {
 		$slug = $this->get_setting('preview_url_parameter', 'template-preview');
 
 		return apply_filters('wu_get_template_preview_slug', $slug);
-
-	} // end get_preview_parameter;
+	}
 
 	/**
 	 * Checks if this is a template previewer window.
@@ -350,8 +330,7 @@ class Template_Previewer {
 		$slug = $this->get_preview_parameter();
 
 		return wu_request($slug);
-
-	} // end is_template_previewer;
+	}
 
 	/**
 	 * Check if the frame is a preview.
@@ -361,9 +340,8 @@ class Template_Previewer {
 	 */
 	public function is_preview() {
 
-		return !empty(wu_request('wu-preview'));
-
-	} // end is_preview;
+		return ! empty(wu_request('wu-preview'));
+	}
 
 	/**
 	 * Returns the settings.
@@ -375,7 +353,7 @@ class Template_Previewer {
 
 		// Fix to issue on wp_get_attachment_url() inside core.
 		// @todo report it.
-		$initial_pagenow = $GLOBALS['pagenow'] ?? '';
+		$initial_pagenow    = $GLOBALS['pagenow'] ?? '';
 		$GLOBALS['pagenow'] = '';
 
 		$default_settings = array(
@@ -390,7 +368,7 @@ class Template_Previewer {
 			'enabled'                     => true,
 		);
 
-		$saved_settings = wu_get_option(Template_Previewer::KEY, array());
+		$saved_settings = wu_get_option(self::KEY, array());
 
 		$default_settings = array_merge($default_settings, $saved_settings);
 
@@ -398,10 +376,8 @@ class Template_Previewer {
 
 		// Ensure that templates key does not change with request
 		if (isset($server_request['templates'])) {
-
 			unset($server_request['templates']);
-
-		} // end if;
+		}
 
 		$parsed_args = wp_parse_args($server_request, $default_settings);
 
@@ -410,8 +386,7 @@ class Template_Previewer {
 
 		$GLOBALS['pagenow'] = $initial_pagenow;
 		return $parsed_args;
-
-	} // end get_settings;
+	}
 
 	/**
 	 * Gets a particular setting.
@@ -425,8 +400,7 @@ class Template_Previewer {
 	public function get_setting($setting, $default = false) {
 
 		return wu_get_isset($this->get_settings(), $setting, $default);
-
-	} // end get_setting;
+	}
 
 	/**
 	 * Save settings.
@@ -441,21 +415,15 @@ class Template_Previewer {
 		$settings = $this->get_settings();
 
 		foreach ($settings as $setting => $value) {
-
 			if ($setting === 'logo_url') {
-
 				$settings['logo_url'] = wu_get_network_logo();
 
 				continue;
+			}
 
-			} // end if;
+			$settings[ $setting ] = wu_get_isset($settings_to_save, $setting, false);
+		}
 
-			$settings[$setting] = wu_get_isset($settings_to_save, $setting, false);
-
-		} // end foreach;
-
-		return wu_save_option(Template_Previewer::KEY, $settings);
-
-	} // end save_settings;
-
-} // end class Template_Previewer;
+		return wu_save_option(self::KEY, $settings);
+	}
+}

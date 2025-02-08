@@ -57,8 +57,7 @@ class Memory_Trap {
 	public function set_return_type($return_type) {
 
 		$this->return_type = $return_type;
-
-	} // end set_return_type;
+	}
 
 	/**
 	 * Setup the actual error handler.
@@ -72,21 +71,20 @@ class Memory_Trap {
 
 		!defined('WP_SANDBOX_SCRAPING') && define('WP_SANDBOX_SCRAPING', true); // phpcs:ignore
 
-		register_shutdown_function(function() {
+		register_shutdown_function(
+			function () {
 
-			$this->memory_reserve = null;
+				$this->memory_reserve = null;
 
-			$err = error_get_last();
+				$err = error_get_last();
 
 			if ((!is_null($err)) && (!in_array($err['type'], array(E_NOTICE, E_WARNING, E_DEPRECATED, E_USER_DEPRECATED)))) { // phpcs:ignore
 
-				$this->memory_limit_error_handler($err);
-
-			} // end if;
-
-		});
-
-	} // end setup;
+					$this->memory_limit_error_handler($err);
+				}
+			}
+		);
+	}
 
 	/**
 	 * Send fatal error messages.
@@ -102,21 +100,17 @@ class Memory_Trap {
 		$message = sprintf(__('Your server\'s PHP and WordPress memory limits are too low to perform this check. You might need to contact your host provider and ask the PHP memory limit in particular to be raised.', 'wp-ultimo'));
 
 		if ($this->return_type === 'json') {
-
-			wp_send_json_error(array(
-				'message' => $message,
-			));
+			wp_send_json_error(
+				array(
+					'message' => $message,
+				)
+			);
 
 			die;
-
 		} else {
-
 			echo $message;
-
-		} // end if;
+		}
 
 		exit;
-
-	} // end memory_limit_error_handler;
-
-} // end class Memory_Trap;
+	}
+}

@@ -22,19 +22,19 @@ class API {
 	use \WP_Ultimo\Traits\Singleton;
 
 	/**
-     * Namespace of our API endpoints
-     *
-     * @since 1.7.4
-     * @var string
-     */
+	 * Namespace of our API endpoints
+	 *
+	 * @since 1.7.4
+	 * @var string
+	 */
 	private string $namespace = 'wu';
 
 	/**
-     * Version fo the API, this is used to build the API URL
-     *
-     * @since 1.7.4
-     * @var string
-     */
+	 * Version fo the API, this is used to build the API URL
+	 *
+	 * @since 1.7.4
+	 * @var string
+	 */
 	private string $api_version = 'v2';
 
 	/**
@@ -61,7 +61,7 @@ class API {
 
 		/**
 		 * Register the routes
-     *
+	 *
 		 * @since 1.7.4
 		 */
 		add_action('rest_api_init', array($this, 'register_routes'));
@@ -79,8 +79,7 @@ class API {
 		 * @since 2.1.2
 		 */
 		add_filter('rest_authentication_errors', array($this, 'maybe_bypass_wp_auth'), 1);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Maybe bypass the WP Core auth errors in our routes so we can use our api keys.
@@ -94,10 +93,8 @@ class API {
 
 		// Another plugin already bypass this request
 		if ($result === true) {
-
 			return $result;
-
-		} // end if;
+		}
 
 		$current_route = $_SERVER['REQUEST_URI'];
 
@@ -105,14 +102,11 @@ class API {
 		$rest_path = rtrim(parse_url($rest_url, PHP_URL_PATH), '/');
 
 		if (strncmp((string) $current_route, $rest_path . '/' . $this->get_namespace(), strlen($rest_path . '/' . $this->get_namespace())) !== 0) {
-
 			return $result;
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end maybe_bypass_wp_auth;
+	}
 
 	/**
 	 * Allow admins to refresh their API credentials.
@@ -123,7 +117,6 @@ class API {
 	public function refresh_API_credentials() { // phpcs:ignore
 
 		if (wu_request('submit_button') === 'refresh_api_credentials') {
-
 			wu_save_setting('api_url', network_site_url());
 
 			wu_save_setting('api_key', wp_generate_password(24, false));
@@ -133,10 +126,8 @@ class API {
 			wp_safe_redirect(network_admin_url('admin.php?page=wp-ultimo-settings&tab=api&api=refreshed&updated=1'));
 
 			exit;
-
-		} // end if;
-
-	} // end refresh_API_credentials;
+		}
+	}
 
 	/**
 	 * Add the admin interface to create new webhooks
@@ -144,119 +135,159 @@ class API {
 	 * @since 1.7.4
 	 */
 	public function add_settings() {
-    /*
+		/*
 		 * API & Webhooks
 		 * This section holds the API settings of the WP Multisite WaaS Plugin.
 		 */
-		wu_register_settings_section('api', array(
-			'title' => __('API & Webhooks', 'wp-ultimo'),
-			'desc'  => __('API & Webhooks', 'wp-ultimo'),
-			'icon'  => 'dashicons-wu-paper-plane',
-			'order' => 95,
-		));
+		wu_register_settings_section(
+			'api',
+			array(
+				'title' => __('API & Webhooks', 'wp-ultimo'),
+				'desc'  => __('API & Webhooks', 'wp-ultimo'),
+				'icon'  => 'dashicons-wu-paper-plane',
+				'order' => 95,
+			)
+		);
 
-		wu_register_settings_field('api', 'api_header', array(
-			'title' => __('API Settings', 'wp-ultimo'),
-			'desc'  => __('Options related to WP Multisite WaaS API endpoints.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
+		wu_register_settings_field(
+			'api',
+			'api_header',
+			array(
+				'title' => __('API Settings', 'wp-ultimo'),
+				'desc'  => __('Options related to WP Multisite WaaS API endpoints.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('api', 'enable_api', array(
-			'title'   => __('Enable API', 'wp-ultimo'),
-			'desc'    => __('Tick this box if you want WP Multisite WaaS to add its own endpoints to the WordPress REST API. This is required for some integrations to work, most notabily, Zapier.', 'wp-ultimo'),
-			'type'    => 'toggle',
-			'default' => 1,
-		));
+		wu_register_settings_field(
+			'api',
+			'enable_api',
+			array(
+				'title'   => __('Enable API', 'wp-ultimo'),
+				'desc'    => __('Tick this box if you want WP Multisite WaaS to add its own endpoints to the WordPress REST API. This is required for some integrations to work, most notabily, Zapier.', 'wp-ultimo'),
+				'type'    => 'toggle',
+				'default' => 1,
+			)
+		);
 
 		$refreshed_tag = '';
 
 		if (wu_request('updated') && wu_request('api') === 'refreshed') {
-
 			$refreshed_tag = sprintf('<span class="wu-ml-2 wu-text-green-600">%s</span>', __('Credentials Refreshed', 'wp-ultimo'));
+		}
 
-		} // end if;
+		wu_register_settings_field(
+			'api',
+			'api_url',
+			array(
+				'title'   => __('API URL', 'wp-ultimo'),
+				'desc'    => '',
+				'tooltip' => '',
+				'copy'    => true,
+				'type'    => 'text-display',
+				'default' => network_site_url(),
+				'require' => array(
+					'enable_api' => true,
+				),
+			)
+		);
 
-		wu_register_settings_field('api', 'api_url', array(
-			'title'   => __('API URL', 'wp-ultimo'),
-			'desc'    => '',
-			'tooltip' => '',
-			'copy'    => true,
-			'type'    => 'text-display',
-			'default' => network_site_url(),
-			'require' => array(
-				'enable_api' => true,
-			),
-		));
+		wu_register_settings_field(
+			'api',
+			'api_key',
+			array(
+				'title'           => __('API Key', 'wp-ultimo') . $refreshed_tag,
+				'desc'            => '',
+				'tooltip'         => '',
+				'type'            => 'text-display',
+				'copy'            => true,
+				'default'         => wp_generate_password(24, false),
+				'wrapper_classes' => 'sm:wu-w-1/2 wu-float-left',
+				'require'         => array(
+					'enable_api' => true,
+				),
+			)
+		);
 
-		wu_register_settings_field('api', 'api_key', array(
-			'title'           => __('API Key', 'wp-ultimo') . $refreshed_tag,
-			'desc'            => '',
-			'tooltip'         => '',
-			'type'            => 'text-display',
-			'copy'            => true,
-			'default'         => wp_generate_password(24, false),
-			'wrapper_classes' => 'sm:wu-w-1/2 wu-float-left',
-			'require'         => array(
-				'enable_api' => true,
-			),
-		));
+		wu_register_settings_field(
+			'api',
+			'api_secret',
+			array(
+				'title'           => __('API Secret', 'wp-ultimo') . $refreshed_tag,
+				'tooltip'         => '',
+				'type'            => 'text-display',
+				'copy'            => true,
+				'default'         => wp_generate_password(24, false),
+				'wrapper_classes' => 'sm:wu-border-l-0 sm:wu-w-1/2 wu-float-left',
+				'require'         => array(
+					'enable_api' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('api', 'api_secret', array(
-			'title'           => __('API Secret', 'wp-ultimo') . $refreshed_tag,
-			'tooltip'         => '',
-			'type'            => 'text-display',
-			'copy'            => true,
-			'default'         => wp_generate_password(24, false),
-			'wrapper_classes' => 'sm:wu-border-l-0 sm:wu-w-1/2 wu-float-left',
-			'require'         => array(
-				'enable_api' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'api',
+			'api_note',
+			array(
+				'desc'            => __('This is your API Key. You cannot change it directly. To reset the API key and secret, use the button "Refresh API credentials" below.', 'wp-ultimo'),
+				'type'            => 'note',
+				'classes'         => 'wu-text-gray-700 wu-text-xs',
+				'wrapper_classes' => 'wu-bg-white sm:wu-border-t-0 sm:wu-mt-0 sm:wu-pt-0',
+				'require'         => array(
+					'enable_api' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('api', 'api_note', array(
-			'desc'            => __('This is your API Key. You cannot change it directly. To reset the API key and secret, use the button "Refresh API credentials" below.', 'wp-ultimo'),
-			'type'            => 'note',
-			'classes'         => 'wu-text-gray-700 wu-text-xs',
-			'wrapper_classes' => 'wu-bg-white sm:wu-border-t-0 sm:wu-mt-0 sm:wu-pt-0',
-			'require'         => array(
-				'enable_api' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'api',
+			'refresh_api_credentials',
+			array(
+				'title'           => __('Refresh API Credentials', 'wp-ultimo'),
+				'type'            => 'submit',
+				'classes'         => 'button wu-ml-auto',
+				'wrapper_classes' => 'wu-bg-white sm:wu-border-t-0 sm:wu-mt-0 sm:wu-pt-0',
+				'require'         => array(
+					'enable_api' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('api', 'refresh_api_credentials', array(
-			'title'           => __('Refresh API Credentials', 'wp-ultimo'),
-			'type'            => 'submit',
-			'classes'         => 'button wu-ml-auto',
-			'wrapper_classes' => 'wu-bg-white sm:wu-border-t-0 sm:wu-mt-0 sm:wu-pt-0',
-			'require'         => array(
-				'enable_api' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'api',
+			'api_log_calls',
+			array(
+				'title'   => __('Log API calls (Advanced)', 'wp-ultimo'),
+				'desc'    => __('Tick this box if you want to log all calls received via WP Multisite WaaS API endpoints. You can access the logs on WP Multisite WaaS &rarr; System Info &rarr; Logs.', 'wp-ultimo'),
+				'type'    => 'toggle',
+				'default' => 0,
+				'require' => array(
+					'enable_api' => 1,
+				),
+			)
+		);
 
-		wu_register_settings_field('api', 'api_log_calls', array(
-			'title'   => __('Log API calls (Advanced)', 'wp-ultimo'),
-			'desc'    => __('Tick this box if you want to log all calls received via WP Multisite WaaS API endpoints. You can access the logs on WP Multisite WaaS &rarr; System Info &rarr; Logs.', 'wp-ultimo'),
-			'type'    => 'toggle',
-			'default' => 0,
-			'require' => array(
-				'enable_api' => 1,
-			),
-		));
+		wu_register_settings_field(
+			'api',
+			'webhook_header',
+			array(
+				'title' => __('Webhook Settings', 'wp-ultimo'),
+				'desc'  => __('Options related to WP Multisite WaaS API webhooks.', 'wp-ultimo'),
+				'type'  => 'header',
+			)
+		);
 
-		wu_register_settings_field('api', 'webhook_header', array(
-			'title' => __('Webhook Settings', 'wp-ultimo'),
-			'desc'  => __('Options related to WP Multisite WaaS API webhooks.', 'wp-ultimo'),
-			'type'  => 'header',
-		));
-
-		wu_register_settings_field('api', 'webhook_calls_blocking', array(
-			'title'   => __('Wait for Response (Advanced)', 'wp-ultimo'),
-			'desc'    => __('Tick this box if you want the WP Multisite WaaS\'s webhook calls to wait for the remote server to respond. Keeping this option enabled can have huge effects on your network\'s performance, only enable it if you know what you are doing and need to debug webhook calls.', 'wp-ultimo'),
-			'type'    => 'toggle',
-			'default' => 0,
-		));
-
-	} // end add_settings;
+		wu_register_settings_field(
+			'api',
+			'webhook_calls_blocking',
+			array(
+				'title'   => __('Wait for Response (Advanced)', 'wp-ultimo'),
+				'desc'    => __('Tick this box if you want the WP Multisite WaaS\'s webhook calls to wait for the remote server to respond. Keeping this option enabled can have huge effects on your network\'s performance, only enable it if you know what you are doing and need to debug webhook calls.', 'wp-ultimo'),
+				'type'    => 'toggle',
+				'default' => 0,
+			)
+		);
+	}
 
 	/**
 	 * Returns the namespace of our API endpoints.
@@ -267,8 +298,7 @@ class API {
 	public function get_namespace() {
 
 		return "$this->namespace/$this->api_version";
-
-	} // end get_namespace;
+	}
 
 	/**
 	 * Returns the credentials.
@@ -282,8 +312,7 @@ class API {
 			'api_key'    => wu_get_setting('api_key', 'prevent'),
 			'api_secret' => wu_get_setting('api_secret', 'prevent'),
 		);
-
-	} // end get_auth;
+	}
 
 	/**
 	 * Validate a pair of API credentials
@@ -296,8 +325,7 @@ class API {
 	public function validate_credentials($api_key, $api_secret) {
 
 		return compact('api_key', 'api_secret') === $this->get_auth(); // phpcs:ignore
-
-	} // end validate_credentials;
+	}
 
 	/**
 	 * Check if we can log api calls.
@@ -308,8 +336,7 @@ class API {
 	public function should_log_api_calls() {
 
 		return apply_filters('wu_should_log_api_calls', wu_get_setting('api_log_calls', false));
-
-	} // end should_log_api_calls;
+	}
 
 	/**
 	 * Checks if we should log api calls or not, and if we should, log them.
@@ -321,19 +348,16 @@ class API {
 	public function maybe_log_api_call($request) {
 
 		if ($this->should_log_api_calls()) {
-
 			$payload = array(
 				'route'       => $request->get_route(),
 				'method'      => $request->get_method(),
 				'url_params'  => $request->get_url_params(),
-				'body_params' => $request->get_body()
+				'body_params' => $request->get_body(),
 			);
 
 			wu_log_add('api-calls', json_encode($payload, JSON_PRETTY_PRINT));
-
-		} // end if;
-
-	} // end maybe_log_api_call;
+		}
+	}
 
 	/**
 	 * Log api errors.
@@ -351,26 +375,22 @@ class API {
 			/*
 			 * Log API call here if we didn't log it before.
 			 */
-			if (!$this->should_log_api_calls()) {
-
+			if ( ! $this->should_log_api_calls()) {
 				$payload = array(
 					'route'       => $request->get_route(),
 					'method'      => $request->get_method(),
 					'url_params'  => $request->get_url_params(),
-					'body_params' => $request->get_body()
+					'body_params' => $request->get_body(),
 				);
 
 				wu_log_add('api-errors', json_encode($payload, JSON_PRETTY_PRINT));
-
-			} // end if;
+			}
 
 			wu_log_add('api-errors', $result);
-
-		} // end if;
+		}
 
 		return $result;
-
-	} // end log_api_errors;
+	}
 
 	/**
 	 * Tries to validate the API key and secret from the request
@@ -382,28 +402,21 @@ class API {
 	public function check_authorization($request) {
 
 		if (isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER']) {
-
 			$api_key    = $_SERVER['PHP_AUTH_USER'];
 			$api_secret = $_SERVER['PHP_AUTH_PW'];
-
 		} else {
-
 			$params = $request->get_params();
 
 			$api_key    = wu_get_isset($params, 'api_key', wu_get_isset($params, 'api-key'));
 			$api_secret = wu_get_isset($params, 'api_secret', wu_get_isset($params, 'api-secret'));
-
-		} // end if;
+		}
 
 		if ($api_key === false) {
-
 			return false;
-
-		} // end if;
+		}
 
 		return $this->validate_credentials($api_key, $api_secret);
-
-	} // end check_authorization;
+	}
 
 	/**
 	 * Checks if the API routes are available or not, via the settings.
@@ -420,8 +433,7 @@ class API {
 		 * @return boolean
 		 */
 		return apply_filters('wu_is_api_enabled', wu_get_setting('enable_api', true));
-
-	} // end is_api_enabled;
+	}
 
 	/**
 	 * Register the API routes.
@@ -431,19 +443,21 @@ class API {
 	 */
 	public function register_routes() {
 
-		if (!$this->is_api_enabled()) {
-
+		if ( ! $this->is_api_enabled()) {
 			return;
-
-		} // end if;
+		}
 
 		$namespace = $this->get_namespace();
 
-		register_rest_route($namespace, '/auth', array(
-			'methods'             => 'GET',
-			'callback'            => array($this, 'auth'),
-			'permission_callback' => array($this, 'check_authorization'),
-		));
+		register_rest_route(
+			$namespace,
+			'/auth',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array($this, 'auth'),
+				'permission_callback' => array($this, 'check_authorization'),
+			)
+		);
 
 		/**
 		 * Allow additional routes to be registered.
@@ -454,8 +468,7 @@ class API {
 		 * @param self $this The current API instance.
 		 */
 		do_action('wu_register_rest_routes', $this);
-
-	} // end register_routes;
+	}
 
 	/**
 	 * Dummy endpoint to low services to test the authentication method being used.
@@ -469,12 +482,12 @@ class API {
 
 		$current_site = get_current_site();
 
-		wp_send_json(array(
-			'success' => true,
-			'label'   => $current_site->site_name,
-			'message' => __('Welcome to our API', 'wp-ultimo'),
-		));
-
-	} // end auth;
-
-} // end class API;
+		wp_send_json(
+			array(
+				'success' => true,
+				'label'   => $current_site->site_name,
+				'message' => __('Welcome to our API', 'wp-ultimo'),
+			)
+		);
+	}
+}

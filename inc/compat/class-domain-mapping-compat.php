@@ -30,7 +30,5 @@ class Domain_Mapping_Compat {
 	 * @return void
 	 */
 	public function init() {
-
-	} // end init;
-
-} // end class Domain_Mapping_Compat;
+	}
+}

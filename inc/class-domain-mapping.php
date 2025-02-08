@@ -48,16 +48,11 @@ class Domain_Mapping {
 	public function init() {
 
 		if ($this->should_skip_checks()) {
-
 			$this->startup();
-
 		} else {
-
 			$this->maybe_startup();
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * Check if we should skip checks before running mapping functions.
@@ -68,8 +63,7 @@ class Domain_Mapping {
 	public static function should_skip_checks() {
 
 		return defined('WP_ULTIMO_DOMAIN_MAPPING_SKIP_CHECKS') && WP_ULTIMO_DOMAIN_MAPPING_SKIP_CHECKS;
-
-	} // end should_skip_checks;
+	}
 
 	/**
 	 * Run the checks to make sure the requirements for Domain mapping are in place and execute it.
@@ -82,34 +76,27 @@ class Domain_Mapping {
 		 * Don't run during installation...
 		 */
 		if (defined('WP_INSTALLING') && $_SERVER['SCRIPT_NAME'] !== '/wp-activate.php') {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Make sure we got loaded in the sunrise stage.
 		 */
 		if (did_action('muplugins_loaded')) {
-
 			return;
-
-		} // end if;
+		}
 
 		$is_enabled = (bool) wu_get_setting_early('enable_domain_mapping');
 
 		if ($is_enabled === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Start the engines!
 		 */
 		$this->startup();
-
-	} // end maybe_startup;
+	}
 
 	/**
 	 * Actual handles domain mapping functionality.
@@ -122,12 +109,10 @@ class Domain_Mapping {
 		 * Adds the necessary tables to the $wpdb global.
 		 */
 		if (empty($GLOBALS['wpdb']->wu_dmtable)) {
-
 			$GLOBALS['wpdb']->wu_dmtable = $GLOBALS['wpdb']->base_prefix . 'wu_domain_mappings';
 
 			$GLOBALS['wpdb']->ms_global_tables[] = 'wu_domain_mappings';
-
-		} // end if;
+		}
 
 		// Ensure cache is shared
 		wp_cache_add_global_groups(array('domain_mappings', 'network_mappings'));
@@ -153,23 +138,27 @@ class Domain_Mapping {
 		 * On WP Multisite WaaS 1.X builds we used Mercator. The Mercator actions and filters are now deprecated.
 		 */
 		if (has_action('mercator_load')) {
-
 			do_action_deprecated('mercator_load', array(), '2.0.0', 'wu_domain_mapping_load');
+		}
 
-		} // end if;
+		add_action(
+			'wu_sso_site_allowed_domains',
+			function ($list, $site_id): array {
 
-		add_action('wu_sso_site_allowed_domains', function($list, $site_id): array {
+				$domains = wu_get_domains(
+					array(
+						'active'        => true,
+						'blog_id'       => $site_id,
+						'stage__not_in' => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
+						'fields'        => 'domain',
+					)
+				);
 
-			$domains = wu_get_domains(array(
-				'active'        => true,
-				'blog_id'       => $site_id,
-				'stage__not_in' => \WP_Ultimo\Models\Domain::INACTIVE_STAGES,
-				'fields'        => 'domain',
-			));
-
-			return array_merge($list, $domains);
-
-		}, 10, 2);
+				return array_merge($list, $domains);
+			},
+			10,
+			2
+		);
 
 		/**
 		 * Fired after our core Domain Mapping has been loaded
@@ -177,8 +166,7 @@ class Domain_Mapping {
 		 * Hook into this to handle any add-on functionality.
 		 */
 		do_action('wu_domain_mapping_load');
-
-	} // end startup;
+	}
 
 	/**
 	 * Checks if an origin is a mapped domain.
@@ -192,31 +180,24 @@ class Domain_Mapping {
 	 */
 	public function add_mapped_domains_as_allowed_origins($origin) {
 
-		if (!function_exists('wu_get_domain_by_domain')) {
-
+		if ( ! function_exists('wu_get_domain_by_domain')) {
 			return;
-
-		} // end if;
+		}
 
 		if (empty($origin) && wp_doing_ajax()) {
-
 			$origin = wu_get_current_url();
-
-		} // end if;
+		}
 
 		$the_domain = wp_parse_url($origin, PHP_URL_HOST);
 
 		$domain = wu_get_domain_by_domain($the_domain);
 
 		if ($domain) {
-
 			return $domain->get_domain();
-
-		} // end if;
+		}
 
 		return $origin;
-
-	} // end add_mapped_domains_as_allowed_origins;
+	}
 
 	/**
 	 * Fixes the SSO target site in cases of domain mapping.
@@ -229,21 +210,16 @@ class Domain_Mapping {
 	 */
 	public function fix_sso_target_site($target_site, $domain) {
 
-		if (!$target_site || !$target_site->blog_id) {
-
+		if ( ! $target_site || ! $target_site->blog_id) {
 			$mapping = \WP_Ultimo\Models\Domain::get_by_domain($domain);
 
 			if ($mapping) {
-
 				$target_site = get_site($mapping->get_site_id());
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $target_site;
-
-	} // end fix_sso_target_site;
+	}
 
 	/**
 	 * Returns both the naked and www. version of the given domain
@@ -256,62 +232,51 @@ class Domain_Mapping {
 	public function get_www_and_nowww_versions($domain) {
 
 		if (strncmp($domain, 'www.', strlen('www.')) === 0) {
-
 			$www   = $domain;
 			$nowww = substr($domain, 4);
-
 		} else {
-
 			$nowww = $domain;
 			$www   = 'www.' . $domain;
-
-		} // end if;
+		}
 
 		return array($nowww, $www);
-
-	} // end get_www_and_nowww_versions;
- /**
-  * Checks if we have a site associated with the domain being accessed
-  *
-  * This method tries to find a site on the network that has a mapping related to the current
-  * domain being accessed. This uses the default WordPress mapping functionality, added on 4.5.
-  *
-  * @since 2.0.0
-  *
-  * @param null|false|\WP_Site $site Site object being searched by path.
-  * @param string              $domain Domain to search for.
-  * @return null|false|\WP_Site
-  */
- public function check_domain_mapping($site, $domain) {
+	}
+	/**
+	 * Checks if we have a site associated with the domain being accessed
+	 *
+	 * This method tries to find a site on the network that has a mapping related to the current
+	 * domain being accessed. This uses the default WordPress mapping functionality, added on 4.5.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param null|false|\WP_Site $site Site object being searched by path.
+	 * @param string              $domain Domain to search for.
+	 * @return null|false|\WP_Site
+	 */
+	public function check_domain_mapping($site, $domain) {
 
 		// Have we already matched? (Allows other plugins to match first)
-		if (!empty($site)) {
-
+		if ( ! empty($site)) {
 			return $site;
-
-		} // end if;
+		}
 
 		$domains = $this->get_www_and_nowww_versions($domain);
 
 		$mapping = Domain::get_by_domain($domains);
 
 		if (empty($mapping) || is_wp_error($mapping)) {
-
 			return $site;
-
-		} // end if;
+		}
 
 		if (has_filter('mercator.use_mapping')) {
-
 			$deprecated_args = array(
 				$mapping->is_active(),
 				$mapping,
-				$domain
+				$domain,
 			);
 
 			$is_active = apply_filters_deprecated('mercator.use_mapping', $deprecated_args, '2.0.0', 'wu_use_domain_mapping');
-
-		} // end if;
+		}
 
 		/**
 		 * Determine whether a mapping should be used
@@ -327,20 +292,16 @@ class Domain_Mapping {
 		$is_active = apply_filters('wu_use_domain_mapping', $mapping->is_active(), $mapping, $domain);
 
 		// Ignore non-active mappings
-		if (!$is_active) {
-
+		if ( ! $is_active) {
 			return $site;
-
-		} // end if;
+		}
 
 		// Fetch the actual data for the site
 		$mapped_site = $mapping->get_site();
 
 		if (empty($mapped_site)) {
-
 			return $site;
-
-		} // end if;
+		}
 
 		/*
 		 * Note: This is only for backwards compatibility with WPMU Domain Mapping,
@@ -352,33 +313,26 @@ class Domain_Mapping {
 		 * Decide if we use SSL
 		 */
 		if ($mapping->is_secure()) {
-
 			force_ssl_admin(true);
-
-		} // end if;
+		}
 
 		$_site = $site;
 
 		if (is_a($mapped_site, '\WP_Site')) {
-
 			$this->original_url = $mapped_site->domain . $mapped_site->path;
 
 			$_site = $mapped_site;
-
 		} elseif (is_a($mapped_site, '\WP_Ultimo\Models\Site')) {
-
 			$this->original_url = $mapped_site->get_domain() . $mapped_site->get_path();
 
 			$_site = $mapped_site->to_wp_site();
-
-		} // end if;
+		}
 
 		/*
 		 * We found a site based on the mapped domain =)
 		 */
 		return $_site;
-
-	} // end check_domain_mapping;
+	}
 
 	/**
 	 * Clear mappings for a site when it's deleted
@@ -390,13 +344,10 @@ class Domain_Mapping {
 		$mappings = Domain::get_by_site($site->blog_id);
 
 		if (empty($mappings)) {
-
 			return;
-
-		} // end if;
+		}
 
 		foreach ($mappings as $mapping) {
-
 			$error = $mapping->delete();
 
 			if (is_wp_error($error)) {
@@ -405,12 +356,9 @@ class Domain_Mapping {
 				$message = sprintf(__('Unable to delete mapping %1$d for site %2$d', 'wp-ultimo'), $mapping->get_id(), $site->blog_id);
 
 				trigger_error($message, E_USER_WARNING);
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end clear_mappings_on_delete;
+			}
+		}
+	}
 
 	/**
 	 * Register filters for URLs, if we've mapped
@@ -422,11 +370,9 @@ class Domain_Mapping {
 
 		$current_site = $GLOBALS['current_blog'];
 
-		if (!$current_site) {
-
+		if ( ! $current_site) {
 			return;
-
-		} // end if;
+		}
 
 		$real_domain = $current_site->domain;
 		$domain      = $_SERVER['HTTP_HOST'];
@@ -435,18 +381,15 @@ class Domain_Mapping {
 
 			// Domain hasn't been mapped
 			return;
-
-		} // end if;
+		}
 
 		$domains = $this->get_www_and_nowww_versions($domain);
 
 		$mapping = Domain::get_by_domain($domains);
 
 		if (empty($mapping) || is_wp_error($mapping)) {
-
 			return;
-
-		} // end if;
+		}
 
 		$this->current_mapping = $mapping;
 
@@ -465,11 +408,9 @@ class Domain_Mapping {
 
 		// If on network site, also filter network urls
 		if (is_main_site()) {
-
 			add_filter('network_site_url', array($this, 'mangle_url'), -10, 3);
 			add_filter('network_home_url', array($this, 'mangle_url'), -10, 3);
-
-		} // end if;
+		}
 
 		add_filter('jetpack_sync_home_url', array($this, 'mangle_url'));
 		add_filter('jetpack_sync_site_url', array($this, 'mangle_url'));
@@ -491,8 +432,7 @@ class Domain_Mapping {
 		 * @return void
 		 */
 		do_action('wu_domain_mapping_register_filters', array($this, 'mangle_url'), $this);
-
-	} // end register_mapped_filters;
+	}
 
 	/**
 	 * Apply the replace URL to URL filters provided by other plugins.
@@ -504,19 +444,18 @@ class Domain_Mapping {
 	 */
 	public static function apply_mapping_to_url($hooks) {
 
-		add_action('wu_domain_mapping_register_filters', function($callback) use ($hooks) {
+		add_action(
+			'wu_domain_mapping_register_filters',
+			function ($callback) use ($hooks) {
 
-			$hooks = (array) $hooks;
+				$hooks = (array) $hooks;
 
-			foreach ($hooks as $hook) {
-
-				add_filter($hook, $callback);
-
-			} // end foreach;
-
-		});
-
-	} // end apply_mapping_to_url;
+				foreach ($hooks as $hook) {
+					add_filter($hook, $callback);
+				}
+			}
+		);
+	}
 
 	/**
 	 * Replaces the URL.
@@ -530,10 +469,8 @@ class Domain_Mapping {
 	public function replace_url($url, $current_mapping = null) {
 
 		if ($current_mapping === null) {
-
 			$current_mapping = $this->current_mapping;
-
-		} // end if;
+		}
 
 		// Replace the domain
 		$domain_base = parse_url($url, PHP_URL_HOST);
@@ -545,18 +482,15 @@ class Domain_Mapping {
 		 * Another try if we don't need to deal with subdirectory.
 		 */
 		if ($mangled === $url && $this->current_mapping !== $current_mapping) {
-
 			$domain  = rtrim($domain_base, '/');
 			$regex   = '#^(\w+://)' . preg_quote($domain, '#') . '#i';
 			$mangled = preg_replace($regex, '${1}' . $current_mapping->get_domain(), $url);
-
-		} // end if;
+		}
 
 		$mangled = wu_replace_scheme($mangled, $current_mapping->is_secure() ? 'https://' : 'http://');
 
 		return $mangled;
-
-	} // end replace_url;
+	}
 
 	/**
 	 * Mangle the home URL to give our primary domain
@@ -570,22 +504,17 @@ class Domain_Mapping {
 	public function mangle_url($url, $path = '/', $orig_scheme = '', $site_id = 0) {
 
 		if (empty($site_id)) {
-
 			$site_id = get_current_blog_id();
-
-		} // end if;
+		}
 
 		$current_mapping = $this->current_mapping;
 
 		if (empty($current_mapping) || $site_id !== $current_mapping->get_site_id()) {
-
 			return $url;
-
-		} // end if;
+		}
 
 		return $this->replace_url($url);
-
-	} // end mangle_url;
+	}
 
 	/**
 	 * Adds a fix to the srcset URLs when we need that domain mapped
@@ -597,13 +526,9 @@ class Domain_Mapping {
 	public function fix_srcset($sources) {
 
 		foreach ($sources as &$source) {
-
-			$sources[$source['value']]['url'] = $this->replace_url($sources[$source['value']]['url']);
-
-		} // end foreach;
+			$sources[ $source['value'] ]['url'] = $this->replace_url($sources[ $source['value'] ]['url']);
+		}
 
 		return $sources;
-
-	} // end fix_srcset;
-
-} // end class Domain_Mapping;
+	}
+}

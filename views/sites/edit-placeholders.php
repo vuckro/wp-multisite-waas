@@ -5,260 +5,268 @@
  * @since 2.0.0
  */
 ?>
-<div id="wu-template-placeholders" class="<?php wu_wrap_use_container() ?> wrap wp-ultimo">
+<div id="wu-template-placeholders" class="<?php wu_wrap_use_container(); ?> wrap wp-ultimo">
 
-  <h1 class="wp-heading-inline">
+	<h1 class="wp-heading-inline">
 
-    <?php _e('Template Placeholders', 'wp-ultimo'); ?>
+	<?php _e('Template Placeholders', 'wp-ultimo'); ?>
 
-  </h1>
+	</h1>
 
-  <p class="description"></p>
+	<p class="description"></p>
 
-  <hr class="wp-header-end">
+	<hr class="wp-header-end">
 
-  <div class="wu-advanced-filters">
+	<div class="wu-advanced-filters">
 
-    <form id="posts-filter" method="get">
+	<form id="posts-filter" method="get">
 
-      <div class="tablenav">
+		<div class="tablenav">
 
-        <div class="tablenav-pages one-page">
+		<div class="tablenav-pages one-page">
 
-          <span v-cloak class="displaying-num">
+			<span v-cloak class="displaying-num">
 
-            {{data.placeholders.length}} <?php _e('item(s)', 'wp-ultimo'); ?>
+			{{data.placeholders.length}} <?php _e('item(s)', 'wp-ultimo'); ?>
 
-          </span>
+			</span>
 
-        </div>
+		</div>
 
-        <br class="clear">
-      </div>
+		<br class="clear">
+		</div>
 
-      <table class="wp-list-table widefat fixed striped">
+		<table class="wp-list-table widefat fixed striped">
 
-        <thead>
+		<thead>
 
-          <tr>
+			<tr>
 
-            <th id="cb" class="manage-column column-cb" style="width: 50px;">
+			<th id="cb" class="manage-column column-cb" style="width: 50px;">
 
-              <label class="screen-reader-text" for="wu-select-2">
-                <?php _e('Select All'); ?>
-              </label>
+				<label class="screen-reader-text" for="wu-select-2">
+				<?php _e('Select All'); ?>
+				</label>
 
-              <input v-bind:disabled="!data.placeholders" v-model="toggle" v-on:click="select_all" id="wu-select-2"
-                type="checkbox">
+				<input v-bind:disabled="!data.placeholders" v-model="toggle" v-on:click="select_all" id="wu-select-2"
+				type="checkbox">
 
-            </th>
+			</th>
 
-            <?php foreach ($columns as $key => $label) : ?>
+			<?php foreach ($columns as $key => $label) : ?>
 
-            <th scope="col" id="<?php echo $key; ?>" class="manage-column sortable asc column-<?php echo $key; ?>">
-              <?php echo $label; ?>
-            </th>
+			<th scope="col" id="<?php echo $key; ?>" class="manage-column sortable asc column-<?php echo $key; ?>">
+				<?php echo $label; ?>
+			</th>
 
-            <?php endforeach; ?>
+			<?php endforeach; ?>
 
-          </tr>
+			</tr>
 
-        </thead>
+		</thead>
 
-        <tbody id="the-list">
+		<tbody id="the-list">
 
-          <tr v-if="loading && !data.placeholders.length" class="wu-text-center">
+			<tr v-if="loading && !data.placeholders.length" class="wu-text-center">
 
-            <td colspan="<?php echo count($columns) + 1; ?>">
+			<td colspan="<?php echo count($columns) + 1; ?>">
 
-              <div class="wu-p-4">
+				<div class="wu-p-4">
 
-                <?php _e('Loading Template Placeholders...', 'wp-ultimo'); ?>
+				<?php _e('Loading Template Placeholders...', 'wp-ultimo'); ?>
 
-              </div>
+				</div>
 
-            </td>
+			</td>
 
-          </tr>
+			</tr>
 
-          <tr v-cloak v-if="!loading && !data.placeholders.length" class="wu-text-center">
+			<tr v-cloak v-if="!loading && !data.placeholders.length" class="wu-text-center">
 
-            <td colspan="<?php echo count($columns) + 1; ?>">
+			<td colspan="<?php echo count($columns) + 1; ?>">
 
-              <div class="wu-p-4">
+				<div class="wu-p-4">
 
-                <?php _e('No items to display', 'wp-ultimo'); ?>
+				<?php _e('No items to display', 'wp-ultimo'); ?>
 
-              </div>
+				</div>
 
-            </td>
+			</td>
 
-          </tr>
+			</tr>
 
-          <tr v-if="data" v-cloak v-for="item in data.placeholders" :id="'tax-rate' + item.id" v-bind:class="{selected: item.selected}">
+			<tr v-if="data" v-cloak v-for="item in data.placeholders" :id="'tax-rate' + item.id" v-bind:class="{selected: item.selected}">
 
-            <th scope="row" class="check-column">
+			<th scope="row" class="check-column">
 
-              <label class="screen-reader-text" for="wu-select-1">
+				<label class="screen-reader-text" for="wu-select-1">
 
-                <?php _e('Select'); ?> {{item.title}}
+				<?php _e('Select'); ?> {{item.title}}
 
-              </label>
+				</label>
 
-              <input type="checkbox" v-model="item.selected">
+				<input type="checkbox" v-model="item.selected">
 
-            </th>
+			</th>
 
-            <?php foreach ($columns as $key => $label) : ?>
+			<?php foreach ($columns as $key => $label) : ?>
 
-            <td class="date column-<?php echo $key; ?>" data-colname="<?php echo $key; ?>">
+			<td class="date column-<?php echo $key; ?>" data-colname="<?php echo $key; ?>">
 
-              <?php
+				<?php
 
-              /**
-               * Switch for some of the fields
-               */
-              switch ($key) : case 'compound': ?>
+				/**
+				 * Switch for some of the fields
+				 */
+				switch ($key) :
+					case 'compound':
+						?>
 
-              <input type="checkbox" v-model="item.compound">
+				<input type="checkbox" v-model="item.compound">
 
-              <?php break; ?>
+				<?php break; ?>
 
-              <?php case 'placeholder': ?>
+					<?php
+					case 'placeholder':
+						?>
 
-              <input
-                class="wu-bg-transparent wu-p-4 wu-border-none wu-w-full hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
-                name="" placeholder="e.g. placeholder" v-on:input="item.<?php echo $key; ?> = $event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, '')" v-bind:value= "item.<?php echo $key; ?>">
+				<input
+				class="wu-bg-transparent wu-p-4 wu-border-none wu-w-full hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
+				name="" placeholder="e.g. placeholder" v-on:input="item.<?php echo $key; ?> = $event.target.value.toLowerCase().replace(/[^a-z0-9-_]+/g, '')" v-bind:value= "item.<?php echo $key; ?>">
 
-              <?php break; ?>
+					<?php break; ?>
 
-              <?php case 'content': ?>
+					<?php
+					case 'content':
+						?>
 
-              <textarea
-                class="wu-bg-transparent wu-p-4 wu-m-0 wu-border-none wu-w-full wu-float-left hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
-                name="" placeholder="e.g. Content" v-model="item.<?php echo $key; ?>" rows="1"></textarea>
+				<textarea
+				class="wu-bg-transparent wu-p-4 wu-m-0 wu-border-none wu-w-full wu-float-left hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
+				name="" placeholder="e.g. Content" v-model="item.<?php echo $key; ?>" rows="1"></textarea>
 
-              <?php break; ?>
+					<?php break; ?>
 
-              <?php default: ?>
+					<?php
+					default:
+						?>
 
-              <input
-                class="wu-bg-transparent wu-p-4 wu-border-none wu-w-full hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
-                name="" placeholder="*" v-model="item.<?php echo $key; ?>">
+				<input
+				class="wu-bg-transparent wu-p-4 wu-border-none wu-w-full hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
+				name="" placeholder="*" v-model="item.<?php echo $key; ?>">
 
-              <?php break; ?>
+					<?php break; ?>
 
-              <?php endswitch; ?>
+				<?php endswitch; ?>
 
-            </td>
+			</td>
 
-            <?php endforeach; ?>
+			<?php endforeach; ?>
 
-          </tr>
+			</tr>
 
-        </tbody>
+		</tbody>
 
-        <tfoot>
+		<tfoot>
 
-          <tr>
+			<tr>
 
-            <th id="cb" class="manage-column column-cb">
+			<th id="cb" class="manage-column column-cb">
 
-              <label class="screen-reader-text" for="wu-select">
+				<label class="screen-reader-text" for="wu-select">
 
-                <?php _e('Select All'); ?>
+				<?php _e('Select All'); ?>
 
-              </label>
+				</label>
 
-              <input v-bind:disabled="!data.placeholders.length" v-model="toggle" v-on:click="select_all" id="wu-select"
-                type="checkbox">
+				<input v-bind:disabled="!data.placeholders.length" v-model="toggle" v-on:click="select_all" id="wu-select"
+				type="checkbox">
 
-            </th>
+			</th>
 
-            <?php foreach ($columns as $key => $label) : ?>
+			<?php foreach ($columns as $key => $label) : ?>
 
-            <th scope="col" id="<?php echo $key; ?>" class="manage-column sortable asc column-<?php echo $key; ?>">
+			<th scope="col" id="<?php echo $key; ?>" class="manage-column sortable asc column-<?php echo $key; ?>">
 
-              <?php echo $label; ?>
+				<?php echo $label; ?>
 
-            </th>
+			</th>
 
-            <?php endforeach; ?>
+			<?php endforeach; ?>
 
-          </tr>
+			</tr>
 
-        </tfoot>
+		</tfoot>
 
-      </table>
-  </div>
+		</table>
+	</div>
 
-  <div class="tablenav bottom wu-bg-gray-100 wu-p-4" v-cloak v-show="!creating">
+	<div class="tablenav bottom wu-bg-gray-100 wu-p-4" v-cloak v-show="!creating">
 
-    <div class="alignleft actions">
+	<div class="alignleft actions">
 
-      <button v-on:click.prevent="add_row" class="button">
+		<button v-on:click.prevent="add_row" class="button">
 
-        <?php _e('Add new Row', 'wp-ultimo'); ?>
+		<?php _e('Add new Row', 'wp-ultimo'); ?>
 
-      </button>
+		</button>
 
-      <button v-on:click.prevent="delete_rows" class="button">
+		<button v-on:click.prevent="delete_rows" class="button">
 
-        <?php _e('Delete Selected Rows', 'wp-ultimo'); ?>
+		<?php _e('Delete Selected Rows', 'wp-ultimo'); ?>
 
-      </button>
+		</button>
 
-    </div>
+	</div>
 
-    <div class="alignleft actions">
+	<div class="alignleft actions">
 
-      <?php
+		<?php
 
-        /**
-         * Let developers print additional buttons to this screen
-         * Our very on EU VAT functions hook on this to display our VAT helper button
-         *
-         * @since 2.0.0
-         */
-        do_action('wu_edit_placeholders_screen_additional_actions');
+		/**
+		 * Let developers print additional buttons to this screen
+		 * Our very on EU VAT functions hook on this to display our VAT helper button
+		 *
+		 * @since 2.0.0
+		 */
+		do_action('wu_edit_placeholders_screen_additional_actions');
 
-        ?>
+		?>
 
-    </div>
+	</div>
 
-    <div class="alignright actions">
+	<div class="alignright actions">
 
-      <span v-if="changed && !saveMessage && !saving" class="description"
-        style="display: inline-block; line-height: 28px; margin-right: 10px;">
-        <?php _e('Save your changes!', 'wp-ultimo'); ?>
-      </span>
+		<span v-if="changed && !saveMessage && !saving" class="description"
+		style="display: inline-block; line-height: 28px; margin-right: 10px;">
+		<?php _e('Save your changes!', 'wp-ultimo'); ?>
+		</span>
 
-      <span v-if="saving" class="description" style="display: inline-block; line-height: 28px; margin-right: 10px;">
-        <?php _e('Saving...', 'wp-ultimo'); ?>
-      </span>
+		<span v-if="saving" class="description" style="display: inline-block; line-height: 28px; margin-right: 10px;">
+		<?php _e('Saving...', 'wp-ultimo'); ?>
+		</span>
 
-      <span v-if="saveMessage" class="description"
-        style="display: inline-block; line-height: 28px; margin-right: 10px;">
-        {{saveMessage}}
-      </span>
+		<span v-if="saveMessage" class="description"
+		style="display: inline-block; line-height: 28px; margin-right: 10px;">
+		{{saveMessage}}
+		</span>
 
-      <button v-on:click.prevent="save" v-bind:disabled="saving" class="button button-primary">
-        <?php _e('Save Template Placeholders'); ?>
-      </button>
-    </div>
+		<button v-on:click.prevent="save" v-bind:disabled="saving" class="button button-primary">
+		<?php _e('Save Template Placeholders'); ?>
+		</button>
+	</div>
 
-    <br class="clear">
+	<br class="clear">
 
-    </form>
+	</form>
 
-  </div>
+	</div>
 
-  <form id="nonce_form">
+	<form id="nonce_form">
 
-    <?php wp_nonce_field('wu_edit_placeholders_editing'); ?>
+	<?php wp_nonce_field('wu_edit_placeholders_editing'); ?>
 
-  </form>
+	</form>
 
-  <br class="clear">
+	<br class="clear">
 
 </div>

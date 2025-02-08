@@ -83,8 +83,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 		 * This is needed because, from our tests, WPMU DEV hosting takes a while to get the SSL certificate.
 		 */
 		add_filter('wu_async_process_domain_stage_max_tries', array($this, 'ssl_tries'), 10, 2);
-
-	} // end init;
+	}
 
 	/**
 	 * Increases the number of tries to get the SSL certificate.
@@ -96,21 +95,16 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 */
 	public function ssl_tries($max_tries, $domain) {
 
-		if (!$this->is_enabled()) {
-
+		if ( ! $this->is_enabled()) {
 			return $max_tries;
-
-		} // end if;
+		}
 
 		if ('checking-ssl-cert' === $domain->get_stage()) {
-
 			$max_tries = 10;
-
-		} // end if;
+		}
 
 		return $max_tries;
-
-	} // end ssl_tries;
+	}
 
 	/**
 	 * Picks up on tips that a given host provider is being used.
@@ -123,8 +117,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	public function detect() {
 
 		return defined('WPMUDEV_HOSTING_SITE_ID') && WPMUDEV_HOSTING_SITE_ID;
-
-	} // end detect;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -143,30 +136,29 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 		$domains = array($domain);
 
 		if (strncmp($domain, 'www.', strlen('www.')) !== 0) {
-
 			$domains[] = "www.$domain";
-
-		} // end if;
+		}
 
 		foreach ($domains as $_domain) {
-
-			$response = wp_remote_post("https://premium.wpmudev.org/api/hosting/v1/$site_id/domains", array(
-				'timeout' => 50,
-				'body'    => array(
-					'domain'  => $_domain,
-					'site_id' => $site_id,
-				),
-				'headers' => array(
-					'Authorization' => $api_key,
-				),
-			));
+			$response = wp_remote_post(
+				"https://premium.wpmudev.org/api/hosting/v1/$site_id/domains",
+				array(
+					'timeout' => 50,
+					'body'    => array(
+						'domain'  => $_domain,
+						'site_id' => $site_id,
+					),
+					'headers' => array(
+						'Authorization' => $api_key,
+					),
+				)
+			);
 
 			if (is_wp_error($response)) {
 
 				// translators: The %s placeholder will be replaced with the domain name.
 				wu_log_add('integration-wpmudev', sprintf(__('An error occurred while trying to add the custom domain %s to WPMU Dev hosting.', 'wp-ultimo'), $_domain), LogLevel::ERROR);
-
-			} // end if;
+			}
 
 			$body = json_decode(wp_remote_retrieve_body($response));
 
@@ -174,17 +166,13 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 
 				// translators: The %1$s will be replaced with the domain name and %2$s is the error message.
 				wu_log_add('integration-wpmudev', sprintf(__('An error occurred while trying to add the custom domain %1$s to WPMU Dev hosting: %2$s', 'wp-ultimo'), $_domain, $body->message->message), LogLevel::ERROR);
-
 			} else {
 
 				// translators: The %s placeholder will be replaced with the domain name.
 				wu_log_add('integration-wpmudev', sprintf(__('Domain %s added to WPMU Dev hosting successfully.', 'wp-ultimo'), $_domain));
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end on_add_domain;
+			}
+		}
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -202,8 +190,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 		 *
 		 * @todo Implement support to removing domains when a mapping is removed.
 		 */
-
-	} // end on_remove_domain;
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -215,7 +202,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_add_subdomain($subdomain, $site_id) {} // end on_add_subdomain;
+	public function on_add_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -227,7 +214,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {} // end on_remove_subdomain;
+	public function on_remove_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * Tests the connection with the WPMUDEV API.
@@ -241,24 +228,22 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 
 		$api_key = get_site_option('wpmudev_apikey');
 
-		$response = wp_remote_get("https://premium.wpmudev.org/api/hosting/v1/{$site_id}/domains", array(
-			'timeout' => 50,
-			'headers' => array(
-				'Authorization' => $api_key,
-			),
-		));
+		$response = wp_remote_get(
+			"https://premium.wpmudev.org/api/hosting/v1/{$site_id}/domains",
+			array(
+				'timeout' => 50,
+				'headers' => array(
+					'Authorization' => $api_key,
+				),
+			)
+		);
 
 		if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
-
 			wp_send_json_error($response);
-
 		} else {
-
 			wp_send_json_success(wp_remote_retrieve_body($response));
-
-		} // end if;
-
-	} // end test_connection;
+		}
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -269,8 +254,7 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __('WPMU DEV is one of the largest companies in the WordPress space. Founded in 2004, it was one of the first companies to scale the Website as a Service model with products such as Edublogs and CampusPress.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -281,7 +265,5 @@ class WPMUDEV_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('wpmudev.jpg', 'img/hosts');
-
-	} // end get_logo;
-
-} // end class WPMUDEV_Host_Provider;
+	}
+}

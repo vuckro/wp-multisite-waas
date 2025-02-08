@@ -81,8 +81,7 @@ class Toolkit {
 		add_filter('qm/collectors', array($this, 'register_collector_overview'), 1, 2);
 
 		add_filter('qm/outputter/html', array($this, 'add_overview_panel'), 50, 2);
-
-	} // end init;
+	}
 
 	/**
 	 * Registers the default listeners.
@@ -107,8 +106,7 @@ class Toolkit {
 		$this->listen('save-rest-arguments', array($this, 'save_route_arguments'), 'wu_rest_register_routes_general');
 
 		$this->listen('save-rest-arguments', array($this, 'save_route_arguments'), 'wu_rest_register_routes_with_id');
-
-	} // end register_default_listeners;
+	}
 
 	/**
 	 * Save route arguments to files to deal with opcache.
@@ -128,8 +126,7 @@ class Toolkit {
 		$args = $manager->get_arguments_schema($context === 'update');
 
 		file_put_contents(wu_path("/mpb/data/endpoint/.endpoint-$class_name-$context"), json_encode($args)); // phpcs:ignore
-
-	} // end save_route_arguments;
+	}
 
 	/**
 	 * Adds a listener for development purposes.
@@ -144,35 +141,38 @@ class Toolkit {
 	 */
 	public function listen($hook, $callback, $wp_hook = 'wp_ultimo_load', $order = 1) {
 
-		$this->listeners[$hook] = ($this->listeners[$hook] ?? 0) + 1;
+		$this->listeners[ $hook ] = ($this->listeners[ $hook ] ?? 0) + 1;
 
-		$this->wp_hooks[$wp_hook] = 1;
+		$this->wp_hooks[ $wp_hook ] = 1;
 
 		$action = $this->get_action($hook, $wp_hook);
 
 		$order = $this->get_order($hook, $order);
 
-		add_action($action, function(...$arguments) use ($callback, $action, $order) {
+		add_action(
+			$action,
+			function (...$arguments) use ($callback, $action, $order) {
 
-			$timing_id = sprintf('%s_%s_%s', $action, $this->run + 1, $order);
+				$timing_id = sprintf('%s_%s_%s', $action, $this->run + 1, $order);
 
 			// phpcs:ignore
 			do_action('qm/start', $timing_id); 
 
-			$result = call_user_func_array($callback, $arguments);
+				$result = call_user_func_array($callback, $arguments);
 
 			 // phpcs:ignore
 			do_action('qm/stop', $timing_id);
 
-			$this->run++;
+				$this->run++;
 
-			return $result;
-
-		}, $order, 100);
+				return $result;
+			},
+			$order,
+			100
+		);
 
 		return $this;
-
-	} // end listen;
+	}
 
 	/**
 	 * Sets flags for the development environment.
@@ -197,17 +197,12 @@ class Toolkit {
 		);
 
 		foreach ($configs as $constant_name => $constant_value) {
-
 			if (in_array($constant_name, $allowed_configs, true)) {
-
 				// phpcs:ignore
 				defined($constant_name) === false && define($constant_name, $constant_value);
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end config;
+			}
+		}
+	}
 
 	/**
 	 * Marks the development environment to finish execution after all listeners are run.
@@ -220,14 +215,11 @@ class Toolkit {
 	public function die($should_die = true) {
 
 		if ($should_die === true) {
-
 			$should_die = is_admin() ? 'admin_enqueue_scripts' : 'wp_enqueue_scripts';
-
-		} // end if;
+		}
 
 		$this->should_die = $should_die;
-
-	} // end die;
+	}
 
 	/**
 	 * Run a registered listener.
@@ -243,20 +235,15 @@ class Toolkit {
 		$listener = wu_request(self::LISTENER_PARAM, 'no-dev-param');
 
 		if ($listener === 'no-dev-param') {
-
 			return current($arguments);
-
 		} elseif ($listener === '') {
-
 			$listener = 'index';
-
-		} // end if;
+		}
 
 		$action = $this->get_action($listener, $wp_hook);
 
 		return do_action_ref_array($action, $arguments); // phpcs:ignore
-
-	} // end run_listener;
+	}
 
 	/**
 	 * Loads the sandbox environment.
@@ -280,26 +267,20 @@ class Toolkit {
 			$toolkit = $this;
 
 			include $dev_file;
-
-		} // end if;
+		}
 
 		$wp_hooks = array_keys($this->wp_hooks);
 
 		foreach ($wp_hooks as $wp_hook) {
-
 			add_action($wp_hook, fn(...$arguments) => $this->run_listener($wp_hook, $arguments), 0, 100);
-
-		} // end foreach;
+		}
 
 		add_action('shutdown', array($this, 'setup_query_monitor'));
 
 		if ($this->should_die) {
-
 			$this->dump_and_die(end($wp_hooks));
-
-		} // end if;
-
-	} // end load_sandbox;
+		}
+	}
 
 	/**
 	 * Setups the query monitor integration.
@@ -310,7 +291,6 @@ class Toolkit {
 	public function setup_query_monitor() {
 
 		if (class_exists('\QM_Dispatchers')) {
-
 			// phpcs:ignore
 			do_action('qm/debug', sprintf('Actions with listeners: %s', $this->get_wp_hooks_list()));
 
@@ -320,23 +300,17 @@ class Toolkit {
 			// phpcs:ignore
 			$dispatcher = \QM_Dispatchers::get('html');
 
-			if (!$dispatcher) {
-
+			if (! $dispatcher) {
 				return;
-
-			} // end if;
+			}
 
 			$dispatcher->did_footer = true;
 
 			if ($this->should_die && $this->run) {
-
 				$this->enqueue_scripts($dispatcher);
-
-			} // end if;
-
-		} // end if;
-
-	} // end setup_query_monitor;
+			}
+		}
+	}
 
 	/**
 	 * Registers the collector overview.
@@ -352,8 +326,7 @@ class Toolkit {
 		$collectors['wp-ultimo'] = new Query_Monitor\Collectors\Collector_Overview();
 
 		return $collectors;
-
-	} // end register_collector_overview;
+	}
 
 	/**
 	 * Adds the overview panel.
@@ -370,8 +343,7 @@ class Toolkit {
 		$output['wp-ultimo'] = new Query_Monitor\Panel\Overview($collector);
 
 		return $output;
-
-	} // end add_overview_panel;
+	}
 
 	/**
 	 * Manually enqueues query monitor and WP Multisite WaaS styles.
@@ -383,15 +355,16 @@ class Toolkit {
 	 */
 	protected function enqueue_scripts($dispatcher) {
 
-		echo sprintf('<link rel="stylesheet" id="toolkit" href="%s" type="text/css" media="all">', wu_url('inc/development/assets/development.css'));
+		printf('<link rel="stylesheet" id="toolkit" href="%s" type="text/css" media="all">', wu_url('inc/development/assets/development.css'));
 
-		wp_print_styles(array(
-			'wu-admin',
-		));
+		wp_print_styles(
+			array(
+				'wu-admin',
+			)
+		);
 
 		$dispatcher->manually_print_assets(); // phpcs:ignore
-
-	} // end enqueue_scripts;
+	}
 
 	/**
 	 * Returns a comma-separated list of listeners.
@@ -403,8 +376,7 @@ class Toolkit {
 		$listener_names = array_keys($this->listeners);
 
 		return implode(', ', $listener_names);
-
-	} // end get_listeners_list;
+	}
 
 	/**
 	 * Returns a comma-separated list of WordPress hooks.
@@ -416,8 +388,7 @@ class Toolkit {
 		$wp_hook_names = array_keys($this->wp_hooks);
 
 		return implode(', ', $wp_hook_names);
-
-	} // end get_wp_hooks_list;
+	}
 
 	/**
 	 * Dumps the development content and kill the execution.
@@ -429,29 +400,27 @@ class Toolkit {
 	 */
 	protected function dump_and_die($hook) {
 
-		add_action($hook, function() use ($hook) {
+		add_action(
+			$hook,
+			function () use ($hook) {
 
-			if (did_action($this->should_die) && $this->run) {
+				if (did_action($this->should_die) && $this->run) {
+					$this->render_listeners_menu();
 
-				$this->render_listeners_menu();
+					do_action('shutdown'); // phpcs:ignore
 
-				do_action('shutdown'); // phpcs:ignore
+					$message = sprintf('Execution killed on %s.', $hook);
 
-				$message = sprintf('Execution killed on %s.', $hook);
+					do_action('qm/info', $message); // phpcs:ignore
 
-				do_action('qm/info', $message); // phpcs:ignore
-
-				die();
-
-			} else {
-
-				return $this->dump_and_die($this->should_die);
-
-			} // end if;
-
-		}, 110);
-
-	} // end dump_and_die;
+					die();
+				} else {
+					return $this->dump_and_die($this->should_die);
+				}
+			},
+			110
+		);
+	}
 
 	/**
 	 * Get the order of a newly added listener.
@@ -464,9 +433,8 @@ class Toolkit {
 	 */
 	protected function get_order($hook, $order = 1) {
 
-		return 10 + (absint($this->listeners[$hook]) * $order * 10) + 5;
-
-	} // end get_order;
+		return 10 + (absint($this->listeners[ $hook ]) * $order * 10) + 5;
+	}
 
 	/**
 	 * Get the action name based on the listener hook and WP action.
@@ -481,8 +449,7 @@ class Toolkit {
 		$hook = str_replace('-', '_', $hook);
 
 		return sprintf('wu_sandbox_run_%s_%s', $hook, $wp_hook);
-
-	} // end get_action;
+	}
 
 	/**
 	 * Render the list of listeners with links.
@@ -496,10 +463,8 @@ class Toolkit {
 		 * Make sure we display it only once.
 		 */
 		if ($this->displayed_footer) {
-
 			return;
-
-		} // end if;
+		}
 
 		// phpcs:disable
 		echo '
@@ -509,13 +474,13 @@ class Toolkit {
 
 						foreach (array_keys($this->listeners) as $listener) {
 
-							echo sprintf(
-								'<li><a href="%s">→ Listener "%s"</a></li>',
-								add_query_arg(self::LISTENER_PARAM, $listener),
-								$listener
-							);
+			echo sprintf(
+'<li><a href="%s">→ Listener "%s"</a></li>',
+add_query_arg(self::LISTENER_PARAM, $listener),
+$listener
+);
 
-						} // end foreach;
+						}
 
 				echo '
 			</ul>
@@ -523,6 +488,6 @@ class Toolkit {
 
 		$this->displayed_footer = true;
 
-	} // end render_listeners_menu;
+	}
 
-} // end class Toolkit;
+}

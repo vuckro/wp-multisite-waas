@@ -44,12 +44,14 @@ class Unique extends Rule {
 	 *
 	 * @param mixed $value Value being checked.
 	 */
-	public function check($value) : bool {
+	public function check($value): bool {
 
-		$this->requireParameters(array(
-			'model',
-			'column',
-		));
+		$this->requireParameters(
+			array(
+				'model',
+				'column',
+			)
+		);
 
 		$column  = $this->parameter('column');
 		$model   = $this->parameter('model');
@@ -76,24 +78,18 @@ class Unique extends Rule {
 		* Customize the error message for the customer.
 		*/
 		if (in_array($model, $user_models, true)) {
-
 			$this->message = __('A customer with the same email address or username already exists.', 'wp-ultimo');
+		}
 
-		} // end if;
-
-		if (!$existing) {
-
+		if ( ! $existing) {
 			return true;
-
-		} // end if;
+		}
 		if ( $existing instanceof \WP_User) {
 			$id = $existing->ID;
 		} else {
-			$id = method_exists( $existing, 'get_id' ) ? $existing->get_id() : $existing->id;
+			$id = method_exists($existing, 'get_id') ? $existing->get_id() : $existing->id;
 		}
 
 		return absint($id) === absint($self_id);
-
-	} // end check;
-
-} // end class Unique;
+	}
+}

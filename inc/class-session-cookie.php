@@ -11,8 +11,8 @@
 
 namespace WP_Ultimo;
 
-use \WP_Ultimo\Contracts\Session;
-use \Delight\Cookie\Cookie;
+use WP_Ultimo\Contracts\Session;
+use Delight\Cookie\Cookie;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -27,18 +27,18 @@ class Session_Cookie implements Session {
 	 *
 	 * @var array
 	 */
-    protected $data = array();
+	protected $data = array();
 
 	/**
 	 * If the session has already loaded
 	 *
 	 * @var boolean
 	 */
-    protected $loaded = false;
-    /**
-     * @var string
-     */
-    protected $realm_name;
+	protected $loaded = false;
+	/**
+	 * @var string
+	 */
+	protected $realm_name;
 
 	/**
 	 * Constructs the manager.
@@ -49,24 +49,21 @@ class Session_Cookie implements Session {
 	 */
 	public function __construct($realm_name) {
 
-        $this->realm_name = $realm_name;
-        if ($this->loaded === true) {
-
-            return;
-
+		$this->realm_name = $realm_name;
+		if ($this->loaded === true) {
+			return;
 		}
 
-        $cookie_name = $this->get_cookie_name();
+		$cookie_name = $this->get_cookie_name();
 
-        $data_raw = Cookie::get($cookie_name, '{"new": true}');
-        $data_raw = urldecode((string) $data_raw);
-        $data_raw = stripslashes($data_raw);
+		$data_raw = Cookie::get($cookie_name, '{"new": true}');
+		$data_raw = urldecode((string) $data_raw);
+		$data_raw = stripslashes($data_raw);
 
-        $this->data = json_decode($data_raw, true);
+		$this->data = json_decode($data_raw, true);
 
-        $this->loaded = true;
-
-	} // end __construct;
+		$this->loaded = true;
+	}
 
 	/**
 	 * Get the name of current cookie.
@@ -76,8 +73,7 @@ class Session_Cookie implements Session {
 	protected function get_cookie_name() {
 
 		return "wu_session_{$this->realm_name}";
-
-	} // end get_cookie_name;
+	}
 
 	/**
 	 * Gets the value of a session key.
@@ -89,15 +85,12 @@ class Session_Cookie implements Session {
 	 */
 	public function get($key = null) {
 
-		if (!$key) {
-
+		if ( ! $key) {
 			return $this->data;
+		}
 
-		} // end if;
-
-        return is_array($this->data) && isset($this->data[$key]) ? $this->data[$key] : null;
-
-	} // end get;
+		return is_array($this->data) && isset($this->data[ $key ]) ? $this->data[ $key ] : null;
+	}
 	/**
 	 * Set the value of a session key.
 	 *
@@ -108,11 +101,10 @@ class Session_Cookie implements Session {
 	 */
 	public function set($key, $value): bool {
 
-        $this->data[$key] = $value;
+		$this->data[ $key ] = $value;
 
-        return true;
-
-	} // end set;
+		return true;
+	}
 	/**
 	 * Appends values to a given key, instead of replacing it.
 	 *
@@ -123,13 +115,12 @@ class Session_Cookie implements Session {
 	 */
 	public function add_values($key, $values): bool {
 
-		$old_values = isset($this->data[$key]) ? $this->data[$key] : array();
+		$old_values = isset($this->data[ $key ]) ? $this->data[ $key ] : array();
 
-		$this->data[$key] = array_merge($old_values, $values);
+		$this->data[ $key ] = array_merge($old_values, $values);
 
 		return true;
-
-	} // end add_values;
+	}
 	/**
 	 * Writes to the session and closes the connection.
 	 *
@@ -138,11 +129,9 @@ class Session_Cookie implements Session {
 	 */
 	public function commit($expire = null): bool {
 
-        if ($expire === null) {
-
+		if ($expire === null) {
 			$expire = HOUR_IN_SECONDS;
-
-        } // end if;
+		}
 
 		$value = json_encode($this->data, JSON_UNESCAPED_UNICODE);
 
@@ -158,11 +147,10 @@ class Session_Cookie implements Session {
 		$cookie->save();
 
 		// Set for current call
-		$_COOKIE[$this->get_cookie_name()] = $value;
+		$_COOKIE[ $this->get_cookie_name() ] = $value;
 
 		return true;
-
-	} // end commit;
+	}
 
 	/**
 	 * Clears the current session.
@@ -171,9 +159,8 @@ class Session_Cookie implements Session {
 	 */
 	public function clear() {
 
-        $this->data = array();
-
-	} // end clear;
+		$this->data = array();
+	}
 
 	/**
 	 * Destroys the session. Equivalent to session_destroy();
@@ -186,10 +173,8 @@ class Session_Cookie implements Session {
 		$name = $this->get_cookie_name();
 
 		// unset from current call
-		unset($_COOKIE[$this->get_cookie_name()]);
+		unset($_COOKIE[ $this->get_cookie_name() ]);
 
 		return (new Cookie($name))->delete();
-
-	} // end destroy;
-
-} // end class Session_Cookie;
+	}
+}

@@ -12,7 +12,7 @@ namespace WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Period_Selection;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Base_Field_Template;
+use WP_Ultimo\Checkout\Signup_Fields\Field_Templates\Base_Field_Template;
 
 /**
  * Template Selection Clean
@@ -52,8 +52,7 @@ class Legacy_Period_Selection_Field_Template extends Base_Field_Template {
 	public function get_render_type(): string {
 
 		return 'dynamic';
-
- 	} // end get_render_type;
+	}
 
 	/**
 	 * The title of the field template.
@@ -66,8 +65,7 @@ class Legacy_Period_Selection_Field_Template extends Base_Field_Template {
 	public function get_title() {
 
 		return __('Legacy', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the field template.
@@ -80,8 +78,7 @@ class Legacy_Period_Selection_Field_Template extends Base_Field_Template {
 	public function get_description() {
 
 		return __('Implementation of the layout that shipped with WP Multisite WaaS < 1.10.X.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The preview image of the field template.
@@ -94,8 +91,7 @@ class Legacy_Period_Selection_Field_Template extends Base_Field_Template {
 	public function get_preview(): string {
 
 		return wu_get_asset('checkout-forms/legacy-period-selection.png');
-
-	} // end get_preview;
+	}
 
 	/**
 	 * The content of the template.
@@ -108,7 +104,5 @@ class Legacy_Period_Selection_Field_Template extends Base_Field_Template {
 	public function output($attributes) {
 
 		wu_get_template('checkout/templates/period-selection/legacy', $attributes);
-
-	} // end output;
-
-} // end class Legacy_Period_Selection_Field_Template;
+	}
+}

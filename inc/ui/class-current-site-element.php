@@ -63,23 +63,20 @@ class Current_Site_Element extends Base_Element {
 	public $membership;
 
 	/**
-     * The icon of the UI element.
-     * e.g. return fa fa-search
-     *
-     * @since 2.0.0
-     * @param string $context One of the values: block, elementor or bb.
-     */
+	 * The icon of the UI element.
+	 * e.g. return fa fa-search
+	 *
+	 * @since 2.0.0
+	 * @param string $context One of the values: block, elementor or bb.
+	 */
 	public function get_icon($context = 'block'): string {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-info-circle-o';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Overload the init to add site-related forms.
@@ -91,13 +88,15 @@ class Current_Site_Element extends Base_Element {
 
 		parent::init();
 
-		wu_register_form('edit_site', array(
-			'render'     => array($this, 'render_edit_site'),
-			'handler'    => array($this, 'handle_edit_site'),
-			'capability' => 'exist',
-		));
-
-	} // end init;
+		wu_register_form(
+			'edit_site',
+			array(
+				'render'     => array($this, 'render_edit_site'),
+				'handler'    => array($this, 'handle_edit_site'),
+				'capability' => 'exist',
+			)
+		);
+	}
 
 	/**
 	 * The title of the UI element.
@@ -112,8 +111,7 @@ class Current_Site_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Site', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -129,8 +127,7 @@ class Current_Site_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a block to display the current site being managed.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -167,19 +164,19 @@ class Current_Site_Element extends Base_Element {
 			'value'   => 1,
 		);
 
-		$pages = get_pages(array(
-			'exclude' => array(get_the_ID()),
-		));
+		$pages = get_pages(
+			array(
+				'exclude' => array(get_the_ID()),
+			)
+		);
 
 		$pages = $pages ? $pages : array();
 
 		$pages_list = array(0 => __('Current Page', 'wp-ultimo'));
 
 		foreach ($pages as $page) {
-
-			$pages_list[$page->ID] = $page->post_title;
-
-		} // end foreach;
+			$pages_list[ $page->ID ] = $page->post_title;
+		}
 
 		$fields['breadcrumbs_my_sites_page'] = array(
 			'type'    => 'select',
@@ -242,8 +239,7 @@ class Current_Site_Element extends Base_Element {
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -271,8 +267,7 @@ class Current_Site_Element extends Base_Element {
 			'Form',
 			'Cart',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -299,8 +294,7 @@ class Current_Site_Element extends Base_Element {
 			'breadcrumbs_my_sites_page' => 0,
 			'show_admin_link'           => 1,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -312,17 +306,14 @@ class Current_Site_Element extends Base_Element {
 
 		$this->site = WP_Ultimo()->currents->get_site();
 
-		if (!$this->site || !$this->site->is_customer_allowed()) {
-
+		if ( ! $this->site || ! $this->site->is_customer_allowed()) {
 			$this->set_display(false);
 
 			return;
-
-		} // end if;
+		}
 
 		$this->membership = $this->site->get_membership();
-
-	} // end setup;
+	}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -335,8 +326,7 @@ class Current_Site_Element extends Base_Element {
 		$this->site = wu_mock_site();
 
 		$this->membership = wu_mock_membership();
-
-	} // end setup_preview;
+	}
 
 	/**
 	 * Loads the required scripts.
@@ -347,8 +337,7 @@ class Current_Site_Element extends Base_Element {
 	public function register_scripts() {
 
 		add_wubox();
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -376,22 +365,23 @@ class Current_Site_Element extends Base_Element {
 				'label'        => __('Edit Site', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-edit wu-align-text-bottom',
 				'classes'      => 'wubox',
-				'href'         => wu_get_form_url('edit_site', array(
-					'site' => $this->site->get_hash(),
-				)),
+				'href'         => wu_get_form_url(
+					'edit_site',
+					array(
+						'site' => $this->site->get_hash(),
+					)
+				),
 			),
 		);
 
 		if ($atts['show_admin_link']) {
-
 			$actions['site_admin'] = array(
 				'label'        => __('Admin Panel', 'wp-ultimo'),
 				'icon_classes' => 'dashicons-wu-grid wu-align-text-bottom',
 				'classes'      => '',
 				'href'         => get_admin_url($this->site->get_id()),
 			);
-
-		} // end if;
+		}
 
 		$atts['actions'] = apply_filters('wu_current_site_actions', $actions, $this->site);
 
@@ -404,8 +394,7 @@ class Current_Site_Element extends Base_Element {
 		$atts['my_sites_url'] = is_admin() ? admin_url('admin.php?page=sites') : $my_sites_url;
 
 		return wu_get_template_contents('dashboard-widgets/current-site', $atts);
-
-	} // end output;
+	}
 
 	/**
 	 * Renders the edit site modal.
@@ -417,11 +406,9 @@ class Current_Site_Element extends Base_Element {
 
 		$site = wu_get_site_by_hash(wu_request('site'));
 
-		if (!$site) {
-
+		if ( ! $site) {
 			return '';
-
-		} // end if;
+		}
 
 		$fields = array(
 			'site_title'       => array(
@@ -460,21 +447,26 @@ class Current_Site_Element extends Base_Element {
 
 		$fields = apply_filters('wu_form_edit_site', $fields, $this);
 
-		$form = new \WP_Ultimo\UI\Form('edit_site', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'edit_site',
-				'data-state'  => wu_convert_to_state(array(
-					'site_title' => $site->get_title(),
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'edit_site',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'edit_site',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'site_title' => $site->get_title(),
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_edit_site;
+	}
 
 	/**
 	 * Handles the password reset form.
@@ -486,32 +478,28 @@ class Current_Site_Element extends Base_Element {
 
 		$site = wu_get_site_by_hash(wu_request('site'));
 
-		if (!$site) {
-
+		if ( ! $site) {
 			$error = new \WP_Error('site-dont-exist', __('Something went wrong.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$new_title = wu_request('site_title');
 
-		if (!$new_title) {
-
+		if ( ! $new_title) {
 			$error = new \WP_Error('title_empty', __('Site title can not be empty.', 'wp-ultimo'));
 
 			wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$status = update_blog_option($site->get_id(), 'blogname', $new_title);
 
 		$status_desc = update_blog_option($site->get_id(), 'blogdescription', wu_request('site_description'));
 
-		wp_send_json_success(array(
-			'redirect_url' => add_query_arg('updated', (int) $status, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_edit_site;
-
-} // end class Current_Site_Element;
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg('updated', (int) $status, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
+}

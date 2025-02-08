@@ -7,45 +7,45 @@
 ?>
 <div class="wu-my-6">
 
-  <div class="wu-flex">
+	<div class="wu-flex">
 
-    <div class="wu-w-1/3">
+	<div class="wu-w-1/3">
 
-      <label for="<?php echo esc_attr($field->id); ?>">
+		<label for="<?php echo esc_attr($field->id); ?>">
 
-        <?php echo $field->title; ?>
+		<?php echo $field->title; ?>
 
-      </label>
+		</label>
 
-    </div>
+	</div>
 
-    <div class="wu-w-2/3">
+	<div class="wu-w-2/3">
 
-      <input class="field-<?php echo esc_attr($field->id); ?>" name="<?php echo esc_attr($field->id); ?>" type="text" id="<?php echo esc_attr($field->id); ?>" class="regular-text" value="<?php echo wu_get_setting($field->id); ?>" placeholder="<?php echo $field->placeholder ? $field->placeholder : ''; ?>">
+		<input class="field-<?php echo esc_attr($field->id); ?>" name="<?php echo esc_attr($field->id); ?>" type="text" id="<?php echo esc_attr($field->id); ?>" class="regular-text" value="<?php echo wu_get_setting($field->id); ?>" placeholder="<?php echo $field->placeholder ? $field->placeholder : ''; ?>">
 
-      <?php if ($field->desc) : ?>
+		<?php if ($field->desc) : ?>
 
-        <p class="description" id="<?php echo $field->id; ?>-desc">
+		<p class="description" id="<?php echo $field->id; ?>-desc">
 
-          <?php echo $field->desc; ?>
+			<?php echo $field->desc; ?>
 
-        </p>
+		</p>
 
-      <?php endif; ?>
+		<?php endif; ?>
 
-    </div>
+	</div>
 
-  </div>
+	</div>
 
-  <?php // if (isset($field['tooltip'])) {echo WU_Util::tooltip($field['tooltip']);} ?>
+	<?php // if (isset($field['tooltip'])) {echo WU_Util::tooltip($field['tooltip']);} ?>
 
 </div>
 
 <script type="text/javascript">
 (function($) {
-    $(function() {
-        // Add Color Picker to all inputs that have 'color-field' class
-        $('.field-<?php echo esc_attr($field->id); ?>').wpColorPicker();
-    });
+	$(function() {
+		// Add Color Picker to all inputs that have 'color-field' class
+		$('.field-<?php echo esc_attr($field->id); ?>').wpColorPicker();
+	});
 })(jQuery);
 </script>

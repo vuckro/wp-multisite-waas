@@ -36,8 +36,7 @@ class Base_Installer {
 	public function get_steps() {
 
 		return array();
-
-	}  // end get_steps;
+	}
 
 	/**
 	 * Runs through all the steps to see if they are all done or not.
@@ -51,18 +50,13 @@ class Base_Installer {
 		$all_done = true;
 
 		foreach ($this->get_steps() as $step) {
-
 			if ($step['done'] === false) {
-
 				$all_done = false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $all_done;
-
-	}  // end all_done;
+	}
 
 	/**
 	 * Handles the installer.
@@ -88,30 +82,22 @@ class Base_Installer {
 		/*
 		* No installer on this class.
 		*/
-		if (!is_callable($callable)) {
-
+		if ( ! is_callable($callable)) {
 			return $status;
-
-		} // end if;
+		}
 
 		try {
-
 			$wpdb->query('START TRANSACTION');
 
 			call_user_func($callable);
-
 		} catch (\Throwable $e) {
-
 			$wpdb->query('ROLLBACK');
 
 			return new \WP_Error($installer, $e->getMessage());
-
-		} // end try;
+		}
 
 		$wpdb->query('COMMIT');
 
 		return $status;
-
-	} // end handle;
-
-} // end class Base_Installer;
+	}
+}

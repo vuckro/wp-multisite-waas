@@ -20,15 +20,12 @@ defined('ABSPATH') || exit;
 function wu_get_translatable_string($string) {
 
 	if (is_string($string) === false) {
-
 		return $string;
-
-	} // end if;
+	}
 
 	$translatable_strings = include WP_ULTIMO_PLUGIN_DIR . '/data/translatable-strings.php';
 
 	$translatable_strings = apply_filters('wu_translatable_strings', $translatable_strings, $string);
 
 	return wu_get_isset($translatable_strings, $string, $string);
-
-} // end wu_get_translatable_string;
+}

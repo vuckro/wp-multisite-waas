@@ -12,7 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-use \WP_Ultimo\Managers\Broadcast_Manager;
+use WP_Ultimo\Managers\Broadcast_Manager;
 
 /**
  * WP Multisite WaaS Broadcast Admin Page.
@@ -66,11 +66,14 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Add new broadcast notice.
 		 */
-		wu_register_form('add_new_broadcast_message', array(
-			'render'     => array($this, 'render_add_new_broadcast_modal'),
-			'handler'    => array($this, 'handle_add_new_broadcast_modal'),
-			'capability' => 'wu_add_broadcasts',
-		));
+		wu_register_form(
+			'add_new_broadcast_message',
+			array(
+				'render'     => array($this, 'render_add_new_broadcast_modal'),
+				'handler'    => array($this, 'handle_add_new_broadcast_modal'),
+				'capability' => 'wu_add_broadcasts',
+			)
+		);
 
 		/**
 		 * Ajax to render the broadcast targets modal.
@@ -81,8 +84,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		 * Ajax to render the targets modal with customers from a specific membership.
 		 */
 		add_action('wu_ajax_wu_modal_product_targets_display', array($this, 'display_product_targets_modal'));
-
-	} // end register_forms;
+	}
 
 	/**
 	 * Enqueue the necessary scripts.
@@ -95,8 +97,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		parent::register_scripts();
 
 		wp_enqueue_editor();
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Renders the broadcast targets modal, when requested.
@@ -117,11 +118,8 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		$display_targets = array();
 
 		if ($targets) {
-
 			if ($target_type === 'customers') {
-
 				foreach ($targets as $key => $value) {
-
 					$customer = wu_get_customer($value);
 
 					$url_atts = array(
@@ -130,27 +128,29 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 
 					$link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
-					$avatar = get_avatar($customer->get_user_id(), 48, 'identicon', '', array(
-						'force_display' => true,
-						'class'         => 'wu-rounded-full',
-					));
+					$avatar = get_avatar(
+						$customer->get_user_id(),
+						48,
+						'identicon',
+						'',
+						array(
+							'force_display' => true,
+							'class'         => 'wu-rounded-full',
+						)
+					);
 
-					$display_targets[$key] = array(
+					$display_targets[ $key ] = array(
 						'link'         => $link,
 						'avatar'       => $avatar,
 						'display_name' => $customer->get_display_name(),
 						'id'           => $customer->get_id(),
 						'description'  => $customer->get_email_address(),
 					);
-
-				} // end foreach;
-
-			} // end if;
+				}
+			}
 
 			if ($target_type === 'products') {
-
 				foreach ($targets as $key => $value) {
-
 					$product = wu_get_product($value);
 
 					$url_atts = array(
@@ -162,41 +162,32 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 					$avatar = $product->get_featured_image('thumbnail');
 
 					if ($avatar) {
-
 						$avatar = sprintf('<img class="wu-w-8 wu-h-8 wu-bg-gray-200 wu-rounded-full wu-text-gray-600 wu-flex wu-items-center wu-justify-center" src="%s">', esc_attr($avatar));
-
 					} else {
-
 						$avatar = '<span class="dashicons-wu-image wu-p-1 wu-rounded-full"></span>';
-
-					} // end if;
+					}
 
 					$plan_customers = wu_get_membership_customers($product->get_id());
 
 					$customer_count = (int) 0;
 
 					if ($plan_customers) {
-
 						$customer_count = count($plan_customers);
-
-					} // end if;
+					}
 
 					// translators: %s is the number of customers.
 					$description = sprintf(__('%s customer(s) targeted.', 'wp-ultimo'), $customer_count);
 
-					$display_targets[$key] = array(
+					$display_targets[ $key ] = array(
 						'link'         => $link,
 						'avatar'       => $avatar,
 						'display_name' => $product->get_name(),
 						'id'           => $product->get_id(),
 						'description'  => $description,
 					);
-
-				} // end foreach;
-
-			} // end if;
-
-		} // end if;
+				}
+			}
+		}
 
 		$args = array(
 			'targets'       => $display_targets,
@@ -207,8 +198,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		wu_get_template('broadcast/widget-targets', $args);
 
 		exit;
-
-	} // end display_targets_modal;
+	}
 
 	/**
 	 * Renders the broadcast targets modal, when requested.
@@ -225,9 +215,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		$display_targets = array();
 
 		if ($customers) {
-
 			foreach ($customers as $key => $value) {
-
 				$customer = wu_get_customer($value);
 
 				$url_atts = array(
@@ -236,22 +224,26 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 
 				$link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
-				$avatar = get_avatar($customer->get_user_id(), 48, 'identicon', '', array(
-					'force_display' => true,
-					'class'         => 'wu-rounded-full',
-				));
+				$avatar = get_avatar(
+					$customer->get_user_id(),
+					48,
+					'identicon',
+					'',
+					array(
+						'force_display' => true,
+						'class'         => 'wu-rounded-full',
+					)
+				);
 
-				$display_targets[$key] = array(
+				$display_targets[ $key ] = array(
 					'link'         => $link,
 					'avatar'       => $avatar,
 					'display_name' => $customer->get_display_name(),
 					'id'           => $customer->get_id(),
 					'description'  => $customer->get_email_address(),
 				);
-
-			} // end foreach;
-
-		} // end if;
+			}
+		}
 
 		$args = array(
 			'targets'       => $display_targets,
@@ -262,8 +254,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		wu_get_template('broadcast/widget-targets', $args);
 
 		exit;
-
-	} // end display_product_targets_modal;
+	}
 
 	/**
 	 * Renders the add new broadcast message modal.
@@ -356,7 +347,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				),
 				'wrapper_html_attr' => array(
 					'v-show'  => "step === 2 && require('type', 'broadcast_notice')",
-					'v-cloak' => 1
+					'v-cloak' => 1,
 				),
 			),
 			'step_note_2'      => array(
@@ -404,7 +395,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				),
 				'html_attr'         => array(
 					'v-bind:disabled'    => 'type === ""',
-					'v-on:click.prevent' => 'step = 2'
+					'v-on:click.prevent' => 'step = 2',
 				),
 			),
 			'submit_button_2'  => array(
@@ -418,7 +409,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				),
 				'html_attr'         => array(
 					'v-bind:disabled'    => 'target_customers === "" && target_products === ""', // phpcs:ignore
-					'v-on:click.prevent' => 'step = 3'
+					'v-on:click.prevent' => 'step = 3',
 				),
 			),
 			'submit_button_3'  => array(
@@ -436,27 +427,32 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('add_new_broadcast', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'add_new_broadcast',
-				'data-state'  => wu_convert_to_state(array(
-					'type'             => 'broadcast_notice',
-					'content'          => '',
-					'step'             => 1,
-					'confirmed'        => false,
-					'target_customers' => '',
-					'target_products'  => '',
-					'subject'          => '',
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_new_broadcast',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'add_new_broadcast',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'type'             => 'broadcast_notice',
+							'content'          => '',
+							'step'             => 1,
+							'confirmed'        => false,
+							'target_customers' => '',
+							'target_products'  => '',
+							'subject'          => '',
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_add_new_broadcast_modal;
+	}
 
 	/**
 	 * Handles the add new broadcast modal.
@@ -469,8 +465,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		$broadcast = Broadcast_Manager::get_instance();
 
 		$broadcast->handle_broadcast();
-
-	} // end handle_add_new_broadcast_modal;
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -478,7 +473,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -492,8 +487,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Broadcast removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Broadcast', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -504,8 +498,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Broadcast', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -516,8 +509,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Broadcasts', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -528,8 +520,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Broadcasts', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -552,8 +543,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				'icon'  => 'wu-mail',
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -564,7 +554,5 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Broadcast_List_Table();
-
-	} // end table;
-
-} // end class Broadcast_List_Admin_Page;
+	}
+}

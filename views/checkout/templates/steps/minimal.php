@@ -15,46 +15,43 @@
  * @version     1.4.0
  */
 
-if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+	exit; // Exit if accessed directly
 }
 
 ?>
 
 <!-- This example requires Tailwind CSS v2.0+ -->
 <nav aria-label="<?php esc_attr_e('Progress', 'wp-ultimo'); ?>">
-  <ul class="wu-minimal-steps">
+	<ul class="wu-minimal-steps">
 
 
-    <?php foreach ($steps as $index => $step) : 
+	<?php
+	foreach ($steps as $index => $step) :
+		$step_key = $step['id'];
 
-      $step_key = $step['id'];
+		/**
+		 * Class element of the Step Status Bar
+		*
+		 * @var string
+		 */
+		$class = '';
 
-      /**
-       * Class element of the Step Status Bar
-       * @var string
-       */
-      $class = '';
+		if ($step_key === $current_step) {
+			$class = 'step-current';
+		} elseif (array_search($current_step, array_column($steps, 'id')) > array_search($step_key, array_column($steps, 'id'))) {
+			$class = 'step-done';
+		} // end if;
 
-      if ($step_key === $current_step) {
+		?>
 
-        $class = 'step-current';
-
-      } elseif (array_search($current_step, array_column($steps, 'id')) > array_search($step_key, array_column($steps, 'id'))) {
-
-        $class = 'step-done';
-
-      } // end if;
-
-      ?>
-
-      <li class="<?php echo esc_attr($class); ?>">
-        <span class="wu-minimal-steps-bar">&nbsp;</span>
-        <span class="wu-minimal-steps-step-count"><?php printf(__('Step %d', 'wp-ultimo'), $index + 1); ?></span>
-        <span class="wu-minimal-steps-step-label"><?php echo $step['name']; ?></span>
-      </li>
+		<li class="<?php echo esc_attr($class); ?>">
+		<span class="wu-minimal-steps-bar">&nbsp;</span>
+		<span class="wu-minimal-steps-step-count"><?php printf(__('Step %d', 'wp-ultimo'), $index + 1); ?></span>
+		<span class="wu-minimal-steps-step-label"><?php echo $step['name']; ?></span>
+		</li>
 
 <?php endforeach; ?>
 
-  </ul>
+	</ul>
 </nav>

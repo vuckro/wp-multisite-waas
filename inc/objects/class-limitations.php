@@ -68,8 +68,7 @@ class Limitations {
 	public function __construct($modules_data = array()) {
 
 		$this->build_modules($modules_data);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns the module via magic getter.
@@ -84,26 +83,21 @@ class Limitations {
 		$module = wu_get_isset($this->modules, $name, false);
 
 		if ($module === false) {
-
 			$repo = self::repository();
 
 			$class_name = wu_get_isset($repo, $name, false);
 
 			if (class_exists($class_name)) {
-
 				$module = new $class_name(array());
 
-				$this->modules[$name] = $module;
+				$this->modules[ $name ] = $module;
 
 				return $module;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $module;
-
-	} // end __get;
+	}
 
 	/**
 	 * Prepare to serialization.
@@ -115,8 +109,7 @@ class Limitations {
 	public function __serialize() { // phpcs:ignore
 
 		return $this->to_array();
-
-	} // end __serialize;
+	}
 
 	/**
 	 * Handles un-serialization.
@@ -130,8 +123,7 @@ class Limitations {
 	public function __unserialize($modules_data) { // phpcs:ignore
 
 		$this->build_modules($modules_data);
-
-	} // end __unserialize;
+	}
 
 	/**
 	 * Builds the module list based on the module data.
@@ -144,48 +136,38 @@ class Limitations {
 	public function build_modules($modules_data) {
 
 		foreach ($modules_data as $type => $data) {
-
 			$module = self::build($data, $type);
 
 			if ($module) {
-
-				$this->modules[$type] = $module;
-
-			} // end if;
-
-		} // end foreach;
+				$this->modules[ $type ] = $module;
+			}
+		}
 
 		return $this;
-
-	} // end build_modules;
- /**
-  * Build a module, based on the data.
-  *
-  * @since 2.0.0
-  *
-  * @param string|array $data The module data.
-  * @param string       $module_name The module_name.
-  * @return false|\WP_Ultimo\Limitations\Limit
-  */
- static public function build($data, $module_name) {
+	}
+	/**
+	 * Build a module, based on the data.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string|array $data The module data.
+	 * @param string       $module_name The module_name.
+	 * @return false|\WP_Ultimo\Limitations\Limit
+	 */
+	public static function build($data, $module_name) {
 
 		$class = wu_get_isset(self::repository(), $module_name);
 
 		if (class_exists($class)) {
-
 			if (is_string($data)) {
-
 				$data = json_decode($data, true);
-
 			}
 
 			return new $class($data);
-
-		} // end if;
+		}
 
 		return false;
-
-	} // end build;
+	}
 
 	/**
 	 * Checks if a limitation model exists in this limitations.
@@ -198,8 +180,7 @@ class Limitations {
 	public function exists($module) {
 
 		return wu_get_isset($this->modules, $module, false);
-
-	} // end exists;
+	}
 
 	/**
 	 * Checks if we have any limitation modules setup at all.
@@ -212,18 +193,13 @@ class Limitations {
 		$has_limitations = false;
 
 		foreach ($this->modules as $module) {
-
 			if ($module->is_enabled()) {
-
 				return true;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $has_limitations;
-
-	} // end has_limitations;
+	}
 
 	/**
 	 * Checks if a particular module is enabled.
@@ -238,8 +214,7 @@ class Limitations {
 		$module = $this->{$module_name};
 
 		return $module ? $module->is_enabled() : false;
-
-	}  // end is_module_enabled;
+	}
 
 	/**
 	 * Merges limitations from other entities.
@@ -257,37 +232,29 @@ class Limitations {
 	 */
 	public function merge($override = false, ...$limitations) {
 
-		if (!is_bool($override)) {
-
+		if ( ! is_bool($override)) {
 			$limitations[] = $override;
 
 			$override = false;
-
-		} // end if;
+		}
 
 		$results = $this->to_array();
 
 		foreach ($limitations as $limitation) {
-
-			if (is_a($limitation, \WP_Ultimo\Objects\Limitations::class)) { // @phpstan-ignore-line
+			if (is_a($limitation, self::class)) { // @phpstan-ignore-line
 
 				$limitation = $limitation->to_array();
+			}
 
-			} // end if;
-
-			if (!is_array($limitation)) {
-
+			if ( ! is_array($limitation)) {
 				continue;
+			}
 
-			} // end if;
-
-			$this->merge_recursive($results, $limitation, !$override);
-
-		} // end foreach;
+			$this->merge_recursive($results, $limitation, ! $override);
+		}
 
 		return new self($results);
-
-	} // end merge;
+	}
 
 	/**
 	 * Merges a limitation array
@@ -310,26 +277,20 @@ class Limitations {
 
 		$force_enabled = in_array($current_id, $force_enabled_list, true);
 
-		if ($force_enabled && (!wu_get_isset($array1, 'enabled', true) || !wu_get_isset($array2, 'enabled', true))) {
-
+		if ($force_enabled && (! wu_get_isset($array1, 'enabled', true) || ! wu_get_isset($array2, 'enabled', true))) {
 			$array1['enabled'] = true;
 			$array2['enabled'] = true;
+		}
 
-		} // end if;
-
-		if (!wu_get_isset($array1, 'enabled', true)) {
-
+		if ( ! wu_get_isset($array1, 'enabled', true)) {
 			$array1 = array(
 				'enabled' => false,
 			);
+		}
 
-		} // end if;
-
-		if (!wu_get_isset($array2, 'enabled', true) && $should_sum) {
-
+		if ( ! wu_get_isset($array2, 'enabled', true) && $should_sum) {
 			return;
-
-		} // end if;
+		}
 
 		foreach ($array2 as $key => &$value) {
 			/**
@@ -338,24 +299,19 @@ class Limitations {
 			 */
 			$value = is_object($value) ? get_object_vars($value) : $value;
 
-			if (isset($array1[$key])) {
+			if (isset($array1[ $key ])) {
+				$array1[ $key ] = is_object($array1[ $key ]) ? get_object_vars($array1[ $key ]) : $array1[ $key ];
+			}
 
-				$array1[$key] = is_object($array1[$key]) ? get_object_vars($array1[$key]) : $array1[$key];
-
-			} // end if;
-
-			if (is_array($value) && isset($array1[$key]) && is_array($array1[$key])) {
-
-				$array1_id = wu_get_isset($array1[$key], 'id', $current_id);
+			if (is_array($value) && isset($array1[ $key ]) && is_array($array1[ $key ])) {
+				$array1_id = wu_get_isset($array1[ $key ], 'id', $current_id);
 
 				$this->current_merge_id = wu_get_isset($value, 'id', $array1_id);
 
-				$this->merge_recursive($array1[$key], $value, $should_sum);
+				$this->merge_recursive($array1[ $key ], $value, $should_sum);
 
 				$this->current_merge_id = $current_id;
-
 			} else {
-
 				$original_value = wu_get_isset($array1, $key);
 
 				// If the value is 0 or '' it can be a unlimited value
@@ -366,22 +322,16 @@ class Limitations {
 					 *  We use values 0 or '' as unlimited in our limits
 					 */
 					continue;
-
-				} elseif (isset($array1[$key]) && is_numeric($array1[$key]) && is_numeric($value) && $should_sum && !$is_unlimited) {
-
-					$array1[$key] = ((int) $array1[$key]) + $value;
-
-				} elseif ($key === 'visibility' && isset($array1[$key]) && $should_sum) {
-
+				} elseif (isset($array1[ $key ]) && is_numeric($array1[ $key ]) && is_numeric($value) && $should_sum && ! $is_unlimited) {
+					$array1[ $key ] = ((int) $array1[ $key ]) + $value;
+				} elseif ($key === 'visibility' && isset($array1[ $key ]) && $should_sum) {
 					$key_priority = array(
 						'hidden'  => 0,
 						'visible' => 1,
 					);
 
-					$array1[$key] = $key_priority[$value] > $key_priority[$array1[$key]] ? $value : $array1[$key];
-
-				} elseif ($key === 'behavior' && isset($array1[$key]) && $should_sum) {
-
+					$array1[ $key ] = $key_priority[ $value ] > $key_priority[ $array1[ $key ] ] ? $value : $array1[ $key ];
+				} elseif ($key === 'behavior' && isset($array1[ $key ]) && $should_sum) {
 					$key_priority_list = array(
 						'plugins' => array(
 							'default'               => 10,
@@ -402,24 +352,19 @@ class Limitations {
 						),
 					);
 
-					$key_priority = apply_filters("wu_limitation_{$current_id}_priority", $key_priority_list[$current_id]);
+					$key_priority = apply_filters("wu_limitation_{$current_id}_priority", $key_priority_list[ $current_id ]);
 
-					$array1[$key] = $key_priority[$value] > $key_priority[$array1[$key]] ? $value : $array1[$key];
-
+					$array1[ $key ] = $key_priority[ $value ] > $key_priority[ $array1[ $key ] ] ? $value : $array1[ $key ];
 				} else {
 
 					// Avoid change true values
-					$array1[$key] = $original_value !== true || !$should_sum ? $value : true;
+					$array1[ $key ] = $original_value !== true || ! $should_sum ? $value : true;
 
-					$array1[$key] = $original_value !== true || !$should_sum ? $value : true;
-
-				} // end if;
-
-			} // end if;
-
-		} // end foreach;
-
-	} // end merge_recursive;
+					$array1[ $key ] = $original_value !== true || ! $should_sum ? $value : true;
+				}
+			}
+		}
+	}
 	/**
 	 * Converts the limitations list to an array.
 	 *
@@ -428,8 +373,7 @@ class Limitations {
 	public function to_array(): array {
 
 		return array_map(fn($module) => method_exists($module, 'to_array') ? $module->to_array() : (array) $module, $this->modules);
-
-	} // end to_array;
+	}
 
 	/**
 	 * Static method to return limitations in very early stages of the WordPress lifecycle.
@@ -449,22 +393,18 @@ class Limitations {
 		 * for the native tables of blogs.
 		 */
 		if ($slug === 'site') {
-
 			$slug = 'blog';
 
 			$wu_prefix = '';
-
-		} // end if;
+		}
 
 		$cache = static::$limitations_cache;
 
 		$key = sprintf('%s-%s', $slug, $id);
 
-		if (isset($cache[$key])) {
-
-			return $cache[$key];
-
-		} // end if;
+		if (isset($cache[ $key ])) {
+			return $cache[ $key ];
+		}
 
 		global $wpdb;
 
@@ -476,20 +416,17 @@ class Limitations {
 
 		$results = $wpdb->get_var($sql); // phpcs:ignore
 
-		if (!empty($results)) {
-
+		if ( ! empty($results)) {
 			$limitations = unserialize($results);
-
-		} // end if;
+		}
 
 		/*
 		 * Caches the results.
 		 */
-		static::$limitations_cache[$key] = $limitations;
+		static::$limitations_cache[ $key ] = $limitations;
 
 		return $limitations;
-
-	} // end early_get_limitations;
+	}
 
 	/**
 	 * Delete limitations.
@@ -511,20 +448,17 @@ class Limitations {
 		 * so no need to use low-level sql calls.
 		 */
 		if ($slug === 'site') {
-
 			$wu_prefix = '';
 
 			$slug = 'blog';
-
-		} // end if;
+		}
 
 		$table_name = "{$wpdb->base_prefix}{$wu_prefix}{$slug}meta";
 
 		$sql = $wpdb->prepare("DELETE FROM {$table_name} WHERE meta_key = 'wu_limitations' AND  {$wu_prefix}{$slug}_id = %d LIMIT 1", $id); // phpcs:ignore
 
 		$wpdb->get_var($sql); // phpcs:ignore
-
-	} // end remove_limitations;
+	}
 
 	/**
 	 * Returns an empty permission set, with modules.
@@ -532,19 +466,16 @@ class Limitations {
 	 * @since 2.0.0
 	 * @return self
 	 */
-	static public function get_empty() {
+	public static function get_empty() {
 
 		$limitations = new self();
 
 		foreach (array_keys(self::repository()) as $module_name) {
-
 			$limitations->{$module_name};
-
-		} // end foreach;
+		}
 
 		return $limitations;
-
-	} // end get_empty;
+	}
 
 	/**
 	 * Repository of the limitation modules.
@@ -554,7 +485,7 @@ class Limitations {
 	 * @since 2.0.0
 	 * @return array
 	 */
-	static public function repository() {
+	public static function repository() {
 
 		$classes = array(
 			'post_types'         => \WP_Ultimo\Limitations\Limit_Post_Types::class,
@@ -570,7 +501,5 @@ class Limitations {
 		);
 
 		return apply_filters('wu_limit_classes', $classes);
-
-	} // end repository;
-
-} // end class Limitations;
+	}
+}

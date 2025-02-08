@@ -33,12 +33,9 @@ class Maintenance_Mode {
 		add_action('wp_ultimo_load', array($this, 'add_settings'));
 
 		if (wu_get_setting('maintenance_mode')) {
-
 			$this->hooks();
-
-		} // end if;
-
-	} // end init;
+		}
+	}
 
 	/**
 	 * Adds the additional hooks, when necessary.
@@ -50,35 +47,25 @@ class Maintenance_Mode {
 
 		add_action('wu_ajax_toggle_maintenance_mode', array($this, 'toggle_maintenance_mode'));
 
-		if (!is_main_site()) {
-
+		if ( ! is_main_site()) {
 			add_action('admin_bar_menu', array($this, 'add_notice_to_admin_bar'), 15);
-
-		} // end if;
+		}
 
 		if (self::check_maintenance_mode()) {
-
 			add_filter('pre_option_blog_public', '__return_true');
 
-			if (!is_admin()) {
-
+			if ( ! is_admin()) {
 				add_action('wp', array($this, 'render_page'));
 
 				if (function_exists('wp_robots_no_robots')) {
-
 					add_filter('wp_robots', 'wp_robots_no_robots'); // WordPress 5.7+
 
 				} else {
-
 					add_action('wp_head', 'wp_no_robots', 20);
-
-				} // end if;
-
-			} // end if;
-
-		} // end if;
-
-	} // end hooks;
+				}
+			}
+		}
+	}
 
 	/**
 	 * Add maintenance mode Notice to Admin Bar
@@ -89,14 +76,11 @@ class Maintenance_Mode {
 	 */
 	public function add_notice_to_admin_bar($wp_admin_bar) {
 
-		if (!current_user_can('manage_options')) {
-
+		if ( ! current_user_can('manage_options')) {
 			return;
-
-		} // end if;
+		}
 
 		if (is_admin() || self::check_maintenance_mode()) {
-
 			$args = array(
 				'id'     => 'wu-maintenance-mode',
 				'parent' => 'top-secondary',
@@ -109,10 +93,8 @@ class Maintenance_Mode {
 			);
 
 			$wp_admin_bar->add_node($args);
-
-		} // end if;
-
-	} // end add_notice_to_admin_bar;
+		}
+	}
 
 	/**
 	 * Render page - html filtrable
@@ -123,10 +105,8 @@ class Maintenance_Mode {
 	public function render_page() {
 
 		if (is_main_site() || current_user_can('read')) {
-
 			return;
-
-		} // end if;
+		}
 
 		$text = apply_filters(
 			'wu_maintenance_mode_text',
@@ -139,8 +119,7 @@ class Maintenance_Mode {
 		);
 
 		wp_die($text, $title, 503);
-
-	} // end render_page;
+	}
 
 	/**
 	 * Check should display maintenance mode
@@ -151,8 +130,7 @@ class Maintenance_Mode {
 	public static function check_maintenance_mode() {
 
 		return get_site_meta(get_current_blog_id(), 'wu_maintenance_mode', true);
-
-	} // end check_maintenance_mode;
+	}
 
 	/**
 	 * Callback button admin toggle maintenance mode.
@@ -166,14 +144,14 @@ class Maintenance_Mode {
 
 		$site_id = \WP_Ultimo\Helpers\Hash::decode(wu_request('site_hash'), 'site');
 
-		if (!current_user_can_for_blog($site_id, 'manage_options')) {
-
-			return wp_send_json_error(array(
-				'message' => __('You do not have the necessary permissions to perform this option.', 'wp-ultimo'),
-				'value'   => false,
-			));
-
-		} // end if;
+		if ( ! current_user_can_for_blog($site_id, 'manage_options')) {
+			return wp_send_json_error(
+				array(
+					'message' => __('You do not have the necessary permissions to perform this option.', 'wp-ultimo'),
+					'value'   => false,
+				)
+			);
+		}
 
 		$value = wu_request('maintenance_status', false);
 
@@ -190,8 +168,7 @@ class Maintenance_Mode {
 		Cache_Manager::get_instance()->flush_known_caches();
 
 		wp_send_json_success($return);
-
-	} // end toggle_maintenance_mode;
+	}
 
 	/**
 	 * Filter the WP Multisite WaaS settings to add Jumper options
@@ -201,14 +178,16 @@ class Maintenance_Mode {
 	 */
 	public function add_settings() {
 
-		wu_register_settings_field('sites', 'maintenance_mode', array(
-			'title'   => __('Site Maintenance Mode', 'wp-ultimo'),
-			'desc'    => __('Allow your customers and super admins to quickly take sites offline via a toggle on the site dashboard.', 'wp-ultimo'),
-			'type'    => 'toggle',
-			'default' => 0,
-			'order'   => 23,
-		));
-
-	} // end add_settings;
-
-} // end class Maintenance_Mode;
+		wu_register_settings_field(
+			'sites',
+			'maintenance_mode',
+			array(
+				'title'   => __('Site Maintenance Mode', 'wp-ultimo'),
+				'desc'    => __('Allow your customers and super admins to quickly take sites offline via a toggle on the site dashboard.', 'wp-ultimo'),
+				'type'    => 'toggle',
+				'default' => 0,
+				'order'   => 23,
+			)
+		);
+	}
+}

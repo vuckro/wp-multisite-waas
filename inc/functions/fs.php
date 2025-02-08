@@ -21,19 +21,16 @@ function wu_get_main_site_upload_dir() {
 
 	is_multisite() && switch_to_blog($current_site->blog_id);
 
-	if (!defined('WP_CONTENT_URL')) {
-
+	if ( ! defined('WP_CONTENT_URL')) {
 		define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-
-	} // end if;
+	}
 
 	$uploads = wp_upload_dir(null, false);
 
 	is_multisite() && restore_current_blog();
 
 	return $uploads;
-
-} // end wu_get_main_site_upload_dir;
+}
 
 /**
  * Creates a WP Multisite WaaS folder inside the uploads folder - if needed - and return its path.
@@ -53,7 +50,7 @@ function wu_maybe_create_folder($folder, ...$path) {
 	/*
 	 * Checks if the folder exists.
 	 */
-	if (!file_exists($folder_path)) {
+	if ( ! file_exists($folder_path)) {
 
 		// Creates the Folder
 		wp_mkdir_p($folder_path);
@@ -61,34 +58,28 @@ function wu_maybe_create_folder($folder, ...$path) {
 		// Creates htaccess
 		$htaccess = $folder_path . '.htaccess';
 
-		if (!file_exists($htaccess)) {
-
+		if ( ! file_exists($htaccess)) {
 			$fp = @fopen($htaccess, 'w');
 
 			@fputs($fp, 'deny from all'); // phpcs:ignore
 
 			@fclose($fp); // phpcs:ignore
-
-		} // end if;
+		}
 
 		// Creates index
 		$index = $folder_path . 'index.html';
 
-		if (!file_exists($index)) {
-
+		if ( ! file_exists($index)) {
 			$fp = @fopen($index, 'w');
 
 			@fputs($fp, ''); // phpcs:ignore
 
 			@fclose($fp); // phpcs:ignore
-
-		} // end if;
-
-	} // end if;
+		}
+	}
 
 	return $folder_path . implode('/', $path);
-
-} // end wu_maybe_create_folder;
+}
 
 /**
  * Gets the URL for the folders created with maybe_create_folder().
@@ -106,5 +97,4 @@ function wu_get_folder_url($folder) {
 	$folder_url = trailingslashit($uploads['baseurl'] . '/' . $folder);
 
 	return set_url_scheme($folder_url);
-
-} // end wu_get_folder_url;
+}

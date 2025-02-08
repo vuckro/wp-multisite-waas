@@ -33,8 +33,7 @@ class Site_Template_Limits {
 	public function init() {
 
 		add_action('plugins_loaded', array($this, 'setup'));
-
-	} // end init;
+	}
 
 	/**
 	 * Sets up the hooks and checks.
@@ -49,8 +48,7 @@ class Site_Template_Limits {
 		add_filter('wu_checkout_template_id', array($this, 'maybe_force_template_selection'), 10, 2);
 
 		add_filter('wu_cart_get_extra_params', array($this, 'maybe_force_template_selection_on_cart'), 10, 2);
-
-	} // end setup;
+	}
 
 	/**
 	 * Maybe filter the template selection options on the template selection field.
@@ -68,8 +66,7 @@ class Site_Template_Limits {
 
 		$products = array_filter($products);
 
-		if (!empty($products)) {
-
+		if ( ! empty($products)) {
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
 			list($plan, $additional_products) = wu_segregate_products($products);
@@ -77,35 +74,25 @@ class Site_Template_Limits {
 			$products = array_merge(array($plan), $additional_products);
 
 			foreach ($products as $product) {
-
 				$limits = $limits->merge($product->get_limitations());
-
-			} // end foreach;
+			}
 
 			if ($limits->site_templates->get_mode() === 'default') {
-
 				$attributes['sites'] = wu_get_isset($attributes, 'sites', explode(',', ($attributes['template_selection_sites'] ?? '')));
 
 				return $attributes;
-
 			} elseif ($limits->site_templates->get_mode() === 'assign_template') {
-
 				$attributes['should_display'] = false;
-
 			} else {
-
 				$site_list = wu_get_isset($attributes, 'sites', explode(',', ($attributes['template_selection_sites'] ?? '')));
 
 				$available_templates = $limits->site_templates->get_available_site_templates();
 				$attributes['sites'] = array_intersect($site_list, $available_templates);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $attributes;
-
-	} // end maybe_filter_template_selection_options;
+	}
 
 	/**
 	 * Decides if we need to force the selection of a given template during the site creation.
@@ -119,14 +106,11 @@ class Site_Template_Limits {
 	public function maybe_force_template_selection($template_id, $membership) {
 
 		if ($membership && $membership->get_limitations()->site_templates->get_mode() === 'assign_template') {
-
 			$template_id = $membership->get_limitations()->site_templates->get_pre_selected_site_template();
-
-		} // end if;
+		}
 
 		return $template_id;
-
-	} // end maybe_force_template_selection;
+	}
 
 	/**
 	 * Pre-selects a given template on the checkout screen depending on permissions.
@@ -150,26 +134,19 @@ class Site_Template_Limits {
 		$products = array_filter($products);
 
 		foreach ($products as $product) {
-
 			$limits = $limits->merge($product->get_limitations());
-
-		} // end foreach;
+		}
 
 		if ($limits->site_templates->get_mode() === 'assign_template') {
-
 			$extra['template_id'] = $limits->site_templates->get_pre_selected_site_template();
-
 		} elseif ($limits->site_templates->get_mode() === 'choose_available_templates') {
-
 			$template_id = Checkout::get_instance()->request_or_session('template_id');
 
 			$extra['template_id'] = $this->is_template_available($products, $template_id) ? $template_id : false;
-
-		} // end if;
+		}
 
 		return $extra;
-
-	} // end maybe_force_template_selection_on_cart;
+	}
 
 	/**
 	 * Check if site template is available in current limits
@@ -182,8 +159,7 @@ class Site_Template_Limits {
 
 		$template_id = (int) $template_id;
 
-		if (!empty($products)) {
-
+		if ( ! empty($products)) {
 			$limits = new \WP_Ultimo\Objects\Limitations();
 
 			list($plan, $additional_products) = wu_segregate_products($products);
@@ -191,27 +167,18 @@ class Site_Template_Limits {
 			$products = array_merge(array($plan), $additional_products);
 
 			foreach ($products as $product) {
-
 				$limits = $limits->merge($product->get_limitations());
-
-			} // end foreach;
+			}
 
 			if ($limits->site_templates->get_mode() === 'assign_template') {
-
 				return $limits->site_templates->get_pre_selected_site_template() === $template_id;
-
 			} else {
-
 				$available_templates = $limits->site_templates->get_available_site_templates();
 
 				return in_array($template_id, $available_templates, true);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return true;
-
-	} // end is_template_available;
-
-} // end class Site_Template_Limits;
+	}
+}

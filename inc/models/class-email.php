@@ -160,8 +160,7 @@ class Email extends Post_Base_Model {
 			'active'              => 'default:1',
 			'legacy'              => 'boolean|default:0',
 		);
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Get event of the email
@@ -172,14 +171,11 @@ class Email extends Post_Base_Model {
 	public function get_event() {
 
 		if ($this->event === null) {
-
 			$this->event = $this->get_meta('wu_system_email_event');
-
-		} // end if;
+		}
 
 		return $this->event;
-
-	} // end get_event;
+	}
 
 	/**
 	 * Get title of the email
@@ -190,8 +186,7 @@ class Email extends Post_Base_Model {
 	public function get_title() {
 
 		return $this->title;
-
-	} // end get_title;
+	}
 
 	/**
 	 * Get title of the email using get_name
@@ -202,8 +197,7 @@ class Email extends Post_Base_Model {
 	public function get_name() {
 
 		return $this->title;
-
-	} // end get_name;
+	}
 	/**
 	 * Get style of the email
 	 *
@@ -215,10 +209,8 @@ class Email extends Post_Base_Model {
 		$this->style = $this->get_meta('wu_style', 'html');
 
 		if ($this->style === 'use_default') {
-
 			$this->style = wu_get_setting('email_template_type', 'html');
-
-		} // end if;
+		}
 
 		/*
 		 * Do an extra check for old installs
@@ -226,14 +218,11 @@ class Email extends Post_Base_Model {
 		 * properly installed.
 		 */
 		if (empty($this->style)) {
-
 			$this->style = 'html';
-
-		} // end if;
+		}
 
 		return $this->style;
-
-	} // end get_style;
+	}
 
 	/**
 	 * Set the style.
@@ -249,8 +238,7 @@ class Email extends Post_Base_Model {
 		$this->style = $style;
 
 		$this->meta['wu_style'] = $this->style;
-
-	} // end set_style;
+	}
 
 	/**
 	 * Get if the email has a schedule.
@@ -261,14 +249,11 @@ class Email extends Post_Base_Model {
 	public function has_schedule() {
 
 		if ($this->schedule === null) {
-
 			$this->schedule = $this->get_meta('wu_schedule', false);
-
-		} // end if;
+		}
 
 		return $this->schedule;
-
-	} // end has_schedule;
+	}
 
 	/**
 	 * Set the email schedule.
@@ -282,8 +267,7 @@ class Email extends Post_Base_Model {
 		$this->schedule = $schedule;
 
 		$this->meta['wu_schedule'] = $schedule;
-
-	} // end set_schedule;
+	}
 
 	/**
 	 * Set the email schedule.
@@ -294,8 +278,7 @@ class Email extends Post_Base_Model {
 	public function get_schedule_type() {
 
 		return $this->get_meta('system_email_schedule_type', 'days');
-
-	} // end get_schedule_type;
+	}
 
 	/**
 	 * Get schedule send in days of the email
@@ -306,8 +289,7 @@ class Email extends Post_Base_Model {
 	public function get_send_days() {
 
 		return $this->get_meta('system_email_send_days', 0);
-
-	} // end get_send_days;
+	}
 
 	/**
 	 * Get schedule send in hours of the email.
@@ -318,8 +300,7 @@ class Email extends Post_Base_Model {
 	public function get_send_hours() {
 
 		return $this->get_meta('system_email_send_hours', '12:00');
-
-	} // end get_send_hours;
+	}
 
 	/**
 	 * Returns a timestamp in the future when this email should be sent.
@@ -331,29 +312,22 @@ class Email extends Post_Base_Model {
 
 		$when_to_send = 0;
 
-		if (!$this->has_schedule()) {
-
+		if ( ! $this->has_schedule()) {
 			return $when_to_send;
-
-		} // end if;
+		}
 
 		if ($this->get_schedule_type() === 'hours') {
-
 			$send_time = explode(':', $this->get_send_hours());
 
 			$when_to_send = strtotime('+' . $send_time[0] . ' hours ' . $send_time[1] . ' minutes');
-
-		} // end if;
+		}
 
 		if ($this->get_schedule_type() === 'days') {
-
 			$when_to_send = strtotime('+' . $this->get_send_days() . ' days');
-
-		} // end if;
+		}
 
 		return $when_to_send;
-
-	} // end get_when_to_send;
+	}
 
 	/**
 	 * Get email slug.
@@ -364,8 +338,7 @@ class Email extends Post_Base_Model {
 	public function get_slug() {
 
 		return $this->slug;
-
-	} // end get_slug;
+	}
 
 	/**
 	 * Get the custom sender option.
@@ -376,8 +349,7 @@ class Email extends Post_Base_Model {
 	public function get_custom_sender() {
 
 		return $this->get_meta('system_email_custom_sender');
-
-	} // end get_custom_sender;
+	}
 
 	/**
 	 * Get the custom sender name.
@@ -388,8 +360,7 @@ class Email extends Post_Base_Model {
 	public function get_custom_sender_name() {
 
 		return $this->get_meta('system_email_custom_sender_name');
-
-	} // end get_custom_sender_name;
+	}
 
 	/**
 	 * Get the custom sender email.
@@ -400,8 +371,7 @@ class Email extends Post_Base_Model {
 	public function get_custom_sender_email() {
 
 		return $this->get_meta('system_email_custom_sender_email');
-
-	} // end get_custom_sender_email;
+	}
 
 	/**
 	 * Adds checks to prevent saving the model with the wrong type.
@@ -413,15 +383,12 @@ class Email extends Post_Base_Model {
 	 */
 	public function set_type($type) {
 
-		if (!in_array($type, $this->allowed_types, true)) {
-
+		if ( ! in_array($type, $this->allowed_types, true)) {
 			$type = 'system_email';
-
-		} // end if;
+		}
 
 		$this->type = $type;
-
-	} // end set_type;
+	}
 
 	/**
 	 * Set the email event.
@@ -436,8 +403,7 @@ class Email extends Post_Base_Model {
 		$this->event = $event;
 
 		$this->meta['wu_system_email_event'] = $event;
-
-	} // end set_event;
+	}
 
 	/**
 	 * Set if the email is schedule.
@@ -450,8 +416,7 @@ class Email extends Post_Base_Model {
 	public function set_email_schedule($email_schedule) {
 
 		$this->meta['system_email_schedule'] = $email_schedule;
-
-	} // end set_email_schedule;
+	}
 
 	/**
 	 * Set the schedule date in hours.
@@ -464,8 +429,7 @@ class Email extends Post_Base_Model {
 	public function set_send_hours($send_hours) {
 
 		$this->meta['system_email_send_hours'] = $send_hours;
-
-	} // end set_send_hours;
+	}
 
 	/**
 	 * Set the schedule date in days.
@@ -478,8 +442,7 @@ class Email extends Post_Base_Model {
 	public function set_send_days($send_days) {
 
 		$this->meta['system_email_send_days'] = $send_days;
-
-	} // end set_send_days;
+	}
 
 	/**
 	 * Set the schedule type.
@@ -493,8 +456,7 @@ class Email extends Post_Base_Model {
 	public function set_schedule_type($schedule_type) {
 
 		$this->meta['system_email_schedule_type'] = $schedule_type;
-
-	} // end set_schedule_type;
+	}
 
 	/**
 	 * Set title using the name parameter.
@@ -507,8 +469,7 @@ class Email extends Post_Base_Model {
 	public function set_name($name) {
 
 		$this->set_title($name);
-
-	} // end set_name;
+	}
 
 	/**
 	 * Set the slug.
@@ -521,8 +482,7 @@ class Email extends Post_Base_Model {
 	public function set_slug($slug) {
 
 		$this->slug = $slug;
-
-	} // end set_slug;
+	}
 
 	/**
 	 * Set the custom sender.
@@ -535,8 +495,7 @@ class Email extends Post_Base_Model {
 	public function set_custom_sender($custom_sender) {
 
 		$this->meta['system_email_custom_sender'] = $custom_sender;
-
-	} // end set_custom_sender;
+	}
 
 	/**
 	 * Set the custom sender name.
@@ -549,8 +508,7 @@ class Email extends Post_Base_Model {
 	public function set_custom_sender_name($custom_sender_name) {
 
 		$this->meta['system_email_custom_sender_name'] = $custom_sender_name;
-
-	} // end set_custom_sender_name;
+	}
 
 	/**
 	 * Set the custom sender email.
@@ -563,8 +521,7 @@ class Email extends Post_Base_Model {
 	public function set_custom_sender_email($custom_sender_email) {
 
 		$this->meta['system_email_custom_sender_email'] = $custom_sender_email;
-
-	} // end set_custom_sender_email;
+	}
 
 	/**
 	 * Get if we should send this to a customer or to the network admin.
@@ -575,14 +532,11 @@ class Email extends Post_Base_Model {
 	public function get_target() {
 
 		if ($this->target === null) {
-
 			$this->target = $this->get_meta('wu_target', 'admin');
-
-		} // end if;
+		}
 
 		return $this->target;
-
-	} // end get_target;
+	}
 
 	/**
 	 * Set if we should send this to a customer or to the network admin.
@@ -597,8 +551,7 @@ class Email extends Post_Base_Model {
 		$this->target = $target;
 
 		$this->meta['wu_target'] = $target;
-
-	} // end set_target;
+	}
 
 	/**
 	 * Gets the list of targets for an email.
@@ -615,24 +568,17 @@ class Email extends Post_Base_Model {
 		$target_type = $this->get_target();
 
 		if ($target_type === 'admin') {
-
 			$target_list = self::get_super_admin_targets();
-
 		} elseif ($target_type === 'customer') {
-
-			if (!wu_get_isset($payload, 'customer_id')) {
-
+			if ( ! wu_get_isset($payload, 'customer_id')) {
 				return array();
-
-			} // end if;
+			}
 
 			$customer = wu_get_customer($payload['customer_id']);
 
-			if (!$customer) {
-
+			if ( ! $customer) {
 				return array();
-
-			} // end if;
+			}
 
 			$target_list[] = array(
 				'name'  => $customer->get_display_name(),
@@ -643,18 +589,14 @@ class Email extends Post_Base_Model {
 			 * Maybe ad super admins as well.
 			 */
 			if ($this->get_send_copy_to_admin()) {
-
 				$admin_targets = self::get_super_admin_targets();
 
 				$target_list = array_merge($target_list, $admin_targets);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $target_list;
-
-	} // end get_target_list;
+	}
 
 	/**
 	 * Returns the list of super admin targets.
@@ -669,23 +611,18 @@ class Email extends Post_Base_Model {
 		$super_admins = get_super_admins();
 
 		foreach ($super_admins as $super_admin) {
-
 			$user = get_user_by('login', $super_admin);
 
 			if ($user) {
-
 				$target_list[] = array(
 					'name'  => $user->display_name,
 					'email' => $user->user_email,
 				);
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return $target_list;
-
-	} // end get_super_admin_targets;
+	}
 
 	/**
 	 * Get if we should send a copy of the email to the admin.
@@ -696,14 +633,11 @@ class Email extends Post_Base_Model {
 	public function get_send_copy_to_admin() {
 
 		if ($this->send_copy_to_admin === null) {
-
 			$this->send_copy_to_admin = $this->get_meta('wu_send_copy_to_admin', false);
-
-		} // end if;
+		}
 
 		return $this->send_copy_to_admin;
-
-	} // end get_send_copy_to_admin;
+	}
 
 	/**
 	 * Set if we should send a copy of the email to the admin.
@@ -717,8 +651,7 @@ class Email extends Post_Base_Model {
 		$this->send_copy_to_admin = $send_copy_to_admin;
 
 		$this->meta['wu_send_copy_to_admin'] = $send_copy_to_admin;
-
-	} // end set_send_copy_to_admin;
+	}
 
 	/**
 	 * Get the active status of an email.
@@ -729,14 +662,11 @@ class Email extends Post_Base_Model {
 	public function is_active() {
 
 		if ($this->active === null) {
-
 			$this->active = $this->get_meta('wu_active', true);
-
-		} // end if;
+		}
 
 		return $this->active;
-
-	} // end is_active;
+	}
 
 	/**
 	 * Set the active status of an email.
@@ -750,8 +680,7 @@ class Email extends Post_Base_Model {
 		$this->active = $active;
 
 		$this->meta['wu_active'] = $active;
-
-	} // end set_active;
+	}
 
 	/**
 	 * Get whether or not this is a legacy email.
@@ -762,14 +691,11 @@ class Email extends Post_Base_Model {
 	public function is_legacy() {
 
 		if ($this->legacy === null) {
-
 			$this->legacy = $this->get_meta('wu_legacy', false);
-
-		} // end if;
+		}
 
 		return $this->legacy;
-
-	} // end is_legacy;
+	}
 
 	/**
 	 * Set whether or not this is a legacy email.
@@ -783,7 +709,5 @@ class Email extends Post_Base_Model {
 		$this->legacy = $legacy;
 
 		$this->meta['wu_legacy'] = $legacy;
-
-	} // end set_legacy;
-
-} // end class Email;
+	}
+}

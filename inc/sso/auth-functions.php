@@ -16,7 +16,7 @@
  * @subpackage SSO
  */
 
-use \Delight\Cookie\Cookie;
+use Delight\Cookie\Cookie;
 
 // phpcs:disable
 
@@ -177,7 +177,7 @@ if ( !function_exists( 'auth_redirect' ) ) :
 
 			return;
 
-		} // end if;
+		}
 
 		$secure = ( is_ssl() || force_ssl_admin() );
 

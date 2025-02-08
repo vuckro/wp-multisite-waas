@@ -28,13 +28,8 @@ function wu_drop_tables() {
 	$except = apply_filters('wu_drop_tables_except', $except);
 
 	foreach ($tables as $table) {
-
-		if (!in_array($table->name, $except, true)) {
-
+		if ( ! in_array($table->name, $except, true)) {
 			$table->uninstall();
-
-		} // end if;
-
-	} // end foreach;
-
-} // end wu_drop_tables;
+		}
+	}
+}

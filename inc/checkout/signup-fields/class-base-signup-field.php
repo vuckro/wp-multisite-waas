@@ -112,8 +112,7 @@ abstract class Base_Signup_Field {
 	public function is_hidden() {
 
 		return false;
-
-	} // end is_hidden;
+	}
 
 	/**
 	 * Defines if this field/element is related to site creation or not.
@@ -124,8 +123,7 @@ abstract class Base_Signup_Field {
 	public function is_site_field() {
 
 		return false;
-
-	} // end is_site_field;
+	}
 
 	/**
 	 * Defines if this field/element is related to user/customer creation or not.
@@ -136,8 +134,7 @@ abstract class Base_Signup_Field {
 	public function is_user_field() {
 
 		return false;
-
-	} // end is_user_field;
+	}
 
 	/**
 	 * Returns the field as an array that the form builder can understand.
@@ -159,8 +156,7 @@ abstract class Base_Signup_Field {
 			'all_attributes'   => $this->get_all_attributes(),
 			'fields'           => array($this, 'get_editor_fields'),
 		);
-
-	} // end get_field_as_type_option;
+	}
 
 	/**
 	 * Modifies the HTML attr array before sending it over to the form.
@@ -174,8 +170,7 @@ abstract class Base_Signup_Field {
 	public function get_editor_fields_html_attr($html_attr, $field_name) {
 
 		return $html_attr;
-
-	} // end get_editor_fields_html_attr;
+	}
 
 	/**
 	 * Get the tabs available for this field.
@@ -189,8 +184,7 @@ abstract class Base_Signup_Field {
 			'content',
 			'style',
 		);
-
-	} // end get_tabs;
+	}
 
 	/**
 	 * Gets the pre-filled value for the field.
@@ -207,20 +201,15 @@ abstract class Base_Signup_Field {
 		$value_session = wu_get_isset($session->get('signup'), $this->attributes['id']);
 
 		if ($value_session) {
-
 			$value = $value_session;
-
-		} // end if;
+		}
 
 		if (wu_get_isset($this->attributes, 'from_request') && wu_get_isset($this->attributes, 'id')) {
-
 			$value = wu_request($this->attributes['id'], '');
-
-		} // end if;
+		}
 
 		return $value;
-
-	} // end get_value;
+	}
 
 	/**
 	 * Calculate the style attributes for the field.
@@ -235,24 +224,17 @@ abstract class Base_Signup_Field {
 		$width = (int) wu_get_isset($this->attributes, 'width');
 
 		if ($width) {
-
 			if ($width !== 100) {
-
 				$styles[] = 'float: left';
 
 				$styles[] = sprintf('width: %s%%', $width);
-
-			} // end if;
-
+			}
 		} else {
-
 			$styles[] = 'clear: both';
-
-		} // end if;
+		}
 
 		return implode('; ', $styles);
-
-	} // end calculate_style_attr;
+	}
 
 	/**
 	 * Sets the config values for the current field.
@@ -265,8 +247,7 @@ abstract class Base_Signup_Field {
 	public function set_attributes($attributes) {
 
 		$this->attributes = $attributes;
-
-	} // end set_attributes;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -277,8 +258,7 @@ abstract class Base_Signup_Field {
 	public function force_attributes() {
 
 		return array();
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Default values for the editor fields.
@@ -289,8 +269,7 @@ abstract class Base_Signup_Field {
 	public function defaults() {
 
 		return array();
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -308,8 +287,7 @@ abstract class Base_Signup_Field {
 			'default',
 			'required',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * Returns the editor fields.
@@ -327,32 +305,27 @@ abstract class Base_Signup_Field {
 		 * Checks if this is a site field
 		 */
 		if ($this->is_site_field()) {
-
-			$final_field_list['_site_notice_field_' . uniqid()] = array(
+			$final_field_list[ '_site_notice_field_' . uniqid() ] = array(
 				'type'    => 'note',
 				'classes' => 'wu--mt-px',
 				'desc'    => sprintf('<div class="wu-p-4 wu--m-4 wu-bg-blue-100 wu-text-blue-600 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid">%s</div>', __('This is a site-related field. For that reason, this field will not show up when no plans are present on the shopping cart.', 'wp-ultimo')),
 				'order'   => 98.5,
 			);
-
-		} // end if;
+		}
 
 		/*
 		 * Checks if this is a user field
 		 */
 		if ($this->is_user_field()) {
-
-			$final_field_list['_user_notice_field_' . uniqid()] = array(
+			$final_field_list[ '_user_notice_field_' . uniqid() ] = array(
 				'type'    => 'note',
 				'classes' => 'wu--mt-px',
 				'desc'    => sprintf('<div class="wu-p-4 wu--m-4 wu-bg-blue-100 wu-text-blue-600 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid">%s</div>', __('This is a customer-related field. For that reason, this field will not show up when the user is logged and already has a customer on file.', 'wp-ultimo')),
 				'order'   => 98.5,
 			);
-
-		} // end if;
+		}
 
 		foreach ($final_field_list as $key => &$field) {
-
 			$field['html_attr'] = wu_get_isset($field, 'html_attr', array());
 
 			$value = wu_get_isset($attributes, $key, null);
@@ -360,13 +333,10 @@ abstract class Base_Signup_Field {
 			$field['default'] = wu_get_isset($this->defaults(), $key, '');
 
 			if ($value === null) {
-
 				$value = $field['default'];
-
-			} // end if;
+			}
 
 			if (wu_get_isset($field['html_attr'], 'data-model')) {
-
 				$model_name = wu_get_isset($field['html_attr'], 'data-model', 'product');
 
 				$models = explode(',', (string) $value);
@@ -374,34 +344,29 @@ abstract class Base_Signup_Field {
 				$func_name = "wu_get_{$model_name}";
 
 				if (function_exists($func_name)) {
+					$selected = array_map(
+						function ($id) use ($func_name) {
 
-					$selected = array_map(function($id) use ($func_name) {
+							$model = call_user_func($func_name, absint($id));
 
-						$model = call_user_func($func_name, absint($id));
+							if ( ! $model) {
+								return false;
+							}
 
-						if (!$model) {
-
-							return false;
-
-						} // end if;
-
-						return $model->to_search_results();
-
-					}, $models);
+							return $model->to_search_results();
+						},
+						$models
+					);
 
 					$selected = array_filter($selected);
 
 					$field['html_attr']['data-selected'] = json_encode($selected);
+				}
+			}
 
-				} // end if;
-
-			} // end if;
-
-			if (!is_null($value)) {
-
+			if ( ! is_null($value)) {
 				$field['value'] = $value;
-
-			} // end if;
+			}
 
 			$field['html_attr'] = $this->get_editor_fields_html_attr($field['html_attr'], $field['type']);
 
@@ -411,23 +376,22 @@ abstract class Base_Signup_Field {
 			$show_reqs = false;
 
 			if (isset($field['wrapper_html_attr'])) {
-
 				$show_reqs = wu_get_isset($field['wrapper_html_attr'], 'v-show');
-
-			} // end if;
+			}
 
 			$tab = wu_get_isset($field, 'tab', 'content');
 
-			$field['wrapper_html_attr'] = array_merge(wu_get_isset($field, 'wrapper_html_attr', array()), array(
-				'v-cloak' => 1,
-				'v-show'  => sprintf('require("type", "%s") && require("tab", "%s")', $this->get_type(), $tab) . ($show_reqs ? " && $show_reqs" : ''),
-			));
-
-		} // end foreach;
+			$field['wrapper_html_attr'] = array_merge(
+				wu_get_isset($field, 'wrapper_html_attr', array()),
+				array(
+					'v-cloak' => 1,
+					'v-show'  => sprintf('require("type", "%s") && require("tab", "%s")', $this->get_type(), $tab) . ($show_reqs ? " && $show_reqs" : ''),
+				)
+			);
+		}
 
 		return $final_field_list;
-
-	} // end get_editor_fields;
+	}
 
 	/**
 	 * Returns a list of all the attributes.
@@ -449,8 +413,7 @@ abstract class Base_Signup_Field {
 		$field_keys = array_keys($this->get_fields());
 
 		return array_merge($this->default_fields(), $field_keys, $styles);
-
-	} // end get_all_attributes;
+	}
 
 	/**
 	 * Treat the attributes array to avoid reaching the input var limits.
@@ -463,8 +426,7 @@ abstract class Base_Signup_Field {
 	public function reduce_attributes($attributes) {
 
 		return $attributes;
-
-	} // end reduce_attributes;
+	}
 
 	/**
 	 * List of all the default fields available.
@@ -608,7 +570,5 @@ abstract class Base_Signup_Field {
 		);
 
 		return $fields;
-
-	} // end fields_list;
-
-} // end class Base_Signup_Field;
+	}
+}

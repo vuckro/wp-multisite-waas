@@ -11,7 +11,7 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-if (!class_exists('PluginUpdateChecker_2_0')) {
+if ( ! class_exists('PluginUpdateChecker_2_0')) {
 
 	/**
 	 * Deprecated: PluginUpdateChecker_2_0
@@ -26,13 +26,12 @@ if (!class_exists('PluginUpdateChecker_2_0')) {
 		 * @deprecated 2.0.0
 		 * @return void
 		 */
-		public function enable_update_checker() {} // end enable_update_checker;
+		public function enable_update_checker() {}
+	}
 
-	} // end class PluginUpdateChecker_2_0;
+}
 
-} // end if;
-
-if (!class_exists('PucFactory')) {
+if ( ! class_exists('PucFactory')) {
 
 	/**
 	 * Deprecated: PucFactory
@@ -47,8 +46,7 @@ if (!class_exists('PucFactory')) {
 		 * @deprecated 2.0.0
 		 * @return void
 		 */
-		public static function buildUpdateChecker() {} // end buildUpdateChecker;
+		public static function buildUpdateChecker() {}
+	}
 
-	} // end class PucFactory;
-
-} // end if;
+}

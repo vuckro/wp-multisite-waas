@@ -34,17 +34,18 @@ class Membership_List_Table extends Base_List_Table {
 	 */
 	public function __construct() {
 
-		parent::__construct(array(
-			'singular' => __('Membership', 'wp-ultimo'),  // singular name of the listed records
-			'plural'   => __('Memberships', 'wp-ultimo'), // plural name of the listed records
-			'ajax'     => true,                           // does this table support ajax?
-			'add_new'  => array(
-				'url'     => wu_get_form_url('add_new_membership'),
-				'classes' => 'wubox',
-			),
-		));
-
-	} // end __construct;
+		parent::__construct(
+			array(
+				'singular' => __('Membership', 'wp-ultimo'),  // singular name of the listed records
+				'plural'   => __('Memberships', 'wp-ultimo'), // plural name of the listed records
+				'ajax'     => true,                           // does this table support ajax?
+				'add_new'  => array(
+					'url'     => wu_get_form_url('add_new_membership'),
+					'classes' => 'wubox',
+				),
+			)
+		);
+	}
 
 	/**
 	 * Adds the extra search field when the search element is present.
@@ -61,8 +62,7 @@ class Membership_List_Table extends Base_List_Table {
 		$_filter_fields['customer_id'] = wu_request('customer_id');
 
 		return $_filter_fields;
-
-	} // end get_extra_query_fields;
+	}
 
 	/**
 	 * Displays the membership reference code.
@@ -97,8 +97,7 @@ class Membership_List_Table extends Base_List_Table {
 		$html = "<span class='wu-font-mono'><strong>{$code}</strong></span>";
 
 		return $html . $this->row_actions($actions);
-
-	} // end column_hash;
+	}
 
 	/**
 	 * Displays the status of the membership.
@@ -117,8 +116,7 @@ class Membership_List_Table extends Base_List_Table {
 		$html = "<span class='wu-bg-gray-200 wu-leading-none wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono $class'>{$label}</span>";
 
 		return $html;
-
-	} // end column_status;
+	}
 
 	/**
 	 * Displays the price of the membership.
@@ -131,13 +129,10 @@ class Membership_List_Table extends Base_List_Table {
 	public function column_amount($item) {
 
 		if (empty($item->get_amount()) && empty($item->get_initial_amount())) {
-
 			return __('Free', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		if ($item->is_recurring()) {
-
 			$amount = wu_format_currency($item->get_amount(), $item->get_currency());
 
 			$duration = $item->get_duration();
@@ -149,8 +144,7 @@ class Membership_List_Table extends Base_List_Table {
 				$item->get_duration_unit()
 			);
 
-			if (!$item->is_forever_recurring()) {
-
+			if ( ! $item->is_forever_recurring()) {
 				$billing_cycles_message = sprintf(
 					// translators: %s is the number of billing cycles.
 					_n('for %s cycle', 'for %s cycles', $item->get_billing_cycles(), 'wp-ultimo'),
@@ -158,20 +152,15 @@ class Membership_List_Table extends Base_List_Table {
 				);
 
 				$message .= ' ' . $billing_cycles_message;
-
-			} // end if;
-
+			}
 		} else {
-
 			$amount = wu_format_currency($item->get_initial_amount(), $item->get_currency());
 
 			$message = __('one time payment', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		return sprintf('%s<br><small>%s</small>', $amount, $message);
-
-	} // end column_amount;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -195,8 +184,7 @@ class Membership_List_Table extends Base_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Handles the default displaying of datetime columns.
@@ -211,16 +199,12 @@ class Membership_List_Table extends Base_List_Table {
 		$date = $item->get_date_expiration();
 
 		if (empty($date) || $date === '0000-00-00 00:00:00') {
-
 			return sprintf('<span>%s</span><br><small>%s</small>', __('Lifetime', 'wp-ultimo'), __('It never expires', 'wp-ultimo'));
+		}
 
-		} // end if;
-
-		if (!wu_validate_date($date)) {
-
+		if ( ! wu_validate_date($date)) {
 			return __('--', 'wp-ultimo');
-
-		} // end if;
+		}
 
 		$time = strtotime(get_date_from_gmt($date));
 
@@ -231,8 +215,7 @@ class Membership_List_Table extends Base_List_Table {
 		$text = $formatted_value . sprintf('<br><small>%s</small>', sprintf($placeholder, human_time_diff($time)));
 
 		return sprintf('<span %s>%s</span>', wu_tooltip_text(date_i18n('Y-m-d H:i:s', $time)), $text);
-
-	} // end column_date_expiration;
+	}
 
 	/**
 	 * Returns the filters for this page.
@@ -250,7 +233,7 @@ class Membership_List_Table extends Base_List_Table {
 				 * Status
 				 */
 				'status' => array(
-					'label'   => __( 'Status', 'wp-ultimo' ),
+					'label'   => __('Status', 'wp-ultimo'),
 					'options' => $membership_status::to_array(),
 				),
 
@@ -282,8 +265,7 @@ class Membership_List_Table extends Base_List_Table {
 				),
 			),
 		);
-
-	} // end get_filters;
+	}
 
 	/**
 	 * Returns the pre-selected filters on the filter bar.
@@ -337,7 +319,5 @@ class Membership_List_Table extends Base_List_Table {
 				'count' => 0,
 			),
 		);
-
-	} // end get_views;
-
-} // end class Membership_List_Table;
+	}
+}

@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -24,15 +24,14 @@ defined('ABSPATH') || exit;
 class Signup_Field_Email extends Base_Signup_Field {
 
 	/**
-     * Returns the type of the field.
-     *
-     * @since 2.0.0
-     */
+	 * Returns the type of the field.
+	 *
+	 * @since 2.0.0
+	 */
 	public function get_type(): string {
 
 		return 'email';
-
-	} // end get_type;
+	}
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -41,8 +40,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 	public function is_required(): bool {
 
 		return true;
-
-	} // end is_required;
+	}
 	/**
 	 * Is this a user-related field?
 	 *
@@ -54,8 +52,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 	public function is_user_field(): bool {
 
 		return false;
-
-	} // end is_user_field;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -68,8 +65,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Email', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -82,8 +78,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a email address field. This email address will be used to create the WordPress user.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -96,8 +91,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a email address field. This email address will be used to create the WordPress user.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -108,8 +102,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 	public function get_icon(): string {
 
 		return 'dashicons-wu-at-sign';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -125,8 +118,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 		return array(
 			'display_notices' => true,
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -141,8 +133,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 			'placeholder',
 			'tooltip',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -156,8 +147,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 			'id'       => 'email_address',
 			'required' => true,
 		);
-
-	}  // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -179,8 +169,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 				),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -195,9 +184,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 		$checkout_fields = array();
 
 		if (is_user_logged_in()) {
-
 			if ($attributes['display_notices']) {
-
 				$checkout_fields['login_note'] = array(
 					'type'              => 'note',
 					'title'             => __('Not you?', 'wp-ultimo'),
@@ -207,13 +194,9 @@ class Signup_Field_Email extends Base_Signup_Field {
 						'style' => $this->calculate_style_attr(),
 					),
 				);
-
-			} // end if;
-
+			}
 		} else {
-
 			if ($attributes['display_notices']) {
-
 				$checkout_fields['login_note'] = array(
 					'type'              => 'note',
 					'title'             => __('Existing customer?', 'wp-ultimo'),
@@ -223,8 +206,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 						'style' => $this->calculate_style_attr(),
 					),
 				);
-
-			} // end if;
+			}
 
 			$checkout_fields['email_address'] = array(
 				'type'              => 'text',
@@ -240,12 +222,10 @@ class Signup_Field_Email extends Base_Signup_Field {
 					'style' => $this->calculate_style_attr(),
 				),
 			);
-
-		} // end if;
+		}
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
+	}
 
 	/**
 	 * Renders the login message for users that are not logged in.
@@ -273,8 +253,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 		<?php // phpcs:enable
 
 		return ob_get_clean();
-
-	} // end render_existing_customer_message;
+	}
 
 	/**
 	 * Renders the login message for users that are not logged in.
@@ -302,7 +281,5 @@ class Signup_Field_Email extends Base_Signup_Field {
 		<?php
 
 		return ob_get_clean();
-
-	} // end render_not_you_customer_message;
-
-} // end class Signup_Field_Email;
+	}
+}

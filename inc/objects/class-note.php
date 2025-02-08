@@ -37,8 +37,7 @@ class Note {
 	public function __construct($data = array()) {
 
 		$this->attributes($data);
-
-	} // end __construct;
+	}
 
 	/**
 	 * Loops through allowed fields and loads them.
@@ -53,18 +52,13 @@ class Note {
 		$allowed_attributes = array_keys(self::fields());
 
 		foreach ($data as $key => $value) {
-
 			if (in_array($key, $allowed_attributes, true)) {
-
-				$this->attributes[$key] = $value;
-
-			} // end if;
-
-		} // end foreach;
+				$this->attributes[ $key ] = $value;
+			}
+		}
 
 		$this->attributes['date_created'] = wu_get_current_time('mysql', true);
-
-	} // end attributes;
+	}
 
 	/**
 	 * Checks if this note has any content at all.
@@ -74,9 +68,8 @@ class Note {
 	 */
 	public function exists() {
 
-		return !empty(array_filter($this->attributes));
-
-	} // end exists;
+		return ! empty(array_filter($this->attributes));
+	}
 
 	/**
 	 * Checks if a parameter exists.
@@ -89,8 +82,7 @@ class Note {
 	public function __isset($name) {
 
 		return wu_get_isset($this->attributes, $name, '');
-
-	} // end __isset;
+	}
 
 	/**
 	 * Gets a note field.
@@ -105,8 +97,7 @@ class Note {
 		$value = wu_get_isset($this->attributes, $name, '');
 
 		return apply_filters("wu_note_get_{$name}", $value, $this);
-
-	} // end __get;
+	}
 
 	/**
 	 * Sets a note field.
@@ -120,9 +111,8 @@ class Note {
 
 		$value = apply_filters("wu_note_set_{$name}", $value, $this);
 
-		$this->attributes[$name] = $value;
-
-	} // end __set;
+		$this->attributes[ $name ] = $value;
+	}
 
 	/**
 	 * Returns the validation rules for new notes.
@@ -133,8 +123,7 @@ class Note {
 	protected function validation_rules() {
 
 		return array();
-
-	} // end validation_rules;
+	}
 
 	/**
 	 * Validates the fields following the validation rules.
@@ -144,19 +133,16 @@ class Note {
 	 */
 	public function validate() {
 
-		$validator = new \WP_Ultimo\Helpers\Validator;
+		$validator = new \WP_Ultimo\Helpers\Validator();
 
 		$validator->validate($this->to_array(), $this->validation_rules());
 
 		if ($validator->fails()) {
-
 			return $validator->get_errors();
-
-		} // end if;
+		}
 
 		return true;
-
-	} // end validate;
+	}
 
 	/**
 	 * Returns a key => value representation of the notes fields.
@@ -173,20 +159,15 @@ class Note {
 		$fields = self::fields();
 
 		foreach ($fields as $field_key => $field) {
-
-			if (!empty($this->{$field_key})) {
-
+			if ( ! empty($this->{$field_key})) {
 				$key = $labels ? $field['title'] : $field_key;
 
-				$address_array[$key] = $this->{$field_key};
-
-			} // end if;
-
-		} // end foreach;
+				$address_array[ $key ] = $this->{$field_key};
+			}
+		}
 
 		return $address_array;
-
-	}  // end to_array;
+	}
 	/**
 	 * Returns the contents of the note.
 	 *
@@ -197,8 +178,7 @@ class Note {
 	public function to_string($delimiter = PHP_EOL): string {
 
 		return implode($delimiter, $this->to_array());
-
-	} // end to_string;
+	}
 
 	/**
 	 * Note field definitions.
@@ -230,7 +210,5 @@ class Note {
 		uasort($fields, 'wu_sort_by_order');
 
 		return $fields;
-
-	} // end fields;
-
-} // end class Note;
+	}
+}

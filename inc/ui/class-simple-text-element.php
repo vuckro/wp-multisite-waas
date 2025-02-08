@@ -65,14 +65,11 @@ class Simple_Text_Element extends Base_Element {
 	public function get_icon($context = 'block') {
 
 		if ($context === 'elementor') {
-
 			return 'eicon-lock-user';
-
-		} // end if;
+		}
 
 		return 'fa fa-search';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * The title of the UI element.
@@ -87,8 +84,7 @@ class Simple_Text_Element extends Base_Element {
 	public function get_title() {
 
 		return __('Simple Text', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * The description of the UI element.
@@ -104,8 +100,7 @@ class Simple_Text_Element extends Base_Element {
 	public function get_description() {
 
 		return __('Adds a simple text block to the page.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * The list of fields to be added to Gutenberg.
@@ -142,12 +137,11 @@ class Simple_Text_Element extends Base_Element {
 			'tooltip'     => '',
 			'html_attr'   => array(
 				'rows' => 6,
-			)
+			),
 		);
 
 		return $fields;
-
-	} // end fields;
+	}
 
 	/**
 	 * Registers scripts and styles necessary to render this.
@@ -158,8 +152,7 @@ class Simple_Text_Element extends Base_Element {
 	public function register_scripts() {
 
 		wp_enqueue_style('wu-admin');
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * The list of keywords for this element.
@@ -186,10 +179,9 @@ class Simple_Text_Element extends Base_Element {
 			'text',
 			'simple text',
 			'shortcode',
-			'textarea'
+			'textarea',
 		);
-
-	} // end keywords;
+	}
 
 	/**
 	 * List of default parameters for the element.
@@ -210,8 +202,7 @@ class Simple_Text_Element extends Base_Element {
 		return array(
 			'simple_text' => __('Text, HTML or shortcode.', 'wp-ultimo'),
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * The content to be output on the screen.
@@ -229,7 +220,5 @@ class Simple_Text_Element extends Base_Element {
 	public function output($atts, $content = null) {
 
 		return wu_get_template_contents('dashboard-widgets/simple-text', $atts);
-
-	} // end output;
-
-} // end class Simple_Text_Element;
+	}
+}

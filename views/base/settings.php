@@ -5,307 +5,300 @@
  * @since 2.0.0
  */
 ?>
-<div id="wp-ultimo-wrap" class="<?php wu_wrap_use_container() ?> wrap wu-wrap <?php echo esc_attr($classes); ?>">
+<div id="wp-ultimo-wrap" class="<?php wu_wrap_use_container(); ?> wrap wu-wrap <?php echo esc_attr($classes); ?>">
 
-  <h1 class="wp-heading-inline">
+	<h1 class="wp-heading-inline">
 
-    <?php echo $page->get_title(); ?>
+	<?php echo $page->get_title(); ?>
 
-    <?php
-    /**
-     * You can filter the get_title_link using wu_page_list_get_title_link, see class-wu-page-list.php
-     *
-     * @since 1.8.2
-     */
-    foreach ($page->get_title_links() as $action_link) :
+	<?php
+	/**
+	 * You can filter the get_title_link using wu_page_list_get_title_link, see class-wu-page-list.php
+	 *
+	 * @since 1.8.2
+	 */
+	foreach ($page->get_title_links() as $action_link) :
+		$action_classes = isset($action_link['classes']) ? $action_link['classes'] : '';
 
-      $action_classes = isset($action_link['classes']) ? $action_link['classes'] : '';
+		?>
 
-    ?>
+		<a title="<?php echo esc_attr($action_link['label']); ?>" href="<?php echo esc_url($action_link['url']); ?>" class="page-title-action <?php echo esc_attr($action_classes); ?>">
 
-      <a title="<?php echo esc_attr($action_link['label']); ?>" href="<?php echo esc_url($action_link['url']); ?>" class="page-title-action <?php echo esc_attr($action_classes); ?>">
+		<?php if ($action_link['icon']) : ?>
 
-        <?php if ($action_link['icon']) : ?>
+			<span class="dashicons dashicons-<?php echo esc_attr($action_link['icon']); ?> wu-text-sm wu-align-middle wu-h-4 wu-w-4">
+			&nbsp;
+			</span>
 
-          <span class="dashicons dashicons-<?php echo esc_attr($action_link['icon']); ?> wu-text-sm wu-align-middle wu-h-4 wu-w-4">
-            &nbsp;
-          </span>
+		<?php endif; ?>
 
-        <?php endif; ?>
+		<?php echo $action_link['label']; ?>
 
-        <?php echo $action_link['label']; ?>
+		</a>
 
-      </a>
+	<?php endforeach; ?>
 
-    <?php endforeach; ?>
+	<?php
+	/**
+	 * Allow plugin developers to add additional buttons to list pages
+	 *
+	 * @since 1.8.2
+	 * @param WU_Page WP Multisite WaaS Page instance
+	 */
+	do_action('wu_page_wizard_after_title', $page);
+	?>
 
-    <?php
-    /**
-     * Allow plugin developers to add additional buttons to list pages
-     *
-     * @since 1.8.2
-     * @param WU_Page WP Multisite WaaS Page instance
-     */
-    do_action('wu_page_wizard_after_title', $page);
-    ?>
+	</h1>
 
-  </h1>
+	<?php if (wu_request('updated')) : ?>
 
-  <?php if (wu_request('updated')) : ?>
+	<div id="message" class="updated notice wu-admin-notice notice-success is-dismissible below-h2">
+		<p><?php _e('Settings successfully saved.', 'wp-ultimo'); ?></p>
+	</div>
 
-    <div id="message" class="updated notice wu-admin-notice notice-success is-dismissible below-h2">
-      <p><?php _e('Settings successfully saved.', 'wp-ultimo') ?></p>
-    </div>
+	<?php endif; ?>
 
-  <?php endif; ?>
+	<hr class="wp-header-end">
 
-  <hr class="wp-header-end">
+	<form method="post">
 
-  <form method="post">
+	<div id="poststuff" class="sm:wu-grid sm:wu-grid-cols-12 wu-gap-4">
 
-    <div id="poststuff" class="sm:wu-grid sm:wu-grid-cols-12 wu-gap-4">
+		<div class="sm:wu-col-span-4 lg:wu-col-span-2">
 
-      <div class="sm:wu-col-span-4 lg:wu-col-span-2">
+		<div class="wu-py-4 wu-relative">
 
-        <div class="wu-py-4 wu-relative">
+			<input
+			data-model='setting'
+			data-value-field="setting_id"
+			data-label-field="title"
+			data-search-field="setting_id"
+			data-max-items="1"
+			selected type="text"
+			placeholder="Search Setting"
+			class="wu-w-full"
+			>
 
-          <input
-            data-model='setting'
-            data-value-field="setting_id"
-            data-label-field="title"
-            data-search-field="setting_id"
-            data-max-items="1"
-            selected type="text"
-            placeholder="Search Setting"
-            class="wu-w-full"
-          >
+		</div>
 
-        </div>
+		<div data-wu-app="settings_menu" data-state="{}">
 
-        <div data-wu-app="settings_menu" data-state="{}">
+			<!-- Navigator -->
+			<ul>
 
-          <!-- Navigator -->
-          <ul>
+			<li class="md:wu-hidden wu-p-4 wu-font-bold wu-uppercase wu-text-xs wu-text-gray-700">
 
-            <li class="md:wu-hidden wu-p-4 wu-font-bold wu-uppercase wu-text-xs wu-text-gray-700">
+				<?php _e('Menu', 'wp-ultimo'); ?>
 
-              <?php _e('Menu', 'wp-ultimo'); ?>
+			</li>
 
-            </li>
+			<?php
 
-            <?php
+			/**
+			 * We need to set a couple of flags in here to control clickable navigation elements.
+			 * This flag makes sure only steps the user already went through are clickable.
+			 */
+			$is_pre_current_section = true;
 
-            /**
-             * We need to set a couple of flags in here to control clickable navigation elements.
-             * This flag makes sure only steps the user already went through are clickable.
-             */
-            $is_pre_current_section = true;
+			/**
+			 * Holds add-on menus
+			 */
+			$addons = array();
 
-            /**
-             * Holds add-on menus
-             */
-            $addons = array();
+			?>
 
-            ?>
+			<?php foreach ($sections as $section_name => $section) : ?>
 
-            <?php foreach ($sections as $section_name => $section) : ?>
+				<?php
 
-              <?php
+				if (wu_get_isset($section, 'invisible')) {
+					continue; // skip add-ons for now.
 
-              if (wu_get_isset($section, 'invisible')) {
+				} // end if;
 
-                continue; // skip add-ons for now.
+				if (wu_get_isset($section, 'addon')) {
+					$addons[ $section_name ] = $section;
 
-              } // end if;
+					continue; // skip add-ons for now.
 
-              if (wu_get_isset($section, 'addon')) {
+				} // end if;
 
-                $addons[$section_name] = $section;
+				/**
+				 * Updates the flag after the current section is looped.
+				 */
+				if ($current_section === $section_name) {
+					$is_pre_current_section = false;
+				} // end if;
 
-                continue; // skip add-ons for now.
+				?>
 
-              } // end if;
+				<!-- Menu Item -->
+				<li id="tab-selector-<?php echo esc_attr($section_name); ?>" class="wu-sticky">
 
-              /**
-               * Updates the flag after the current section is looped.
-               */
-              if ($current_section === $section_name) {
+				<!-- Menu Link -->
+				<a
+					id="tab-selector-<?php echo esc_attr($section_name); ?>-link"
+					href="<?php echo esc_url($page->get_section_link($section_name)); ?>" 
+					class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-sm wu-rounded <?php echo ! $clickable_navigation && ! $is_pre_current_section ? 'wu-pointer-events-none' : ''; ?> <?php echo $current_section === $section_name ? 'wu-bg-gray-300 wu-text-gray-800' : 'wu-text-gray-600 hover:wu-text-gray-700'; ?>"
+				>
 
-                $is_pre_current_section = false;
+					<span class="<?php echo esc_attr($section['icon']); ?> wu-align-text-bottom wu-mr-1"></span>
 
-              } // end if;
+					<?php echo $section['title']; ?>
 
-              ?>
+				</a>
+				<!-- End Menu Link -->
 
-              <!-- Menu Item -->
-              <li id="tab-selector-<?php echo esc_attr($section_name); ?>" class="wu-sticky">
+				<?php if ( ! empty($section['sub-sections'])) : ?>
 
-                <!-- Menu Link -->
-                <a
-                  id="tab-selector-<?php echo esc_attr($section_name); ?>-link"
-                  href="<?php echo esc_url($page->get_section_link($section_name)); ?>" 
-                  class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-sm wu-rounded <?php echo !$clickable_navigation && !$is_pre_current_section ? 'wu-pointer-events-none' : ''; ?> <?php echo $current_section === $section_name ? 'wu-bg-gray-300 wu-text-gray-800' : 'wu-text-gray-600 hover:wu-text-gray-700'; ?>"
-                >
+					<!-- Sub-menu -->
+					<ul class="classes" v-show="false" v-cloak>
 
-                  <span class="<?php echo esc_attr($section['icon']); ?> wu-align-text-bottom wu-mr-1"></span>
+					<?php foreach ($section['sub-sections'] as $sub_section_name => $sub_section) : ?>
 
-                  <?php echo $section['title']; ?>
+						<li class="classes">
+						<a href="<?php echo esc_url($page->get_section_link($section_name) . '#' . $sub_section_name); ?>" class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-gray-500 hover:wu-text-gray-600 wu-text-sm">
+							&rarr; <?php echo $sub_section['title']; ?>
+						</a>
+						</li>
 
-                </a>
-                <!-- End Menu Link -->
+					<?php endforeach; ?>
 
-                <?php if (!empty($section['sub-sections'])) : ?>
+					</ul>
+					<!-- End Sub-menu -->
 
-                  <!-- Sub-menu -->
-                  <ul class="classes" v-show="false" v-cloak>
+				<?php endif; ?>
 
-                    <?php foreach ($section['sub-sections'] as $sub_section_name => $sub_section) : ?>
+				</li>
+				<!-- End Menu Item -->
 
-                      <li class="classes">
-                        <a href="<?php echo esc_url($page->get_section_link($section_name)."#".$sub_section_name); ?>" class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-gray-500 hover:wu-text-gray-600 wu-text-sm">
-                          &rarr; <?php echo $sub_section['title']; ?>
-                        </a>
-                      </li>
+			<?php endforeach; ?>
 
-                    <?php endforeach; ?>
+			</ul>
+			<!-- End Navigator -->
 
-                  </ul>
-                  <!-- End Sub-menu -->
+			<?php if ( ! empty($addons)) : ?>
 
-                <?php endif; ?>
+			<!-- Addon Navigator -->
+			<ul class="wu-pt-4">
 
-              </li>
-              <!-- End Menu Item -->
+				<li class="wu-px-4 wu-font-bold wu-uppercase wu-text-xs wu-text-gray-700">
+				<?php _e('Add-ons', 'wp-ultimo'); ?>
+				</li>
 
-            <?php endforeach; ?>
+				<?php foreach ($addons as $section_name => $section) : ?>
 
-          </ul>
-          <!-- End Navigator -->
+					<?php
 
-          <?php if (!empty($addons)) : ?>
+					/**
+					 * Updates the flag after the current section is looped.
+					 */
+					if ($current_section === $section_name) {
+						$is_pre_current_section = false;
+					} // end if;
 
-            <!-- Addon Navigator -->
-            <ul class="wu-pt-4">
+					?>
 
-              <li class="wu-px-4 wu-font-bold wu-uppercase wu-text-xs wu-text-gray-700">
-                <?php _e('Add-ons', 'wp-ultimo'); ?>
-              </li>
+				<!-- Menu Item -->
+				<li class="wu-sticky">
 
-              <?php foreach ($addons as $section_name => $section) : ?>
+					<!-- Menu Link -->
+					<a href="<?php echo esc_url($page->get_section_link($section_name)); ?>" class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-sm wu-rounded <?php echo ! $clickable_navigation && ! $is_pre_current_section ? 'wu-pointer-events-none' : ''; ?> <?php echo $current_section === $section_name ? 'wu-bg-gray-300 wu-text-gray-800' : 'wu-text-gray-600 hover:wu-text-gray-700'; ?>">
 
-                <?php
+					<span class="<?php echo esc_attr($section['icon']); ?> wu-align-text-bottom wu-mr-1"></span>
 
-                /**
-                 * Updates the flag after the current section is looped.
-                 */
-                if ($current_section === $section_name) {
+					<?php echo $section['title']; ?>
 
-                  $is_pre_current_section = false;
+					</a>
+					<!-- End Menu Link -->
 
-                } // end if;
+					<?php if ( ! empty($section['sub-sections'])) : ?>
 
-                ?>
+					<!-- Sub-menu -->
+					<ul class="classes" v-show="false" v-cloak>
 
-                <!-- Menu Item -->
-                <li class="wu-sticky">
+						<?php foreach ($section['sub-sections'] as $sub_section_name => $sub_section) : ?>
 
-                  <!-- Menu Link -->
-                  <a href="<?php echo esc_url($page->get_section_link($section_name)); ?>" class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-sm wu-rounded <?php echo !$clickable_navigation && !$is_pre_current_section ? 'wu-pointer-events-none' : ''; ?> <?php echo $current_section === $section_name ? 'wu-bg-gray-300 wu-text-gray-800' : 'wu-text-gray-600 hover:wu-text-gray-700'; ?>">
+						<li class="classes">
+							<a href="<?php echo esc_url($page->get_section_link($section_name) . '#' . $sub_section_name); ?>" class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-gray-500 hover:wu-text-gray-600 wu-text-sm">
+							&rarr; <?php echo $sub_section['title']; ?>
+							</a>
+						</li>
 
-                    <span class="<?php echo esc_attr($section['icon']); ?> wu-align-text-bottom wu-mr-1"></span>
+						<?php endforeach; ?>
 
-                    <?php echo $section['title']; ?>
+					</ul>
+					<!-- End Sub-menu -->
 
-                  </a>
-                  <!-- End Menu Link -->
+					<?php endif; ?>
 
-                  <?php if (!empty($section['sub-sections'])) : ?>
+				</li>
+				<!-- End Menu Item -->
 
-                    <!-- Sub-menu -->
-                    <ul class="classes" v-show="false" v-cloak>
+				<?php endforeach; ?>
 
-                      <?php foreach ($section['sub-sections'] as $sub_section_name => $sub_section) : ?>
+			</ul>
+			<!-- End Addon Navigator -->
 
-                        <li class="classes">
-                          <a href="<?php echo esc_url($page->get_section_link($section_name)."#".$sub_section_name); ?>" class="wu-block wu-py-2 wu-px-4 wu-no-underline wu-text-gray-500 hover:wu-text-gray-600 wu-text-sm">
-                            &rarr; <?php echo $sub_section['title']; ?>
-                          </a>
-                        </li>
+			<?php endif; ?>
 
-                      <?php endforeach; ?>
+		</div>
 
-                    </ul>
-                    <!-- End Sub-menu -->
+		</div>
 
-                  <?php endif; ?>
+		<div class="sm:wu-col-span-8 lg:wu-col-span-6 metabox-holder">
 
-                </li>
-                <!-- End Menu Item -->
+		<div class="wu-relative">
 
-              <?php endforeach; ?>
+			<?php
+			/**
+			 * Print Side Metaboxes
+			 *
+			 * Allow plugin developers to add new metaboxes
+			 *
+			 * @since 1.8.2
+			 * @param object Object being edited right now
+			 */
+			do_meta_boxes($screen->id, 'normal', false);
+			?>
 
-            </ul>
-            <!-- End Addon Navigator -->
+		</div>
 
-          <?php endif; ?>
+		</div>
 
-        </div>
+		<div class="sm:wu-col-span-8 sm:wu-col-start-5 lg:wu-col-span-3 lg:wu-col-start-10 metabox-holder">
 
-      </div>
+		<?php
+		/**
+		 * Print Normal Metaboxes
+		 *
+		 * Allow plugin developers to add new metaboxes
+		 *
+		 * @since 1.8.2
+		 * @param object Object being edited right now
+		 */
+		do_meta_boxes('wu_settings_admin_page', 'side', false);
+		?>
 
-      <div class="sm:wu-col-span-8 lg:wu-col-span-6 metabox-holder">
+		</div>
 
-        <div class="wu-relative">
+	</div>
 
-          <?php
-          /**
-           * Print Side Metaboxes
-           *
-           * Allow plugin developers to add new metaboxes
-           *
-           * @since 1.8.2
-           * @param object Object being edited right now
-           */
-          do_meta_boxes($screen->id, 'normal', false);
-          ?>
+	<?php
+	/**
+	 * Allow plugin developers to add scripts to the bottom of the page
+	 *
+	 * @since 1.8.2
+	 * @param WU_Page WP Multisite WaaS Page instance
+	 */
+	do_action('wu_page_wizard_footer', $page);
+	?>
 
-        </div>
+	<?php wp_nonce_field(sprintf('saving_%s', $current_section), sprintf('saving_%s', $current_section), false); ?>
 
-      </div>
+	<?php wp_nonce_field(sprintf('saving_%s', $current_section), '_wpultimo_nonce'); ?>
 
-      <div class="sm:wu-col-span-8 sm:wu-col-start-5 lg:wu-col-span-3 lg:wu-col-start-10 metabox-holder">
-
-        <?php
-        /**
-         * Print Normal Metaboxes
-         *
-         * Allow plugin developers to add new metaboxes
-         *
-         * @since 1.8.2
-         * @param object Object being edited right now
-         */
-        do_meta_boxes('wu_settings_admin_page', 'side', false);
-        ?>
-
-      </div>
-
-    </div>
-
-    <?php
-    /**
-     * Allow plugin developers to add scripts to the bottom of the page
-     *
-     * @since 1.8.2
-     * @param WU_Page WP Multisite WaaS Page instance
-     */
-    do_action('wu_page_wizard_footer', $page);
-    ?>
-
-    <?php wp_nonce_field(sprintf('saving_%s', $current_section), sprintf('saving_%s', $current_section), false); ?>
-
-    <?php wp_nonce_field(sprintf('saving_%s', $current_section), '_wpultimo_nonce'); ?>
-
-  </form>
+	</form>
 
 </div>
 
@@ -323,7 +316,7 @@ settings_loader = wu_block_ui('#wp-ultimo-wizard-body');
  */
 function remove_block_ui() {
 
-  settings_loader.unblock();
+	settings_loader.unblock();
 
 } // end remove_block_ui;
 

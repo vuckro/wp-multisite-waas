@@ -64,24 +64,29 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		/*
 		 * Edit/Add New Site
 		 */
-		wu_register_form('add_new_site', array(
-			'render'     => array($this, 'render_add_new_site_modal'),
-			'handler'    => array($this, 'handle_add_new_site_modal'),
-			'capability' => 'wu_add_sites',
-		));
+		wu_register_form(
+			'add_new_site',
+			array(
+				'render'     => array($this, 'render_add_new_site_modal'),
+				'handler'    => array($this, 'handle_add_new_site_modal'),
+				'capability' => 'wu_add_sites',
+			)
+		);
 
 		/*
 		 * Publish pending site.
 		 */
-		wu_register_form('publish_pending_site', array(
-			'render'     => array($this, 'render_publish_pending_site_modal'),
-			'handler'    => array($this, 'handle_publish_pending_site_modal'),
-			'capability' => 'wu_publish_sites',
-		));
+		wu_register_form(
+			'publish_pending_site',
+			array(
+				'render'     => array($this, 'render_publish_pending_site_modal'),
+				'handler'    => array($this, 'handle_publish_pending_site_modal'),
+				'capability' => 'wu_publish_sites',
+			)
+		);
 
 		add_action('wu_handle_bulk_action_form_site_screenshot', array($this, 'handle_bulk_screenshots'), 10, 3);
-
-	} // end register_forms;
+	}
 
 	/**
 	 * Handles the screenshot bulk action.
@@ -98,14 +103,15 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		$item_ids = array_filter($ids);
 
 		foreach ($item_ids as $item_id) {
-
-			wu_enqueue_async_action('wu_async_take_screenshot', array(
-				'site_id' => $item_id,
-			), 'site');
-
-		} // end foreach;
-
-	} // end handle_bulk_screenshots;
+			wu_enqueue_async_action(
+				'wu_async_take_screenshot',
+				array(
+					'site_id' => $item_id,
+				),
+				'site'
+			);
+		}
+	}
 
 	/**
 	 * Renders the deletion confirmation form.
@@ -117,11 +123,9 @@ class Site_List_Admin_Page extends List_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('membership_id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			return;
-
-		} // end if;
+		}
 
 		$fields = array(
 			'confirm'       => array(
@@ -153,21 +157,26 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form('total-actions', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'true',
-				'data-state'  => json_encode(array(
-					'confirmed' => false,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'total-actions',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'true',
+					'data-state'  => json_encode(
+						array(
+							'confirmed' => false,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_publish_pending_site_modal;
+	}
 
 	/**
 	 * Handles the deletion of line items.
@@ -179,29 +188,23 @@ class Site_List_Admin_Page extends List_Admin_Page {
 
 		$membership = wu_get_membership(wu_request('membership_id'));
 
-		if (!$membership) {
-
+		if ( ! $membership) {
 			wp_send_json_error(new \WP_Error('not-found', __('Pending site not found.', 'wp-ultimo')));
-
-		} // end if;
+		}
 
 		$pending_site = $membership->get_pending_site();
 
-		if (!is_a($pending_site, '\\WP_Ultimo\\Models\\Site')) {
-
+		if ( ! is_a($pending_site, '\\WP_Ultimo\\Models\\Site')) {
 			wp_send_json_error(new \WP_Error('not-found', __('Pending site not found.', 'wp-ultimo')));
-
-		} // end if;
+		}
 
 		$pending_site->set_type('customer_owned');
 
 		$saved = $pending_site->save();
 
 		if (is_wp_error($saved)) {
-
 			wp_send_json_error($saved);
-
-		} // end if;
+		}
 
 		$membership->delete_pending_site();
 
@@ -212,13 +215,17 @@ class Site_List_Admin_Page extends List_Admin_Page {
 
 		$redirect = current_user_can('wu_edit_sites') ? 'wp-ultimo-edit-site' : 'wp-ultimo-sites';
 
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url($redirect, array(
-				'id' => $pending_site->get_id(),
-			))
-		));
-
-	} // end handle_publish_pending_site_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					$redirect,
+					array(
+						'id' => $pending_site->get_id(),
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Handles the add/edit of line items.
@@ -233,17 +240,13 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		$domain_type = wu_request('tab', is_subdomain_install() ? 'sub-domain' : 'sub-directory');
 
 		if ($domain_type === 'domain') {
-
 			$domain = wu_request('domain', '');
 			$path   = '/';
-
 		} else {
-
 			$d      = wu_get_site_domain_and_path(wu_request('domain', ''));
 			$domain = $d->domain;
 			$path   = $d->path;
-
-		} // end if;
+		}
 
 		$atts = array(
 			'domain'                => $domain,
@@ -254,36 +257,36 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			'membership_id'         => wu_request('membership_id', false),
 			'duplication_arguments' => array(
 				'copy_media' => wu_request('copy_media'),
-			)
+			),
 		);
 
 		$site = wu_create_site($atts);
 
 		if (is_wp_error($site)) {
-
 			return wp_send_json_error($site);
-
-		} // end if;
+		}
 
 		if ($site->get_blog_id() === false) {
-
 			$error = new \WP_Error('error', __('Something wrong happened.', 'wp-ultimo'));
 
 			return wp_send_json_error($error);
-
-		} // end if;
+		}
 
 		$redirect = current_user_can('wu_edit_sites') ? 'wp-ultimo-edit-site' : 'wp-ultimo-sites';
 
-		wp_send_json_success(array(
-			'redirect_url' => wu_network_admin_url($redirect, array(
-				'id'           => $site->get_id(),
-				'wu-new-model' => 1,
-				'updated'      => 1,
-			))
-		));
-
-	} // end handle_add_new_site_modal;
+		wp_send_json_success(
+			array(
+				'redirect_url' => wu_network_admin_url(
+					$redirect,
+					array(
+						'id'           => $site->get_id(),
+						'wu-new-model' => 1,
+						'updated'      => 1,
+					)
+				),
+			)
+		);
+	}
 
 	/**
 	 * Renders the add/edit line items form.
@@ -316,8 +319,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			$type          = $site->get_type();
 			$template_id   = $duplicate_id;
 			$membership_id = $site->get_membership_id();
-
-		} // end if;
+		}
 
 		$save_label = $duplicate_id ? __('Duplicate Site', 'wp-ultimo') : __('Add new Site', 'wp-ultimo');
 
@@ -331,14 +333,10 @@ class Site_List_Admin_Page extends List_Admin_Page {
 		 * Only keep the tab that correspond to the install type.
 		 */
 		if (is_subdomain_install()) {
-
 			unset($options['sub-directory']);
-
 		} else {
-
 			unset($options['sub-domain']);
-
-		} // end if;
+		}
 
 		$fields = array(
 			'tab'           => array(
@@ -460,28 +458,33 @@ class Site_List_Admin_Page extends List_Admin_Page {
 
 		$d = wu_get_site_domain_and_path('replace');
 
-		$form = new \WP_Ultimo\UI\Form('add_new_site', $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => 'add_new_site',
-				'data-state'  => wu_convert_to_state(array(
-					'tab'          => is_subdomain_install() ? 'sub-domain' : 'sub-directory',
-					'install_type' => is_subdomain_install() ? 'sub-domain' : 'sub-directory',
-					'membership'   => $membership_id,
-					'type'         => $type,
-					'copy'         => $site ? $site->get_id() : 0,
-					'base_url'     => str_replace('replace.', '', (string) $d->domain) . '/',
-					'scheme'       => is_ssl() ? 'https://' : 'http://',
-					'domain'       => $path,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			'add_new_site',
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => 'add_new_site',
+					'data-state'  => wu_convert_to_state(
+						array(
+							'tab'          => is_subdomain_install() ? 'sub-domain' : 'sub-directory',
+							'install_type' => is_subdomain_install() ? 'sub-domain' : 'sub-directory',
+							'membership'   => $membership_id,
+							'type'         => $type,
+							'copy'         => $site ? $site->get_id() : 0,
+							'base_url'     => str_replace('replace.', '', (string) $d->domain) . '/',
+							'scheme'       => is_ssl() ? 'https://' : 'http://',
+							'domain'       => $path,
+						)
+					),
+				),
+			)
+		);
 
 		$form->render();
-
-	} // end render_add_new_site_modal;
+	}
 
 	/**
 	 * Allow child classes to register widgets, if they need them.
@@ -489,7 +492,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	 * @since 1.8.2
 	 * @return void
 	 */
-	public function register_widgets() {} // end register_widgets;
+	public function register_widgets() {}
 
 	/**
 	 * Returns an array with the labels for the edit page.
@@ -503,8 +506,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 			'deleted_message' => __('Site removed successfully.', 'wp-ultimo'),
 			'search_label'    => __('Search Site', 'wp-ultimo'),
 		);
-
-	} // end get_labels;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -515,8 +517,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	public function get_title() {
 
 		return __('Sites', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the title of menu for this page.
@@ -527,8 +528,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	public function get_menu_title() {
 
 		return __('Sites', 'wp-ultimo');
-
-	} // end get_menu_title;
+	}
 
 	/**
 	 * Allows admins to rename the sub-menu (first item) for a top-level page.
@@ -539,8 +539,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	public function get_submenu_title() {
 
 		return __('Sites', 'wp-ultimo');
-
-	} // end get_submenu_title;
+	}
 
 	/**
 	 * Returns the action links for that page.
@@ -558,8 +557,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 				'url'     => wu_get_form_url('add_new_site'),
 			),
 		);
-
-	} // end action_links;
+	}
 
 	/**
 	 * Loads the list table for this particular page.
@@ -570,7 +568,5 @@ class Site_List_Admin_Page extends List_Admin_Page {
 	public function table() {
 
 		return new \WP_Ultimo\List_Tables\Site_List_Table();
-
-	} // end table;
-
-} // end class Site_List_Admin_Page;
+	}
+}

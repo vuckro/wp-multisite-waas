@@ -20,5 +20,4 @@ function wu_get_ip() {
 	$geolocation = \WP_Ultimo\Geolocation::geolocate_ip('', true);
 
 	return apply_filters('wu_get_ip', $geolocation['ip']);
-
-} // end wu_get_ip;
+}

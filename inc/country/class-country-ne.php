@@ -71,8 +71,7 @@ class Country_NE extends Country {
 	public function get_name() {
 
 		return __('Niger', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for NE.
@@ -91,7 +90,5 @@ class Country_NE extends Country {
 			'6' => __('Tillabéri Region', 'wp-ultimo-locations'),
 			'7' => __('Zinder Region', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_NE;
+	}
+}

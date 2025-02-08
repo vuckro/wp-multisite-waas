@@ -42,8 +42,7 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	public function get_preview_url() {
 
 		return get_site_url(null);
-
-	} // end get_preview_url;
+	}
 
 	/**
 	 * Adds hooks when the page loads.
@@ -61,8 +60,7 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 		$screen = get_current_screen();
 
 		add_action("wu_edit_{$screen->id}_after_normal", array($this, 'display_preview_window'));
-
-	} // end page_loaded;
+	}
 
 	/**
 	 * Adds the preview window.
@@ -72,12 +70,14 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function display_preview_window() {
 
-		wu_get_template('base/edit/editor-customizer', array(
-			'preview_iframe_url' => $this->get_preview_url(),
-			'preview_height'     => $this->preview_height,
-		));
-
-	}  // end display_preview_window;
+		wu_get_template(
+			'base/edit/editor-customizer',
+			array(
+				'preview_iframe_url' => $this->get_preview_url(),
+				'preview_height'     => $this->preview_height,
+			)
+		);
+	}
 
 	/**
 	 * Registers the necessary scripts and styles for this admin page.
@@ -96,8 +96,7 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 		wp_enqueue_script('wp-color-picker');
 
 		wp_enqueue_media();
-
-	} // end register_scripts;
+	}
 
 	/**
 	 * Checkout_Forms have titles.
@@ -108,8 +107,7 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	public function has_title() {
 
 		return false;
-
-	} // end has_title;
+	}
 
 	/**
 	 * Not needed.
@@ -117,6 +115,5 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function get_object() {} // end get_object;
-
-}  // end class Customizer_Admin_Page;
+	public function get_object() {}
+}

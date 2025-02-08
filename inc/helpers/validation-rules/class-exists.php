@@ -44,19 +44,19 @@ class Exists extends Rule {
 	 *
 	 * @param mixed $value Value being checked.
 	 */
-	public function check($value) : bool {
+	public function check($value): bool {
 
-		$this->requireParameters(array(
-			'model',
-			'column'
-		));
+		$this->requireParameters(
+			array(
+				'model',
+				'column',
+			)
+		);
 
 		$column = $this->parameter('column');
 		$model  = $this->parameter('model');
 
 		// do query
-		return !!$model::get_by($column, $value);
-
-	} // end check;
-
-} // end class Exists;
+		return (bool) $model::get_by($column, $value);
+	}
+}

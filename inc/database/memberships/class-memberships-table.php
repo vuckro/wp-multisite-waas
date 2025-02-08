@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Memberships_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'memberships';
 
 	/**
@@ -64,8 +64,7 @@ final class Memberships_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema.
@@ -112,8 +111,7 @@ final class Memberships_Table extends Table {
 			KEY plan_id (plan_id),
 			KEY status (status),
 			KEY disabled (disabled)";
-
-	} // end set_schema;
+	}
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *
@@ -133,21 +131,15 @@ final class Memberships_Table extends Table {
 		);
 
 		foreach ($null_columns as $column) {
-
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";
 
 			$result = $this->get_db()->query($query);
 
-			if (!$this->is_success($result)) {
-
+			if ( ! $this->is_success($result)) {
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return true;
-
-	} // end __20230601;
-
-} // end class Memberships_Table;
+	}
+}

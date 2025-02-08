@@ -107,7 +107,5 @@ class Product_Query extends Query {
 	public function __construct($query = array()) {
 
 		parent::__construct($query);
-
-	} // end __construct;
-
-} // end class Product_Query;
+	}
+}

@@ -9,8 +9,8 @@
 
 namespace WP_Ultimo\Checkout\Signup_Fields;
 
-use \WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
-use \WP_Ultimo\Managers\Field_Templates_Manager;
+use WP_Ultimo\Checkout\Signup_Fields\Base_Signup_Field;
+use WP_Ultimo\Managers\Field_Templates_Manager;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -25,15 +25,14 @@ defined('ABSPATH') || exit;
 class Signup_Field_Period_Selection extends Base_Signup_Field {
 
 	/**
-     * Returns the type of the field.
-     *
-     * @since 2.0.0
-     */
+	 * Returns the type of the field.
+	 *
+	 * @since 2.0.0
+	 */
 	public function get_type(): string {
 
 		return 'period_selection';
-
-	} // end get_type;
+	}
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -42,8 +41,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function is_required(): bool {
 
 		return false;
-
-	} // end is_required;
+	}
 
 	/**
 	 * Requires the title of the field/element type.
@@ -56,8 +54,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function get_title() {
 
 		return __('Period Select', 'wp-ultimo');
-
-	} // end get_title;
+	}
 
 	/**
 	 * Returns the description of the field/element.
@@ -70,8 +67,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function get_description() {
 
 		return __('Adds a period selector, that allows customers to switch between different billing periods.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the tooltip of the field/element.
@@ -84,8 +80,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function get_tooltip() {
 
 		return __('Adds a period selector, that allows customers to switch between different billing periods.', 'wp-ultimo');
-
-	} // end get_tooltip;
+	}
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -96,8 +91,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function get_icon(): string {
 
 		return 'dashicons-wu dashicons-wu-toggle-right';
-
-	} // end get_icon;
+	}
 
 	/**
 	 * Returns the default values for the field-elements.
@@ -113,8 +107,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 		return array(
 			'period_selection_template' => 'clean',
 		);
-
-	} // end defaults;
+	}
 
 	/**
 	 * List of keys of the default fields we want to display on the builder.
@@ -127,8 +120,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 		return array(
 			// 'name',
 		);
-
-	} // end default_fields;
+	}
 
 	/**
 	 * If you want to force a particular attribute to a value, declare it here.
@@ -143,8 +135,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 			'name'     => __('Plan Duration Switch', 'wp-ultimo'),
 			'required' => true,
 		);
-
-	} // end force_attributes;
+	}
 
 	/**
 	 * Returns the list of available pricing table templates.
@@ -157,8 +148,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 		$available_templates = Field_Templates_Manager::get_instance()->get_templates_as_options('period_selection');
 
 		return $available_templates;
-
-	} // end get_template_options;
+	}
 
 	/**
 	 * Returns the list of additional fields specific to this type.
@@ -283,8 +273,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 		);
 
 		return $editor_fields;
-
-	} // end get_fields;
+	}
 
 	/**
 	 * Returns the field/element actual field array to be used on the checkout form.
@@ -297,14 +286,12 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if (wu_get_isset($attributes, 'period_selection_template') === 'legacy') {
-
 			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), array('wu-functions'), wu_get_version());
 
 			wp_enqueue_script('wu-legacy-signup');
 
 			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), array('dashicons'), wu_get_version());
-
-		} // end if;
+		}
 
 		$template_class = Field_Templates_Manager::get_instance()->get_template_class('period_selection', $attributes['period_selection_template']);
 
@@ -312,7 +299,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 
 		$checkout_fields = array();
 
-		$checkout_fields[$attributes['id']] = array(
+		$checkout_fields[ $attributes['id'] ] = array(
 			'type'            => 'note',
 			'id'              => $attributes['id'],
 			'wrapper_classes' => $attributes['element_classes'],
@@ -334,7 +321,5 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 		);
 
 		return $checkout_fields;
-
-	} // end to_fields_array;
-
-} // end class Signup_Field_Period_Selection;
+	}
+}

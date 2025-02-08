@@ -68,8 +68,7 @@ class Country_GB extends Country {
 	public function get_name() {
 
 		return __('United Kingdom', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for GB.
@@ -328,7 +327,5 @@ class Country_GB extends Country {
 			'WOR'   => __('Worcestershire', 'wp-ultimo-locations'),
 			'WRX'   => __('Wrexham County Borough', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_GB;
+	}
+}

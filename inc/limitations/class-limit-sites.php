@@ -43,7 +43,5 @@ class Limit_Sites extends Limit {
 	public function check($value_to_check, $limit, $type = '') {
 
 		return true;
-
-	} // end check;
-
-} // end class Limit_Sites;
+	}
+}

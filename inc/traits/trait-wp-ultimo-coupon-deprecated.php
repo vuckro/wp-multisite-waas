@@ -31,9 +31,8 @@ trait WP_Ultimo_Coupon_Deprecated {
 		 */
 		_doing_it_wrong($key, __('Discount Code keys should not be set directly.', 'wp-ultimo'), '2.0.0');
 
-		$this->meta["wpu_{$key}"] = $value;
-
-	} // end __set;
+		$this->meta[ "wpu_{$key}" ] = $value;
+	}
 
 	/**
 	 * Magic getter to provide backwards compatibility for plans.
@@ -51,8 +50,7 @@ trait WP_Ultimo_Coupon_Deprecated {
 		switch ($key) {
 			default:
 				$value = $this->get_meta('wpu_' . $key, false, true);
-
-		} // end switch;
+		}
 
 		if ($value === null) {
 
@@ -62,8 +60,7 @@ trait WP_Ultimo_Coupon_Deprecated {
 			// throw new \Exception($message);
 
 			return false;
-
-		} // end if;
+		}
 
 		/**
 		 * Let developers know that this is not going to be supported in the future.
@@ -73,7 +70,5 @@ trait WP_Ultimo_Coupon_Deprecated {
 		_doing_it_wrong($key, __('Discount Code keys should not be accessed directly', 'wp-ultimo'), '2.0.0');
 
 		return $value;
-
-	} // end __get;
-
-} // end trait WP_Ultimo_Coupon_Deprecated;
+	}
+}

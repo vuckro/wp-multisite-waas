@@ -73,8 +73,7 @@ class Country_ZA extends Country {
 	public function get_name() {
 
 		return __('South Africa', 'wp-ultimo-locations');
-
-	} // end get_name;
+	}
 
 	/**
 	 * Returns the list of states for ZA.
@@ -95,7 +94,5 @@ class Country_ZA extends Country {
 			'NC'  => __('Northern Cape', 'wp-ultimo-locations'),
 			'WC'  => __('Western Cape', 'wp-ultimo-locations'),
 		);
-
-	} // end states;
-
-} // end class Country_ZA;
+	}
+}

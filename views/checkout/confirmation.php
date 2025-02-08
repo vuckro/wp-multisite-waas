@@ -7,26 +7,26 @@
 ?>
 <div class="wu-styling">
 
-  <p>Thank you for your membership to wphunt.org. Your Teste 2 membership is now active.</p>
+	<p>Thank you for your membership to wphunt.org. Your Teste 2 membership is now active.</p>
 
-  <p>Below are details about your membership account and a receipt for your initial membership invoice. A welcome email with a copy of your initial membership invoice has been sent to arindo@wpultimo.com.</p>
+	<p>Below are details about your membership account and a receipt for your initial membership invoice. A welcome email with a copy of your initial membership invoice has been sent to arindo@wpultimo.com.</p>
 
-  <p>Extra message</p>
+	<p>Extra message</p>
 
-  <h3>
+	<h3>
 		Invoice #DF232BD72B on May 2, 2020
 	</h3>
 
-  <a class="pmpro_a-print" href="javascript:window.print()">Print</a>
+	<a class="pmpro_a-print" href="javascript:window.print()">Print</a>
 
-  <ul>
+	<ul>
 		<li><strong>Account:</strong> aanduque (arindo@wpultimo.com)</li>
 		<li><strong>Membership Level:</strong> Teste 2</li>
 	</ul>
 
-  <hr>
+	<hr>
 
-  <div class="pmpro_invoice_details">
+	<div class="pmpro_invoice_details">
 					<div class="pmpro_invoice-billing-address">
 				<strong>Billing Address</strong>
 				<p>Quynn Mullins<br>
@@ -49,14 +49,14 @@
 
 	</div>
 
-  <hr>
+	<hr>
 
-  <nav id="nav-below" class="navigation" role="navigation">
+	<nav id="nav-below" class="navigation" role="navigation">
 
-	  <div class="nav-next alignright">
+		<div class="nav-next alignright">
 			<a href="https://wphunt.org/?page_id=28">View Your Membership Account →</a>
 		</div>
 
-  </nav>
+	</nav>
 
 </div>

@@ -172,5 +172,4 @@ class Discount_Codes_Schema extends Schema {
 		),
 
 	);
-
-} // end class Discount_Codes_Schema;
+}

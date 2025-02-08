@@ -37,7 +37,7 @@ class Posts_Schema extends Schema {
 			'unsigned' => true,
 			'extra'    => 'auto_increment',
 			'primary'  => true,
-			'sortable' => true
+			'sortable' => true,
 		),
 
 		array(
@@ -51,35 +51,35 @@ class Posts_Schema extends Schema {
 			'name'       => 'type',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		array(
 			'name'       => 'slug',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		array(
 			'name'       => 'title',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		array(
 			'name'       => 'content',
 			'type'       => 'longtext',
 			'default'    => '',
-			'searchable' => true
+			'searchable' => true,
 		),
 
 		array(
 			'name'       => 'excerpt',
 			'type'       => 'longtext',
 			'default'    => '',
-			'searchable' => true
+			'searchable' => true,
 		),
 
 		array(
@@ -121,5 +121,4 @@ class Posts_Schema extends Schema {
 		),
 
 	);
-
-} // end class Posts_Schema;
+}

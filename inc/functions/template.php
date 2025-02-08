@@ -34,10 +34,8 @@ function wu_get_template($view, $args = array(), $default_view = false) {
 
 	// Make passed variables available
 	if (is_array($args)) {
-
 		extract($args); // phpcs:ignore
-
-	} // end if;
+	}
 
 	/**
 	 * Allows developers to add additional folders to the replaceable list.
@@ -49,32 +47,30 @@ function wu_get_template($view, $args = array(), $default_view = false) {
 	 * @param array $replaceable_views List of allowed folders.
 	 * @return array
 	 */
-	$replaceable_views = apply_filters('wu_view_override_replaceable_views', array(
-		'signup',
-		'emails',
-		'forms',
-		'checkout'
-	));
+	$replaceable_views = apply_filters(
+		'wu_view_override_replaceable_views',
+		array(
+			'signup',
+			'emails',
+			'forms',
+			'checkout',
+		)
+	);
 
 	/*
 		* Only allow template for emails and signup for now
 		*/
 	if (preg_match('/(' . implode('\/?|', $replaceable_views) . '\/?' . ')\w+/', $view)) {
-
 		$template = apply_filters('wu_view_override', $template, $view, $default_view);
+	}
 
-	} // end if;
-
-	if (!file_exists($template) && $default_view) {
-
+	if ( ! file_exists($template) && $default_view) {
 		$template = wu_path("views/$default_view.php");
-
-	} // end if;
+	}
 
 	// Load our view
 	include $template;
-
-} // end wu_get_template;
+}
 
 /**
  * Alias function to be used on the templates;
@@ -92,5 +88,4 @@ function wu_get_template_contents($view, $args = array(), $default_view = false)
 		wu_get_template($view, $args, $default_view); // phpcs:ignore
 
 	return ob_get_clean();
-
-} // end wu_get_template_contents;
+}

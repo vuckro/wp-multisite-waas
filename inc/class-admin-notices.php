@@ -45,8 +45,7 @@ class Admin_Notices {
 		add_action('in_admin_header', array($this, 'display_notices'));
 
 		add_action('wp_ajax_wu_dismiss_admin_notice', array($this, 'ajax_dismiss_admin_notices'));
-
-	} // end init;
+	}
 
 	/**
 	 * Get the notices the current user has dismissed
@@ -61,8 +60,7 @@ class Admin_Notices {
 		$dismissed = $dismissed ? $dismissed : array();
 
 		return $dismissed;
-
-	} // end get_dismissed_notices;
+	}
 
 	/**
 	 * Adds a new admin notice
@@ -83,14 +81,13 @@ class Admin_Notices {
 
 		$id = $dismissible_key ? $dismissible_key : md5($notice);
 
-		$this->notices[$panel][$id] = array(
+		$this->notices[ $panel ][ $id ] = array(
 			'type'            => $type,
 			'message'         => $notice,
 			'dismissible_key' => is_string($dismissible_key) ? $dismissible_key : false,
 			'actions'         => $actions,
 		);
-
-	}  // end add;
+	}
 
 	/**
 	 * Returns the list of notices added for a particular panel.
@@ -103,15 +100,13 @@ class Admin_Notices {
 	 */
 	public function get_notices($panel = 'admin', $filter = true) {
 
-		$notices = isset($this->notices[$panel]) ? $this->notices[$panel] : array();
+		$notices = isset($this->notices[ $panel ]) ? $this->notices[ $panel ] : array();
 
 		$dismissed_messages = $this->get_dismissed_notices();
 
 		if ($filter && $notices) {
-
-			$notices = array_filter($notices, fn($notice) => !$notice['dismissible_key'] || !in_array($notice['dismissible_key'], $dismissed_messages, true));
-
-		} // end if;
+			$notices = array_filter($notices, fn($notice) => ! $notice['dismissible_key'] || ! in_array($notice['dismissible_key'], $dismissed_messages, true));
+		}
 
 		/**
 		 * Allow developers to filter admin notices added by WP Multisite WaaS.
@@ -123,11 +118,10 @@ class Admin_Notices {
 		 * @param string $panel Panel to retrieve the notices.
 		 * @param string $filter If the dismissable notices have been filtered out.
 		 * @param array  $dismissed_messages List of dismissed notice keys.
-	   * @return array
+		* @return array
 		 */
 		return apply_filters('wu_admin_notices', $notices, $this->notices, $panel, $filter, $dismissed_messages);
-
-	} // end get_notices;
+	}
 
 	/**
 	 * Enqueues the JavaScript code that sends the dismiss call to the ajax endpoint.
@@ -138,8 +132,7 @@ class Admin_Notices {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script('wu-admin-notices', wu_get_asset('admin-notices.js', 'js'), array('jquery'), wu_get_version());
-
-	} // end enqueue_scripts;
+	}
 
 	/**
 	 * Gets the current panel the user is viewing
@@ -152,20 +145,15 @@ class Admin_Notices {
 		$panel = 'admin';
 
 		if (is_user_admin()) {
-
 			$panel = 'user';
-
-		} // end if;
+		}
 
 		if (is_network_admin()) {
-
 			$panel = 'network-admin';
-
-		} // end if;
+		}
 
 		return $panel;
-
-	} // end get_current_panel;
+	}
 
 	/**
 	 * Retrieves the admin notices for the current panel and displays them.
@@ -179,12 +167,14 @@ class Admin_Notices {
 
 		$notices = $this->get_notices($panel);
 
-		wu_get_template('admin-notices', array(
-			'notices' => $notices,
-			'nonce'   => wp_create_nonce('wu-dismiss-admin-notice'),
-		));
-
-	} // end display_notices;
+		wu_get_template(
+			'admin-notices',
+			array(
+				'notices' => $notices,
+				'nonce'   => wp_create_nonce('wu-dismiss-admin-notice'),
+			)
+		);
+	}
 
 	/**
 	 * Adds an ajax endpoint to dismiss admin notices
@@ -194,26 +184,20 @@ class Admin_Notices {
 	 */
 	public function ajax_dismiss_admin_notices() {
 
-		if (!wp_verify_nonce($_POST['nonce'], 'wu-dismiss-admin-notice')) {
-
+		if ( ! wp_verify_nonce($_POST['nonce'], 'wu-dismiss-admin-notice')) {
 			die('-1');
-
-		} // end if;
+		}
 
 		$dismissed = $this->get_dismissed_notices();
 
-		if (!in_array($_POST['notice_id'], $dismissed, true)) {
-
+		if ( ! in_array($_POST['notice_id'], $dismissed, true)) {
 			$dismissed[] = $_POST['notice_id'];
 
 			update_user_meta(get_current_user_id(), 'wu_dismissed_admin_notices', $dismissed);
 
 			die('1');
-
-		} // end if;
+		}
 
 		die('0');
-
-	} // end ajax_dismiss_admin_notices;
-
-} // end class Admin_Notices;
+	}
+}

@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Domains_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'domain_mappings';
 
 	/**
@@ -64,8 +64,7 @@ final class Domains_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema
@@ -88,8 +87,7 @@ final class Domains_Table extends Table {
 			PRIMARY KEY (id),
 			KEY blog_id (blog_id,domain,active),
 			KEY domain (domain)";
-
-	} // end set_schema;
+	}
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *
@@ -103,21 +101,15 @@ final class Domains_Table extends Table {
 		);
 
 		foreach ($null_columns as $column) {
-
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";
 
 			$result = $this->get_db()->query($query);
 
-			if (!$this->is_success($result)) {
-
+			if ( ! $this->is_success($result)) {
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return true;
-
-	} // end __20230601;
-
-} // end class Domains_Table;
+	}
+}

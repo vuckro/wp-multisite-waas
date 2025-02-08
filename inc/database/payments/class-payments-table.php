@@ -22,11 +22,11 @@ defined('ABSPATH') || exit;
 final class Payments_Table extends Table {
 
 	/**
-     * Table name
-     *
-     * @since 2.0.0
-     * @var string
-     */
+	 * Table name
+	 *
+	 * @since 2.0.0
+	 * @var string
+	 */
 	protected $name = 'payments';
 
 	/**
@@ -66,8 +66,7 @@ final class Payments_Table extends Table {
 	public function __construct() {
 
 		parent::__construct();
-
-	} // end __construct;
+	}
 
 	/**
 	 * Setup the database schema.
@@ -102,8 +101,7 @@ final class Payments_Table extends Table {
 			KEY parent_id (parent_id),
 			KEY product_id (product_id),
 			KEY status (status)";
-
-	} // end set_schema;
+	}
 
 	/**
 	 * Adds the refund_total column.
@@ -120,17 +118,14 @@ final class Payments_Table extends Table {
 
 		// Maybe add column
 		if (empty($result)) {
-
 			$query = "ALTER TABLE {$this->table_name} ADD COLUMN `refund_total` decimal(13,4) default 0 AFTER `subtotal`;";
 
 			$result = $this->get_db()->query($query);
-
-		} // end if;
+		}
 
 		// Return success/fail
 		return $this->is_success($result);
-
-	} // end __20210417;
+	}
 
 	/**
 	 * Adds the refund_total column.
@@ -144,27 +139,22 @@ final class Payments_Table extends Table {
 
 		// Maybe add column
 		if (empty($result)) {
-
 			$query_set = "SET sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';";
 
 			$result_set = $this->get_db()->query($query_set);
 
 			if ($this->is_success($result_set) === false) {
-
 				return false;
-
-			} // end if;
+			}
 
 			$query = "ALTER TABLE {$this->table_name} ADD COLUMN `refund_total` decimal(13,4) default 0 AFTER `subtotal`;";
 
 			$result = $this->get_db()->query($query);
-
-		} // end if;
+		}
 
 		// Return success/fail
 		return $this->is_success($result);
-
-	} // end __20210607;
+	}
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *
@@ -178,21 +168,15 @@ final class Payments_Table extends Table {
 		);
 
 		foreach ($null_columns as $column) {
-
 			$query = "ALTER TABLE {$this->table_name} MODIFY COLUMN `{$column}` datetime DEFAULT NULL;";
 
 			$result = $this->get_db()->query($query);
 
-			if (!$this->is_success($result)) {
-
+			if ( ! $this->is_success($result)) {
 				return false;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		return true;
-
-	} // end __20230601;
-
-} // end class Payments_Table;
+	}
+}

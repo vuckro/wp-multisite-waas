@@ -11,7 +11,7 @@
 
 namespace WP_Ultimo\Managers;
 
-use \WP_Ultimo\Managers\Base_Manager;
+use WP_Ultimo\Managers\Base_Manager;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -44,8 +44,7 @@ class Field_Templates_Manager extends Base_Manager {
 		add_action('wu_ajax_nopriv_wu_render_field_template', array($this, 'serve_field_template'));
 
 		add_action('wu_ajax_wu_render_field_template', array($this, 'serve_field_template'));
-
-	} // end init;
+	}
 
 	/**
 	 * Serve the HTML markup for the templates.
@@ -61,21 +60,20 @@ class Field_Templates_Manager extends Base_Manager {
 
 		$template_class = $this->get_template_class($template_parts[0], $template_parts[1]);
 
-		if (!$template_class) {
-
+		if ( ! $template_class) {
 			wp_send_json_error(new \WP_Error('template', __('Template not found.', 'wp-ultimo')));
-
-		} // end if;
+		}
 
 		$key = $template_parts[0];
 
 		$attributes = apply_filters("wu_{$key}_render_attributes", wu_request('attributes'));
 
-		wp_send_json_success(array(
-			'html' => $template_class->render($attributes),
-		));
-
-	} // end serve_field_template;
+		wp_send_json_success(
+			array(
+				'html' => $template_class->render($attributes),
+			)
+		);
+	}
 
 	/**
 	 * Returns the list of registered signup field types.
@@ -157,8 +155,7 @@ class Field_Templates_Manager extends Base_Manager {
 		 * @return array
 		 */
 		return apply_filters('wu_checkout_field_templates', $field_templates);
-
-	} // end get_field_templates;
+	}
 
 	/**
 	 * Get the field templates for a field type. Returns only the class names.
@@ -171,8 +168,7 @@ class Field_Templates_Manager extends Base_Manager {
 	public function get_templates($field_type) {
 
 		return wu_get_isset($this->get_field_templates(), $field_type, array());
-
-	} // end get_templates;
+	}
 
 	/**
 	 * Get the instance of the template class.
@@ -188,8 +184,7 @@ class Field_Templates_Manager extends Base_Manager {
 		$templates = $this->get_instantiated_field_types($field_type);
 
 		return wu_get_isset($templates, $field_template_id);
-
-	} // end get_template_class;
+	}
 
 	/**
 	 * Returns the field templates as a key => title array of options.
@@ -206,14 +201,11 @@ class Field_Templates_Manager extends Base_Manager {
 		$options = array();
 
 		foreach ($templates as $template_id => $template) {
-
-			$options[$template_id] = $template->get_title();
-
-		} // end foreach;
+			$options[ $template_id ] = $template->get_title();
+		}
 
 		return $options;
-
-	} // end get_templates_as_options;
+	}
 
 	/**
 	 * Returns the field templates as a key => info_array array of fields.
@@ -230,19 +222,16 @@ class Field_Templates_Manager extends Base_Manager {
 		$options = array();
 
 		foreach ($templates as $template_id => $template) {
-
-			$options[$template_id] = array(
+			$options[ $template_id ] = array(
 				'id'          => $template_id,
 				'title'       => $template->get_title(),
 				'description' => $template->get_description(),
 				'preview'     => $template->get_preview(),
 			);
-
-		} // end foreach;
+		}
 
 		return $options;
-
-	} // end get_templates_info;
+	}
 
 	/**
 	 * Instantiate a field template.
@@ -255,8 +244,7 @@ class Field_Templates_Manager extends Base_Manager {
 	public function instantiate_field_template($class_name) {
 
 		return new $class_name();
-
-	} // end instantiate_field_template;
+	}
 
 	/**
 	 * Returns an array with all fields, instantiated.
@@ -269,15 +257,12 @@ class Field_Templates_Manager extends Base_Manager {
 
 		$holder_name = "instantiated_{$field_type}_templates";
 
-		if (!isset($this->holders[$holder_name]) || $this->holders[$holder_name] === null) {
+		if ( ! isset($this->holders[ $holder_name ]) || $this->holders[ $holder_name ] === null) {
+			$this->holders[ $holder_name ] = array_map(array($this, 'instantiate_field_template'), $this->get_templates($field_type));
+		}
 
-			$this->holders[$holder_name] = array_map(array($this, 'instantiate_field_template'), $this->get_templates($field_type));
-
-		} // end if;
-
-		return $this->holders[$holder_name];
-
-	} // end get_instantiated_field_types;
+		return $this->holders[ $holder_name ];
+	}
 
 	/**
 	 * Render preview block.
@@ -291,22 +276,24 @@ class Field_Templates_Manager extends Base_Manager {
 
 		$preview_block = '<div class="wu-w-full">';
 
-		foreach (Field_Templates_Manager::get_instance()->get_templates_info($field_type) as $template_slug => $template_info) {
-
+		foreach (self::get_instance()->get_templates_info($field_type) as $template_slug => $template_info) {
 			$image_tag = $template_info['preview'] ? sprintf('<img class="wu-object-cover wu-image-preview wu-w-7 wu-h-7 wu-rounded wu-mr-3" src="%1$s" data-image="%1$s">', $template_info['preview']) : '<div class="wu-w-7 wu-h-7 wu-bg-gray-200 wu-rounded wu-text-gray-600 wu-flex wu-items-center wu-justify-center wu-mr-2">
 				<span class="dashicons-wu-image"></span>
 			</div>';
 
-			$preview_block .= sprintf("<div v-show='%4\$s_template === \"%1\$s\"' class='wu-w-full wu-flex wu-items-center'>
+			$preview_block .= sprintf(
+				"<div v-show='%4\$s_template === \"%1\$s\"' class='wu-w-full wu-flex wu-items-center'>
 				<div class='wu-flex wu-items-center'>%2\$s</div><div class='wu-flex-wrap wu-overflow-hidden'>%3\$s</div>
-			</div>", $template_info['id'], $image_tag, $template_info['description'], $field_type);
-
-		} // end foreach;
+			</div>",
+				$template_info['id'],
+				$image_tag,
+				$template_info['description'],
+				$field_type
+			);
+		}
 
 		$preview_block .= '</div>';
 
 		return $preview_block;
-
-	} // end render_preview_block;
-
-} // end class Field_Templates_Manager;
+	}
+}

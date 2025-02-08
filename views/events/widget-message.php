@@ -7,15 +7,15 @@
 ?>
 <ul class="wu-widget-list wu-striped wu-m-0 wu--my-2 wu--mx-3">
 
-  <li class="wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-400 wu-border-solid">
+	<li class="wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-400 wu-border-solid">
 
-    <h3 class="wu-my-1 wu-text-2xs wu-uppercase"><?php echo __('Message', 'wp-ultimo'); ?></h3>
+	<h3 class="wu-my-1 wu-text-2xs wu-uppercase"><?php echo __('Message', 'wp-ultimo'); ?></h3>
 
-    <span class="wu-my-1 wu-inline-block">
-      <?php echo $object->get_message(); ?>
-    </span>
+	<span class="wu-my-1 wu-inline-block">
+		<?php echo $object->get_message(); ?>
+	</span>
 
-  </li>
+	</li>
 
 </ul>
 

@@ -32,8 +32,7 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Renders the inside column responsive.
@@ -83,16 +82,13 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 			'url'             => wu_get_form_url('delete_line_item', $url_atts),
 		);
 
-    /*
-     * Adds discounts
-     */
+		/*
+		* Adds discounts
+		*/
 		if ($item->get_discount_total()) {
-
 			if ($item->get_discount_type() === 'percentage' && $item->get_discount_rate()) {
-
 				$tax_rate = $item->get_discount_rate() . '%';
-
-			} // end if;
+			}
 
 			$tax_label = $item->get_discount_rate() ? ($item->get_discount_label() ? $item->get_discount_label() : __('Discount', 'wp-ultimo')) : __('No discount', 'wp-ultimo');
 
@@ -103,8 +99,7 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 				'label' => $tooltip,
 				'value' => sprintf(__('Discounts: %s', 'wp-ultimo'), wu_format_currency($item->get_discount_total())),
 			);
-
-		} // end if;
+		}
 
 		$first_row['subtotal'] = array(
 			'icon'  => 'dashicons-wu-info1 wu-align-middle wu-mr-1',
@@ -112,16 +107,13 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 			'value' => sprintf(__('Subtotal: %s', 'wp-ultimo'), wu_format_currency($item->get_subtotal())),
 		);
 
-    /*
-     * Adds Taxes
-     */
+		/*
+		* Adds Taxes
+		*/
 		if ($item->get_tax_total()) {
-
 			if ($item->get_tax_type() === 'percentage' && $item->get_tax_rate()) {
-
 				$tax_rate = $item->get_tax_rate() . '%';
-
-			} // end if;
+			}
 
 			$tax_label = $item->get_tax_rate() ? ($item->get_tax_label() ? $item->get_tax_label() : __('Tax Applied', 'wp-ultimo')) : __('No Taxes Applied', 'wp-ultimo');
 
@@ -132,8 +124,7 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 				'label' => $tooltip,
 				'value' => sprintf(__('Taxes: %s', 'wp-ultimo'), wu_format_currency($item->get_tax_total())),
 			);
-
-		} // end if;
+		}
 
 		$first_row['description'] = array(
 			'icon'  => 'dashicons-wu-file-text wu-align-middle wu-mr-1',
@@ -141,17 +132,16 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 			'value' => $item->get_description(),
 		);
 
-		echo wu_responsive_table_row(array(
-			'id'     => '',
-			'title'  => $item->get_title(),
-			'url'    => '',
-			'image'  => '',
-			'status' => sprintf('<span class="wu-text-sm wu-font-medium wu-text-gray-700">%s</span>', wu_format_currency($item->get_total())),
-		),
-		$first_row,
-		$second_row
+		echo wu_responsive_table_row(
+			array(
+				'id'     => '',
+				'title'  => $item->get_title(),
+				'url'    => '',
+				'image'  => '',
+				'status' => sprintf('<span class="wu-text-sm wu-font-medium wu-text-gray-700">%s</span>', wu_format_currency($item->get_total())),
+			),
+			$first_row,
+			$second_row
 		);
-
-	} // end column_responsive;
-
-} // end class Payment_Line_Item_List_Table;
+	}
+}

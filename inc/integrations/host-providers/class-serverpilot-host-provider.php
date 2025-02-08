@@ -79,8 +79,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	public function detect() {
 
 		return defined('WP_PLUGIN_DIR') && preg_match('/\/srv\/users\/(.+)\/apps\/(.+)/', (string) WP_PLUGIN_DIR);
-
-	} // end detect;
+	}
 
 	/**
 	 * Returns the list of installation fields.
@@ -107,8 +106,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 				'placeholder' => __('e.g. 940288', 'wp-ultimo'),
 			),
 		);
-
-	} // end get_fields;
+	}
 
 	/**
 	 * This method gets called when a new domain is mapped.
@@ -123,19 +121,19 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 		$current_domain_list = $this->get_server_pilot_domains();
 
 		if ($current_domain_list && is_array($current_domain_list)) {
-
-			$this->send_server_pilot_api_request('', array(
-				'domains' => array_merge($current_domain_list, array($domain, 'www.' . $domain)),
-			));
+			$this->send_server_pilot_api_request(
+				'',
+				array(
+					'domains' => array_merge($current_domain_list, array($domain, 'www.' . $domain)),
+				)
+			);
 
 			/**
 			 * Makes sure autoSSL is always on
 			 */
 			$this->turn_server_pilot_auto_ssl_on();
-
-		} // end if;
-
-	} // end on_add_domain;
+		}
+	}
 
 	/**
 	 * This method gets called when a mapped domain is removed.
@@ -156,13 +154,14 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 			 */
 			$current_domain_list = array_filter($current_domain_list, fn($remote_domain) => $remote_domain !== $domain && $remote_domain !== 'www.' . $domain);
 
-			$this->send_server_pilot_api_request('', array(
-				'domains' => $current_domain_list
-			));
-
-		} // end if;
-
-	} // end on_remove_domain;
+			$this->send_server_pilot_api_request(
+				'',
+				array(
+					'domains' => $current_domain_list,
+				)
+			);
+		}
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being added.
@@ -179,19 +178,19 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 		$current_domain_list = $this->get_server_pilot_domains();
 
 		if ($current_domain_list && is_array($current_domain_list)) {
-
-			$this->send_server_pilot_api_request('', array(
-				'domains' => array_merge($current_domain_list, array($subdomain)),
-			));
+			$this->send_server_pilot_api_request(
+				'',
+				array(
+					'domains' => array_merge($current_domain_list, array($subdomain)),
+				)
+			);
 
 			/**
 			 * Makes sure autoSSL is always on
 			 */
 			$this->turn_server_pilot_auto_ssl_on();
-
-		} // end if;
-
-	} // end on_add_subdomain;
+		}
+	}
 
 	/**
 	 * This method gets called when a new subdomain is being removed.
@@ -203,7 +202,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 * @param int    $site_id ID of the site that is receiving that mapping.
 	 * @return void
 	 */
-	public function on_remove_subdomain($subdomain, $site_id) {} // end on_remove_subdomain;
+	public function on_remove_subdomain($subdomain, $site_id) {}
 
 	/**
 	 * Sends a request to ServerPilot, with the right API key.
@@ -229,19 +228,16 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 
 		$response = wp_remote_request('https://api.serverpilot.io/v1/apps/' . WU_SERVER_PILOT_APP_ID . $endpoint, $post_fields);
 
-		if (!is_wp_error($response)) {
-
+		if ( ! is_wp_error($response)) {
 			$body = json_decode(wp_remote_retrieve_body($response), true);
 
 			if (json_last_error() === JSON_ERROR_NONE) {
 				return $body;
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $response;
-
-	} // end send_server_pilot_api_request;
+	}
 
 	/**
 	 * Makes sure ServerPilot autoSSL is always on, when possible.
@@ -251,11 +247,13 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	 */
 	public function turn_server_pilot_auto_ssl_on() {
 
-		return $this->send_server_pilot_api_request('/ssl', array(
-			'auto' => true,
-		));
-
-	} // end turn_server_pilot_auto_ssl_on;
+		return $this->send_server_pilot_api_request(
+			'/ssl',
+			array(
+				'auto' => true,
+			)
+		);
+	}
 
 	/**
 	 * Get the current list of domains added on Server Pilot.
@@ -268,10 +266,8 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 		$app_info = $this->send_server_pilot_api_request('', array(), 'GET');
 
 		if (isset($app_info['data']['domains'])) {
-
 			return $app_info['data']['domains'];
-
-		} // end if;
+		}
 
 		/*
 		 * Log response so we can see what went wrong
@@ -281,8 +277,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 		wu_log_add('integration-serverpilot', sprintf(__('An error occurred while trying to get the current list of domains: %s', 'wp-ultimo'), json_encode($app_info)), LogLevel::ERROR);
 
 		return false;
-
-	} // end get_server_pilot_domains;
+	}
 
 	/**
 	 * Tests the connection with the ServerPilot API.
@@ -295,14 +290,11 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 		$response = $this->send_server_pilot_api_request('', array(), 'GET');
 
 		if (is_wp_error($response) || wu_get_isset($response, 'error')) {
-
 			wp_send_json_error($response);
-
-		} // end if;
+		}
 
 		wp_send_json_success($response);
-
-	} // end test_connection;
+	}
 
 	/**
 	 * Renders the instructions content.
@@ -313,8 +305,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	public function get_instructions() {
 
 		wu_get_template('wizards/host-integrations/serverpilot-instructions');
-
-	} // end get_instructions;
+	}
 
 	/**
 	 * Returns the description of this integration.
@@ -325,8 +316,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	public function get_description() {
 
 		return __('ServerPilot is a cloud service for hosting WordPress and other PHP websites on servers at DigitalOcean, Amazon, Google, or any other server provider. You can think of ServerPilot as a modern, centralized hosting control panel.', 'wp-ultimo');
-
-	} // end get_description;
+	}
 
 	/**
 	 * Returns the logo for the integration.
@@ -337,7 +327,5 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 	public function get_logo() {
 
 		return wu_get_asset('serverpilot.svg', 'img/hosts');
-
-	} // end get_logo;
-
-} // end class ServerPilot_Host_Provider;
+	}
+}

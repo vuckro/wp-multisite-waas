@@ -44,21 +44,15 @@ class City extends Rule {
 		$state = $this->parameter('state') ?? wu_request('billing_state');
 
 		if ($country && $state && $city) {
-
 			$state = strtoupper((string) $state);
 
 			$allowed_cities = wu_get_country_cities(strtoupper((string) $country), $state, false);
 
-			if (!empty($allowed_cities)) {
-
+			if (! empty($allowed_cities)) {
 				$check = in_array($city, $allowed_cities, true);
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $check;
-
-	} // end check;
-
-} // end class City;
+	}
+}

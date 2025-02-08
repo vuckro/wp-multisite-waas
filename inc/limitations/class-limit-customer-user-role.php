@@ -37,10 +37,9 @@ class Limit_Customer_User_Role extends Limit {
 
 		return array(
 			'enabled' => true,
-			'limit'   => 'default'
+			'limit'   => 'default',
 		);
-
-	} // end default_state;
+	}
 
 	/**
 	 * The check method is what gets called when allowed is called.
@@ -58,8 +57,7 @@ class Limit_Customer_User_Role extends Limit {
 	public function check($value_to_check, $limit, $type = '') {
 
 		return true;
-
-	} // end check;
+	}
 
 	/**
 	 * Gets the limit data.
@@ -74,7 +72,5 @@ class Limit_Customer_User_Role extends Limit {
 		$default_value = wu_get_setting('default_role', 'administrator');
 
 		return empty($this->limit) || $this->limit === 'default' ? $default_value : $this->limit;
-
-	} // end get_limit;
-
-} // end class Limit_Customer_User_Role;
+	}
+}

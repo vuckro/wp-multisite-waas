@@ -37,8 +37,7 @@ class Invoice_List_Table extends Parent_Payment_List_Table {
 		);
 
 		return $columns;
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Clears the bulk actions.
@@ -51,8 +50,5 @@ class Invoice_List_Table extends Parent_Payment_List_Table {
 	public function bulk_actions($which = '') {
 
 		return array();
-
-	} // end bulk_actions;
-
-} // end class Invoice_List_Table;
-
+	}
+}

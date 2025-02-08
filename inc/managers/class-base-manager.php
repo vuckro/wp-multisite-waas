@@ -27,6 +27,5 @@ class Base_Manager {
 	 * @since 2.0.11
 	 * @return void
 	 */
-	public function init() {} // end init;
-
-} // end class Base_Manager;
+	public function init() {}
+}

@@ -12,14 +12,14 @@
 namespace WP_Ultimo\Managers;
 
 use Psr\Log\LogLevel;
-use \WP_Ultimo\Managers\Base_Manager;
-use \WP_Ultimo\Gateways\Ignorable_Exception;
+use WP_Ultimo\Managers\Base_Manager;
+use WP_Ultimo\Gateways\Ignorable_Exception;
 
-use \WP_Ultimo\Gateways\Free_Gateway;
-use \WP_Ultimo\Gateways\Stripe_Gateway;
-use \WP_Ultimo\Gateways\Stripe_Checkout_Gateway;
-use \WP_Ultimo\Gateways\PayPal_Gateway;
-use \WP_Ultimo\Gateways\Manual_Gateway;
+use WP_Ultimo\Gateways\Free_Gateway;
+use WP_Ultimo\Gateways\Stripe_Gateway;
+use WP_Ultimo\Gateways\Stripe_Checkout_Gateway;
+use WP_Ultimo\Gateways\PayPal_Gateway;
+use WP_Ultimo\Gateways\Manual_Gateway;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -66,8 +66,7 @@ class Gateway_Manager extends Base_Manager {
 	public function init() {
 
 		add_action('plugins_loaded', array($this, 'on_load'));
-
-	} // end init;
+	}
 
 	/**
 	 * Runs after all plugins have been loaded to allow for add-ons to hook into it correctly.
@@ -83,9 +82,13 @@ class Gateway_Manager extends Base_Manager {
 		/*
 		 * Allow developers to add new gateways.
 		 */
-		add_action('init', function () {
-			do_action('wu_register_gateways');
-		}, 19);
+		add_action(
+			'init',
+			function () {
+				do_action('wu_register_gateways');
+			},
+			19
+		);
 
 		/*
 		 * Adds the Gateway selection fields
@@ -108,8 +111,7 @@ class Gateway_Manager extends Base_Manager {
 		 * Waits for webhook signals and deal with them.
 		 */
 		add_action('admin_init', array($this, 'maybe_process_v1_webhooks'), 1);
-
-	} // end on_load;
+	}
 
 	/**
 	 * Checks if we need to process webhooks received by gateways.
@@ -121,7 +123,7 @@ class Gateway_Manager extends Base_Manager {
 
 		$gateway = wu_request('wu-gateway');
 
-		if ($gateway && !is_admin() && is_main_site()) {
+		if ($gateway && ! is_admin() && is_main_site()) {
 			/*
 			 * Do not cache this!
 			 */
@@ -146,9 +148,7 @@ class Gateway_Manager extends Base_Manager {
 				http_response_code(200);
 
 				die('Thanks!');
-
 			} catch (Ignorable_Exception $e) {
-
 				$message = sprintf('We failed to handle a webhook call, but in this case, no further action is necessary. Message: %s', $e->getMessage());
 
 				wu_log_add("wu-{$gateway}-webhook-errors", $message);
@@ -157,9 +157,7 @@ class Gateway_Manager extends Base_Manager {
 				 * Send the error back, but with a 200.
 				 */
 				wp_send_json_error(new \WP_Error('webhook-error', $message), 200);
-
 			} catch (\Throwable $e) {
-
 				$file = $e->getFile();
 				$line = $e->getLine();
 
@@ -177,12 +175,9 @@ class Gateway_Manager extends Base_Manager {
 				 * a non-200 code is returned.
 				 */
 				wp_send_json_error(new \WP_Error('webhook-error', $message), 500);
-
-			} // end try;
-
-		} // end if;
-
-	} // end maybe_process_webhooks;
+			}
+		}
+	}
 
 	/**
 	 * Checks if we need to process webhooks received by legacy gateways.
@@ -203,7 +198,6 @@ class Gateway_Manager extends Base_Manager {
 			$gateway = wu_get_gateway($gateway_id);
 
 			if ($gateway) {
-
 				$gateway->before_backwards_compatible_webhook();
 
 				/*
@@ -230,9 +224,7 @@ class Gateway_Manager extends Base_Manager {
 					http_response_code(200);
 
 					die('Thanks!');
-
 				} catch (Ignorable_Exception $e) {
-
 					$message = sprintf('We failed to handle a webhook call, but in this case, no further action is necessary. Message: %s', $e->getMessage());
 
 					wu_log_add("wu-{$gateway_id}-webhook-errors", $message);
@@ -241,9 +233,7 @@ class Gateway_Manager extends Base_Manager {
 					* Send the error back, but with a 200.
 					*/
 					wp_send_json_error(new \WP_Error('webhook-error', $message), 200);
-
 				} catch (\Throwable $e) {
-
 					$message = sprintf('We failed to handle a webhook call. Error: %s', $e->getMessage());
 
 					wu_log_add("wu-{$gateway_id}-webhook-errors", $message, LogLevel::ERROR);
@@ -257,14 +247,10 @@ class Gateway_Manager extends Base_Manager {
 					http_response_code(500);
 
 					wp_send_json_error(new \WP_Error('webhook-error', $message));
-
-				} // end try;
-
-			} // end if;
-
-		} // end if;
-
-	} // end maybe_process_v1_webhooks;
+				}
+			}
+		}
+	}
 
 	/**
 	 * Let gateways deal with their confirmation steps.
@@ -278,11 +264,9 @@ class Gateway_Manager extends Base_Manager {
 		/*
 		 * First we check for the confirmation parameter.
 		 */
-		if (!wu_request('wu-confirm') || (wu_request('status') && wu_request('status') === 'done')) {
-
+		if ( ! wu_request('wu-confirm') || (wu_request('status') && wu_request('status') === 'done')) {
 			return;
-
-		} // end if;
+		}
 
 		ob_start();
 
@@ -292,25 +276,27 @@ class Gateway_Manager extends Base_Manager {
 
 		$gateway = wu_get_gateway($gateway_id);
 
-		if (!$gateway) {
-
+		if ( ! $gateway) {
 			$error = new \WP_Error('missing_gateway', __('Missing gateway parameter.', 'wp-ultimo'));
 
-			wp_die($error, __('Error', 'wp-ultimo'), array('back_link' => true, 'response' => '200'));
-
-		} // end if;
+			wp_die(
+				$error,
+				__('Error', 'wp-ultimo'),
+				array(
+					'back_link' => true,
+					'response'  => '200',
+				)
+			);
+		}
 
 		try {
-
 			$payment_hash = wu_request('payment');
 
 			$payment = wu_get_payment_by_hash($payment_hash);
 
 			if ($payment) {
-
 				$gateway->set_payment($payment);
-
-			} // end if;
+			}
 
 			/*
 			 * Pass it down to the gateway.
@@ -322,31 +308,38 @@ class Gateway_Manager extends Base_Manager {
 			$results = $gateway->process_confirmation();
 
 			if (is_wp_error($results)) {
-
-				wp_die($results, __('Error', 'wp-ultimo'), array('back_link' => true, 'response' => '200'));
-
-			} // end if;
-
+				wp_die(
+					$results,
+					__('Error', 'wp-ultimo'),
+					array(
+						'back_link' => true,
+						'response'  => '200',
+					)
+				);
+			}
 		} catch (\Throwable $e) {
-
 			$error = new \WP_Error('confirm-error-' . $e->getCode(), $e->getMessage());
 
-			wp_die($error, __('Error', 'wp-ultimo'), array('back_link' => true, 'response' => '200'));
-
-		} // end try;
+			wp_die(
+				$error,
+				__('Error', 'wp-ultimo'),
+				array(
+					'back_link' => true,
+					'response'  => '200',
+				)
+			);
+		}
 
 		$output = ob_get_clean();
 
-		if (!empty($output)) {
+		if ( ! empty($output)) {
 			/*
 			 * Add a filter to bypass the checkout form.
 			 * This is used for PayPal confirmation page.
 			 */
 			add_action('wu_bypass_checkout_form', fn($bypass, $atts) => $output, 10, 2);
-
-		} // end if;
-
-	} // end process_gateway_confirmations;
+		}
+	}
 
 	/**
 	 * Adds the field that enabled and disables Payment Gateways on the settings.
@@ -356,16 +349,19 @@ class Gateway_Manager extends Base_Manager {
 	 */
 	public function add_gateway_selector_field() {
 
-		wu_register_settings_field('payment-gateways', 'active_gateways', array(
-			'title'   => __('Active Payment Gateways', 'wp-ultimo'),
-			'desc'    => __('Payment gateways are what your customers will use to pay.', 'wp-ultimo'),
-			'type'    => 'multiselect',
-			'columns' => 2,
-			'options' => array($this, 'get_gateways_as_options'),
-			'default' => array(),
-		));
-
-	} // end add_gateway_selector_field;
+		wu_register_settings_field(
+			'payment-gateways',
+			'active_gateways',
+			array(
+				'title'   => __('Active Payment Gateways', 'wp-ultimo'),
+				'desc'    => __('Payment gateways are what your customers will use to pay.', 'wp-ultimo'),
+				'type'    => 'multiselect',
+				'columns' => 2,
+				'options' => array($this, 'get_gateways_as_options'),
+				'default' => array(),
+			)
+		);
+	}
 
 	/**
 	 * Returns the list of registered gateways as options for the gateway selector setting.
@@ -384,8 +380,7 @@ class Gateway_Manager extends Base_Manager {
 		$gateways = array_filter($gateways, fn($item) => $item['hidden'] === false);
 
 		return $gateways;
-
-	} // end get_gateways_as_options;
+	}
 
 	/**
 	 * Loads the default gateways.
@@ -422,8 +417,7 @@ class Gateway_Manager extends Base_Manager {
 		 */
 		$manual_desc = __('Use the Manual Gateway to allow users to pay you directly via bank transfers, checks, or other channels.', 'wp-ultimo');
 		wu_register_gateway('manual', __('Manual', 'wp-ultimo'), $manual_desc, Manual_Gateway::class);
-
-	} // end add_default_gateways;
+	}
 
 	/**
 	 * Checks if a gateway was already registered.
@@ -434,9 +428,8 @@ class Gateway_Manager extends Base_Manager {
 	 */
 	public function is_gateway_registered($id) {
 
-		return is_array($this->registered_gateways) && isset($this->registered_gateways[$id]);
-
-	} // end is_gateway_registered;
+		return is_array($this->registered_gateways) && isset($this->registered_gateways[ $id ]);
+	}
 
 	/**
 	 * Returns a list of all the registered gateways
@@ -447,8 +440,7 @@ class Gateway_Manager extends Base_Manager {
 	public function get_registered_gateways() {
 
 		return $this->registered_gateways;
-
-	} // end get_registered_gateways;
+	}
 
 	/**
 	 * Returns a particular Gateway registered
@@ -459,9 +451,8 @@ class Gateway_Manager extends Base_Manager {
 	 */
 	public function get_gateway($id) {
 
-		return $this->is_gateway_registered($id) ? $this->registered_gateways[$id] : false;
-
-	} // end get_gateway;
+		return $this->is_gateway_registered($id) ? $this->registered_gateways[ $id ] : false;
+	}
 
 	/**
 	 * Adds a new Gateway to the System. Used by gateways to make themselves visible.
@@ -479,15 +470,13 @@ class Gateway_Manager extends Base_Manager {
 
 		// Checks if gateway was already added
 		if ($this->is_gateway_registered($id)) {
-
 			return;
-
-		} // end if;
+		}
 
 		$active_gateways = (array) wu_get_setting('active_gateways', array());
 
 		// Adds to the global
-		$this->registered_gateways[$id] = array(
+		$this->registered_gateways[ $id ] = array(
 			'id'         => $id,
 			'title'      => $title,
 			'desc'       => $desc,
@@ -502,8 +491,7 @@ class Gateway_Manager extends Base_Manager {
 
 		// Return the value
 		return true;
-
-	} // end register_gateway;
+	}
 
 	/**
 	 * Adds additional hooks for each of the gateway registered.
@@ -524,16 +512,13 @@ class Gateway_Manager extends Base_Manager {
 		 * payments, add it to the list.
 		 */
 		if ($gateway->supports_recurring()) {
-
 			$this->auto_renewable_gateways[] = $gateway_id;
-
-		} // end if;
+		}
 
 		add_action('wu_checkout_scripts', array($gateway, 'register_scripts'));
 
-        $gateway->hooks();
+		$gateway->hooks();
 		add_action('wu_settings_payment_gateways', array($gateway, 'settings'));
-
 
 		add_action("wu_{$gateway_id}_process_webhooks", array($gateway, 'process_webhooks'));
 
@@ -546,13 +531,15 @@ class Gateway_Manager extends Base_Manager {
 		/*
 		 * Renders the gateway fields.
 		 */
-		add_action('wu_checkout_gateway_fields', function($checkout) use ($gateway) {
+		add_action(
+			'wu_checkout_gateway_fields',
+			function ($checkout) use ($gateway) {
 
-			$field_content = call_user_func(array($gateway, 'fields'));
+				$field_content = call_user_func(array($gateway, 'fields'));
 
-			ob_start();
+				ob_start();
 
-			?>
+				?>
 
 			<div v-cloak v-show="gateway == '<?php echo esc_attr($gateway->get_id()); ?>' && order && order.should_collect_payment" class="wu-overflow">
 
@@ -560,13 +547,12 @@ class Gateway_Manager extends Base_Manager {
 
 			</div>
 
-			<?php
+				<?php
 
-			echo ob_get_clean();
-
-		});
-
-	} // end install_hooks;
+				echo ob_get_clean();
+			}
+		);
+	}
 
 	/**
 	 * Returns an array with the list of gateways that support auto-renew.
@@ -577,7 +563,5 @@ class Gateway_Manager extends Base_Manager {
 	public function get_auto_renewable_gateways() {
 
 		return (array) $this->auto_renewable_gateways;
-
-	} // end get_auto_renewable_gateways;
-
-} // end class Gateway_Manager;
+	}
+}

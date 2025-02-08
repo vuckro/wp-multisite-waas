@@ -35,8 +35,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 		);
 
 		$this->current_mode = 'grid';
-
-	} // end __construct;
+	}
 
 	/**
 	 * Returns the list of columns for this particular List Table.
@@ -47,8 +46,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 	public function get_columns() {
 
 		return array();
-
-	} // end get_columns;
+	}
 
 	/**
 	 * Resets the filters.
@@ -61,8 +59,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 			'filters'      => array(),
 			'date_filters' => array(),
 		);
-
-	} // end get_filters;
+	}
 
 	/**
 	 * Resets bulk actions.
@@ -75,8 +72,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 	public function bulk_actions($which = '') {
 
 		return array();
-
-	} // end bulk_actions;
+	}
 
 	/**
 	 * Renders the customer card for grid mode.
@@ -88,11 +84,12 @@ class Product_List_Table extends Parent_Product_List_Table {
 	 */
 	public function single_row_grid($item) {
 
-		wu_get_template('base/products/grid-item', array(
-			'item'       => $item,
-			'list_table' => $this,
-		));
-
-	} // end single_row_grid;
-
-} // end class Product_List_Table;
+		wu_get_template(
+			'base/products/grid-item',
+			array(
+				'item'       => $item,
+				'list_table' => $this,
+			)
+		);
+	}
+}

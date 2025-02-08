@@ -62,14 +62,14 @@ class Sites_Schema extends Schema {
 			'name'       => 'domain',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		array(
 			'name'       => 'path',
 			'type'       => 'varchar',
 			'searchable' => true,
-			'sortable'   => true
+			'sortable'   => true,
 		),
 
 		array(
@@ -147,5 +147,4 @@ class Sites_Schema extends Schema {
 		),
 
 	);
-
-} // end class Sites_Schema;
+}

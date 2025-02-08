@@ -29,8 +29,7 @@ class Views {
 	public function init() {
 
 		add_filter('wu_view_override', array($this, 'view_override'), 10, 3);
-
-	} // end init;
+	}
 
 	/**
 	 * Custom locate template function that allows us to retrieve user overridden templates.
@@ -57,44 +56,31 @@ class Views {
 		$located = '';
 
 		foreach ((array) $template_names as $template_name) {
-
-			if (!$template_name) {
-
+			if ( ! $template_name) {
 				continue;
+			}
 
-			} // end if;
-
-			if (file_exists( $stylesheet_path . '/' . $template_name)) {
-
+			if (file_exists($stylesheet_path . '/' . $template_name)) {
 				$located = $stylesheet_path . '/' . $template_name;
 
 				break;
-
 			} elseif (file_exists(get_template_directory() . '/' . $template_name)) {
-
 				$located = get_template_directory() . '/' . $template_name;
 
 				break;
-
 			} elseif (file_exists(ABSPATH . WPINC . '/theme-compat/' . $template_name)) {
-
 				$located = ABSPATH . WPINC . '/theme-compat/' . $template_name;
 
 				break;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		if ($load && '' !== $located) {
-
 			load_template($located, $require_once);
-
-		} // end if;
+		}
 
 		return $located;
-
-	} // end custom_locate_template;
+	}
 
 	/**
 	 * Check if an alternative view exists and override
@@ -108,7 +94,5 @@ class Views {
 		$found = $this->custom_locate_template("wp-ultimo/$view.php");
 
 		return $found ? $found : $original_path;
-
-	} // end view_override;
-
-} // end class Views;
+	}
+}

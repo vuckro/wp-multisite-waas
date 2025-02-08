@@ -9,7 +9,7 @@
 
 namespace WP_Ultimo\UI;
 
-use \WP_Ultimo\Database\Sites\Site_Type;
+use WP_Ultimo\Database\Sites\Site_Type;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
@@ -113,7 +113,7 @@ abstract class Base_Element {
 	 * @param string $context One of the values: block, elementor or bb.
 	 * @return string
 	 */
-	abstract public function get_icon($context = 'block'); // end get_icon;
+	abstract public function get_icon($context = 'block');
 
 	/**
 	 * The title of the UI element.
@@ -157,7 +157,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return array
 	 */
-	abstract public function fields(); // end fields;
+	abstract public function fields();
 
 	/**
 	 * The list of keywords for this element.
@@ -176,7 +176,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return array
 	 */
-	abstract public function keywords(); // end keywords;
+	abstract public function keywords();
 
 	/**
 	 * List of default parameters for the element.
@@ -192,7 +192,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return array
 	 */
-	abstract public function defaults(); // end defaults;
+	abstract public function defaults();
 
 	/**
 	 * The content to be output on the screen.
@@ -207,7 +207,7 @@ abstract class Base_Element {
 	 * @param string|null $content The content inside the shortcode.
 	 * @return string
 	 */
-	abstract public function output($atts, $content = null); // end output;
+	abstract public function output($atts, $content = null);
 
 	// Boilerplate -----------------------------------
 
@@ -239,17 +239,14 @@ abstract class Base_Element {
 
 		// Init should be the correct time to call this to avoid the deprecated notice from I18N.
 		// But it doesn't work for some reason, fix later.
-//		add_action('init', function () {
+		// add_action('init', function () {
 			do_action('wu_element_loaded', $this);
-//		} );
+		// } );
 
 		if ($this->public) {
-
-			Base_Element::register_public_element($this);
-
-		} // end if;
-
-	} // end init;
+			self::register_public_element($this);
+		}
+	}
 
 	/**
 	 * Register a public element to further use.
@@ -261,8 +258,7 @@ abstract class Base_Element {
 	public static function register_public_element($element) {
 
 		static::$public_elements[] = $element;
-
-	} // end register_public_element;
+	}
 
 	/**
 	 * Retrieves the public registered elements.
@@ -273,8 +269,7 @@ abstract class Base_Element {
 	public static function get_public_elements() {
 
 		return static::$public_elements;
-
-	} // end get_public_elements;
+	}
 
 	/**
 	 * Sets blocks up for the block editor.
@@ -290,10 +285,8 @@ abstract class Base_Element {
 		$should_load = false;
 
 		if ($block['blockName'] === $this->get_id()) {
-
 			$should_load = true;
-
-		} // end if;
+		}
 
 		/**
 		 * We might need to add additional blocks later.
@@ -301,38 +294,30 @@ abstract class Base_Element {
 		 * @since 2.0.0
 		 * @return array
 		 */
-		$blocks_to_check = apply_filters('wu_element_block_types_to_check', array(
-			'core/shortcode',
-			'core/paragraph',
-		));
+		$blocks_to_check = apply_filters(
+			'wu_element_block_types_to_check',
+			array(
+				'core/shortcode',
+				'core/paragraph',
+			)
+		);
 
 		if (in_array($block['blockName'], $blocks_to_check, true)) {
-
 			if ($this->contains_current_element($block['innerHTML'])) {
-
 				$should_load = true;
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		if ($should_load) {
-
 			if ($this->is_preview()) {
-
 				$this->setup_preview();
-
 			} else {
-
 				$this->setup();
-
-			} // end if;
-
-		} // end if;
+			}
+		}
 
 		return $short_circuit;
-
-	} // end setup_for_block_editor;
+	}
 
 	/**
 	 * Search for an element id on the list of metaboxes.
@@ -352,11 +337,9 @@ abstract class Base_Element {
 		/*
 		 * Bail if things don't look normal or in the right context.
 		 */
-		if (!function_exists('get_current_screen')) {
-
+		if ( ! function_exists('get_current_screen')) {
 			return;
-
-		} // end if;
+		}
 
 		$screen = get_current_screen();
 
@@ -364,10 +347,8 @@ abstract class Base_Element {
 		 * First, check on cache, to avoid recalculating it time and time again.
 		 */
 		if (is_array(self::$metabox_cache)) {
-
 			return in_array($element_id, self::$metabox_cache, true);
-
-		} // end if;
+		}
 
 		$contains_metaboxes = wu_get_isset($wp_meta_boxes, $screen->id) || wu_get_isset($wp_meta_boxes, $pagenow);
 
@@ -375,38 +356,27 @@ abstract class Base_Element {
 
 		$found = false;
 
-		if (is_array($wp_meta_boxes) && $contains_metaboxes && is_array($wp_meta_boxes[$screen->id])) {
-
-			foreach ($wp_meta_boxes[$screen->id] as $position => $priorities) {
-
+		if (is_array($wp_meta_boxes) && $contains_metaboxes && is_array($wp_meta_boxes[ $screen->id ])) {
+			foreach ($wp_meta_boxes[ $screen->id ] as $position => $priorities) {
 				foreach ($priorities as $priority => $metaboxes) {
-
 					foreach ($metaboxes as $metabox_id => $metabox) {
-
 						$elements_to_cache[] = $metabox_id;
 
 						if ($metabox_id === $element_id) {
-
 							$found = true;
-
-						} // end if;
-
-					} // end foreach;
-
-				} // end foreach;
-
-			} // end foreach;
+						}
+					}
+				}
+			}
 
 			/**
 			 * Set a local cache so we don't have to loop it all over again.
 			 */
 			self::$metabox_cache = $elements_to_cache;
-
-		} // end if;
+		}
 
 		return $found;
-
-	} // end search_in_metaboxes;
+	}
 
 	/**
 	 * Setup element on admin pages.
@@ -417,22 +387,17 @@ abstract class Base_Element {
 	public function setup_for_admin() {
 
 		if ($this->loaded === true) {
-
 			return;
-
-		} // end if;
+		}
 
 		$element_id = "wp-ultimo-{$this->id}-element";
 
 		if (self::search_in_metaboxes($element_id)) {
-
 			$this->loaded = true;
 
 			$this->setup();
-
-		} // end if;
-
-	} // end setup_for_admin;
+		}
+	}
 
 	/**
 	 * Maybe run setup, when the shortcode or block is found.
@@ -446,26 +411,17 @@ abstract class Base_Element {
 		global $post;
 
 		if (is_admin() || empty($post)) {
-
 			return;
-
-		} // end if;
+		}
 
 		if ($this->contains_current_element($post->post_content, $post)) {
-
 			if ($this->is_preview()) {
-
 				$this->setup_preview();
-
 			} else {
-
 				$this->setup();
-
-			} // end if;
-
-		} // end if;
-
-	} // end maybe_setup;
+			}
+		}
+	}
 
 	/**
 	 * Runs early on the request lifecycle as soon as we detect the shortcode is present.
@@ -473,7 +429,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup() {} // end setup;
+	public function setup() {}
 
 	/**
 	 * Allows the setup in the context of previews.
@@ -481,7 +437,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function setup_preview() {} // end setup_preview;
+	public function setup_preview() {}
 
 	/**
 	 * Checks content to see if the current element is present.
@@ -503,10 +459,8 @@ abstract class Base_Element {
 		 * we can skip the entire check and return true.
 		 */
 		if (is_array($this->pre_loaded_attributes)) {
-
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * First, check for default shortcodes
@@ -515,14 +469,12 @@ abstract class Base_Element {
 		$shortcode = $this->get_shortcode_id();
 
 		if (has_shortcode($content, $shortcode)) {
-
 			$this->pre_loaded_attributes = $this->maybe_extract_arguments($content, 'shortcode');
 
 			$this->actually_loaded = true;
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * Handle the Block Editor
@@ -531,14 +483,12 @@ abstract class Base_Element {
 		$block = $this->get_id();
 
 		if (has_block($block, $content)) {
-
 			$this->pre_loaded_attributes = $this->maybe_extract_arguments($content, 'block');
 
 			$this->actually_loaded = true;
 
 			return true;
-
-		} // end if;
+		}
 
 		/*
 		 * Runs generic version so plugins can extend it.
@@ -551,10 +501,8 @@ abstract class Base_Element {
 		 * Last option is to check for the post force setting.
 		 */
 		if ($post && get_post_meta($post->ID, '_wu_force_elements_loading', true)) {
-
 			$contains_element = true;
-
-		} // end if;
+		}
 
 		/**
 		 * Allow developers to change the results of the initial search.
@@ -567,8 +515,7 @@ abstract class Base_Element {
 		 * @param self The current element.
 		 */
 		return apply_filters('wu_contains_element', $contains_element, $content, $this, $post);
-
-	} // end contains_current_element;
+	}
 
 	/**
 	 * Tries to extract element arguments depending on the element type.
@@ -591,8 +538,7 @@ abstract class Base_Element {
 
 			preg_match_all('/' . $shortcode_regex . '/', $content, $matches, PREG_SET_ORDER);
 
-			return !empty($matches) ? shortcode_parse_atts($matches[0][3]) : false;
-
+			return ! empty($matches) ? shortcode_parse_atts($matches[0][3]) : false;
 		} elseif ($type === 'block') {
 
 			/**
@@ -602,18 +548,13 @@ abstract class Base_Element {
 			$block_content = parse_blocks($content);
 
 			foreach ($block_content as $block) {
-
 				if ($block['blockName'] === $this->get_id()) {
-
 					return $block['attrs'];
-
-				} // end if;
-
-			} // end foreach;
+				}
+			}
 
 			return false;
-
-		} // end if;
+		}
 
 		/**
 		 * Adds generic filter to allow developers
@@ -624,8 +565,7 @@ abstract class Base_Element {
 		 * @return false|array
 		 */
 		return apply_filters('wu_element_maybe_extract_arguments', false, $content, $type, $this);
-
-	} // end maybe_extract_arguments;
+	}
 
 	/**
 	 * Adds custom CSS to the signup screen.
@@ -637,11 +577,9 @@ abstract class Base_Element {
 
 		global $post;
 
-		if (!is_a($post, '\WP_Post')) {
-
+		if ( ! is_a($post, '\WP_Post')) {
 			return;
-
-		} // end if;
+		}
 
 		$should_enqueue_scripts = apply_filters('wu_element_should_enqueue_scripts', false, $post, $this->get_shortcode_id());
 
@@ -656,10 +594,8 @@ abstract class Base_Element {
 			 * @since 2.0.0
 			 */
 			do_action("wu_{$this->id}_scripts", $post, $this);
-
-		} // end if;
-
-	} // end enqueue_element_scripts;
+		}
+	}
 
 	/**
 	 * Tries to parse the shortcode content on page load.
@@ -677,15 +613,12 @@ abstract class Base_Element {
 	 */
 	public function get_pre_loaded_attribute($name, $default = false) {
 
-		if ($this->pre_loaded_attributes === false || !is_array($this->pre_loaded_attributes)) {
-
+		if ($this->pre_loaded_attributes === false || ! is_array($this->pre_loaded_attributes)) {
 			return false;
-
-		} // end if;
+		}
 
 		return wu_get_isset($this->pre_loaded_attributes, $name, $default);
-
-	} // end get_pre_loaded_attribute;
+	}
 
 	/**
 	 * Registers the shortcode.
@@ -696,14 +629,11 @@ abstract class Base_Element {
 	public function register_shortcode() {
 
 		if (wu_get_current_site()->get_type() === Site_Type::CUSTOMER_OWNED && is_admin() === false) {
-
 			return;
-
-		} // end if;
+		}
 
 		add_shortcode($this->get_shortcode_id(), array($this, 'display'));
-
-	} // end register_shortcode;
+	}
 
 	/**
 	 * Registers the forms.
@@ -715,22 +645,27 @@ abstract class Base_Element {
 		/*
 		 * Add Generator Forms
 		 */
-		wu_register_form("shortcode_{$this->id}", array(
-			'render'     => array($this, 'render_generator_modal'),
-			'handler'    => '__return_empty_string',
-			'capability' => 'manage_network',
-		));
+		wu_register_form(
+			"shortcode_{$this->id}",
+			array(
+				'render'     => array($this, 'render_generator_modal'),
+				'handler'    => '__return_empty_string',
+				'capability' => 'manage_network',
+			)
+		);
 
 		/*
 		 * Add Customize Forms
 		 */
-		wu_register_form("customize_{$this->id}", array(
-			'render'     => array($this, 'render_customize_modal'),
-			'handler'    => array($this, 'handle_customize_modal'),
-			'capability' => 'manage_network',
-		));
-
-	} // end register_form;
+		wu_register_form(
+			"customize_{$this->id}",
+			array(
+				'render'     => array($this, 'render_customize_modal'),
+				'handler'    => array($this, 'handle_customize_modal'),
+				'capability' => 'manage_network',
+			)
+		);
+	}
 
 	/**
 	 * Adds the modal to copy the shortcode for this particular element.
@@ -747,14 +682,11 @@ abstract class Base_Element {
 		$state = array();
 
 		foreach ($fields as $field_slug => &$field) {
-
 			if ($field['type'] === 'header' || $field['type'] === 'note') {
-
-				unset($fields[$field_slug]);
+				unset($fields[ $field_slug ]);
 
 				continue;
-
-			} // end if;
+			}
 
 			/*
 			 * Additional State.
@@ -766,20 +698,16 @@ abstract class Base_Element {
 			$additional_state = array();
 
 			if ($field['type'] === 'group') {
-
 				foreach ($field['fields'] as $sub_field_slug => &$sub_field) {
-
 					$sub_field['html_attr'] = array(
 						'v-model.lazy' => "attributes.{$sub_field_slug}",
 					);
 
-					$additional_state[$sub_field_slug] = wu_request($sub_field_slug, wu_get_isset($defaults, $sub_field_slug));
-
-				} // end foreach;
+					$additional_state[ $sub_field_slug ] = wu_request($sub_field_slug, wu_get_isset($defaults, $sub_field_slug));
+				}
 
 				continue;
-
-			} // end if;
+			}
 
 			/*
 			 * Set v-model
@@ -791,28 +719,23 @@ abstract class Base_Element {
 			$required = wu_get_isset($field, 'required');
 
 			if (wu_get_isset($field, 'required')) {
-
 				$shows = array();
 
 				foreach ($required as $key => $value) {
-
 					$value = is_string($value) ? "\"$value\"" : $value;
 
 					$shows[] = "attributes.{$key} == $value";
-
-				} // end foreach;
+				}
 
 				$field['wrapper_html_attr'] = array(
 					'v-show' => implode(' && ', $shows),
 				);
 
-				$state[$field_slug . '_shortcode_requires'] = $required;
+				$state[ $field_slug . '_shortcode_requires' ] = $required;
+			}
 
-			} // end if;
-
-			$state[$field_slug] = wu_request($field_slug, wu_get_isset($defaults, $field_slug));
-
-		} // end foreach;
+			$state[ $field_slug ] = wu_request($field_slug, wu_get_isset($defaults, $field_slug));
+		}
 
 		$fields['shortcode_result'] = array(
 			'type'            => 'note',
@@ -832,27 +755,32 @@ abstract class Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form($this->id, $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-w-full',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => "{$this->id}_generator",
-				'data-state'  => wu_convert_to_state(array(
-					'id'         => $this->get_shortcode_id(),
-					'defaults'   => $defaults,
-					'attributes' => $state,
-				)),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			$this->id,
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0 wu-w-full',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => "{$this->id}_generator",
+					'data-state'  => wu_convert_to_state(
+						array(
+							'id'         => $this->get_shortcode_id(),
+							'defaults'   => $defaults,
+							'attributes' => $state,
+						)
+					),
+				),
+			)
+		);
 
 		echo '<div class="wu-styling">';
 
 		$form->render();
 
 		echo '</div>';
-
-	} // end render_generator_modal;
+	}
 
 	/**
 	 * Adds the modal customize the widget block
@@ -882,24 +810,18 @@ abstract class Base_Element {
 		$state = array_merge($defaults, $saved_settings);
 
 		foreach ($fields as $field_slug => &$field) {
-
 			if ($field['type'] === 'header') {
-
-				unset($fields[$field_slug]);
+				unset($fields[ $field_slug ]);
 
 				continue;
-
-			} // end if;
+			}
 
 			$value = wu_get_isset($saved_settings, $field_slug, null);
 
 			if ($value !== null) {
-
 				$field['value'] = $value;
-
-			} // end if;
-
-		} // end foreach;
+			}
+		}
 
 		$fields['save_line'] = array(
 			'type'            => 'group',
@@ -923,23 +845,26 @@ abstract class Base_Element {
 			),
 		);
 
-		$form = new \WP_Ultimo\UI\Form($this->id, $fields, array(
-			'views'                 => 'admin-pages/fields',
-			'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
-			'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
-			'html_attr'             => array(
-				'data-wu-app' => "{$this->id}_customize",
-				'data-state'  => wu_convert_to_state($state),
-			),
-		));
+		$form = new \WP_Ultimo\UI\Form(
+			$this->id,
+			$fields,
+			array(
+				'views'                 => 'admin-pages/fields',
+				'classes'               => 'wu-modal-form wu-widget-list wu-striped wu-m-0 wu-mt-0',
+				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
+				'html_attr'             => array(
+					'data-wu-app' => "{$this->id}_customize",
+					'data-state'  => wu_convert_to_state($state),
+				),
+			)
+		);
 
 		echo '<div class="wu-styling">';
 
 		$form->render();
 
 		echo '</div>';
-
-	} // end render_customize_modal;
+	}
 
 	/**
 	 * Saves the customization settings for a given widget.
@@ -952,7 +877,6 @@ abstract class Base_Element {
 		$settings = array();
 
 		if (wu_request('submit') !== 'restore') {
-
 			$fields = $this->fields();
 
 			$fields['hide'] = array(
@@ -960,31 +884,27 @@ abstract class Base_Element {
 			);
 
 			foreach ($fields as $field_slug => $field) {
-
 				$setting = wu_request($field_slug, false);
 
 				if ($setting !== false || $field['type'] === 'toggle') {
-
-					$settings[$field_slug] = $setting;
-
-				} // end if;
-
-			} // end foreach;
-
-		} // end if;
+					$settings[ $field_slug ] = $setting;
+				}
+			}
+		}
 
 		$this->save_widget_settings($settings);
 
-		wp_send_json_success(array(
-			'send'         => array(
-				'scope'         => 'window',
-				'function_name' => 'wu_block_ui',
-				'data'          => '#wpcontent',
-			),
-			'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
-		));
-
-	} // end handle_customize_modal;
+		wp_send_json_success(
+			array(
+				'send'         => array(
+					'scope'         => 'window',
+					'function_name' => 'wu_block_ui',
+					'data'          => '#wpcontent',
+				),
+				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+			)
+		);
+	}
 
 	/**
 	 * Registers scripts and styles necessary to render this.
@@ -995,8 +915,7 @@ abstract class Base_Element {
 	public function register_default_scripts() {
 
 		wp_enqueue_style('wu-admin');
-
-	} // end register_default_scripts;
+	}
 
 	/**
 	 * Registers scripts and styles necessary to render this.
@@ -1004,7 +923,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_scripts() {} // end register_scripts;
+	public function register_scripts() {}
 
 	/**
 	 * Loads dependencies that might not be available at render time.
@@ -1012,7 +931,7 @@ abstract class Base_Element {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function dependencies() {} // end dependencies;
+	public function dependencies() {}
 
 	/**
 	 * Returns the ID of this UI element.
@@ -1023,8 +942,7 @@ abstract class Base_Element {
 	public function get_id() {
 
 		return sprintf('wp-ultimo/%s', $this->id);
-
-	} // end get_id;
+	}
 
 	/**
 	 * Returns the ID of this UI element.
@@ -1035,8 +953,7 @@ abstract class Base_Element {
 	public function get_shortcode_id() {
 
 		return str_replace('-', '_', sprintf('wu_%s', $this->id));
-
-	} // end get_shortcode_id;
+	}
 
 	/**
 	 * Treats the attributes before passing them down to the output method.
@@ -1048,11 +965,10 @@ abstract class Base_Element {
 	 */
 	public function display($atts) {
 
-		if (!$this->should_display()) {
-
+		if ( ! $this->should_display()) {
 			return; // bail if the display was set to false.
 
-		} // end if;
+		}
 
 		$this->dependencies();
 
@@ -1069,8 +985,7 @@ abstract class Base_Element {
 		$atts['element'] = $this;
 
 		return call_user_func(array($this, 'output'), $atts);
-
-	} // end display;
+	}
 
 	/**
 	 * Retrieves a cleaned up version of the content.
@@ -1086,20 +1001,27 @@ abstract class Base_Element {
 
 		$content = $this->display($atts);
 
-		$content = str_replace(array(
-			'v-',
-			'data-wu',
-			'data-state',
-		), 'inactive-', $content);
+		$content = str_replace(
+			array(
+				'v-',
+				'data-wu',
+				'data-state',
+			),
+			'inactive-',
+			$content
+		);
 
-		$content = str_replace(array(
-			'{{',
-			'}}',
-		), '', $content);
+		$content = str_replace(
+			array(
+				'{{',
+				'}}',
+			),
+			'',
+			$content
+		);
 
 		return $content;
-
-	} // end display_template;
+	}
 
 	/**
 	 * Checks if we need to display admin management attachments.
@@ -1111,8 +1033,7 @@ abstract class Base_Element {
 	public function should_display_customize_controls() {
 
 		return apply_filters('wu_element_display_super_admin_notice', current_user_can('manage_network'), $this);
-
-	} // end should_display_customize_controls;
+	}
 
 	/**
 	 * Adds the element as a inline block, without the admin widget frame.
@@ -1126,56 +1047,47 @@ abstract class Base_Element {
 	 */
 	public function as_inline_content($screen_id, $hook = 'admin_notices', $atts = array()) {
 
-		if (!function_exists('get_current_screen')) {
-
+		if ( ! function_exists('get_current_screen')) {
 			_doing_it_wrong(__METHOD__, __('An element can not be loaded as inline content unless the get_current_screen() function is already available.', 'wp-ultimo'), '2.0.0');
 
 			return;
-
-		} // end if;
+		}
 
 		$screen = get_current_screen();
 
-		if (!$screen || $screen_id !== $screen->id) {
-
+		if ( ! $screen || $screen_id !== $screen->id) {
 			return;
-
-		} // end if;
+		}
 
 		/*
 		 * Run the setup in this case;
 		 */
 		$this->setup();
 
-		if (!$this->should_display()) {
-
+		if ( ! $this->should_display()) {
 			return; // bail if the display was set to false.
 
-		} // end if;
+		}
 
 		if (empty($atts)) {
-
 			$atts = $this->get_widget_settings();
-
-		} // end if;
+		}
 
 		$control_classes = '';
 
 		if (wu_get_isset($atts, 'hide', $this->hidden_by_default)) {
-
-			if (!$this->should_display_customize_controls()) {
-
+			if ( ! $this->should_display_customize_controls()) {
 				return;
-
-			} // end if;
+			}
 
 			$control_classes = 'wu-customize-mode wu-opacity-25';
+		}
 
-		} // end if;
+		add_action(
+			$hook,
+			function () use ($atts, $control_classes) {
 
-		add_action($hook, function() use ($atts, $control_classes) {
-
-			echo '<div class="wu-inline-widget">';
+				echo '<div class="wu-inline-widget">';
 
 				echo '<div class="wu-inline-widget-body ' . $control_classes . '">';
 
@@ -1185,13 +1097,12 @@ abstract class Base_Element {
 
 				$this->super_admin_notice();
 
-			echo '</div>';
-
-		});
+				echo '</div>';
+			}
+		);
 
 		do_action("wu_{$this->id}_scripts", null, $this);
-
-	} // end as_inline_content;
+	}
 
 	/**
 	 * Save the widget options.
@@ -1206,8 +1117,7 @@ abstract class Base_Element {
 		$key = wu_replace_dashes($this->id);
 
 		wu_save_setting("widget_{$key}_settings", $settings);
-
-	} // end save_widget_settings;
+	}
 
 	/**
 	 * Retrieves the settings for a particular widget.
@@ -1220,8 +1130,7 @@ abstract class Base_Element {
 		$key = wu_replace_dashes($this->id);
 
 		return wu_get_setting("widget_{$key}_settings", array());
-
-	} // end get_widget_settings;
+	}
 
 	/**
 	 * Adds the element as a metabox.
@@ -1237,36 +1146,29 @@ abstract class Base_Element {
 
 		$this->setup();
 
-		if (!$this->should_display()) {
-
+		if ( ! $this->should_display()) {
 			return; // bail if the display was set to false.
 
-		} // end if;
+		}
 
 		if (empty($atts)) {
-
 			$atts = $this->get_widget_settings();
-
-		} // end if;
+		}
 
 		$control_classes = '';
 
 		if (wu_get_isset($atts, 'hide')) {
-
-			if (!$this->should_display_customize_controls()) {
-
+			if ( ! $this->should_display_customize_controls()) {
 				return;
-
-			} // end if;
+			}
 
 			$control_classes = 'wu-customize-mode wu-opacity-25';
-
-		} // end if;
+		}
 
 		add_meta_box(
 			"wp-ultimo-{$this->id}-element",
 			$this->get_title(),
-			function() use ($atts, $control_classes) {
+			function () use ($atts, $control_classes) {
 
 				echo '<div class="wu-metabox-widget ' . $control_classes . '">';
 
@@ -1275,7 +1177,6 @@ abstract class Base_Element {
 				echo '</div>';
 
 				$this->super_admin_notice();
-
 			},
 			$screen_id,
 			$position,
@@ -1283,8 +1184,7 @@ abstract class Base_Element {
 		);
 
 		do_action("wu_{$this->id}_scripts", null, $this);
-
-	} // end as_metabox;
+	}
 
 	/**
 	 * Adds note for super admins.
@@ -1326,10 +1226,8 @@ abstract class Base_Element {
 			';
 
 			echo $html;
-
-		} // end if;
-
-	} // end super_admin_notice;
+		}
+	}
 
 	/**
 	 * Checks if we are in a preview context.
@@ -1342,14 +1240,11 @@ abstract class Base_Element {
 		$is_preview = false;
 
 		if (did_action('init')) {
-
 			$is_preview = wu_request('preview') && current_user_can('edit_posts');
-
-		} // end if;
+		}
 
 		return apply_filters('wu_element_is_preview', false, $this);
-
-	} // end is_preview;
+	}
 
 	/**
 	 * Get controls whether or not the widget and element should display..
@@ -1360,8 +1255,7 @@ abstract class Base_Element {
 	public function should_display() {
 
 		return $this->display || $this->is_preview();
-
-	} // end should_display;
+	}
 
 	/**
 	 * Set controls whether or not the widget and element should display..
@@ -1373,8 +1267,7 @@ abstract class Base_Element {
 	public function set_display($display) {
 
 		$this->display = $display;
-
-	} // end set_display;
+	}
 
 	/**
 	 * Checks if the current element was actually loaded.
@@ -1385,7 +1278,5 @@ abstract class Base_Element {
 	public function is_actually_loaded() {
 
 		return $this->actually_loaded;
-
-	} // end is_actually_loaded;
-
-} // end class Base_Element;
+	}
+}

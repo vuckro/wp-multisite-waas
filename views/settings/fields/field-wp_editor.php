@@ -7,40 +7,40 @@
 ?>
 <div class="wu-my-6">
 
-  <div class="wu-flex">
+	<div class="wu-flex">
 
-    <div class="wu-w-1/3">
+	<div class="wu-w-1/3">
 
-      <label for="<?php echo esc_attr($field->id); ?>">
+		<label for="<?php echo esc_attr($field->id); ?>">
 
-        <?php echo $field->title; ?>
+		<?php echo $field->title; ?>
 
-      </label>
+		</label>
 
-    </div>
+	</div>
 
-    <div class="wu-w-2/3">
+	<div class="wu-w-2/3">
 
-      <div style="max-width: 800px;">
+		<div style="max-width: 800px;">
 
-        <?php wp_editor(wu_get_setting($field->id), $field->id, $field->args); ?>
+		<?php wp_editor(wu_get_setting($field->id), $field->id, $field->args); ?>
 
-      </div>
+		</div>
 
-      <?php if ($field->desc) : ?>
+		<?php if ($field->desc) : ?>
 
-        <p class="description" id="<?php echo $field->id; ?>-desc">
+		<p class="description" id="<?php echo $field->id; ?>-desc">
 
-          <?php echo $field->desc; ?>
+			<?php echo $field->desc; ?>
 
-        </p>
+		</p>
 
-      <?php endif; ?>
+		<?php endif; ?>
 
-    </div>
+	</div>
 
-  </div>
+	</div>
 
-  <?php // if (isset($field['tooltip'])) {echo WU_Util::tooltip($field['tooltip']);} ?>
+	<?php // if (isset($field['tooltip'])) {echo WU_Util::tooltip($field['tooltip']);} ?>
 
 </div>

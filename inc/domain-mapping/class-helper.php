@@ -12,7 +12,7 @@ namespace WP_Ultimo\Domain_Mapping;
 use Psr\Log\LogLevel;
 
 // Exit if accessed directly
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Helper class for domain mapping functionality.
@@ -35,7 +35,7 @@ class Helper {
 	/**
 	 * Static-only class.
 	 */
-	private function __construct() {} // end __construct;
+	private function __construct() {}
 
 	/**
 	 * Checks if we are in development mode.
@@ -48,7 +48,7 @@ class Helper {
 
 		$site_url = site_url();
 
-		$is_development_mode = preg_match( '#(localhost|staging.*\.|\.local|\.test)#', $site_url );
+		$is_development_mode = preg_match('#(localhost|staging.*\.|\.local|\.test)#', $site_url);
 
 		/**
 		 * Allow plugin developers to add additional tests
@@ -60,8 +60,8 @@ class Helper {
 		 * @param string $site_url The site URL.
 		 * @return bool
 		 */
-		return apply_filters( 'wu_is_development_mode', $is_development_mode, $site_url );
-	} // end is_development_mode;
+		return apply_filters('wu_is_development_mode', $is_development_mode, $site_url);
+	}
 	/**
 	 * Gets the local IP address of the network.
 	 *
@@ -72,8 +72,8 @@ class Helper {
 	 */
 	public static function get_local_network_ip() {
 
-		return isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : false;
-	} // end get_local_network_ip;
+		return isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : false;
+	}
 
 	/**
 	 * Gets the public IP address of the network using an external HTTP call.
@@ -93,10 +93,10 @@ class Helper {
 			/**
 			 * See more about this filter below, on this same method.
 			 */
-			return apply_filters( 'wu_get_network_public_ip', $local_ip, true );
-		} // end if;
+			return apply_filters('wu_get_network_public_ip', $local_ip, true);
+		}
 
-		$_ip_address = get_site_transient( 'wu_public_network_ip' );
+		$_ip_address = get_site_transient('wu_public_network_ip');
 
 		if ( ! $_ip_address ) {
 			$ip_address = false;
@@ -109,17 +109,17 @@ class Helper {
 					)
 				);
 
-				if ( ! is_wp_error( $response ) ) {
-					$ip_address = trim( wp_remote_retrieve_body( $response ) );
+				if ( ! is_wp_error($response) ) {
+					$ip_address = trim(wp_remote_retrieve_body($response));
 
 					continue;
-				} // end if;
-			} // end foreach;
+				}
+			}
 
-			set_site_transient( 'wu_public_network_ip', $ip_address, 10 * DAY_IN_SECONDS );
+			set_site_transient('wu_public_network_ip', $ip_address, 10 * DAY_IN_SECONDS);
 
 			$_ip_address = $ip_address;
-		} // end if;
+		}
 
 		/**
 		 * Allow developers to change the public IP address of the network.
@@ -135,8 +135,8 @@ class Helper {
 		 * @param bool $local True if this is a local network (localhost, .dev, etc.), false otherwise.
 		 * @return string The new IP address.
 		 */
-		return apply_filters( 'wu_get_network_public_ip', $_ip_address, false );
-	} // end get_network_public_ip;
+		return apply_filters('wu_get_network_public_ip', $_ip_address, false);
+	}
 	/**
 	 * Checks if a given domain name has a valid associated SSL certificate.
 	 *
@@ -177,7 +177,7 @@ class Helper {
 			);
 
 			// If stream could not be established, SSL is invalid.
-			if (!$stream) {
+			if ( ! $stream) {
 				throw new \Exception($errstr);
 			}
 
@@ -190,8 +190,8 @@ class Helper {
 				if ($cert) {
 					// Verify the certificate's validity period.
 					$current_time = time();
-					$valid_from = $cert['validFrom_time_t'] ?? 0;
-					$valid_to = $cert['validTo_time_t'] ?? 0;
+					$valid_from   = $cert['validFrom_time_t'] ?? 0;
+					$valid_to     = $cert['validTo_time_t'] ?? 0;
 
 					// Check if the certificate is currently valid.
 					if ($current_time >= $valid_from && $current_time <= $valid_to) {
@@ -199,20 +199,20 @@ class Helper {
 
 						// Check that the domain matches the certificate.
 						$common_name = $cert['subject']['CN'] ?? ''; // Common Name (CN)
-						$alt_names = $cert['extensions']['subjectAltName'] ?? ''; // Subject Alternative Names (SAN)
+						$alt_names   = $cert['extensions']['subjectAltName'] ?? ''; // Subject Alternative Names (SAN)
 
 						// Parse SAN into an array if present.
-						$alt_names_array = array_filter(array_map('trim', explode(',', str_replace('DNS:', '', $alt_names))));
+						$alt_names_array   = array_filter(array_map('trim', explode(',', str_replace('DNS:', '', $alt_names))));
 						$alt_names_array[] = $common_name;
 						// Check if the host matches either the CN, any SAN entry, or supports a wildcard match.
 						if (
 							$host === $common_name ||
-							in_array( $host, $alt_names_array, true )
+							in_array($host, $alt_names_array, true)
 						) {
 							$is_valid = true;
 						} else {
 							foreach ($alt_names_array as $alt_name) {
-								if ( strpos($alt_name, '*.') === 0 && str_ends_with( $host, substr($alt_name, 1) )) {
+								if ( strpos($alt_name, '*.') === 0 && str_ends_with($host, substr($alt_name, 1))) {
 									$is_valid = true;
 									break;
 								}
@@ -234,5 +234,5 @@ class Helper {
 		}
 
 		return $is_valid;
-	} // end has_valid_ssl_certificate;
-} // end class Helper;
+	}
+}
