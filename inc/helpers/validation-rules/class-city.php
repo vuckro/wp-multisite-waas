@@ -27,7 +27,7 @@ class City extends Rule {
 	 * @since 2.0.4
 	 * @var array
 	 */
-	protected $fillableParams = array('country', 'state'); // phpcs:ignore
+	protected $fillableParams = array('country', 'state');
 	/**
 	 * Performs the actual check.
 	 *
@@ -35,7 +35,7 @@ class City extends Rule {
 	 *
 	 * @param mixed $city The city value detected.
 	 */
- public function check($city) : bool { // phpcs:ignore
+    public function check($city) : bool {
 
 		$check = true;
 

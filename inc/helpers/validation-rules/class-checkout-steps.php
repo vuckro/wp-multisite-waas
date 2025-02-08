@@ -1,4 +1,4 @@
-<?php // phpcs:disable
+<?php
 /**
  * Adds a validation rules that allows us to check if a given parameter is unique.
  *
@@ -37,103 +37,90 @@ class Checkout_Steps extends Rule {
 	 * @var array
 	 */
 	protected $fillableParams = array(); // phpcs:ignore
-  /**
-   * Performs the actual check.
-   *
-   * @since 2.0.0
-   *
-   * @param mixed $value Value being checked.
-   */
-  public function check($value) : bool {
+	/**
+	 * Performs the actual check.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param mixed $value Value being checked.
+	 */
+	public function check($value): bool {
 
-    if (is_string($value)) {
+		if (is_string($value)) {
+			$value = maybe_unserialize($value);
+		}
 
-      $value = maybe_unserialize($value);
+		$required_fields = Signup_Fields_Manager::get_instance()->get_required_fields();
 
-    }
+		$required_fields_list = array_keys($required_fields);
 
-    $required_fields = Signup_Fields_Manager::get_instance()->get_required_fields();
-
-    $required_fields_list = array_keys($required_fields);
-
-    if (!$value || is_string($value)) {
-
-      return true;
-
-    }
+		if (! $value || is_string($value)) {
+			return true;
+		}
 
 		$fields = array_column($value, 'fields');
 
 		if (empty($fields)) {
-
 			return true;
-
 		}
 
-    $all_fields = call_user_func_array('array_merge', $fields);
+		$all_fields = call_user_func_array('array_merge', $fields);
 
-    $all_fields_list = array_column($all_fields, 'type');
+		$all_fields_list = array_column($all_fields, 'type');
 
 		/**
 		 * First, we validated that all of our required fields are present.
 		 */
-    $all_present = true;
+		$all_present = true;
 
-    foreach ($required_fields_list as $field_slug) {
+		foreach ($required_fields_list as $field_slug) {
+			if (! in_array($field_slug, $all_fields_list, true)) {
+				$this->message = sprintf(__('The %s field must be present in at least one of the checkout form steps.', 'wp-ultimo'), wu_slug_to_name($field_slug));
 
-      if (!in_array($field_slug, $all_fields_list, true)) {
+				return false;
+			}
+		}
 
-        $this->message = sprintf(__('The %s field must be present in at least one of the checkout form steps.', 'wp-ultimo'), wu_slug_to_name($field_slug));
+		/**
+		 * Allow developers to bypass the check if a field is auto-submittable.
+		 *
+		 * @since 2.0.0
+		 * @param array $submittable_field_types The list of field types.
+		 * @return array
+		 */
+		$submittable_field_types = apply_filters(
+			'wu_checkout_step_validation_submittable_field_types',
+			array(
+				'submit_button',
+				'pricing_table',
+				'template_selection',
+			)
+		);
 
-        return false;
+		/**
+		 * Second, we must validate if every step has a submit button.
+		 */
+		foreach ($value as $step) {
+			$found_submittable_field_types = \Arrch\Arrch::find(
+				$step['fields'],
+				array(
+					'where' => array(
+						array('type', $submittable_field_types),
+					),
+				)
+			);
 
-      }
+			if (empty($found_submittable_field_types)) {
+				$this->message = sprintf(__('The %s step is missing a submit field', 'wp-ultimo'), $step['name']);
 
-    }
+				return false;
+			}
+		}
 
-    /**
-     * Allow developers to bypass the check if a field is auto-submittable.
-     * 
-     * @since 2.0.0
-     * @param array $submittable_field_types The list of field types.
-     * @return array
-     */
-    $submittable_field_types = apply_filters(
-      'wu_checkout_step_validation_submittable_field_types', 
-      array(
-        'submit_button',
-        'pricing_table',
-        'template_selection',
-      )
-    );
+		/*
+		* @todo: Plan, product selection fields must come before the order summary and payment fields.
+		*/
 
-    /**
-     * Second, we must validate if every step has a submit button.
-     */
-    foreach ($value as $step) {
-
-      $found_submittable_field_types = \Arrch\Arrch::find($step['fields'], array(
-        'where'    => array(
-          array('type', $submittable_field_types),
-        ),
-      ));
-
-      if (empty($found_submittable_field_types)) {
-
-        $this->message = sprintf(__('The %s step is missing a submit field', 'wp-ultimo'), $step['name']);
-
-        return false;
-
-      }
-
-    }
-
-    /*
-     * @todo: Plan, product selection fields must come before the order summary and payment fields.
-     */
-
-    return true;
-
+		return true;
 	}
-
 }

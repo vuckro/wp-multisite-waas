@@ -75,7 +75,7 @@ class Country_NL extends Country {
 	 */
 	public function get_name() {
 
-		return __('Netherlands', 'wp-ultimo-locations');
+		return __('Netherlands', 'wp-ultimo');
 	}
 
 	/**
@@ -87,21 +87,21 @@ class Country_NL extends Country {
 	protected function states() {
 
 		return array(
-			'BQ1' => __('Bonaire', 'wp-ultimo-locations'),
-			'DR'  => __('Drenthe', 'wp-ultimo-locations'),
-			'FL'  => __('Flevoland', 'wp-ultimo-locations'),
-			'FR'  => __('Friesland', 'wp-ultimo-locations'),
-			'GE'  => __('Gelderland', 'wp-ultimo-locations'),
-			'GR'  => __('Groningen', 'wp-ultimo-locations'),
-			'LI'  => __('Limburg', 'wp-ultimo-locations'),
-			'NB'  => __('North Brabant', 'wp-ultimo-locations'),
-			'NH'  => __('North Holland', 'wp-ultimo-locations'),
-			'OV'  => __('Overijssel', 'wp-ultimo-locations'),
-			'BQ2' => __('Saba', 'wp-ultimo-locations'),
-			'BQ3' => __('Sint Eustatius', 'wp-ultimo-locations'),
-			'ZH'  => __('South Holland', 'wp-ultimo-locations'),
-			'UT'  => __('Utrecht', 'wp-ultimo-locations'),
-			'ZE'  => __('Zeeland', 'wp-ultimo-locations'),
+			'BQ1' => __('Bonaire', 'wp-ultimo'),
+			'DR'  => __('Drenthe', 'wp-ultimo'),
+			'FL'  => __('Flevoland', 'wp-ultimo'),
+			'FR'  => __('Friesland', 'wp-ultimo'),
+			'GE'  => __('Gelderland', 'wp-ultimo'),
+			'GR'  => __('Groningen', 'wp-ultimo'),
+			'LI'  => __('Limburg', 'wp-ultimo'),
+			'NB'  => __('North Brabant', 'wp-ultimo'),
+			'NH'  => __('North Holland', 'wp-ultimo'),
+			'OV'  => __('Overijssel', 'wp-ultimo'),
+			'BQ2' => __('Saba', 'wp-ultimo'),
+			'BQ3' => __('Sint Eustatius', 'wp-ultimo'),
+			'ZH'  => __('South Holland', 'wp-ultimo'),
+			'UT'  => __('Utrecht', 'wp-ultimo'),
+			'ZE'  => __('Zeeland', 'wp-ultimo'),
 		);
 	}
 }

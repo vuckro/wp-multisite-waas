@@ -95,7 +95,7 @@ class Country_MX extends Country {
 	 */
 	public function get_name() {
 
-		return __('Mexico', 'wp-ultimo-locations');
+		return __('Mexico', 'wp-ultimo');
 	}
 
 	/**
@@ -107,38 +107,38 @@ class Country_MX extends Country {
 	protected function states() {
 
 		return array(
-			'AGU'  => __('Aguascalientes', 'wp-ultimo-locations'),
-			'BCN'  => __('Baja California', 'wp-ultimo-locations'),
-			'BCS'  => __('Baja California Sur', 'wp-ultimo-locations'),
-			'CAM'  => __('Campeche', 'wp-ultimo-locations'),
-			'CHP'  => __('Chiapas', 'wp-ultimo-locations'),
-			'CHH'  => __('Chihuahua', 'wp-ultimo-locations'),
-			'CDMX' => __('Ciudad de México', 'wp-ultimo-locations'),
-			'COA'  => __('Coahuila de Zaragoza', 'wp-ultimo-locations'),
-			'COL'  => __('Colima', 'wp-ultimo-locations'),
-			'DUR'  => __('Durango', 'wp-ultimo-locations'),
-			'MEX'  => __('Estado de México', 'wp-ultimo-locations'),
-			'GUA'  => __('Guanajuato', 'wp-ultimo-locations'),
-			'GRO'  => __('Guerrero', 'wp-ultimo-locations'),
-			'HID'  => __('Hidalgo', 'wp-ultimo-locations'),
-			'JAL'  => __('Jalisco', 'wp-ultimo-locations'),
-			'MIC'  => __('Michoacán de Ocampo', 'wp-ultimo-locations'),
-			'MOR'  => __('Morelos', 'wp-ultimo-locations'),
-			'NAY'  => __('Nayarit', 'wp-ultimo-locations'),
-			'NLE'  => __('Nuevo León', 'wp-ultimo-locations'),
-			'OAX'  => __('Oaxaca', 'wp-ultimo-locations'),
-			'PUE'  => __('Puebla', 'wp-ultimo-locations'),
-			'QUE'  => __('Querétaro', 'wp-ultimo-locations'),
-			'ROO'  => __('Quintana Roo', 'wp-ultimo-locations'),
-			'SLP'  => __('San Luis Potosí', 'wp-ultimo-locations'),
-			'SIN'  => __('Sinaloa', 'wp-ultimo-locations'),
-			'SON'  => __('Sonora', 'wp-ultimo-locations'),
-			'TAB'  => __('Tabasco', 'wp-ultimo-locations'),
-			'TAM'  => __('Tamaulipas', 'wp-ultimo-locations'),
-			'TLA'  => __('Tlaxcala', 'wp-ultimo-locations'),
-			'VER'  => __('Veracruz de Ignacio de la Llave', 'wp-ultimo-locations'),
-			'YUC'  => __('Yucatán', 'wp-ultimo-locations'),
-			'ZAC'  => __('Zacatecas', 'wp-ultimo-locations'),
+			'AGU'  => __('Aguascalientes', 'wp-ultimo'),
+			'BCN'  => __('Baja California', 'wp-ultimo'),
+			'BCS'  => __('Baja California Sur', 'wp-ultimo'),
+			'CAM'  => __('Campeche', 'wp-ultimo'),
+			'CHP'  => __('Chiapas', 'wp-ultimo'),
+			'CHH'  => __('Chihuahua', 'wp-ultimo'),
+			'CDMX' => __('Ciudad de México', 'wp-ultimo'),
+			'COA'  => __('Coahuila de Zaragoza', 'wp-ultimo'),
+			'COL'  => __('Colima', 'wp-ultimo'),
+			'DUR'  => __('Durango', 'wp-ultimo'),
+			'MEX'  => __('Estado de México', 'wp-ultimo'),
+			'GUA'  => __('Guanajuato', 'wp-ultimo'),
+			'GRO'  => __('Guerrero', 'wp-ultimo'),
+			'HID'  => __('Hidalgo', 'wp-ultimo'),
+			'JAL'  => __('Jalisco', 'wp-ultimo'),
+			'MIC'  => __('Michoacán de Ocampo', 'wp-ultimo'),
+			'MOR'  => __('Morelos', 'wp-ultimo'),
+			'NAY'  => __('Nayarit', 'wp-ultimo'),
+			'NLE'  => __('Nuevo León', 'wp-ultimo'),
+			'OAX'  => __('Oaxaca', 'wp-ultimo'),
+			'PUE'  => __('Puebla', 'wp-ultimo'),
+			'QUE'  => __('Querétaro', 'wp-ultimo'),
+			'ROO'  => __('Quintana Roo', 'wp-ultimo'),
+			'SLP'  => __('San Luis Potosí', 'wp-ultimo'),
+			'SIN'  => __('Sinaloa', 'wp-ultimo'),
+			'SON'  => __('Sonora', 'wp-ultimo'),
+			'TAB'  => __('Tabasco', 'wp-ultimo'),
+			'TAM'  => __('Tamaulipas', 'wp-ultimo'),
+			'TLA'  => __('Tlaxcala', 'wp-ultimo'),
+			'VER'  => __('Veracruz de Ignacio de la Llave', 'wp-ultimo'),
+			'YUC'  => __('Yucatán', 'wp-ultimo'),
+			'ZAC'  => __('Zacatecas', 'wp-ultimo'),
 		);
 	}
 }

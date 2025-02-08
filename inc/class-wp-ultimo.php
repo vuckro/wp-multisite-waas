@@ -234,7 +234,6 @@ final class WP_Ultimo {
 		 * Loads the translation files.
 		 */
 		load_plugin_textdomain('wp-ultimo', false, dirname((string) WP_ULTIMO_PLUGIN_BASENAME) . '/lang');
-		load_plugin_textdomain('wp-ultimo-locations', false, dirname((string) WP_ULTIMO_PLUGIN_BASENAME) . '/lang');
 	}
 
 	/**

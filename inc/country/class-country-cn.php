@@ -95,7 +95,7 @@ class Country_CN extends Country {
 	 */
 	public function get_name() {
 
-		return __('China', 'wp-ultimo-locations');
+		return __('China', 'wp-ultimo');
 	}
 
 	/**

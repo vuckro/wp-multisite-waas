@@ -81,7 +81,7 @@ class Country_ES extends Country {
 	 */
 	public function get_name() {
 
-		return __('Spain', 'wp-ultimo-locations');
+		return __('Spain', 'wp-ultimo');
 	}
 
 	/**
@@ -93,34 +93,34 @@ class Country_ES extends Country {
 	protected function states() {
 
 		return array(
-			'AN' => __('Andalusia', 'wp-ultimo-locations'),
-			'AR' => __('Aragon', 'wp-ultimo-locations'),
-			'AS' => __('Asturias', 'wp-ultimo-locations'),
-			'PM' => __('Balearic Islands', 'wp-ultimo-locations'),
-			'PV' => __('Basque Country', 'wp-ultimo-locations'),
-			'BU' => __('Burgos Province', 'wp-ultimo-locations'),
-			'CN' => __('Canary Islands', 'wp-ultimo-locations'),
-			'CB' => __('Cantabria', 'wp-ultimo-locations'),
-			'CL' => __('Castile and León', 'wp-ultimo-locations'),
-			'CM' => __('Castilla La Mancha', 'wp-ultimo-locations'),
-			'CT' => __('Catalonia', 'wp-ultimo-locations'),
-			'CE' => __('Ceuta', 'wp-ultimo-locations'),
-			'EX' => __('Extremadura', 'wp-ultimo-locations'),
-			'GA' => __('Galicia', 'wp-ultimo-locations'),
-			'RI' => __('La Rioja', 'wp-ultimo-locations'),
-			'LE' => __('Léon', 'wp-ultimo-locations'),
-			'MD' => __('Madrid', 'wp-ultimo-locations'),
-			'ML' => __('Melilla', 'wp-ultimo-locations'),
-			'MC' => __('Murcia', 'wp-ultimo-locations'),
-			'NC' => __('Navarra', 'wp-ultimo-locations'),
-			'P'  => __('Palencia Province', 'wp-ultimo-locations'),
-			'SA' => __('Salamanca Province', 'wp-ultimo-locations'),
-			'SG' => __('Segovia Province', 'wp-ultimo-locations'),
-			'SO' => __('Soria Province', 'wp-ultimo-locations'),
-			'VC' => __('Valencia', 'wp-ultimo-locations'),
-			'VA' => __('Valladolid Province', 'wp-ultimo-locations'),
-			'ZA' => __('Zamora Province', 'wp-ultimo-locations'),
-			'AV' => __('Ávila', 'wp-ultimo-locations'),
+			'AN' => __('Andalusia', 'wp-ultimo'),
+			'AR' => __('Aragon', 'wp-ultimo'),
+			'AS' => __('Asturias', 'wp-ultimo'),
+			'PM' => __('Balearic Islands', 'wp-ultimo'),
+			'PV' => __('Basque Country', 'wp-ultimo'),
+			'BU' => __('Burgos Province', 'wp-ultimo'),
+			'CN' => __('Canary Islands', 'wp-ultimo'),
+			'CB' => __('Cantabria', 'wp-ultimo'),
+			'CL' => __('Castile and León', 'wp-ultimo'),
+			'CM' => __('Castilla La Mancha', 'wp-ultimo'),
+			'CT' => __('Catalonia', 'wp-ultimo'),
+			'CE' => __('Ceuta', 'wp-ultimo'),
+			'EX' => __('Extremadura', 'wp-ultimo'),
+			'GA' => __('Galicia', 'wp-ultimo'),
+			'RI' => __('La Rioja', 'wp-ultimo'),
+			'LE' => __('Léon', 'wp-ultimo'),
+			'MD' => __('Madrid', 'wp-ultimo'),
+			'ML' => __('Melilla', 'wp-ultimo'),
+			'MC' => __('Murcia', 'wp-ultimo'),
+			'NC' => __('Navarra', 'wp-ultimo'),
+			'P'  => __('Palencia Province', 'wp-ultimo'),
+			'SA' => __('Salamanca Province', 'wp-ultimo'),
+			'SG' => __('Segovia Province', 'wp-ultimo'),
+			'SO' => __('Soria Province', 'wp-ultimo'),
+			'VC' => __('Valencia', 'wp-ultimo'),
+			'VA' => __('Valladolid Province', 'wp-ultimo'),
+			'ZA' => __('Zamora Province', 'wp-ultimo'),
+			'AV' => __('Ávila', 'wp-ultimo'),
 		);
 	}
 }

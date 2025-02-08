@@ -349,7 +349,8 @@ class Tax {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function render_taxes_side_panel() { // phpcs:disable ?>
+	public function render_taxes_side_panel() {
+		?>
 
 		<div id="wu-taxes-side-panel" class="wu-widget-inset">
 
@@ -405,12 +406,12 @@ class Tax {
 					data: {},
 					computed: {
 						enabled: function() {
-							return <?php echo json_encode(wu_get_setting('enable_taxes')); ?>
+							return <?php echo wp_json_encode(wu_get_setting('enable_taxes')); ?>
 						}
 					}
 				});
 			});
 		</script>
-	<?php // phpcs:enable
+		<?php
 	}
 }

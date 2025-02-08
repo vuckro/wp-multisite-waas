@@ -79,7 +79,7 @@ class Country_DE extends Country {
 	 */
 	public function get_name() {
 
-		return __('Germany', 'wp-ultimo-locations');
+		return __('Germany', 'wp-ultimo');
 	}
 
 	/**
@@ -91,22 +91,22 @@ class Country_DE extends Country {
 	protected function states() {
 
 		return array(
-			'BW' => __('Baden-Württemberg', 'wp-ultimo-locations'),
-			'BY' => __('Bavaria', 'wp-ultimo-locations'),
-			'BE' => __('Berlin', 'wp-ultimo-locations'),
-			'BB' => __('Brandenburg', 'wp-ultimo-locations'),
-			'HB' => __('Bremen', 'wp-ultimo-locations'),
-			'HH' => __('Hamburg', 'wp-ultimo-locations'),
-			'HE' => __('Hesse', 'wp-ultimo-locations'),
-			'NI' => __('Lower Saxony', 'wp-ultimo-locations'),
-			'MV' => __('Mecklenburg-Vorpommern', 'wp-ultimo-locations'),
-			'NW' => __('North Rhine-Westphalia', 'wp-ultimo-locations'),
-			'RP' => __('Rhineland-Palatinate', 'wp-ultimo-locations'),
-			'SL' => __('Saarland', 'wp-ultimo-locations'),
-			'SN' => __('Saxony', 'wp-ultimo-locations'),
-			'ST' => __('Saxony-Anhalt', 'wp-ultimo-locations'),
-			'SH' => __('Schleswig-Holstein', 'wp-ultimo-locations'),
-			'TH' => __('Thuringia', 'wp-ultimo-locations'),
+			'BW' => __('Baden-Württemberg', 'wp-ultimo'),
+			'BY' => __('Bavaria', 'wp-ultimo'),
+			'BE' => __('Berlin', 'wp-ultimo'),
+			'BB' => __('Brandenburg', 'wp-ultimo'),
+			'HB' => __('Bremen', 'wp-ultimo'),
+			'HH' => __('Hamburg', 'wp-ultimo'),
+			'HE' => __('Hesse', 'wp-ultimo'),
+			'NI' => __('Lower Saxony', 'wp-ultimo'),
+			'MV' => __('Mecklenburg-Vorpommern', 'wp-ultimo'),
+			'NW' => __('North Rhine-Westphalia', 'wp-ultimo'),
+			'RP' => __('Rhineland-Palatinate', 'wp-ultimo'),
+			'SL' => __('Saarland', 'wp-ultimo'),
+			'SN' => __('Saxony', 'wp-ultimo'),
+			'ST' => __('Saxony-Anhalt', 'wp-ultimo'),
+			'SH' => __('Schleswig-Holstein', 'wp-ultimo'),
+			'TH' => __('Thuringia', 'wp-ultimo'),
 		);
 	}
 }

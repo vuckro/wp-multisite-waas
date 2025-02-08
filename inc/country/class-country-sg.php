@@ -65,7 +65,7 @@ class Country_SG extends Country {
 	 */
 	public function get_name() {
 
-		return __('Singapore', 'wp-ultimo-locations');
+		return __('Singapore', 'wp-ultimo');
 	}
 
 	/**
@@ -77,11 +77,11 @@ class Country_SG extends Country {
 	protected function states() {
 
 		return array(
-			'01' => __('Central Singapore Community Development Council', 'wp-ultimo-locations'),
-			'02' => __('North East Community Development Council', 'wp-ultimo-locations'),
-			'03' => __('North West Community Development Council', 'wp-ultimo-locations'),
-			'04' => __('South East Community Development Council', 'wp-ultimo-locations'),
-			'05' => __('South West Community Development Council', 'wp-ultimo-locations'),
+			'01' => __('Central Singapore Community Development Council', 'wp-ultimo'),
+			'02' => __('North East Community Development Council', 'wp-ultimo'),
+			'03' => __('North West Community Development Council', 'wp-ultimo'),
+			'04' => __('South East Community Development Council', 'wp-ultimo'),
+			'05' => __('South West Community Development Council', 'wp-ultimo'),
 		);
 	}
 }
