@@ -162,7 +162,7 @@ class Async_Calls {
 	 * @param integer $parallel_threads The number of parallel threads to be run.
 	 * @return true|\WP_Error
 	 */
-	public static function run($id, $args, $total, $chunk_size = 10, $parallel_threads = 3): void {
+	public static function run($id, $args, $total, $chunk_size = 10, $parallel_threads = 3) {
 
 		$client = self::get_client();
 
