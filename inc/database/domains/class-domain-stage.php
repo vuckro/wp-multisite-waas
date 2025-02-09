@@ -27,9 +27,13 @@ class Domain_Stage extends Enum {
 	const __default = 'checking-dns'; // phpcs:ignore
 
 	const FAILED           = 'failed';
+
 	const CHECKING_DNS     = 'checking-dns';
+
 	const CHECKING_SSL     = 'checking-ssl-cert';
+
 	const DONE_WITHOUT_SSL = 'done-without-ssl';
+
 	const DONE             = 'done';
 
 	/**

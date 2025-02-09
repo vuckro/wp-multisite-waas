@@ -224,7 +224,7 @@ class Multiple_Accounts_Compat {
 		 * belong to the sub-site in question, so we unset the user
 		 * currently logged in.
 		 */
-		if ($has_user === false) {
+		if (false === $has_user) {
 			wu_x_header('X-Ultimo-Multiple-Accounts: user-unset');
 
 			$current_user = null;
@@ -305,7 +305,7 @@ class Multiple_Accounts_Compat {
 	 */
 	public function add_column_content($null, $column, $user_id): void {
 
-		if ($column === 'multiple_accounts') {
+		if ('multiple_accounts' === $column) {
 
 			// Get user email
 			$user = get_user_by('ID', $user_id);
@@ -399,6 +399,7 @@ class Multiple_Accounts_Compat {
 		// If nothing was found return false;
 		return $has_user;
 	}
+
 	/**
 	 * Gets the right user when logging-in.
 	 *
@@ -457,6 +458,7 @@ class Multiple_Accounts_Compat {
 
 		return $can;
 	}
+
 	/**
 	 * Gets the right user for a given domain.
 	 *
@@ -477,7 +479,7 @@ class Multiple_Accounts_Compat {
 
 		// Loop the results and check which one is in this group
 		foreach ($users->results as $user_with_email) {
-			$conditions = $password == false ? true : wp_check_password($password, $user_with_email->user_pass, $user_with_email->ID);
+			$conditions = false == $password ? true : wp_check_password($password, $user_with_email->user_pass, $user_with_email->ID);
 
 			// Check for the pertinence of that user in this site
 			if ($conditions && $this->user_can_for_blog($user_with_email, get_current_blog_id(), 'read')) {

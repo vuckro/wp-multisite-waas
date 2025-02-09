@@ -23,6 +23,7 @@ function wu_get_customer($customer_id) {
 
 	return \WP_Ultimo\Models\Customer::get_by_id($customer_id);
 }
+
 /**
  * Returns a single customer defined by a particular column and value.
  *
@@ -36,6 +37,7 @@ function wu_get_customer_by($column, $value) {
 
 	return \WP_Ultimo\Models\Customer::get_by($column, $value);
 }
+
 /**
  * Gets a customer based on the hash.
  *
@@ -83,6 +85,7 @@ function wu_get_customers($query = []) {
 
 	return \WP_Ultimo\Models\Customer::query($query);
 }
+
 /**
  * Returns a customer based on user_id.
  *
@@ -95,6 +98,7 @@ function wu_get_customer_by_user_id($user_id) {
 
 	return \WP_Ultimo\Models\Customer::get_by('user_id', $user_id);
 }
+
 /**
  * Returns the current customer.
  *
@@ -105,6 +109,7 @@ function wu_get_current_customer() {
 
 	return wu_get_customer_by_user_id(get_current_user_id());
 }
+
 /**
  * Creates a new customer.
  *
@@ -154,7 +159,7 @@ function wu_create_customer($customer_data) {
 			return $user_id;
 		}
 
-		if ($user_id === false) {
+		if (false === $user_id) {
 			return new \WP_Error('user', __('We were not able to create a new user with the provided username and email address combination.', 'wp-ultimo'), $customer_data);
 		}
 	} else {

@@ -441,7 +441,7 @@ class General_Compat {
 
 			$file_path = get_parent_theme_file_path('includes/lib/inc/functions.php');
 
-			if ($theme === 'avada' && file_exists($file_path)) {
+			if ('avada' === $theme && file_exists($file_path)) {
 
 				require_once get_parent_theme_file_path('includes/lib/inc/functions.php');
 

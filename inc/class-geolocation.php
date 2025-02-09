@@ -69,6 +69,7 @@ class Geolocation {
     private static function supports_geolite2(): bool {
         return false; // version_compare( PHP_VERSION, '5.4.0', '>=' );
     }
+
     /**
      * Check if geolocation is enabled.
      *
@@ -144,6 +145,7 @@ class Geolocation {
         } elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) { // @codingStandardsIgnoreLine
             return sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ); // @codingStandardsIgnoreLine
         }
+
         return '';
     }
 
@@ -289,6 +291,7 @@ class Geolocation {
                 wp_clear_scheduled_hook( 'wu_geoip_updater' );
                 wp_schedule_event( strtotime( 'first tuesday of next month' ), 'monthly', 'wu_geoip_updater' );
             }
+
             // Delete temp file regardless of success.
             $wp_filesystem->delete( $tmp_database_path );
         } else {

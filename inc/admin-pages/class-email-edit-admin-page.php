@@ -496,7 +496,7 @@ class Email_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_page_redirect($page): void {
 
-		if ($page->get_id() === 'wp-ultimo-edit-email') {
+		if ('wp-ultimo-edit-email' === $page->get_id()) {
 			if (wu_request('test_notice')) {
 				$test_notice = wu_request('test_notice');
 

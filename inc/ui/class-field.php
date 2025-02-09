@@ -243,27 +243,27 @@ class Field implements \JsonSerializable {
 			$attr = call_user_func($attr, $this);
 		}
 
-		if ($att === 'wrapper_classes' && isset($this->atts['wrapper_html_attr']['v-show'])) {
-			$this->atts['wrapper_classes'] = $this->atts['wrapper_classes'] . ' wu-requires-other';
+		if ('wrapper_classes' === $att && isset($this->atts['wrapper_html_attr']['v-show'])) {
+			$this->atts['wrapper_classes'] .= ' wu-requires-other';
 		}
 
-		if ($att === 'type' && $this->atts[ $att ] === 'submit') {
-			$this->atts['wrapper_classes'] = $this->atts['wrapper_classes'] . ' wu-submit-field';
+		if ('type' === $att && $this->atts[ $att ] === 'submit') {
+			$this->atts['wrapper_classes'] .= ' wu-submit-field';
 		}
 
-		if ($att === 'type' && $this->atts[ $att ] === 'tab-select') {
-			$this->atts['wrapper_classes'] = $this->atts['wrapper_classes'] . ' wu-tab-field';
+		if ('type' === $att && $this->atts[ $att ] === 'tab-select') {
+			$this->atts['wrapper_classes'] .= ' wu-tab-field';
 		}
 
-		if ($att === 'wrapper_classes' && is_a($this->form, '\\WP_Ultimo\\UI\\Form')) {
+		if ('wrapper_classes' === $att && is_a($this->form, '\\WP_Ultimo\\UI\\Form')) {
 			return $this->form->field_wrapper_classes . ' ' . $this->atts['wrapper_classes'];
 		}
 
-		if ($att === 'classes' && is_a($this->form, '\\WP_Ultimo\\UI\\Form')) {
+		if ('classes' === $att && is_a($this->form, '\\WP_Ultimo\\UI\\Form')) {
 			return $this->form->field_classes . ' ' . $this->atts['classes'];
 		}
 
-		if ($att === 'title' && $attr === false && isset($this->atts['name'])) {
+		if ('title' === $att && false === $attr && isset($this->atts['name'])) {
 			$attr = $this->atts['name'];
 		}
 
@@ -342,6 +342,7 @@ class Field implements \JsonSerializable {
 			$this->value = call_user_func($sanitize_method, $this->value);
 		}
 	}
+
 	/**
 	 * Sanitization callback for fields of type number.
 	 *

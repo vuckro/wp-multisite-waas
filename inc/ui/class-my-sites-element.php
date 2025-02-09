@@ -73,7 +73,7 @@ class My_Sites_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block') {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-info-circle-o';
 		}
 
@@ -361,7 +361,7 @@ class My_Sites_Element extends Base_Element {
 			);
 		}
 
-		if ($show === 'all') {
+		if ('all' === $show) {
 			$wp_user_sites = get_blogs_of_user(get_current_user_id());
 
 			$user_sites = array_reduce(
@@ -372,6 +372,7 @@ class My_Sites_Element extends Base_Element {
 						$wu_site->set_membership_id(0);
 						$user_sites[ $wp_site->userblog_id ] = $wu_site;
 					}
+
 					return $user_sites;
 				}
 			);
@@ -401,11 +402,11 @@ class My_Sites_Element extends Base_Element {
 	 */
 	public function get_manage_url($site_id, $type = 'default', $custom_page_id = 0) {
 
-		if ($type === 'wp_admin') {
+		if ('wp_admin' === $type) {
 			return get_admin_url($site_id);
 		}
 
-		if ($type === 'custom_page') {
+		if ('custom_page' === $type) {
 			$custom_page = get_page_link($custom_page_id);
 
 			$url_param = \WP_Ultimo\Current::param_key('site');

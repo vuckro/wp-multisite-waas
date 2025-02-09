@@ -187,7 +187,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$preview_type = wu_request('type', 'user');
 
-		if ($preview_type === 'visitor') {
+		if ('visitor' === $preview_type) {
 			global $current_user;
 
 			$current_user = wp_set_current_user(0);
@@ -549,13 +549,13 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 				]
 			);
 
-			if ($default_field_slug === 'name' || $default_field_slug === 'id' || $default_field_slug === 'default_value') {
+			if ('name' === $default_field_slug || 'id' === $default_field_slug || 'default_value' === $default_field_slug) {
 				unset($default_field['wrapper_html_attr']['v-if']);
 
 				$default_field['wrapper_html_attr']['v-show'] = sprintf('type && require("type", %s) && require("tab", "%s")', json_encode($reqs), $tab);
 			}
 
-			if ($default_field_slug === 'id') {
+			if ('id' === $default_field_slug) {
 				$default_field['html_attr']['v-bind:required'] = sprintf('type && require("type", %s) && require("tab", "content")', json_encode($reqs));
 			}
 		}
@@ -701,7 +701,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 		$state = array_map(
 			function ($value) {
 
-				if ($value === 'false' || $value === 'true') {
+				if ('false' === $value || 'true' === $value) {
 					$value = (int) wu_string_to_bool($value);
 				}
 

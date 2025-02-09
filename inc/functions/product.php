@@ -91,6 +91,7 @@ function wu_get_product_by_slug($product_slug) {
 
 	return Product::get_by('slug', $product_slug);
 }
+
 /**
  * Returns a single product defined by a particular column and value.
  *
@@ -151,6 +152,7 @@ function wu_create_product($product_data) {
 
 	return is_wp_error($saved) ? $saved : $product;
 }
+
 /**
  * Returns a list of available product groups.
  *

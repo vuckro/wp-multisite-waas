@@ -249,7 +249,7 @@ class Base_List_Table extends \WP_List_Table {
 		foreach ($extra_query_args as $extra_query_arg) {
 			$query = wu_request($extra_query_arg, 'all');
 
-			if ($query !== 'all') {
+			if ('all' !== $query) {
 				$query_args[ $extra_query_arg ] = $query;
 			}
 		}
@@ -403,7 +403,7 @@ class Base_List_Table extends \WP_List_Table {
 			'wu_list_table',
 			[
 				'base_url' => wu_get_form_url('bulk_actions'),
-				'model'    => strchr($this->get_table_id(), '_', true),
+				'model'    => strstr($this->get_table_id(), '_', true),
 				'i18n'     => [
 					'confirm' => __('Confirm Action', 'wp-ultimo'),
 				],
@@ -647,9 +647,9 @@ class Base_List_Table extends \WP_List_Table {
 
 		$model = wu_request('model');
 
-		if ($model === 'checkout') {
+		if ('checkout' === $model) {
 			$model = 'checkout_form';
-		} elseif ($model === 'discount') {
+		} elseif ('discount' === $model) {
 			$model = 'discount_code';
 		}
 

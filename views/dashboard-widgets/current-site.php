@@ -72,7 +72,7 @@
 
 		<?php if ($display_image) : ?>
 
-			<div class="wu-mb-4 md:wu-mb-0 <?php echo $screenshot_position === 'right' ? 'wu-order-12 md:wu-ml-6' : 'md:wu-mr-6'; ?>">
+			<div class="wu-mb-4 md:wu-mb-0 <?php echo 'right' === $screenshot_position ? 'wu-order-12 md:wu-ml-6' : 'md:wu-mr-6'; ?>">
 
 			<img 
 				style="max-width: <?php echo esc_attr($screenshot_size); ?>px;"

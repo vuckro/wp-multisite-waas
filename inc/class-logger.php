@@ -55,11 +55,11 @@ class Logger extends AbstractLogger {
 
 		$allowed_log_level = wu_get_setting('error_logging_level', 'default');
 
-		if ($allowed_log_level === 'disabled') {
+		if ('disabled' === $allowed_log_level) {
 			return;
 		}
 
-		if ($allowed_log_level === 'default') {
+		if ('default' === $allowed_log_level) {
 			/**
 			 * Get from default php reporting level
 			 *
@@ -96,7 +96,7 @@ class Logger extends AbstractLogger {
 			if ( ! in_array($log_level, $current_log_levels, true) && ($reporting_level & ~E_ALL)) {
 				return;
 			}
-		} elseif ($allowed_log_level === 'errors' && $log_level !== LogLevel::ERROR && $log_level !== LogLevel::CRITICAL) {
+		} elseif ('errors' === $allowed_log_level && LogLevel::ERROR !== $log_level && LogLevel::CRITICAL !== $log_level) {
 			return;
 		}
 

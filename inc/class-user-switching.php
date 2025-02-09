@@ -30,6 +30,7 @@ class User_Switching {
 
 		add_action('plugins_loaded', [$this, 'register_forms']);
 	}
+
 	/**
 	 * Check if Plugin User Switching is activated
 	 *

@@ -119,7 +119,7 @@ function wu_is_login_page() {
 
 	$is_login_element_present = \WP_Ultimo\UI\Login_Form_Element::get_instance()->is_actually_loaded();
 
-	$is_default_wp_login = $pagenow === 'wp-login.php';
+	$is_default_wp_login = 'wp-login.php' === $pagenow;
 
 	return $is_login_element_present || $is_default_wp_login;
 }

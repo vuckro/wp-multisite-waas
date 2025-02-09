@@ -215,13 +215,13 @@ class Manual_Gateway extends Base_Gateway {
 		 * simply throw a exception and WP Multisite WaaS will
 		 * catch it and rollback any changes.
 		 */
-		if ($type === 'new') {
+		if ('new' === $type) {
 
 			// Your logic here.
-		} elseif ($type === 'renewal') {
+		} elseif ('renewal' === $type) {
 
 			// Your logic here.
-		} elseif ($type === 'downgrade') {
+		} elseif ('downgrade' === $type) {
 			/*
 			 * When downgrading, we need to schedule a swap for the end of the
 			 * current expiration date.
@@ -238,7 +238,7 @@ class Manual_Gateway extends Base_Gateway {
 			 * Saves the membership with the changes.
 			 */
 			$status = $membership->save();
-		} elseif ($type === 'upgrade' || $type === 'addon') {
+		} elseif ('upgrade' === $type || 'addon' === $type) {
 			/*
 			* After everything is said and done,
 			* we need to swap the membership to the new products

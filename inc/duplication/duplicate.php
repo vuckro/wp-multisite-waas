@@ -77,7 +77,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 			self::bypass_server_limit();
 
 			// Copy Site - File
-			if ($copy_file == 'yes') {
+			if ('yes' == $copy_file) {
 				do_action('mucd_before_copy_files', $from_site_id, $to_site_id);
 				$result = MUCD_Files::copy_files($from_site_id, $to_site_id);
 				do_action('mucd_after_copy_files', $from_site_id, $to_site_id);
@@ -89,7 +89,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 			do_action('mucd_after_copy_data', $from_site_id, $to_site_id);
 
 			// Copy Site - Users
-			if ($keep_users == 'yes') {
+			if ('yes' == $keep_users) {
 				do_action('mucd_before_copy_users', $from_site_id, $to_site_id);
 				$result = self::copy_users($from_site_id, $to_site_id);
 				do_action('mucd_after_copy_users', $from_site_id, $to_site_id);
@@ -190,6 +190,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 									continue;
 								}
 							}
+
 							update_user_meta($user->ID, $to_site_prefix . $raw_meta_name, maybe_unserialize($metavalue));
 						}
 					}
@@ -211,8 +212,9 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 				if (isset($data['log-path']) && ! empty($data['log-path'])) {
 					$log_name = @date('Y_m_d_His') . '-' . $data['domain'] . '.log';
 					if (! str_ends_with((string) $data['log-path'], '/')) {
-						$data['log-path'] = $data['log-path'] . '/';
+						$data['log-path'] .= '/';
 					}
+
 					self::$log = new MUCD_Log(true, $data['log-path'], $log_name);
 				}
 			} else {
@@ -273,6 +275,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 			if (self::log() !== false) {
 				return self::$log->file_url();
 			}
+
 			return false;
 		}
 

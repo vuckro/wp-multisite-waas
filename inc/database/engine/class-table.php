@@ -51,11 +51,7 @@ abstract class Table extends \BerlinDB\Database\Table {
 			return false;
 		}
 
-		if ( ! is_main_site()) {
-			return false;
-		}
-
-		return true;
+        return (bool) is_main_site();
 	}
 
 	/**

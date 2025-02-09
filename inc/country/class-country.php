@@ -100,11 +100,11 @@ abstract class Country {
 
 		$placeholder_option = [];
 
-		if ($placeholder !== false && $options) {
+		if (false !== $placeholder && $options) {
 			$division_name = $this->get_administrative_division_name();
 
 			// translators: %s is the name of the administrative division (state, province, etc).
-			$placeholder_option[''] = $placeholder !== '' ? $placeholder : sprintf(__('Select your %s', 'wp-ultimo'), $division_name);
+			$placeholder_option[''] = '' !== $placeholder ? $placeholder : sprintf(__('Select your %s', 'wp-ultimo'), $division_name);
 		}
 
 		return array_merge($placeholder_option, $options);
@@ -161,8 +161,8 @@ abstract class Country {
 
 		$placeholder_option = [];
 
-		if ($placeholder !== false && $options) {
-			$placeholder_option[''] = $placeholder !== '' ? $placeholder : __('Select your city', 'wp-ultimo');
+		if (false !== $placeholder && $options) {
+			$placeholder_option[''] = '' !== $placeholder ? $placeholder : __('Select your city', 'wp-ultimo');
 		}
 
 		$options = array_combine($options, $options);

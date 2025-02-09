@@ -115,7 +115,7 @@ class Theme_Limits {
 
 		$pending_theme_switch = $context['manager']->is_theme_active() === false;
 
-		if ($pending_theme_switch === false) {
+		if (false === $pending_theme_switch) {
 			return $data;
 		}
 
@@ -157,7 +157,7 @@ class Theme_Limits {
 			return;
 		}
 
-		if ($pagenow !== 'themes.php') {
+		if ('themes.php' !== $pagenow) {
 			return;
 		}
 

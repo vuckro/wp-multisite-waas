@@ -66,6 +66,7 @@ class Domain_List_Table extends Base_List_Table {
 
 		return $_filter_fields;
 	}
+
 	/**
 	 * Displays the content of the domain column.
 	 *
@@ -169,6 +170,7 @@ class Domain_List_Table extends Base_List_Table {
 
 		return $columns;
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

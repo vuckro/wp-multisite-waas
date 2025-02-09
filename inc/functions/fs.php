@@ -61,7 +61,7 @@ function wu_maybe_create_folder($folder, ...$path) {
 		if ( ! file_exists($htaccess)) {
 			$fp = @fopen($htaccess, 'w');
 
-			@fputs($fp, 'deny from all'); // phpcs:ignore
+			@fwrite($fp, 'deny from all'); // phpcs:ignore
 
 			@fclose($fp); // phpcs:ignore
 		}
@@ -72,7 +72,7 @@ function wu_maybe_create_folder($folder, ...$path) {
 		if ( ! file_exists($index)) {
 			$fp = @fopen($index, 'w');
 
-			@fputs($fp, ''); // phpcs:ignore
+			@fwrite($fp, ''); // phpcs:ignore
 
 			@fclose($fp); // phpcs:ignore
 		}

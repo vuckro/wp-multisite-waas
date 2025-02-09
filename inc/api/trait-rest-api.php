@@ -152,6 +152,7 @@ trait Rest_Api {
 
 		do_action('wu_rest_register_routes_with_id', $routes, $this->get_rest_base(), 'update', $this);
 	}
+
 	/**
 	 * Returns a specific item.
 	 *
@@ -170,6 +171,7 @@ trait Rest_Api {
 
 		return rest_ensure_response($item);
 	}
+
 	/**
 	 * Returns a list of items.
 	 *
@@ -184,6 +186,7 @@ trait Rest_Api {
 
 		return rest_ensure_response($items);
 	}
+
 	/**
 	 * Creates an item.
 	 *
@@ -220,6 +223,7 @@ trait Rest_Api {
 
 		return rest_ensure_response($item);
 	}
+
 	/**
 	 * Updates an item.
 	 *
@@ -247,7 +251,7 @@ trait Rest_Api {
 		foreach ($params as $param => $value) {
 			$set_method = "set_{$param}";
 
-			if ($param === 'meta') {
+			if ('meta' === $param) {
 				$item->update_meta_batch($value);
 			} elseif (method_exists($item, $set_method)) {
 				call_user_func([$item, $set_method], $value);
@@ -279,6 +283,7 @@ trait Rest_Api {
 
 		return rest_ensure_response($item);
 	}
+
 	/**
 	 * Deletes an item.
 	 *
@@ -464,7 +469,7 @@ trait Rest_Api {
 			'id',
 		];
 
-		if ($this->slug === 'site') {
+		if ('site' === $this->slug) {
 			$arr = [
 				'id',
 				'blog_id',
@@ -511,7 +516,7 @@ trait Rest_Api {
 		 */
 		apply_filters('wu_before_' . $this->slug . '_api_arguments', $args, $this);
 
-		if ($this->slug !== 'broadcast' && isset($args['author_id'])) {
+		if ('broadcast' !== $this->slug && isset($args['author_id'])) {
 			unset($args['author_id']);
 		}
 
@@ -547,15 +552,15 @@ trait Rest_Api {
 			unset($args['slug']);
 		}
 
-		if ($this->slug === 'product' && isset($args['price_variations'])) {
+		if ('product' === $this->slug && isset($args['price_variations'])) {
 			unset($args['price_variations']);
 		}
 
-		if ($this->slug === 'payment' && isset($args['line_items'])) {
+		if ('payment' === $this->slug && isset($args['line_items'])) {
 			unset($args['line_items']);
 		}
 
-		if ($this->slug === 'site') {
+		if ('site' === $this->slug) {
 			if (isset($args['duplication_arguments'])) {
 				unset($args['duplication_arguments']);
 			}
@@ -565,7 +570,7 @@ trait Rest_Api {
 			}
 		}
 
-		if ($this->slug === 'email') {
+		if ('email' === $this->slug) {
 			if (isset($args['status'])) {
 				unset($args['status']);
 			}
@@ -575,7 +580,7 @@ trait Rest_Api {
 			}
 		}
 
-		if ($this->slug === 'broadcast') {
+		if ('broadcast' === $this->slug) {
 			if (isset($args['message_targets'])) {
 				unset($args['message_targets']);
 			}

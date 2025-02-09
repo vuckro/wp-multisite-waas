@@ -111,6 +111,7 @@ class Billing_Address {
 
 		$this->attributes[ $name ] = $value;
 	}
+
 	/**
 	 * Returns the validation rules for the billing address fields.
 	 *
@@ -168,6 +169,7 @@ class Billing_Address {
 
 		return $address_array;
 	}
+
 	/**
 	 * Returns a string representation of the billing address.
 	 *

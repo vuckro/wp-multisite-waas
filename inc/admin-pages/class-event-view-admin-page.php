@@ -276,6 +276,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 
 		exit;
 	}
+
 	/**
 	 * Events have titles.
 	 *
@@ -285,6 +286,7 @@ class Event_View_Admin_Page extends Edit_Admin_Page {
 
 		return false;
 	}
+
 	/**
 	 * Handles the save of this form.
 	 *

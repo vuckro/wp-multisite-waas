@@ -77,7 +77,7 @@ if (is_array($field->values)) {
 	foreach ($field->values as $key => $value) {
 		$field_id = esc_attr($field->id);
 
-		$field_id .= $position !== $field_len - 1 ? $key : '';
+		$field_id .= $field_len - 1 !== $position ? $key : '';
 		++$position;
 		?>
 		<li id="<?php echo esc_attr($field_id); ?>-line"

@@ -88,6 +88,7 @@ final class Posts_Table extends Table {
 			status varchar(100) NOT NULL default 'draft',
 			PRIMARY KEY (id)";
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

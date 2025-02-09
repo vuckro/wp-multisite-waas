@@ -195,7 +195,7 @@ class Product_List_Table extends Base_List_Table {
 
 		$bulk_action = $this->current_action();
 
-		if ($bulk_action === 'duplicate') {
+		if ('duplicate' === $bulk_action) {
 			$product = wu_request('id');
 
 			$product = wu_get_product($product);

@@ -31,6 +31,7 @@ class Screenshot {
 	public static function api_url($domain): string {
 		return 'https://image.thum.io/get/' . $domain;
 	}
+
 	/**
 	 * Takes in a URL and creates it as an attachment.
 	 *
@@ -45,6 +46,7 @@ class Screenshot {
 
 		return self::save_image_from_url($url);
 	}
+
 	/**
 	 * Downloads the image from the URL.
 	 *

@@ -528,7 +528,7 @@ abstract class Base_Element {
 	 */
 	protected function maybe_extract_arguments($content, $type = 'shortcode') {
 
-		if ($type === 'shortcode') {
+		if ('shortcode' === $type) {
 
 			/**
 			 * Tries to parse the shortcode out of the content
@@ -539,7 +539,7 @@ abstract class Base_Element {
 			preg_match_all('/' . $shortcode_regex . '/', $content, $matches, PREG_SET_ORDER);
 
 			return ! empty($matches) ? shortcode_parse_atts($matches[0][3]) : false;
-		} elseif ($type === 'block') {
+		} elseif ('block' === $type) {
 
 			/**
 			 * Next, try to parse attrs from blocks
@@ -818,7 +818,7 @@ abstract class Base_Element {
 
 			$value = wu_get_isset($saved_settings, $field_slug, null);
 
-			if ($value !== null) {
+			if (null !== $value) {
 				$field['value'] = $value;
 			}
 		}
@@ -886,7 +886,7 @@ abstract class Base_Element {
 			foreach ($fields as $field_slug => $field) {
 				$setting = wu_request($field_slug, false);
 
-				if ($setting !== false || $field['type'] === 'toggle') {
+				if (false !== $setting || $field['type'] === 'toggle') {
 					$settings[ $field_slug ] = $setting;
 				}
 			}
@@ -1055,7 +1055,7 @@ abstract class Base_Element {
 
 		$screen = get_current_screen();
 
-		if ( ! $screen || $screen_id !== $screen->id) {
+		if ( ! $screen || $screen->id !== $screen_id) {
 			return;
 		}
 

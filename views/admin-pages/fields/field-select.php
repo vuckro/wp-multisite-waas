@@ -29,7 +29,7 @@
 
 		<?php foreach ($field->options as $option_value => $option_label) : ?>
 
-		<option <?php selected($option_value === $field->value || (is_array($field->value) && in_array($option_value, $field->value))); ?> value="<?php echo esc_attr($option_value); ?>">
+		<option <?php selected($field->value === $option_value || (is_array($field->value) && in_array($option_value, $field->value))); ?> value="<?php echo esc_attr($option_value); ?>">
 
 			<?php echo $option_label; ?>
 

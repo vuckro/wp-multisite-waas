@@ -163,7 +163,7 @@ class Customer_Manager extends Base_Manager {
 	 */
 	public function transition_customer_email_verification($old_status, $new_status, $customer_id): void {
 
-		if ($new_status !== 'pending') {
+		if ('pending' !== $new_status) {
 			return;
 		}
 
@@ -317,7 +317,7 @@ class Customer_Manager extends Base_Manager {
 
 		$is_already_user = is_user_member_of_blog($user_id, wu_get_main_site_id());
 
-		if ($is_already_user === false) {
+		if (false === $is_already_user) {
 			$role = wu_get_setting('main_site_default_role', 'subscriber');
 
 			add_user_to_blog(wu_get_main_site_id(), $user_id, $role);

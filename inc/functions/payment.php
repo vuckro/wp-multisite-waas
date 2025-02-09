@@ -59,6 +59,7 @@ function wu_get_line_item($line_item_id, $payment_id) {
 
 	return wu_get_isset($line_items, $line_item_id, false);
 }
+
 /**
  * Gets a payment based on the hash.
  *
@@ -71,6 +72,7 @@ function wu_get_payment_by_hash($hash) {
 
 	return \WP_Ultimo\Models\Payment::get_by_hash($hash);
 }
+
 /**
  * Returns a single payment defined by a particular column and value.
  *
@@ -84,6 +86,7 @@ function wu_get_payment_by($column, $value) {
 
 	return \WP_Ultimo\Models\Payment::get_by($column, $value);
 }
+
 /**
  * Creates a new payment.
  *

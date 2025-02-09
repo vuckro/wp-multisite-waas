@@ -59,9 +59,9 @@ class Inside_Events_List_Table extends Event_List_Table {
 
 		$object_initiator = $item->get_initiator();
 
-		if ($object_initiator === 'system') {
+		if ('system' === $object_initiator) {
 			$value = sprintf('<span class="dashicons-wu-wp-ultimo wu-align-middle wu-mr-1 wu-text-lg"></span><span class="wu-text-gray-600">%s</span>', __('Automatically processed by WP Multisite WaaS', 'wp-ultimo'));
-		} elseif ($object_initiator === 'manual') {
+		} elseif ('manual' === $object_initiator) {
 			$avatar = get_avatar(
 				$item->get_author_id(),
 				16,

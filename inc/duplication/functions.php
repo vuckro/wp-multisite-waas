@@ -15,8 +15,9 @@ if ( ! class_exists('MUCD_Functions') ) {
 			if (strpos($path, ':') == 1 && preg_match('/[a-zA-Z]/', $path[0])) {
 						$tmp  = substr($path, 2);
 						$bool = preg_match('/^[^*?"<>|:]*$/', $tmp);
-						return ($bool == 1); // so that it will return only true and false
+						return (1 == $bool); // so that it will return only true and false
 			}
+
 					return false;
 		}
 
@@ -30,7 +31,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		public static function valid_unix_dir_path($path) {
 			$reg  = '/^(\/([a-zA-Z0-9+$_.-])+)*\/?$/';
 			$bool = preg_match($reg, $path);
-			return ($bool == 1);
+			return (1 == $bool);
 		}
 
 		/**
@@ -74,10 +75,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 				return true;
 			}
 
-			if ( get_blog_option($blog_id, 'mucd_duplicable', 'no') == 'yes') {
-				return true;
-			}
-			return false;
+            return get_blog_option($blog_id, 'mucd_duplicable', 'no') == 'yes';
 		}
 
 		/**
@@ -109,10 +107,11 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 */
 		public static function value_in_array($value, $array, $key): bool {
 			foreach ($array as $row) {
-				if (isset($row[ $key ]) && $value == $row[ $key ]) {
+				if (isset($row[ $key ]) && $row[ $key ] == $value) {
 					return true;
 				}
 			}
+
 			return false;
 		}
 
@@ -194,6 +193,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 				foreach ($sites as $key => $site) {
 					$sites[ $key ] = (array) $site;
 				}
+
 				return $sites;
 			} else {
 				$defaults = ['limit' => MUCD_MAX_NUMBER_OF_SITE];

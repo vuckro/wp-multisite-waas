@@ -82,7 +82,7 @@ class Limitations {
 
 		$module = wu_get_isset($this->modules, $name, false);
 
-		if ($module === false) {
+		if (false === $module) {
 			$repo = self::repository();
 
 			$class_name = wu_get_isset($repo, $name, false);
@@ -145,6 +145,7 @@ class Limitations {
 
 		return $this;
 	}
+
 	/**
 	 * Build a module, based on the data.
 	 *
@@ -315,23 +316,23 @@ class Limitations {
 				$original_value = wu_get_isset($array1, $key);
 
 				// If the value is 0 or '' it can be a unlimited value
-				$is_unlimited = (is_numeric($value) || $value === '') && (int) $value === 0;
+				$is_unlimited = (is_numeric($value) || '' === $value) && (int) $value === 0;
 
-				if ($should_sum && ($original_value === '' || $original_value === 0)) {
+				if ($should_sum && ('' === $original_value || 0 === $original_value)) {
 					/**
 					 *  We use values 0 or '' as unlimited in our limits
 					 */
 					continue;
 				} elseif (isset($array1[ $key ]) && is_numeric($array1[ $key ]) && is_numeric($value) && $should_sum && ! $is_unlimited) {
 					$array1[ $key ] = ((int) $array1[ $key ]) + $value;
-				} elseif ($key === 'visibility' && isset($array1[ $key ]) && $should_sum) {
+				} elseif ('visibility' === $key && isset($array1[ $key ]) && $should_sum) {
 					$key_priority = [
 						'hidden'  => 0,
 						'visible' => 1,
 					];
 
 					$array1[ $key ] = $key_priority[ $value ] > $key_priority[ $array1[ $key ] ] ? $value : $array1[ $key ];
-				} elseif ($key === 'behavior' && isset($array1[ $key ]) && $should_sum) {
+				} elseif ('behavior' === $key && isset($array1[ $key ]) && $should_sum) {
 					$key_priority_list = [
 						'plugins' => [
 							'default'               => 10,
@@ -358,13 +359,14 @@ class Limitations {
 				} else {
 
 					// Avoid change true values
-					$array1[ $key ] = $original_value !== true || ! $should_sum ? $value : true;
+					$array1[ $key ] = true !== $original_value || ! $should_sum ? $value : true;
 
-					$array1[ $key ] = $original_value !== true || ! $should_sum ? $value : true;
+					$array1[ $key ] = true !== $original_value || ! $should_sum ? $value : true;
 				}
 			}
 		}
 	}
+
 	/**
 	 * Converts the limitations list to an array.
 	 *
@@ -392,7 +394,7 @@ class Limitations {
 		 * Reset the slug and prefixes
 		 * for the native tables of blogs.
 		 */
-		if ($slug === 'site') {
+		if ('site' === $slug) {
 			$slug = 'blog';
 
 			$wu_prefix = '';
@@ -447,7 +449,7 @@ class Limitations {
 		 * Site apis are already available,
 		 * so no need to use low-level sql calls.
 		 */
-		if ($slug === 'site') {
+		if ('site' === $slug) {
 			$wu_prefix = '';
 
 			$slug = 'blog';

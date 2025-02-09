@@ -196,7 +196,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	 */
 	public function handle_edit_page(): void {
 
-		$settings_to_save = wu_request('submit') !== 'restore' ? $_POST : []; // don't worry, this gets cleaned later on.
+		$settings_to_save = 'restore' !== wu_request('submit') ? $_POST : []; // don't worry, this gets cleaned later on.
 
 		$this->save_page_settings($settings_to_save);
 
@@ -413,7 +413,7 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	 */
 	public function save_settings($meta_id, $user_id, $meta_key, $_meta_value): void {
 
-		if (wu_request('action') !== 'meta-box-order') {
+		if ('meta-box-order' !== wu_request('action')) {
 			return;
 		}
 

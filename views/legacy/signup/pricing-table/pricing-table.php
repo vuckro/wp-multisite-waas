@@ -91,7 +91,7 @@ if (empty($plans)) {
 		 */
 
 		$count   = count($plans);
-		$columns = $count == 5 ? '2-4' : 12 / $count;
+		$columns = 5 == $count ? '2-4' : 12 / $count;
 
 		foreach ($plans as $plan) {
 			wu_get_template(

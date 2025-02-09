@@ -100,7 +100,7 @@ function wu_get_gateway_as_options() {
 	foreach (wu_get_gateways() as $gateway_slug => $gateway) {
 		$instance = class_exists($gateway['class_name']) ? new $gateway['class_name']() : false;
 
-		if ($instance === false || $gateway['hidden']) {
+		if (false === $instance || $gateway['hidden']) {
 			continue;
 		}
 
@@ -123,7 +123,7 @@ function wu_get_active_gateway_as_options() {
 	foreach (wu_get_active_gateways() as $gateway_slug => $gateway) {
 		$instance = class_exists($gateway['class_name']) ? new $gateway['class_name']() : false;
 
-		if ($instance === false || $gateway['hidden']) {
+		if (false === $instance || $gateway['hidden']) {
 			continue;
 		}
 

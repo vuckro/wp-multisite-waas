@@ -381,6 +381,7 @@ class Domain_Manager extends Base_Manager {
 			]
 		);
 	}
+
 	/**
 	 * Returns the default instructions for domain mapping.
 	 *
@@ -481,7 +482,7 @@ class Domain_Manager extends Base_Manager {
 		// translators: %s is the domain name
 		wu_log_add("domain-{$domain_url}", sprintf(__('Starting Check for %s', 'wp-ultimo'), $domain_url));
 
-		if ($stage === 'checking-dns') {
+		if ('checking-dns' === $stage) {
 			if ($domain->has_correct_dns()) {
 				$domain->set_stage('checking-ssl-cert');
 
@@ -540,7 +541,7 @@ class Domain_Manager extends Base_Manager {
 
 				return;
 			}
-		} elseif ($stage === 'checking-ssl-cert') {
+		} elseif ('checking-ssl-cert' === $stage) {
 			if ($domain->has_valid_ssl_certificate()) {
 				$domain->set_stage('done');
 
@@ -685,7 +686,7 @@ class Domain_Manager extends Base_Manager {
 			);
 		}
 
-		if ($result === false) {
+		if (false === $result) {
 			wp_send_json_error(new \WP_Error('error', __('Not able to fetch DNS entries.', 'wp-ultimo')));
 		}
 

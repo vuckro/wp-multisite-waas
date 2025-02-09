@@ -516,7 +516,7 @@ class Checkout_Pages {
 
 		$function_caller = wu_get_function_caller(5);
 
-		if ($function_caller === 'wp_auth_check_html') {
+		if ('wp_auth_check_html' === $function_caller) {
 			return $login_url;
 		}
 

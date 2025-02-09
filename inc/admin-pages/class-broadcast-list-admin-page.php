@@ -118,7 +118,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 		$display_targets = [];
 
 		if ($targets) {
-			if ($target_type === 'customers') {
+			if ('customers' === $target_type) {
 				foreach ($targets as $key => $value) {
 					$customer = wu_get_customer($value);
 
@@ -149,7 +149,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 				}
 			}
 
-			if ($target_type === 'products') {
+			if ('products' === $target_type) {
 				foreach ($targets as $key => $value) {
 					$product = wu_get_product($value);
 

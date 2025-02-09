@@ -69,7 +69,7 @@ class Site_Maintenance_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block') {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-lock-user';
 		}
 

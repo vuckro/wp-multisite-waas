@@ -13,7 +13,7 @@ foreach ($products as $index => &$_product) {
 
 	$product_variation = $_product->get_as_variation($duration, $duration_unit);
 
-	if ($product_variation === false && ! $force_different_durations) {
+	if (false === $product_variation && ! $force_different_durations) {
 		unset($products[ $index ]);
 
 		$_product = $product_variation;

@@ -100,7 +100,7 @@ function wu_register_settings_field($section_slug, $field_slug, $atts, $priority
  */
 function wu_register_settings_side_panel($section_slug, $atts) {
 
-	if (wu_request('tab', 'general') !== $section_slug && $section_slug !== 'all') {
+	if (wu_request('tab', 'general') !== $section_slug && 'all' !== $section_slug) {
 		return;
 	}
 

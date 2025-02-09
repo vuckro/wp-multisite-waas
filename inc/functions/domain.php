@@ -36,6 +36,7 @@ function wu_get_domains($query = []) {
 
 	return \WP_Ultimo\Models\Domain::query($query);
 }
+
 /**
  * Returns a domain based on domain.
  *
@@ -48,6 +49,7 @@ function wu_get_domain_by_domain($domain) {
 
 	return \WP_Ultimo\Models\Domain::get_by('domain', $domain);
 }
+
 /**
  * Creates a new domain.
  *

@@ -71,7 +71,7 @@ class Thank_You_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block'): string {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-info-circle-o';
 		}
 

@@ -33,6 +33,7 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 
 		return 'order_summary';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -81,6 +82,7 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 
 		return __('Adds a summary table with prices, key subscription dates, discounts, and taxes.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *

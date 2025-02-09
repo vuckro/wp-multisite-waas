@@ -255,6 +255,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 
 		return $this->api;
 	}
+
 	/**
 	 * Returns the Site URL.
 	 *
@@ -276,7 +277,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 */
 	public function get_subdomain($domain, $mapped_domain = true) {
 
-		if ($mapped_domain === false) {
+		if (false === $mapped_domain) {
 			$domain_parts = explode('.', $domain);
 
 			return array_shift($domain_parts);

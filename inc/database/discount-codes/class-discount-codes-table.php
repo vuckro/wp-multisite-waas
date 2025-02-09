@@ -93,6 +93,7 @@ final class Discount_Codes_Table extends Table {
 			date_modified datetime NULL,
 			PRIMARY KEY (id)";
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

@@ -30,6 +30,7 @@ class SSO_Broker extends Broker {
 	public function is_must_redirect_call(): bool {
 		return $this->getVerificationCode() === 'must-redirect';
 	}
+
 	/**
 	 * Get URL to attach session at SSO server.
 	 *

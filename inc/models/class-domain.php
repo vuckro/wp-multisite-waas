@@ -151,6 +151,7 @@ class Domain extends Base_Model {
 
 		$this->domain = strtolower($domain);
 	}
+
 	/**
 	 * Gets the URL with schema and all.
 	 *
@@ -200,6 +201,7 @@ class Domain extends Base_Model {
 
 		return $this->get_blog_id();
 	}
+
 	/**
 	 * Get the site object for this particular mapping.
 	 *
@@ -323,6 +325,7 @@ class Domain extends Base_Model {
 
 		$this->stage = $stage;
 	}
+
 	/**
 	 * Check if this domain is on a inactive stage.
 	 *
@@ -498,6 +501,7 @@ class Domain extends Base_Model {
 
 		return $results;
 	}
+
 	/**
 	 * Delete the model from the database.
 	 *
@@ -559,7 +563,7 @@ class Domain extends Base_Model {
 		// Check cache first
 		$mappings = wp_cache_get('id:' . $site, 'domain_mapping');
 
-		if ($mappings === 'none') {
+		if ('none' === $mappings) {
 			return false;
 		}
 
@@ -610,14 +614,14 @@ class Domain extends Base_Model {
 		foreach ($domains as $domain) {
 			$data = wp_cache_get('domain:' . $domain, 'domain_mappings');
 
-			if ( ! empty($data) && $data !== 'notexists') {
+			if ( ! empty($data) && 'notexists' !== $data) {
 				return new static($data);
-			} elseif ($data === 'notexists') {
+			} elseif ('notexists' === $data) {
 				++$not_exists;
 			}
 		}
 
-		if ($not_exists === count($domains)) {
+		if (count($domains) === $not_exists) {
 
 			// Every domain we checked was found in the cache, but doesn't exist
 			// so skip the query

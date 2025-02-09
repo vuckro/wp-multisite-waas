@@ -123,6 +123,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 			wu_log_add('integration-cloudways', '[SSL]' . print_r($ssl_response, true));
 		}
 	}
+
 	/**
 	 * Picks up on tips that a given host provider is being used.
 	 *
@@ -248,6 +249,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 			wu_log_add('integration-cloudways', '[Alias]' . print_r($alias_response, true));
 		}
 	}
+
 	/**
 	 * Returns an array of valid SSL domains to be used with the Cloudways API based on a list of domains.
 	 *
@@ -279,6 +281,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		return array_values(array_unique(array_filter($ssl_valid_domains)));
 	}
+
 	/**
 	 * Returns an array of all domains that should be added to Cloudways.
 	 *
@@ -469,7 +472,7 @@ class Cloudways_Host_Provider extends Base_Host_Provider {
 
 		$endpoint_url = "https://api.cloudways.com/api/v1$endpoint";
 
-		if ($method === 'GET') {
+		if ('GET' === $method) {
 			$endpoint_url = add_query_arg(
 				[
 					'server_id' => defined('WU_CLOUDWAYS_SERVER_ID') ? WU_CLOUDWAYS_SERVER_ID : '',

@@ -73,7 +73,7 @@ class Email_List_Table extends Base_List_Table {
 
 		$target = wu_request('target');
 
-		if ($target && $target !== 'all') {
+		if ($target && 'all' !== $target) {
 			$query['meta_query'] = [
 				'type' => [
 					'key'   => 'wu_target',
@@ -86,6 +86,7 @@ class Email_List_Table extends Base_List_Table {
 
 		return wu_get_emails($query);
 	}
+
 	/**
 	 * Displays the title of the email.
 	 *
@@ -212,7 +213,7 @@ class Email_List_Table extends Base_List_Table {
 
 		$bulk_action = $this->current_action();
 
-		if ($bulk_action === 'duplicate') {
+		if ('duplicate' === $bulk_action) {
 			$email_id = wu_request('id');
 
 			$email = wu_get_email($email_id);
@@ -280,6 +281,7 @@ class Email_List_Table extends Base_List_Table {
 			exit;
 		}
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

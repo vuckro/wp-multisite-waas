@@ -16,7 +16,7 @@ if ( ! class_exists('MUCD_Files') ) {
 			switch_to_blog($from_site_id);
 			$wp_upload_info   = wp_upload_dir();
 			$from_dir['path'] = $wp_upload_info['basedir'];
-			$from_site_id == MUCD_PRIMARY_SITE_ID ? $from_dir['exclude'] = MUCD_Option::get_primary_dir_exclude() : $from_dir['exclude'] = [];
+			MUCD_PRIMARY_SITE_ID == $from_site_id ? $from_dir['exclude'] = MUCD_Option::get_primary_dir_exclude() : $from_dir['exclude'] = [];
 
 			// Switch to Destination site and get uploads info
 			switch_to_blog($to_site_id);
@@ -38,6 +38,7 @@ if ( ! class_exists('MUCD_Files') ) {
 				if (isset($dir['to_dir_path']) && ! self::init_dir($dir['to_dir_path'])) {
 					self::mkdir_error($dir['to_dir_path']);
 				}
+
 				MUCD_Duplicate::write_log('Copy files from ' . $dir['from_dir_path'] . ' to ' . $dir['to_dir_path']);
 				self::recurse_copy($dir['from_dir_path'], $dir['to_dir_path'], $dir['exclude_dirs']);
 			}
@@ -59,7 +60,7 @@ if ( ! class_exists('MUCD_Files') ) {
 			$dir = opendir($src);
 			@mkdir($dst);
 			while (false !== ($file = readdir($dir)) ) {
-				if (($file != '.') && ($file != '..')) {
+				if (('.' != $file) && ('..' != $file)) {
 					if ( is_dir($src . '/' . $file) ) {
 						if ( ! in_array($file, $exclude_dirs)) {
 							self::recurse_copy($src . '/' . $file, $dst . '/' . $file);
@@ -69,6 +70,7 @@ if ( ! class_exists('MUCD_Files') ) {
 					}
 				}
 			}
+
 			closedir($dir);
 		}
 
@@ -88,6 +90,7 @@ if ( ! class_exists('MUCD_Files') ) {
 				if ( ! is_writable($path)) {
 					return chmod($path, 0777);
 				}
+
 				return true;
 			}
 
@@ -106,7 +109,7 @@ if ( ! class_exists('MUCD_Files') ) {
 			if (is_dir($dir)) {
 				$objects = scandir($dir);
 				foreach ($objects as $object) {
-					if ($object != '.' && $object != '..') {
+					if ('.' != $object && '..' != $object) {
 						if (filetype($dir . '/' . $object) == 'dir') {
 							self::rrmdir($dir . '/' . $object);
 						} else {
@@ -114,6 +117,7 @@ if ( ! class_exists('MUCD_Files') ) {
 						}
 					}
 				}
+
 				reset($objects);
 				rmdir($dir);
 			}
@@ -135,6 +139,7 @@ if ( ! class_exists('MUCD_Files') ) {
 			if ( $log_url = MUCD_Duplicate::log_url() ) {
 				echo '<a href="' . $log_url . '">' . MUCD_NETWORK_PAGE_DUPLICATE_VIEW_LOG . '</a>';
 			}
+
 			MUCD_Functions::remove_blog(self::$to_site_id);
 			wp_die();
 		}

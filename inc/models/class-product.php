@@ -487,7 +487,7 @@ class Product extends Base_Model {
 
 		$this->pricing_type = $pricing_type;
 
-		if ($pricing_type === 'free' || $pricing_type === 'contact_us') {
+		if ('free' === $pricing_type || 'contact_us' === $pricing_type) {
 			$this->set_amount(0);
 
 			$this->set_recurring(false);
@@ -1210,11 +1210,11 @@ class Product extends Base_Model {
 			return $this;
 		}
 
-		if ($duration !== $this->get_duration() || $duration_unit !== $this->get_duration_unit()) {
+		if ($this->get_duration() !== $duration || $this->get_duration_unit() !== $duration_unit) {
 			$price_variation = $this->get_price_variation($duration, $duration_unit);
 		}
 
-		if (absint($duration) === $this->get_duration() && $duration_unit === $this->get_duration_unit()) {
+		if (absint($duration) === $this->get_duration() && $this->get_duration_unit() === $duration_unit) {
 			$price_variation = [
 				'amount' => $this->get_amount(),
 			];
@@ -1297,7 +1297,7 @@ class Product extends Base_Model {
 		$price_variations = $this->get_price_variations();
 
 		if ( ! empty($price_variations)) {
-			if (absint($duration) === 12 && $duration_unit === 'month') {
+			if (absint($duration) === 12 && 'month' === $duration_unit) {
 				$duration = 1;
 
 				$duration_unit = 'year';

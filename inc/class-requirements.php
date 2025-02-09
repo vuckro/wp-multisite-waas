@@ -128,6 +128,7 @@ class Requirements {
 	public static function is_unit_test() {
 		return defined('WP_TESTS_MULTISITE') && WP_TESTS_MULTISITE;
 	}
+
 	/**
 	 * Check if the PHP version requirements are met
 	 *
@@ -143,6 +144,7 @@ class Requirements {
 
 		return true;
 	}
+
 	/**
 	 * Check if the WordPress version requirements are met
 	 *
@@ -217,6 +219,7 @@ class Requirements {
 
 		return true;
 	}
+
 	/**
 	 * Check if the install is a Multisite install
 	 *
@@ -232,6 +235,7 @@ class Requirements {
 
 		return true;
 	}
+
 	/**
 	 * Check if WP Multisite WaaS is network active.
 	 *

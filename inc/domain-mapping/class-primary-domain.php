@@ -139,7 +139,7 @@ class Primary_Domain {
 
 		$redirect_settings = wu_get_setting('force_admin_redirect', 'both');
 
-		if ($redirect_settings === 'both') {
+		if ('both' === $redirect_settings) {
 			return;
 		}
 
@@ -159,11 +159,11 @@ class Primary_Domain {
 
 		$redirect_url = false;
 
-		if ($redirect_settings === 'force_map' && $current_url_to_compare !== $mapped_url_to_compare) {
+		if ('force_map' === $redirect_settings && $current_url_to_compare !== $mapped_url_to_compare) {
 			$redirect_url = Domain_Mapping::get_instance()->replace_url(wu_get_current_url(), $mapped_domain);
 
 			$query_args = array_map(fn($value) => Domain_Mapping::get_instance()->replace_url($value, $mapped_domain), $query_args);
-		} elseif ($redirect_settings === 'force_network' && $current_url_to_compare === $mapped_url_to_compare) {
+		} elseif ('force_network' === $redirect_settings && $current_url_to_compare === $mapped_url_to_compare) {
 			$redirect_url = wu_restore_original_url(wu_get_current_url(), $site->get_id());
 
 			$query_args = array_map(fn($value) => wu_restore_original_url($value, $site->get_id()), $query_args);

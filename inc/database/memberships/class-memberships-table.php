@@ -112,6 +112,7 @@ final class Memberships_Table extends Table {
 			KEY status (status),
 			KEY disabled (disabled)";
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

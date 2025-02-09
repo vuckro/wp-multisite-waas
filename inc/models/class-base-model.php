@@ -208,12 +208,7 @@ abstract class Base_Model implements \JsonSerializable {
 		$vars = get_object_vars($object);
 
 		$this->attributes($vars);
-
-		if (empty($this->id)) {
-			return false;
-		}
-
-		return true;
+        return !empty($this->id);
 	}
 
 	/**
@@ -227,7 +222,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function attributes($atts) {
 
 		foreach ($atts as $key => $value) {
-			if ($key === 'meta' && is_array($value)) {
+			if ('meta' === $key && is_array($value)) {
 				$this->meta = is_array($this->meta) ? array_merge($this->meta, $value) : $value;
 			}
 
@@ -691,14 +686,8 @@ abstract class Base_Model implements \JsonSerializable {
 			return false;
 		}
 
-		if ( ! $this->get_id() && ! $this->_mocked) {
-
-			// _doing_it_wrong(__METHOD__, __('Model metadata only works for already saved models.', 'wp-ultimo'), '2.0.0');
-
-			return false;
-		}
-
-		return true;
+        // _doing_it_wrong(__METHOD__, __('Model metadata only works for already saved models.', 'wp-ultimo'), '2.0.0');
+        return !(! $this->get_id() && ! $this->_mocked);
 	}
 
 	/**
@@ -1075,7 +1064,7 @@ abstract class Base_Model implements \JsonSerializable {
 	public function hydrate(): void {
 
 		$attributes = get_object_vars($this);
-		$attributes = array_filter($attributes, fn ($value) => $value === null);
+		$attributes = array_filter($attributes, fn ($value) => null === $value);
 
 		unset($attributes['meta']);
 

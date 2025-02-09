@@ -195,7 +195,7 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 									</div>";
 
 				break;
-			case $targets_count === 1:
+			case 1 === $targets_count:
 				$customer = wu_get_customer($targets[0]);
 
 				$url_atts = [

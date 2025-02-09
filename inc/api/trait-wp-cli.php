@@ -200,6 +200,7 @@ trait WP_CLI {
 			$this
 		);
 	}
+
 	/**
 	 * Allows the additional of additional parameters.
 	 *
@@ -283,7 +284,7 @@ trait WP_CLI {
 
 		$success = $item->save();
 
-		if ($success === true) {
+		if (true === $success) {
 			$item_id = $item->get_id();
 
 			if ( ! empty($array_assoc['porcelain'])) {
@@ -327,7 +328,7 @@ trait WP_CLI {
 		foreach ($params as $param => $value) {
 			$set_method = "set_{$param}";
 
-			if ($param === 'meta') {
+			if ('meta' === $param) {
 				$item->update_meta_batch($value);
 			} elseif (method_exists($item, $set_method)) {
 				call_user_func([$item, $set_method], $value);

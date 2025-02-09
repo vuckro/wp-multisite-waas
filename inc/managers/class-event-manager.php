@@ -98,7 +98,7 @@ class Event_Manager extends Base_Manager {
 	 */
 	public function log_transitions($model, $data, $data_unserialized, $object) {
 
-		if ($model === 'event') {
+		if ('event' === $model) {
 			return;
 		}
 
@@ -143,7 +143,7 @@ class Event_Manager extends Base_Manager {
 			foreach ($diff as $key => $new_value) {
 				$old_value = wu_get_isset($original, $key, '');
 
-				if ($key === 'id' && intval($old_value) === 0) {
+				if ('id' === $key && intval($old_value) === 0) {
 					return;
 				}
 
@@ -561,7 +561,7 @@ class Event_Manager extends Base_Manager {
 		}
 
 		if (method_exists($obj, 'get_billing_address') || method_exists($obj, 'get_membership')) {
-			if ($model_object) {
+			if (null !== $model_object) {
 				$payload = method_exists($obj, 'get_billing_address')
 				? array_merge(
 					$payload,

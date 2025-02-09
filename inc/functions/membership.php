@@ -26,6 +26,7 @@ function wu_get_membership($membership_id) {
 
 	return Membership::get_by_id($membership_id);
 }
+
 /**
  * Returns a single membership defined by a particular column and value.
  *
@@ -39,6 +40,7 @@ function wu_get_membership_by($column, $value) {
 
 	return Membership::get_by($column, $value);
 }
+
 /**
  * Gets a membership based on the hash.
  *
@@ -79,6 +81,7 @@ function wu_get_memberships($query = []) {
 
 	return Membership::query($query);
 }
+
 /**
  * Creates a new membership.
  *
@@ -165,6 +168,7 @@ function wu_get_membership_customers($product_id) {
 
 	return $results;
 }
+
 /**
  * Returns a membership based on the customer gateway ID.
  *
@@ -267,6 +271,7 @@ function wu_get_membership_product_price($membership, $product_id, $quantity, $o
 
 	return $temp_payment->get_total();
 }
+
 /**
  * Creates a new payment for a membership.
  *

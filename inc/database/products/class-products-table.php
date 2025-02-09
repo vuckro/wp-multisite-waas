@@ -154,6 +154,7 @@ final class Products_Table extends Table {
 		// Return success/fail
 		return $this->is_success($result);
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

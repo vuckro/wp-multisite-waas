@@ -35,6 +35,7 @@ class Session_Cookie implements Session {
 	 * @var boolean
 	 */
 	protected $loaded = false;
+
 	/**
 	 * @var string
 	 */
@@ -91,6 +92,7 @@ class Session_Cookie implements Session {
 
 		return is_array($this->data) && isset($this->data[ $key ]) ? $this->data[ $key ] : null;
 	}
+
 	/**
 	 * Set the value of a session key.
 	 *
@@ -105,6 +107,7 @@ class Session_Cookie implements Session {
 
 		return true;
 	}
+
 	/**
 	 * Appends values to a given key, instead of replacing it.
 	 *
@@ -121,6 +124,7 @@ class Session_Cookie implements Session {
 
 		return true;
 	}
+
 	/**
 	 * Writes to the session and closes the connection.
 	 *
@@ -129,7 +133,7 @@ class Session_Cookie implements Session {
 	 */
 	public function commit($expire = null): bool {
 
-		if ($expire === null) {
+		if (null === $expire) {
 			$expire = HOUR_IN_SECONDS;
 		}
 

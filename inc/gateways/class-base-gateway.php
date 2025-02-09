@@ -167,7 +167,7 @@ abstract class Base_Gateway {
 	 */
 	public function set_order($order): void {
 
-		if ($order === null) {
+		if (null === $order) {
 			return;
 		}
 
@@ -784,7 +784,7 @@ abstract class Base_Gateway {
 	 */
 	public function trigger_payment_processed($payment, $membership = null): void {
 
-		if ($membership === null) {
+		if (null === $membership) {
 			$membership = $payment->get_membership();
 		}
 

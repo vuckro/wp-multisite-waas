@@ -27,10 +27,15 @@ class Site_Type extends Enum {
 	const __default = 'default'; // phpcs:ignore
 
 	const REGULAR        = 'default';
+
 	const SITE_TEMPLATE  = 'site_template';
+
 	const CUSTOMER_OWNED = 'customer_owned';
+
 	const PENDING        = 'pending';
+
 	const EXTERNAL       = 'external';
+
 	const MAIN           = 'main';
 
 	/**

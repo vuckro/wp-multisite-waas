@@ -511,6 +511,7 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return $this->object;
 	}
+
 	/**
 	 * Domains have titles.
 	 *

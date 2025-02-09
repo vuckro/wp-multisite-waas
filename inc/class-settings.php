@@ -87,7 +87,7 @@ class Settings {
 
 		global $current_site;
 
-		if ($network_id !== $current_site->id) {
+		if ($current_site->id !== $network_id) {
 			return $status;
 		}
 
@@ -110,7 +110,7 @@ class Settings {
 
 		global $current_site;
 
-		if ($network_id !== $current_site->id) {
+		if ($current_site->id !== $network_id) {
 			return $status;
 		}
 
@@ -131,7 +131,7 @@ class Settings {
 
 		global $current_site;
 
-		if ($network_id !== $current_site->id || is_bool($status)) {
+		if ($current_site->id !== $network_id || is_bool($status)) {
 			return $status;
 		}
 
@@ -249,7 +249,7 @@ class Settings {
 				/**
 				 * For the current tab, we need to assume toggle fields.
 				 */
-				if ($section_slug === wu_request('tab', 'general') && $field->type === 'toggle' && ! isset($settings_to_save[ $field_slug ])) {
+				if (wu_request('tab', 'general') === $section_slug && $field->type === 'toggle' && ! isset($settings_to_save[ $field_slug ])) {
 					$new_value = false;
 				}
 
@@ -298,6 +298,7 @@ class Settings {
 		if ( $this->sections ) {
 			return $this->sections;
 		}
+
 		$this->default_sections();
 		$this->sections = apply_filters(
 			'wu_settings_get_sections',
@@ -455,14 +456,14 @@ class Settings {
 				$model_name = wu_get_isset($atts['html_attr'], 'data-model');
 
 				if ($model_name) {
-					if (function_exists("wu_get_{$model_name}") || $model_name === 'page') {
+					if (function_exists("wu_get_{$model_name}") || 'page' === $model_name) {
 						$original_html_attr = $atts['html_attr'];
 
 						$atts['html_attr'] = function () use ($field_slug, $model_name, $atts, $original_html_attr) {
 
 							$value = wu_get_setting($field_slug);
 
-							if ($model_name === 'page') {
+							if ('page' === $model_name) {
 								$new_attrs['data-selected'] = get_post($value);
 							} else {
 								$data_selected              = call_user_func("wu_get_{$model_name}", $value);

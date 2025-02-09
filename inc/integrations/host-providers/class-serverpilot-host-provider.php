@@ -152,7 +152,7 @@ class ServerPilot_Host_Provider extends Base_Host_Provider {
 			/**
 			 * Removes the current domain fromt he domain list
 			 */
-			$current_domain_list = array_filter($current_domain_list, fn($remote_domain) => $remote_domain !== $domain && $remote_domain !== 'www.' . $domain);
+			$current_domain_list = array_filter($current_domain_list, fn($remote_domain) => $remote_domain !== $domain && 'www.' . $domain !== $remote_domain);
 
 			$this->send_server_pilot_api_request(
 				'',

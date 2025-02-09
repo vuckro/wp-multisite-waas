@@ -520,7 +520,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 			wp_die(__('You do not have the permissions required to change settings.', 'wp-ultimo'));
 		}
 
-		if ( ! isset($_POST['active_gateways']) && wu_request('tab') === 'payment-gateways') {
+		if ( ! isset($_POST['active_gateways']) && 'payment-gateways' === wu_request('tab')) {
 			$_POST['active_gateways'] = [];
 		}
 

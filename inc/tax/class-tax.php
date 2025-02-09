@@ -47,13 +47,13 @@ class Tax {
 
 					$country = wu_request('country', 'not-present');
 
-					if ($country === 'not-present') {
+					if ('not-present' === $country) {
 						return;
 					}
 
-					if ($model === 'state') {
+					if ('state' === $model) {
 						$results = wu_get_country_states($country, 'slug', 'name');
-					} elseif ($model === 'city') {
+					} elseif ('city' === $model) {
 						$states = explode(',', (string) wu_request('state', ''));
 
 						$results = wu_get_country_cities($country, $states, 'slug', 'name');

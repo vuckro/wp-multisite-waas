@@ -95,6 +95,7 @@ class Payment_List_Table_Widget extends Base_List_Table {
 
 		return $query;
 	}
+
 	/**
 	 * Displays the payment reference code.
 	 *
@@ -193,6 +194,7 @@ class Payment_List_Table_Widget extends Base_List_Table {
 
 		return $html;
 	}
+
 	/**
 	 * Displays the column for the total amount of the payment.
 	 *

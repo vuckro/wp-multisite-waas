@@ -27,10 +27,15 @@ class Membership_Status extends Enum {
 	const __default = 'pending'; // phpcs:ignore
 
 	const PENDING   = 'pending';
+
 	const ACTIVE    = 'active';
+
 	const TRIALING  = 'trialing';
+
 	const EXPIRED   = 'expired';
+
 	const ON_HOLD   = 'on-hold';
+
 	const CANCELLED = 'cancelled';
 
 	/**

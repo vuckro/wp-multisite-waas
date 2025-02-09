@@ -26,6 +26,7 @@ class Checkout_Form extends Base_Model {
 	 * @var array<string, int>|array<string, string>
 	 */
 	public $meta;
+
 	/**
 	 * The name of the checkout form.
 	 *
@@ -274,6 +275,7 @@ class Checkout_Form extends Base_Model {
 
 		$this->settings = $settings;
 	}
+
 	/**
 	 * Returns a specific step by the step name.
 	 *
@@ -289,7 +291,7 @@ class Checkout_Form extends Base_Model {
 
 		$step_key = array_search($step_name, array_column($settings, 'id'), true);
 
-		$step = $step_key !== false ? $settings[ $step_key ] : false;
+		$step = false !== $step_key ? $settings[ $step_key ] : false;
 
 		if ($step) {
 			$step = wp_parse_args(
@@ -303,6 +305,7 @@ class Checkout_Form extends Base_Model {
 
 		return $step;
 	}
+
 	/**
 	 * Returns the steps to show in current form
 	 *
@@ -336,11 +339,11 @@ class Checkout_Form extends Base_Model {
 		foreach ($steps as $key => $step) {
 			$logged = wu_get_isset($step, 'logged', 'always');
 
-			$show = $logged === 'always';
+			$show = 'always' === $logged;
 
-			if ($logged === 'guests_only' && ! $user_exists) {
+			if ('guests_only' === $logged && ! $user_exists) {
 				$show = true;
-			} elseif ($logged === 'logged_only' && $user_exists) {
+			} elseif ('logged_only' === $logged && $user_exists) {
 				$show = true;
 			}
 
@@ -369,6 +372,7 @@ class Checkout_Form extends Base_Model {
 
 		return $final_steps;
 	}
+
 	/**
 	 * Returns a specific field by the step name and field name.
 	 *
@@ -388,7 +392,7 @@ class Checkout_Form extends Base_Model {
 
 		$field_key = array_search($field_name, array_column($step['fields'], 'id'), true);
 
-		return $field_key !== false ? $step['fields'][ $field_key ] : false;
+		return false !== $field_key ? $step['fields'][ $field_key ] : false;
 	}
 
 	/**
@@ -488,6 +492,7 @@ class Checkout_Form extends Base_Model {
 
 		return is_array($fields) ? count($fields) : 0;
 	}
+
 	/**
 	 * Returns the shortcode that needs to be placed to embed this form.
 	 *
@@ -510,11 +515,11 @@ class Checkout_Form extends Base_Model {
 
 		$fields = [];
 
-		if ($template === 'multi-step') {
+		if ('multi-step' === $template) {
 			$fields = $this->get_multi_step_template();
 
 			$this->set_settings($fields);
-		} elseif ($template === 'single-step') {
+		} elseif ('single-step' === $template) {
 			$fields = $this->get_single_step_template();
 		}
 
@@ -811,7 +816,7 @@ class Checkout_Form extends Base_Model {
 			/**
 			 * Deal with special cases.
 			 */
-			if ($step_id === 'plan') {
+			if ('plan' === $step_id) {
 				$products_list = wu_get_plans(
 					[
 						'fields' => 'ids',
@@ -873,7 +878,7 @@ class Checkout_Form extends Base_Model {
 			/**
 			 * Deal with special cases.
 			 */
-			if ($step_id === 'template' && wu_get_isset($old_settings, 'allow_template', true)) {
+			if ('template' === $step_id && wu_get_isset($old_settings, 'allow_template', true)) {
 				$templates = [];
 
 				foreach (wu_get_site_templates() as $site) {
@@ -965,7 +970,7 @@ class Checkout_Form extends Base_Model {
 						$field['type'] = 'submit_button';
 						$field['id']   = 'submit_button';
 
-						if ($step_id === 'account') {
+						if ('account' === $step_id) {
 							$field['name'] = __('Continue to the Next Step', 'wp-ultimo');
 						}
 

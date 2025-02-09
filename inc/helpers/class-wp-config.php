@@ -34,7 +34,7 @@ class WP_Config {
 
 		$config_path = $this->get_wp_config_path();
 
-		if ( ! is_writeable($config_path)) {
+		if ( ! is_writable($config_path)) {
 
 			// translators: %s is the file name.
 			return new \WP_Error('not-writeable', sprintf(__('The file %s is not writable', 'wp-ultimo'), $config_path));
@@ -46,12 +46,12 @@ class WP_Config {
 
 		$content = str_pad(sprintf("define( '%s', '%s' );", $constant, $value), 50) . '// Automatically injected by WP Multisite WaaS;';
 
-		if ($line === false) {
+		if (false === $line) {
 
 			// no defined, we just need to inject
 			$hook_line = $this->find_reference_hook_line($config);
 
-			if ($hook_line === false) {
+			if (false === $hook_line) {
 				return new \WP_Error('unknown-wpconfig', __("WP Multisite WaaS can't recognize your wp-config.php, please revert it to original state for further process.", 'wp-ultimo'));
 			}
 
@@ -61,7 +61,7 @@ class WP_Config {
 		} else {
 			[$value, $line] = $line;
 
-			if ($value !== true) {
+			if (true !== $value) {
 				$config[ $line ] = $content . PHP_EOL;
 
 				return file_put_contents($config_path, implode('', $config), LOCK_EX);
@@ -177,7 +177,7 @@ class WP_Config {
 
 		$config_path = $this->get_wp_config_path();
 
-		if ( ! is_writeable($config_path)) {
+		if ( ! is_writable($config_path)) {
 
 			// translators: %s is the file name.
 			return new \WP_Error('not-writeable', sprintf(__('The file %s is not writable', 'wp-ultimo'), $config_path));
@@ -187,14 +187,14 @@ class WP_Config {
 
 		$line = $this->find_injected_line($config, $constant);
 
-		if ($line === false) {
+		if (false === $line) {
 			return;
 		} else {
 			$value = $line[0];
 
 			$line = $line[1];
 
-			if ($value === 'true' || $value === '1') {
+			if ('true' === $value || '1' === $value) {
 
 				// value is true, we will remove this
 				unset($config[ $line ]);
@@ -204,6 +204,7 @@ class WP_Config {
 			}
 		}
 	}
+
 	/**
 	 * Checks for the injected line inside of the wp-config.php file.
 	 *

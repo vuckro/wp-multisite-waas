@@ -78,7 +78,7 @@ class Event_List_Table extends Base_List_Table {
 
 		$object_label_tooltip = substr($object_severity_label, 0, 1);
 
-		if ($object_initiator === 'system') {
+		if ('system' === $object_initiator) {
 			$avatar = '<span class="dashicons-wu-tools wu-text-gray-700 wu-text-xl"></span>';
 
 			$system_text = ucfirst($object_initiator);
@@ -97,7 +97,7 @@ class Event_List_Table extends Base_List_Table {
 				</div>
 			</div>";
 			// phpcs:enable
-		} elseif ($object_initiator === 'manual') {
+		} elseif ('manual' === $object_initiator) {
 			$avatar = get_avatar(
 				$item->get_author_id(),
 				32,
@@ -164,6 +164,7 @@ class Event_List_Table extends Base_List_Table {
 
 		return "<span class='wu-py-1 wu-px-2 wu-bg-gray-200 wu-rounded-sm wu-text-gray-700 wu-text-xs wu-font-mono'>{$object_slug}</span>";
 	}
+
 	/**
 	 * Returns the markup for the message column.
 	 *
@@ -216,6 +217,7 @@ class Event_List_Table extends Base_List_Table {
 
 		return apply_filters('wu_events_list_table_get_columns', $columns, $this);
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

@@ -8,20 +8,24 @@ if ( ! class_exists('MUCD_Log') ) {
 		 * @readonly
 		 */
 		private string $log_file_path;
+
 		/**
 		 * @readonly
 		 */
 		private string $log_file_url;
 
 		private $fp;
+
 		/**
 		 * @var boolean
 		 */
 		public $mod;
+
 		/**
 		 * @var string
 		 */
 		private $log_dir_path = '';
+
 		/**
 		 * @var string
 		 */
@@ -43,7 +47,7 @@ if ( ! class_exists('MUCD_Log') ) {
 
 			$this->log_file_url = str_replace(ABSPATH, get_site_url(1, '/'), $log_dir_path) . $log_file_name;
 
-			if ( $mod !== false) {
+			if ( false !== $mod) {
 				$this->init_file();
 			}
 		}
@@ -119,9 +123,11 @@ if ( ! class_exists('MUCD_Log') ) {
 				if ( ! $this->fp = @fopen($this->log_file_path, 'a') ) {
 					return false;
 				}
+
 				chmod($this->log_file_path, 0777);
 				return true;
 			}
+
 			return false;
 		}
 
@@ -138,6 +144,7 @@ if ( ! class_exists('MUCD_Log') ) {
 				fwrite($this->fp, "$time $message" . "\r\n");
 				return true;
 			}
+
 			return false;
 		}
 

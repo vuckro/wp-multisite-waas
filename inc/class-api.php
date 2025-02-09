@@ -92,7 +92,7 @@ class API {
 	public function maybe_bypass_wp_auth($result) {
 
 		// Another plugin already bypass this request
-		if ($result === true) {
+		if (true === $result) {
 			return $result;
 		}
 
@@ -411,7 +411,7 @@ class API {
 			$api_secret = wu_get_isset($params, 'api_secret', wu_get_isset($params, 'api-secret'));
 		}
 
-		if ($api_key === false) {
+		if (false === $api_key) {
 			return false;
 		}
 

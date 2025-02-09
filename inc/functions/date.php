@@ -127,6 +127,7 @@ function wu_filter_duration_unit($unit, $length) {
 
 	return $new_unit;
 }
+
 /**
  * Get the human time diff.
  *
@@ -148,7 +149,7 @@ function wu_human_time_diff($from, $limit = '-5 days', $to = false): string {
 		return sprintf(__('on %s', 'wp-ultimo'), date_i18n(get_option('date_format'), $timestamp_from));
 	}
 
-	if ($to === false) {
+	if (false === $to) {
 		$to = wu_get_current_time('timestamp'); // phpcs:ignore
 	}
 

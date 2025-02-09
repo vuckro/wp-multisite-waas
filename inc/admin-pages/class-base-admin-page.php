@@ -240,7 +240,7 @@ abstract class Base_Admin_Page {
 
 		global $submenu;
 
-		if ($this->get_submenu_title() && $this->type === 'menu' && isset($submenu[ $this->id ]) && $submenu[ $this->id ][0][3] === $this->get_title()) {
+		if ($this->get_submenu_title() && 'menu' === $this->type && isset($submenu[ $this->id ]) && $submenu[ $this->id ][0][3] === $this->get_title()) {
 			$submenu[ $this->id ][0][0] = $this->get_submenu_title();
 		}
 	}
@@ -416,7 +416,7 @@ abstract class Base_Admin_Page {
 		/**
 		 * Create the admin page or sub-page
 		 */
-		$this->page_hook = $this->type === 'menu' ? $this->add_toplevel_menu_page() : $this->add_submenu_page();
+		$this->page_hook = 'menu' === $this->type ? $this->add_toplevel_menu_page() : $this->add_submenu_page();
 
 		/**
 		 * Add the default hooks

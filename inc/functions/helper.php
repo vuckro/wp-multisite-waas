@@ -98,6 +98,7 @@ function wu_slugify($term) {
 
 	return "wp-ultimo_$term";
 }
+
 /**
  * Returns the full path to the plugin folder.
  *
@@ -168,7 +169,7 @@ function wu_are_code_comments_available() {
 
 	static $res;
 
-	if ($res === null) {
+	if (null === $res) {
 		$res = (bool) (new \ReflectionFunction(__FUNCTION__))->getDocComment();
 	}
 
@@ -184,7 +185,7 @@ function wu_are_code_comments_available() {
  */
 function wu_path_join(...$parts): string {
 
-	if (sizeof($parts) === 0) {
+	if (count($parts) === 0) {
 		return '';
 	}
 
@@ -255,6 +256,7 @@ function wu_get_function_caller($depth = 1) {
 
 	return $caller;
 }
+
 /**
  * Checks if a particular plugin is skipped in a CLI context.
  *

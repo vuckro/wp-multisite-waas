@@ -322,7 +322,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 
 		$action = wu_request('submit_button', 'none');
 
-		if ($action === 'none') {
+		if ('none' === $action) {
 			WP_Ultimo()->notices->add(__('Something wrong happened', 'wp-ultimo'), 'error', 'network-admin');
 
 			return;
@@ -336,7 +336,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 			return;
 		}
 
-		if ($action === 'download') {
+		if ('download' === $action) {
 			$file_name = str_replace(Logger::get_logs_folder(), '', (string) $file);
 
 			header('Content-Type: application/octet-stream');
@@ -346,7 +346,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 			readfile($file);
 
 			exit;
-		} elseif ($action === 'delete') {
+		} elseif ('delete' === $action) {
 			$status = unlink($file);
 
 			if ( ! $status) {

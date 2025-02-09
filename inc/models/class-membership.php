@@ -534,6 +534,7 @@ class Membership extends Base_Model {
 
 		return ! empty($this->get_addons());
 	}
+
 	/**
 	 * Gets a list of product ids for addons.
 	 *
@@ -558,7 +559,7 @@ class Membership extends Base_Model {
 		$has_product = wu_get_isset($this->addon_products, $product_id);
 
 		if ($has_product && $this->addon_products[ $product_id ] >= 0) {
-			$this->addon_products[ $product_id ] = $this->addon_products[ $product_id ] + $quantity;
+			$this->addon_products[ $product_id ] += $quantity;
 		} else {
 			$this->addon_products[ $product_id ] = $quantity;
 		}
@@ -582,7 +583,7 @@ class Membership extends Base_Model {
 		$has_product = wu_get_isset($this->addon_products, $product_id);
 
 		if ($has_product && $this->addon_products[ $product_id ] >= 0) {
-			$this->addon_products[ $product_id ] = $this->addon_products[ $product_id ] - $quantity;
+			$this->addon_products[ $product_id ] -= $quantity;
 		}
 
 		if ($this->addon_products[ $product_id ] <= 0) {
@@ -725,6 +726,7 @@ class Membership extends Base_Model {
 		 */
 		return $this;
 	}
+
 	/**
 	 * Schedule a swap for the membership.
 	 *
@@ -836,6 +838,7 @@ class Membership extends Base_Model {
 
 		return $description;
 	}
+
 	/**
 	 * Returns the times billed in a human-friendly way.
 	 *
@@ -854,6 +857,7 @@ class Membership extends Base_Model {
 
 		return sprintf($description, $this->get_times_billed(), $this->get_billing_cycles());
 	}
+
 	/**
 	 * Returns the membership price structure in a way human can understand it.
 	 *
@@ -1329,6 +1333,7 @@ class Membership extends Base_Model {
 
 		$this->auto_renew = (bool) $auto_renew;
 	}
+
 	/**
 	 * Get the discount code applied if exist.
 	 *
@@ -1755,6 +1760,7 @@ class Membership extends Base_Model {
 
 		return wu_get_payments($query);
 	}
+
 	/**
 	 * Returns the last pending payment for a membership.
 	 *
@@ -1870,6 +1876,7 @@ class Membership extends Base_Model {
 
 		return $this->update_meta('pending_site', $site);
 	}
+
 	/**
 	 * Returns the pending site, if any.
 	 *
@@ -2056,7 +2063,7 @@ class Membership extends Base_Model {
 
 		static $sum;
 
-		if ($sum === null) {
+		if (null === $sum) {
 			$sum = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT SUM(total) FROM {$wpdb->base_prefix}wu_payments WHERE parent_id = 0 AND membership_id = %d",
@@ -2364,7 +2371,7 @@ class Membership extends Base_Model {
 		];
 
 		foreach ($this->_gateway_info as $key => $value) {
-			if ($value !== $current_gateway[ $key ]) {
+			if ($current_gateway[ $key ] !== $value) {
 				$has_change = true;
 
 				break;
@@ -2390,7 +2397,7 @@ class Membership extends Base_Model {
 			return PHP_INT_MAX;
 		}
 
-		$limit = $limit === '' ? 1 : $limit;
+		$limit = '' === $limit ? 1 : $limit;
 
 		return $limit - count($this->get_sites());
 	}
@@ -2416,6 +2423,7 @@ class Membership extends Base_Model {
 
 		return $this->get_date_trial_end() > gmdate('Y-m-d 23:59:59');
 	}
+
 	/**
 	 * Save (create or update) the model on the database.
 	 *
@@ -2497,6 +2505,7 @@ class Membership extends Base_Model {
 
 		return parent::save();
 	}
+
 	/**
 	 * Delete the model from the database.
 	 *

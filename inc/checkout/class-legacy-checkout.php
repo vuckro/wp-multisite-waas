@@ -959,12 +959,7 @@ class Legacy_Checkout {
 	public function has_plan_step(): bool {
 
 		$transient = static::get_transient();
-
-		if (isset($transient['skip_plan']) && isset($transient['plan_id']) && isset($transient['plan_freq'])) {
-			return false;
-		}
-
-		return true;
+        return !(isset($transient['skip_plan']) && isset($transient['plan_id']) && isset($transient['plan_freq']));
 	}
 
 	/**
@@ -1048,9 +1043,9 @@ class Legacy_Checkout {
 
 		$keys       = array_keys($this->steps);
 		$search_key = array_search($this->step, array_keys($this->steps)) - 1 >= 0 ? array_search($this->step, array_keys($this->steps)) - 1 : false;
-		$key        = $search_key === false ? '' : $keys[ $search_key ];
+		$key        = false === $search_key ? '' : $keys[ $search_key ];
 
-		if ( ! $key || $key == 'begin-signup') {
+		if ( ! $key || 'begin-signup' == $key) {
 			return false;
 		}
 
@@ -1096,7 +1091,7 @@ class Legacy_Checkout {
 
 		?>
 
-		<?php if ($step == 'plan') { ?>
+		<?php if ('plan' == $step) { ?>
 
 		<input type="hidden" name="wu_action" value="wu_new_user">
 		<input type="hidden" id="wu_plan_freq" name="plan_freq" value="<?php echo $freq; ?>">
@@ -1267,7 +1262,7 @@ class Legacy_Checkout {
 	 */
 	public function array_filter_key(array $array, $callback): array {
 
-		$matched_keys = array_filter(array_keys($array), $callback ?? fn($v, $k): bool => ! empty($v), $callback === null ? ARRAY_FILTER_USE_BOTH : 0);
+		$matched_keys = array_filter(array_keys($array), $callback ?? fn($v, $k): bool => ! empty($v), null === $callback ? ARRAY_FILTER_USE_BOTH : 0);
 
 		return array_intersect_key($array, array_flip($matched_keys));
 	}
@@ -1332,7 +1327,7 @@ class Legacy_Checkout {
 			function ($steps) use ($step, $id, $order, $field) {
 
 				// Checks for honey-trap id
-				if ($id === 'site_url') {
+				if ('site_url' === $id) {
 					wp_die(__('Please, do not use the "site_url" as one of your custom fields\' ids. We use it as a honeytrap field to prevent spam registration. Consider alternatives such as "url" or "website".', 'wp-ultimo'));
 				}
 

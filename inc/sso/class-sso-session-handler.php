@@ -46,6 +46,7 @@ class SSO_Session_Handler implements SessionInterface {
 	public function __construct(\WP_Ultimo\SSO\SSO $sso_manager = null) {
 		$this->sso_manager = $sso_manager;
 	}
+
 	/**
 	 * Returns the session id.
 	 *
@@ -54,6 +55,7 @@ class SSO_Session_Handler implements SessionInterface {
  public function getId(): string { // phpcs:ignore
 		return $this->sso_manager->input('broker');
 	}
+
 	/**
 	 * Start a new session.
 	 *
@@ -74,6 +76,7 @@ class SSO_Session_Handler implements SessionInterface {
 
 		set_site_transient("sso-{$site_hash}-{$id}", get_current_user_id(), 180);
 	}
+
 	/**
 	 * Resume an existing session.
 	 *
@@ -94,6 +97,7 @@ class SSO_Session_Handler implements SessionInterface {
 			$this->sso_manager->set_target_user_id($user_id);
 		}
 	}
+
 	/**
 	 * Check if a session is active. (status PHP_SESSION_ACTIVE).
 	 *

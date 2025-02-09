@@ -33,6 +33,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 
 		return 'pricing_table';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -81,6 +82,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 
 		return __('Adds a pricing table section that customers can use to choose a plan to subscribe to.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -244,7 +246,7 @@ class Signup_Field_Pricing_Table extends Base_Signup_Field {
 	 */
 	public function to_fields_array($attributes) {
 
-		if (wu_get_isset($attributes, 'pricing_table_template') === 'legacy') {
+		if ('legacy' === wu_get_isset($attributes, 'pricing_table_template')) {
 			wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons'], wu_get_version());
 
 			wp_add_inline_style('legacy-shortcodes', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());

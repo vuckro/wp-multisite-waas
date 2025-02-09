@@ -46,6 +46,7 @@ class Webhook_List_Table extends Base_List_Table {
 			]
 		);
 	}
+
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -115,6 +116,7 @@ class Webhook_List_Table extends Base_List_Table {
 
 		return "<span class='wu-py-1 wu-px-2 wu-bg-gray-200 wu-rounded-sm wu-text-gray-700 wu-text-xs wu-font-mono'>{$event}</span>";
 	}
+
 	/**
 	 * Displays the content of the count column.
 	 *
@@ -132,6 +134,7 @@ class Webhook_List_Table extends Base_List_Table {
 
 		return $count . $this->row_actions($actions);
 	}
+
 	/**
 	 * Displays the content of the integration column.
 	 *
@@ -178,6 +181,7 @@ class Webhook_List_Table extends Base_List_Table {
 
 		return $columns;
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

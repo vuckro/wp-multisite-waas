@@ -32,6 +32,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 
 		return 'products';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -80,6 +81,7 @@ class Signup_Field_Products extends Base_Signup_Field {
 
 		return __('Hidden field used to pre-select products. This is useful when you have a signup page for specific offering/bundles and do not want your customers to be able to choose plans and products manually.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *

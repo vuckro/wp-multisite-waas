@@ -14,7 +14,7 @@
 		// Check if it was selected
 		$settings = wu_get_setting($field_slug);
 
-		if ($settings === false) {
+		if (false === $settings) {
 			$settings = $field['default'] ?? false;
 		}
 

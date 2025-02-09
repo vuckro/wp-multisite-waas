@@ -237,6 +237,7 @@ class Jumper {
 
 		return $links;
 	}
+
 	/**
 	 * Get the trigger key defined by the user.
 	 *
@@ -355,6 +356,7 @@ class Jumper {
 			]
 		);
 	}
+
 	/**
 	 * Get the full page URL for admin pages.
 	 *

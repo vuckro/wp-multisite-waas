@@ -738,6 +738,7 @@ class Site_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return $this->object;
 	}
+
 	/**
 	 * Sites have titles.
 	 *

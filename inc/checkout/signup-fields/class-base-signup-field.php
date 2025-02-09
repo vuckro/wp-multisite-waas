@@ -224,7 +224,7 @@ abstract class Base_Signup_Field {
 		$width = (int) wu_get_isset($this->attributes, 'width');
 
 		if ($width) {
-			if ($width !== 100) {
+			if (100 !== $width) {
 				$styles[] = 'float: left';
 
 				$styles[] = sprintf('width: %s%%', $width);
@@ -332,7 +332,7 @@ abstract class Base_Signup_Field {
 
 			$field['default'] = wu_get_isset($this->defaults(), $key, '');
 
-			if ($value === null) {
+			if (null === $value) {
 				$value = $field['default'];
 			}
 

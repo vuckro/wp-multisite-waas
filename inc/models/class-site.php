@@ -368,6 +368,7 @@ class Site extends Base_Model {
 
 		return $this->featured_image_id;
 	}
+
 	/**
 	 * Get featured image url.
 	 *
@@ -420,6 +421,7 @@ class Site extends Base_Model {
 
 		return Template_Previewer::get_instance()->get_preview_url($this->get_id());
 	}
+
 	/**
 	 * Get the preview URL attrs.
 	 *
@@ -496,6 +498,7 @@ class Site extends Base_Model {
 
 		$this->site_id = $site_id;
 	}
+
 	/**
 	 * Get title of the site..
 	 *
@@ -593,6 +596,7 @@ class Site extends Base_Model {
 
 		$this->domain = $domain;
 	}
+
 	/**
 	 * Get path of the site. Used when in sub-directory mode..
 	 *
@@ -1044,6 +1048,7 @@ class Site extends Base_Model {
 
 		return false;
 	}
+
 	/**
 	 * Get template ID.
 	 *
@@ -1172,6 +1177,7 @@ class Site extends Base_Model {
 
 		$this->type = $type;
 	}
+
 	/**
 	 * Get the primary mapped domain for this site.
 	 *
@@ -1421,6 +1427,7 @@ class Site extends Base_Model {
 
 		return absint($primary_site_id) === absint($this->get_id());
 	}
+
 	/**
 	 * Delete the model from the database.
 	 *
@@ -1580,7 +1587,7 @@ class Site extends Base_Model {
 					$error = $saved;
 					$saved = get_blog_id_from_url($domain, $this->get_path());
 
-					if ($saved === 0 || $saved === wu_get_main_site_id()) {
+					if (0 === $saved || wu_get_main_site_id() === $saved) {
 						return $error;
 					}
 				}
@@ -1744,7 +1751,7 @@ class Site extends Base_Model {
 
 		global $wpdb;
 
-		if ($type === 'pending') {
+		if ('pending' === $type) {
 			$table_name = "{$wpdb->base_prefix}wu_membershipmeta";
 
 			$customer_id = (int) wu_get_isset($query_args, 'customer_id');

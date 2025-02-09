@@ -123,7 +123,7 @@ class Toolkit {
 
 		$class_name = str_replace('_', '-', strtolower($path));
 
-		$args = $manager->get_arguments_schema($context === 'update');
+		$args = $manager->get_arguments_schema('update' === $context);
 
 		file_put_contents(wu_path("/mpb/data/endpoint/.endpoint-$class_name-$context"), json_encode($args)); // phpcs:ignore
 	}
@@ -214,7 +214,7 @@ class Toolkit {
 	 */
 	public function die($should_die = true): void {
 
-		if ($should_die === true) {
+		if (true === $should_die) {
 			$should_die = is_admin() ? 'admin_enqueue_scripts' : 'wp_enqueue_scripts';
 		}
 
@@ -234,9 +234,9 @@ class Toolkit {
 
 		$listener = wu_request(self::LISTENER_PARAM, 'no-dev-param');
 
-		if ($listener === 'no-dev-param') {
+		if ('no-dev-param' === $listener) {
 			return current($arguments);
-		} elseif ($listener === '') {
+		} elseif ('' === $listener) {
 			$listener = 'index';
 		}
 

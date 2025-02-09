@@ -101,6 +101,7 @@ class Current_Membership_Element extends Base_Element {
 
 		add_wubox();
 	}
+
 	/**
 	 * The icon of the UI element.
 	 * e.g. return fa fa-search
@@ -110,7 +111,7 @@ class Current_Membership_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block'): string {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-info-circle-o';
 		}
 

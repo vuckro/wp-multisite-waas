@@ -46,6 +46,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 			]
 		);
 	}
+
 	/**
 	 * Displays the content of the product column.
 	 *
@@ -97,6 +98,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 
 		return "<span class='wu-bg-gray-200 wu-text-gray-700 wu-py-1 wu-px-2 wu-rounded-sm wu-text-xs wu-font-mono'>{$slug}</span>";
 	}
+
 	/**
 	 * Displays the number pof steps and fields.
 	 *
@@ -108,6 +110,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 
 		return sprintf(__('%1$d Step(s) and %2$d Field(s)', 'wp-ultimo'), $item->get_step_count(), $item->get_field_count());
 	}
+
 	/**
 	 * Displays the form shortcode.
 	 *
@@ -138,7 +141,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 
 		$bulk_action = $this->current_action();
 
-		if ($bulk_action === 'duplicate') {
+		if ('duplicate' === $bulk_action) {
 			$checkout_form_id = wu_request('id');
 
 			$checkout_form = wu_get_checkout_form($checkout_form_id);
@@ -199,6 +202,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 
 		return $columns;
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

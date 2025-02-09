@@ -183,7 +183,7 @@ trait WP_Ultimo_Plan_Deprecated {
 				$value        = $is_unlimited ? __('Unlimited', 'wp-ultimo') : $this->get_limitations()->post_types->{$pt_slug}->number;
 
 				// Add Line
-				$label = $value == 1 ? $post_type->labels->singular_name : $post_type->labels->name;
+				$label = 1 == $value ? $post_type->labels->singular_name : $post_type->labels->name;
 
 				$pricing_table_lines[ 'wu_product_limit_post_type_' . $pt_slug ] = sprintf('%s %s', $value, $label);
 			}
@@ -272,11 +272,11 @@ trait WP_Ultimo_Plan_Deprecated {
 	 */
 	public function get_quota($quota_name) {
 
-		if ($quota_name === 'visits') {
+		if ('visits' === $quota_name) {
 			$limit = (float) $this->get_limitations()->visits->get_limit();
-		} elseif ($quota_name === 'disk_space') {
+		} elseif ('disk_space' === $quota_name) {
 			$limit = (float) $this->get_limitations()->disk_space->get_limit();
-		} elseif ($quota_name === 'sites') {
+		} elseif ('sites' === $quota_name) {
 			$limit = (float) $this->get_limitations()->sites->get_limit();
 		} else {
 			$limit = (float) $this->get_limitations()->post_types->{$quota_name}->number;

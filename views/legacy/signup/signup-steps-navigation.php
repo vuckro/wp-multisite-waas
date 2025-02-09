@@ -48,7 +48,7 @@ $percent     = 100 / $count;
 		 */
 		$class = '';
 
-		if ($step_key === $signup->step) {
+		if ($signup->step === $step_key) {
 			$class = 'active';
 		} elseif (array_search($signup->step, array_keys($signup->steps)) > array_search($step_key, array_keys($signup->steps))) {
 			$class = 'done';

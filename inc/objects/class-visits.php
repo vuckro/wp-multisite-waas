@@ -23,6 +23,7 @@ class Visits {
 	 * Key to save on the database.
 	 */
 	const KEY = 'wu_visits';
+
 	/**
 	 * @var int
 	 */
@@ -38,6 +39,7 @@ class Visits {
 	public function __construct($site_id) {
 		$this->site_id = $site_id;
 	}
+
 	/**
 	 * Returns the meta key to save visits.
 	 *

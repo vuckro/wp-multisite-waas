@@ -198,7 +198,7 @@ class Membership_List_Table extends Base_List_Table {
 
 		$date = $item->get_date_expiration();
 
-		if (empty($date) || $date === '0000-00-00 00:00:00') {
+		if (empty($date) || '0000-00-00 00:00:00' === $date) {
 			return sprintf('<span>%s</span><br><small>%s</small>', __('Lifetime', 'wp-ultimo'), __('It never expires', 'wp-ultimo'));
 		}
 

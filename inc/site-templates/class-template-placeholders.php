@@ -125,6 +125,7 @@ class Template_Placeholders {
 
 		return "{{{$tag}}}";
 	}
+
 	/**
 	 * Replace the contents with the placeholders.
 	 *

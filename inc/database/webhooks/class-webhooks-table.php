@@ -94,6 +94,7 @@ final class Webhooks_Table extends Table {
 
 			// phpcs:enable
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

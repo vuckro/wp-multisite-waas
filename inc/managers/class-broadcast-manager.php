@@ -134,7 +134,7 @@ class Broadcast_Manager extends Base_Manager {
 
 		$args['type'] = $broadcast_type;
 
-		if ($broadcast_type === 'broadcast_notice') {
+		if ('broadcast_notice' === $broadcast_type) {
 			$targets = [
 				'customers' => $target_customers,
 				'products'  => $target_products,

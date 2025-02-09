@@ -537,7 +537,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		 */
 		$type = wu_request('type', 'product');
 
-		if ($type === 'product') {
+		if ('product' === $type) {
 			$product = wu_get_product(wu_request('product_id'));
 
 			if (empty($product)) {
@@ -1270,7 +1270,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 
 		static $payment;
 
-		if ($payment !== null) {
+		if (null !== $payment) {
 			return $payment;
 		}
 
@@ -1292,6 +1292,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return new Payment();
 	}
+
 	/**
 	 * Payments have titles.
 	 *

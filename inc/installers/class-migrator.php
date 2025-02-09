@@ -217,6 +217,7 @@ class Migrator extends Base_Installer {
 		 */
 		return ! self::is_migration_done();
 	}
+
 	/**
 	 * Returns the list of errors detected.
 	 *
@@ -226,6 +227,7 @@ class Migrator extends Base_Installer {
 
 		return array_unique((array) $this->errors);
 	}
+
 	/**
 	 * Returns the list of _backtraces detected.
 	 *
@@ -409,7 +411,7 @@ class Migrator extends Base_Installer {
 		 */
 		$set_memory_limit = @ini_set('memory_limit', '-1'); // phpcs:ignore
 
-		if ($set_memory_limit === false) {
+		if (false === $set_memory_limit) {
 			$error->add('memory_limit', sprintf($message, 'memory_limit'));
 		}
 
@@ -418,7 +420,7 @@ class Migrator extends Base_Installer {
 		 */
 		$set_time_limit = @set_time_limit(0); // phpcs:ignore
 
-		if ($set_time_limit === false) {
+		if (false === $set_time_limit) {
 			$error->add('time_limit', sprintf($message, 'time_limit'));
 		}
 
@@ -1153,7 +1155,7 @@ class Migrator extends Base_Installer {
 			$site_template_enabled          = true;
 			$force_template                 = false;
 
-			if ($has_template_selection_options === false) {
+			if (false === $has_template_selection_options) {
 				$force_template = get_post_meta($plan->ID, 'wpu_site_template', true);
 
 				if ($force_template && wu_get_site($force_template)) {
@@ -1181,7 +1183,7 @@ class Migrator extends Base_Installer {
 
 				$behavior = $has_custom_template_list ? 'not_available' : 'available';
 
-				if ($site_template_id === absint($force_template)) {
+				if (absint($force_template) === $site_template_id) {
 					$behavior = 'pre_selected';
 				} elseif (in_array($site_template_id, $templates)) { // phpcs:ignore;
 
@@ -1258,7 +1260,7 @@ class Migrator extends Base_Installer {
 			$post_types_limit = [];
 
 			foreach ($quotas as $post_type => $quota) {
-				if ($post_type === 'users' && ! $unlimited_users) {
+				if ('users' === $post_type && ! $unlimited_users) {
 					$user_roles = get_editable_roles();
 
 					$roles_limit = [];
@@ -1274,17 +1276,17 @@ class Migrator extends Base_Installer {
 						'limit'   => $roles_limit,
 						'enabled' => true,
 					];
-				} elseif ($post_type === 'upload') {
+				} elseif ('upload' === $post_type) {
 					$limitations_modules['disk_space'] = [
 						'limit'   => absint($quota),
 						'enabled' => true,
 					];
-				} elseif ($post_type === 'visits') {
+				} elseif ('visits' === $post_type) {
 					$limitations_modules['visits'] = [
 						'limit'   => $quota ? absint($quota) : '',
 						'enabled' => true,
 					];
-				} elseif ($post_type === 'sites') {
+				} elseif ('sites' === $post_type) {
 					$limitations_modules['sites'] = [
 						'limit'   => absint($quota),
 						'enabled' => true,
@@ -2201,6 +2203,7 @@ class Migrator extends Base_Installer {
 			}
 		}
 	}
+
 	/**
 	 * Convert hard-coded thumbnail urls into v2 thumbnails.
 	 *
@@ -2451,7 +2454,7 @@ class Migrator extends Base_Installer {
 
 			$style = get_post_meta($broadcast->ID, 'wpu_style', true);
 
-			$new_type = $old_type === 'message' ? 'broadcast_notice' : 'broadcast_email';
+			$new_type = 'message' === $old_type ? 'broadcast_notice' : 'broadcast_email';
 
 			$customer_targets = (array) get_post_meta($broadcast->ID, 'wpu_target_users', true);
 			$product_targets  = (array) get_post_meta($broadcast->ID, 'wpu_target_plans', true);

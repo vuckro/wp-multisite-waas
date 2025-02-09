@@ -27,14 +27,17 @@ class PayPal_Gateway extends Base_Gateway {
 	 * @var string
 	 */
 	public $error_message;
+
 	/**
 	 * @var string
 	 */
 	public $webhook_event_id;
+
 	/**
 	 * @var \WP_Ultimo\Models\Payment
 	 */
 	public $payment;
+
 	/**
 	 * Holds the ID of a given gateway.
 	 *
@@ -517,7 +520,7 @@ class PayPal_Gateway extends Base_Gateway {
 			$recurring_total_format = wu_format_currency($recurring_total, $cart->get_currency());
 
 			if ($recurring_total !== $cart_total) {
-				if ($type === 'downgrade') {
+				if ('downgrade' === $type) {
 					if ($is_trial_setup) {
 						$notes[] = sprintf(__('Your updated membership will start on $1$s, from that date you will be billed %2$s every month.', 'wp-ultimo'), $date, $recurring_total_format);
 					} else {
@@ -561,8 +564,8 @@ class PayPal_Gateway extends Base_Gateway {
 				"L_PAYMENTREQUEST_0_TAXAMT{$product_index}" => $tax_amount,
 			];
 
-			$args['PAYMENTREQUEST_0_ITEMAMT'] = $args['PAYMENTREQUEST_0_ITEMAMT'] + $sub_total;
-			$args['PAYMENTREQUEST_0_TAXAMT']  = $args['PAYMENTREQUEST_0_TAXAMT'] + $tax_amount;
+			$args['PAYMENTREQUEST_0_ITEMAMT'] += $sub_total;
+			$args['PAYMENTREQUEST_0_TAXAMT'] += $tax_amount;
 			$args['PAYMENTREQUEST_0_AMT']     = $args['PAYMENTREQUEST_0_AMT'] + $sub_total + $tax_amount;
 
 			$args = array_merge($args, $product_args);
@@ -584,8 +587,8 @@ class PayPal_Gateway extends Base_Gateway {
 				]
 			);
 
-			$args['PAYMENTREQUEST_0_ITEMAMT'] = $args['PAYMENTREQUEST_0_ITEMAMT'] + $discounts_total;
-			$args['PAYMENTREQUEST_0_AMT']     = $args['PAYMENTREQUEST_0_AMT'] + $discounts_total;
+			$args['PAYMENTREQUEST_0_ITEMAMT'] += $discounts_total;
+			$args['PAYMENTREQUEST_0_AMT'] += $discounts_total;
 
 			++$product_index;
 		}
@@ -731,7 +734,7 @@ class PayPal_Gateway extends Base_Gateway {
 			'INVOICEID'     => $payment->get_hash(),
 		];
 
-		if ($refund_type === 'Partial') {
+		if ('Partial' === $refund_type) {
 			$args['AMT'] = $amount_formatted;
 		}
 
@@ -773,6 +776,7 @@ class PayPal_Gateway extends Base_Gateway {
 
 		throw new \Exception(__('Something went wrong.', 'wp-ultimo'));
 	}
+
 	/**
 	 * Adds additional fields to the checkout form for a particular gateway.
 	 *
@@ -890,6 +894,7 @@ class PayPal_Gateway extends Base_Gateway {
 			$this->confirmation_form();
 		}
 	}
+
 	/**
 	 * Process webhooks
 	 *
@@ -936,7 +941,7 @@ class PayPal_Gateway extends Base_Gateway {
 
 		$amount = isset($posted['mc_gross']) ? wu_to_float($posted['mc_gross']) : false;
 
-		if ($amount !== false) {
+		if (false !== $amount) {
 			$payment_data['amount'] = $amount;
 		}
 
@@ -1278,7 +1283,7 @@ class PayPal_Gateway extends Base_Gateway {
 				// If TRANSACTIONID is not passed we need to wait for webhook
 				$payment_status = Payment_Status::PENDING;
 
-				if ( ! empty($transaction_id) || $profile_status === 'ActiveProfile' || $is_trial_setup) {
+				if ( ! empty($transaction_id) || 'ActiveProfile' === $profile_status || $is_trial_setup) {
 					$payment_status = Payment_Status::COMPLETED;
 				}
 
@@ -1311,7 +1316,7 @@ class PayPal_Gateway extends Base_Gateway {
 				$membership->set_gateway_customer_id($details['PAYERID']);
 				$membership->set_gateway('paypal');
 
-				if ($payment_status === Payment_Status::COMPLETED) {
+				if (Payment_Status::COMPLETED === $payment_status) {
 					$membership->add_to_times_billed(1);
 
 					/*
@@ -1547,6 +1552,7 @@ class PayPal_Gateway extends Base_Gateway {
 			]
 		);
 	}
+
 	/**
 	 * Get checkout details.
 	 *

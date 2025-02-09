@@ -34,6 +34,7 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 
 		return 'template_selection';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -82,6 +83,7 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 
 		return __('Adds a template selection section. This allows the customer to choose a pre-built site to be used as a template for the site being currently created.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -375,15 +377,15 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 
 		$selection_type = wu_get_isset($attributes, 'template_selection_type', 'name');
 
-		if ($selection_type === 'name') {
+		if ('name' === $selection_type) {
 			return explode(',', $attributes['template_selection_sites']);
 		}
 
-		if ($selection_type === 'all') {
+		if ('all' === $selection_type) {
 			return wu_get_site_templates(['fields' => 'blog_id']);
 		}
 
-		if ($selection_type === 'categories') {
+		if ('categories' === $selection_type) {
 			return array_column(
 				\WP_Ultimo\Models\Site::get_all_by_categories(
 					$attributes['template_selection_categories'],

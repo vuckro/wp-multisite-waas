@@ -88,6 +88,7 @@ final class Domains_Table extends Table {
 			KEY blog_id (blog_id,domain,active),
 			KEY domain (domain)";
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

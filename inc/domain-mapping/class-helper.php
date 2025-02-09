@@ -62,6 +62,7 @@ class Helper {
 		 */
 		return apply_filters('wu_is_development_mode', $is_development_mode, $site_url);
 	}
+
 	/**
 	 * Gets the local IP address of the network.
 	 *
@@ -137,6 +138,7 @@ class Helper {
 		 */
 		return apply_filters('wu_get_network_public_ip', $_ip_address, false);
 	}
+
 	/**
 	 * Checks if a given domain name has a valid associated SSL certificate.
 	 *

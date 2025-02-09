@@ -70,7 +70,7 @@ class Limit_Post_Types extends Limit_Subtype {
 
 		$post_count = wp_count_posts($post_type);
 
-		$statuses = $post_type === 'attachment' ? ['inherit'] : ['publish', 'private'];
+		$statuses = 'attachment' === $post_type ? ['inherit'] : ['publish', 'private'];
 
 		/**
 		 * Allow plugin developers to change which post status should be counted

@@ -474,7 +474,7 @@ class Notes_Manager extends Base_Manager {
 
 		$status = $object->delete_note($note_id);
 
-		if (is_wp_error($status) || $status === false) {
+		if (is_wp_error($status) || false === $status) {
 			wp_send_json_error(new \WP_Error('not-found', __('Note not found', 'wp-ultimo')));
 		}
 

@@ -104,7 +104,7 @@ trait Notable {
 
 				$column_name = "wu_{$model}_id";
 
-				if ($model === 'site') {
+				if ('site' === $model) {
 					$table_name = "{$wpdb->base_prefix}blogmeta";
 
 					$column_name = 'blog_id';
@@ -120,7 +120,7 @@ trait Notable {
 
 		$status = delete_metadata_by_mid("wu_{$model}", $mid['meta_id']);
 
-		if ($model === 'site') {
+		if ('site' === $model) {
 			$status = delete_metadata_by_mid('blog', $mid['meta_id']);
 		}
 

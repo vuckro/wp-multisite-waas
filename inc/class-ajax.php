@@ -42,6 +42,7 @@ class Ajax {
 		 */
 		add_action('wp_ajax_wu_list_table_fetch_ajax_results', [$this, 'refresh_list_table']);
 	}
+
 	/**
 	 * Reverts the name of the table being processed.
 	 *
@@ -301,6 +302,7 @@ class Ajax {
 
 		wp_send_json($data);
 	}
+
 	/**
 	 * Search for WP Multisite WaaS settings to help customers find them.
 	 *

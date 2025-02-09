@@ -110,7 +110,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 
 		$this->register_page_settings();
 
-		if ($this->current_site->get_type() === 'customer_owned') {
+		if ('customer_owned' === $this->current_site->get_type()) {
 			parent::__construct();
 
 			add_action('admin_menu', [$this, 'unset_default_my_sites_menu']);
@@ -187,7 +187,7 @@ class My_Sites_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 */
 	public function force_screen_options(): void {
 
-		if (get_current_screen()->id !== 'toplevel_page_sites') {
+		if ('toplevel_page_sites' !== get_current_screen()->id) {
 			return;
 		}
 

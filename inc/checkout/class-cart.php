@@ -533,6 +533,7 @@ class Cart implements \JsonSerializable {
 
 		$this->cart_descriptor = $descriptor;
 	}
+
 	/**
 	 * Decides if we are trying to recover a payment.
 	 *
@@ -707,6 +708,7 @@ class Cart implements \JsonSerializable {
 
 		return true;
 	}
+
 	/**
 	 * Uses the membership to decide if this is a upgrade/downgrade/addon cart.
 	 *
@@ -1050,6 +1052,7 @@ class Cart implements \JsonSerializable {
 		 */
 		return true;
 	}
+
 	/**
 	 * Search for variations of the plans with same duration.
 	 *
@@ -1235,6 +1238,7 @@ class Cart implements \JsonSerializable {
 
 		$this->add_line_item($credit_line_item);
 	}
+
 	/**
 	 * Adds a discount code to the cart.
 	 *
@@ -1485,6 +1489,7 @@ class Cart implements \JsonSerializable {
 
 		krsort($this->line_items);
 	}
+
 	/**
 	 * Adds a new product to the cart.
 	 *
@@ -1762,6 +1767,7 @@ class Cart implements \JsonSerializable {
 
 		return $this->recovered_payment;
 	}
+
 	/**
 	 * Add discount to the order.
 	 *
@@ -1787,6 +1793,7 @@ class Cart implements \JsonSerializable {
 
 		return true;
 	}
+
 	/**
 	 * Get registration discounts.
 	 *
@@ -1836,6 +1843,7 @@ class Cart implements \JsonSerializable {
 
 		return array_filter($this->line_items, fn($id) => in_array($id, $ids, true), ARRAY_FILTER_USE_KEY);
 	}
+
 	/**
 	 * Get registration fees.
 	 *
@@ -2137,6 +2145,7 @@ class Cart implements \JsonSerializable {
 
 		return $smallest_trial;
 	}
+
 	/**
 	 * Returns the timestamp of the next charge, if recurring.
 	 *

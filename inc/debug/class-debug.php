@@ -718,7 +718,7 @@ class Debug {
 				);
 			}
 
-			if ($result === false) {
+			if (false === $result) {
 				throw new \Exception("Error $table");
 			}
 		}

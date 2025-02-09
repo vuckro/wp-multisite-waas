@@ -114,7 +114,7 @@ function wu_array_recursive_diff($array1, $array2, $to_keep = []) {
 				if (count($array_recursive_diff)) {
 					$arr_return[ $key ] = $array_recursive_diff;
 				}
-			} elseif ((! is_null($value) && $value != $array2[ $key ]) || ($value && $array2[ $key ] && in_array($key, $to_keep, true))) {
+			} elseif ((! is_null($value) && $array2[ $key ] != $value) || ($value && $array2[ $key ] && in_array($key, $to_keep, true))) {
 				// phpcs:ignore
 
 					$arr_return[ $key ] = $value;
@@ -126,6 +126,7 @@ function wu_array_recursive_diff($array1, $array2, $to_keep = []) {
 
 	return $arr_return;
 }
+
 /**
  * Array map implementation to deal with keys.
  *

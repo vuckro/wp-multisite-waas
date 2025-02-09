@@ -70,7 +70,7 @@ class Dashboard_Widgets {
 
 		global $pagenow;
 
-		if ( ! $pagenow || $pagenow !== 'index.php') {
+		if ( ! $pagenow || 'index.php' !== $pagenow) {
 			return;
 		}
 

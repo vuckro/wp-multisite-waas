@@ -1050,6 +1050,7 @@ class Product_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return $this->object;
 	}
+
 	/**
 	 * Products have titles.
 	 *

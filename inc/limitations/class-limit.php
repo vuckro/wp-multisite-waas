@@ -134,7 +134,7 @@ abstract class Limit implements \JsonSerializable {
 		/*
 		 * Sets the own limit flag, if necessary.
 		 */
-		if ($current_limit === 'not-set' || $current_limit === '') {
+		if ('not-set' === $current_limit || '' === $current_limit) {
 			$this->has_own_limit = false;
 		}
 

@@ -88,7 +88,7 @@ class Domain_Mapping {
 
 		$is_enabled = (bool) wu_get_setting_early('enable_domain_mapping');
 
-		if ($is_enabled === false) {
+		if (false === $is_enabled) {
 			return;
 		}
 
@@ -241,6 +241,7 @@ class Domain_Mapping {
 
 		return [$nowww, $www];
 	}
+
 	/**
 	 * Checks if we have a site associated with the domain being accessed
 	 *
@@ -468,7 +469,7 @@ class Domain_Mapping {
 	 */
 	public function replace_url($url, $current_mapping = null) {
 
-		if ($current_mapping === null) {
+		if (null === $current_mapping) {
 			$current_mapping = $this->current_mapping;
 		}
 
@@ -509,7 +510,7 @@ class Domain_Mapping {
 
 		$current_mapping = $this->current_mapping;
 
-		if (empty($current_mapping) || $site_id !== $current_mapping->get_site_id()) {
+		if (empty($current_mapping) || $current_mapping->get_site_id() !== $site_id) {
 			return $url;
 		}
 

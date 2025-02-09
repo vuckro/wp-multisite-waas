@@ -54,6 +54,7 @@ function wu_remove_empty_p($content): ?string {
 
 	return preg_replace('#<p>(\s|&nbsp;)*+(<br\s*/*>)*(\s|&nbsp;)*</p>#i', '', $content);
 }
+
 /**
  * Generates a string containing html attributes to be used inside html tags.
  *
@@ -107,6 +108,7 @@ function wu_tooltip($tooltip, $icon = 'dashicons-editor-help') {
 
 	return $markup;
 }
+
 /**
  * Adds a tooltip to a HTML element. Needs to be echo'ed.
  *
@@ -118,6 +120,7 @@ function wu_tooltip_text($tooltip): string {
 
 	return sprintf('role="tooltip" aria-label="%s"', esc_attr($tooltip));
 }
+
 /**
  * Adds a preview tag that displays the image passed on hover.
  *

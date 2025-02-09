@@ -224,7 +224,7 @@ class Async_Calls {
 		foreach ($results as $result) {
 			$status = wu_get_isset($result, 'success', false);
 
-			if ($status === false) {
+			if (false === $status) {
 				return $result;
 			}
 		}

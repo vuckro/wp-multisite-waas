@@ -52,6 +52,7 @@ function wu_get_tax_category($tax_category = 'default') {
 		]
 	);
 }
+
 /**
  * Returns the tax categories as a slug => name array.
  *
@@ -61,6 +62,7 @@ function wu_get_tax_categories_as_options(): array {
 
 	return array_map(fn($item) => $item['name'], wu_get_tax_categories());
 }
+
 /**
  * Calculates the tax value.
  *
@@ -80,7 +82,7 @@ function wu_get_tax_amount($base_price, $amount, $type, $format = true, $inclusi
 	 */
 	$tax_total = $amount;
 
-	if ($type === 'percentage') {
+	if ('percentage' === $type) {
 		if ( ! $inclusive) {
 
 			/**
@@ -159,14 +161,14 @@ function wu_get_applicable_tax_rates($country, $tax_category = 'default', $state
 			/*
 			 * Step 1: The country.
 			 */
-			if ($key === 'country' && $rate['country'] === $country) {
+			if ('country' === $key && $rate['country'] === $country) {
 				$priority += 10;
 			}
 
 			/*
 			 * Step 2: The state / province
 			 */
-			if ($key === 'state' && $state !== '*') {
+			if ('state' === $key && '*' !== $state) {
 				if (in_array($state, $value, true)) {
 					$priority += 1;
 				} elseif (empty($value) || in_array('*', $value, true)) {
@@ -177,7 +179,7 @@ function wu_get_applicable_tax_rates($country, $tax_category = 'default', $state
 			/*
 			 * Step 3: The city
 			 */
-			if ($key === 'city' && $city !== '*') {
+			if ('city' === $key && '*' !== $city) {
 				if (in_array($city, $value, true)) {
 					/*
 					 * If it's a full match, gives 1 point.

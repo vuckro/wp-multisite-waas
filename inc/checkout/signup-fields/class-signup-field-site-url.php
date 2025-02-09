@@ -32,6 +32,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 
 		return 'site_url';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -41,6 +42,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 
 		return false;
 	}
+
 	/**
 	 * Defines if this field/element is related to site creation or not.
 	 *
@@ -89,6 +91,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 
 		return __('Adds a Site URL field. This is used to set the URL of the site being created.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *
@@ -362,6 +365,7 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 
 		return $checkout_fields;
 	}
+
 	/**
 	 * Get the domain options.
 	 *

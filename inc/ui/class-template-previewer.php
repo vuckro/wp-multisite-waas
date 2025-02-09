@@ -415,7 +415,7 @@ class Template_Previewer {
 		$settings = $this->get_settings();
 
 		foreach ($settings as $setting => $value) {
-			if ($setting === 'logo_url') {
+			if ('logo_url' === $setting) {
 				$settings['logo_url'] = wu_get_network_logo();
 
 				continue;

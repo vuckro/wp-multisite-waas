@@ -23,6 +23,7 @@ abstract class Enum {
 	 * The default value.
 	 */
 	const __default = false;
+
     // phpcs:ignore
     /**
 	 * The options available.
@@ -31,10 +32,12 @@ abstract class Enum {
 	 * @var array
 	 */
 	static $options = [];
+
 	/**
 	 * @var string
 	 */
 	private $value = '';
+
 	/**
 	 * Constructor method. Takes the value you want to set.
 	 *
@@ -54,6 +57,7 @@ abstract class Enum {
 	 * @return array
 	 */
 	abstract protected function classes();
+
 	/**
 	 * Returns an array with values => labels.
 	 *
@@ -61,6 +65,7 @@ abstract class Enum {
 	 * @return void
 	 */
 	abstract protected function labels();
+
 	/**
 	 * Returns an array with values => labels.
 	 *
@@ -186,7 +191,7 @@ abstract class Enum {
 
 		static $instance;
 
-		if ($instance === null) {
+		if (null === $instance) {
 			$instance = new static();
 		}
 

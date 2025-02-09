@@ -124,7 +124,7 @@ class Site_Manager extends Base_Manager {
 		 * if so, we remove it and re-validate with our custom rule
 		 * which is the same, but also allows for hyphens.
 		 */
-		if ( ! empty($blogname_errors) && $error_key !== false) {
+		if ( ! empty($blogname_errors) && false !== $error_key) {
 			unset($result['errors']->errors['blogname'][ $error_key ]);
 
 			if (empty($result['errors']->errors['blogname'])) {
@@ -284,14 +284,14 @@ class Site_Manager extends Base_Manager {
 
 		$status = $membership ? $membership->get_status() : false;
 
-		$is_cancelled = $status === Membership_Status::CANCELLED;
+		$is_cancelled = Membership_Status::CANCELLED === $status;
 
-		$is_inactive = $status && ! $membership->is_active() && $status !== Membership_Status::TRIALING;
+		$is_inactive = $status && ! $membership->is_active() && Membership_Status::TRIALING !== $status;
 
 		if ($is_cancelled || ($is_inactive && wu_get_setting('block_frontend', false))) {
 
 			// If membership is cancelled we do not add the grace period
-			$grace_period = $status !== Membership_Status::CANCELLED ? (int) wu_get_setting('block_frontend_grace_period', 0) : 0;
+			$grace_period = Membership_Status::CANCELLED !== $status ? (int) wu_get_setting('block_frontend_grace_period', 0) : 0;
 
 			$expiration_time = wu_date($membership->get_date_expiration())->getTimestamp() + $grace_period * DAY_IN_SECONDS;
 
@@ -305,7 +305,7 @@ class Site_Manager extends Base_Manager {
 			}
 		}
 
-		if ($can_access === false) {
+		if (false === $can_access) {
 			if ($redirect_url) {
 				wp_redirect($redirect_url);
 
@@ -678,7 +678,7 @@ class Site_Manager extends Base_Manager {
 	 */
 	public function filter_illegal_search_keys($search_and_replace): array {
 
-		return array_filter($search_and_replace, fn($k) => ! is_null($k) && $k !== false && ! empty($k), ARRAY_FILTER_USE_KEY);
+		return array_filter($search_and_replace, fn($k) => ! is_null($k) && false !== $k && ! empty($k), ARRAY_FILTER_USE_KEY);
 	}
 
 	/**

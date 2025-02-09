@@ -239,7 +239,7 @@ class Site_List_Admin_Page extends List_Admin_Page {
 
 		$domain_type = wu_request('tab', is_subdomain_install() ? 'sub-domain' : 'sub-directory');
 
-		if ($domain_type === 'domain') {
+		if ('domain' === $domain_type) {
 			$domain = wu_request('domain', '');
 			$path   = '/';
 		} else {

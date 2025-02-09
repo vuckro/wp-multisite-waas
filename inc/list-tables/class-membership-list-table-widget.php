@@ -112,6 +112,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 
 		return $_filter_fields;
 	}
+
 	/**
 	 * Displays the membership reference code.
 	 *
@@ -269,6 +270,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 
 		return $columns;
 	}
+
 	/**
 	 * Overrides the parent method to include the custom ajax functionality for WP Multisite WaaS.
 	 *

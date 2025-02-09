@@ -45,7 +45,7 @@ trait WP_Ultimo_Settings_Deprecated {
 		$sections = apply_filters_deprecated('wu_settings_sections', [[]], '2.0.0', 'wu_register_settings_section()');
 
 		foreach ($sections as $section_key => $section) {
-			if ($section_key === 'activation') {
+			if ('activation' === $section_key) {
 				continue; // No activation stuff;
 
 			}

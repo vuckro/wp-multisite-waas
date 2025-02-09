@@ -114,6 +114,7 @@ class Membership_Manager extends Base_Manager {
 
 		exit; // Just exit the request
 	}
+
 	/**
 	 * Processes a delayed site publish action.
 	 *
@@ -169,6 +170,7 @@ class Membership_Manager extends Base_Manager {
 
 		exit;
 	}
+
 	/**
 	 * Processes a membership swap.
 	 *
@@ -279,7 +281,7 @@ class Membership_Manager extends Base_Manager {
 	 */
 	public function mark_cancelled_date($old_value, $new_value, $item_id): void {
 
-		if ($new_value === 'cancelled' && $new_value !== $old_value) {
+		if ('cancelled' === $new_value && $new_value !== $old_value) {
 			$membership = wu_get_membership($item_id);
 
 			$membership->set_date_cancellation(wu_get_current_time('mysql', true));

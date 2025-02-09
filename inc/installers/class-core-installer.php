@@ -114,7 +114,7 @@ class Core_Installer extends Base_Installer {
 
 			$success = $table->install();
 
-			if ($success === false) {
+			if (false === $success) {
 
 				// translators: %s is the name of a database table, e.g. wu_memberships.
 				$error_message = sprintf(__('Installation of the table %s failed', 'wp-ultimo'), $table->get_name());

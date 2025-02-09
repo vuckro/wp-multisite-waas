@@ -389,6 +389,7 @@ class Stripe_Checkout_Gateway extends Base_Stripe_Gateway {
 			exit;
 		}
 	}
+
 	/**
 	 * Add credit card fields.
 	 *

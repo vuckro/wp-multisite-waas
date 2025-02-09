@@ -29,6 +29,7 @@ class Base_Field_Template {
 	 * @var string
 	 */
 	protected $id;
+
 	/**
 	 * @var array
 	 */
@@ -92,6 +93,7 @@ class Base_Field_Template {
 
 		return __('Description', 'wp-ultimo');
 	}
+
 	/**
 	 * The preview image of the field template.
 	 *

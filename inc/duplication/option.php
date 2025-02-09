@@ -19,6 +19,7 @@ if ( ! class_exists('MUCD_Option') ) {
 				$blog_id = $blog['blog_id'];
 				add_blog_option($blog_id, 'mucd_duplicable', $blogs_value);
 			}
+
 			add_site_option('mucd_duplicables', $network_value);
 		}
 
@@ -34,6 +35,7 @@ if ( ! class_exists('MUCD_Option') ) {
 				$blog_id = $blog['blog_id'];
 				delete_blog_option($blog_id, 'mucd_duplicable');
 			}
+
 			delete_site_option('mucd_duplicables');
 		}
 

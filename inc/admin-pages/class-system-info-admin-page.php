@@ -630,7 +630,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 
 		// Finally get the correct version number
 		$known   = ['Version', $browser_name_short, 'other'];
-		$pattern = '#(?<browser>' . join('|', $known) . ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+		$pattern = '#(?<browser>' . implode('|', $known) . ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
 
 		if ( ! preg_match_all($pattern, (string) $user_agent, $matches)) {
 			// We have no matching number just continue
@@ -639,7 +639,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 		// See how many we have
 		$i = count($matches['browser']);
 
-		if ($i !== 1) {
+		if (1 !== $i) {
 
 			// We will have two since we are not using 'other' argument yet
 			// See if version is before or after the name
@@ -695,6 +695,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 
 		return (array) get_option('active_plugins', []);
 	}
+
 	/**
 	 * Get memory usage
 	 */

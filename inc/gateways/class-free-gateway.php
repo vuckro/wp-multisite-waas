@@ -66,7 +66,7 @@ class Free_Gateway extends Base_Gateway {
 		$membership->set_gateway($this->get_id());
 		$membership->set_auto_renew(false);
 
-		if ($type === 'downgrade' && ($membership_status === Membership_Status::ACTIVE || $membership_status === Membership_Status::TRIALING)) {
+		if ('downgrade' === $type && (Membership_Status::ACTIVE === $membership_status || Membership_Status::TRIALING === $membership_status)) {
 			/*
 			 * When downgrading, we need to schedule a swap for the end of the
 			 * current expiration date.
@@ -79,7 +79,7 @@ class Free_Gateway extends Base_Gateway {
 			$status = $membership->save();
 
 			return;
-		} elseif ($type === 'upgrade' || $type === 'downgrade' || $type === 'addon') {
+		} elseif ('upgrade' === $type || 'downgrade' === $type || 'addon' === $type) {
 			/*
 			 * A change to another free membership
 			 * is a upgrade and if membership is not

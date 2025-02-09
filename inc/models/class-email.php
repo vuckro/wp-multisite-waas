@@ -198,6 +198,7 @@ class Email extends Post_Base_Model {
 
 		return $this->title;
 	}
+
 	/**
 	 * Get style of the email
 	 *
@@ -381,7 +382,7 @@ class Email extends Post_Base_Model {
 	 * @param string $type The type being set.
 	 * @return void
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		if ( ! in_array($type, $this->allowed_types, true)) {
 			$type = 'system_email';
@@ -567,9 +568,9 @@ class Email extends Post_Base_Model {
 
 		$target_type = $this->get_target();
 
-		if ($target_type === 'admin') {
+		if ('admin' === $target_type) {
 			$target_list = self::get_super_admin_targets();
-		} elseif ($target_type === 'customer') {
+		} elseif ('customer' === $target_type) {
 			if ( ! wu_get_isset($payload, 'customer_id')) {
 				return [];
 			}

@@ -46,6 +46,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 			]
 		);
 	}
+
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -195,6 +196,7 @@ class Discount_Code_List_Table extends Base_List_Table {
 
 		return $columns;
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

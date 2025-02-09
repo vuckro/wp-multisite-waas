@@ -55,22 +55,27 @@ class CPanel_API {
 	 * @var string|null
 	 */
 	private ?string $ex_page = null;
+
 	/**
 	 * @var string
 	 */
 	private $username;
+
 	/**
 	 * @var string
 	 */
 	private $password;
+
 	/**
 	 * @var string
 	 */
 	private $host;
+
 	/**
 	 * @var integer
 	 */
 	private $port = 2083;
+
 	/**
 	 * @var boolean
 	 */
@@ -212,6 +217,7 @@ class CPanel_API {
 
 		return (@gzdecode($answer)) ? gzdecode($answer) : $answer; // phpcs:ignore
 	}
+
 	/**
 	 * Get the base URL to make the calls.
 	 *

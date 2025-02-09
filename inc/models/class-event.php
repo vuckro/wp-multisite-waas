@@ -22,9 +22,13 @@ defined('ABSPATH') || exit;
 class Event extends Base_Model {
 
 	const SEVERITY_SUCCESS = 1;
+
 	const SEVERITY_NEUTRAL = 2;
+
 	const SEVERITY_INFO    = 3;
+
 	const SEVERITY_WARNING = 4;
+
 	const SEVERITY_FATAL   = 5;
 
 	/**
@@ -253,6 +257,7 @@ class Event extends Base_Model {
 
 		return $this->interpolate_message($message, $this->get_payload());
 	}
+
 	/**
 	 * Interpolates the value of a message and its placeholders with the contents of the payload.
 	 *
@@ -419,6 +424,7 @@ class Event extends Base_Model {
 
 		return false;
 	}
+
 	/**
 	 * Polyfill for the get_object method.
 	 *
@@ -429,12 +435,13 @@ class Event extends Base_Model {
 
 		$object_type = $this->get_object_type();
 
-		if ($object_type !== 'membership') {
+		if ('membership' !== $object_type) {
 			return false;
 		}
 
 		return $this->get_object();
 	}
+
 	/**
 	 * Polyfill for the get_object method.
 	 *
@@ -445,12 +452,13 @@ class Event extends Base_Model {
 
 		$object_type = $this->get_object_type();
 
-		if ($object_type !== 'product') {
+		if ('product' !== $object_type) {
 			return false;
 		}
 
 		return $this->get_object();
 	}
+
 	/**
 	 * Polyfill for the get_object method.
 	 *
@@ -461,12 +469,13 @@ class Event extends Base_Model {
 
 		$object_type = $this->get_object_type();
 
-		if ($object_type !== 'site') {
+		if ('site' !== $object_type) {
 			return false;
 		}
 
 		return $this->get_object();
 	}
+
 	/**
 	 * Polyfill for the get_object method.
 	 *
@@ -477,12 +486,13 @@ class Event extends Base_Model {
 
 		$object_type = $this->get_object_type();
 
-		if ($object_type !== 'customer') {
+		if ('customer' !== $object_type) {
 			return false;
 		}
 
 		return $this->get_object();
 	}
+
 	/**
 	 * Polyfill for the get_object method.
 	 *
@@ -493,7 +503,7 @@ class Event extends Base_Model {
 
 		$object_type = $this->get_object_type();
 
-		if ($object_type !== 'payment') {
+		if ('payment' !== $object_type) {
 			return false;
 		}
 

@@ -367,6 +367,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return new Webhook();
 	}
+
 	/**
 	 * Webhooks have titles.
 	 *

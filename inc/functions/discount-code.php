@@ -23,6 +23,7 @@ function wu_get_discount_code_by_code($coupon_code) {
 
 	return \WP_Ultimo\Models\Discount_Code::get_by('code', $coupon_code);
 }
+
 /**
  * Gets a discount code based on the ID.
  *
@@ -48,6 +49,7 @@ function wu_get_discount_codes($query = []) {
 
 	return \WP_Ultimo\Models\Discount_Code::query($query);
 }
+
 /**
  * Calculates the discounted price after running it through the discount code.
  *
@@ -61,9 +63,9 @@ function wu_get_discount_codes($query = []) {
  */
 function wu_get_discounted_price($base_price, $amount, $type, $format = true) {
 
-	if ($type === 'percentage') {
+	if ('percentage' === $type) {
 		$discounted_price = $base_price - ($base_price * ($amount / 100));
-	} elseif ($type === 'absolute') {
+	} elseif ('absolute' === $type) {
 		$discounted_price = $base_price - $amount;
 	}
 
@@ -73,6 +75,7 @@ function wu_get_discounted_price($base_price, $amount, $type, $format = true) {
 
 	return number_format((float) $discounted_price, 2);
 }
+
 /**
  * Creates a new discount code.
  *

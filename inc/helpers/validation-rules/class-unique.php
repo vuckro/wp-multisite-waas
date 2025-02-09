@@ -84,6 +84,7 @@ class Unique extends Rule {
 		if ( ! $existing) {
 			return true;
 		}
+
 		if ( $existing instanceof \WP_User) {
 			$id = $existing->ID;
 		} else {

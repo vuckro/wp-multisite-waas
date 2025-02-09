@@ -274,7 +274,7 @@ class Register_Endpoint {
 			/*
 			 * Deal with status changes.
 			 */
-			if ($membership_status !== $membership->get_status()) {
+			if ($membership->get_status() !== $membership_status) {
 				$membership->set_status($membership_status);
 
 				$membership->save();
@@ -293,7 +293,7 @@ class Register_Endpoint {
 				}
 			}
 
-			if ($payment_status !== $payment->get_status()) {
+			if ($payment->get_status() !== $payment_status) {
 				$payment->set_status($payment_status);
 
 				$payment->save();
@@ -533,6 +533,7 @@ class Register_Endpoint {
 
 		return apply_filters('wu_rest_register_endpoint_args', $args, $this);
 	}
+
 	/**
 	 * Maybe create a customer, if needed.
 	 *
@@ -675,6 +676,7 @@ class Register_Endpoint {
 			'site.site_title'   => 'required_with:site|min:4',
 		];
 	}
+
 	/**
 	 * Validates the rules and make sure we only save models when necessary.
 	 *

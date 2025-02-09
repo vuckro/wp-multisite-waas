@@ -25,7 +25,7 @@
 			<?php _e('Description', 'wp-ultimo'); ?>
 			</th>
 
-			<?php if ($table_columns === 'simple') : ?>
+			<?php if ('simple' === $table_columns) : ?>
 
 			<th class="col-total-gross">
 				<?php _e('Subtotal', 'wp-ultimo'); ?>
@@ -59,7 +59,7 @@
 
 		<tr v-if="order.line_items.length === 0">
 
-			<td class="" colspan="<?php echo esc_attr($table_columns === 'simple') ? 2 : 5; ?>" class="col-description">
+			<td class="" colspan="<?php echo esc_attr('simple' === $table_columns) ? 2 : 5; ?>" class="col-description">
 
 			<?php _e('No products in shopping cart.', 'wp-ultimo'); ?>
 
@@ -101,7 +101,7 @@
 
 			</td>
 
-			<?php if ($table_columns === 'simple') : ?>
+			<?php if ('simple' === $table_columns) : ?>
 
 			<td v-show="line_item.recurring" class="wu-py-2 col-total-net">
 
@@ -161,7 +161,7 @@
 
 		<tfoot class="">
 
-		<?php if ($table_columns === 'simple') : ?>
+		<?php if ('simple' === $table_columns) : ?>
 
 			<tr>
 
@@ -199,7 +199,7 @@
 
 		<tr>
 
-			<td class="" colspan="<?php echo esc_attr($table_columns === 'simple') ? 1 : 4; ?>">
+			<td class="" colspan="<?php echo esc_attr('simple' === $table_columns) ? 1 : 4; ?>">
 
 			<strong><?php _e("Today's Grand Total", 'wp-ultimo'); ?></strong>
 
@@ -221,7 +221,7 @@
 
 		<tr v-if="order.has_trial">
 
-			<td class="" colspan="<?php echo esc_attr($table_columns === 'simple') ? 1 : 4; ?>">
+			<td class="" colspan="<?php echo esc_attr('simple' === $table_columns) ? 1 : 4; ?>">
 
 			<small>
 				<?php printf(__('Total in %1$s - end of trial period.', 'wp-ultimo'), '{{ $moment.unix(order.dates.date_trial_end).format(`LL`) }}'); ?>

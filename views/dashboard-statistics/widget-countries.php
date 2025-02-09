@@ -83,7 +83,7 @@ $page->render_csv_button(
 
 			<?php
 			foreach ($state_list as $state => $state_count) :
-				$_state_count = $_state_count + $state_count;
+				$_state_count += $state_count;
 				?>
 
 			<tr>

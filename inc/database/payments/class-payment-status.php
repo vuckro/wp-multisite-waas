@@ -27,11 +27,17 @@ class Payment_Status extends Enum {
 	const __default = 'pending'; // phpcs:ignore
 
 	const PENDING        = 'pending';
+
 	const COMPLETED      = 'completed';
+
 	const REFUND         = 'refunded';
+
 	const PARTIAL_REFUND = 'partially-refunded';
+
 	const PARTIAL        = 'partially-paid';
+
 	const FAILED         = 'failed';
+
 	const CANCELLED      = 'cancelled';
 
 	/**

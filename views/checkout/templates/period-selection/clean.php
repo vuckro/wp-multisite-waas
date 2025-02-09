@@ -25,7 +25,7 @@ defined('ABSPATH') || exit;
 
 	<li class="wu-mx-2">
 		<a 
-		:class="(duration == <?php echo $period_option['duration']; ?> && duration_unit == '<?php echo $period_option['duration_unit']; ?>') || (<?php echo json_encode($index === 0); ?> && duration === '') ? 'wu-font-semibold active' : ''" 
+		:class="(duration == <?php echo $period_option['duration']; ?> && duration_unit == '<?php echo $period_option['duration_unit']; ?>') || (<?php echo json_encode(0 === $index); ?> && duration === '') ? 'wu-font-semibold active' : ''" 
 		v-on:click.prevent="duration = <?php echo $period_option['duration']; ?>; duration_unit = '<?php echo $period_option['duration_unit']; ?>'" 
 		href="#"
 		>

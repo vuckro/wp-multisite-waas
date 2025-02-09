@@ -747,7 +747,7 @@ class Customer extends Base_Model {
 
 		static $sum;
 
-		if ($sum === null) {
+		if (null === $sum) {
 			$sum = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT SUM(total) FROM {$wpdb->base_prefix}wu_payments WHERE parent_id = 0 AND customer_id = %d",
@@ -779,7 +779,7 @@ class Customer extends Base_Model {
 		$minutes_interval += $interval->h * 60;
 		$minutes_interval += $interval->i;
 
-		return $minutes_interval <= apply_filters('wu_is_online_minutes_interval', 3) ? true : false;
+		return $minutes_interval <= apply_filters('wu_is_online_minutes_interval', 3);
 	}
 
 	/**
@@ -796,6 +796,7 @@ class Customer extends Base_Model {
 
 		return $this->update_meta('wu_verification_key', $hash);
 	}
+
 	/**
 	 * Returns the saved verification key.
 	 *
@@ -817,6 +818,7 @@ class Customer extends Base_Model {
 
 		return $this->update_meta('wu_verification_key', false);
 	}
+
 	/**
 	 * Returns the link of the email verification endpoint.
 	 *

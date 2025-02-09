@@ -307,6 +307,7 @@ class Runcloud_Host_Provider extends Base_Host_Provider {
 
 		return false;
 	}
+
 	/**
 	 * Checks if RunCloud has a SSL cert installed or not, and returns the ID.
 	 *

@@ -89,6 +89,7 @@ final class Events_Table extends Table {
 			KEY author_id (author_id),
 			KEY initiator (initiator)";
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

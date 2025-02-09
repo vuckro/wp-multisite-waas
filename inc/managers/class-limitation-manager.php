@@ -75,9 +75,9 @@ class Limitation_Manager {
 
 		switch_to_blog($site_id);
 
-		if ($action === 'activate') {
+		if ('activate' === $action) {
 			$results = activate_plugins($plugins, '', $network_wide, $silent);
-		} elseif ($action === 'deactivate') {
+		} elseif ('deactivate' === $action) {
 			$results = deactivate_plugins($plugins, $silent, $network_wide);
 		}
 
@@ -820,6 +820,7 @@ class Limitation_Manager {
 
 		return $listed_plugins;
 	}
+
 	/**
 	 * Returns a list of all themes available as options, after filtering.
 	 *

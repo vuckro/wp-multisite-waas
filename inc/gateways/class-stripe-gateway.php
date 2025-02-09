@@ -271,9 +271,9 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 * Here, we just need to make sure we process
 		 * a membership swap.
 		 */
-		if ($type === 'upgrade' || $type === 'addon') {
+		if ('upgrade' === $type || 'addon' === $type) {
 			$this->membership->swap($this->order);
-		} elseif ($type === 'downgrade') {
+		} elseif ('downgrade' === $type) {
 			$this->membership->schedule_swap($this->order);
 		}
 
@@ -611,7 +611,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			$membership->add_to_times_billed(1);
 			$membership->should_auto_renew();
 
-			if ($type !== 'downgrade') {
+			if ('downgrade' !== $type) {
 				$membership_status = $cart->has_trial() ? Membership_Status::TRIALING : Membership_Status::ACTIVE;
 
 				$renewal_date = new \DateTime();

@@ -570,6 +570,7 @@ class WU_Util {
 
 		return $signups;
 	}
+
 	/**
 	 * Deprecated: users_on_trial
 	 *
@@ -656,9 +657,9 @@ class WU_Logger {
 
 		$alternative = "\\WP_Ultimo\\Logger::$method_name";
 
-		if ($method_name === 'add') {
+		if ('add' === $method_name) {
 			$alternative = 'wu_log_add';
-		} elseif ($method_name === 'clear') {
+		} elseif ('clear' === $method_name) {
 			$alternative = 'wu_log_clear';
 		}
 
@@ -873,7 +874,7 @@ class WU_Coupon extends \WP_Ultimo\Models\Discount_Code {
 	 */
 	public function after_set($key, $value): void {
 
-		if ($key === 'title') {
+		if ('title' === $key) {
 			$this->set_code($value);
 
 			$this->set_name($value);
@@ -931,7 +932,7 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 	 */
 	public function __get($key) {
 
-		if ($key === 'price_1') {
+		if ('price_1' === $key) {
 			return $this->get_amount();
 		}
 
@@ -952,7 +953,7 @@ class WU_Plan extends \WP_Ultimo\Models\Product {
 	 */
 	public function after_set($key, $value): void {
 
-		if ($key === 'price_1') {
+		if ('price_1' === $key) {
 			$this->set_amount($value);
 		}
 	}
@@ -1147,9 +1148,10 @@ class WU_Transactions {
 
 		$date = new \DateTime();
 
-		return $type === 'mysql' ? $date->format('Y-m-d H:i:s') : $date->format('U');
+		return 'mysql' === $type ? $date->format('Y-m-d H:i:s') : $date->format('U');
 	}
 }
+
 /*
  * Functions
  */
@@ -1216,6 +1218,7 @@ function wu_get_plan_by_slug($plan_slug) {
 
 	return wu_get_product_by_slug($plan_slug);
 }
+
 /**
  * Deprecated: Returns a subscription object based on the user.
  *
@@ -1234,6 +1237,7 @@ function wu_get_subscription($user_id) {
 
 	return wu_get_membership_by('user_id', $user_id);
 }
+
 /**
  * Deprecated: Returns a subscription object based on the integration key.
  *
@@ -1248,6 +1252,7 @@ function wu_get_subscription_by_integration_key($integration_key) {
 
 	return wu_get_membership_by('gateway_subscription_id', $integration_key);
 }
+
 /**
  * Deprecated: Return a subscription object based on the current user.
  *
@@ -1280,7 +1285,7 @@ function wu_is_active_subscriber($user_id = false) {
 
 	_deprecated_function(__FUNCTION__, '2.0.0');
 
-	if ($user_id === false) {
+	if (false === $user_id) {
 		$membership = wu_get_current_site()->get_membership();
 	} else {
 		$membership = wu_get_membership_by('user_id', get_current_user_id());
@@ -1335,6 +1340,7 @@ function wu_get_active_gateway() {
 
 	return reset($active_gateways);
 }
+
 /**
  * Deprecated: Generates the price description.
  *

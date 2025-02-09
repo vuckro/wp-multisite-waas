@@ -115,7 +115,7 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 
 	<?php
 	$button_attrubutes = apply_filters('wu_plan_select_button_attributes', '', $plan, $current_plan);
-	$button_label      = $current_plan != null && $current_plan->id == $plan->get_id() ? __('This is your current plan', 'wp-ultimo') : __('Select Plan', 'wp-ultimo');
+	$button_label      = null != $current_plan && $current_plan->id == $plan->get_id() ? __('This is your current plan', 'wp-ultimo') : __('Select Plan', 'wp-ultimo');
 	$button_label      = apply_filters('wu_plan_select_button_label', $button_label, $plan, $current_plan);
 	?>
 

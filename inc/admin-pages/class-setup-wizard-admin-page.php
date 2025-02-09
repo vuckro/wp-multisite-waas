@@ -735,9 +735,9 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		$step = wu_request('step');
 
-		if ($step === 'your-company') {
+		if ('your-company' === $step) {
 			$fields_to_save = $this->get_general_settings();
-		} elseif ($step === 'payment-gateways') {
+		} elseif ('payment-gateways' === $step) {
 			$fields_to_save = $this->get_payment_settings();
 		} else {
 			return;

@@ -134,6 +134,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 
 		return $dns_records;
 	}
+
 	/**
 	 * Picks up on tips that a given host provider is being used.
 	 *
@@ -358,6 +359,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 			wu_log_add('integration-cloudflare', sprintf('Removed sub-domain "%s" to Cloudflare.', $subdomain));
 		}
 	}
+
 	/**
 	 * Sends an API call to Cloudflare.
 	 *
@@ -378,7 +380,7 @@ class Cloudflare_Host_Provider extends Base_Host_Provider {
 			$endpoint_url,
 			[
 				'method'      => $method,
-				'body'        => $method === 'GET' ? $data : wp_json_encode($data),
+				'body'        => 'GET' === $method ? $data : wp_json_encode($data),
 				'data_format' => 'body',
 				'headers'     => [
 					'Authorization' => sprintf('Bearer %s', defined('WU_CLOUDFLARE_API_KEY') ? WU_CLOUDFLARE_API_KEY : ''),

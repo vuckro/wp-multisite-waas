@@ -382,8 +382,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 		case 'checkbox':
 			$checked = isset($field['check_if']) && isset($result[$field['check_if']])
                   || (isset($field['check_if']) && isset($_POST[$field['check_if']]) && $_POST[$field['check_if']])
-                  || (isset($field['checked']) && $field['checked'])
-                  ? true : false;
+                  || (isset($field['checked']) && $field['checked']);
 			?>
 
     <p>

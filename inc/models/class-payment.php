@@ -266,6 +266,7 @@ class Payment extends Base_Model {
 
 		$this->customer_id = absint($customer_id);
 	}
+
 	/**
 	 * Gets the membership object associated with this payment.
 	 *

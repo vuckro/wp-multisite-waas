@@ -78,7 +78,7 @@ if ( ! class_exists('MUCD_Data') ) {
 			$schema = DB_NAME;
 
 			// Get sources Tables
-			if ($from_site_id == MUCD_PRIMARY_SITE_ID) {
+			if (MUCD_PRIMARY_SITE_ID == $from_site_id) {
 				$from_site_table = self::get_primary_tables($from_site_prefix);
 			} else {
 				$sql_query       = $wpdb->prepare('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = \'%s\' AND TABLE_NAME LIKE \'%s\'', $schema, $from_site_prefix_like . '%');
@@ -319,10 +319,11 @@ if ( ! class_exists('MUCD_Data') ) {
 			$new = $val;
 			if (is_string($val)) {
 				$pos = strpos($val, $to_string);
-				if ($pos === false) {
+				if (false === $pos) {
 					$new = str_replace($from_string, $to_string, $val);
 				}
 			}
+
 			return $new;
 		}
 
@@ -398,6 +399,7 @@ if ( ! class_exists('MUCD_Data') ) {
 			} else {
 				$row[ $field ] = self::replace($row[ $field ], $from_string, $to_string);
 			}
+
 			return $row[ $field ];
 		}
 

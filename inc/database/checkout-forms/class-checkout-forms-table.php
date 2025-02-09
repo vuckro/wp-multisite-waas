@@ -86,6 +86,7 @@ final class Checkout_Forms_Table extends Table {
 			date_modified datetime DEFAULT NULL,
 			PRIMARY KEY (id)";
 	}
+
 	/**
 	 * Fixes the datetime columns to accept null.
 	 *

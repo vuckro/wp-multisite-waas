@@ -67,7 +67,7 @@ class Template_Switching_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block'): string {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-cart-medium';
 		}
 

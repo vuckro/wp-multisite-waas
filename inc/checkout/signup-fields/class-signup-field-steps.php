@@ -33,6 +33,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 
 		return 'steps';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -81,6 +82,7 @@ class Signup_Field_Steps extends Base_Signup_Field {
 
 		return __('Adds a list of the steps.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *

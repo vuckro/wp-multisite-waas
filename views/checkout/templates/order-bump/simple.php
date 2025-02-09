@@ -12,7 +12,7 @@ $product = wu_get_product($product['id']);
 
 $product_variation = $product->get_as_variation($duration, $duration_unit);
 
-if ($product_variation !== false) {
+if (false !== $product_variation) {
 	$product = $product_variation;
 } // end if;
 

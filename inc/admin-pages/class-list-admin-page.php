@@ -26,6 +26,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @var bool
 	 */
 	public $has_search;
+
 	/**
 	 * The id/name/slug of the object being edited/created. e.g: plan
 	 *
@@ -209,7 +210,7 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 */
 	public function save_screen_option($value, $option, $other_value) {
 
-		return $value === false && is_numeric($other_value) ? (int) $other_value : $value;
+		return false === $value && is_numeric($other_value) ? (int) $other_value : $value;
 	}
 
 	/**

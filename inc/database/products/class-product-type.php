@@ -27,7 +27,9 @@ class Product_Type extends Enum {
 	const __default = 'plan'; // phpcs:ignore
 
 	const PLAN    = 'plan';
+
 	const PACKAGE = 'package';
+
 	const SERVICE = 'service';
 
 	/**

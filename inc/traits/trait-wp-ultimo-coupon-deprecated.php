@@ -52,7 +52,7 @@ trait WP_Ultimo_Coupon_Deprecated {
 				$value = $this->get_meta('wpu_' . $key, false, true);
 		}
 
-		if ($value === null) {
+		if (null === $value) {
 
 			// translators: the placeholder is the key.
 			$message = sprintf(__('Discount Codes do not have a %s parameter', 'wp-ultimo'), $key);

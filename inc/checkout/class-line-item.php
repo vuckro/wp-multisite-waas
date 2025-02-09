@@ -372,6 +372,7 @@ class Line_Item implements \JsonSerializable {
 
 		$this->type = $type;
 	}
+
 	/**
 	 * Get product associated with this line item.
 	 *

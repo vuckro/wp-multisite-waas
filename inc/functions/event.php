@@ -95,6 +95,7 @@ function wu_get_events($query = []) {
 
 	return \WP_Ultimo\Models\Event::query($query);
 }
+
 /**
  * Gets a event on the ID.
  *
@@ -107,6 +108,7 @@ function wu_get_event($event_id) {
 
 	return \WP_Ultimo\Models\Event::get_by_id($event_id);
 }
+
 /**
  * Returns a event based on slug.
  *
@@ -119,6 +121,7 @@ function wu_get_event_by_slug($event_slug) {
 
 	return \WP_Ultimo\Models\Event::get_by('slug', $event_slug);
 }
+
 /**
  * Creates a new event.
  *
@@ -199,7 +202,7 @@ function wu_generate_event_payload($model_name, $model = false): array {
 		}
 	}
 
-	if ($model_name === 'customer') {
+	if ('customer' === $model_name) {
 		$payload = $model->to_search_results();
 
 		$payload = [
@@ -217,7 +220,7 @@ function wu_generate_event_payload($model_name, $model = false): array {
 				]
 			),
 		];
-	} elseif ($model_name === 'membership') {
+	} elseif ('membership' === $model_name) {
 		$payload = $model->to_search_results();
 
 		$p = $payload;
@@ -241,7 +244,7 @@ function wu_generate_event_payload($model_name, $model = false): array {
 				]
 			),
 		];
-	} elseif ($model_name === 'product') {
+	} elseif ('product' === $model_name) {
 		$payload = $model->to_search_results();
 
 		$payload = [
@@ -260,7 +263,7 @@ function wu_generate_event_payload($model_name, $model = false): array {
 				]
 			),
 		];
-	} elseif ($model_name === 'payment') {
+	} elseif ('payment' === $model_name) {
 		$payload = $model->to_search_results();
 
 		$payload = [
@@ -285,7 +288,7 @@ function wu_generate_event_payload($model_name, $model = false): array {
 				]
 			),
 		];
-	} elseif ($model_name === 'site') {
+	} elseif ('site' === $model_name) {
 		$payload = $model->to_search_results();
 
 		$payload = [
@@ -301,7 +304,7 @@ function wu_generate_event_payload($model_name, $model = false): array {
 				]
 			),
 		];
-	} elseif ($model_name === 'domain') {
+	} elseif ('domain' === $model_name) {
 		$payload = $model->to_search_results();
 
 		$payload = [

@@ -97,12 +97,12 @@ function wu_create_checkout_fields($fields = []) {
 		 */
 		$visibility = wu_get_isset($field, 'logged', 'always');
 
-		if ($visibility !== 'always') {
-			if ($visibility === 'guests_only' && is_user_logged_in()) {
+		if ('always' !== $visibility) {
+			if ('guests_only' === $visibility && is_user_logged_in()) {
 				continue;
 			}
 
-			if ($visibility === 'logged_only' && ! is_user_logged_in()) {
+			if ('logged_only' === $visibility && ! is_user_logged_in()) {
 				continue;
 			}
 		}
@@ -174,6 +174,7 @@ function wu_get_registration_url($path = false) {
 
 	return $url . $path;
 }
+
 /**
  * Returns the URL for the login page.
  *

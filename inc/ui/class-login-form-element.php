@@ -78,7 +78,7 @@ class Login_Form_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block'): string {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-lock-user';
 		}
 
@@ -505,16 +505,16 @@ class Login_Form_Element extends Base_Element {
 		$redirect_type = wu_request('wu_login_form_redirect_type', 'default');
 
 		// If some condition match, force user redirection to the URL
-		if ($redirect_type === 'query_redirect') {
+		if ('query_redirect' === $redirect_type) {
 
 			// query_redirect is the default wp behaviour
 			return $redirect_to;
-		} elseif ($redirect_type === 'customer_site') {
+		} elseif ('customer_site' === $redirect_type) {
 			$user_site = get_active_blog_for_user($user->ID);
 
 			wp_redirect($user_site->siteurl . $requested_redirect_to);
 			exit;
-		} elseif ($redirect_type === 'main_site') {
+		} elseif ('main_site' === $redirect_type) {
 			wp_redirect(network_site_url($requested_redirect_to));
 			exit;
 		}

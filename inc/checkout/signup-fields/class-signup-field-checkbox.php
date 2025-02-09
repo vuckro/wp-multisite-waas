@@ -201,7 +201,7 @@ class Signup_Field_Checkbox extends Base_Signup_Field {
 
 		$value = $this->get_value();
 
-		if ($value !== '' && (bool) $value === true) {
+		if ('' !== $value && (bool) $value === true) {
 			$checkout_fields[ $attributes['id'] ]['html_attr']['checked'] = 'checked';
 		}
 

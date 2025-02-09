@@ -311,10 +311,10 @@ class Checkout {
 		 *
 		 * @since 2.0.8
 		 */
-		if ($key === 'template_id') {
+		if ('template_id' === $key) {
 			$template_name = get_query_var('template_name', null);
 
-			if ($template_name !== null) {
+			if (null !== $template_name) {
 				$d = wu_get_site_domain_and_path($template_name);
 
 				$wp_site = get_site_by_path($d->domain, $d->path);
@@ -550,6 +550,7 @@ class Checkout {
 
 		wp_send_json_success($results);
 	}
+
 	/**
 	 * Process an order.
 	 *
@@ -892,6 +893,7 @@ class Checkout {
 		 */
 		return $success_data;
 	}
+
 	/**
 	 * Checks if a customer exists, otherwise, creates a new one.
 	 *
@@ -1059,7 +1061,7 @@ class Checkout {
 	 */
 	protected function handle_customer_meta_fields($customer, $form_slug) {
 
-		if (empty($form_slug) || $form_slug === 'none') {
+		if (empty($form_slug) || 'none' === $form_slug) {
 			return;
 		}
 
@@ -1131,6 +1133,7 @@ class Checkout {
 			do_action('wu_handle_user_meta_fields', $user_meta_repository, $user, $customer, $this);
 		}
 	}
+
 	/**
 	 * Checks if a membership exists, otherwise, creates a new one.
 	 *
@@ -1181,6 +1184,7 @@ class Checkout {
 
 		return $membership;
 	}
+
 	/**
 	 * Checks if a pending site exists, otherwise, creates a new one.
 	 *
@@ -1235,8 +1239,8 @@ class Checkout {
 		 * The strategy here is simple, we basically set the site_url to the username and
 		 * check if it is already taken.
 		 */
-		if (empty($site_url) || $auto_generate_url === 'username') {
-			if ($auto_generate_url === 'username') {
+		if (empty($site_url) || 'username' === $auto_generate_url) {
+			if ('username' === $auto_generate_url) {
 				$site_url = $this->customer->get_username();
 
 				$site_title = $site_title ?: $site_url;
@@ -1339,7 +1343,7 @@ class Checkout {
 	 */
 	protected function get_site_meta_fields($form_slug, $meta_type = 'site_meta') {
 
-		if (empty($form_slug) || $form_slug === 'none') {
+		if (empty($form_slug) || 'none' === $form_slug) {
 			return [];
 		}
 
@@ -1357,6 +1361,7 @@ class Checkout {
 
 		return $list;
 	}
+
 	/**
 	 * Checks if a pending payment exists, otherwise, creates a new one.
 	 *
@@ -1821,7 +1826,7 @@ class Checkout {
 			$stack = array_merge($session, $_REQUEST);
 		}
 
-		if ($rules === null) {
+		if (null === $rules) {
 			$rules = $this->get_validation_rules();
 		}
 
@@ -2102,7 +2107,7 @@ class Checkout {
 			 *
 			 * In that case, we simply return.
 			 */
-			if ($status === false) {
+			if (false === $status) {
 				return;
 			}
 
@@ -2320,7 +2325,7 @@ class Checkout {
 		 * it means that we don't have a step name set
 		 * so we need to set it to the first.
 		 */
-		if ($current_step_index === false) {
+		if (false === $current_step_index) {
 			$current_step_index = 0;
 		}
 

@@ -429,7 +429,7 @@ abstract class Base_Host_Provider {
 			/*
 			 * If any constant fail, bail.
 			 */
-			if ($all_set === false) {
+			if (false === $all_set) {
 				return false;
 			}
 		}

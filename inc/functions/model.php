@@ -81,7 +81,7 @@ function wu_model_get_required_fields($class_name) {
 		$validation_rules = (new $class_name())->validation_rules();
 
 		foreach ($validation_rules as $field => $validation_rule) {
-			if (str_contains((string) $validation_rule, 'required|') || $validation_rule === 'required') {
+			if (str_contains((string) $validation_rule, 'required|') || 'required' === $validation_rule) {
 				$required_fields[] = $field;
 			}
 		}

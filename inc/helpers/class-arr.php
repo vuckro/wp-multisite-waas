@@ -60,7 +60,7 @@ class Arr {
 		);
 
 		if ($flag) {
-			$result = $flag === self::RESULTS_FIRST ? reset($result) : end($result);
+			$result = self::RESULTS_FIRST === $flag ? reset($result) : end($result);
 		}
 
 		return $result;

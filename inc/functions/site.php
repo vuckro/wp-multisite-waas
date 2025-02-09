@@ -32,6 +32,7 @@ function wu_get_site($id) {
 
 	return \WP_Ultimo\Models\Site::get_by_id($id);
 }
+
 /**
  * Gets a site based on the hash.
  *
@@ -116,6 +117,7 @@ function wu_handle_site_domain($domain) {
 
 	return (object) $parsed;
 }
+
 /**
  * Creates a new site.
  *

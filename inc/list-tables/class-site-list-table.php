@@ -66,7 +66,7 @@ class Site_List_Table extends Base_List_Table {
 
 		$type = wu_request('type');
 
-		if ($type === 'pending') {
+		if ('pending' === $type) {
 			$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending');
 
 			return $count ? count($pending_sites) : $pending_sites;
@@ -79,7 +79,7 @@ class Site_List_Table extends Base_List_Table {
 			'search' => wu_request('s'),
 		];
 
-		if ($type && $type !== 'all') {
+		if ($type && 'all' !== $type) {
 			$query['meta_query'] = [
 				'type' => [
 					'key'   => 'wu_type',
@@ -92,6 +92,7 @@ class Site_List_Table extends Base_List_Table {
 
 		return wu_get_sites($query);
 	}
+
 	/**
 	 * Render the bulk edit checkbox.
 	 *
@@ -105,6 +106,7 @@ class Site_List_Table extends Base_List_Table {
 
 		return sprintf('<input type="checkbox" name="bulk-delete[]" value="%s" />', $item->get_id());
 	}
+
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -185,6 +187,7 @@ class Site_List_Table extends Base_List_Table {
 
 		return $title . sprintf('<span class="wu-block">%s</span>', make_clickable($item->get_active_site_url())) . $this->row_actions($actions);
 	}
+
 	/**
 	 * Returns the date of the customer registration.
 	 *
@@ -228,6 +231,7 @@ class Site_List_Table extends Base_List_Table {
 
 		return "<span class='wu-bg-gray-200 wu-py-1 wu-px-2 wu-leading-none wu-rounded-sm wu-text-xs wu-font-mono $class'>{$label}</span>";
 	}
+
 	/**
 	 * Column for the domains associated with this site.
 	 *
@@ -295,6 +299,7 @@ class Site_List_Table extends Base_List_Table {
 			]
 		);
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *
@@ -387,7 +392,7 @@ class Site_List_Table extends Base_List_Table {
 
 		$action = $this->current_action();
 
-		if ($action === 'duplicate') {
+		if ('duplicate' === $action) {
 			$site_id = wu_request('id');
 
 			$site = wu_get_site($site_id);

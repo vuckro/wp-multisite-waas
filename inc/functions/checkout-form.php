@@ -37,6 +37,7 @@ function wu_get_checkout_forms($query = []) {
 
 	return \WP_Ultimo\Models\Checkout_Form::query($query);
 }
+
 /**
  * Returns a checkout_form based on slug.
  *
@@ -56,7 +57,7 @@ function wu_get_checkout_form_by_slug($checkout_form_slug) {
 	 *
 	 * @see wu_checkout_form_membership_change_form_fields filter.
 	 */
-	if ($checkout_form_slug === 'wu-checkout') {
+	if ('wu-checkout' === $checkout_form_slug) {
 		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
 		$checkout_fields = Checkout_Form::membership_change_form_fields();
@@ -64,7 +65,7 @@ function wu_get_checkout_form_by_slug($checkout_form_slug) {
 		$checkout_form->set_settings($checkout_fields);
 
 		return $checkout_form;
-	} elseif ($checkout_form_slug === 'wu-add-new-site') {
+	} elseif ('wu-add-new-site' === $checkout_form_slug) {
 		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
 		$checkout_fields = Checkout_Form::add_new_site_form_fields();
@@ -72,7 +73,7 @@ function wu_get_checkout_form_by_slug($checkout_form_slug) {
 		$checkout_form->set_settings($checkout_fields);
 
 		return $checkout_form;
-	} elseif ($checkout_form_slug === 'wu-finish-checkout') {
+	} elseif ('wu-finish-checkout' === $checkout_form_slug) {
 		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
 		$checkout_fields = Checkout_Form::finish_checkout_form_fields();
@@ -84,6 +85,7 @@ function wu_get_checkout_form_by_slug($checkout_form_slug) {
 
 	return \WP_Ultimo\Models\Checkout_Form::get_by('slug', $checkout_form_slug);
 }
+
 /**
  * Creates a new checkout form.
  *

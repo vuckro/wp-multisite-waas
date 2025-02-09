@@ -75,7 +75,7 @@ class Domain_Mapping_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block'): string {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-url';
 		}
 
@@ -404,7 +404,7 @@ class Domain_Mapping_Element extends Base_Element {
 
 		$current_site = wu_get_site($current_site_id);
 
-		if ( ! is_super_admin() && (! $current_site || $current_user_id !== $current_site->get_customer()->get_user_id())) {
+		if ( ! is_super_admin() && (! $current_site || $current_site->get_customer()->get_user_id() !== $current_user_id)) {
 			wp_send_json_error(
 				new \WP_Error('no-permissions', __('You do not have permissions to perform this action.', 'wp-ultimo'))
 			);

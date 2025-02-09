@@ -102,6 +102,7 @@ class Customer_List_Table extends Base_List_Table {
 
 		return $_filter_fields;
 	}
+
 	/**
 	 * Displays the content of the name column.
 	 *
@@ -202,6 +203,7 @@ class Customer_List_Table extends Base_List_Table {
 
 		return $html;
 	}
+
 	/**
 	 * Returns the number of memberships owned by this customer.
 	 *

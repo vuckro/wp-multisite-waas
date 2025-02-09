@@ -89,7 +89,7 @@ class Checkout_Element extends Base_Element {
 	 */
 	public function get_icon($context = 'block'): string {
 
-		if ($context === 'elementor') {
+		if ('elementor' === $context) {
 			return 'eicon-cart-medium';
 		}
 
@@ -325,7 +325,7 @@ class Checkout_Element extends Base_Element {
 			return is_string($bypass) ? $bypass : '';
 		}
 
-		if ($customer && $membership && $slug !== 'wu-finish-checkout') {
+		if ($customer && $membership && 'wu-finish-checkout' !== $slug) {
 			$published_sites = $membership->get_published_sites();
 
 			$pending_payment = $membership ? $membership->get_last_pending_payment() : false;
@@ -493,7 +493,7 @@ class Checkout_Element extends Base_Element {
 							$message .= "<a class=\"wu-no-underline button button-primary wu-mr-2\" href=\"$register_page\">$button_text</a>";
 						}
 
-						if ($limitation !== 'sites' || wu_get_setting('enable_multiple_sites')) {
+						if ('sites' !== $limitation || wu_get_setting('enable_multiple_sites')) {
 							$update_link = '';
 
 							$checkout_pages = \WP_Ultimo\Checkout\Checkout_Pages::get_instance();
@@ -536,7 +536,7 @@ class Checkout_Element extends Base_Element {
 					}
 				}
 			}
-		} elseif ( ! $customer && $slug === 'wu-finish-checkout') {
+		} elseif ( ! $customer && 'wu-finish-checkout' === $slug) {
 			if (is_user_logged_in()) {
 				$message = __('You need to be the account owner to complete this payment.', 'wp-ultimo');
 			} else {
@@ -774,10 +774,12 @@ class Mocked_Signup {
 	 * @var string
 	 */
 	public $step;
+
 	/**
 	 * @var array
 	 */
 	public $steps;
+
 	/**
 	 * Constructs the class.
 	 *
@@ -801,6 +803,7 @@ class Mocked_Signup {
 
 		return $this->steps;
 	}
+
 	/**
 	 * Deprecated: returns the prev step link.
 	 *

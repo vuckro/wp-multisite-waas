@@ -1120,6 +1120,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return $this->object;
 	}
+
 	/**
 	 * Memberships have titles.
 	 *
@@ -1129,6 +1130,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		return false;
 	}
+
 	/**
 	 * Handle convert to lifetime.
 	 *

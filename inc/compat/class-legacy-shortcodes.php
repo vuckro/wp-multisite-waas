@@ -375,14 +375,14 @@ class Legacy_Shortcodes {
 			'required'               => true,
 			'pricing_table_products' => implode(',', wu_get_plans($search_arguments)),
 			'pricing_table_template' => $layout,
-			'element_classes'        => $layout === 'legacy' ? 'wu-content-plan' : '',
+			'element_classes'        => 'legacy' === $layout ? 'wu-content-plan' : '',
 		];
 
 		/**
 		 * If not using the legacy checkout,
 		 * we'll need a submit field.
 		 */
-		if ($layout !== 'legacy') {
+		if ('legacy' !== $layout) {
 			$fields[] = [
 				'step' => 'checkout',
 				'name' => __('Get Started &rarr;', 'wp-ultimo'),
@@ -528,7 +528,7 @@ class Legacy_Shortcodes {
 			'template_selection_sites'    => implode(',', $templates ?: wu_get_site_templates($search_arguments)),
 			'template_selection_template' => $layout,
 			'cols'                        => $atts['cols'],
-			'element_classes'             => $layout === 'legacy' ? 'wu-content-templates' : '',
+			'element_classes'             => 'legacy' === $layout ? 'wu-content-templates' : '',
 		];
 
 		$steps = [
@@ -589,6 +589,7 @@ class Legacy_Shortcodes {
 			]
 		);
 	}
+
 	/**
 	 * Makes sure we don't return any invalid values.
 	 *

@@ -367,7 +367,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 		$show_modified = wu_get_isset($atts, 'modified', true);
 
-		if ($this->edit && $show_modified === true) {
+		if ($this->edit && true === $show_modified) {
 			$atts['fields']['date_modified'] = [
 				'title'         => __('Last Modified at', 'wp-ultimo'),
 				'type'          => 'text-display',

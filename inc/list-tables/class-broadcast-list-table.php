@@ -78,28 +78,29 @@ class Broadcast_List_Table extends Base_List_Table {
 
 		$class = 'wu-bg-gray-200';
 
-		if ($type === 'broadcast_email') {
+		if ('broadcast_email' === $type) {
 			$label = __('Email', 'wp-ultimo');
 		}
 
-		if ($type === 'broadcast_notice') {
+		if ('broadcast_notice' === $type) {
 			$status = $item->get_notice_type();
 
 			$label = __('Notice', 'wp-ultimo');
 
-			if ($status === 'info') {
+			if ('info' === $status) {
 				$class = 'wu-bg-blue-200';
-			} elseif ($status === 'success') {
+			} elseif ('success' === $status) {
 				$class = 'wu-bg-green-200';
-			} elseif ($status === 'warning') {
+			} elseif ('warning' === $status) {
 				$class = 'wu-bg-orange-200';
-			} elseif ($status === 'error') {
+			} elseif ('error' === $status) {
 				$class = 'wu-bg-red-200';
 			}
 		}
 
 		return "<span class='wu-py-1 wu-px-2 $class wu-rounded-sm wu-text-gray-700 wu-text-xs wu-font-mono'>{$label}</span>";
 	}
+
 	/**
 	 * Displays the name of the broadcast.
 	 *
@@ -428,6 +429,7 @@ class Broadcast_List_Table extends Base_List_Table {
 
 		return $columns;
 	}
+
 	/**
 	 * Returns the filters for this page.
 	 *

@@ -1313,7 +1313,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			/*
 			 * Skip recurring items
 			 */
-			if ($line_item->is_recurring() && $include_recurring_products === false) {
+			if ($line_item->is_recurring() && false === $include_recurring_products) {
 				continue;
 			}
 
@@ -1626,21 +1626,21 @@ class Base_Stripe_Gateway extends Base_Gateway {
 					// Legacy WP Multisite WaaS uses user_id
 					$user_id = (int) $subscription->metadata['user_id'];
 
-					if ($customer_id === 0 && $user_id === 0) {
+					if (0 === $customer_id && 0 === $user_id) {
 						continue;
 					}
 
-					if ($customer_id !== $this->customer->get_id() && $user_id !== $this->customer->get_user_id()) {
+					if ($this->customer->get_id() !== $customer_id && $this->customer->get_user_id() !== $user_id) {
 						continue;
 					}
 
 					$membership_id = (int) $subscription->metadata['membership_id'];
 
-					if ($allow_multiple_membership && $membership_id !== $this->membership->get_id()) {
+					if ($allow_multiple_membership && $this->membership->get_id() !== $membership_id) {
 						continue;
 					}
 
-					if ($membership_id === 0 && $customer_id === 0) {
+					if (0 === $membership_id && 0 === $customer_id) {
 						/**
 						 * If we do not have a $membership_id it can be a legacy subscription.
 						 * The best way to check this is checking if the plan in Stripe haves
@@ -1666,7 +1666,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 					}
 
 					// Check if membership exist and is from this customer before delete subscription
-					if ($membership_id !== 0 && $membership_id !== $this->membership->get_id()) {
+					if (0 !== $membership_id && $this->membership->get_id() !== $membership_id) {
 						$membership_from_s = wu_get_membership($membership_id);
 
 						if ( ! $membership_from_s || $membership_from_s->get_customer_id() !== $customer_id) {
@@ -2214,14 +2214,14 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 						$old_subtotal = $payment_data['subtotal'];
 
-						if ($type === 'percentage') {
+						if ('percentage' === $type) {
 							$payment_data['subtotal'] = $old_subtotal / (1 - ($discount_code->get_value() / 100));
 
 							$discount_total = $payment_data['subtotal'] - $old_subtotal;
-						} elseif ($type === 'absolute') {
+						} elseif ('absolute' === $type) {
 							$discount_total = $discount_code->get_value();
 
-							$payment_data['subtotal'] = $payment_data['subtotal'] - $discount_total;
+							$payment_data['subtotal'] -= $discount_total;
 						}
 
 						// Now we apply this discount to the line items.
@@ -2773,7 +2773,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 */
 	function maybe_create_price($title, $amount, $currency, $quantity = 1, $duration = false, $duration_unit = false, $tax_behavior = '') {
 
-		$name = $quantity === 1 ? $title : "x$quantity $title";
+		$name = 1 === $quantity ? $title : "x$quantity $title";
 
 		$currency = strtolower($currency);
 		$s_amount = round($amount * wu_stripe_get_currency_multiplier());

@@ -470,7 +470,7 @@ class SSO {
 			status_header($response_code);
 
 			exit;
-		} elseif ($response_type === 'redirect') {
+		} elseif ('redirect' === $response_type) {
 			$args = [
 				'sso_verify' => $verification_code ?: 'invalid',
 			];
@@ -548,7 +548,7 @@ class SSO {
 			exit();
 		}
 
-		if ($response_type === 'jsonp') {
+		if ('jsonp' === $response_type) {
 			echo '// Nothing to see here.';
 
 			exit;
@@ -658,6 +658,7 @@ class SSO {
 			 * @throws NotAttachedException
 			 */
 		}
+
 		return $current_user_id;
 	}
 
@@ -859,6 +860,7 @@ class SSO {
 		if ( ! $action) {
 			$action = $this->input($sso_path, 'done') !== 'done' ? $sso_path : '';
 		}
+
 		if ( ! $action) {
 			$action = $this->input("$sso_path-grant", 'done') !== 'done' ? "$sso_path-grant" : '';
 		}
@@ -1046,6 +1048,7 @@ class SSO {
 	public function get_target_user_id() {
 		return $this->target_user_id;
 	}
+
 	/**
 	 * Get the url path for SSO.
 	 *

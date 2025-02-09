@@ -168,6 +168,7 @@ class Note {
 
 		return $address_array;
 	}
+
 	/**
 	 * Returns the contents of the note.
 	 *

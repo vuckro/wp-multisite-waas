@@ -53,7 +53,7 @@ trait Limitable {
 		 * If this is a site, and it's not a customer owned site, we don't have limitations.
 		 * This is because we don't want to limit sites other than the customer owned ones.
 		 */
-		if ($this->model === 'site' && $this->get_type() !== Site_Type::CUSTOMER_OWNED) {
+		if ('site' === $this->model && $this->get_type() !== Site_Type::CUSTOMER_OWNED) {
 			return new Limitations([]);
 		}
 

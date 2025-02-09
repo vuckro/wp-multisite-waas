@@ -32,6 +32,7 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 
 		return 'shortcode';
 	}
+
 	/**
 	 * Returns if this field should be present on the checkout flow or not.
 	 *
@@ -80,6 +81,7 @@ class Signup_Field_Shortcode extends Base_Signup_Field {
 
 		return __('Displays the content of a given WordPress shortcode. Can be useful to insert content from other plugins inside a WP Multisite WaaS checkout form.', 'wp-ultimo');
 	}
+
 	/**
 	 * Returns the icon to be used on the selector.
 	 *

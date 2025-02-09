@@ -514,7 +514,7 @@ class Discount_Code extends Base_Model {
 
 			$allowed = $this->get_limit_products() && in_array($product_id, $this->get_allowed_products()); // phpcs:ignore
 
-			if ($allowed === false) {
+			if (false === $allowed) {
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-ultimo'));
 			}
 		}
@@ -621,6 +621,7 @@ class Discount_Code extends Base_Model {
 
 		$this->date_created = $date_created;
 	}
+
 	/**
 	 * Returns a text describing the discount code values.
 	 *

@@ -28,6 +28,7 @@ class City extends Rule {
 	 * @var array
 	 */
 	protected $fillableParams = ['country', 'state'];
+
 	/**
 	 * Performs the actual check.
 	 *

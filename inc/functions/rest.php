@@ -58,7 +58,7 @@ function wu_rest_get_endpoint_schema($class_name, $context = 'create', $force_ge
 		$from_cache = true;
 	}
 
-	if (empty($schema) && $from_cache === false && $force_generate) {
+	if (empty($schema) && false === $from_cache && $force_generate) {
 		$schema = wu_rest_generate_schema($class_name, $context);
 	}
 
@@ -83,7 +83,7 @@ function wu_rest_generate_schema($class_name, $context = 'create') {
 	foreach ($schema as $argument_name => &$argument) {
 		$argument['type'] = wu_rest_treat_argument_type($argument['type']);
 
-		$argument['required'] = $context === 'create' ? in_array($argument_name, $required_fields, true) : false;
+		$argument['required'] = 'create' === $context ? in_array($argument_name, $required_fields, true) : false;
 
 		$schema[ $argument_name ] = $argument;
 	}
@@ -103,11 +103,11 @@ function wu_rest_treat_argument_type($type) {
 
 	$type = (string) $type;
 
-	if ($type === 'bool') {
+	if ('bool' === $type) {
 		$type = 'boolean';
-	} elseif ($type === 'int') {
+	} elseif ('int' === $type) {
 		$type = 'integer';
-	} elseif ($type === 'float') {
+	} elseif ('float' === $type) {
 		$type = 'number';
 	}
 

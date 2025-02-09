@@ -19,7 +19,7 @@ $first_recurring_product = array_reduce(
 	$products_to_reduce,
 	function ($chosen_product, $product) {
 
-		if ($product && $product->is_recurring() && $chosen_product == false) {
+		if ($product && $product->is_recurring() && false == $chosen_product) {
 			$chosen_product = $product;
 		} // end if;
 
@@ -58,7 +58,7 @@ wp_add_inline_script(
 	'after'
 );
 
-if ($first_recurring_product !== null) {
+if (null !== $first_recurring_product) {
 	wp_add_inline_script(
 		'wu-checkout',
 		sprintf(
@@ -318,7 +318,7 @@ if ($first_recurring_product !== null) {
 
 						$extra_check_for_annual = '';
 
-						if ($freq === 12) {
+						if (12 === $freq) {
 							$extra_check_for_annual = ' || (duration == "1" && duration_unit == "year")';
 						} // end if;
 

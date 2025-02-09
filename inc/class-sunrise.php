@@ -291,7 +291,7 @@ class Sunrise {
 			return true;
 		}
 
-		if ($sunrise_found === false) {
+		if (false === $sunrise_found) {
 			$error = [
 				'message' => __('File not found.', 'wp-ultimo'),
 			];
@@ -425,9 +425,9 @@ class Sunrise {
 
 		$is_active = isset($meta['active']) && $meta['active'];
 
-		if ($is_active && $mode === 'activating') {
+		if ($is_active && 'activating' === $mode) {
 			return false;
-		} elseif ( ! $is_active && $mode === 'deactivating') {
+		} elseif ( ! $is_active && 'deactivating' === $mode) {
 			return false;
 		}
 
@@ -457,10 +457,10 @@ class Sunrise {
 			]
 		);
 
-		if ($mode === 'activating') {
+		if ('activating' === $mode) {
 			$to_save['active']         = true;
 			$to_save['last_activated'] = $now;
-		} elseif ($mode === 'deactivating') {
+		} elseif ('deactivating' === $mode) {
 			$to_save['active']           = false;
 			$to_save['last_deactivated'] = $now;
 		} else {
