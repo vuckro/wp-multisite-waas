@@ -1073,7 +1073,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_object() {
 
-		if ($this->object !== null) {
+		if (null !== $this->object) {
 			return $this->object;
 		}
 
@@ -1156,7 +1156,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 			'updated' => 1,
 		];
 
-		if ($this->edit === false) {
+		if (false === $this->edit) {
 			$array_params['id'] = $object->get_id();
 		}
 

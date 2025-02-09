@@ -158,7 +158,7 @@ class Broadcast_Manager extends Base_Manager {
 			);
 		}
 
-		if ($args['type'] === 'broadcast_email') {
+		if ('broadcast_email' === $args['type']) {
 			$to = [];
 
 			$bcc = [];
@@ -272,7 +272,7 @@ class Broadcast_Manager extends Base_Manager {
 
 		$broadcast = new Broadcast($broadcast_data);
 
-		if ($args['type'] === 'broadcast_notice') {
+		if ('broadcast_notice' === $args['type']) {
 			$broadcast->set_notice_type($args['notice_type']);
 		}
 

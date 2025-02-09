@@ -257,7 +257,7 @@ class Field_Templates_Manager extends Base_Manager {
 
 		$holder_name = "instantiated_{$field_type}_templates";
 
-		if ( ! isset($this->holders[ $holder_name ]) || $this->holders[ $holder_name ] === null) {
+		if ( ! isset($this->holders[ $holder_name ]) || null === $this->holders[ $holder_name ]) {
 			$this->holders[ $holder_name ] = array_map([$this, 'instantiate_field_template'], $this->get_templates($field_type));
 		}
 

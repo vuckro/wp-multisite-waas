@@ -709,7 +709,7 @@ class Discount_Code extends Base_Model {
 	 */
 	public function get_allowed_products() {
 
-		if ($this->allowed_products === null) {
+		if (null === $this->allowed_products) {
 			$this->allowed_products = $this->get_meta('wu_allowed_products', []);
 		}
 
@@ -738,7 +738,7 @@ class Discount_Code extends Base_Model {
 	 */
 	public function get_limit_products() {
 
-		if ($this->limit_products === null) {
+		if (null === $this->limit_products) {
 			$this->limit_products = $this->get_meta('wu_limit_products', false);
 		}
 

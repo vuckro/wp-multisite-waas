@@ -50,7 +50,7 @@ class Base_Installer {
 		$all_done = true;
 
 		foreach ($this->get_steps() as $step) {
-			if ($step['done'] === false) {
+			if (false === $step['done']) {
 				$all_done = false;
 			}
 		}

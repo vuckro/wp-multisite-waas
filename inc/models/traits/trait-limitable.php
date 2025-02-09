@@ -159,9 +159,9 @@ trait Limitable {
 
 		$sites = [];
 
-		if ($this->model === 'site') {
+		if ('site' === $this->model) {
 			$sites[] = $this;
-		} elseif ($this->model === 'membership') {
+		} elseif ('membership' === $this->model) {
 			$sites = $this->get_sites();
 		}
 
@@ -242,12 +242,12 @@ trait Limitable {
 			}
 		}
 
-		if ($this->model !== 'product') {
+		if ('product' !== $this->model) {
 			/*
 			 * Set the new permissions, based on the diff.
 			 */
 			$limitations = wu_array_recursive_diff($modules_to_save, $current_limitations->to_array());
-		} elseif ($this->model === 'product' && $this->get_type() !== 'plan') {
+		} elseif ('product' === $this->model && $this->get_type() !== 'plan') {
 			$limitations = wu_array_recursive_diff($modules_to_save, Limitations::get_empty()->to_array());
 		} else {
 			$limitations = $modules_to_save;
@@ -264,15 +264,15 @@ trait Limitable {
 	 */
 	public function get_applicable_product_slugs() {
 
-		if ($this->model === 'product') {
+		if ('product' === $this->model) {
 			return [$this->get_slug()];
 		}
 
 		$slugs = [];
 
-		if ($this->model === 'membership') {
+		if ('membership' === $this->model) {
 			$membership = $this;
-		} elseif ($this->model === 'site') {
+		} elseif ('site' === $this->model) {
 			$membership = $this->get_membership();
 		}
 

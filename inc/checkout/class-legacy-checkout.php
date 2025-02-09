@@ -247,7 +247,7 @@ class Legacy_Checkout {
 		wp_add_inline_style('legacy-signup', $this->get_legacy_dynamic_styles());
 
 		// Do not get the login if the first step
-		if ($this->step != 'plan') {
+		if ('plan' != $this->step) {
 
 			wp_enqueue_style('login');
 
@@ -577,7 +577,7 @@ class Legacy_Checkout {
 		/**
 		 * Set the errors
 		 */
-		if ($this->results === null) {
+		if (null === $this->results) {
 			$this->results = ['errors' => new \WP_Error()];
 		}
 
@@ -979,7 +979,7 @@ class Legacy_Checkout {
 			$params['customized'] = $_REQUEST['customized'];
 		}
 
-		if (isset($_REQUEST['skip_plan']) && $_REQUEST['skip_plan'] == 1) {
+		if (isset($_REQUEST['skip_plan']) && 1 == $_REQUEST['skip_plan']) {
 			unset($this->steps['plan']);
 			unset($params['skip_plan']);
 		}

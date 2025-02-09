@@ -32,7 +32,7 @@ trait Notable {
 	 */
 	public function get_notes() {
 
-		if ($this->notes === null) {
+		if (null === $this->notes) {
 			$this->notes = get_metadata($this->get_meta_data_table_name(), $this->get_id(), 'wu_note', false);
 		}
 

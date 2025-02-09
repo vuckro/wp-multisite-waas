@@ -41,18 +41,19 @@ class Arr {
 	/**
 	 * Filter an array by property or key.
 	 *
-	 * @since 2.0.11
-	 *
-	 * @param array   $array The array to filter.
+	 * @param array   $array_to_filter The array to filter.
 	 * @param string  $property The property to filter by. Dot notation is supported.
 	 * @param mixed   $expected_value The expected value to filter by.
 	 * @param integer $flag The flag determining the return type.
+	 *
 	 * @return mixed
+	 *@since 2.0.11
+	 *
 	 */
-	public static function filter_by_property($array, $property, $expected_value, $flag = 0) {
+	public static function filter_by_property($array_to_filter, $property, $expected_value, $flag = 0) {
 
 		$result = self::filter(
-			$array,
+			$array_to_filter,
 			function ($value) use ($property, $expected_value) {
 
 			return Arr::get($value, $property, null) == $expected_value; // phpcs:ignore
@@ -69,18 +70,19 @@ class Arr {
 	/**
 	 * Filters an array using a callback.
 	 *
-	 * @since 2.0.11
-	 *
-	 * @param array    $array The array to search inside.
+	 * @param array    $array_to_search The array to search inside.
 	 * @param callable $closure The closure function to call.
+	 *
 	 * @return array
+	 *@since 2.0.11
+	 *
 	 */
-	public static function filter($array, $closure) {
+	public static function filter($array_to_search, $closure) {
 
 		if ($closure) {
 			$result = [];
 
-			foreach ($array as $key => $value) {
+			foreach ($array_to_search as $key => $value) {
 				if (call_user_func($closure, $value, $key)) {
 					$result[] = $value;
 				}
@@ -89,71 +91,74 @@ class Arr {
 			return $result;
 		}
 
-		return array_filter($array);
+		return array_filter($array_to_search);
 	}
 
 	/**
 	 * Get a nested value inside an array. Dot notation is supported.
 	 *
-	 * @since 2.0.11
-	 *
-	 * @param array  $array The array to get the value from.
+	 * @param array  $array_target The array to get the value from.
 	 * @param string $key The array key to get. Supports dot notation.
 	 * @param mixed  $default The value to return ibn the case the key does not exist.
+	 *
 	 * @return mixed
+	 *@since 2.0.11
+	 *
 	 */
-	public static function get($array, $key, $default = null) {
+	public static function get($array_target, $key, $default = null) {
 
 		if (is_null($key)) {
-			return $array;
+			return $array_target;
 		}
 
-		if (isset($array[ $key ])) {
-			return $array[ $key ];
+		if (isset($array_target[ $key ])) {
+			return $array_target[ $key ];
 		}
 
 		foreach (explode('.', $key) as $segment) {
-			if ( ! is_array($array) || ! array_key_exists($segment, $array)) {
+			if ( ! is_array($array_target) || ! array_key_exists($segment, $array_target)) {
 				return $default;
 			}
 
-			$array = $array[ $segment ];
+			$array_target = $array_target[ $segment ];
 		}
 
-		return $array;
+		return $array_target;
 	}
 
 	/**
 	 * Set a nested value inside an array. Dot notation is supported.
 	 *
-	 * @since 2.0.11
-	 *
-	 * @param array  $array The array to modify.
+	 * @param array  $array_to_modify The array to modify.
 	 * @param string $key The array key to set. Supports dot notation.
 	 * @param mixed  $value The value to set.
+	 *
 	 * @return array
+	 *@since 2.0.11
+	 *
 	 */
-	public static function set(&$array, $key, $value) {
+	public static function set(&$array_to_modify, $key, $value) {
 
 		if (is_null($key)) {
-			return $array = $value; // phpcs:ignore
+			return $array_to_modify = $value; // phpcs:ignore
 		}
 
-		$keys = explode('.', $key);
+		$keys       = explode('.', $key);
+		$keys_count = count($keys);
 
-		while (count($keys) > 1) {
+		while ($keys_count > 1) {
 			$key = array_shift($keys);
 
-			if ( ! isset($array[ $key ]) || ! is_array($array[ $key ])) {
-				$array[ $key ] = [];
+			if ( ! isset($array_to_modify[ $key ]) || ! is_array($array_to_modify[ $key ])) {
+				$array_to_modify[ $key ] = [];
 			}
 
-			$array =& $array[ $key ];
+			$array_to_modify =& $array_to_modify[ $key ];
 		}
 
-		$array[ array_shift($keys) ] = $value;
+		$array_to_modify[ array_shift($keys) ] = $value;
 
-		return $array;
+		return $array_to_modify;
 	}
 
 	/**

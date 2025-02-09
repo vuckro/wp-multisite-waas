@@ -37,7 +37,7 @@
 
 	<div class="wu-toggle">
 
-		<input class="wu-tgl wu-tgl-ios" value="1" <?php checked($field->value == 1); ?>  id="wu-tg-<?php echo esc_attr($field->id); ?>" type="checkbox" name="<?php echo esc_attr($field_slug); ?>" <?php echo $field->get_html_attributes(); ?> />
+		<input class="wu-tgl wu-tgl-ios" value="1" <?php checked(1 == $field->value); ?>  id="wu-tg-<?php echo esc_attr($field->id); ?>" type="checkbox" name="<?php echo esc_attr($field_slug); ?>" <?php echo $field->get_html_attributes(); ?> />
 
 		<label class="wu-tgl-btn wp-ui-highlight wu-bg-blue-500" for="wu-tg-<?php echo esc_attr($field->id); ?>"></label>
 

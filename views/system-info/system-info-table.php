@@ -33,11 +33,11 @@ $text_no  = '<span class="dashicons dashicons-no-alt wu-text-red-600"></span>';
 
 				</td>
 
-				<?php if ($value['value'] === 'Yes' || $value['value'] === 'Enabled') : ?>
+				<?php if ('Yes' === $value['value'] || 'Enabled' === $value['value']) : ?>
 
 					<td class='wu-px-4 wu-py-2'> <?php echo $text_yes; ?> </td>
 
-				<?php elseif ($value['value'] === 'No' || $value['value'] === 'Disabled') : ?>
+				<?php elseif ('No' === $value['value'] || 'Disabled' === $value['value']) : ?>
 
 					<td class='wu-px-4 wu-py-2'> <?php echo $text_no; ?> </td>
 

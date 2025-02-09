@@ -1089,7 +1089,7 @@ class Checkout_Form extends Base_Model {
 	 */
 	public function get_thank_you_page_id() {
 
-		if ($this->thank_you_page_id === null) {
+		if (null === $this->thank_you_page_id) {
 			$this->thank_you_page_id = $this->get_meta('wu_thank_you_page_id', '');
 		}
 
@@ -1118,7 +1118,7 @@ class Checkout_Form extends Base_Model {
 	 */
 	public function get_conversion_snippets() {
 
-		if ($this->conversion_snippets === null) {
+		if (null === $this->conversion_snippets) {
 			$this->conversion_snippets = $this->get_meta('wu_conversion_snippets', '');
 		}
 

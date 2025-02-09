@@ -125,7 +125,7 @@ class Broadcast extends Post_Base_Model {
 	 */
 	public function get_migrated_from_id() {
 
-		if ($this->migrated_from_id === null) {
+		if (null === $this->migrated_from_id) {
 			$this->migrated_from_id = $this->get_meta('migrated_from_id', 0);
 		}
 
@@ -176,7 +176,7 @@ class Broadcast extends Post_Base_Model {
 	 */
 	public function get_notice_type() {
 
-		if ($this->notice_type === null) {
+		if (null === $this->notice_type) {
 			$this->notice_type = $this->get_meta('notice_type', 'success');
 		}
 

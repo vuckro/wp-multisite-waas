@@ -87,9 +87,9 @@ class Limit_Site_Templates extends Limit {
 		$template = (object) $this->{$value_to_check};
 
 		$types = [
-			'available'     => $template->behavior === 'available',
-			'not_available' => $template->behavior === 'not_available',
-			'pre_selected'  => $template->behavior === 'pre_selected',
+			'available'     => 'available' === $template->behavior,
+			'not_available' => 'not_available' === $template->behavior,
+			'pre_selected'  => 'pre_selected' === $template->behavior,
 		];
 
 		return wu_get_isset($types, $type, true);
@@ -178,7 +178,7 @@ class Limit_Site_Templates extends Limit {
 		foreach ($limits as $site_id => $site_settings) {
 			$site_settings = (object) $site_settings;
 
-			if ($site_settings->behavior === 'available' || $site_settings->behavior === 'pre_selected' || $this->mode === 'default') {
+			if ('available' === $site_settings->behavior || 'pre_selected' === $site_settings->behavior || 'default' === $this->mode) {
 				$available[] = $site_id;
 			}
 		}
@@ -205,7 +205,7 @@ class Limit_Site_Templates extends Limit {
 		foreach ($limits as $site_id => $site_settings) {
 			$site_settings = (object) $site_settings;
 
-			if ($site_settings->behavior === 'pre_selected') {
+			if ('pre_selected' === $site_settings->behavior) {
 				$pre_selected_site_template = $site_id;
 			}
 		}

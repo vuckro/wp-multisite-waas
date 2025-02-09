@@ -62,7 +62,7 @@ abstract class Table extends \BerlinDB\Database\Table {
 	 */
 	public function exists() {
 
-		if ($this->_exists === null) {
+		if (null === $this->_exists) {
 			$this->_exists = parent::exists();
 		}
 

@@ -25,7 +25,7 @@
 
 	?>
 
-	<?php if ($field->type === 'model') : ?>
+	<?php if ('model' === $field->type) : ?>
 
 		<div class="wu-flex">
 

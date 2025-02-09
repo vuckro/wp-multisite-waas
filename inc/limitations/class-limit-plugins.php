@@ -45,13 +45,13 @@ class Limit_Plugins extends Limit {
 		$plugin = (object) $this->{$value_to_check};
 
 		$types = [
-			'visible'               => $plugin->visibility === 'visible',
-			'hidden'                => $plugin->visibility === 'hidden',
-			'default'               => $plugin->behavior === 'default',
-			'force_active'          => $plugin->behavior === 'force_active',
-			'force_inactive'        => $plugin->behavior === 'force_inactive',
-			'force_active_locked'   => $plugin->behavior === 'force_active_locked',
-			'force_inactive_locked' => $plugin->behavior === 'force_inactive_locked',
+			'visible'               => 'visible' === $plugin->visibility,
+			'hidden'                => 'hidden' === $plugin->visibility,
+			'default'               => 'default' === $plugin->behavior,
+			'force_active'          => 'force_active' === $plugin->behavior,
+			'force_inactive'        => 'force_inactive' === $plugin->behavior,
+			'force_active_locked'   => 'force_active_locked' === $plugin->behavior,
+			'force_inactive_locked' => 'force_inactive_locked' === $plugin->behavior,
 		];
 
 		return wu_get_isset($types, $type, false);

@@ -314,7 +314,7 @@ class Legacy_Shortcodes {
 		/**
 		 * In the case of the legacy layout, we need to load extra styles.
 		 */
-		if ($atts['layout'] === 'legacy') {
+		if ('legacy' === $atts['layout']) {
 			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'));
 
 			wp_add_inline_style('legacy-signup', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
@@ -324,7 +324,7 @@ class Legacy_Shortcodes {
 
 		do_action('wu_setup_checkout');
 
-		$atts['plan_id'] = is_string($atts['plan_id']) && $atts['plan_id'] !== 'all' ? explode(',', $atts['plan_id']) : false;
+		$atts['plan_id'] = is_string($atts['plan_id']) && 'all' !== $atts['plan_id'] ? explode(',', $atts['plan_id']) : false;
 
 		$checkout_form = new \WP_Ultimo\Models\Checkout_Form();
 
@@ -504,7 +504,7 @@ class Legacy_Shortcodes {
 		/**
 		 * In the case of the legacy layout, we need to load extra styles.
 		 */
-		if ($atts['layout'] === 'legacy') {
+		if ('legacy' === $atts['layout']) {
 			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'));
 
 			wp_add_inline_style('legacy-signup', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());

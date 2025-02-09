@@ -42,7 +42,7 @@ if ( ! isset($signup->step)) {
 
 ?>
 
-<?php if ($signup->step != 'plan' && $signup->step != 'template') : ?>
+<?php if ('plan' != $signup->step && 'template' != $signup->step) : ?>
 
 	<p id="nav">
 

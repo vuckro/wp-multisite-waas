@@ -284,7 +284,7 @@ abstract class Base_Element {
 
 		$should_load = false;
 
-		if ($block['blockName'] === $this->get_id()) {
+		if ($this->get_id() === $block['blockName']) {
 			$should_load = true;
 		}
 
@@ -386,7 +386,7 @@ abstract class Base_Element {
 	 */
 	public function setup_for_admin(): void {
 
-		if ($this->loaded === true) {
+		if (true === $this->loaded) {
 			return;
 		}
 
@@ -548,7 +548,7 @@ abstract class Base_Element {
 			$block_content = parse_blocks($content);
 
 			foreach ($block_content as $block) {
-				if ($block['blockName'] === $this->get_id()) {
+				if ($this->get_id() === $block['blockName']) {
 					return $block['attrs'];
 				}
 			}
@@ -613,7 +613,7 @@ abstract class Base_Element {
 	 */
 	public function get_pre_loaded_attribute($name, $default = false) {
 
-		if ($this->pre_loaded_attributes === false || ! is_array($this->pre_loaded_attributes)) {
+		if (false === $this->pre_loaded_attributes || ! is_array($this->pre_loaded_attributes)) {
 			return false;
 		}
 
@@ -682,7 +682,7 @@ abstract class Base_Element {
 		$state = [];
 
 		foreach ($fields as $field_slug => &$field) {
-			if ($field['type'] === 'header' || $field['type'] === 'note') {
+			if ('header' === $field['type'] || 'note' === $field['type']) {
 				unset($fields[ $field_slug ]);
 
 				continue;
@@ -697,7 +697,7 @@ abstract class Base_Element {
 			 */
 			$additional_state = [];
 
-			if ($field['type'] === 'group') {
+			if ('group' === $field['type']) {
 				foreach ($field['fields'] as $sub_field_slug => &$sub_field) {
 					$sub_field['html_attr'] = [
 						'v-model.lazy' => "attributes.{$sub_field_slug}",
@@ -810,7 +810,7 @@ abstract class Base_Element {
 		$state = array_merge($defaults, $saved_settings);
 
 		foreach ($fields as $field_slug => &$field) {
-			if ($field['type'] === 'header') {
+			if ('header' === $field['type']) {
 				unset($fields[ $field_slug ]);
 
 				continue;
@@ -886,7 +886,7 @@ abstract class Base_Element {
 			foreach ($fields as $field_slug => $field) {
 				$setting = wu_request($field_slug, false);
 
-				if (false !== $setting || $field['type'] === 'toggle') {
+				if (false !== $setting || 'toggle' === $field['type']) {
 					$settings[ $field_slug ] = $setting;
 				}
 			}

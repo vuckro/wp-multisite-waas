@@ -57,7 +57,7 @@
 
 		<div class="wu-block wu-pt-2">
 
-		<?php if ($user->ID !== get_current_user_id()) : ?>
+		<?php if (get_current_user_id() !== $user->ID) : ?>
 
 			<a 
 			href="<?php echo \WP_Ultimo\User_Switching::get_instance()->render($user->ID); ?>" 

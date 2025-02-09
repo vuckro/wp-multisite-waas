@@ -25,7 +25,7 @@
 
 	?>
 
-	<?php if ($field->type === 'date' || $field->date === true) : ?>
+	<?php if ('date' === $field->type || true === $field->date) : ?>
 
 		<?php
 

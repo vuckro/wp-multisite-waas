@@ -30,7 +30,7 @@ function wu_guess_registration_page() {
 
 			$maybe_register_page = get_page_by_path('register');
 
-			if ($maybe_register_page && has_shortcode($maybe_register_page->post_content, 'wu_checkout') && $maybe_register_page->post_status === 'publish') {
+			if ($maybe_register_page && has_shortcode($maybe_register_page->post_content, 'wu_checkout') && 'publish' === $maybe_register_page->post_status) {
 				wu_save_setting('default_registration_page', $maybe_register_page->ID);
 
 				function_exists('flush_rewrite_rules') && flush_rewrite_rules(true);

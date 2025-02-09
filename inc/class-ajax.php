@@ -138,7 +138,7 @@ class Ajax {
 		/*
 		 * Deal with site
 		 */
-		if ($args['model'] === 'site') {
+		if ('site' === $args['model']) {
 			if (wu_get_isset($query, 'id__in')) {
 				$query['blog_id__in'] = $query['id__in'];
 
@@ -154,9 +154,9 @@ class Ajax {
 
 		$results = [];
 
-		if ($args['model'] === 'user') {
+		if ('user' === $args['model']) {
 			$results = $this->search_wordpress_users($query);
-		} elseif ($args['model'] === 'page') {
+		} elseif ('page' === $args['model']) {
 			$results = get_posts(
 				[
 					'post_type'   => 'page',
@@ -165,7 +165,7 @@ class Ajax {
 					'exclude'     => $query['id__not_in'] ?? '',
 				]
 			);
-		} elseif ($args['model'] === 'setting') {
+		} elseif ('setting' === $args['model']) {
 			$results = $this->search_wp_ultimo_setting($query);
 		} else {
 			$model_func = 'wu_get_' . strtolower((string) $args['model']) . 's';

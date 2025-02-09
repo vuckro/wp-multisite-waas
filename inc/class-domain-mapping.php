@@ -75,7 +75,7 @@ class Domain_Mapping {
 		/*
 		 * Don't run during installation...
 		 */
-		if (defined('WP_INSTALLING') && $_SERVER['SCRIPT_NAME'] !== '/wp-activate.php') {
+		if (defined('WP_INSTALLING') && '/wp-activate.php' !== $_SERVER['SCRIPT_NAME']) {
 			return;
 		}
 

@@ -720,7 +720,7 @@ class Site_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_object() {
 
-		if ($this->object !== null) {
+		if (null !== $this->object) {
 			return $this->object;
 		}
 

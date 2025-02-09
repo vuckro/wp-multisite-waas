@@ -51,7 +51,7 @@ class Session_Cookie implements Session {
 	public function __construct($realm_name) {
 
 		$this->realm_name = $realm_name;
-		if ($this->loaded === true) {
+		if (true === $this->loaded) {
 			return;
 		}
 

@@ -10,7 +10,7 @@
 
 		$theme_settings = $object->get_limitations()->themes->{$theme_path};
 
-		if ($theme_settings->behavior === 'force_active') {
+		if ('force_active' === $theme_settings->behavior) {
 			$section['state']['force_active_theme'] = $theme_path;
 		} // end if;
 
@@ -65,8 +65,8 @@
 			</h3>
 
 			<select name="modules[themes][limit][<?php echo esc_attr($theme_path); ?>][visibility]" class="wu-w-full">
-				<option <?php selected($theme_settings->visibility === 'visible'); ?> value="visible"><?php _e('Visible', 'wp-ultimo'); ?></option>
-				<option <?php selected($theme_settings->visibility === 'hidden'); ?> value="hidden"><?php _e('Hidden', 'wp-ultimo'); ?></option>
+				<option <?php selected('visible' === $theme_settings->visibility); ?> value="visible"><?php _e('Visible', 'wp-ultimo'); ?></option>
+				<option <?php selected('hidden' === $theme_settings->visibility); ?> value="hidden"><?php _e('Hidden', 'wp-ultimo'); ?></option>
 			</select>
 
 			<h3 class="wu-my-1 wu-mt-4 wu-text-2xs wu-uppercase wu-text-gray-600">
@@ -76,16 +76,16 @@
 			</h3>
 
 			<select v-on:change="force_active_theme = ($event.target.value === 'force_active' ? '<?php echo esc_attr($theme_path); ?>' : '')" name="modules[themes][limit][<?php echo esc_attr($theme_path); ?>][behavior]" class="wu-w-full">
-				<option <?php selected($theme_settings->behavior === 'available'); ?> value="available"><?php _e('Available', 'wp-ultimo'); ?></option>
-				<option <?php selected($theme_settings->behavior === 'not_available'); ?> value="not_available"><?php _e('Not Available', 'wp-ultimo'); ?></option>
-				<option :disabled="force_active_theme !== '' && force_active_theme != '<?php echo esc_attr($theme_path); ?>'" <?php selected($theme_settings->behavior === 'force_active'); ?> value="force_active"><?php _e('Force Activate', 'wp-ultimo'); ?></option>
+				<option <?php selected('available' === $theme_settings->behavior); ?> value="available"><?php _e('Available', 'wp-ultimo'); ?></option>
+				<option <?php selected('not_available' === $theme_settings->behavior); ?> value="not_available"><?php _e('Not Available', 'wp-ultimo'); ?></option>
+				<option :disabled="force_active_theme !== '' && force_active_theme != '<?php echo esc_attr($theme_path); ?>'" <?php selected('force_active' === $theme_settings->behavior); ?> value="force_active"><?php _e('Force Activate', 'wp-ultimo'); ?></option>
 			</select>
 
 			</div>
 
 		</div>
 
-		<?php if ($object->model !== 'product' && $object->get_limitations(false)->themes->exists($theme_path)) : ?>
+		<?php if ('product' !== $object->model && $object->get_limitations(false)->themes->exists($theme_path)) : ?>
 
 			<p class="wu-m-0 wu-mt-4 wu-p-2 wu-bg-blue-100 wu-text-blue-600 wu-rounded">
 				<?php _e('This value is being applied only to this entity. Changes made to the membership or product permissions will not affect this particular value.', 'wp-ultimo'); ?>

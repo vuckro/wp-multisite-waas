@@ -451,11 +451,11 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				'value'   => wu_get_customer_meta($this->get_object()->get_id(), $key),
 			];
 
-			if ($field_data['type'] === 'hidden') {
+			if ('hidden' === $field_data['type']) {
 				$field_data['type'] = 'text';
 			}
 
-			if ($field_data['type'] === 'image') {
+			if ('image' === $field_data['type']) {
 				$image_attributes  = wp_get_attachment_image_src((int) $field_data['value'], 'full');
 				$field_data['img'] = $image_attributes ? $image_attributes[0] : '';
 			}
@@ -1071,7 +1071,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_object() {
 
-		if ($this->object !== null) {
+		if (null !== $this->object) {
 			return $this->object;
 		}
 
@@ -1108,7 +1108,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_save(): void {
 
-		if ($_POST['submit_button'] === 'send_verification') {
+		if ('send_verification' === $_POST['submit_button']) {
 			$customer = $this->get_object();
 
 			$customer->send_verification_email();

@@ -63,8 +63,8 @@
 				</h3>
 
 				<select name="modules[plugins][limit][<?php echo esc_attr($plugin_path); ?>][visibility]" class="wu-w-full">
-				<option <?php selected($object->get_limitations()->plugins->{$plugin_path}->visibility === 'visible'); ?> value="visible"><?php _e('Visible', 'wp-ultimo'); ?></option>
-				<option <?php selected($object->get_limitations()->plugins->{$plugin_path}->visibility === 'hidden'); ?> value="hidden"><?php _e('Hidden', 'wp-ultimo'); ?></option>
+				<option <?php selected('visible' === $object->get_limitations()->plugins->{$plugin_path}->visibility); ?> value="visible"><?php _e('Visible', 'wp-ultimo'); ?></option>
+				<option <?php selected('hidden' === $object->get_limitations()->plugins->{$plugin_path}->visibility); ?> value="hidden"><?php _e('Hidden', 'wp-ultimo'); ?></option>
 				</select>
 
 				<h3 class="wu-my-1 wu-mt-4 wu-text-2xs wu-uppercase wu-text-gray-600">
@@ -74,11 +74,11 @@
 				</h3>
 
 				<select name="modules[plugins][limit][<?php echo esc_attr($plugin_path); ?>][behavior]" class="wu-w-full">
-				<option <?php selected($object->get_limitations()->plugins->{$plugin_path}->behavior === 'default'); ?> value="default"><?php _e('Default', 'wp-ultimo'); ?></option>
-				<option <?php disabled(is_plugin_active_for_network($plugin_path)); ?> <?php selected($object->get_limitations()->plugins->{$plugin_path}->behavior === 'force_active'); ?> value="force_active"><?php _e('Force Activate', 'wp-ultimo'); ?></option>
-				<option <?php disabled(is_plugin_active_for_network($plugin_path)); ?> <?php selected($object->get_limitations()->plugins->{$plugin_path}->behavior === 'force_inactive'); ?> value="force_inactive"><?php _e('Force Inactivate', 'wp-ultimo'); ?></option>
-				<option <?php selected($object->get_limitations()->plugins->{$plugin_path}->behavior === 'force_active_locked'); ?> value="force_active_locked"><?php _e('Force Activate & Lock', 'wp-ultimo'); ?></option>
-				<option <?php selected($object->get_limitations()->plugins->{$plugin_path}->behavior === 'force_inactive_locked'); ?> value="force_inactive_locked"><?php _e('Force Inactivate & Lock', 'wp-ultimo'); ?></option>
+				<option <?php selected('default' === $object->get_limitations()->plugins->{$plugin_path}->behavior); ?> value="default"><?php _e('Default', 'wp-ultimo'); ?></option>
+				<option <?php disabled(is_plugin_active_for_network($plugin_path)); ?> <?php selected('force_active' === $object->get_limitations()->plugins->{$plugin_path}->behavior); ?> value="force_active"><?php _e('Force Activate', 'wp-ultimo'); ?></option>
+				<option <?php disabled(is_plugin_active_for_network($plugin_path)); ?> <?php selected('force_inactive' === $object->get_limitations()->plugins->{$plugin_path}->behavior); ?> value="force_inactive"><?php _e('Force Inactivate', 'wp-ultimo'); ?></option>
+				<option <?php selected('force_active_locked' === $object->get_limitations()->plugins->{$plugin_path}->behavior); ?> value="force_active_locked"><?php _e('Force Activate & Lock', 'wp-ultimo'); ?></option>
+				<option <?php selected('force_inactive_locked' === $object->get_limitations()->plugins->{$plugin_path}->behavior); ?> value="force_inactive_locked"><?php _e('Force Inactivate & Lock', 'wp-ultimo'); ?></option>
 				</select>
 
 			</div>
@@ -87,7 +87,7 @@
 
 		</div>
 
-		<?php if ($object->model !== 'product' && $object->get_limitations(false)->plugins->exists($plugin_path)) : ?>
+		<?php if ('product' !== $object->model && $object->get_limitations(false)->plugins->exists($plugin_path)) : ?>
 
 			<p class="wu-m-0 wu-mt-4 wu-p-2 wu-bg-blue-100 wu-text-blue-600 wu-rounded">
 				<?php _e('This value is being applied only to this entity. Changes made to the membership or product permissions will not affect this particular value.', 'wp-ultimo'); ?>

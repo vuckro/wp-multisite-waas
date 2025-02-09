@@ -367,7 +367,7 @@ class Checkout {
 
 		$this->checkout_form = wu_get_checkout_form_by_slug($checkout_form_slug);
 
-		if ($this->session === null) {
+		if (null === $this->session) {
 			$this->session = wu_get_session('signup');
 		}
 
@@ -1434,7 +1434,7 @@ class Checkout {
 		 * to handle the status here as the payment is not
 		 * passed to process_checkout method in this case.
 		 */
-		if ( ! $this->order->should_collect_payment() && $this->type === 'downgrade') {
+		if ( ! $this->order->should_collect_payment() && 'downgrade' === $this->type) {
 			$payment_data['status'] = Payment_Status::COMPLETED;
 		}
 
@@ -1570,7 +1570,7 @@ class Checkout {
 		if (empty($duration) && $this->steps) {
 			foreach ($this->steps as $step) {
 				foreach ($step['fields'] as $field) {
-					if ($field['type'] === 'period_selection') {
+					if ('period_selection' === $field['type']) {
 						$duration      = $field['period_options'][0]['duration'];
 						$duration_unit = $field['period_options'][0]['duration_unit'];
 
@@ -1723,7 +1723,7 @@ class Checkout {
 		/*
 		 * Add rules for site when creating a new account.
 		 */
-		if ($this->type === 'new') {
+		if ('new' === $this->type) {
 
 			// char limit according https://datatracker.ietf.org/doc/html/rfc1034#section-3.1
 			$rules['site_title'] = 'min:4';
@@ -2293,7 +2293,7 @@ class Checkout {
 
 		$value = $default;
 
-		if ($this->session !== null) {
+		if (null !== $this->session) {
 			$session = $this->session->get('signup');
 
 			if (isset($session[ $key ])) {
@@ -2348,7 +2348,7 @@ class Checkout {
 			return true;
 		}
 
-		return $this->step_name === array_shift($step_names);
+		return array_shift($step_names) === $this->step_name;
 	}
 
 	/**
@@ -2386,7 +2386,7 @@ class Checkout {
 			return true;
 		}
 
-		return $this->step_name === array_pop($step_names);
+		return array_pop($step_names) === $this->step_name;
 	}
 
 	/**

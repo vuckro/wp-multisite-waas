@@ -150,7 +150,7 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 		foreach ($elements as $element) {
 			$defaults = $element->defaults();
 
-			$params = array_filter($element->fields(), fn($el) => $el['type'] !== 'note' && $el['type'] !== 'header');
+			$params = array_filter($element->fields(), fn($el) => 'note' !== $el['type'] && 'header' !== $el['type']);
 
 			foreach ($params as $key => $value) {
 				$params[ $key ]['default'] = wu_get_isset($defaults, $key, '');

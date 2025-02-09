@@ -343,7 +343,7 @@ class Site extends Base_Model {
 	 */
 	public function get_categories() {
 
-		if ($this->categories === null) {
+		if (null === $this->categories) {
 			$this->categories = $this->get_meta('wu_categories', []);
 		}
 
@@ -362,7 +362,7 @@ class Site extends Base_Model {
 	 */
 	public function get_featured_image_id() {
 
-		if ($this->featured_image_id === null) {
+		if (null === $this->featured_image_id) {
 			return $this->get_meta('wu_featured_image_id');
 		}
 
@@ -718,7 +718,7 @@ class Site extends Base_Model {
 	 */
 	public function is_active() {
 
-		if ($this->active === null) {
+		if (null === $this->active) {
 			$this->active = $this->get_meta('wu_active', true);
 		}
 
@@ -885,7 +885,7 @@ class Site extends Base_Model {
 	 */
 	public function get_customer_id() {
 
-		if ($this->customer_id === null) {
+		if (null === $this->customer_id) {
 			$this->customer_id = $this->get_meta('wu_customer_id');
 		}
 
@@ -950,7 +950,7 @@ class Site extends Base_Model {
 	 */
 	public function get_membership_id() {
 
-		if ($this->membership_id === null) {
+		if (null === $this->membership_id) {
 			$this->membership_id = $this->get_meta('wu_membership_id');
 		}
 
@@ -1001,7 +1001,7 @@ class Site extends Base_Model {
 	 */
 	public function get_membership() {
 
-		if ($this->_membership !== null) {
+		if (null !== $this->_membership) {
 			return $this->_membership;
 		}
 
@@ -1057,7 +1057,7 @@ class Site extends Base_Model {
 	 */
 	public function get_template_id() {
 
-		if ($this->template_id === null) {
+		if (null === $this->template_id) {
 			$this->template_id = $this->get_meta('wu_template_id');
 		}
 
@@ -1152,7 +1152,7 @@ class Site extends Base_Model {
 			return 'main';
 		}
 
-		if ($this->type === null) {
+		if (null === $this->type) {
 			$type = $this->get_meta('wu_type');
 
 			$this->type = $type ?: 'default';
@@ -1267,7 +1267,7 @@ class Site extends Base_Model {
 
 		$details = get_blog_details($this->get_blog_id());
 
-		if ($details && $this->title === null) {
+		if ($details && null === $this->title) {
 			$this->set_title($details->blogname);
 		}
 
@@ -1289,7 +1289,7 @@ class Site extends Base_Model {
 	 */
 	public function get_transient() {
 
-		if ($this->transient === null) {
+		if (null === $this->transient) {
 			$this->transient = $this->get_meta('wu_transient');
 		}
 

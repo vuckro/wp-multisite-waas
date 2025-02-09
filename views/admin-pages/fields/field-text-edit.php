@@ -25,12 +25,12 @@
 
 	?>
 
-	<?php if ($field->type === 'date' || $field->date === true) : ?>
+	<?php if ('date' === $field->type || true === $field->date) : ?>
 
 		<?php
 
 		if (wu_validate_date($field->value)) {
-			if ($field->display_value == false) {
+			if (false == $field->display_value) {
 				echo __('No date', 'wp-ultimo');
 			} else {
 				$date = $field->value;

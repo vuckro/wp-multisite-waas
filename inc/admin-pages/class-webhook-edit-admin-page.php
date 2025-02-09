@@ -401,7 +401,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 				'updated' => 1,
 			];
 
-			if ($this->edit === false) {
+			if (false === $this->edit) {
 				$array_params['id'] = $object->get_id();
 			}
 

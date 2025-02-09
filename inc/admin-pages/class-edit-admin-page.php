@@ -62,7 +62,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 */
 	public function get_errors() {
 
-		if ($this->errors === null) {
+		if (null === $this->errors) {
 			$this->errors = new \WP_Error();
 		}
 
@@ -850,7 +850,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 				'updated' => 1,
 			];
 
-			if ($this->edit === false) {
+			if (false === $this->edit) {
 				$array_params['id'] = $object->get_id();
 
 				$array_params['wu-new-model'] = true;

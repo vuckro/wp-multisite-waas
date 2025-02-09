@@ -62,7 +62,7 @@ $page->render_csv_button(
 			<tr>
 			<td>
 				<?php echo $form->signup_form; ?>
-				<?php if ($form->signup_form === 'by-admin') : ?>
+				<?php if ('by-admin' === $form->signup_form) : ?>
 					<?php echo wu_tooltip(__('Customers created via the admin panel, by super admins.', 'wp-ultimo')); ?>
 				<?php endif; ?>
 			</td>

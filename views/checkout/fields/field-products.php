@@ -27,7 +27,7 @@
 
 	<label class="wu-block" for="field-<?php echo esc_attr($field->id); ?>-<?php echo esc_attr($option->get_id()); ?>">
 
-		<input id="field-products-<?php echo esc_attr($option->get_id()); ?>" type="checkbox" name="products[]" value="<?php echo esc_attr($option->get_id()); ?>" <?php echo $field->get_html_attributes(); ?> <?php checked($field->value == $option->get_id()); ?> v-model="products">
+		<input id="field-products-<?php echo esc_attr($option->get_id()); ?>" type="checkbox" name="products[]" value="<?php echo esc_attr($option->get_id()); ?>" <?php echo $field->get_html_attributes(); ?> <?php checked($option->get_id() == $field->value); ?> v-model="products">
 
 		<?php echo $option->get_name(); ?>
 

@@ -547,7 +547,7 @@ class Customer extends Base_Model {
 	 */
 	public function get_extra_information() {
 
-		if ($this->extra_information === null) {
+		if (null === $this->extra_information) {
 			$extra_information = (array) $this->get_meta('wu_customer_extra_information');
 
 			$this->extra_information = array_filter($extra_information);

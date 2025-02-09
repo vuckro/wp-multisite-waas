@@ -706,7 +706,7 @@ class Migrator extends Base_Installer {
 
 		global $wpdb;
 
-		if ($this->settings !== null) {
+		if (null !== $this->settings) {
 			return $this->settings;
 		}
 
@@ -1662,7 +1662,7 @@ class Migrator extends Base_Installer {
 			if ($subscription->gateway) {
 				$membership_data['gateway'] = $subscription->gateway;
 
-				if ($subscription->gateway === 'stripe') {
+				if ('stripe' === $subscription->gateway) {
 
 					/**
 					 * Case Stripe.
@@ -1672,7 +1672,7 @@ class Migrator extends Base_Installer {
 					 */
 					$membership_data['gateway_customer_id']     = $subscription->integration_key;
 					$membership_data['gateway_subscription_id'] = $v1_subscription_meta->subscription_id;
-				} elseif ($subscription->gateway === 'paypal') {
+				} elseif ('paypal' === $subscription->gateway) {
 
 					/**
 					 * Case PayPal.

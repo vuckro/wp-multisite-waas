@@ -423,7 +423,7 @@ class Login_Form_Element extends Base_Element {
 		/*
 		 * Handles maintenance mode on Elementor.
 		 */
-		if ($post && $post->ID === absint(wu_get_setting('default_login_page', 0))) {
+		if ($post && absint(wu_get_setting('default_login_page', 0)) === $post->ID) {
 			add_filter('elementor/maintenance_mode/is_login_page', '__return_true');
 		}
 	}
@@ -749,9 +749,9 @@ class Login_Form_Element extends Base_Element {
 			if (isset($_GET['redirect_to'])) {
 				$atts['redirect_type']          = 'query_redirect';
 				$fields['redirect_to']['value'] = $_GET['redirect_to'];
-			} elseif ($atts['redirect_type'] === 'customer_site') {
+			} elseif ('customer_site' === $atts['redirect_type']) {
 				$fields['redirect_to']['value'] = $atts['customer_redirect_path'];
-			} elseif ($atts['redirect_type'] === 'main_site') {
+			} elseif ('main_site' === $atts['redirect_type']) {
 				$fields['redirect_to']['value'] = $atts['main_redirect_path'];
 			}
 

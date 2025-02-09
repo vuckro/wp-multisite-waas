@@ -213,12 +213,12 @@ class Form implements \JsonSerializable {
 
 		unset($this->atts['html_attr']['class']);
 
-		if ($this->type === 'number') {
-			if ($this->min !== false) {
+		if ('number' === $this->type) {
+			if (false !== $this->min) {
 				$attributes['min'] = $this->min;
 			}
 
-			if ($this->max !== false) {
+			if (false !== $this->max) {
 				$attributes['max'] = $this->max;
 			}
 		}

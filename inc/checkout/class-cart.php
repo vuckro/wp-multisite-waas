@@ -626,7 +626,7 @@ class Cart implements \JsonSerializable {
 			$product = $line_item->get_product();
 
 			if ($product) {
-				if ($product->is_recurring() && ($this->duration_unit !== $product->get_duration_unit() || $this->duration !== $product->get_duration())) {
+				if ($product->is_recurring() && ($product->get_duration_unit() !== $this->duration_unit || $product->get_duration() !== $this->duration)) {
 					$product_variation = $product->get_as_variation($this->duration, $this->duration_unit);
 
 					/*
@@ -876,7 +876,7 @@ class Cart implements \JsonSerializable {
 		 */
 		$is_plan_change = false;
 
-		if ($membership->get_plan_id() !== $this->plan_id || $this->duration_unit !== $membership->get_duration_unit() || $this->duration !== $membership->get_duration()) {
+		if ($membership->get_plan_id() !== $this->plan_id || $membership->get_duration_unit() !== $this->duration_unit || $membership->get_duration() !== $this->duration) {
 			$is_plan_change = true;
 		}
 
@@ -934,7 +934,7 @@ class Cart implements \JsonSerializable {
 		 * We'll probably never enter in this if, but we
 		 * hev it here to prevent bugs.
 		 */
-		if ( ! $is_plan_change || ($this->get_plan_id() === $membership->get_plan_id() && $this->duration_unit === $membership->get_duration_unit() && $this->duration === $membership->get_duration())) {
+		if ( ! $is_plan_change || ($this->get_plan_id() === $membership->get_plan_id() && $membership->get_duration_unit() === $this->duration_unit && $membership->get_duration() === $this->duration)) {
 			$this->products   = [];
 			$this->line_items = [];
 
@@ -969,7 +969,7 @@ class Cart implements \JsonSerializable {
 		$old_price_per_day = $days_in_old_cycle > 0 ? $membership->get_amount() / $days_in_old_cycle : $membership->get_amount();
 		$new_price_per_day = $days_in_new_cycle > 0 ? $this->get_recurring_total() / $days_in_new_cycle : $this->get_recurring_total();
 
-		$is_same_product = $this->plan_id === $membership->get_plan_id();
+		$is_same_product = $membership->get_plan_id() === $this->plan_id;
 
 		/**
 		 * Here we search for variations of the plans
@@ -1088,7 +1088,7 @@ class Cart implements \JsonSerializable {
 			];
 		}
 
-		if ($this->duration_unit && $this->duration && ($this->duration_unit !== $plan_b->get_duration_unit() || $this->duration !== $plan_b->get_duration())) {
+		if ($this->duration_unit && $this->duration && ($plan_b->get_duration_unit() !== $this->duration_unit || $plan_b->get_duration() !== $this->duration)) {
 			$plan_a_variation = $plan_a->get_as_variation($this->duration, $this->duration_unit);
 
 			if ( ! $plan_a_variation) {
@@ -1511,7 +1511,7 @@ class Cart implements \JsonSerializable {
 		}
 
 		// Here we check if the product is recurring and if so, get the correct variation
-		if ($product->is_recurring() && ! empty($this->duration) && ($this->duration !== $product->get_duration() || $this->duration_unit !== $product->get_duration_unit())) {
+		if ($product->is_recurring() && ! empty($this->duration) && ($product->get_duration() !== $this->duration || $product->get_duration_unit() !== $this->duration_unit)) {
 			$product = $product->get_as_variation($this->duration, $this->duration_unit);
 
 			if ( ! $product) {
@@ -1576,7 +1576,7 @@ class Cart implements \JsonSerializable {
 		 * the cart.
 		 */
 		if ($product->is_free() === false) {
-			if (absint($this->duration) !== $product->get_duration() || $this->duration_unit !== $product->get_duration_unit()) {
+			if (absint($this->duration) !== $product->get_duration() || $product->get_duration_unit() !== $this->duration_unit) {
 				$price_variation = $product->get_price_variation($this->duration, $this->duration_unit);
 
 				if ($price_variation) {
@@ -2614,7 +2614,7 @@ class Cart implements \JsonSerializable {
 	 */
 	public function should_auto_renew() {
 
-		return $this->auto_renew === 'yes' || $this->auto_renew === true;
+		return 'yes' === $this->auto_renew || true === $this->auto_renew;
 	}
 
 	/**

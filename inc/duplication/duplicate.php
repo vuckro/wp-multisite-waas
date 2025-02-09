@@ -208,7 +208,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 */
 		public static function init_log($data): void {
 			// INIT LOG AND SAVE OPTION
-			if (isset($data['log']) && $data['log'] == 'yes' ) {
+			if (isset($data['log']) && 'yes' == $data['log'] ) {
 				if (isset($data['log-path']) && ! empty($data['log-path'])) {
 					$log_name = @date('Y_m_d_His') . '-' . $data['domain'] . '.log';
 					if (! str_ends_with((string) $data['log-path'], '/')) {

@@ -93,7 +93,7 @@ trait WP_Ultimo_Plan_Deprecated {
 	 */
 	public function is_featured_plan() {
 
-		if ($this->featured_plan === null) {
+		if (null === $this->featured_plan) {
 			$this->featured_plan = $this->get_meta('featured_plan', false);
 		}
 

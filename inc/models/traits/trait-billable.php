@@ -43,7 +43,7 @@ trait Billable {
 	 */
 	public function get_billing_address() {
 
-		if ($this->billing_address === null) {
+		if (null === $this->billing_address) {
 			$billing_address = $this->get_meta('wu_billing_address');
 
 			$this->billing_address = is_a($billing_address, '\WP_Ultimo\Objects\Billing_Address') ? $billing_address : $this->get_default_billing_address();

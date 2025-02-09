@@ -185,11 +185,11 @@ function wu_is_form_field_pre_selected($field_slug) {
  */
 function wu_form_field_request_arg($field) {
 
-	if ($field['type'] === 'template_selection') {
+	if ('template_selection' === $field['type']) {
 		return 'template_id';
 	}
 
-	if ($field['type'] === 'pricing_table') {
+	if ('pricing_table' === $field['type']) {
 		return 'products';
 	}
 

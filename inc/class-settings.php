@@ -153,7 +153,7 @@ class Settings {
 			$this->settings = wu_get_option(self::KEY);
 		}
 
-		if ($this->settings === false || empty($this->settings)) {
+		if (false === $this->settings || empty($this->settings)) {
 			if ( ! $this->saving) {
 				$this->saving   = true;
 				$this->settings = $this->save_settings([], true);
@@ -249,7 +249,7 @@ class Settings {
 				/**
 				 * For the current tab, we need to assume toggle fields.
 				 */
-				if (wu_request('tab', 'general') === $section_slug && $field->type === 'toggle' && ! isset($settings_to_save[ $field_slug ])) {
+				if (wu_request('tab', 'general') === $section_slug && 'toggle' === $field->type && ! isset($settings_to_save[ $field_slug ])) {
 					$new_value = false;
 				}
 
@@ -503,7 +503,7 @@ class Settings {
 		/*
 		 * Makes sure we install the default value if it is not set yet.
 		 */
-		if (isset($atts['default']) && $atts['default'] !== null && ! isset($settings[ $field_slug ])) {
+		if (isset($atts['default']) && null !== $atts['default'] && ! isset($settings[ $field_slug ])) {
 			$this->save_setting($field_slug, $atts['default']);
 		}
 	}

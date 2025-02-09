@@ -34,7 +34,15 @@ final class YodaConditionsRector extends AbstractRector
     public function refactor(Node $node): ?Node
     {
 		// Ensure the left operand is not a constant
-		if ($node->left instanceof Node\Expr\Variable && (! $node->right instanceof Node\Expr\Variable)) {
+		if ((
+			$node->left instanceof Node\Expr\Variable ||
+			$node->left instanceof Node\Expr\PropertyFetch ||
+			$node->left instanceof Node\Expr\ArrayDimFetch) && (
+				$node->right instanceof Scalar ||
+				$node->right instanceof ConstFetch ||
+				$node->right instanceof Node\Expr\FuncCall ||
+				$node->right instanceof Node\Expr\MethodCall
+			)) {
 			// Swap the left and right operands
 			$this->mirrorComments($node->right, $node->left);
 			[$node->left, $node->right] = [$node->right, $node->left];

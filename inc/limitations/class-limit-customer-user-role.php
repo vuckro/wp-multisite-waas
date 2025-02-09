@@ -71,6 +71,6 @@ class Limit_Customer_User_Role extends Limit {
 
 		$default_value = wu_get_setting('default_role', 'administrator');
 
-		return empty($this->limit) || $this->limit === 'default' ? $default_value : $this->limit;
+		return empty($this->limit) || 'default' === $this->limit ? $default_value : $this->limit;
 	}
 }

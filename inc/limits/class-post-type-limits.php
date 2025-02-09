@@ -112,7 +112,7 @@ class Post_Type_Limits {
 	 */
 	public function limit_restoring(): void {
 
-		if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'untrash') {
+		if (isset($_REQUEST['action']) && 'untrash' === $_REQUEST['action']) {
 			$this->limit_posts();
 		}
 	}
@@ -170,7 +170,7 @@ class Post_Type_Limits {
 
 		}
 
-		if (isset($data['post_status']) && $data['post_status'] !== 'publish') {
+		if (isset($data['post_status']) && 'publish' !== $data['post_status']) {
 			return $data;
 		}
 
@@ -208,10 +208,10 @@ class Post_Type_Limits {
 		$quota = wu_get_current_site()->get_limitations()->post_types->attachment->number;
 
 		// This bit is for the flash uploader
-		if ($file['type'] === 'application/octet-stream' && isset($file['tmp_name'])) {
+		if ('application/octet-stream' === $file['type'] && isset($file['tmp_name'])) {
 			$file_size = getimagesize($file['tmp_name']);
 
-			if (isset($file_size['error']) && $file_size['error'] !== 0) {
+			if (isset($file_size['error']) && 0 !== $file_size['error']) {
 				$file['error'] = "Unexpected Error: {$file_size['error']}";
 
 				return $file;

@@ -443,7 +443,7 @@ if ( ! class_exists('MUCD_Data') ) {
 				MUCD_Duplicate::write_log('Result :' . var_export($results, true));
 			}
 
-			if ($wpdb->last_error != '') {
+			if ('' != $wpdb->last_error) {
 				self::sql_error($sql_query, $wpdb->last_error);
 			}
 

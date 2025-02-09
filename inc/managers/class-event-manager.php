@@ -236,7 +236,7 @@ class Event_Manager extends Base_Manager {
 			'hidden'     => false,
 		];
 
-		$types = array_filter($types, fn($item) => $item['hidden'] === false);
+		$types = array_filter($types, fn($item) => false === $item['hidden']);
 
 		return $types;
 	}

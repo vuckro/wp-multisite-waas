@@ -608,7 +608,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			 * If already exists, checks for status
 			 */
 			if ($existing_webhook) {
-				if ($existing_webhook->status === 'disabled') {
+				if ('disabled' === $existing_webhook->status) {
 					$status = Stripe\WebhookEndpoint::update(
 						$existing_webhook->id,
 						[
@@ -1779,7 +1779,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			try {
 				$subscription = Stripe\Subscription::retrieve($subscription_id);
 
-				if ($subscription->status !== 'canceled') {
+				if ('canceled' !== $subscription->status) {
 					$subscription->cancel();
 				}
 			} catch (\Exception $e) {
@@ -2054,7 +2054,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		 *
 		 * First, we'll start customer subscription created.
 		 */
-		if ($event->type === 'customer.subscription.created') {
+		if ('customer.subscription.created' === $event->type) {
 			do_action('wu_webhook_recurring_payment_profile_created', $membership, $this);
 		}
 
@@ -2064,7 +2064,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		 * On Stripe Checkout, we rely entirely on
 		 * the webhook call to change the status of things.
 		 */
-		if ($event->type === 'checkout.session.completed') {
+		if ('checkout.session.completed' === $event->type) {
 			$membership->set_gateway_customer_id($payment_event->customer);
 
 			$membership->set_gateway_subscription_id($payment_event->subscription);
@@ -2079,7 +2079,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		/*
 		 * Next, let's deal with charges that went through!
 		 */
-		if ($event->type === 'charge.succeeded' || $event->type === 'invoice.payment_succeeded') {
+		if ('charge.succeeded' === $event->type || 'invoice.payment_succeeded' === $event->type) {
 			/**
 			 * Here we need to handle invoice.payment_succeeded
 			 * events due subscriptions with trials and we need
@@ -2092,7 +2092,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 				'gateway' => $this->get_id(),
 			];
 
-			if ($event->type === 'charge.succeeded') {
+			if ('charge.succeeded' === $event->type) {
 				/*
 				 * Successful one-time payment
 				 */
@@ -2178,7 +2178,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 					$pending_payment->attributes($payment_data);
 
 					$payment = $pending_payment;
-				} elseif ($event->type === 'charge.succeeded') {
+				} elseif ('charge.succeeded' === $event->type) {
 					/**
 					 * These must be retrieved after the status
 					 * is set to active in order for upgrades to work properly
@@ -2248,7 +2248,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 				$this->payment = $payment;
 
-				if ($payment_event->object === 'charge' && ! $subscription && $this->get_id() === 'stripe') {
+				if ('charge' === $payment_event->object && ! $subscription && $this->get_id() === 'stripe') {
 					$cart = $payment->get_meta('wu_original_cart');
 
 					$payment_intent_id = (string) $payment->get_meta('stripe_payment_intent_id');
@@ -2316,7 +2316,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		/*
 		 * Next, let's deal with charges that went through!
 		 */
-		if ($event->type === 'charge.refunded') {
+		if ('charge.refunded' === $event->type) {
 			$payment_data = [
 				'gateway' => 'stripe',
 			];
@@ -2352,11 +2352,11 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		/*
 		 * Failed payments.
 		 */
-		if ($event->type === 'invoice.payment_failed') {
+		if ('invoice.payment_failed' === $event->type) {
 			$this->webhook_event_id = $event->id;
 
 			// Make sure this invoice is tied to a subscription and is the user's current subscription.
-			if ( ! empty($event->data->object->subscription) && $event->data->object->subscription === $membership->get_gateway_subscription_id()) {
+			if ( ! empty($event->data->object->subscription) && $membership->get_gateway_subscription_id() === $event->data->object->subscription) {
 				do_action('wu_recurring_payment_failed', $membership, $this);
 			}
 
@@ -2368,10 +2368,10 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		/*
 		 * Cancelled / failed subscription.
 		 */
-		if ($event->type === 'customer.subscription.deleted') {
+		if ('customer.subscription.deleted' === $event->type) {
 			wu_log_add('stripe', 'Processing Stripe customer.subscription.deleted webhook.');
 
-			if ($payment_event->id === $membership->get_gateway_subscription_id()) {
+			if ($membership->get_gateway_subscription_id() === $payment_event->id) {
 				/*
 				 * If this is a completed payment plan,
 				 * we can skip any cancellation actions.

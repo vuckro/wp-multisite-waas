@@ -334,7 +334,7 @@ class Product extends Base_Model {
 	 */
 	public function get_featured_image_id() {
 
-		if ($this->featured_image_id === null) {
+		if (null === $this->featured_image_id) {
 			$this->featured_image_id = $this->get_meta('wu_featured_image_id');
 		}
 
@@ -1055,7 +1055,7 @@ class Product extends Base_Model {
 	 */
 	public function get_tax_category() {
 
-		if ($this->tax_category === null) {
+		if (null === $this->tax_category) {
 			$this->tax_category = $this->get_meta('tax_category', 'default');
 		}
 
@@ -1085,7 +1085,7 @@ class Product extends Base_Model {
 	 */
 	public function get_contact_us_label() {
 
-		if ($this->contact_us_label === null) {
+		if (null === $this->contact_us_label) {
 			$this->contact_us_label = $this->get_meta('wu_contact_us_label', '');
 		}
 
@@ -1114,7 +1114,7 @@ class Product extends Base_Model {
 	 */
 	public function get_contact_us_link() {
 
-		if ($this->contact_us_link === null) {
+		if (null === $this->contact_us_link) {
 			$this->contact_us_link = $this->get_meta('wu_contact_us_link', '');
 		}
 
@@ -1143,7 +1143,7 @@ class Product extends Base_Model {
 	 */
 	public function get_feature_list() {
 
-		if ($this->feature_list === null) {
+		if (null === $this->feature_list) {
 			$this->feature_list = $this->get_meta('feature_list');
 		}
 
@@ -1172,7 +1172,7 @@ class Product extends Base_Model {
 	 */
 	public function get_customer_role() {
 
-		if ($this->customer_role === null) {
+		if (null === $this->customer_role) {
 			$this->customer_role = $this->get_limitations()->customer_user_role->get_limit();
 		}
 
@@ -1239,7 +1239,7 @@ class Product extends Base_Model {
 	 */
 	public function get_price_variations() {
 
-		if ($this->price_variations === null) {
+		if (null === $this->price_variations) {
 			$this->price_variations = array_map(
 				function ($price_variation) {
 					/**
@@ -1372,7 +1372,7 @@ class Product extends Base_Model {
 	 */
 	public function get_available_addons() {
 
-		if ($this->available_addons === null) {
+		if (null === $this->available_addons) {
 			$this->available_addons = $this->get_meta('wu_available_addons', []);
 
 			if (is_string($this->available_addons)) {
@@ -1440,7 +1440,7 @@ class Product extends Base_Model {
 	 */
 	public function get_legacy_options() {
 
-		if ($this->legacy_options === null) {
+		if (null === $this->legacy_options) {
 			$this->legacy_options = $this->get_meta('legacy_options', false);
 		}
 

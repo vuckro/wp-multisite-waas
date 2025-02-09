@@ -23,6 +23,8 @@ defined('ABSPATH') || exit;
 abstract class Base_Admin_Page {
 
 	/**
+	 * In Edit mode
+	 *
 	 * @var bool
 	 */
 	protected $edit;
@@ -240,7 +242,7 @@ abstract class Base_Admin_Page {
 
 		global $submenu;
 
-		if ($this->get_submenu_title() && 'menu' === $this->type && isset($submenu[ $this->id ]) && $submenu[ $this->id ][0][3] === $this->get_title()) {
+		if ($this->get_submenu_title() && 'menu' === $this->type && isset($submenu[ $this->id ]) && $this->get_title() === $submenu[ $this->id ][0][3]) {
 			$submenu[ $this->id ][0][0] = $this->get_submenu_title();
 		}
 	}
@@ -256,7 +258,7 @@ abstract class Base_Admin_Page {
 
 		global $plugin_page;
 
-		if ($this->highlight_menu_slug && isset($_GET['page']) && $_GET['page'] === $this->get_id()) {
+		if ($this->highlight_menu_slug && isset($_GET['page']) && $this->get_id() === $_GET['page']) {
 			$plugin_page = $this->highlight_menu_slug;
 
 			$file = $this->highlight_menu_slug;
@@ -624,7 +626,7 @@ abstract class Base_Admin_Page {
 		if (wu_get_documentation_url($this->get_id(), false)) {
 			$this->action_links[] = [
 				'url'   => wu_get_documentation_url($this->get_id()),
-				'label' => __('Documentation'),
+				'label' => __('Documentation', 'wp-ultimo'),
 				'icon'  => 'wu-open-book',
 			];
 		}

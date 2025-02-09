@@ -134,7 +134,7 @@ class Dashboard_Admin_Page extends Base_Admin_Page {
 			return;
 		}
 
-		if ($page->id === 'wp-ultimo') {
+		if ('wp-ultimo' === $page->id) {
 			$preset_options = [
 				'last_7_days'  => [
 					'label'      => __('Last 7 days', 'wp-ultimo'),

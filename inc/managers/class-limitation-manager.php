@@ -313,7 +313,7 @@ class Limitation_Manager {
 				],
 			];
 
-			if ($object->model !== 'product') {
+			if ('product' !== $object->model) {
 				$sections['visits']['fields']['modules_visits_overwrite'] = $this->override_notice($object->get_limitations(false)->visits->has_own_enabled());
 			}
 
@@ -332,7 +332,7 @@ class Limitation_Manager {
 				],
 			];
 
-			if ($object->model !== 'product') {
+			if ('product' !== $object->model) {
 				$sections['visits']['fields']['allowed_visits_overwrite'] = $this->override_notice($object->get_limitations(false)->visits->has_own_limit(), ['limit_visits']);
 			}
 
@@ -374,7 +374,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$sections['users']['fields']['modules_user_overwrite'] = $this->override_notice($object->get_limitations(false)->users->has_own_enabled());
 		}
 
@@ -401,7 +401,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$sections['post_types']['fields']['post_quota_overwrite'] = $this->override_notice($object->get_limitations(false)->post_types->has_own_enabled());
 		}
 
@@ -437,7 +437,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$sections['limit_disk_space']['fields']['disk_space_modules_overwrite'] = $this->override_notice($object->get_limitations(false)->disk_space->has_own_enabled());
 		}
 
@@ -454,7 +454,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$sections['limit_disk_space']['fields']['disk_space_override'] = $this->override_notice($object->get_limitations(false)->disk_space->has_own_limit(), ['limit_disk_space']);
 		}
 
@@ -482,7 +482,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$sections['custom_domain']['fields']['custom_domain_override'] = $this->override_notice($object->get_limitations(false)->domain_mapping->has_own_enabled(), ['allow_domain_mapping']);
 		}
 
@@ -620,7 +620,7 @@ class Limitation_Manager {
 			/*
 			 * Add override notice.
 			 */
-			if ($object->model !== 'product') {
+			if ('product' !== $object->model) {
 				$sections['users']['fields'][ "override_{$user_role_slug}" ] = $this->override_notice($object->get_limitations(false)->users->exists($user_role_slug), ['limit_users']);
 			}
 		}
@@ -678,7 +678,7 @@ class Limitation_Manager {
 			/*
 			 * Add override notice.
 			 */
-			if ($object->model !== 'product') {
+			if ('product' !== $object->model) {
 				$sections['post_types']['fields'][ "override_{$post_type_slug}" ] = $this->override_notice(
 					$object->get_limitations(false)->post_types->exists($post_type_slug),
 					[
@@ -711,7 +711,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$fields['sites_overwrite'] = $this->override_notice($object->get_limitations(false)->sites->has_own_enabled());
 		}
 
@@ -741,7 +741,7 @@ class Limitation_Manager {
 			],
 		];
 
-		if ($object->model !== 'product') {
+		if ('product' !== $object->model) {
 			$fields['sites_overwrite_2'] = $this->override_notice($object->get_limitations(false)->sites->has_own_limit(), ["get_state_value('product_type', 'none') !== 'service' && limit_sites"]);
 		}
 

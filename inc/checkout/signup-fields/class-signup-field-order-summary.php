@@ -215,7 +215,7 @@ class Signup_Field_Order_Summary extends Base_Signup_Field {
 		/*
 		 * Backwards compatibility with previous betas
 		 */
-		if ($attributes['order_summary_template'] === 'simple') {
+		if ('simple' === $attributes['order_summary_template']) {
 			$attributes['order_summary_template'] = 'clean';
 		}
 

@@ -120,7 +120,7 @@ class Whitelabel {
 	 */
 	public function replace_text($translation, $text, $domain) {
 
-		if ($this->allowed_domains === null) {
+		if (null === $this->allowed_domains) {
 			$this->allowed_domains = apply_filters(
 				'wu_replace_text_allowed_domains',
 				[
@@ -148,7 +148,7 @@ class Whitelabel {
 			return $translation;
 		}
 
-		if ($this->init === false) {
+		if (false === $this->init) {
 			$search_and_replace = [];
 
 			$site_plural = wu_get_setting('rename_site_plural');
@@ -343,7 +343,7 @@ class Whitelabel {
 		$index = '';
 
 		foreach ($menu as $i => $menu_item) {
-			if ($menu_item[2] === 'sites.php') {
+			if ('sites.php' === $menu_item[2]) {
 				$index = $i;
 
 				continue;

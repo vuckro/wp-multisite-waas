@@ -597,7 +597,7 @@ class Payment extends Base_Model {
 	 */
 	public function get_line_items(): array {
 
-		if ($this->line_items === null) {
+		if (null === $this->line_items) {
 			$line_items = (array) $this->get_meta('wu_line_items');
 
 			$this->line_items = array_filter($line_items);
@@ -877,7 +877,7 @@ class Payment extends Base_Model {
 	 */
 	public function get_saved_invoice_number() {
 
-		if ($this->invoice_number === null) {
+		if (null === $this->invoice_number) {
 			$this->invoice_number = $this->get_meta('wu_invoice_number', '');
 		}
 
@@ -898,11 +898,11 @@ class Payment extends Base_Model {
 
 		$provisional = false;
 
-		if ($this->invoice_number === null) {
+		if (null === $this->invoice_number) {
 			$this->invoice_number = $this->get_meta('wu_invoice_number');
 		}
 
-		if ($this->invoice_number === false) {
+		if (false === $this->invoice_number) {
 			$provisional = true;
 
 			$this->invoice_number = wu_get_setting('next_invoice_number');
@@ -981,7 +981,7 @@ class Payment extends Base_Model {
 	 */
 	public function should_cancel_membership_on_refund() {
 
-		if ($this->cancel_membership_on_refund === null) {
+		if (null === $this->cancel_membership_on_refund) {
 			$this->cancel_membership_on_refund = $this->get_meta('wu_cancel_membership_on_refund', false);
 		}
 

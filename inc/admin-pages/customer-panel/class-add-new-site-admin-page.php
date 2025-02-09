@@ -159,7 +159,7 @@ class Add_New_Site_Admin_Page extends Base_Customer_Facing_Admin_Page {
 	 */
 	public function force_screen_options(): void {
 
-		if (get_current_screen()->id !== 'toplevel_page_sites') {
+		if ('toplevel_page_sites' !== get_current_screen()->id) {
 			return;
 		}
 

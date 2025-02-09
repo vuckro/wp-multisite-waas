@@ -482,7 +482,7 @@ class Membership extends Base_Model {
 		if ($plan && ($plan->get_duration() !== $this->get_duration() || $plan->get_duration_unit() !== $this->get_duration_unit())) {
 			$variation = $plan->get_as_variation($this->get_duration(), $this->get_duration_unit());
 
-			$plan = ($variation ? $variation : null) ?? $plan;
+			$plan = ($variation ?: null) ?? $plan;
 		}
 
 		return $plan;
@@ -1342,7 +1342,7 @@ class Membership extends Base_Model {
 	 */
 	public function get_discount_code() {
 
-		if ($this->discount_code === null) {
+		if (null === $this->discount_code) {
 			$this->discount_code = $this->get_meta('discount_code');
 		}
 

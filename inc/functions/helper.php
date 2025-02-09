@@ -189,7 +189,7 @@ function wu_path_join(...$parts): string {
 		return '';
 	}
 
-	$prefix = ($parts[0] === DIRECTORY_SEPARATOR) ? DIRECTORY_SEPARATOR : '';
+	$prefix = (DIRECTORY_SEPARATOR === $parts[0]) ? DIRECTORY_SEPARATOR : '';
 
 	$processed = array_filter(array_map(fn($part) => rtrim((string) $part, DIRECTORY_SEPARATOR), $parts), fn($part) => ! empty($part));
 

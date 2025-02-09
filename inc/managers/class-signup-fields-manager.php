@@ -113,7 +113,7 @@ class Signup_Fields_Manager extends Base_Manager {
 	 */
 	public function get_instantiated_field_types() {
 
-		if ($this->instantiated_field_types === null) {
+		if (null === $this->instantiated_field_types) {
 			$this->instantiated_field_types = array_map([$this, 'instantiate_field_type'], $this->get_field_types());
 		}
 

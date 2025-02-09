@@ -139,7 +139,7 @@ if ( ! class_exists('MUCD_Log') ) {
 		 * @return boolean True on success, False on failure
 		 */
 		public function write_log($message): bool {
-			if ($this->mod !== false && $this->can_write() ) {
+			if (false !== $this->mod && $this->can_write() ) {
 				$time = @date('[d/M/Y:H:i:s]');
 				fwrite($this->fp, "$time $message" . "\r\n");
 				return true;

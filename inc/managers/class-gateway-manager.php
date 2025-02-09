@@ -377,7 +377,7 @@ class Gateway_Manager extends Base_Manager {
 
 		$gateways = $this->get_registered_gateways();
 
-		$gateways = array_filter($gateways, fn($item) => $item['hidden'] === false);
+		$gateways = array_filter($gateways, fn($item) => false === $item['hidden']);
 
 		return $gateways;
 	}

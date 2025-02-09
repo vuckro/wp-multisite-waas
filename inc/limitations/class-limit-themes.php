@@ -53,10 +53,10 @@ class Limit_Themes extends Limit {
 		$theme = (object) $this->{$value_to_check};
 
 		$types = [
-			'visible'       => $theme->visibility === 'visible',
-			'hidden'        => $theme->visibility === 'hidden',
-			'available'     => $theme->behavior === 'available',
-			'not_available' => $theme->behavior === 'not_available',
+			'visible'       => 'visible' === $theme->visibility,
+			'hidden'        => 'hidden' === $theme->visibility,
+			'available'     => 'available' === $theme->behavior,
+			'not_available' => 'not_available' === $theme->behavior,
 		];
 
 		return wu_get_isset($types, $type, false);
@@ -136,7 +136,7 @@ class Limit_Themes extends Limit {
 		foreach ($limits as $theme_slug => $theme_settings) {
 			$theme_settings = (object) $theme_settings;
 
-			if ($theme_settings->behavior === 'available') {
+			if ('available' === $theme_settings->behavior) {
 				$available[] = $theme_slug;
 			}
 		}
@@ -160,14 +160,14 @@ class Limit_Themes extends Limit {
 			return $active_theme;
 		}
 
-		if ($this->forced_active_theme !== null) {
+		if (null !== $this->forced_active_theme) {
 			return $this->forced_active_theme;
 		}
 
 		foreach ($limits as $theme_slug => $theme_settings) {
 			$theme_settings = (object) $theme_settings;
 
-			if ($theme_settings->behavior === 'force_active') {
+			if ('force_active' === $theme_settings->behavior) {
 				$active_theme = $theme_slug;
 			}
 		}

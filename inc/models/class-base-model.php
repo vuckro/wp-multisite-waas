@@ -240,7 +240,7 @@ abstract class Base_Model implements \JsonSerializable {
 		/*
 		 * Keeps the original.
 		 */
-		if ($this->_original === null) {
+		if (null === $this->_original) {
 			$original = get_object_vars($this);
 
 			unset($original['_original']);

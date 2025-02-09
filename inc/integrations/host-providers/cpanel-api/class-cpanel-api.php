@@ -243,7 +243,7 @@ class CPanel_API {
 
 		$reply = json_decode((string) $reply, true);
 
-		if (isset($reply['status']) && $reply['status'] == 1) { // phpcs:ignore
+		if (isset($reply['status']) && 1 == $reply['status']) { // phpcs:ignore
 
 			$this->cpsess   = $reply['security_token'];
 			$this->homepage = $this->get_base_url() . $reply['redirect'];

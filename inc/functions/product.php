@@ -190,7 +190,7 @@ function wu_segregate_products($products) {
 			}
 		}
 
-		if ($product->get_type() === 'plan' && $results[0] === false) {
+		if ($product->get_type() === 'plan' && false === $results[0]) {
 			$results[0] = $product;
 		} else {
 			$results[1][] = $product;

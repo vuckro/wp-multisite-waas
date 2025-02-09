@@ -54,7 +54,7 @@ class Customer_User_Role_Limits {
 
 		$screen = get_current_screen();
 
-		if ( ! $screen || $screen->id !== 'user') {
+		if ( ! $screen || 'user' !== $screen->id) {
 			return;
 		}
 

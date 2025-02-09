@@ -241,7 +241,7 @@ class CPanel_Host_Provider extends Base_Host_Provider {
 	 */
 	public function load_api() {
 
-		if ($this->api === null) {
+		if (null === $this->api) {
 			$username = defined('WU_CPANEL_USERNAME') ? WU_CPANEL_USERNAME : '';
 			$password = defined('WU_CPANEL_PASSWORD') ? WU_CPANEL_PASSWORD : '';
 			$host     = defined('WU_CPANEL_HOST') ? WU_CPANEL_HOST : '';

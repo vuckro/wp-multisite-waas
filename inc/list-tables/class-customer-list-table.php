@@ -293,7 +293,7 @@ class Customer_List_Table extends Base_List_Table {
 				$filter_type = 'text';
 				$rule        = 'is';
 
-				if ($item->date_query === true) {
+				if (true === $item->date_query) {
 					$filter_type = 'date';
 					$rule        = 'is_after';
 				} elseif (in_array(strtolower((string) $item->name), ['smallint'], true)) {

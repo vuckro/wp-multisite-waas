@@ -51,7 +51,6 @@ class Autoloader {
 	 * @return boolean
 	 */
 	public static function is_debug() {
-
-		return false; // return wu_is_debug();
+		return false;
 	}
 }

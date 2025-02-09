@@ -192,7 +192,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function is_migration() {
 
-		if ($this->is_migration === null) {
+		if (null === $this->is_migration) {
 			$this->is_migration = Migrator::is_legacy_network();
 		}
 
@@ -785,7 +785,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function handle_configuration(): void {
 
-		if ($_POST['submit'] === '1') {
+		if ('1' === $_POST['submit']) {
 			$this->integration->setup_constants($_POST);
 
 			$redirect_url = $this->get_next_section_link();

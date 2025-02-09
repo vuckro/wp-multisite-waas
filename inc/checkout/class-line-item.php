@@ -387,7 +387,7 @@ class Line_Item implements \JsonSerializable {
 			return false;
 		}
 
-		if ($product->is_recurring() && ($this->duration_unit !== $product->get_duration_unit() || $this->duration !== $product->get_duration())) {
+		if ($product->is_recurring() && ($product->get_duration_unit() !== $this->duration_unit || $product->get_duration() !== $this->duration)) {
 			$product_variation = $product->get_as_variation($this->duration, $this->duration_unit);
 
 			/*

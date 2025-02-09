@@ -168,7 +168,7 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	protected function extra_tablenav($which) {
 
-		if ($this->current_mode === 'grid') {
+		if ('grid' === $this->current_mode) {
 			printf(
 				'<button id="cb-select-all-grid" v-on:click.prevent="select_all" class="button">%s</button>',
 				__('Select All', 'wp-ultimo')
@@ -184,7 +184,7 @@ class Base_List_Table extends \WP_List_Table {
 	 */
 	public function set_list_mode(): void {
 
-		if ($this->context !== 'page') {
+		if ('page' !== $this->context) {
 			$this->current_mode = 'list';
 
 			return;
@@ -501,7 +501,7 @@ class Base_List_Table extends \WP_List_Table {
 		/*
 		 * Any items at all?
 		 */
-		if ( ! $this->has_items() && $this->context === 'page') {
+		if ( ! $this->has_items() && 'page' === $this->context) {
 			echo wu_render_empty_state(
 				[
 					'message'      => sprintf(__("You don't have any %s yet.", 'wp-ultimo'), $this->labels['plural']),
@@ -1355,7 +1355,7 @@ class Base_List_Table extends \WP_List_Table {
 					continue;
 				}
 
-				if (isset($_REQUEST[ $field_name ]['before']) && isset($_REQUEST[ $field_name ]['after']) && $_REQUEST[ $field_name ]['before'] === '' && $_REQUEST[ $field_name ]['after'] === '') {
+				if (isset($_REQUEST[ $field_name ]['before']) && isset($_REQUEST[ $field_name ]['after']) && '' === $_REQUEST[ $field_name ]['before'] && '' === $_REQUEST[ $field_name ]['after']) {
 					continue;
 				}
 

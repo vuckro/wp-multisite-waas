@@ -99,7 +99,7 @@ class Memory_Trap {
 
 		$message = sprintf(__('Your server\'s PHP and WordPress memory limits are too low to perform this check. You might need to contact your host provider and ask the PHP memory limit in particular to be raised.', 'wp-ultimo'));
 
-		if ($this->return_type === 'json') {
+		if ('json' === $this->return_type) {
 			wp_send_json_error(
 				[
 					'message' => $message,

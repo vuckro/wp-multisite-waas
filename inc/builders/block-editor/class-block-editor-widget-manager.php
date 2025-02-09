@@ -147,7 +147,7 @@ class Block_Editor_Widget_Manager {
 			 * Deal with the group type.
 			 * On those, we need to loop the sub-fields.
 			 */
-			if ($field['type'] === 'group') {
+			if ('group' === $field['type']) {
 				foreach ($field['fields'] as &$sub_field) {
 					foreach ($sub_field as $sub_item => &$sub_value) {
 						if (in_array($sub_item, $callable_keys, true) && is_callable($sub_value)) {
@@ -213,11 +213,11 @@ class Block_Editor_Widget_Manager {
 		foreach ($fields as $field_id => $field) {
 			$type = 'string';
 
-			if ($field['type'] === 'toggle') {
+			if ('toggle' === $field['type']) {
 				$type = 'boolean';
 			}
 
-			if ($field['type'] === 'number') {
+			if ('number' === $field['type']) {
 				$type = 'integer';
 			}
 

@@ -200,9 +200,11 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 
 		$this->save_page_settings($settings_to_save);
 
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
+
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}

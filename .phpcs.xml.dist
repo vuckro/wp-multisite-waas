@@ -35,6 +35,7 @@
 	    <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" />
 	    <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
 	    <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
+	    <exclude name="Universal.Operators.DisallowShortTernary" />
 	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>

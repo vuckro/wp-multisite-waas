@@ -330,7 +330,7 @@ class Theme_Limits {
 	 */
 	protected function get_forced_theme_stylesheet() {
 
-		if ($this->forced_theme_stylesheet === null) {
+		if (null === $this->forced_theme_stylesheet) {
 			$this->forced_theme_stylesheet = wu_get_current_site()->get_limitations()->themes->get_forced_active_theme();
 		}
 
@@ -346,7 +346,7 @@ class Theme_Limits {
 	 */
 	protected function get_forced_theme_template() {
 
-		if ($this->forced_theme_template === null) {
+		if (null === $this->forced_theme_template) {
 			$stylesheet = $this->get_forced_theme_stylesheet();
 
 			$this->forced_theme_template = $stylesheet ? wp_get_theme($stylesheet)->get_template() : false;

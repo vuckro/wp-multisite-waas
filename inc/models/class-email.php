@@ -170,7 +170,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function get_event() {
 
-		if ($this->event === null) {
+		if (null === $this->event) {
 			$this->event = $this->get_meta('wu_system_email_event');
 		}
 
@@ -209,7 +209,7 @@ class Email extends Post_Base_Model {
 
 		$this->style = $this->get_meta('wu_style', 'html');
 
-		if ($this->style === 'use_default') {
+		if ('use_default' === $this->style) {
 			$this->style = wu_get_setting('email_template_type', 'html');
 		}
 
@@ -249,7 +249,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function has_schedule() {
 
-		if ($this->schedule === null) {
+		if (null === $this->schedule) {
 			$this->schedule = $this->get_meta('wu_schedule', false);
 		}
 
@@ -532,7 +532,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function get_target() {
 
-		if ($this->target === null) {
+		if (null === $this->target) {
 			$this->target = $this->get_meta('wu_target', 'admin');
 		}
 
@@ -633,7 +633,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function get_send_copy_to_admin() {
 
-		if ($this->send_copy_to_admin === null) {
+		if (null === $this->send_copy_to_admin) {
 			$this->send_copy_to_admin = $this->get_meta('wu_send_copy_to_admin', false);
 		}
 
@@ -662,7 +662,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function is_active() {
 
-		if ($this->active === null) {
+		if (null === $this->active) {
 			$this->active = $this->get_meta('wu_active', true);
 		}
 
@@ -691,7 +691,7 @@ class Email extends Post_Base_Model {
 	 */
 	public function is_legacy() {
 
-		if ($this->legacy === null) {
+		if (null === $this->legacy) {
 			$this->legacy = $this->get_meta('wu_legacy', false);
 		}
 

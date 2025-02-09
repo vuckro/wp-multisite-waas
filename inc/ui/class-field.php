@@ -178,7 +178,7 @@ class Field implements \JsonSerializable {
 			/*
 			 * Back Compat for Select2 Fields
 			 */
-			if ($this->type === 'select2') {
+			if ('select2' === $this->type) {
 				$this->atts['html_attr']['data-selectize'] = 1;
 				$this->atts['html_attr']['multiple']       = 1;
 			}
@@ -247,11 +247,11 @@ class Field implements \JsonSerializable {
 			$this->atts['wrapper_classes'] .= ' wu-requires-other';
 		}
 
-		if ('type' === $att && $this->atts[ $att ] === 'submit') {
+		if ('type' === $att && 'submit' === $this->atts[ $att ]) {
 			$this->atts['wrapper_classes'] .= ' wu-submit-field';
 		}
 
-		if ('type' === $att && $this->atts[ $att ] === 'tab-select') {
+		if ('type' === $att && 'tab-select' === $this->atts[ $att ]) {
 			$this->atts['wrapper_classes'] .= ' wu-tab-field';
 		}
 
@@ -402,12 +402,12 @@ class Field implements \JsonSerializable {
 
 		unset($this->atts['html_attr']['class']);
 
-		if ($this->type === 'number') {
-			if ($this->min !== false) {
+		if ('number' === $this->type) {
+			if (false !== $this->min) {
 				$attributes['min'] = $this->min;
 			}
 
-			if ($this->max !== false) {
+			if (false !== $this->max) {
 				$attributes['max'] = $this->max;
 			}
 		}
@@ -415,7 +415,7 @@ class Field implements \JsonSerializable {
 		/*
 		 * Adds money formatting and masking
 		 */
-		if ($this->money !== false) {
+		if (false !== $this->money) {
 			$attributes['v-bind'] = 'money_settings';
 		}
 

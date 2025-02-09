@@ -7,7 +7,7 @@
 ?>
 <?php
 
-if (isset($_GET['coupon']) && wu_get_coupon($_GET['coupon']) !== false && isset($_GET['step']) && $_GET['step'] == 'plan') :
+if (isset($_GET['coupon']) && wu_get_coupon($_GET['coupon']) !== false && isset($_GET['step']) && 'plan' == $_GET['step']) :
 	$coupon = wu_get_coupon($_GET['coupon']);
 
 	?>

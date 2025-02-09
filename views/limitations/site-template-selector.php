@@ -61,9 +61,9 @@
 				name="modules[site_templates][limit][<?php echo esc_attr($site_template->get_id()); ?>][behavior]"
 				class="wu-w-full"
 			>
-				<option <?php selected($template_settings->behavior === 'available'); ?> value="available"><?php _e('Available', 'wp-ultimo'); ?></option>
-				<option <?php selected($template_settings->behavior === 'not_available'); ?> value="not_available"><?php _e('Not Available', 'wp-ultimo'); ?></option>
-				<option :disabled="pre_selected_template !== '' && pre_selected_template !== false && pre_selected_template != '<?php echo esc_attr($site_template->get_id()); ?>'" <?php selected($template_settings->behavior === 'pre_selected'); ?> value="pre_selected"><?php _e('Pre-Selected', 'wp-ultimo'); ?></option>
+				<option <?php selected('available' === $template_settings->behavior); ?> value="available"><?php _e('Available', 'wp-ultimo'); ?></option>
+				<option <?php selected('not_available' === $template_settings->behavior); ?> value="not_available"><?php _e('Not Available', 'wp-ultimo'); ?></option>
+				<option :disabled="pre_selected_template !== '' && pre_selected_template !== false && pre_selected_template != '<?php echo esc_attr($site_template->get_id()); ?>'" <?php selected('pre_selected' === $template_settings->behavior); ?> value="pre_selected"><?php _e('Pre-Selected', 'wp-ultimo'); ?></option>
 			</select>
 
 			</div>
