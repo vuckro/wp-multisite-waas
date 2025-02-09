@@ -19,8 +19,10 @@ return RectorConfig::configure()
 	->withSkipPath(__DIR__ . '/vendor',)
 	->withImportNames(false)
 	->withPhpSets()
+	->withCodeQualityLevel(15)
+	->withCodingStyleLevel(5)
 	->withRules(
 		[
-			AddVoidReturnTypeWhereNoReturnRector::class,
+			\Utils\Rector\Rector\YodaConditionsRector::class,
 		]
 	);
