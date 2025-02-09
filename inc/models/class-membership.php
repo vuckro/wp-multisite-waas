@@ -482,7 +482,7 @@ class Membership extends Base_Model {
 		if ($plan && ($plan->get_duration() !== $this->get_duration() || $plan->get_duration_unit() !== $this->get_duration_unit())) {
 			$variation = $plan->get_as_variation($this->get_duration(), $this->get_duration_unit());
 
-			$plan = ($variation ?: null) ?? $plan;
+			$plan = ($variation ? $variation : null) ?? $plan;
 		}
 
 		return $plan;

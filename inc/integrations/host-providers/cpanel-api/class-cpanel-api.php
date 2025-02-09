@@ -74,12 +74,12 @@ class CPanel_API {
 	/**
 	 * @var integer
 	 */
-	private $port = 2083;
+	private $port;
 
 	/**
 	 * @var boolean
 	 */
-	private $log = false;
+	private $log;
 
 	/**
 	 * Creates the CPanel_API Object.

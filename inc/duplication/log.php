@@ -24,12 +24,12 @@ if ( ! class_exists('MUCD_Log') ) {
 		/**
 		 * @var string
 		 */
-		private $log_dir_path = '';
+		private $log_dir_path;
 
 		/**
 		 * @var string
 		 */
-		private $log_file_name = '';
+		private $log_file_name;
 
 		/**
 		 * Constructor

@@ -7,8 +7,5 @@
     <testsuite name="testing">
       <directory suffix="Test.php">./tests/</directory>
     </testsuite>
-    <testsuite name="rector">
-      <directory>utils/rector/tests</directory>
-    </testsuite>
   </testsuites>
 </phpunit>

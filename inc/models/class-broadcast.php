@@ -244,7 +244,7 @@ class Broadcast extends Post_Base_Model {
 	 * @param string $type The type being set.
 	 * @return void
 	 */
-	public function set_type($type) {
+	public function set_type($type): void {
 
 		if ( ! in_array($type, $this->allowed_types, true)) {
 			$type = 'broadcast_notice';
@@ -261,7 +261,7 @@ class Broadcast extends Post_Base_Model {
 	 * @param string $status The status being set.
 	 * @return void
 	 */
-	public function set_status($status) {
+	public function set_status($status): void {
 
 		if ( ! in_array($status, $this->allowed_status, true)) {
 			$status = 'publish';

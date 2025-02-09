@@ -36,7 +36,7 @@ abstract class Enum {
 	/**
 	 * @var string
 	 */
-	private $value = '';
+	private $value;
 
 	/**
 	 * Constructor method. Takes the value you want to set.

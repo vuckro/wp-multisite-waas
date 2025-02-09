@@ -241,5 +241,5 @@ class Payment_List_Table_Widget extends Base_List_Table {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function _js_vars() {}
+	public function _js_vars(): void {}
 }

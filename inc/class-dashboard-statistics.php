@@ -73,7 +73,7 @@ class Dashboard_Statistics {
 	 * @since 2.0.0
 	 * @return void.
 	 */
-	public function init() {}
+	public function init(): void {}
 
 	/**
 	 * Main function to call the get data functions based on the array of types.

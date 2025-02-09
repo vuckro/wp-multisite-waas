@@ -11,8 +11,6 @@
 
 namespace WP_Ultimo\Objects;
 
-use WP_Ultimo\Objects\Limitations;
-
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 

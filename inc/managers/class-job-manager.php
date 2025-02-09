@@ -31,6 +31,6 @@ class Job_Manager {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 	}
 }

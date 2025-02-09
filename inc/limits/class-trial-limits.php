@@ -27,7 +27,7 @@ class Trial_Limits {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 	}
 
 	/**

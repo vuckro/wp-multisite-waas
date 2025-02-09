@@ -50,7 +50,8 @@
         "symfony/polyfill-php81": "^1.31.0",
         "symfony/polyfill-php82": "^1.31.0",
         "symfony/polyfill-php83": "^1.31.0",
-        "symfony/polyfill-php84": "^1.31.0"
+        "symfony/polyfill-php84": "^1.31.0",
+      "ext-curl": "*"
     },
     "require-dev": {
         "composer/installers": "^1.9.0",
