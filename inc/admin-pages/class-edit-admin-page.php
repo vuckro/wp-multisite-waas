@@ -75,7 +75,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded(): void {
+	public function page_loaded() {
 
 		/**
 		 * Setups the object
@@ -315,9 +315,7 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_widgets(): void {
-
-		$screen = get_current_screen();
+	public function register_widgets() {
 
 		$this->add_info_widget(
 			'info',
