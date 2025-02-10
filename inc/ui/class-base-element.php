@@ -893,6 +893,7 @@ abstract class Base_Element {
 		}
 
 		$this->save_widget_settings($settings);
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
@@ -901,7 +902,7 @@ abstract class Base_Element {
 					'function_name' => 'wu_block_ui',
 					'data'          => '#wpcontent',
 				],
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}
@@ -1048,7 +1049,7 @@ abstract class Base_Element {
 	public function as_inline_content($screen_id, $hook = 'admin_notices', $atts = []): void {
 
 		if ( ! function_exists('get_current_screen')) {
-			_doing_it_wrong(__METHOD__, __('An element can not be loaded as inline content unless the get_current_screen() function is already available.', 'wp-ultimo'), '2.0.0');
+			_doing_it_wrong(__METHOD__, esc_html__('An element can not be loaded as inline content unless the get_current_screen() function is already available.', 'wp-ultimo'), '2.0.0');
 
 			return;
 		}
@@ -1089,7 +1090,7 @@ abstract class Base_Element {
 
 				echo '<div class="wu-inline-widget">';
 
-				echo '<div class="wu-inline-widget-body ' . $control_classes . '">';
+				echo '<div class="wu-inline-widget-body ' . esc_attr($control_classes) . '">';
 
 					echo $this->display($atts);
 

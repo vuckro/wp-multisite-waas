@@ -79,7 +79,7 @@ class Form_Manager extends Base_Manager {
         </div>
       </div>
     ',
-			$message
+			esc_html($message)
 		);
 
 		do_action('wu_form_scripts', false);
@@ -101,12 +101,14 @@ class Form_Manager extends Base_Manager {
 
 		printf(
 			"<form class='wu_form wu-styling' id='%s' action='%s' method='post'>",
-			$form['id'],
-			$this->get_form_url(
-				$form['id'],
-				[
-					'action' => 'wu_form_handler',
-				]
+			esc_attr($form['id']),
+			esc_attr(
+				$this->get_form_url(
+					$form['id'],
+					[
+						'action' => 'wu_form_handler',
+					]
+				)
 			)
 		);
 
@@ -117,8 +119,8 @@ class Form_Manager extends Base_Manager {
 				<li class="wu-m-0 wu-p-0" v-for="error in errors">{{ error.message }}</li>
 			</ul>
 		</div>',
-			$form['id'] . '_errors',
-			htmlspecialchars(json_encode(['errors' => []]))
+			esc_attr($form['id'] . '_errors'),
+			esc_attr(wp_json_encode(['errors' => []]))
 		);
 
 		call_user_func($form['render']);
@@ -174,18 +176,18 @@ class Form_Manager extends Base_Manager {
 		/*
 		 * We only want ajax requests.
 		 */
-		if ((empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower((string) $_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest')) {
+		if ((empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower(sanitize_key(wp_unslash($_SERVER['HTTP_X_REQUESTED_WITH']))) !== 'xmlhttprequest')) {
 			wp_die(0);
 		}
 
 		$form = $this->get_form(wu_request('form'));
 
 		if ( ! $form) {
-			return $this->display_form_unavailable();
+			$this->display_form_unavailable();
 		}
 
 		if ( ! current_user_can($form['capability'])) {
-			return $this->display_form_unavailable();
+			$this->display_form_unavailable();
 		}
 	}
 
@@ -343,8 +345,7 @@ class Form_Manager extends Base_Manager {
 
 			try {
 				$object = call_user_func("wu_get_{$model}", $id);
-			} catch (\Throwable $exception) {
-
+			} catch (\Throwable $exception) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement
 				// No need to do anything, but cool to stop fatal errors.
 			}
 
@@ -382,7 +383,7 @@ class Form_Manager extends Base_Manager {
 						'type'  => 'hidden',
 						'value' => $object->get_id(),
 					],
-					'meta_key'      => [
+					'meta_key'      => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 						'type'  => 'hidden',
 						'value' => $meta_key,
 					],
@@ -407,7 +408,7 @@ class Form_Manager extends Base_Manager {
 					'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
 					'html_attr'             => [
 						'data-wu-app' => 'true',
-						'data-state'  => json_encode(
+						'data-state'  => wp_json_encode(
 							[
 								'confirmed' => false,
 							]
@@ -462,7 +463,7 @@ class Form_Manager extends Base_Manager {
 
 			try {
 				$object = call_user_func("wu_get_{$model}", $id);
-			} catch (\Throwable $exception) {
+			} catch (\Throwable $exception) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement
 
 				// No need to do anything, but cool to stop fatal errors.
 			}
@@ -556,7 +557,7 @@ class Form_Manager extends Base_Manager {
 				'field_wrapper_classes' => 'wu-w-full wu-box-border wu-items-center wu-flex wu-justify-between wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid',
 				'html_attr'             => [
 					'data-wu-app' => 'true',
-					'data-state'  => json_encode(
+					'data-state'  => wp_json_encode(
 						[
 							'confirmed' => false,
 						]

@@ -79,6 +79,7 @@ class Gateway_Manager extends Base_Manager {
 		 * Adds our own default gateways.
 		 */
 		add_action('wu_register_gateways', [$this, 'add_default_gateways'], 5);
+
 		/*
 		 * Allow developers to add new gateways.
 		 */
@@ -277,11 +278,11 @@ class Gateway_Manager extends Base_Manager {
 		$gateway = wu_get_gateway($gateway_id);
 
 		if ( ! $gateway) {
-			$error = new \WP_Error('missing_gateway', __('Missing gateway parameter.', 'wp-ultimo'));
+			$error = new \WP_Error('missing_gateway', esc_html__('Missing gateway parameter.', 'wp-ultimo'));
 
 			wp_die(
 				$error,
-				__('Error', 'wp-ultimo'),
+				esc_html__('Error', 'wp-ultimo'),
 				[
 					'back_link' => true,
 					'response'  => '200',
@@ -481,7 +482,6 @@ class Gateway_Manager extends Base_Manager {
 			'title'      => $title,
 			'desc'       => $desc,
 			'class_name' => $class_name,
-			'active'     => in_array($id, $active_gateways, true),
 			'active'     => in_array($id, $active_gateways, true),
 			'hidden'     => (bool) $hidden,
 			'gateway'    => $class_name, // Deprecated.

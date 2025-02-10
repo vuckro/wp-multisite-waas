@@ -153,7 +153,7 @@ class Base_Field_Template {
 				$attributes = $signup_field->reduce_attributes($attributes);
 			}
 
-			$markup = sprintf('<dynamic :template="get_template(\'%s\', %s)"></dynamic>', esc_js($this->id), esc_attr(json_encode($attributes)));
+			$markup = sprintf('<dynamic :template="get_template(\'%s\', %s)"></dynamic>', esc_js($this->id), esc_attr(wp_json_encode($attributes)));
 		} else {
 			$markup = $this->render($attributes);
 		}

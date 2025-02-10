@@ -507,15 +507,15 @@ class Event_Manager extends Base_Manager {
 	 *
 	 * @param array $data Data.
 	 * @param mixed $obj Object.
-	 * @param bool  $new New.
+	 * @param bool  $new_model New.
 	 *
 	 * @since 2.1.4
 	 */
-	public function dispatch_base_model_event(array $data, $obj, bool $new): void {
+	public function dispatch_base_model_event(array $data, $obj, bool $new_model): void {
 
 		$model = $obj->model;
 
-		$type = $new ? 'created' : 'updated';
+		$type = $new_model ? 'created' : 'updated';
 
 		$registered_model = wu_get_isset($this->models_events, $model);
 

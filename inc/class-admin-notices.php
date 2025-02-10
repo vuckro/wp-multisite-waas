@@ -57,9 +57,7 @@ class Admin_Notices {
 
 		$dismissed = get_user_meta(get_current_user_id(), 'wu_dismissed_admin_notices', true);
 
-		$dismissed = $dismissed ?: [];
-
-		return $dismissed;
+		return $dismissed ?: [];
 	}
 
 	/**
@@ -184,14 +182,14 @@ class Admin_Notices {
 	 */
 	public function ajax_dismiss_admin_notices(): void {
 
-		if ( ! wp_verify_nonce($_POST['nonce'], 'wu-dismiss-admin-notice')) {
+		if ( ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'] ?? '')), 'wu-dismiss-admin-notice')) {
 			die('-1');
 		}
 
 		$dismissed = $this->get_dismissed_notices();
 
-		if ( ! in_array($_POST['notice_id'], $dismissed, true)) {
-			$dismissed[] = $_POST['notice_id'];
+		if ( isset($_POST['notice_id']) && ! in_array($_POST['notice_id'], $dismissed, true)) {
+			$dismissed[] = sanitize_text_field(wp_unslash($_POST['notice_id']));
 
 			update_user_meta(get_current_user_id(), 'wu_dismissed_admin_notices', $dismissed);
 
