@@ -6,13 +6,13 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Contributors: aanduque, superdav42 
 
-The Complete Network Solution.
+The Complete Network Solution for transforming your WordPress Multisite into a Website as a Service (WaaS) platform.
 
 == Description ==
 
-WP Multisite WaaS
+WP Multisite WaaS helps you transform your WordPress Multisite installation into a powerful Website as a Service (WaaS) platform. This plugin enables you to offer website creation, hosting, and management services to your customers through a streamlined interface.
 
-The WordPress Multisite Website as a Service (Waas) plugin. Now community maintained.
+Now community maintained.
 
 == Installation ==
 
@@ -67,6 +67,17 @@ Solution: Deactivate and remove any older versions of WP Ultimo or WP Multisite 
 This error can occur if the plugin's autoloader isn't properly loading all the necessary classes.
 
 Solution: Use the pre-packaged release from the [Releases page](https://github.com/superdav42/wp-multisite-waas/releases) which includes all required files.
+
+== Requirements ==
+
+- WordPress Multisite 5.3 or higher
+- PHP 7.4.30 or higher
+- MySQL 5.6 or higher
+- HTTPS enabled (recommended for secure checkout)
+
+== Support ==
+
+For support, please open an issue on the [GitHub repository](https://github.com/superdav42/wp-multisite-waas/issues).
 
 == Upgrade Notice ==
 
