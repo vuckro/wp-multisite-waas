@@ -29,7 +29,7 @@ final class WP_Ultimo {
 	 * @since 2.1.0
 	 * @var string
 	 */
-	const VERSION = '2.3.4';
+	const VERSION = '2.4.0';
 
 	/**
 	 * Version of the Plugin.
@@ -37,7 +37,7 @@ final class WP_Ultimo {
 	 * @deprecated use the const version instead.
 	 * @var string
 	 */
-	public $version = '2.3.4';
+	public $version = self::VERSION;
 
 	/**
 	 * Tables registered by WP Multisite WaaS.

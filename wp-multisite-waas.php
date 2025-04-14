@@ -4,7 +4,7 @@
  * Description: The WordPress Multisite Website as a Service (WaaS) plugin.
  * Plugin URI: https://wpmultisitewaas.org
  * Text Domain: wp-multisite-waas
- * Version: 2.3.4
+ * Version: 2.4.0
  * Author: WP Multisite Community
  * Author URI: https://github.com/superdav42/wp-multisite-waas
  * GitHub Plugin URI: https://github.com/superdav42/wp-multisite-waas
@@ -27,10 +27,10 @@
  * You should have received a copy of the GNU General Public License
  * along with WP Multisite WaaS. If not, see <http://www.gnu.org/licenses/>.
  *
- * @author   Arindo Duque and NextPress
+ * @author   Arindo Duque and NextPress and WP Multisite Community
  * @category Core
  * @package  WP_Ultimo
- * @version  2.3.4
+ * @version  2.4.0
  */
 
 // Exit if accessed directly
