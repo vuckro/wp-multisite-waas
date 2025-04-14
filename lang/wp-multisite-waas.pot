@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-07T17:38:26+00:00\n"
+"POT-Creation-Date: 2025-04-14T17:41:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wp-multisite-waas\n"
@@ -1241,7 +1241,7 @@ msgstr ""
 #: inc/models/class-payment.php:557
 #: views/admin-pages/fields/field-text-display.php:43
 #: views/admin-pages/fields/field-text-edit.php:47
-#: views/base/customers/grid-item.php:118
+#: views/base/customers/grid-item.php:130
 msgid "None"
 msgstr ""
 
@@ -4357,12 +4357,12 @@ msgid "Activated"
 msgstr ""
 
 #: inc/admin-pages/class-setup-wizard-admin-page.php:853
-#: inc/class-scripts.php:177
+#: inc/class-scripts.php:180
 msgid "Select an Image."
 msgstr ""
 
 #: inc/admin-pages/class-setup-wizard-admin-page.php:854
-#: inc/class-scripts.php:178
+#: inc/class-scripts.php:181
 msgid "Use this image"
 msgstr ""
 
@@ -6345,7 +6345,7 @@ msgstr ""
 #: inc/api/trait-rest-api.php:169
 #: inc/api/trait-rest-api.php:242
 #: inc/api/trait-rest-api.php:300
-#: inc/models/class-base-model.php:610
+#: inc/models/class-base-model.php:611
 #: inc/models/class-site.php:1440
 msgid "Item not found."
 msgstr ""
@@ -7684,16 +7684,16 @@ msgid "here"
 msgstr ""
 
 #. translators: the day/month/year date format used by WP Multisite WaaS. You can changed it to localize this date format to your language. the default value is d/m/Y, which is the format 31/12/2021.
-#: inc/class-scripts.php:274
+#: inc/class-scripts.php:277
 msgid "d/m/Y"
 msgstr ""
 
-#: inc/class-scripts.php:284
+#: inc/class-scripts.php:287
 msgid "in %s"
 msgstr ""
 
 #. translators: %s a unit of time.
-#: inc/class-scripts.php:285
+#: inc/class-scripts.php:288
 #: inc/functions/date.php:155
 #: inc/list-tables/class-base-list-table.php:830
 #: inc/list-tables/class-membership-list-table.php:209
@@ -7702,59 +7702,59 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: inc/class-scripts.php:286
+#: inc/class-scripts.php:289
 msgid "a few seconds"
 msgstr ""
 
-#: inc/class-scripts.php:287
+#: inc/class-scripts.php:290
 msgid "%d seconds"
 msgstr ""
 
-#: inc/class-scripts.php:288
+#: inc/class-scripts.php:291
 msgid "a minute"
 msgstr ""
 
-#: inc/class-scripts.php:289
+#: inc/class-scripts.php:292
 msgid "%d minutes"
 msgstr ""
 
-#: inc/class-scripts.php:290
+#: inc/class-scripts.php:293
 msgid "an hour"
 msgstr ""
 
-#: inc/class-scripts.php:291
+#: inc/class-scripts.php:294
 msgid "%d hours"
 msgstr ""
 
-#: inc/class-scripts.php:292
+#: inc/class-scripts.php:295
 msgid "a day"
 msgstr ""
 
-#: inc/class-scripts.php:293
+#: inc/class-scripts.php:296
 msgid "%d days"
 msgstr ""
 
-#: inc/class-scripts.php:294
+#: inc/class-scripts.php:297
 msgid "a week"
 msgstr ""
 
-#: inc/class-scripts.php:295
+#: inc/class-scripts.php:298
 msgid "%d weeks"
 msgstr ""
 
-#: inc/class-scripts.php:296
+#: inc/class-scripts.php:299
 msgid "a month"
 msgstr ""
 
-#: inc/class-scripts.php:297
+#: inc/class-scripts.php:300
 msgid "%d months"
 msgstr ""
 
-#: inc/class-scripts.php:298
+#: inc/class-scripts.php:301
 msgid "a year"
 msgstr ""
 
-#: inc/class-scripts.php:299
+#: inc/class-scripts.php:302
 msgid "%d years"
 msgstr ""
 
@@ -8418,11 +8418,11 @@ msgid "Remove all saved data for WP Multisite WaaS when the plugin is uninstalle
 msgstr ""
 
 #. translators: the placeholder is an error message
-#: inc/class-sunrise.php:274
+#: inc/class-sunrise.php:276
 msgid "Sunrise copy failed: %s"
 msgstr ""
 
-#: inc/class-sunrise.php:277
+#: inc/class-sunrise.php:279
 msgid "Sunrise upgrade attempt succeeded."
 msgstr ""
 
@@ -14782,43 +14782,43 @@ msgstr ""
 msgid "Focus on your business and avoid all the web hosting hassles. Our managed hosting guarantees unmatched performance, reliability and choice with 24/7 support that acts as your extended team, making Cloudways an ultimate choice for growing agencies and e-commerce businesses."
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:115
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:114
 msgid "cPanel Username"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:116
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:115
 msgid "e.g. username"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:120
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:119
 msgid "cPanel Password"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:121
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:120
 msgid "password"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:124
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:123
 msgid "cPanel Host"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:125
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:124
 msgid "e.g. yourdomain.com"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:128
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:127
 msgid "cPanel Port"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:129
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:128
 msgid "Defaults to 2083"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:133
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:132
 msgid "Root Directory"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:134
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:133
 msgid "Defaults to /public_html"
 msgstr ""
 
@@ -14826,15 +14826,15 @@ msgstr ""
 msgid "Unexpected error ocurred trying to sync domains with CPanel"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:317
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:318
 msgid "cPanel is the management panel being used on a large number of shared and dedicated hosts across the globe."
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:362
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:363
 msgid "Add a new Addon Domain on cPanel whenever a new domain mapping gets created on your network"
 msgstr ""
 
-#: inc/integrations/host-providers/class-cpanel-host-provider.php:368
+#: inc/integrations/host-providers/class-cpanel-host-provider.php:369
 msgid "Add a new SubDomain on cPanel whenever a new site gets created on your network"
 msgstr ""
 
@@ -15256,7 +15256,7 @@ msgid "Send an email to this customer"
 msgstr ""
 
 #: inc/list-tables/class-customer-list-table.php:152
-#: views/base/customers/grid-item.php:115
+#: views/base/customers/grid-item.php:127
 msgid "Switch To"
 msgstr ""
 
@@ -15265,7 +15265,7 @@ msgstr ""
 #: inc/list-tables/class-payment-list-table.php:143
 #: inc/list-tables/class-site-list-table.php:256
 #: views/admin-pages/fields/field-text.php:44
-#: views/base/customers/grid-item.php:95
+#: views/base/customers/grid-item.php:107
 #: views/base/responsive-table-row.php:130
 msgid "View"
 msgstr ""
@@ -15297,7 +15297,7 @@ msgstr ""
 
 #: inc/list-tables/class-customer-list-table.php:363
 #: inc/list-tables/class-site-customer-list-table.php:62
-#: views/base/customers/grid-item.php:64
+#: views/base/customers/grid-item.php:76
 msgid "Online"
 msgstr ""
 
@@ -16588,11 +16588,11 @@ msgstr ""
 msgid "You do not have enough permissions to read the logs of this webhook."
 msgstr ""
 
-#: inc/models/class-base-model.php:185
+#: inc/models/class-base-model.php:186
 msgid "You can only use numeric fields to generate hashes."
 msgstr ""
 
-#: inc/models/class-base-model.php:733
+#: inc/models/class-base-model.php:734
 msgid "This method expects an array as argument."
 msgstr ""
 
@@ -17980,7 +17980,7 @@ msgid "Preview Image"
 msgstr ""
 
 #: views/admin-pages/fields/field-image.php:90
-#: views/settings/fields/field-image.php:50
+#: views/settings/fields/field-image.php:47
 msgid "Remove Image"
 msgstr ""
 
@@ -18083,48 +18083,48 @@ msgstr ""
 msgid "Your browser doesn't support iframes"
 msgstr ""
 
-#: views/base/customers/grid-item.php:45
+#: views/base/customers/grid-item.php:57
 msgid "No email address"
 msgstr ""
 
-#: views/base/customers/grid-item.php:50
+#: views/base/customers/grid-item.php:62
 msgid "VIP Customer"
 msgstr ""
 
-#: views/base/customers/grid-item.php:50
+#: views/base/customers/grid-item.php:62
 msgid "Regular Customer"
 msgstr ""
 
-#: views/base/customers/grid-item.php:59
+#: views/base/customers/grid-item.php:71
 msgid "Last Login:"
 msgstr ""
 
-#: views/base/customers/grid-item.php:66
 #: views/base/customers/grid-item.php:78
+#: views/base/customers/grid-item.php:90
 msgid "ago"
 msgstr ""
 
-#: views/base/customers/grid-item.php:68
+#: views/base/customers/grid-item.php:80
 msgid "Never logged in"
 msgstr ""
 
-#: views/base/customers/grid-item.php:75
+#: views/base/customers/grid-item.php:87
 msgid "Customer Since:"
 msgstr ""
 
-#: views/base/customers/grid-item.php:84
+#: views/base/customers/grid-item.php:96
 msgid "Memberships:"
 msgstr ""
 
-#: views/base/customers/grid-item.php:106
+#: views/base/customers/grid-item.php:118
 msgid "Actions:"
 msgstr ""
 
-#: views/base/customers/grid-item.php:134
+#: views/base/customers/grid-item.php:146
 msgid "Select Customer"
 msgstr ""
 
-#: views/base/customers/grid-item.php:138
+#: views/base/customers/grid-item.php:150
 #: views/base/sites/grid-item.php:67
 #: views/dashboard-widgets/my-sites.php:151
 msgid "Manage"
