@@ -203,6 +203,11 @@ final class WP_Ultimo {
 		add_action('init', [$this, 'after_init']);
 	}
 
+	/**
+	 * Loads admin pages
+	 *
+	 * @return void
+	 */
 	public function after_init() {
 		/*
 		 * Loads admin pages
