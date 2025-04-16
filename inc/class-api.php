@@ -367,7 +367,6 @@ class API {
 	 * @param mixed            $result The result of the REST API call.
 	 * @param string|array     $handler The callback.
 	 * @param \WP_REST_Request $request The request object.
-	 * @return mixed
 	 */
 	public function log_api_errors($result, $handler, $request) {
 
@@ -388,8 +387,6 @@ class API {
 
 			wu_log_add('api-errors', $result);
 		}
-
-		return $result;
 	}
 
 	/**
@@ -465,7 +462,7 @@ class API {
 		 * This is used by our /register endpoint.
 		 *
 		 * @since 2.0.0
-		 * @param self $this The current API instance.
+		 * @param self $api_instance The current API instance.
 		 */
 		do_action('wu_register_rest_routes', $this);
 	}
