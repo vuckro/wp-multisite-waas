@@ -28,7 +28,7 @@
 				<?php endif; ?>
 				<td>
 					<label class="wu-font-semibold wu-text-gray-700" for="default_content_<?php echo esc_attr($slug); ?>">
-						<?php echo esc_html($default['title']); ?>
+						<?php echo wp_kses($default['title'], ['code' => []]); ?>
 					</label>
 					<span class="wu-text-xs wu-block wu-mt-1">
 							<?php echo esc_html($default['description']); ?>

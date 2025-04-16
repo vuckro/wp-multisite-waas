@@ -11,7 +11,7 @@
 
 <?php if ($description) : ?>
 	<p class="wu-text-lg wu-text-gray-600 wu-mt-4 wu-mb-0">
-		<?php echo esc_html($description); ?>
+		<?php echo wp_kses($description, ['br' => []]); ?>
 	</p>
 <?php endif; ?>
 
