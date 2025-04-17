@@ -125,6 +125,10 @@ class Sunrise {
 		require_once __DIR__ . '/database/sites/class-site-type.php';
 		require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Base.php';
 		require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Query.php';
+		require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Row.php';
+		require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Schema.php';
+		require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Table.php';
+		require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Column.php';
 		require_once __DIR__ . '/database/engine/class-query.php';
 		require_once __DIR__ . '/database/sites/class-site-query.php';
 		require_once __DIR__ . '/models/class-base-model.php';
@@ -138,22 +142,9 @@ class Sunrise {
 		require_once __DIR__ . '/limits/class-plugin-limits.php';
 		require_once __DIR__ . '/limits/class-theme-limits.php';
 		require_once __DIR__ . '/models/class-membership.php';
-
-		// Make sure we have all the necessary database classes loaded
-		// BerlinDB core classes
-		if (file_exists(__DIR__ . '/../vendor/berlindb/core/src/Database/Base.php')) {
-			require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Base.php';
-			require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Query.php';
-			require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Row.php';
-			require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Schema.php';
-			require_once __DIR__ . '/../vendor/berlindb/core/src/Database/Table.php';
-		}
-
-		// Site database classes
+		require_once __DIR__ . '/database/engine/class-schema.php';
 		require_once __DIR__ . '/database/sites/class-sites-schema.php';
 		require_once __DIR__ . '/database/sites/class-site-query.php';
-		require_once __DIR__ . '/database/sites/class-site.php';
-
 	}
 
 	/**

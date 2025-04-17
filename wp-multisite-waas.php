@@ -49,7 +49,7 @@ if (defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING) {
 		// We must override the old sunrise file or more name conflicts will occur.
 		copy(__DIR__ . '/sunrise.php', WP_CONTENT_DIR . '/sunrise.php');
 		if (function_exists('opcache_invalidate')) {
-			opcache_invalidate( WP_CONTENT_DIR . '/sunrise.php', true );
+			opcache_invalidate(WP_CONTENT_DIR . '/sunrise.php', true);
 		}
 		$wu_possible_conflicts = true;
 	}
