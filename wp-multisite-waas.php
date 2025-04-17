@@ -36,17 +36,26 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-if ( defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING ) {
+if (defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( is_plugin_active('wp-ultimo/wp-ultimo.php') ) {
+	$wu_possible_conflicts = false;
+	if (is_plugin_active('wp-ultimo/wp-ultimo.php')) {
 		// old plugin still installed and active with the old name and path
 		// and the user is trying to activate this plugin. So deactivate and return.
 		deactivate_plugins('wp-ultimo/wp-ultimo.php', true, true);
-
-		if ( file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
-			// We must override the old sunrise file or more name conflicts will occur.
-			copy(__DIR__ . '/sunrise.php', WP_CONTENT_DIR . '/sunrise.php');
+		$wu_possible_conflicts = true;
+	}
+	if (file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
+		// We must override the old sunrise file or more name conflicts will occur.
+		copy(__DIR__ . '/sunrise.php', WP_CONTENT_DIR . '/sunrise.php');
+		if (function_exists('opcache_invalidate')) {
+			opcache_invalidate( WP_CONTENT_DIR . '/sunrise.php', true );
 		}
+		$wu_possible_conflicts = true;
+	}
+	if ($wu_possible_conflicts) {
+		// return to avoid loading the plugin which will have name conflicts.
+		// on the next page load the plugin will load normally and old plugin will be gone.
 		return;
 	}
 }
@@ -63,8 +72,6 @@ require_once __DIR__ . '/constants.php';
 require_once __DIR__ . '/vendor/autoload_packages.php';
 
 require_once __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
-
-require_once __DIR__ . '/inc/traits/trait-singleton.php';
 
 /**
  * Setup activation/deactivation hooks
