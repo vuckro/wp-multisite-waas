@@ -98,6 +98,7 @@ Version [2.4.0] - Released on 2025-XX-XX
 - Fixed: i18n deprecation notice for translating too early
 - Improved: Put all scripts in footer and load async
 - Improved: Add discounts to thank you page
+- Improved: Prevent downgrading a plan if it the post type could would be over the limit
 
 Version [2.3.4] - Released on 2024-01-31
 - Fixed: Unable to checkout with any payment gateway

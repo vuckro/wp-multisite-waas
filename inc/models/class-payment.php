@@ -695,6 +695,8 @@ class Payment extends Base_Model {
 
 		$refund_total = 0;
 
+		$discount_total = 0;
+
 		$total = 0;
 
 		foreach ($line_items as $line_item) {
@@ -703,6 +705,8 @@ class Payment extends Base_Model {
 			$tax_total += $line_item->get_tax_total();
 
 			$sub_total += $line_item->get_subtotal();
+
+			$discount_total += $line_item->get_discount_total();
 
 			$total += $line_item->get_total();
 
@@ -713,10 +717,11 @@ class Payment extends Base_Model {
 
 		$this->attributes(
 			[
-				'tax_total'    => $tax_total,
-				'subtotal'     => $sub_total,
-				'refund_total' => $refund_total,
-				'total'        => $total,
+				'tax_total'      => $tax_total,
+				'subtotal'       => $sub_total,
+				'refund_total'   => $refund_total,
+				'discount_total' => $discount_total,
+				'total'          => $total,
 			]
 		);
 

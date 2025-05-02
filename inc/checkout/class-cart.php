@@ -941,6 +941,30 @@ class Cart implements \JsonSerializable {
 			$this->errors->add('no_changes', __('This cart proposes no changes to the current membership.', 'wp-multisite-waas'));
 
 			return true;
+		} else {
+			$new_plan = $this->get_plan();
+			$new_limitations = $new_plan->get_limitations();
+			$overlimits = $new_limitations->post_types->check_all_post_types();
+			if ($overlimits) {
+				foreach ($overlimits as $post_type_slug => $limit) {
+					$post_type = get_post_type_object($post_type_slug);
+
+					$this->errors->add(
+						'overlimits',
+						sprintf(
+						// translators: %1$d: current number of posts, %2$s: post type name, %3$d: posts quota, %4$s: post type name, %5$d: number of posts to be deleted, %6$s: post type name.
+							esc_html__( 'You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'wp-ultimo' ),
+							$limit['current'],
+							$limit['current'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
+							$limit['limit'],
+							$limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
+							$limit['current'] - $limit['limit'],
+							$limit['current'] - $limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name
+						)
+					);
+				}
+				return true;
+			}
 		}
 
 		/*
