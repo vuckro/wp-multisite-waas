@@ -290,14 +290,13 @@ class Payment_Manager extends Base_Manager {
 			 * Validates nonce.
 			 */
 			if ( ! wp_verify_nonce(wu_request('key'), 'see_invoice')) {
-
-				// wp_die(__('You do not have permissions to access this file.', 'wp-multisite-waas'));
+				wp_die(esc_html__('You do not have permissions to access this file.', 'wp-multisite-waas'));
 			}
 
 			$payment = wu_get_payment_by_hash(wu_request('reference'));
 
 			if ( ! $payment) {
-				wp_die(__('This invoice does not exist.', 'wp-multisite-waas'));
+				wp_die(esc_html__('This invoice does not exist.', 'wp-multisite-waas'));
 			}
 
 			$invoice = new Invoice($payment);
@@ -332,7 +331,7 @@ class Payment_Manager extends Base_Manager {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-multisite-waas'));
 		}
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		try {
 
@@ -344,17 +343,17 @@ class Payment_Manager extends Base_Manager {
 			$saved = $payment->save();
 
 			if (is_wp_error($saved)) {
-				$wpdb->query('ROLLBACK');
+				$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				return $saved;
 			}
 		} catch (\Throwable $e) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 			return new \WP_Error('exception', $e->getMessage());
 		}
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		return true;
 	}
@@ -434,6 +433,6 @@ class Payment_Manager extends Base_Manager {
 
 		$payment->save();
 
-		return wu_save_setting('next_invoice_number', $current_invoice_number + 1);
+		wu_save_setting('next_invoice_number', $current_invoice_number + 1);
 	}
 }

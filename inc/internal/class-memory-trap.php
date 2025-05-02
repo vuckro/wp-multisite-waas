@@ -108,7 +108,7 @@ class Memory_Trap {
 
 			die;
 		} else {
-			echo $message;
+			echo esc_html($message);
 		}
 
 		exit;
