@@ -7,18 +7,18 @@
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-	<div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
+	<div class="<?php echo esc_attr(wu_env_picker('', 'wu-widget-inset')); ?>">
 
 	<!-- Billing Address -->
 
 	<div id="wu-billing-address">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100')); ?>">
 
 		<?php if ($title) : ?>
 
-			<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
 			<?php echo esc_html($title); ?>
 
@@ -93,11 +93,11 @@
 		<div id="wu-payment-method">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-t wu-border-gray-200'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-t wu-border-gray-200')); ?>">
 
 			<?php if (true) : ?>
 
-			<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
 				<?php echo __('Payment Method', 'wp-multisite-waas'); ?>
 

@@ -11,7 +11,7 @@
 
 	<!-- Already Logged Block -->
 
-	<div class="wu-p-4 wu-bg-yellow-200 wu-rounded <?php echo wu_env_picker('wu-mb-4', 'wu-mt-2 wu-shadow-sm'); ?>">
+	<div class="wu-p-4 wu-bg-yellow-200 wu-rounded <?php echo esc_attr(wu_env_picker('wu-mb-4', 'wu-mt-2 wu-shadow-sm')); ?>">
 
 		<?php
 
@@ -31,7 +31,7 @@
 
 		<?php if ($display_title) : ?>
 
-		<h2 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+		<h2 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
 			<?php echo esc_html($title); ?>
 

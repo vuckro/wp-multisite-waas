@@ -7,7 +7,7 @@
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-	<div class="<?php echo wu_env_picker('', 'wu-mt-4'); ?>">
+	<div class="<?php echo esc_attr(wu_env_picker('', 'wu-mt-4')); ?>">
 
 	<?php if ($display_breadcrumbs) : ?>
 
@@ -16,7 +16,7 @@
 		<div class="wu-bg-gray-100">
 
 			<nav 
-			class="wu-border wu-rounded wu-border-solid wu-flex wu-px-4 <?php echo wu_env_picker('wu-border-gray-300', 'wu-border-gray-400'); ?>" 
+			class="wu-border wu-rounded wu-border-solid wu-flex wu-px-4 <?php echo esc_attr(wu_env_picker('wu-border-gray-300', 'wu-border-gray-400')); ?>" 
 			aria-label="<?php esc_attr_e('Breadcrumb', 'wp-multisite-waas'); ?>"
 			>
 
@@ -66,7 +66,7 @@
 
 	<?php endif; ?>
 
-	<div class="wu-py-4 <?php echo wu_env_picker('', ''); ?>">
+	<div class="wu-py-4 <?php echo esc_attr(wu_env_picker('', '')); ?>">
 
 		<div class="wu-relative md:wu-flex">
 
@@ -76,7 +76,7 @@
 
 			<img 
 				style="max-width: <?php echo esc_attr($screenshot_size); ?>px;"
-				class="wu-w-full wu-rounded wu-border wu-border-solid <?php echo wu_env_picker('wu-border-gray-300', 'wu-border-gray-400'); ?>" 
+				class="wu-w-full wu-rounded wu-border wu-border-solid <?php echo esc_attr(wu_env_picker('wu-border-gray-300', 'wu-border-gray-400')); ?>" 
 				src="<?php echo $current_site->get_featured_image(); ?>" 
 				alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), $current_site->get_title()); ?>"
 			>
@@ -112,7 +112,7 @@
 			<?php endif; ?>
 
 			<!-- Site Actions -->
-			<ul class="wu-list-none wu-p-0 wu-m-0 <?php echo wu_env_picker('', 'wu-mt-4'); ?>">
+			<ul class="wu-list-none wu-p-0 wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-mt-4')); ?>">
 
 				<?php foreach ($actions as $action) : ?>
 

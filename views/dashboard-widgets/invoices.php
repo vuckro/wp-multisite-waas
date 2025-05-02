@@ -7,15 +7,15 @@
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-	<div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
+	<div class="<?php echo esc_attr(wu_env_picker('', 'wu-widget-inset')); ?>">
 
 	<?php if ($title) : ?>
 
 		<!-- Title Element -->
 
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-gray-400'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-gray-400')); ?>">
 
-			<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
 			<?php echo esc_html($title); ?>
 
@@ -27,7 +27,7 @@
 
 	<?php endif; ?>
 
-	<table class="striped <?php echo wu_env_picker('', 'wp-list-table widefat wu-border-none'); ?>">
+	<table class="striped <?php echo esc_attr(wu_env_picker('', 'wp-list-table widefat wu-border-none')); ?>">
 
 		<tbody class="wu-align-baseline">
 

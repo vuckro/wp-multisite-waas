@@ -7,14 +7,14 @@
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-	<div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
+	<div class="<?php echo esc_attr(wu_env_picker('', 'wu-widget-inset')); ?>">
 
 	<!-- Title Element -->
-	<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-gray-200'); ?>">
+	<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-gray-200')); ?>">
 
 		<?php if ($title) : ?>
 
-		<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+		<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
 			<?php echo esc_html($title); ?>
 
@@ -29,7 +29,7 @@
 			<a 
 			title="<?php esc_attr_e('See More', 'wp-multisite-waas'); ?>"
 			class="wu-text-sm wu-no-underline button" 
-			href="<?php echo $element->get_manage_url($site->get_id()); ?>"
+			href="<?php echo esc_attr($element->get_manage_url($site->get_id())); ?>"
 			>
 
 			<?php esc_html_e('See More', 'wp-multisite-waas'); ?>
@@ -105,7 +105,7 @@
 		<?php if ( ! $unlimited_space) : ?>
 
 			<span class="wu-p-1 wu-bg-gray-200 wu-inline wu-align-text-bottom wu-rounded wu-text-center wu-text-xs wu-text-gray-600">
-			<?php echo $percentage; ?>%
+			<?php echo esc_html($percentage); ?>%
 			</span>
 
 		<?php endif; ?>

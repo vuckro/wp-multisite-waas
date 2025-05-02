@@ -222,9 +222,9 @@
 		<div>
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-gray-200'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100 wu-border-solid wu-border-0 wu-border-b wu-border-gray-200')); ?>">
 
-			<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
 			<?php echo __('Additional Packages & Services', 'wp-multisite-waas'); ?>
 

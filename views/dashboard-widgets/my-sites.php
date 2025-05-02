@@ -22,12 +22,12 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
-	<div class="<?php echo wu_env_picker('wu-mb-4', ''); ?>">
+	<div class="<?php echo esc_attr(wu_env_picker('wu-mb-4', '')); ?>">
 
 	<div class="wu-relative">
 
 		<div
-		class="wu-grid wu-gap-5 wu-grid-cols-<?php echo esc_attr((int) $columns); ?> sm:wu-grid-cols-<?php echo esc_attr((int) $columns); ?> xl:wu-grid-cols-<?php echo esc_attr((int) $columns); ?> lg:wu-max-w-none <?php echo wu_env_picker('', 'wu-py-4'); ?>">
+		class="wu-grid wu-gap-5 wu-grid-cols-<?php echo esc_attr((int) $columns); ?> sm:wu-grid-cols-<?php echo esc_attr((int) $columns); ?> xl:wu-grid-cols-<?php echo esc_attr((int) $columns); ?> lg:wu-max-w-none <?php echo esc_attr(wu_env_picker('', 'wu-py-4')); ?>">
 
 		<?php foreach ( (array) $sites as $site) : ?>
 
@@ -138,7 +138,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 
 					<li class="wu-block wu-my-2">
 					<span
-						class="wu-w-full wu-no-underline <?php echo wu_env_picker('wu-text-sm', 'button button-primary button-disabled'); ?>">
+						class="wu-w-full wu-no-underline <?php echo esc_attr(wu_env_picker('wu-text-sm', 'button button-primary button-disabled')); ?>">
 						<?php esc_html_e('Current Site', 'wp-multisite-waas'); ?>
 					</span>
 					</li>
@@ -147,7 +147,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 
 					<li class="wu-block wu-my-2">
 					<a href="<?php echo esc_url($element->get_manage_url($site->get_id(), $site_manage_type, $custom_manage_page)); ?>"
-						class="wu-w-full wu-no-underline <?php echo wu_env_picker('wu-text-sm', 'button button-primary'); ?>">
+						class="wu-w-full wu-no-underline <?php echo esc_attr(wu_env_picker('wu-text-sm', 'button button-primary')); ?>">
 						<?php esc_html_e('Manage', 'wp-multisite-waas'); ?>
 					</a>
 					</li>

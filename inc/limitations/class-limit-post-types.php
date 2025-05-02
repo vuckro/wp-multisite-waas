@@ -49,9 +49,7 @@ class Limit_Post_Types extends Limit_Subtype {
 		 * Allow plugin developers to filter the return value
 		 *
 		 * @since 1.7.0
-		 * @param bool If the post type is disabled or not
-		 * @param WU_Plan Plan of the current user
-		 * @param int User id
+		 * @param bool $value If the post type is disabled or not
 		 */
 		return apply_filters('wu_limits_is_post_above_limit', $quota > 0 && $post_count >= $quota);
 	}
@@ -76,9 +74,7 @@ class Limit_Post_Types extends Limit_Subtype {
 			 * Allow plugin developers to filter the return value
 			 *
 			 * @since 1.7.0
-			 * @param bool If the post type is disabled or not
-			 * @param WU_Plan Plan of the current user
-			 * @param int User id
+			 * @param bool $value If the post type is disabled or not
 			 */
 			$is_above_limit = apply_filters('wu_limits_is_post_above_limit', $quota > 0 && ($post_count) > $quota);
 
