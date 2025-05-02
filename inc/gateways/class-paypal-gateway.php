@@ -615,7 +615,7 @@ class PayPal_Gateway extends Base_Gateway {
 		 * Maybe PayPal is out? We can't be sure.
 		 */
 		if (is_wp_error($request)) {
-			throw new \Exception($request->get_error_message(), $request->get_error_code());
+			throw new \Exception(esc_html($request->get_error_message()), esc_html($request->get_error_code()));
 		}
 
 		/*
@@ -636,7 +636,7 @@ class PayPal_Gateway extends Base_Gateway {
 			}
 
 			if ('failure' === strtolower((string) $body['ACK']) || 'failurewithwarning' === strtolower((string) $body['ACK'])) {
-				wp_die($body['L_LONGMESSAGE0'], $body['L_ERRORCODE0']);
+				wp_die(esc_html($body['L_LONGMESSAGE0']), esc_html($body['L_ERRORCODE0']));
 			} else {
 				/*
 				 * We do have a valid token.
@@ -652,7 +652,7 @@ class PayPal_Gateway extends Base_Gateway {
 		/*
 		 * If we get here, something went wrong.
 		 */
-		throw new \Exception(__('Something has gone wrong, please try again', 'wp-multisite-waas'));
+		throw new \Exception(esc_html__('Something has gone wrong, please try again', 'wp-multisite-waas'));
 	}
 
 	/**
@@ -712,7 +712,7 @@ class PayPal_Gateway extends Base_Gateway {
 		$gateway_payment_id = $payment->get_gateway_payment_id();
 
 		if (empty($gateway_payment_id)) {
-			throw new \Exception(__('Gateway payment ID not found. Cannot process refund automatically.', 'wp-multisite-waas'));
+			throw new \Exception(esc_html__('Gateway payment ID not found. Cannot process refund automatically.', 'wp-multisite-waas'));
 		}
 
 		$refund_type = 'Partial';
@@ -752,7 +752,7 @@ class PayPal_Gateway extends Base_Gateway {
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-			throw new \Exception($request->get_error_message());
+			throw new \Exception(esc_html($request->get_error_message()));
 		}
 
 		if (200 === absint($code) && 'OK' === $message) {
@@ -765,7 +765,7 @@ class PayPal_Gateway extends Base_Gateway {
 			}
 
 			if ('failure' === strtolower((string) $body['ACK'])) {
-				throw new \Exception($body['L_LONGMESSAGE0']);
+				throw new \Exception(esc_html($body['L_LONGMESSAGE0']));
 			}
 
 			/*
@@ -774,7 +774,7 @@ class PayPal_Gateway extends Base_Gateway {
 			return true;
 		}
 
-		throw new \Exception(__('Something went wrong.', 'wp-multisite-waas'));
+		throw new \Exception(esc_html__('Something went wrong.', 'wp-multisite-waas'));
 	}
 
 	/**
@@ -825,9 +825,9 @@ class PayPal_Gateway extends Base_Gateway {
 			$details = $this->get_checkout_details(wu_request('token'));
 
 			if (empty($details)) {
-				$error = new \WP_Error(__('PayPal token no longer valid.', 'wp-multisite-waas'));
+				$error = new \WP_Error(esc_html__('PayPal token no longer valid.', 'wp-multisite-waas'));
 
-				wp_die($error);
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			/*
@@ -841,9 +841,9 @@ class PayPal_Gateway extends Base_Gateway {
 			* Bail.
 			*/
 			if (empty($payment)) {
-				$error = new \WP_Error(__('Pending payment does not exist.', 'wp-multisite-waas'));
+				$error = new \WP_Error(esc_html__('Pending payment does not exist.', 'wp-multisite-waas'));
 
-				wp_die($error);
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			/*
@@ -855,9 +855,9 @@ class PayPal_Gateway extends Base_Gateway {
 			$original_cart = $payment->get_meta('wu_original_cart');
 
 			if (empty($original_cart)) {
-				$error = new \WP_Error('no-cart', __('Original cart does not exist.', 'wp-multisite-waas'));
+				$error = new \WP_Error('no-cart', esc_html__('Original cart does not exist.', 'wp-multisite-waas'));
 
-				wp_die($error);
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
 			}
 
 			/*
@@ -869,9 +869,9 @@ class PayPal_Gateway extends Base_Gateway {
 			$is_recurring      = $original_cart->has_recurring();
 
 			if (empty($membership) || empty($customer)) {
-				$error = new \WP_Error('no-membership', __('Missing membership or customer data.', 'wp-multisite-waas'));
+				$error = new \WP_Error('no-membership', esc_html__('Missing membership or customer data.', 'wp-multisite-waas'));
 
-				wp_die($error);
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
 			}
 
 			if ($should_auto_renew && $is_recurring) {
@@ -1041,7 +1041,7 @@ class PayPal_Gateway extends Base_Gateway {
 				if ('failed' === strtolower((string) $posted['payment_status'])) {
 
 					// Recurring payment failed.
-					$membership->add_note(sprintf(__('Transaction ID %s failed in PayPal.', 'wp-multisite-waas'), $posted['txn_id']));
+					$membership->add_note(['text' => sprintf(__('Transaction ID %s failed in PayPal.', 'wp-multisite-waas'), $posted['txn_id'])]);
 
 					die('Subscription payment failed');
 				} elseif ('pending' === strtolower((string) $posted['payment_status'])) {
@@ -1049,7 +1049,7 @@ class PayPal_Gateway extends Base_Gateway {
 					// Recurring payment pending (such as echeck).
 					$pending_reason = ! empty($posted['pending_reason']) ? $posted['pending_reason'] : __('unknown', 'wp-multisite-waas');
 
-					$membership->add_note(sprintf(__('Transaction ID %1$s is pending in PayPal for reason: %2$s', 'wp-multisite-waas'), $posted['txn_id'], $pending_reason));
+					$membership->add_note(['text' => sprintf(__('Transaction ID %1$s is pending in PayPal for reason: %2$s', 'wp-multisite-waas'), $posted['txn_id'], $pending_reason)]);
 
 					die('Subscription payment pending');
 				}
@@ -1093,7 +1093,7 @@ class PayPal_Gateway extends Base_Gateway {
 					// Initial payment failed, so set the user back to pending.
 					$membership->set_status('pending');
 
-					$membership->add_note(__('Initial payment failed in PayPal Express.', 'wp-multisite-waas'));
+					$membership->add_note(['text' => __('Initial payment failed in PayPal Express.', 'wp-multisite-waas')]);
 
 					$this->error_message = __('Initial payment failed.', 'wp-multisite-waas');
 				} else {
@@ -1108,7 +1108,7 @@ class PayPal_Gateway extends Base_Gateway {
 					// user is marked as cancelled but retains access until end of term
 					$membership->cancel();
 
-					$membership->add_note(__('Membership cancelled via PayPal Express IPN.', 'wp-multisite-waas'));
+					$membership->add_note(['text' => __('Membership cancelled via PayPal Express IPN.', 'wp-multisite-waas')]);
 				}
 
 				break;
@@ -1347,14 +1347,14 @@ class PayPal_Gateway extends Base_Gateway {
 				$this->payment = $payment;
 				$redirect_url  = $this->get_return_url();
 
-				wp_redirect($redirect_url);
+				wp_safe_redirect($redirect_url);
 
 				exit;
 			}
 		} else {
 			wp_die(
-				__('Something has gone wrong, please try again', 'wp-multisite-waas'),
-				__('Error', 'wp-multisite-waas'),
+				esc_html__('Something has gone wrong, please try again', 'wp-multisite-waas'),
+				esc_html__('Error', 'wp-multisite-waas'),
 				[
 					'back_link' => true,
 					'response'  => '401',

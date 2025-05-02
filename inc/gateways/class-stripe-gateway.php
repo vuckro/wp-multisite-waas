@@ -427,7 +427,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 					$intent = Stripe\SetupIntent::create($intent_args, $intent_options);
 				}
 			}
-		} catch (Stripe\Stripe\Error\Base $e) {
+		} catch (\Stripe\Exception\ExceptionInterface $e) {
 			return $this->get_stripe_error($e);
 		} catch (\Exception $e) {
 			$error_code = $e->getCode();

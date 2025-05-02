@@ -12,12 +12,9 @@
 namespace WP_Ultimo\Gateways;
 
 use Psr\Log\LogLevel;
-use WP_Ultimo\Gateways\Base_Gateway;
-use WP_Ultimo\Gateways\Ignorable_Exception;
 use Stripe;
 use WP_Ultimo\Models\Membership;
 use WP_Ultimo\Database\Payments\Payment_Status;
-use WP_Ultimo\Checkout\Cart;
 use WP_Ultimo\Checkout\Line_Item;
 use WP_Ultimo\Models\Site;
 
@@ -199,7 +196,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 * @param Membership $membership The current membership object.
 	 * @return array
 	 */
-	function add_site_actions($actions, $atts, $site, $membership) {
+	public function add_site_actions($actions, $atts, $site, $membership) {
 
 		$gateway_id = wu_replace_dashes($this->id);
 
@@ -250,7 +247,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		$customer = wu_get_current_customer();
 
 		if ( ! is_super_admin() && (! $customer || $customer->get_id() !== $membership->get_customer_id())) {
-			wp_die(__('You are not allowed to modify this membership.', 'wp-multisite-waas'));
+			wp_die(esc_html__('You are not allowed to modify this membership.', 'wp-multisite-waas'));
 		}
 
 		$gateway_id = $membership->get_gateway();
@@ -1019,7 +1016,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		 * return a WP_Error object.
 		 */
 		if (is_object($stripe_cart) && is_wp_error($stripe_cart)) {
-			throw new \Exception($stripe_cart->get_error_message());
+			throw new \Exception(esc_html($stripe_cart->get_error_message()));
 		}
 
 		// Otherwise, use the calculated expiration date of the membership, modified to current time instead of 23:59.
@@ -1033,7 +1030,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		$start_date = $datetime->getTimestamp() - HOUR_IN_SECONDS; // Reduce by 60 seconds to account for inaccurate server times.
 
 		if (empty($payment_method)) {
-			throw new \Exception(__('Invalid payment method', 'wp-multisite-waas'));
+			throw new \Exception(esc_html__('Invalid payment method', 'wp-multisite-waas'));
 		}
 
 		/*
@@ -1367,7 +1364,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 * @since 2.0.0
 	 *
 	 * @param \WP_Ultimo\Checkout\Cart $cart The cart object.
-	 * @return array
+	 * @return array|\WP_Error
 	 */
 	protected function build_stripe_cart($cart) {
 		/*
@@ -1432,7 +1429,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			} catch (\Exception $e) {
 				$error_message = sprintf('Failed to create subscription for membership #%d. Message: %s', $this->membership->get_id(), $e->getMessage());
 
-				return new \WP_Error('plan-creation-failed', $error_message);
+				return new \WP_Error('plan-creation-failed', esc_html($error_message));
 			}
 
 			/*
@@ -1530,9 +1527,9 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  Stripe\Payment_Intent $payment_intent The payment intent.
-	 * @param  Stripe\Customer       $s_customer The stripe customer.
-	 * @return Stripe\Payment_Method
+	 * @param  \Stripe\PaymentIntent $payment_intent The payment intent.
+	 * @param  \Stripe\Customer       $s_customer The stripe customer.
+	 * @return \Stripe\PaymentMethod
 	 */
 	protected function save_payment_method($payment_intent, $s_customer) {
 
@@ -1707,7 +1704,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		$gateway_payment_id = $payment->get_gateway_payment_id();
 
 		if (empty($gateway_payment_id)) {
-			throw new \Exception(__('Gateway payment ID not found. Cannot process refund automatically.', 'wp-multisite-waas'));
+			throw new \Exception(esc_html__('Gateway payment ID not found. Cannot process refund automatically.', 'wp-multisite-waas'));
 		}
 
 		/**
@@ -1726,7 +1723,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 			$gateway_payment_id = $invoice->charge;
 		} else {
-			throw new Exception(__('Gateway payment ID not valid.', 'wp-multisite-waas'));
+			throw new Exception(esc_html__('Gateway payment ID not valid.', 'wp-multisite-waas'));
 		}
 
 		/*
@@ -1806,7 +1803,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 		try {
 			$signup_date = new \DateTimeImmutable($signup_date);
-		} catch (Exception $exception) {
+		} catch (\Exception $exception) {
 			$signup_date = new \DateTimeImmutable();
 		}
 
@@ -1844,7 +1841,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 *
 	 * This converts the exception into a WP_Error object with a localized error message.
 	 *
-	 * @param Error\Base $e The stripe error object.
+	 * @param \Stripe\Exception\ExceptionInterface $e The stripe error object.
 	 *
 	 * @since 2.0.0
 	 * @return \WP_Error
@@ -1879,15 +1876,10 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 */
 	protected function get_localized_error_message($error_code, $error_message = '') {
 
-		$errors = wu_stripe_get_localized_error_messages();
+        // TODO: Fetch a translated message from an error_code => error_message map.
 
-		if ( ! empty($errors[ $error_code ])) {
-			return $errors[ $error_code ];
-		} else {
-
-			// translators: 1 is the error code and 2 the message.
-			return sprintf(__('An error has occurred (code: %1$s; message: %2$s).', 'wp-multisite-waas'), $error_code, $error_message);
-		}
+        // translators: 1 is the error code and 2 the message.
+        return sprintf(__('An error has occurred (code: %1$s; message: %2$s).', 'wp-multisite-waas'), $error_code, $error_message);
 	}
 
 	/**
@@ -1928,7 +1920,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 
 		// for extra security, retrieve from the Stripe API
 		if ( ! isset($received_event->id)) {
-			throw new \Exception(__('Event ID not found.', 'wp-multisite-waas'));
+			throw new \Exception(esc_html__('Event ID not found.', 'wp-multisite-waas'));
 		}
 
 		// Set the right mode for this request
@@ -2031,7 +2023,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 		if ($this->get_id() !== $membership->get_gateway()) {
 
 			// translators: %s is the customer ID.
-			throw new Ignorable_Exception(sprintf(__('Exiting Stripe webhook - This call must be handled by %s webhook', 'wp-multisite-waas'), $membership->get_gateway()));
+			throw new Ignorable_Exception(esc_html(sprintf(__('Exiting Stripe webhook - This call must be handled by %s webhook', 'wp-multisite-waas'), $membership->get_gateway())));
 		}
 
 		/*
@@ -2309,7 +2301,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 				 * Throws to inform that
 				 * we have a duplicate payment.
 				 */
-				throw new Ignorable_Exception(__('Duplicate payment.', 'wp-multisite-waas'));
+				throw new Ignorable_Exception(esc_html__('Duplicate payment.', 'wp-multisite-waas'));
 			}
 		}
 
@@ -2326,13 +2318,13 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			$payment = wu_get_payment($payment_id);
 
 			if (empty($payment)) {
-				throw new Ignorable_Exception(__('Payment not found on refund webhook call.', 'wp-multisite-waas'));
+				throw new Ignorable_Exception(esc_html__('Payment not found on refund webhook call.', 'wp-multisite-waas'));
 			}
 
 			$is_refundable = in_array($payment->get_status(), wu_get_refundable_payment_types(), true);
 
 			if ( ! $is_refundable) {
-				throw new Ignorable_Exception(__('Payment is not refundable.', 'wp-multisite-waas'));
+				throw new Ignorable_Exception(esc_html__('Payment is not refundable.', 'wp-multisite-waas'));
 			}
 
 			/*
@@ -2383,7 +2375,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 				if ($membership->is_active()) {
 					$membership->cancel();
 
-					$membership->add_note(__('Membership cancelled via Stripe webhook.', 'wp-multisite-waas'));
+					$membership->add_note(['text' => __('Membership cancelled via Stripe webhook.', 'wp-multisite-waas')]);
 				} else {
 					wu_log_add('stripe', sprintf('Membership #%d is not active - not cancelling account.', $membership->get_id()));
 				}
@@ -2478,7 +2470,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			return;
 		}
 
-		wp_register_script('wu-stripe-sdk', 'https://js.stripe.com/v3/', false, 'v3');
+		wp_register_script('wu-stripe-sdk', 'https://js.stripe.com/v3/', false, 'v3', true);
 
 		wp_register_script("wu-{$this->get_id()}", wu_get_asset("gateways/{$this->get_id()}.js", 'js'), ['wu-checkout', 'wu-stripe-sdk'], wu_get_version(), true);
 
@@ -2848,7 +2840,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 *
 	 * @throws \Exception, When info is wrong.
 	 * @throws \Exception When info is wrong 2.
-	 * @return PaymentMethod[]|array
+	 * @return \Stripe\PaymentMethod[]|array
 	 */
 	public function get_user_saved_payment_methods() {
 
