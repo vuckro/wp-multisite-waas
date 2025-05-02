@@ -7,21 +7,21 @@
 ?>
 <div id="wu-thank-you-element" class="wu-styling <?php echo esc_attr($className); ?>">
 
-	<div class="<?php echo wu_env_picker('', 'wu-widget-inset'); ?>">
+	<div class="<?php echo esc_attr(wu_env_picker('', 'wu-widget-inset')); ?>">
 
-	<?php if (in_array($payment->get_status(), ['completed'])) : ?>
+	<?php if (in_array($payment->get_status(), ['completed'], true)) : ?>
 
 		<!-- Thank You -->
 		<div id="wu-thank-you-message-block">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100')); ?>">
 
 			<?php if ($title) : ?>
 
-			<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-				<?php echo $title; ?>
+				<?php echo esc_html($title); ?>
 
 			</h3>
 
@@ -51,11 +51,11 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo $payment->get_hash(); ?>
+				<?php echo esc_html($payment->get_hash()); ?>
 
 				<small class="wu-text-gray-600 wu-font-normal wu-m-0 wu-block">
 
-				<?php echo date_i18n(get_option('date_format'), strtotime($payment->get_date_created())); ?>
+				<?php echo esc_html(date_i18n(get_option('date_format'), strtotime($payment->get_date_created()))); ?>
 
 				</small>
 
@@ -75,7 +75,7 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo $customer->get_email_address(); ?>
+				<?php echo esc_html($customer->get_email_address()); ?>
 
 			</span>
 
@@ -93,7 +93,7 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo wu_format_currency($payment->get_total(), $payment->get_currency()); ?>
+				<?php echo wu_format_currency($payment->get_total(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 			</span>
 
@@ -111,13 +111,13 @@
 		<div id="wu-thank-you-message-block">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100')); ?>">
 
 			<?php if ($title_pending) : ?>
 
-			<h3 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-				<?php echo $title_pending; ?>
+				<?php echo esc_html($title_pending); ?>
 
 			</h3>
 
@@ -147,7 +147,7 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo $payment->get_hash(); ?>
+				<?php echo esc_html($payment->get_hash()); ?>
 
 			</span>
 
@@ -165,7 +165,7 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo date_i18n(get_option('date_format'), strtotime($payment->get_date_created())); ?>
+				<?php echo esc_html(date_i18n(get_option('date_format'), strtotime($payment->get_date_created()))); ?>
 
 			</span>
 
@@ -183,7 +183,7 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo $customer->get_email_address(); ?>
+				<?php echo esc_html($customer->get_email_address()); ?>
 
 			</span>
 
@@ -201,7 +201,7 @@
 
 			<span class="wu-text-md wu-font-bold wu-block">
 
-				<?php echo wu_format_currency($payment->get_total(), $payment->get_currency()); ?>
+				<?php echo wu_format_currency($payment->get_total(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 			</span>
 
@@ -221,13 +221,13 @@
 	<div id="wu-thank-you-sites">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100')); ?>">
 
 		<?php if ('Site') : ?>
 
-			<h4 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h4 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-			<?php echo esc_html_e('Site', 'wp-multisite-waas'); ?>
+			<?php esc_html_e('Site', 'wp-multisite-waas'); ?>
 
 			</h4>
 
@@ -253,7 +253,7 @@
 
 					<img
 					class="sm:wu-w-12 sm:wu-h-12 wu-mb-4 sm:wu-mb-0 wu-rounded"
-					src="<?php echo $site->get_featured_image('thumbnail'); ?>"
+					src="<?php echo esc_attr($site->get_featured_image('thumbnail')); ?>"
 					/>
 
 				</div>
@@ -262,12 +262,12 @@
 
 					<h5 class="wu-mb-1">
 
-					<?php echo ucfirst($site->get_title()); ?>
+					<?php echo esc_html(ucfirst($site->get_title())); ?>
 
 					<?php if ($site->get_type() === 'pending') : ?>
 
 						<span class="wu-align-middle wu-inline-block wu-rounded wu-px-2 wu-py-1 wu-uppercase wu-text-xs wu-font-bold <?php echo esc_attr($site->get_type_class()); ?>">
-						<?php echo $site->get_type_label(); ?>
+						<?php echo esc_html($site->get_type_label()); ?>
 						</span>
 
 						<span v-cloak v-if="creating && false" class="wu-align-middle wu-inline-block wu-rounded wu-px-2 wu-py-1 wu-uppercase wu-text-xs wu-font-bold wu-text-gray-700 wu-bg-gray-300">
@@ -288,7 +288,7 @@
 
 					<span class="wu-text-sm">
 
-						<?php echo $site->get_active_site_url(); ?>
+						<?php echo esc_html($site->get_active_site_url()); ?>
 
 					</span>
 
@@ -300,7 +300,7 @@
 
 					<?php if ($site->get_type() === 'pending') : ?>
 
-					<a v-if="!creating" href="<?php echo wu_get_current_url(); ?>" class="wu-block sm:wu-inline-block wu-no-underline">
+					<a v-if="!creating" href="<?php echo esc_attr(wu_get_current_url()); ?>" class="wu-block sm:wu-inline-block wu-no-underline">
 						<span class="dashicons-wu-cycle wu-align-middle wu-mr-1"></span>
 						<?php esc_html_e('Check Status', 'wp-multisite-waas'); ?>
 					</a>
@@ -351,13 +351,13 @@
 	<div id="wu-thank-you-order-details">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100')); ?>">
 
 		<?php if ('Order Details') : ?>
 
-			<h4 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h4 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-			<?php echo esc_html_e('Order Details', 'wp-multisite-waas'); ?>
+			<?php esc_html_e('Order Details', 'wp-multisite-waas'); ?>
 
 			</h4>
 
@@ -387,12 +387,12 @@
 				<tr>
 
 				<td class="wu-py-2 wu-px-4">
-					<?php echo $line_item->get_title(); ?>
-					<code class="wu-ml-1">x<?php echo $line_item->get_quantity(); ?></code>
+					<?php echo esc_html($line_item->get_title()); ?>
+					<code class="wu-ml-1">x<?php echo esc_html($line_item->get_quantity()); ?></code>
 				</td>
 
 				<td class="wu-py-2 wu-px-4">
-					<?php echo wu_format_currency($line_item->get_subtotal(), $payment->get_currency()); ?>
+					<?php echo wu_format_currency($line_item->get_subtotal(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</td>
 
 				</tr>
@@ -405,21 +405,28 @@
 
 			<tr>
 				<th class="wu-text-left wu-py-2 wu-px-4"><?php esc_html_e('Subtotal', 'wp-multisite-waas'); ?></th>
-				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($payment->get_subtotal(), $payment->get_currency()); ?></th>
+				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($payment->get_subtotal(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 			</tr>
 
 			<?php foreach ($payment->get_tax_breakthrough() as $rate => $total) : ?>
 
 				<tr>
-				<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(__('Tax (%s%%)', 'wp-multisite-waas'), $rate); ?></th>
-				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($total, $payment->get_currency()); ?></th>
+				<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Tax (%s%%)', 'wp-multisite-waas'), esc_html($rate)); ?></th>
+				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($total, $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?></th>
 				</tr>
 
 			<?php endforeach; ?>
 
+			<?php if ($payment->get_discount_total()) : ?>
+				<tr>
+					<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Discount (%s)', 'wp-ultimo'), esc_html($payment->get_discount_code())); ?></th>
+					<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($payment->get_discount_total(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
+				</tr>
+			<?php endif; ?>
+
 			<tr>
 				<th class="wu-text-left wu-py-2 wu-px-4"><?php esc_html_e('Total', 'wp-multisite-waas'); ?></th>
-				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($payment->get_total(), $payment->get_currency()); ?></th>
+				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($payment->get_total(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 			</tr>
 
 			</tfoot>
@@ -436,13 +443,13 @@
 	<div id="wu-thank-you-billing-address">
 
 		<!-- Title Element -->
-		<div class="wu-p-4 wu-flex wu-items-center <?php echo wu_env_picker('', 'wu-bg-gray-100'); ?>">
+		<div class="wu-p-4 wu-flex wu-items-center <?php echo esc_attr(wu_env_picker('', 'wu-bg-gray-100')); ?>">
 
 		<?php if ('Billing Address') : ?>
 
-			<h4 class="wu-m-0 <?php echo wu_env_picker('', 'wu-widget-title'); ?>">
+			<h4 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-			<?php echo esc_html_e('Billing Address', 'wp-multisite-waas'); ?>
+			<?php esc_html_e('Billing Address', 'wp-multisite-waas'); ?>
 
 			</h4>
 
@@ -453,8 +460,8 @@
 
 		<!-- Body Content -->
 		<div class="wu-thank-you-billing-address wu-p-4 wu-mx-4 wu-bg-gray-100 wu-rounded">
-
-		<?php echo $membership->get_billing_address()->to_string('<br>'); ?>
+		<?php /** @var $membership \WP_Ultimo\Models\Membership */ ?>
+		<?php echo nl2br(esc_html($membership->get_billing_address()->to_string("\n"))); ?>
 
 		</div>
 		<!-- Body Content - End -->
