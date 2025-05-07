@@ -15,7 +15,7 @@
 
 	<!-- <form id="posts-filter" method="post"> -->
 
-		<input type="hidden" name="page" value="<?php echo $page->get_id(); ?>">
+		<input type="hidden" name="page" value="<?php echo esc_attr($page->get_id()); ?>">
 
 		<?php $table->display(); ?>
 

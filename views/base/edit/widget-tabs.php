@@ -8,7 +8,7 @@
 <div
 	class="wu-m-0"
 	data-wu-app="<?php echo esc_attr($html_attr['data-wu-app']); ?>"
-	data-state="<?php echo htmlspecialchars(json_encode(($html_attr['data-state']))); ?>"
+	data-state="<?php echo esc_attr(wp_json_encode(($html_attr['data-state']))); ?>"
 	<?php echo wu_get_isset($html_attr, 'data-on-load') ? 'data-on-load="' . esc_attr($html_attr['data-on-load']) . '"' : ''; ?>
 >
 
