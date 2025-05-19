@@ -1680,6 +1680,10 @@ class Checkout {
 		 */
 		$variables['order'] = (new Cart($variables))->done();
 
+		if ( !empty($variables['order']->discount_code)) {
+			$variables['discount_code'] = $variables['order']->discount_code->get_code();
+		}
+
 		/**
 		 * Allow plugin developers to filter the pre-sets of a checkout page.
 		 *
