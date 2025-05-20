@@ -367,6 +367,8 @@ class API {
 	 * @param mixed            $result The result of the REST API call.
 	 * @param string|array     $handler The callback.
 	 * @param \WP_REST_Request $request The request object.
+	 *
+	 * @return mixed
 	 */
 	public function log_api_errors($result, $handler, $request) {
 
@@ -387,6 +389,7 @@ class API {
 
 			wu_log_add('api-errors', $result);
 		}
+		return $result;
 	}
 
 	/**
