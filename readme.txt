@@ -190,6 +190,7 @@ Version [2.4.0] - Released on 2025-XX-XX
 - Improved: Put all scripts in footer and load async
 - Improved: Add discounts to thank you page
 - Improved: Prevent downgrading a plan if it the post type could would be over the limit
+- Fixed: Styles on thank you page of legacy checkout
 
 Version [2.3.4] - Released on 2024-01-31
 - Fixed: Unable to checkout with any payment gateway
