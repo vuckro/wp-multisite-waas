@@ -520,12 +520,12 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		if ( ! current_user_can('wu_edit_settings')) {
 			wp_die(esc_html__('You do not have the permissions required to change settings.', 'wp-multisite-waas'));
 		}
-
-		if ( ! isset($_POST['active_gateways']) && 'payment-gateways' === wu_request('tab')) {
+        // Nonce processed in the calling method.
+		if ( ! isset($_POST['active_gateways']) && 'payment-gateways' === wu_request('tab')) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$_POST['active_gateways'] = [];
 		}
 
-		WP_Ultimo()->settings->save_settings($_POST);
+		WP_Ultimo()->settings->save_settings($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		wp_safe_redirect(add_query_arg('updated', 1, wu_get_current_url()));
 

@@ -12,6 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
+use WordPressCS\WordPress\Sniffs\Security\NonceVerificationSniff;
 use WP_Ultimo\Database\Memberships\Membership_Status;
 
 /**
@@ -212,7 +213,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	function render_transfer_membership_modal(): void {
+	public function render_transfer_membership_modal(): void {
 
 		$membership = wu_get_membership(wu_request('id'));
 
@@ -1022,7 +1023,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function sites_query_filter($args) {
 
-		$args['meta_query'] = [
+		$args['meta_query'] = [ // phpcs: WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'membership_id' => [
 				'key'   => 'wu_membership_id',
 				'value' => $this->get_object()->get_id(),
@@ -1196,7 +1197,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$billing_address = $object->get_billing_address();
 
-		$billing_address->attributes($_POST);
+		$billing_address->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerificationphpcs:ignore WordPress.Security.NonceVerification
 
 		$valid_address = $billing_address->validate();
 
@@ -1382,10 +1383,11 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		if (is_wp_error($saved)) {
 			wp_send_json_error($saved);
 		}
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}
@@ -1532,10 +1534,11 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		if (is_wp_error($saved)) {
 			wp_send_json_error($saved);
 		}
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}
@@ -1704,10 +1707,11 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 		if (is_wp_error($saved)) {
 			wp_send_json_error($saved);
 		}
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}

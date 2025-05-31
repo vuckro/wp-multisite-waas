@@ -664,6 +664,8 @@ final class WP_Ultimo {
 		 */
 		new WP_Ultimo\Admin_Pages\About_Admin_Page();
 
+		new WP_Ultimo\Admin_Pages\Addons_Admin_Page();
+
 		/*
 		 * Loads the Checkout Form admin page.
 		 */

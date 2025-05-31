@@ -66,7 +66,7 @@ class Customer_List_Admin_Page extends List_Admin_Page {
 		}
 
 		if ( ! wp_verify_nonce(wu_request('nonce'), 'wu_export_customers')) {
-			wp_die(__('You do not have permissions to access this file.', 'wp-multisite-waas'));
+			wp_die(esc_html__('You do not have permissions to access this file.', 'wp-multisite-waas'));
 		}
 
 		$customer_data = array_map(

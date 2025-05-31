@@ -140,12 +140,12 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 
 		if ($locked && $this->edit) {
 
-			// translators: %s is the date, using the site format options
-			$message = sprintf(__('This item is locked from editions.<br />This is probably due to a background action being performed (like a transfer between different accounts, for example). You can manually unlock it, but be careful. The lock should be released automatically in %s seconds.', 'wp-multisite-waas'), wu_get_next_queue_run() + 10);
+			// translators: %1$s is the date, using the site format options, %2$s is a <br /> tag.
+			$message = sprintf(esc_html__('This item is locked from editions. %2$s This is probably due to a background action being performed (like a transfer between different accounts, for example). You can manually unlock it, but be careful. The lock should be released automatically in %1$s seconds.', 'wp-multisite-waas'), wu_get_next_queue_run() + 10, '<br />');
 
 			$actions = [
 				'preview' => [
-					'title' => __('Unlock', 'wp-multisite-waas'),
+					'title' => esc_html__('Unlock', 'wp-multisite-waas'),
 					'url'   => add_query_arg(
 						[
 							'remove-lock'           => 1,
@@ -828,10 +828,11 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		 */
 		$_POST['active'] = (bool) wu_request('active', false);
 
-		$object->attributes($_POST);
+		// Nonce handled in calling method.
+		$object->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if (method_exists($object, 'handle_limitations')) {
-			$object->handle_limitations($_POST); // @phpstan-ignore-line
+			$object->handle_limitations($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		}
 

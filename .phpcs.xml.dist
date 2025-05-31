@@ -90,6 +90,12 @@
                 <element key="6" value="delete_notes"/>
                 <element key="7" value="wu_edit_payments"/>
                 <element key="8" value="wu_edit_sites"/>
+                <element key="9" value="wu_delete_sites"/>
+                <element key="10" value="wu_delete_payments"/>
+                <element key="11" value="wu_transfer_memberships"/>
+                <element key="12" value="wu_transfer_sites"/>
+                <element key="13" value="wu_read_financial" />
+                <element key="14" value="wu_manage_invoice" />
             </property>
         </properties>
     </rule>

@@ -241,10 +241,11 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		if (is_wp_error($saved)) {
 			wp_send_json_error($saved);
 		}
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}
@@ -255,7 +256,7 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	function render_refund_payment_modal(): void {
+	public function render_refund_payment_modal(): void {
 
 		$payment = wu_get_payment(wu_request('id'));
 
@@ -616,10 +617,11 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 		if (is_wp_error($saved)) {
 			wp_send_json_error($saved);
 		}
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}
@@ -1274,10 +1276,10 @@ class Payment_Edit_Admin_Page extends Edit_Admin_Page {
 			return $payment;
 		}
 
-		if (isset($_GET['id'])) {
+		if (isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$query = new \WP_Ultimo\Database\Payments\Payment_Query();
 
-			$item = $query->get_item_by('id', $_GET['id']);
+			$item = $query->get_item_by('id', (int) $_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			if ( ! $item || $item->get_parent_id()) {
 				wp_safe_redirect(wu_network_admin_url('wp-ultimo-payments'));

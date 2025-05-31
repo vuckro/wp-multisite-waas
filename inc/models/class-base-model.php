@@ -476,6 +476,7 @@ abstract class Base_Model implements \JsonSerializable {
 	 */
 	public function save() {
 
+		/** @var \WP_Ultimo\Database\Engine\Query $query_class */
 		$query_class = new $this->query_class();
 
 		$data = get_object_vars($this);
@@ -556,7 +557,7 @@ abstract class Base_Model implements \JsonSerializable {
 				$saved = true;
 			}
 		} else {
-			$saved = $query_class->update_item($this->get_id(), $data);
+			$saved = (bool) $query_class->update_item($this->get_id(), $data);
 		}
 
 		if ( ! empty($meta)) {

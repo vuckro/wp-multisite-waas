@@ -134,8 +134,8 @@ class Checkout_Pages {
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
 			return;
 		}
-
-		if ( ! isset($_POST['_wu_force_compat']) || ! wp_verify_nonce($_POST['_wu_force_compat'], '_wu_force_compat_' . $post_id)) {
+		// Nonce checked in calling method.
+		if ( ! isset($_POST['_wu_force_compat']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wu_force_compat'])), '_wu_force_compat_' . $post_id)) {
 			return;
 		}
 
@@ -144,7 +144,7 @@ class Checkout_Pages {
 		}
 
 		if (isset($_POST['_wu_force_elements_loading'])) {
-			update_post_meta($post_id, '_wu_force_elements_loading', $_POST['_wu_force_elements_loading']);
+			update_post_meta($post_id, '_wu_force_elements_loading', sanitize_text_field(wp_unslash($_POST['_wu_force_elements_loading'])));
 		} else {
 			delete_post_meta($post_id, '_wu_force_elements_loading');
 		}
@@ -381,8 +381,8 @@ class Checkout_Pages {
 
 		$redirect_to = $active_blog ? get_admin_url($active_blog->blog_id) : false;
 
-		if (isset($_GET['redirect_to'])) {
-			$redirect_to = $_GET['redirect_to'];
+		if (isset($_GET['redirect_to'])) { // phpcs:ignore WordPress.Security.NonceVerification
+			$redirect_to = sanitize_url(wp_unslash($_GET['redirect_to'])); // phpcs:ignore WordPress.Security.NonceVerification
 		} elseif (is_multisite() && ! get_active_blog_for_user($user->ID) && ! is_super_admin($user->ID)) {
 			$redirect_to = user_admin_url();
 		} elseif (is_multisite() && ! $user->has_cap('read')) {
@@ -412,7 +412,7 @@ class Checkout_Pages {
 	 */
 	public function add_verify_email_notice($payment, $membership, $customer): void {
 
-		if ($payment->get_total() == 0 && $customer->get_email_verification() === 'pending') {
+		if ($payment->get_total() === 0.0 && $customer->get_email_verification() === 'pending') {
 			$html = '<div class="wu-p-4 wu-bg-yellow-200 wu-mb-2 wu-text-yellow-700 wu-rounded">%s</div>';
 
 			$message = __('Your email address is not yet verified. Your site <strong>will only be activated</strong> after your email address is verified. Check your inbox and verify your email address.', 'wp-multisite-waas');

@@ -180,7 +180,7 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$targets_count = count($targets);
 
-		$html = '<div class="wu-bg-gray-100 wu--mt-3 wu--mb-6 wu--mx-3">
+		echo '<div class="wu-bg-gray-100 wu--mt-3 wu--mb-6 wu--mx-3">
 							<ul class="wu-widget-list">
 								<li class="wu-p-2 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-200 wu-border-solid">
 									<div class="wu-p-2 wu-mr-1 wu-flex wu-rounded wu-items-center wu-border wu-border-solid wu-border-gray-300 wu-bg-white wu-relative wu-overflow-hidden">';
@@ -189,7 +189,7 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 			case $targets_count < 0:
 				$not_found = __('No customer found', 'wp-multisite-waas');
 
-				$html .= "<span class='dashicons dashicons-wu-block wu-text-gray-600 wu-px-1 wu-pr-3'>&nbsp;</span>
+				echo "<span class='dashicons dashicons-wu-block wu-text-gray-600 wu-px-1 wu-pr-3'>&nbsp;</span>
 									<div class=''>
 										<span class='wu-block wu-py-3 wu-text-gray-600 wu-text-2xs wu-font-bold wu-uppercase'>{$not_found}</span>
 									</div>";
@@ -221,13 +221,20 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 
 				$email = $customer->get_email_address();
 
-				$html .= "<a href='{$customer_link}' class='wu-p-1 wu-flex wu-flex-grow wu-rounded wu-items-center wu-no-underline'>
-										{$avatar}
-										<div class='wu-pl-2'>
-												<strong class='wu-block'>{$display_name} <small class='wu-font-normal'>(#{$id})</small></strong>
-												<small>{$email}</small>
+				printf(
+					'<a href="%s" class="wu-p-1 wu-flex wu-flex-grow wu-rounded wu-items-center wu-no-underline">
+										%s
+										<div class="wu-pl-2">
+												<strong class="wu-block">%s <small class="wu-font-normal">(#%s)</small></strong>
+												<small>%s</small>
 										</div>
-								</a>";
+								</a>',
+					esc_attr($customer_link),
+					esc_html($display_name),
+					$avatar, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					esc_html($id),
+					esc_html($email)
+				);
 				break;
 			case $targets_count > 1:
 				foreach ($targets as $key => $target) {
@@ -253,7 +260,12 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 
 					$customer_link = wu_network_admin_url('wp-ultimo-edit-customer', $url_atts);
 
-					$html .= "<div class='wu-flex wu--mr-4'><a role='tooltip' aria-label='{$tooltip_name}' href='{$customer_link}'>{$avatar}</a></div>";
+					printf(
+						"<div class='wu-flex wu--mr-4'><a role='tooltip' aria-label='%s' href='%s'>%s</a></div>",
+						esc_attr($tooltip_name),
+						esc_attr($customer_link),
+						$avatar // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					);
 				}
 
 				if ($targets_count < 7) {
@@ -265,14 +277,14 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 						'target_type' => 'customers',
 					];
 
-					$html .= sprintf(
+					printf(
 						'<div class="wu-inline-block wu--mr-4">
 										<a href="%s" title="%s" class="wubox wu-no-underline"><span class="wu-ml-6 wu-uppercase wu-text-xs wu-text-gray-600 wu-font-bold"> %s %s</span></a>
 										</div>',
-						wu_get_form_url('view_broadcast_targets', $modal_atts),
-						__('Targets', 'wp-multisite-waas'),
-						$targets_count,
-						__('Targets', 'wp-multisite-waas')
+						esc_attr(wu_get_form_url('view_broadcast_targets', $modal_atts)),
+						esc_attr__('Targets', 'wp-multisite-waas'),
+						esc_html($targets_count),
+						esc_html__('Targets', 'wp-multisite-waas')
 					);
 				} else {
 					$count = $targets_count - 6;
@@ -285,23 +297,21 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 						'target_type' => 'customers',
 					];
 
-					$html .= sprintf(
+					printf(
 						'<div class="wu-inline-block wu-ml-4">
 									<a href="%s" title="%s" class="wubox wu-no-underline"><span class="wu-pl-2 wu-uppercase wu-text-xs wu-font-bold"> %s %s</span></a>
 									</div>',
-						wu_get_form_url('view_broadcast_targets', $modal_atts),
-						__('Targets', 'wp-multisite-waas'),
-						$targets_count,
-						__('Targets', 'wp-multisite-waas')
+						esc_attr(wu_get_form_url('view_broadcast_targets', $modal_atts)),
+						esc_attr__('Targets', 'wp-multisite-waas'),
+						esc_html($targets_count),
+						esc_html__('Targets', 'wp-multisite-waas')
 					);
 				}
 
 				break;
 		}
 
-		$html .= '</div></li></ul></div>';
-
-		echo $html;
+		echo '</div></li></ul></div>';
 	}
 
 	/**
@@ -448,17 +458,17 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_object() {
 
-		if (isset($_GET['id'])) {
+		if (isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$query = new \WP_Ultimo\Database\Broadcasts\Broadcast_Query();
 
-			$item = $query->get_item_by('id', $_GET['id']);
+			$item = $query->get_item_by('id', (int) $_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			if ( ! $item) {
 				wp_safe_redirect(wu_network_admin_url('wp-ultimo-broadcasts'));
 
 				exit;
 			}
-
+			/** @var Broadcast $item */
 			return $item;
 		}
 

@@ -1680,7 +1680,7 @@ class Checkout {
 		 */
 		$variables['order'] = (new Cart($variables))->done();
 
-		if ( !empty($variables['order']->discount_code)) {
+		if ( ! empty($variables['order']->discount_code)) {
 			$variables['discount_code'] = $variables['order']->discount_code->get_code();
 		}
 

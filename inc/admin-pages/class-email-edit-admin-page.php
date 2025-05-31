@@ -108,7 +108,7 @@ class Email_Edit_Admin_Page extends Edit_Admin_Page {
 
 		parent::register_scripts();
 
-		wp_enqueue_script('wu-email-edit-page', wu_get_asset('email-edit-page.js', 'js'), ['jquery', 'clipboard']);
+		wp_enqueue_script('wu-email-edit-page', wu_get_asset('email-edit-page.js', 'js'), ['jquery', 'clipboard'], \WP_Ultimo::VERSION, true);
 	}
 
 	/**
@@ -509,7 +509,6 @@ class Email_Edit_Admin_Page extends Edit_Admin_Page {
 				</div>
 
 				<?php
-
 			}
 		}
 	}
@@ -522,10 +521,10 @@ class Email_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function get_object() {
 
-		if (isset($_GET['id'])) {
+		if (isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$query = new \WP_Ultimo\Database\Emails\Email_Query();
 
-			$item = $query->get_item_by('id', $_GET['id']);
+			$item = $query->get_item_by('id', (int) $_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			if (! $item) {
 				wp_safe_redirect(wu_network_admin_url('wp-ultimo-emails'));

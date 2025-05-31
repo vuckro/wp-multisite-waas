@@ -101,7 +101,8 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 
 		$payment = wu_mock_payment();
 
-		$invoice = new Invoice($payment, $_REQUEST);
+		check_ajax_referer('wu-preview-invoice', 'wu-preview-nonce');
+		$invoice = new Invoice($payment, $_GET);
 
 		$invoice->print_file();
 
@@ -123,6 +124,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 				'action'            => 'wu-preview-invoice',
 				'customizer'        => 1,
 				'invoice-customize' => 1,
+				'wu-preview-nonce'  => wp_create_nonce('wu-preview-invoice'),
 			],
 			$url
 		);
@@ -353,7 +355,8 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function handle_save(): void {
 
-		Invoice::save_settings($_POST);
+		// Nonce in handeled in the calling method.
+		Invoice::save_settings($_POST); // phpcs:ignore phpcs: WordPress.Security.NonceVerification
 
 		$url = add_query_arg('updated', '1');
 

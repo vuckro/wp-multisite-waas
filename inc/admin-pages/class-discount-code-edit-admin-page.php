@@ -603,7 +603,7 @@ class Discount_Code_Edit_Admin_Page extends Edit_Admin_Page {
 			return $this->object;
 		}
 
-		if (isset($_GET['id'])) {
+		if (isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$item_id = wu_request('id', 0);
 
 			$item = wu_get_discount_code($item_id);

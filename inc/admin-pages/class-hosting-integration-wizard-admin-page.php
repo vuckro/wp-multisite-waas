@@ -74,7 +74,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * Current integration being setup.
 	 *
 	 * @since 2.0.0
-	 * @var WP_Ultimo\Integrations\Host_Providers\Base_Host_Provider
+	 * @var \WP_Ultimo\Integrations\Host_Providers\Base_Host_Provider
 	 */
 	protected $integration;
 
@@ -86,10 +86,10 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function page_loaded(): void {
 
-		if (isset($_GET['integration'])) {
+		if (isset($_GET['integration'])) { // phpcs:ignore WordPress.Security.NonceVerification
 			$domain_manager = \WP_Ultimo\Managers\Domain_Manager::get_instance();
 
-			$this->integration = $domain_manager->get_integration_instance($_GET['integration']);
+			$this->integration = $domain_manager->get_integration_instance(sanitize_text_field(wp_unslash($_GET['integration']))); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		if ( ! $this->integration) {
@@ -240,7 +240,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 					'page'        => $this,
 					'integration' => $this->integration,
 					'form'        => $form,
-					'post'        => $_GET['post'],
+					'post'        => sanitize_text_field(wp_unslash($_GET['post'] ?? '')), // phpcs:ignore WordPress.Security.NonceVerification
 				]
 			);
 
@@ -307,8 +307,8 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function handle_configuration(): void {
 
-		if (wu_request('submit') == '0') { // phpcs:ignore
-
+		check_admin_referer('saving_config', 'saving_config');
+		if ((int) wu_request('submit') === 0) {
 			$redirect_url = add_query_arg(
 				[
 					'manual' => '1',
@@ -321,8 +321,7 @@ class Hosting_Integration_Wizard_Admin_Page extends Wizard_Admin_Page {
 			exit;
 		}
 
-		if (wu_request('submit') == '1') { // phpcs:ignore
-
+		if ((int) wu_request('submit') === 1) {
 			$this->integration->setup_constants($_POST);
 		}
 

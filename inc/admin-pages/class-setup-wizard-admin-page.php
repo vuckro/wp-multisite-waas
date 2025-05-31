@@ -624,8 +624,8 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		} else {
 			return;
 		}
-
-		$settings_to_save = array_intersect_key($_POST, $fields_to_save);
+		// Nonce check handled in calling method.
+		$settings_to_save = array_intersect_key($_POST, $fields_to_save); // phpcs:ignore WordPress.Security.NonceVerification
 
 		\WP_Ultimo\Settings::get_instance()->save_settings($settings_to_save);
 
@@ -643,25 +643,6 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	public function handle_migration(): void {
 		wp_redirect('https://github.com/superdav42/wp-multisite-waas/releases/tag/v2.3.4'); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 		exit;
-	}
-
-	/**
-	 * Handles the configuration of a given integration.
-	 *
-	 * @since 2.0.0
-	 * @return void
-	 */
-	public function handle_configuration(): void {
-
-		if ('1' === $_POST['submit']) {
-			$this->integration->setup_constants($_POST);
-
-			$redirect_url = $this->get_next_section_link();
-
-			wp_safe_redirect($redirect_url);
-
-			exit;
-		}
 	}
 
 	/**
@@ -701,14 +682,14 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			/*
 			* Adds tipTip
 			*/
-			wp_enqueue_script('wu-tiptip', wu_get_asset('lib/tiptip.js', 'js'));
+			wp_enqueue_script('wu-tiptip', wu_get_asset('lib/tiptip.js', 'js'), \WP_Ultimo::VERSION, true);
 
 			/*
 			* Adds jQueryBlockUI
 			*/
-			wp_enqueue_script('wu-block-ui', wu_get_asset('lib/jquery.blockUI.js', 'js'), ['jquery']);
+			wp_enqueue_script('wu-block-ui', wu_get_asset('lib/jquery.blockUI.js', 'js'), ['jquery'], \WP_Ultimo::VERSION, true);
 
-			wp_register_script('wu-fields', wu_get_asset('fields.js', 'js'), ['jquery']);
+			wp_register_script('wu-fields', wu_get_asset('fields.js', 'js'), ['jquery'], \WP_Ultimo::VERSION, true);
 
 			/*
 			* Localize components
@@ -724,9 +705,9 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				]
 			);
 
-			wp_register_script('wu-functions', wu_get_asset('functions.js', 'js'), ['jquery']);
+			wp_register_script('wu-functions', wu_get_asset('functions.js', 'js'), ['jquery'], \WP_Ultimo::VERSION, true);
 
-			wp_register_script('wubox', wu_get_asset('wubox.js', 'js'), ['wu-functions']);
+			wp_register_script('wubox', wu_get_asset('wubox.js', 'js'), ['wu-functions'], \WP_Ultimo::VERSION, true);
 
 			wp_localize_script(
 				'wubox',

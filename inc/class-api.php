@@ -343,7 +343,7 @@ class API {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_REST_Request $request The request sent.
+	 * @param \WP_REST_Request $request The request sent.
 	 */
 	public function maybe_log_api_call($request): void {
 

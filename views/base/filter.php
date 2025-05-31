@@ -17,13 +17,13 @@
 		<?php foreach ($views as $view_slug => $view) : ?>
 
 			<li
-				class="<?php echo wu_request($view['field'], 'all') == $view_slug ? esc_attr('current') : ''; ?>"
+				class="<?php echo wu_request($view['field'], 'all') === $view_slug ? esc_attr('current') : ''; ?>"
 				:class="view && view === '<?php echo esc_attr($view_slug); ?>' ? 'current wu-font-medium' : ''"
 			>
 				<a
 					v-on:click.prevent="set_view('<?php echo esc_attr($view['field']); ?>', '<?php echo esc_attr($view_slug); ?>')"
 					href="<?php echo esc_attr($view['url']); ?>"
-					class="<?php echo wu_request($view['field'], 'all') == $view_slug ? esc_attr('current wu-font-medium') : ''; ?>"
+					class="<?php echo wu_request($view['field'], 'all') === $view_slug ? esc_attr('current wu-font-medium') : ''; ?>"
 					:class="view && view === '<?php echo esc_attr($view_slug); ?>' ? 'current wu-font-medium' : ''"
 				>
 
@@ -75,7 +75,7 @@
 
 			<input
 				name='s' id="s"
-				value="<?php echo esc_attr($_REQUEST['s'] ?? ''); ?>"
+				value="<?php echo esc_attr(sanitize_text_field(wp_unslash($_REQUEST['s'] ?? ''))); // phpcs:ignore WordPress.Security.NonceVerification ?>"
 				placeholder="<?php echo esc_attr($search_label); ?>"
 				type="search"
 				aria-describedby="live-search-desc"

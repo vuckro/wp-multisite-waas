@@ -90,7 +90,7 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
 		parent::register_scripts();
 
-		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), ['jquery', 'wu-sweet-alert']);
+		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), ['jquery', 'wu-sweet-alert'], \WP_Ultimo::VERSION, true);
 
 		wp_localize_script(
 			'wu-webhook-page',
@@ -388,7 +388,8 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$object = $this->get_object();
 
-		$object->attributes($_POST);
+		// Nonce checked in calling method.
+		$object->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if (is_wp_error($object->save())) {
 			$errors = implode('<br>', $object->save()->get_error_messages());

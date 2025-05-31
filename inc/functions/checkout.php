@@ -215,11 +215,9 @@ function wu_multiple_memberships_enabled() {
  * @param string $duration_unit Unit: day, month, or year.
  * @param int    $duration Cycle duration.
  *
- * @return int
+ * @return float
  */
 function wu_get_days_in_cycle($duration_unit, $duration) {
-
-	$days_in_cycle = 0;
 
 	switch ($duration_unit) {
 		case 'day':
@@ -235,7 +233,7 @@ function wu_get_days_in_cycle($duration_unit, $duration) {
 			$days_in_cycle = $duration * 365.25;
 			break;
 		default:
-			$days_in_cycle = $days_in_cycle;
+			$days_in_cycle = 0;
 			break;
 	}
 

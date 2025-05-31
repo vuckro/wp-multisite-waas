@@ -1304,11 +1304,11 @@ class Checkout_Form extends Base_Model {
 			$should_use_period_selector = false;
 
 			/**
-			 * Lets see if we need a period selector
-			 * and witch selectors we need
+			 * Let's see if we need a period selector
+			 * and which selectors we need
 			 */
 			foreach ($products as $product) {
-				$days_in_cycle = wu_get_days_in_cycle($product->get_duration_unit(), $product->get_duration());
+				$days_in_cycle = (int) wu_get_days_in_cycle($product->get_duration_unit(), $product->get_duration());
 
 				$label = sprintf(
 					// translators: %1$s the duration, and %2$s the duration unit (day, week, month, etc)
@@ -1339,7 +1339,7 @@ class Checkout_Form extends Base_Model {
 					/**
 					 * Get variations for selector
 					 */
-					$days_in_cycle = wu_get_days_in_cycle($variation['duration_unit'], $variation['duration']);
+					$days_in_cycle = (int) wu_get_days_in_cycle($variation['duration_unit'], $variation['duration']);
 
 					$label = sprintf(
 						// translators: %1$s the duration, and %2$s the duration unit (day, week, month, etc)

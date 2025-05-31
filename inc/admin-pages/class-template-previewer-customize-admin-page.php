@@ -300,7 +300,8 @@ class Template_Previewer_Customize_Admin_Page extends Customizer_Admin_Page {
 	 */
 	public function handle_save(): void {
 
-		$settings = Template_Previewer::get_instance()->save_settings($_POST);
+		// Nonce checked in calling method.
+		$settings = Template_Previewer::get_instance()->save_settings($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$array_params = [
 			'updated' => 1,

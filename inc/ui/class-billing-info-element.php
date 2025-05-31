@@ -397,10 +397,11 @@ class Billing_Info_Element extends Base_Element {
 		if (is_wp_error($saved)) {
 			wp_send_json_error($saved);
 		}
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', (int) $saved, $_SERVER['HTTP_REFERER']),
+				'redirect_url' => add_query_arg('updated', (int) $saved, $referer),
 			]
 		);
 	}

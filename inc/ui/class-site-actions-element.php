@@ -722,10 +722,11 @@ class Site_Actions_Element extends Base_Element {
 		wp_set_auth_cookie($user->ID);
 		wp_set_current_user($user->ID);
 		do_action('wp_login', $user->user_login, $user); // PHPCS:ignore WordPress.NamingConventions
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[
-				'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+				'redirect_url' => add_query_arg('updated', 1, $referer),
 			]
 		);
 	}
@@ -804,10 +805,11 @@ class Site_Actions_Element extends Base_Element {
 
 		if ($new_primary_site) {
 			update_user_meta(get_current_user_id(), 'primary_blog', $new_primary_site);
+			$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 			wp_send_json_success(
 				[
-					'redirect_url' => add_query_arg('updated', 1, $_SERVER['HTTP_REFERER']), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+					'redirect_url' => add_query_arg('updated', 1, $referer),
 				]
 			);
 		}

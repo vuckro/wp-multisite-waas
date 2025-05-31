@@ -117,7 +117,7 @@ class Register_Endpoint {
 			return $validation_errors;
 		}
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		try {
 			$customer = $this->maybe_create_customer($params);
@@ -299,12 +299,12 @@ class Register_Endpoint {
 				$payment->save();
 			}
 		} catch (\Throwable $e) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 			return new \WP_Error('registration_error', $e->getMessage(), ['status' => 500]);
 		}
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		/*
 		 * We have everything we need now.
@@ -709,7 +709,7 @@ class Register_Endpoint {
 
 		global $wpdb;
 
-		$wpdb->query('ROLLBACK');
+		$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		return $error;
 	}

@@ -288,6 +288,7 @@ class Template_Switching_Element extends Base_Element {
 		 * @return void
 		 */
 		do_action('wu_after_switch_template', $this->site->get_id());
+		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		if ($switch) {
 			wp_send_json_success(
@@ -296,7 +297,7 @@ class Template_Switching_Element extends Base_Element {
 						[
 							'updated' => 1,
 						],
-						$_SERVER['HTTP_REFERER']
+						$referer
 					),
 				]
 			);

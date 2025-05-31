@@ -334,7 +334,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 					'web-server'             => [
 						'tooltip' => '',
 						'title'   => 'Web Server',
-						'value'   => $_SERVER['SERVER_SOFTWARE'],
+						'value'   => sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'] ?? '')),
 					],
 					'wordpress-url'          => [
 						'tooltip' => '',
@@ -371,7 +371,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 						'title'   => 'Uploads Directory',
 						'value'   => (defined('UPLOADS') ? UPLOADS : WP_CONTENT_DIR . '/uploads'),
 					],
-					'pluguins-url'           => [
+					'cookie-domain'          => [
 						'tooltip' => '',
 						'title'   => 'Cookie Domain',
 						'value'   => defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN ?: __('Disabled', 'wp-multisite-waas') : __('Not set', 'wp-multisite-waas'),
@@ -399,7 +399,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 					'database-current-time'  => [
 						'tooltip' => '',
 						'title'   => 'Database Current Time',
-						'value'   => gmdate('Y-m-d H:i:s', strtotime((string) $wpdb->get_row('SELECT NOW() as time;')->time)),
+						'value'   => gmdate('Y-m-d H:i:s', strtotime((string) $wpdb->get_row('SELECT NOW() as time;')->time)), // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					],
 					'php-curl-support'       => [
 						'tooltip' => '',
@@ -560,7 +560,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 	public function generate_text_file_system_info(): void {
 
 		$file_name = sprintf("$this->id-%s.txt", gmdate('Y-m-d'));
-		$txt       = fopen($file_name, 'w') or die('Unable to open file!');
+		$txt       = fopen($file_name, 'w') || die('Unable to open file!');
 
 		foreach ($this->get_data() as $type) {
 			foreach ($type as $item) {
@@ -593,7 +593,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 		// http://www.php.net/manual/en/function.get-browser.php#101125.
 		// Cleaned up a bit, but overall it's the same.
 
-		$user_agent   = $_SERVER['HTTP_USER_AGENT'];
+		$user_agent   = sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'] ?? ''));
 		$browser_name = 'Unknown';
 		$platform     = 'Unknown';
 		$version      = '';

@@ -73,17 +73,6 @@ class Shortcodes_Admin_Page extends Base_Admin_Page {
 	];
 
 	/**
-	 * Allow child classes to add further initializations.
-	 *
-	 * @since 1.8.2
-	 * @return void
-	 */
-	public function init(): void {
-
-		parent::init();
-	}
-
-	/**
 	 * Returns the title of the page.
 	 *
 	 * @since 2.0.0

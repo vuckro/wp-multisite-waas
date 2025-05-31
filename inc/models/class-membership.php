@@ -665,7 +665,7 @@ class Membership extends Base_Model {
 	 * @since 2.0.0
 	 *
 	 * @param Cart $order The cart object.
-	 * @return \WP_Ultimo\Models\Membership
+	 * @return \WP_Ultimo\Models\Membership|\WP_Error
 	 */
 	public function swap($order) {
 
@@ -1113,7 +1113,7 @@ class Membership extends Base_Model {
 	 * Set the value of date_renewed.
 	 *
 	 * @since 2.0.0
-	 * @param string $date_renewed Date when the membership was cancelled.
+	 * @param string $date_renewed Date when the membership was renewed.
 	 * @return void
 	 */
 	public function set_date_renewed($date_renewed): void {
@@ -1243,7 +1243,7 @@ class Membership extends Base_Model {
 				$month = gmdate('n', $expire_timestamp);
 
 				if ($month < 12) {
-					$month += 1;
+					++$month;
 
 					$year = gmdate('Y', $expire_timestamp);
 				} else {
@@ -1377,7 +1377,7 @@ class Membership extends Base_Model {
 	 * Set the value of discount_code.
 	 *
 	 * @since 2.0.20
-	 * @param string|WP_Ultimo\Models\Discount_Code $discount_code Discount code object.
+	 * @param string|\WP_Ultimo\Models\Discount_Code $discount_code Discount code object.
 	 * @return void
 	 */
 	public function set_discount_code($discount_code): void {
@@ -1816,7 +1816,7 @@ class Membership extends Base_Model {
 
 		$sites = Site::query(
 			[
-				'meta_query' => [
+				'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'customer_id' => [
 						'key'   => 'wu_membership_id',
 						'value' => $this->get_id(),

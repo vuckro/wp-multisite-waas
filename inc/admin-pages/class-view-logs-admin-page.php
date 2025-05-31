@@ -163,7 +163,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 
 		// Security check
 		if ($file && ! stristr((string) $file, Logger::get_logs_folder())) {
-			wp_die(__('You can see files that are not WP Multisite WaaS\'s logs', 'wp-multisite-waas'));
+			wp_die(esc_html__('You can see files that are not WP Multisite WaaS\'s logs', 'wp-multisite-waas'));
 		}
 
 		if ( ! $file && ! empty($logs_list)) {
@@ -347,7 +347,7 @@ class View_Logs_Admin_Page extends Edit_Admin_Page {
 
 			exit;
 		} elseif ('delete' === $action) {
-			$status = unlink($file);
+			$status = wp_delete_file($file);
 
 			if ( ! $status) {
 				WP_Ultimo()->notices->add(__('We were unable to delete file', 'wp-multisite-waas'), 'error', 'network-admin');

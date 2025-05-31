@@ -564,16 +564,16 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @return void
 	 */
 	public function handle_save(): void {
-
-		$_POST['footer_text'] = stripslashes((string) $_POST['footer_text']);
-
-		$_POST['footer_text'] = sanitize_text_field($_POST['footer_text']);
+		// Calling method performs the nonce check.
+		if ( ! empty($_POST['footer_text'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$_POST['footer_text'] = sanitize_text_field(wp_unslash((string) $_POST['footer_text'])); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		}
 
 		$_POST['use_custom_logo'] = wu_request('use_custom_logo');
 
 		$_POST['display_company_address'] = wu_request('display_company_address');
 
-		$this->save_settings($_POST);
+		$this->save_settings($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$url = add_query_arg('updated', '1');
 
@@ -645,7 +645,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	 * @param string $default In case there's no option.
 	 * @return string With the requested setting.
 	 */
-	public function get_setting($setting, $default = false) {
+	public function get_setting($setting, $default_value = false) {
 
 		if ($setting) {
 			$return = wu_get_option('email_template', []);
@@ -653,7 +653,7 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 			if ($return && isset($return[ $setting ])) {
 				$return = $return[ $setting ];
 			} else {
-				$return = $default;
+				$return = $default_value;
 			}
 
 			return $return;

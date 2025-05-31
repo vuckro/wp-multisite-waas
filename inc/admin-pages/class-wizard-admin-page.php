@@ -76,7 +76,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function page_loaded(): void {
+	public function page_loaded() {
 		/*
 		 * Load sections to memory.
 		 */
@@ -99,7 +99,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	final public function process_save(): void {
+	final public function process_save() {
 
 		$saving_tag = sprintf('saving_%s', $this->get_current_section());
 
@@ -144,7 +144,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function register_widgets(): void {
+	public function register_widgets() {
 
 		$screen = get_current_screen();
 
@@ -161,7 +161,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output_default_widget_body(): void {
+	public function output_default_widget_body() {
 
 		echo '<div class="wu-p-4">';
 
@@ -192,7 +192,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function output(): void {
+	public function output() {
 		/*
 		 * Renders the base edit page layout, with the columns and everything else =)
 		 */
@@ -239,7 +239,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 
 		$sections = array_filter($sections, fn($item) => wu_get_isset($item, 'addon') === false);
 
-		$current_section = isset($_GET[ $this->section_slug ]) ? sanitize_key($_GET[ $this->section_slug ]) : current(array_keys($sections));
+		$current_section = isset($_GET[ $this->section_slug ]) ? sanitize_key($_GET[ $this->section_slug ]) : current(array_keys($sections)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		return $current_section;
 	}
@@ -297,7 +297,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function default_handler(): void {
+	public function default_handler() {
 
 		wp_safe_redirect($this->get_next_section_link());
 
@@ -310,7 +310,7 @@ abstract class Wizard_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function default_view(): void {
+	public function default_view() {
 
 		$section = wp_parse_args(
 			$this->current_section,

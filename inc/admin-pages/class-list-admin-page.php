@@ -230,5 +230,5 @@ abstract class List_Admin_Page extends Base_Admin_Page {
 	 * @since 2.0.0
 	 * @return \WP_Ultimo\List_Tables\Base_List_Table
 	 */
-	abstract function table();
+	abstract public function table();
 }

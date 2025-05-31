@@ -212,7 +212,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 			);
 
 			if ($index < $count - 1) {
-				$content .= sprintf('<hr class="sm:wu-bg-transparent wu-hr-text wu-font-semibold wu-my-4 wu-mt-6 wu-text-gray-600 wu-text-sm" data-content="%s">', __('Step Separator', 'wp-multisite-waas'));
+				$content .= sprintf('<hr class="sm:wu-bg-transparent wu-hr-text wu-font-semibold wu-my-4 wu-mt-6 wu-text-gray-600 wu-text-sm" data-content="%s">', esc_attr__('Step Separator', 'wp-multisite-waas'));
 			}
 		}
 
@@ -224,7 +224,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 
 		echo '<div class="wu-p-6">';
 
-		echo $content;
+		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		wp_print_footer_scripts();
 
@@ -1526,7 +1526,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in parent::handle_save()
 		if (isset($_POST['_settings'])) {
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- We're using json_decode which handles sanitization
-			$_POST['settings'] = json_decode(wp_unslash((string) $_POST['_settings']), true);
+			$_POST['settings'] = json_decode(wp_unslash((string) $_POST['_settings']), true); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		}
 
 		/**

@@ -258,7 +258,7 @@ abstract class Base_Admin_Page {
 
 		global $plugin_page;
 
-		if ($this->highlight_menu_slug && isset($_GET['page']) && $this->get_id() === $_GET['page']) {
+		if ($this->highlight_menu_slug && isset($_GET['page']) && $this->get_id() === $_GET['page']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$plugin_page = $this->highlight_menu_slug;
 
 			$file = $this->highlight_menu_slug;
