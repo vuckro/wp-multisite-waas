@@ -12,6 +12,7 @@ namespace WP_Ultimo\Admin_Pages;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
+use WP_Ultimo\Installers\Migrator;
 use WP_Ultimo\Installers\Core_Installer;
 use WP_Ultimo\Installers\Default_Content_Installer;
 use WP_Ultimo\Logger;
@@ -123,6 +124,8 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		parent::__construct();
 
+		add_action('admin_action_download_migration_logs', [$this, 'download_migration_logs']);
+
 		/*
 		 * Serve the installers
 		 */
@@ -133,11 +136,39 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		 */
 		add_action('wu_handle_ajax_installers', [Core_Installer::get_instance(), 'handle'], 10, 3);
 		add_action('wu_handle_ajax_installers', [Default_Content_Installer::get_instance(), 'handle'], 10, 3);
+		add_action('wu_handle_ajax_installers', [Migrator::get_instance(), 'handle'], 10, 3);
 
 		/*
 		 * Redirect on activation
 		 */
 		add_action('wu_activation', [$this, 'redirect_to_wizard']);
+	}
+
+	/**
+	 * Download the migration logs.
+	 *
+	 * @since 2.0.7
+	 * @return void
+	 */
+	public function download_migration_logs(): void {
+
+		check_admin_referer('download_migration_logs', 'nonce');
+
+		$path = Logger::get_logs_folder();
+
+		$file = $path . Migrator::LOG_FILE_NAME . '.log';
+
+		$file_name = str_replace($path, '', $file);
+
+		header('Content-Type: application/octet-stream');
+
+		header("Content-Disposition: attachment; filename=$file_name");
+
+		header('Pragma: no-cache');
+
+		readfile($file);
+
+		exit;
 	}
 
 	/**
@@ -162,23 +193,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	public function is_migration() {
 
 		if (null === $this->is_migration) {
-			$plans = get_posts(
-				[
-					'post_type'   => 'wpultimo_plan',
-					'numberposts' => 1,
-				]
-			);
-
-			if (empty($plans)) {
-				/*
-				 * For all intents and purposes, a fresh install
-				 * can be considered as "migrated", as there is nothing
-				 * to migrate.
-				 */
-				$this->is_migration = true;
-			} else {
-				$this->is_migration = get_network_option(null, 'wu_is_migration_done', false);
-			}
+			$this->is_migration = Migrator::is_legacy_network();
 		}
 
 		return $this->is_migration;
@@ -341,15 +356,109 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 		 * In case of migrations, add different sections.
 		 */
 		if ($this->is_migration()) {
+			$dry_run = wu_request('dry-run', true);
+
+			$next = true;
+
+			$errors = Migrator::get_instance()->get_errors();
+
+			$back_traces = Migrator::get_instance()->get_back_traces();
+
+			$next_label = __('Migrate!', 'wp-multisite-waas');
+
+			$description = __('No errors found during dry run! Now it is time to actually migrate! <br><br><strong>We strongly recommend creating a backup of your database before moving forward with the migration.</strong>', 'wp-multisite-waas');
+
+			if ($dry_run) {
+				$next_label = __('Run Check', 'wp-multisite-waas');
+
+				$description = __('It seems that you were running WP Multisite WaaS 1.X on this network. This migrator will convert the data from the old version to the new one.', 'wp-multisite-waas') . '<br><br>' . __('First, let\'s run a test migration to see if we can spot any potential errors.', 'wp-multisite-waas');
+			}
+
+			$fields = [
+				'migration' => [
+					'type' => 'note',
+					'desc' => fn() => $this->render_installation_steps(Migrator::get_instance()->get_steps(), false),
+				],
+			];
+
+			if ($errors) {
+				$subject = 'Errors on migrating my network';
+
+				$user = wp_get_current_user();
+
+				$message_lines = [
+					'Hi there,',
+					sprintf('My name is %s.', $user->display_name),
+					'I tried to migrate my network from version 1 to version 2, but was not able to do it successfully...',
+					'Here are the error messages I got:',
+					sprintf('```%s%s%s```', PHP_EOL, implode(PHP_EOL, $errors), PHP_EOL),
+					sprintf('```%s%s%s```', PHP_EOL, $back_traces ? implode(PHP_EOL, $back_traces) : 'No backtraces found.', PHP_EOL),
+					'Kind regards.',
+				];
+
+				$message = implode(PHP_EOL . PHP_EOL, $message_lines);
+
+				$description = __('The dry run test detected issues during the test migration. Please, <a class="wu-trigger-support" href="#">contact our support team</a> to get help migrating from 1.X to version 2.', 'wp-multisite-waas');
+
+				$next = true;
+
+				$next_label = __('Try Again!', 'wp-multisite-waas');
+
+				$error_list = '<strong>' . __('List of errors detected:', 'wp-multisite-waas') . '</strong><br><br>';
+
+				$errors[] = sprintf(
+					'<br><a href="%2$s" class="wu-no-underline wu-text-red-500 wu-font-bold"><span class="dashicons-wu-download wu-mr-2"></span>%1$s</a>',
+					__('Download migration error log', 'wp-multisite-waas'),
+					add_query_arg(
+						[
+							'action' => 'download_migration_logs',
+							'nonce'  => wp_create_nonce('download_migration_logs'),
+						],
+						network_admin_url('admin.php')
+					)
+				);
+
+				$errors[] = sprintf(
+					'<br><a href="%2$s" class="wu-no-underline wu-text-red-500 wu-font-bold"><span class="dashicons-wu-back-in-time wu-mr-2"></span>%1$s</a>',
+					__('Rollback to version 1.10.13', 'wp-multisite-waas'),
+					add_query_arg(
+						[
+							'page'    => 'wp-ultimo-rollback',
+							'version' => '1.10.13',
+							'type'    => 'select-version',
+						],
+						network_admin_url('admin.php')
+					)
+				);
+
+				$error_list .= implode('<br>', $errors);
+
+				$fields = array_merge(
+					[
+						'errors' => [
+							'type'    => 'note',
+							'classes' => 'wu-flex-grow',
+							'desc'    => function () use ($error_list) {
+
+								/** Reset errors */
+								Migrator::get_instance()->session->set('errors', []);
+
+								return sprintf('<div class="wu-mt-0 wu-p-4 wu-bg-red-100 wu-border wu-border-solid wu-border-red-200 wu-rounded-sm wu-text-red-500">%s</div>', $error_list);
+							},
+						],
+					],
+					$fields
+				);
+			}
+
 			$sections['migration'] = [
 				'title'       => __('Migration', 'wp-multisite-waas'),
-				'description' => __('It seems that you were running WP Ultimo 1.X on this network. The migration feature is not included with WP Multisite WaaS since version 2.4.0.', 'wp-multisite-waas') . '<br><br>' .
-								__('Install WP Multisite WaaS version 2.3.4 to run the migration.', 'wp-multisite-waas'),
-				'next_label'  => __('Ok, Download version 2.3.4', 'wp-multisite-waas'),
-				'skip_label'  => __('Skip Migration', 'wp-multisite-waas'),
-				'skip'        => true,
-				'next'        => true,
+				'description' => $description,
+				'next_label'  => $next_label,
+				'skip'        => false,
+				'next'        => $next,
 				'handler'     => [$this, 'handle_migration'],
+				'fields'      => $fields,
 			];
 		} else {
 			$sections['your-company'] = [
@@ -569,6 +678,15 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 
 		update_network_option(null, 'wu_setup_finished', true);
 
+		/**
+		 * Mark the migration as done, if this was a migration.
+		 *
+		 * @since 2.0.7
+		 */
+		if (Migrator::is_legacy_network()) {
+			update_network_option(null, 'wu_is_migration_done', true);
+		}
+
 		wu_enqueue_async_action(
 			'wu_async_take_screenshot',
 			[
@@ -641,7 +759,21 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 * @return void
 	 */
 	public function handle_migration(): void {
-		wp_redirect('https://github.com/superdav42/wp-multisite-waas/releases/tag/v2.3.4'); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+
+		$dry_run = wu_request('dry-run', true);
+
+		$errors = Migrator::get_instance()->get_errors();
+
+		if ($dry_run) {
+			$url = add_query_arg('dry-run', empty($errors) ? 0 : 1);
+		} elseif (empty($errors)) {
+				$url = remove_query_arg('dry-run', $this->get_next_section_link());
+		} else {
+			$url = add_query_arg('dry-run', 0);
+		}
+
+		wp_safe_redirect($url);
+
 		exit;
 	}
 
