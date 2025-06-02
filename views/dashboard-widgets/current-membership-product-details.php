@@ -6,13 +6,13 @@
  */
 ?>
 
-<div class="<?php echo "wu-product-{$product->get_id()}-head"; ?> wu-bg-gray-100 wu-p-4 wu-flex wu-items-center">
+<div class="<?php echo esc_attr("wu-product-{$product->get_id()}-head"); ?> wu-bg-gray-100 wu-p-4 wu-flex wu-items-center">
 
 	<div>
 
-	<span class="wu-text-xl wu-font-medium wu-block"><?php echo $product->get_name(); ?></span>
+	<span class="wu-text-xl wu-font-medium wu-block"><?php echo esc_html($product->get_name()); ?></span>
 
-	<small class="wu-text-gray-600 wu-text-sm wu-block wu-mt-2"><?php echo $product->get_price_description(); ?></small>
+	<small class="wu-text-gray-600 wu-text-sm wu-block wu-mt-2"><?php echo esc_html($product->get_price_description()); ?></small>
 
 	</div>
 
@@ -32,7 +32,7 @@
 
 </div>
 
-<div class="<?php echo "wu-product-{$product->get_id()}-description"; ?> wu-p-4 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b wu-border-gray-300 wu-border-solid">
+<div class="<?php echo esc_attr("wu-product-{$product->get_id()}-description"); ?> wu-p-4 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b wu-border-gray-300 wu-border-solid">
 
 	<?php if ($product->get_description()) : ?>
 
@@ -42,7 +42,7 @@
 
 	</span>
 
-	<p class="wu-mb-6"><?php echo $product->get_description(); ?></p>
+	<p class="wu-mb-6"><?php echo wp_kses_post($product->get_description()); ?></p>
 
 	<?php endif; ?>
 
@@ -56,7 +56,7 @@
 
 	<?php foreach ($product->get_pricing_table_lines() as $key => $line) : ?>
 
-		<li class="<?php echo str_replace('_', '-', $key); ?>"><?php echo $line; ?></li>
+		<li class="<?php echo esc_attr(str_replace('_', '-', $key)); ?>"><?php echo $line; ?></li>
 
 	<?php endforeach; ?>
 
