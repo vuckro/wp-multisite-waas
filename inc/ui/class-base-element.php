@@ -1207,7 +1207,7 @@ abstract class Base_Element {
 			?>
 				<div class="wu-styling">
 						<div class="wu-widget-inset">
-							<div class="wubox wu-no-underline wu-p-4 wu-bg-gray-200 wu-block wu-mt-4 wu-text-center wu-text-sm wu-text-gray-600 wu-m-auto wu-border-solid wu-border-0 wu-border-t wu-border-gray-400">
+							<div class="wu-no-underline wu-p-4 wu-bg-gray-200 wu-block wu-mt-4 wu-text-center wu-text-sm wu-text-gray-600 wu-m-auto wu-border-solid wu-border-0 wu-border-t wu-border-gray-400">
 								<a class="wubox wu-no-underline" title="Customize" href="<?php echo esc_attr(wu_get_form_url("shortcode_{$this->id}")); ?>">
 									<?php esc_html_e('Customize this element', 'wp-multisite-waas'); ?>
 								</a>
