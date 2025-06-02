@@ -24,7 +24,7 @@
 
 		<div class="wu-ml-auto">
 
-		<a title="<?php esc_html_e('Add Domain', 'wp-multisite-waas'); ?>" href="<?php echo $modal['url']; ?>" class="wu-text-sm wu-no-underline wubox button">
+		<a title="<?php esc_html_e('Add Domain', 'wp-multisite-waas'); ?>" href="<?php echo esc_attr($modal['url']); ?>" class="wu-text-sm wu-no-underline wubox button">
 
 			<?php esc_html_e('Add Domain', 'wp-multisite-waas'); ?>
 
@@ -84,7 +84,7 @@
 							'url'             => $domain['delete_link'],
 						];
 
-						echo wu_responsive_table_row(
+						echo wu_responsive_table_row( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							[
 								'id'     => false,
 								'title'  => strtolower($item->get_domain()),
@@ -119,7 +119,7 @@
 			<?php else : ?>
 
 			<div class="wu-text-center wu-bg-gray-100 wu-rounded wu-uppercase wu-font-semibold wu-text-xs wu-text-gray-700 wu-p-4 wu-m-4 wu-mt-6">
-				<span><?php echo __('No domains added.', 'wp-multisite-waas'); ?></span>
+				<span><?php echo esc_html__('No domains added.', 'wp-multisite-waas'); ?></span>
 			</div>
 
 			<?php endif; ?>

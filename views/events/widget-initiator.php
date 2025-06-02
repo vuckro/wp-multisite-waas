@@ -36,7 +36,7 @@
 
 			?>
 
-			<span role="tooltip" aria-label="<?php echo esc_attr($object->get_initiator().' - '.$object->get_severity_label()); ?>" class="wu-absolute wu-rounded-full wu--mb-2 wu--mr-2 wu-flex wu-items-center wu-justify-center wu-font-mono wu-bottom-0 wu-right-0 wu-font-bold wu-h-3 wu-w-3 wu-uppercase wu-text-2xs wu-p-1 wu-border-solid wu-border-2 wu-border-white <?php echo esc_attr($object->get_severity_class()); ?>">
+			<span role="tooltip" aria-label="<?php echo esc_attr($object->get_initiator() . ' - ' . $object->get_severity_label()); ?>" class="wu-absolute wu-rounded-full wu--mb-2 wu--mr-2 wu-flex wu-items-center wu-justify-center wu-font-mono wu-bottom-0 wu-right-0 wu-font-bold wu-h-3 wu-w-3 wu-uppercase wu-text-2xs wu-p-1 wu-border-solid wu-border-2 wu-border-white <?php echo esc_attr($object->get_severity_class()); ?>">
 
 				<?php echo esc_html(substr($object->get_severity_label(), 0, 1)); ?>
 
@@ -62,7 +62,7 @@
 
 				<span class="dashicons-wu-tools wu-text-gray-700 wu-text-xl"></span>
 
-				<span role="tooltip" aria-label="<?php echo esc_attr($object->get_initiator().' - '.$object->get_severity_label()); ?>" class="wu-absolute wu-rounded-full wu--mb-2 wu--mr-2 wu-flex wu-items-center wu-justify-center wu-font-mono wu-bottom-0 wu-right-0 wu-font-bold wu-h-3 wu-w-3 wu-uppercase wu-text-2xs wu-p-1 wu-border-solid wu-border-2 wu-border-white <?php echo esc_attr($object->get_severity_class()); ?>">
+				<span role="tooltip" aria-label="<?php echo esc_attr($object->get_initiator() . ' - ' . $object->get_severity_label()); ?>" class="wu-absolute wu-rounded-full wu--mb-2 wu--mr-2 wu-flex wu-items-center wu-justify-center wu-font-mono wu-bottom-0 wu-right-0 wu-font-bold wu-h-3 wu-w-3 wu-uppercase wu-text-2xs wu-p-1 wu-border-solid wu-border-2 wu-border-white <?php echo esc_attr($object->get_severity_class()); ?>">
 
 				<?php echo esc_html(substr($object->get_severity_label(), 0, 1)); ?>
 

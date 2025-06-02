@@ -52,7 +52,7 @@ class Webhook_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Webhook $item Webhook object.
+	 * @param \WP_Ultimo\Models\Webhook $item Webhook object.
 	 */
 	public function column_name($item): string {
 
@@ -92,7 +92,7 @@ class Webhook_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Webhook $item Webhook object.
+	 * @param \WP_Ultimo\Models\Webhook $item Webhook object.
 	 * @return string
 	 */
 	public function column_webhook_url($item) {
@@ -107,7 +107,7 @@ class Webhook_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Webhook $item Webhook object.
+	 * @param \WP_Ultimo\Models\Webhook $item Webhook object.
 	 * @return string
 	 */
 	public function column_event($item) {
@@ -122,7 +122,7 @@ class Webhook_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Webhook $item Webhook object.
+	 * @param \WP_Ultimo\Models\Webhook $item Webhook object.
 	 */
 	public function column_count($item): string {
 
@@ -140,7 +140,7 @@ class Webhook_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Webhook $item Webhook object.
+	 * @param \WP_Ultimo\Models\Webhook $item Webhook object.
 	 */
 	public function column_integration($item): string {
 
@@ -152,7 +152,7 @@ class Webhook_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Webhook $item Webhook object.
+	 * @param \WP_Ultimo\Models\Webhook $item Webhook object.
 	 * @return string
 	 */
 	public function column_active($item) {

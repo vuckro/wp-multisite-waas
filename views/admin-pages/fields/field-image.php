@@ -64,7 +64,7 @@ $content_wrapper_classes = $field->content_wrapper_classes
 
 	</div>
 
-	<div class="<?php echo $content_wrapper_classes; ?>">
+	<div class="<?php echo esc_attr($content_wrapper_classes); ?>">
 	  
 		<div class="wu-wrapper-image-field wu-w-full wu-overflow-hidden">
 

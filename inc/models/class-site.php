@@ -1506,7 +1506,7 @@ class Site extends Base_Model implements Limitable {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return bool
+	 * @return bool|\WP_Error
 	 */
 	public function save() {
 		/*

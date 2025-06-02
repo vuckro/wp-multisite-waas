@@ -174,7 +174,7 @@ class Event_Manager extends Base_Manager {
 			];
 		}
 
-		if ( ! empty($_POST) && is_user_logged_in()) {
+		if ( ! empty($_POST) && is_user_logged_in()) { // phpcs:ignore WordPress.Security.NonceVerification
 			$event_data['initiator'] = 'manual';
 			$event_data['author_id'] = get_current_user_id();
 		}

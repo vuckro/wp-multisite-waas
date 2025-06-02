@@ -871,7 +871,7 @@ class PayPal_Gateway extends Base_Gateway {
 			if (empty($membership) || empty($customer)) {
 				$error = new \WP_Error('no-membership', esc_html__('Missing membership or customer data.', 'wp-multisite-waas'));
 
-				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput;
 			}
 
 			if ($should_auto_renew && $is_recurring) {
@@ -899,12 +899,13 @@ class PayPal_Gateway extends Base_Gateway {
 	 * Process webhooks
 	 *
 	 * @since 2.0.0
+	 * @throws \Exception
 	 */
 	public function process_webhooks(): bool {
 
 		wu_log_add('paypal', 'Receiving PayPal IPN webhook...');
 
-		$posted = apply_filters('wu_ipn_post', $_POST);
+		$posted = apply_filters('wu_ipn_post', $_POST); // phpcs:ignore WordPress.Security.NonceVerification
 
 		$payment    = false;
 		$customer   = false;
@@ -923,7 +924,7 @@ class PayPal_Gateway extends Base_Gateway {
 		}
 
 		if (empty($membership)) {
-			throw new \Exception(__('Exiting PayPal Express IPN - membership ID not found.', 'wp-multisite-waas'));
+			throw new \Exception(esc_html__('Exiting PayPal Express IPN - membership ID not found.', 'wp-multisite-waas'));
 		}
 
 		wu_log_add('paypal', sprintf('Processing IPN for membership #%d.', $membership->get_id()));
@@ -1253,7 +1254,7 @@ class PayPal_Gateway extends Base_Gateway {
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-			wp_die($request);
+			wp_die($request); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		if (200 === absint($code) && 'OK' === $message) {
@@ -1266,9 +1267,7 @@ class PayPal_Gateway extends Base_Gateway {
 			}
 
 			if ('failure' === strtolower((string) $body['ACK'])) {
-				$error = new \WP_Error($body['L_ERRORCODE0'], $body['L_LONGMESSAGE0']);
-
-				wp_die($error);
+				wp_die(new \WP_Error($body['L_ERRORCODE0'], esc_html($body['L_LONGMESSAGE0']))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			} else {
 				/*
 				 * We were successful, let's update
@@ -1430,7 +1429,7 @@ class PayPal_Gateway extends Base_Gateway {
 		$message = wp_remote_retrieve_response_message($request);
 
 		if (is_wp_error($request)) {
-			wp_die($request);
+			wp_die($request); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		if (200 === absint($code) && 'OK' === $message) {
@@ -1439,9 +1438,9 @@ class PayPal_Gateway extends Base_Gateway {
 			}
 
 			if ('failure' === strtolower((string) $body['ACK'])) {
-				$error = new \WP_Error($body['L_ERRORCODE0'], $body['L_LONGMESSAGE0']);
+				$error = new \WP_Error($body['L_ERRORCODE0'], esc_html($body['L_LONGMESSAGE0']));
 
-				wp_die($error);
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			} else {
 				/*
 					* We were successful, let's update
@@ -1502,14 +1501,14 @@ class PayPal_Gateway extends Base_Gateway {
 				$this->payment = $payment;
 				$redirect_url  = $this->get_return_url();
 
-				wp_redirect($redirect_url);
+				wp_safe_redirect($redirect_url);
 
 				exit;
 			}
 		} else {
 			wp_die(
-				__('Something has gone wrong, please try again', 'wp-multisite-waas'),
-				__('Error', 'wp-multisite-waas'),
+				esc_html__('Something has gone wrong, please try again', 'wp-multisite-waas'),
+				esc_html__('Error', 'wp-multisite-waas'),
 				[
 					'back_link' => true,
 					'response'  => '401',

@@ -1528,7 +1528,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 * @since 2.0.0
 	 *
 	 * @param  \Stripe\PaymentIntent $payment_intent The payment intent.
-	 * @param  \Stripe\Customer       $s_customer The stripe customer.
+	 * @param  \Stripe\Customer      $s_customer The stripe customer.
 	 * @return \Stripe\PaymentMethod
 	 */
 	protected function save_payment_method($payment_intent, $s_customer) {
@@ -1876,10 +1876,10 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 */
 	protected function get_localized_error_message($error_code, $error_message = '') {
 
-        // TODO: Fetch a translated message from an error_code => error_message map.
+		// TODO: Fetch a translated message from an error_code => error_message map.
 
-        // translators: 1 is the error code and 2 the message.
-        return sprintf(__('An error has occurred (code: %1$s; message: %2$s).', 'wp-multisite-waas'), $error_code, $error_message);
+		// translators: 1 is the error code and 2 the message.
+		return sprintf(__('An error has occurred (code: %1$s; message: %2$s).', 'wp-multisite-waas'), $error_code, $error_message);
 	}
 
 	/**
@@ -2763,7 +2763,7 @@ class Base_Stripe_Gateway extends Base_Gateway {
 	 * @param string $tax_behavior  Tax behavior.
 	 * @return string|\WP_Error Price ID on success or WP_Error on failure.
 	 */
-	function maybe_create_price($title, $amount, $currency, $quantity = 1, $duration = false, $duration_unit = false, $tax_behavior = '') {
+	public function maybe_create_price($title, $amount, $currency, $quantity = 1, $duration = false, $duration_unit = false, $tax_behavior = '') {
 
 		$name = 1 === $quantity ? $title : "x$quantity $title";
 

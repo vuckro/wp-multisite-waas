@@ -9,7 +9,7 @@
 <?php if (empty($notes)) : ?>
 
 	<?php
-	echo wu_render_empty_state(
+	echo wu_render_empty_state( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		[
 			'message'                  => __('No notes yet.', 'wp-multisite-waas'),
 			'sub_message'              => __('Use the "Add new Note" to create the first one.', 'wp-multisite-waas'),

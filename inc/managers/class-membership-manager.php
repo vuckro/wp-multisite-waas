@@ -12,7 +12,6 @@
 namespace WP_Ultimo\Managers;
 
 use Psr\Log\LogLevel;
-use WP_Ultimo\Managers\Base_Manager;
 use WP_Ultimo\Database\Memberships\Membership_Status;
 
 // Exit if accessed directly
@@ -197,7 +196,7 @@ class Membership_Manager extends Base_Manager {
 
 		$order = $scheduled_swap->order;
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		try {
 			$membership->swap($order);
@@ -205,12 +204,12 @@ class Membership_Manager extends Base_Manager {
 			$status = $membership->save();
 
 			if (is_wp_error($status)) {
-				$wpdb->query('ROLLBACK');
+				$wpdb->query('ROLLBACK');  // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				return new \WP_Error('error', __('An unexpected error happened.', 'wp-multisite-waas'));
 			}
 		} catch (\Throwable $exception) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-multisite-waas'));
 		}
@@ -220,7 +219,7 @@ class Membership_Manager extends Base_Manager {
 		 */
 		$membership->delete_scheduled_swap();
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		return true;
 	}
@@ -262,11 +261,7 @@ class Membership_Manager extends Base_Manager {
 		 */
 		$membership = wu_get_membership($membership_id);
 
-		$status = $membership->publish_pending_site_async();
-
-		if (is_wp_error($status)) {
-			wu_log_add('site-errors', $status, LogLevel::ERROR);
-		}
+		$membership->publish_pending_site_async();
 	}
 
 	/**
@@ -311,7 +306,7 @@ class Membership_Manager extends Base_Manager {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-multisite-waas'));
 		}
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		try {
 			/*
@@ -319,7 +314,7 @@ class Membership_Manager extends Base_Manager {
 			 */
 			$sites = wu_get_sites(
 				[
-					'meta_query' => [
+					'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 						'membership_id' => [
 							'key'   => 'wu_membership_id',
 							'value' => $membership->get_id(),
@@ -334,7 +329,7 @@ class Membership_Manager extends Base_Manager {
 				$saved = $site->save();
 
 				if (is_wp_error($saved)) {
-					$wpdb->query('ROLLBACK');
+					$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 					return $saved;
 				}
@@ -348,17 +343,17 @@ class Membership_Manager extends Base_Manager {
 			$saved = $membership->save();
 
 			if (is_wp_error($saved)) {
-				$wpdb->query('ROLLBACK');
+				$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				return $saved;
 			}
 		} catch (\Throwable $e) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 			return new \WP_Error('exception', $e->getMessage());
 		}
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		$membership->unlock();
 
@@ -383,7 +378,7 @@ class Membership_Manager extends Base_Manager {
 			return new \WP_Error('error', __('An unexpected error happened.', 'wp-multisite-waas'));
 		}
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		try {
 			/*
@@ -391,7 +386,7 @@ class Membership_Manager extends Base_Manager {
 			 */
 			$sites = wu_get_sites(
 				[
-					'meta_query' => [
+					'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 						'membership_id' => [
 							'key'   => 'wu_membership_id',
 							'value' => $membership->get_id(),
@@ -404,7 +399,7 @@ class Membership_Manager extends Base_Manager {
 				$saved = $site->delete();
 
 				if (is_wp_error($saved)) {
-					$wpdb->query('ROLLBACK');
+					$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 					return $saved;
 				}
@@ -416,17 +411,17 @@ class Membership_Manager extends Base_Manager {
 			$saved = $membership->delete();
 
 			if (is_wp_error($saved)) {
-				$wpdb->query('ROLLBACK');
+				$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				return $saved;
 			}
 		} catch (\Throwable $e) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 			return new \WP_Error('exception', $e->getMessage());
 		}
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		return true;
 	}

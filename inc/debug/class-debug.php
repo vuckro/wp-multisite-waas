@@ -13,7 +13,7 @@ use WP_Ultimo\Faker;
 
 // Exit if accessed directly
 defined('ABSPATH') || exit;
-
+// phpcs:disable WordPress.DB.DirectDatabaseQuery
 /**
  * Debugger Tools for developers.
  *
@@ -719,7 +719,7 @@ class Debug {
 			}
 
 			if (false === $result) {
-				throw new \Exception("Error $table");
+				throw new \Exception(esc_html("Error $table"));
 			}
 		}
 	}
@@ -975,3 +975,4 @@ class Debug {
 		}
 	}
 }
+// phpcs:enable WordPress.DB.DirectDatabaseQuery

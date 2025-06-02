@@ -141,9 +141,9 @@ class Domain_Manager extends Base_Manager {
 	 * @return void
 	 */
 	protected function set_cookie_domain() {
-
-		if (defined('DOMAIN_CURRENT_SITE') && ! defined('COOKIE_DOMAIN') && ! preg_match('/' . DOMAIN_CURRENT_SITE . '$/', '.' . $_SERVER['HTTP_HOST'])) {
-			define('COOKIE_DOMAIN', '.' . $_SERVER['HTTP_HOST']);
+		$host = sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'] ?? ''));
+		if (defined('DOMAIN_CURRENT_SITE') && ! defined('COOKIE_DOMAIN') && ! preg_match('/' . DOMAIN_CURRENT_SITE . '$/', '.' . $host)) {
+			define('COOKIE_DOMAIN', '.' . $host);
 		}
 	}
 
@@ -726,7 +726,7 @@ class Domain_Manager extends Base_Manager {
 	 * Tests the integration in the Wizard context.
 	 *
 	 * @since 2.0.0
-	 * @return mixed
+	 * @return void
 	 */
 	public function test_integration() {
 

@@ -384,7 +384,7 @@ class Stripe_Checkout_Gateway extends Base_Stripe_Gateway {
 
 			$redirect_url = $this->get_return_url();
 
-			wp_redirect($redirect_url);
+			wp_safe_redirect($redirect_url);
 
 			exit;
 		}

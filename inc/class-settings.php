@@ -178,7 +178,7 @@ class Settings {
 		$settings = $this->get_all();
 
 		if (str_contains($setting, '-')) {
-			_doing_it_wrong($setting, esc_html__('Dashes are no longer supported when registering a setting. You should change it to underscores in later versions.', 'wp-multisite-waas'), '2.0.0');
+			_doing_it_wrong(esc_html($setting), esc_html__('Dashes are no longer supported when registering a setting. You should change it to underscores in later versions.', 'wp-multisite-waas'), '2.0.0');
 		}
 
 		$setting_value = $settings[ $setting ] ?? $default_value;
@@ -402,7 +402,7 @@ class Settings {
 				* We no longer support settings with hyphens.
 				*/
 				if (str_contains($field_slug, '-')) {
-					_doing_it_wrong($field_slug, esc_html__('Dashes are no longer supported when registering a setting. You should change it to underscores in later versions.', 'wp-multisite-waas'), '2.0.0');
+					_doing_it_wrong(esc_html($field_slug), esc_html__('Dashes are no longer supported when registering a setting. You should change it to underscores in later versions.', 'wp-multisite-waas'), '2.0.0');
 				}
 
 				$default_order = (count($fields) + 1) * 10;

@@ -40,7 +40,7 @@ function wu_errors() {
  */
 function wu_stripe_generate_idempotency_key($args, $context = 'new') {
 
-	$idempotency_key = md5(json_encode($args));
+	$idempotency_key = md5(wp_json_encode($args));
 
 	/**
 	 * Filters the idempotency_key value sent with the Stripe charge options.

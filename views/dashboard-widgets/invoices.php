@@ -59,7 +59,7 @@
 					],
 				] : [];
 
-				echo wu_responsive_table_row(
+				echo wu_responsive_table_row( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					[
 						'url'    => false,
 						'title'  => $payment->get_invoice_number() . $download_link,

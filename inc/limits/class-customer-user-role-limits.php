@@ -71,7 +71,7 @@ class Customer_User_Role_Limits {
 		 */
 		$message = apply_filters('wu_users_membership_limit_message', $message);
 
-		wp_die($message, __('Limit Reached', 'wp-multisite-waas'), ['back_link' => true]);
+		wp_die(esc_html($message), esc_html__('Limit Reached', 'wp-multisite-waas'), ['back_link' => true]);
 	}
 
 	/**

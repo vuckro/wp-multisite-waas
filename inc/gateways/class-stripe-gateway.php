@@ -509,7 +509,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		$payment_intent_id = $payment->get_meta('stripe_payment_intent_id');
 
 		if (empty($payment_intent_id)) {
-			throw new \Exception(__('Missing Stripe payment intent, please try again or contact support if the issue persists.', 'wp-multisite-waas'), 'missing_stripe_payment_intent');
+			throw new \Exception(esc_html__('Missing Stripe payment intent, please try again or contact support if the issue persists.', 'wp-multisite-waas'), 'missing_stripe_payment_intent');
 		}
 
 		/**

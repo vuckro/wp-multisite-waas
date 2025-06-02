@@ -112,7 +112,8 @@ class Post_Type_Limits {
 	 */
 	public function limit_restoring(): void {
 
-		if (isset($_REQUEST['action']) && 'untrash' === $_REQUEST['action']) {
+		// nonce is checked in a different action.
+		if (isset($_REQUEST['action']) && 'untrash' === $_REQUEST['action']) { // phpcs:ignore WordPress.Security.NonceVerification
 			$this->limit_posts();
 		}
 	}

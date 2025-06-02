@@ -9,8 +9,13 @@
 
 namespace WP_Ultimo\Installers;
 
+use Exception;
 use Psr\Log\LogLevel;
 use Ifsnop\Mysqldump\Mysqldump;
+use WP_Error;
+use WP_Ultimo\Async_Calls;
+use WP_Ultimo\Contracts\Session;
+use WP_Ultimo\Traits\Singleton;
 use WP_Ultimo\UI\Template_Previewer;
 use WP_Ultimo\Models\Checkout_Form;
 use WP_Ultimo\Checkout\Legacy_Checkout;
@@ -33,7 +38,7 @@ defined('ABSPATH') || exit;
  */
 class Migrator extends Base_Installer {
 
-	use \WP_Ultimo\Traits\Singleton;
+	use Singleton;
 
 	const LOG_FILE_NAME = 'migrator-errors';
 
@@ -41,7 +46,7 @@ class Migrator extends Base_Installer {
 	 * Holds the session object.
 	 *
 	 * @since 2.0.0
-	 * @var \WP_Ultimo\Contracts\Session
+	 * @var Session
 	 */
 	public $session;
 
@@ -100,7 +105,7 @@ class Migrator extends Base_Installer {
 	 * or a WP_Error object containing the errors.
 	 *
 	 * @since 2.0.7
-	 * @var bool|\WP_Error
+	 * @var bool|WP_Error
 	 */
 	protected $server_bypass_status = true;
 
@@ -123,9 +128,9 @@ class Migrator extends Base_Installer {
 		/*
 		 * Install the handler for the parallel installer.
 		 */
-		\WP_Ultimo\Async_Calls::register_listener('parallel_installers', [$this, 'handle_parallel_installers']);
+		Async_Calls::register_listener('parallel_installers', [$this, 'handle_parallel_installers']);
 
-		\WP_Ultimo\Async_Calls::install_listeners();
+		Async_Calls::install_listeners();
 	}
 
 	/**
@@ -140,9 +145,7 @@ class Migrator extends Base_Installer {
 
 		do_action('wp_ajax_wu_setup_install'); // phpcs:ignore
 
-		$results = json_decode(ob_get_clean(), true);
-
-		return $results;
+		return json_decode(ob_get_clean(), true);
 	}
 
 	/**
@@ -150,7 +153,7 @@ class Migrator extends Base_Installer {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param \WP_Ultimo\Contracts\Session $session The session handler object.
+	 * @param Session $session The session handler object.
 	 * @param bool                         $dry_run If we are in dry run mode or not.
 	 * @param string                       $installer The name of the current installer.
 	 * @return void
@@ -163,7 +166,7 @@ class Migrator extends Base_Installer {
 
 		$this->log_ids_of_interest();
 
-		$e = new \Exception('The migrator process exit unexpectedly');
+		$e = new Exception('The migrator process exit unexpectedly');
 
 		$this->handle_error_messages($e, $session, $dry_run, $installer);
 	}
@@ -174,7 +177,7 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.0
 	 * @return boolean
 	 */
-	protected function is_migration_screen() {
+	protected function is_migration_screen(): bool {
 
 		return wu_request('page') === 'wp-ultimo-setup' && wu_request('step') === 'migration';
 	}
@@ -405,7 +408,7 @@ class Migrator extends Base_Installer {
 	 */
 	protected function bypass_server_limits() {
 
-		$error = new \WP_Error();
+		$error = new WP_Error();
 
 		$message = 'Unable to set %s';
 
@@ -441,8 +444,6 @@ class Migrator extends Base_Installer {
 
 			return;
 		}
-
-		return true;
 	}
 
 	/**
@@ -454,12 +455,13 @@ class Migrator extends Base_Installer {
 	 * Migrator needs a different implementation to support
 	 * dry runs.
 	 *
-	 * @since 2.0.0
-	 *
-	 * @param bool|\WP_Error $status Status of the installer.
+	 * @param bool|WP_Error $status Status of the installer.
 	 * @param string         $installer The installer name.
 	 * @param object         $wizard Wizard class.
-	 * @return bool
+	 *
+	 * @return bool|WP_Error
+	 *@since 2.0.0
+	 *
 	 */
 	public function handle($status, $installer, $wizard) {
 
@@ -569,10 +571,10 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.7
 	 *
 	 * @param \Throwable|null              $e The exception thrown.
-	 * @param \WP_Ultimo\Contracts\Session $session THe WP Multisite WaaS session object.
+	 * @param Session $session THe WP Multisite WaaS session object.
 	 * @param boolean                      $dry_run If we are on a dry run or not.
 	 * @param string                       $installer The name of the installer.
-	 * @return \WP_Error
+	 * @return WP_Error
 	 */
 	public function handle_error_messages($e, $session, $dry_run = true, $installer = 'none') {
 
@@ -597,7 +599,7 @@ class Migrator extends Base_Installer {
 			$session->set('back_traces', $back_traces);
 		}
 
-		return new \WP_Error($installer, $error_nice_message);
+		return new WP_Error($installer, $error_nice_message);
 	}
 
 	/**
@@ -654,7 +656,7 @@ class Migrator extends Base_Installer {
 	 * Generate the database dump as a backup.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return mixed
 	 */
 	public function _install_dry_run_check(): void {
@@ -676,7 +678,7 @@ class Migrator extends Base_Installer {
 	 * Generate the database dump as a backup.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return mixed
 	 */
 	public function _install_backup(): void {
@@ -735,14 +737,14 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.0
 	 *
 	 * @param string  $setting The setting key.
-	 * @param boolean $default Default value.
+	 * @param boolean $default_value Default value.
 	 * @return mixed
 	 */
-	public function get_old_setting($setting, $default = false) {
+	public function get_old_setting($setting, $default_value = false) {
 
 		$settings = $this->get_old_settings();
 
-		$value = wu_get_isset($settings, $setting, $default);
+		$value = wu_get_isset($settings, $setting, $default_value);
 
 		return $value;
 	}
@@ -752,7 +754,7 @@ class Migrator extends Base_Installer {
 	 *
 	 * @todo Needs implementing.
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_settings() {
@@ -976,7 +978,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Plans.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_products() {
@@ -1139,7 +1141,7 @@ class Migrator extends Base_Installer {
 			$product = wu_create_product($product_data);
 
 			if (is_wp_error($product)) {
-				throw new \Exception(esc_html($product->get_error_message()));
+				throw new Exception(esc_html($product->get_error_message()));
 			}
 
 			/*
@@ -1355,6 +1357,7 @@ class Migrator extends Base_Installer {
 	 *
 	 * @param int $total_records The total number of records.
 	 * @param int $threshold The threshold separating normal processing and parallel processing.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function maybe_run_in_parallel($total_records, $threshold = 100) {
@@ -1375,10 +1378,10 @@ class Migrator extends Base_Installer {
 					'dry-run'   => $this->dry_run,
 				];
 
-				$result = \WP_Ultimo\Async_Calls::run('parallel_installers', $args, $total_records, $threshold, 10);
+				$result = Async_Calls::run('parallel_installers', $args, $total_records, $threshold, 10);
 
 				if (is_wp_error($result)) {
-					throw new \Exception($result->get_error_message());
+					throw new Exception(esc_html($result->get_error_message()));
 				}
 
 				return;
@@ -1416,7 +1419,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Customers.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_customers() {
@@ -1454,8 +1457,7 @@ class Migrator extends Base_Installer {
 					created_at
 				FROM
 					{$wpdb->base_prefix}wu_subscriptions
-				{$limit_clause}
-			"
+				{$limit_clause}" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
 
 		foreach ($users as $user) {
@@ -1475,7 +1477,7 @@ class Migrator extends Base_Installer {
 
 			if (is_wp_error($customer)) {
 				if ($customer->get_error_code() !== 'empty_username') {
-					throw new \Exception($customer->get_error_message());
+					throw new Exception(esc_html($customer->get_error_message()));
 				} else {
 					$this->add_id_of_interest($user->user_id, 'not_found', 'customers');
 				}
@@ -1487,7 +1489,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Memberships.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_memberships() {
@@ -1540,8 +1542,7 @@ class Migrator extends Base_Installer {
 					meta_object as meta
 				FROM
 					{$wpdb->base_prefix}wu_subscriptions
-				{$limit_clause}
-			"
+				{$limit_clause}" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
 
 		foreach ($subscriptions as $subscription) {
@@ -1643,7 +1644,7 @@ class Migrator extends Base_Installer {
 					{$wpdb->base_prefix}wu_transactions
 				WHERE
 					user_id = %d AND type = 'payment'
-				ORDER BY id ASC
+				ORDER BY id
 				LIMIT 1
 			",
 				$subscription->user_id
@@ -1753,7 +1754,7 @@ class Migrator extends Base_Installer {
 			$membership = wu_create_membership($membership_data);
 
 			if (is_wp_error($membership)) {
-				throw new \Exception($membership->get_error_message());
+				throw new Exception(esc_html($membership->get_error_message()));
 			}
 
 			/*
@@ -1768,7 +1769,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Transactions.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_transactions() {
@@ -1808,8 +1809,7 @@ class Migrator extends Base_Installer {
 					*
 				FROM
 					{$wpdb->base_prefix}wu_transactions
-				{$limit_clause}
-			"
+				{$limit_clause}" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
 
 		/**
@@ -1908,7 +1908,7 @@ class Migrator extends Base_Installer {
 			$payment = wu_create_payment($payment_data);
 
 			if (is_wp_error($payment)) {
-				throw new \Exception($payment->get_error_message());
+				throw new Exception(esc_html($payment->get_error_message()));
 			}
 		}
 	}
@@ -1917,7 +1917,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Coupons.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_discount_codes() {
@@ -2012,7 +2012,7 @@ class Migrator extends Base_Installer {
 			$discount_code = wu_create_discount_code($discount_code_data);
 
 			if (is_wp_error($discount_code)) {
-				throw new \Exception($discount_code->get_error_message());
+				throw new Exception(esc_html($discount_code->get_error_message()));
 			}
 		}
 	}
@@ -2021,7 +2021,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Sites.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_sites() {
@@ -2061,8 +2061,7 @@ class Migrator extends Base_Installer {
 					user_id
 				FROM
 					{$wpdb->base_prefix}wu_site_owner
-				{$limit_clause}
-			"
+				{$limit_clause}" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
 
 		foreach ($site_owners as $site_owner) {
@@ -2088,7 +2087,7 @@ class Migrator extends Base_Installer {
 			$saved = $site->save();
 
 			if (is_wp_error($saved)) {
-				throw new \Exception(esc_html($saved->get_error_message()));
+				throw new Exception(esc_html($saved->get_error_message()));
 			}
 		}
 	}
@@ -2097,7 +2096,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Template Sites Sites.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_site_templates() {
@@ -2193,7 +2192,7 @@ class Migrator extends Base_Installer {
 				$saved = $site_template->save();
 
 				if (is_wp_error($saved)) {
-					throw new \Exception(esc_html($saved->get_error_message()));
+					throw new Exception(esc_html($saved->get_error_message()));
 				}
 			}
 		}
@@ -2230,7 +2229,7 @@ class Migrator extends Base_Installer {
 	 * Migrates domains.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_domains() {
@@ -2276,7 +2275,7 @@ class Migrator extends Base_Installer {
 			);
 
 			if (is_wp_error($domain)) {
-				throw new \Exception(esc_html($domain->get_error_message()));
+				throw new Exception(esc_html($domain->get_error_message()));
 			}
 		}
 	}
@@ -2285,7 +2284,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Checkout Forms.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_forms() {
@@ -2314,7 +2313,7 @@ class Migrator extends Base_Installer {
 		$status = wu_create_checkout_form($checkout_form);
 
 		if (is_wp_error($status)) {
-			throw new \Exception(esc_html($status->get_error_message()));
+			throw new Exception(esc_html($status->get_error_message()));
 		} else {
 			$steps = Legacy_Checkout::get_instance()->get_steps();
 
@@ -2352,7 +2351,7 @@ class Migrator extends Base_Installer {
 		$page_id = wp_insert_post($post_details);
 
 		if (is_wp_error($page_id)) {
-			throw new \Exception(esc_html($page_id->get_error_message()));
+			throw new Exception(esc_html($page_id->get_error_message()));
 		}
 
 		/*
@@ -2392,7 +2391,7 @@ class Migrator extends Base_Installer {
 		$login_page_id = wp_insert_post($login_post_details);
 
 		if (is_wp_error($login_page_id)) {
-			throw new \Exception(esc_html($login_page_id->get_error_message()));
+			throw new Exception(esc_html($login_page_id->get_error_message()));
 		}
 
 		/*
@@ -2408,7 +2407,7 @@ class Migrator extends Base_Installer {
 	 *
 	 * @todo Needs implementing.
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_emails() {
@@ -2502,7 +2501,7 @@ class Migrator extends Base_Installer {
 			);
 
 			if (is_wp_error($broadcast)) {
-				throw new \Exception(esc_html($broadcast->get_error_message()));
+				throw new Exception(esc_html($broadcast->get_error_message()));
 			}
 		}
 	}
@@ -2511,7 +2510,7 @@ class Migrator extends Base_Installer {
 	 * Migrates Webhooks.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_webhooks() {
@@ -2548,7 +2547,7 @@ class Migrator extends Base_Installer {
 			);
 
 			if (is_wp_error($webhook)) {
-				throw new \Exception(esc_html($webhook->get_error_message()));
+				throw new Exception(esc_html($webhook->get_error_message()));
 			}
 		}
 	}
@@ -2557,7 +2556,7 @@ class Migrator extends Base_Installer {
 	 * Migrates other things.
 	 *
 	 * @since 2.0.0
-	 * @throws \Exception Halts the process on error.
+	 * @throws Exception Halts the process on error.
 	 * @return void
 	 */
 	protected function _install_other() {

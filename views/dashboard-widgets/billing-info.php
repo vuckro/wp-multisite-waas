@@ -31,7 +31,7 @@
 			<a 
 			title="<?php esc_attr_e('Update Billing Address', 'wp-multisite-waas'); ?>"
 			class="wu-text-sm wu-no-underline wubox button" 
-			href="<?php echo $update_billing_address_link; ?>"
+			href="<?php echo esc_attr($update_billing_address_link); ?>"
 			>
 
 			<?php esc_html_e('Update', 'wp-multisite-waas'); ?>
@@ -110,7 +110,7 @@
 			<a 
 				title="<?php esc_attr_e('Update Billing Address', 'wp-multisite-waas'); ?>"
 				class="wu-text-sm wu-no-underline wubox button" 
-				href="<?php echo $update_billing_address_link; ?>"
+				href="<?php echo esc_attr($update_billing_address_link); ?>"
 			>
 
 				<?php esc_html_e('Update', 'wp-multisite-waas'); ?>

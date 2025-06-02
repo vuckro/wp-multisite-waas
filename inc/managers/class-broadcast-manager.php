@@ -120,7 +120,8 @@ class Broadcast_Manager extends Base_Manager {
 	 */
 	public function handle_broadcast(): void {
 
-		$args = $_POST;
+		// Nonce check happens in Form_Manager::handle_form()
+		$args = $_POST; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$target_customers = wu_request('target_customers', '');
 

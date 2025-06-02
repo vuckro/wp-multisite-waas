@@ -204,7 +204,7 @@ class Site_Manager extends Base_Manager {
 					wp_send_json_error($validation);
 				}
 
-				$wpdb->query('COMMIT');
+				$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				wp_send_json_success([]);
 			}

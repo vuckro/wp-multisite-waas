@@ -412,7 +412,7 @@
 
 				<tr>
 				<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Tax (%s%%)', 'wp-multisite-waas'), esc_html($rate)); ?></th>
-				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($total, $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?></th>
+				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($total, $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 				</tr>
 
 			<?php endforeach; ?>

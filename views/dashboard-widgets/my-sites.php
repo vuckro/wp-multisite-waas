@@ -10,7 +10,7 @@ $add_new_url = wu_get_setting('enable_multiple_sites') ? $element->get_new_site_
 // Redirect back to this page after create the site
 $add_new_url = add_query_arg(
 	[
-		'redirect_url' => urlencode(wu_get_current_url()),
+		'redirect_url' => rawurlencode(wu_get_current_url()),
 	],
 	$add_new_url
 );
@@ -44,7 +44,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 					<span
 						class="wu-shadow-sm wu-inline-flex wu-items-center wu-px-2 wu-py-1 wu-rounded wu-text-sm wu-font-medium <?php echo $site->get_membership()->get_status_class(); ?>"
 					>
-						<?php echo $site->get_membership()->get_status_label(); ?>
+						<?php echo esc_html($site->get_membership()->get_status_label()); ?>
 					</span>
 
 					<?php else : ?>
@@ -86,8 +86,8 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 
 				<img
 					class="wu-h-48 wu-w-full wu-object-cover wu-block"
-					src="<?php echo $site->get_featured_image(); ?>"
-					alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), $site->get_title()); ?>"
+					src="<?php echo esc_attr($site->get_featured_image()); ?>"
+					alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), esc_attr($site->get_title())); ?>"
 					style="background-color: rgba(255, 255, 255, 0.5)"
 				>
 
@@ -106,8 +106,8 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 				<?php if ($site->get_id()) : ?>
 					<a href="<?php echo esc_attr($site->get_active_site_url()); ?>" class="wu-block wu-no-underline">
 
-					<span class="wu-text-base wu-font-semibold wu-text-gray-800 wu-block" <?php echo wu_tooltip_text(__('Visit Site', 'wp-multisite-waas')); ?>>
-						<?php echo $site->get_title(); ?> <span class="wu-text-sm dashicons-wu-popup"></span>
+					<span class="wu-text-base wu-font-semibold wu-text-gray-800 wu-block" <?php echo wu_tooltip_text(__('Visit Site', 'wp-multisite-waas')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+						<?php echo esc_html($site->get_title()); ?> <span class="wu-text-sm dashicons-wu-popup"></span>
 					</span>
 
 					<span class="wu-text-xs wu-text-gray-600 wu-block wu-mt-2">

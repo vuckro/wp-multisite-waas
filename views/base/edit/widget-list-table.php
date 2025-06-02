@@ -5,7 +5,7 @@
  * @since 2.0.0
  */
 ?>
-<?php echo $before; ?>
+<?php echo $before; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 <?php if ($page->edit) : ?>
 
@@ -34,4 +34,4 @@
 
 <?php endif; ?>
 
-<?php echo $after; ?>
+<?php echo $after; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

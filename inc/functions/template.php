@@ -60,7 +60,7 @@ function wu_get_template($view, $args = [], $default_view = false) {
 	/*
 		* Only allow template for emails and signup for now
 		*/
-	if (preg_match('/(' . implode('\/?|', $replaceable_views) . '\/?' . ')\w+/', $view)) {
+	if (preg_match('/(' . implode('\/?|', $replaceable_views) . '\/?)\w+/', $view)) {
 		$template = apply_filters('wu_view_override', $template, $view, $default_view);
 	}
 

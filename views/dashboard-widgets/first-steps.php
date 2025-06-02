@@ -67,7 +67,7 @@
 
 			<div class="wu-block sm:wu-hidden wu-h-2">&nbsp;</div>
 
-			<a href="<?php echo $step['action_link']; ?>" class="button wu-w-full sm:wu-w-auto wu-text-center">
+			<a href="<?php echo esc_attr($step['action_link']); ?>" class="button wu-w-full sm:wu-w-auto wu-text-center">
 			<?php echo esc_html($step['action_label']); ?>
 			</a>
 

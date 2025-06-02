@@ -46,7 +46,7 @@
 			<a
 			title="<?php esc_attr_e('Update Billing Address', 'wp-multisite-waas'); ?>"
 			class="wu-text-sm wu-no-underline button"
-			href="<?php echo wu_get_registration_url(); ?>"
+			href="<?php echo esc_attr(wu_get_registration_url()); ?>"
 			>
 
 			<?php esc_html_e('Create an Account', 'wp-multisite-waas'); ?>

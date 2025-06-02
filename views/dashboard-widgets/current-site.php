@@ -30,7 +30,7 @@
 					<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
 					</svg>
 
-					<span class="screen-reader-text"><?php _e('Home'); ?></span>
+					<span class="screen-reader-text"><?php esc_html_e('Home'); ?></span>
 
 				</div>
 
@@ -77,8 +77,8 @@
 			<img 
 				style="max-width: <?php echo esc_attr($screenshot_size); ?>px;"
 				class="wu-w-full wu-rounded wu-border wu-border-solid <?php echo esc_attr(wu_env_picker('wu-border-gray-300', 'wu-border-gray-400')); ?>" 
-				src="<?php echo $current_site->get_featured_image(); ?>" 
-				alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), $current_site->get_title()); ?>"
+				src="<?php echo esc_attr($current_site->get_featured_image()); ?>"
+				alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), esc_attr($current_site->get_title())); ?>"
 			>
 
 			</div>

@@ -282,7 +282,7 @@ class Manual_Gateway extends Base_Gateway {
 		 * will be undone, including the swap above.
 		 */
 		if (is_wp_error($status)) {
-			throw new \Exception($status->get_error_message(), $status->get_error_code());
+			throw new \Exception(esc_html($status->get_error_message()), esc_html($status->get_error_code()));
 		}
 
 		// In case of trials with payment method
@@ -337,7 +337,7 @@ class Manual_Gateway extends Base_Gateway {
 		$status = $payment->refund($amount);
 
 		if (is_wp_error($status)) {
-			throw new \Exception($status->get_error_code(), $status->get_error_message());
+			throw new \Exception(esc_html($status->get_error_code()), esc_html($status->get_error_message()));
 		}
 	}
 	/**

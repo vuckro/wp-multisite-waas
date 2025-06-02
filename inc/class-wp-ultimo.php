@@ -12,7 +12,7 @@ defined('ABSPATH') || exit;
 /**
  * WP Multisite WaaS main class
  *
- * This class instantiates our dependencies and load the things
+ * This class instantiates our dependencies and loads the things
  * our plugin needs to run.
  *
  * @package WP_Ultimo
@@ -664,7 +664,7 @@ final class WP_Ultimo {
 		 */
 		new WP_Ultimo\Admin_Pages\About_Admin_Page();
 
-		new WP_Ultimo\Admin_Pages\Addons_Admin_Page();
+//		new WP_Ultimo\Admin_Pages\Addons_Admin_Page();
 
 		/*
 		 * Loads the Checkout Form admin page.

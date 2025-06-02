@@ -63,7 +63,9 @@ if (defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING) {
 if ( ! defined('WP_ULTIMO_PLUGIN_FILE')) {
 	define('WP_ULTIMO_PLUGIN_FILE', __FILE__);
 }
-
+if ( ! defined('WP_MULTISITE_WAAS_UPDATE_URL')) {
+	define('WP_MULTISITE_WAAS_UPDATE_URL', 'https://wpmultisitewaas.org/');
+}
 /**
  * Require core file dependencies
  */
