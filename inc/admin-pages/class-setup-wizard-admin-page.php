@@ -16,6 +16,7 @@ use WP_Ultimo\Installers\Migrator;
 use WP_Ultimo\Installers\Core_Installer;
 use WP_Ultimo\Installers\Default_Content_Installer;
 use WP_Ultimo\Logger;
+use WP_Ultimo\Requirements;
 
 /**
  * WP Multisite WaaS Dashboard Admin Page.
@@ -218,7 +219,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function redirect_to_wizard(): void {
 
-		if ( ! \WP_Ultimo\Requirements::run_setup() && wu_request('page') !== 'wp-ultimo-setup') {
+		if ( ! Requirements::run_setup() && wu_request('page') !== 'wp-ultimo-setup') {
 			wp_safe_redirect(wu_network_admin_url('wp-ultimo-setup'));
 
 			exit;
@@ -268,7 +269,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function is_core_loaded() {
 
-		return \WP_Ultimo\Requirements::met() && \WP_Ultimo\Requirements::run_setup();
+		return Requirements::met() && Requirements::run_setup();
 	}
 
 	/**
@@ -329,7 +330,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			'checks'       => [
 				'title'       => __('Pre-install Checks', 'wp-multisite-waas'),
 				'description' => __('Now it is time to see if this machine has what it takes to run WP Multisite WaaS well!', 'wp-multisite-waas'),
-				'next_label'  => \WP_Ultimo\Requirements::met() ? __('Go to the Next Step &rarr;', 'wp-multisite-waas') : __('Check Again', 'wp-multisite-waas'),
+				'next_label'  => Requirements::met() ? __('Go to the Next Step &rarr;', 'wp-multisite-waas') : __('Check Again', 'wp-multisite-waas'),
 				'handler'     => [$this, 'handle_checks'],
 				'back'        => false,
 				'fields'      => [
@@ -621,20 +622,20 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			'php'       => [
 				'name'                => __('PHP', 'wp-multisite-waas'),
 				'help'                => wu_get_documentation_url('wp-ultimo-requirements'),
-				'required_version'    => \WP_Ultimo\Requirements::$php_version,
-				'recommended_version' => \WP_Ultimo\Requirements::$php_recommended_version,
+				'required_version'    => Requirements::$php_version,
+				'recommended_version' => Requirements::$php_recommended_version,
 				'installed_version'   => phpversion(),
-				'pass_requirements'   => version_compare(phpversion(), \WP_Ultimo\Requirements::$php_version, '>='),
-				'pass_recommendation' => version_compare(phpversion(), \WP_Ultimo\Requirements::$php_recommended_version, '>='),
+				'pass_requirements'   => version_compare(phpversion(), Requirements::$php_version, '>='),
+				'pass_recommendation' => version_compare(phpversion(), Requirements::$php_recommended_version, '>='),
 			],
 			'wordpress' => [
 				'name'                => __('WordPress', 'wp-multisite-waas'),
 				'help'                => wu_get_documentation_url('wp-ultimo-requirements'),
-				'required_version'    => \WP_Ultimo\Requirements::$wp_version,
-				'recommended_version' => \WP_Ultimo\Requirements::$wp_recommended_version,
+				'required_version'    => Requirements::$wp_version,
+				'recommended_version' => Requirements::$wp_recommended_version,
 				'installed_version'   => $wp_version,
-				'pass_requirements'   => version_compare(phpversion(), \WP_Ultimo\Requirements::$wp_version, '>='),
-				'pass_recommendation' => version_compare(phpversion(), \WP_Ultimo\Requirements::$wp_recommended_version, '>='),
+				'pass_requirements'   => version_compare(phpversion(), Requirements::$wp_version, '>='),
+				'pass_recommendation' => version_compare(phpversion(), Requirements::$wp_recommended_version, '>='),
 			],
 		];
 
@@ -649,13 +650,13 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				'name'              => __('WP Multisite WaaS', 'wp-multisite-waas'),
 				'help'              => wu_get_documentation_url('wp-ultimo-requirements'),
 				'condition'         => apply_filters('wp_ultimo_skip_network_active_check', false) ? __('Bypassed via filter', 'wp-multisite-waas') : __('Network Activated', 'wp-multisite-waas'),
-				'pass_requirements' => \WP_Ultimo\Requirements::is_network_active(),
+				'pass_requirements' => Requirements::is_network_active(),
 			],
 			'wp-cron'   => [
 				'name'              => __('WordPress Cron', 'wp-multisite-waas'),
 				'help'              => wu_get_documentation_url('wp-ultimo-requirements'),
 				'condition'         => __('Activated', 'wp-multisite-waas'),
-				'pass_requirements' => \WP_Ultimo\Requirements::check_wp_cron(),
+				'pass_requirements' => Requirements::check_wp_cron(),
 			],
 		];
 
@@ -712,7 +713,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 	 */
 	public function handle_checks(): void {
 
-		if (\WP_Ultimo\Requirements::met() === false) {
+		if ( Requirements::met() === false) {
 			wp_safe_redirect(add_query_arg());
 
 			exit;

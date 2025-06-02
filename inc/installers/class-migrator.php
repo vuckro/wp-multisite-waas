@@ -23,6 +23,9 @@ use WP_Ultimo\Managers\Limitation_Manager;
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
+// Lots of direct database queries do a one time migration and that's ok.
+// phpcs:disable WordPress.DB.DirectDatabaseQuery
+
 /**
  * WP Multisite WaaS 1.X to 2.X migrator.
  *
@@ -38,7 +41,7 @@ class Migrator extends Base_Installer {
 	 * Holds the session object.
 	 *
 	 * @since 2.0.0
-	 * @var \WP_Ultimo\Session
+	 * @var \WP_Ultimo\Contracts\Session
 	 */
 	public $session;
 
@@ -147,9 +150,9 @@ class Migrator extends Base_Installer {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param \WP_Ultimo\Session $session The session handler object.
-	 * @param bool               $dry_run If we are in dry run mode or not.
-	 * @param string             $installer The name of the current installer.
+	 * @param \WP_Ultimo\Contracts\Session $session The session handler object.
+	 * @param bool                         $dry_run If we are in dry run mode or not.
+	 * @param string                       $installer The name of the current installer.
 	 * @return void
 	 */
 	public function on_shutdown($session, $dry_run, $installer): void {
@@ -387,7 +390,7 @@ class Migrator extends Base_Installer {
 		 *
 		 * @since 2.0.0
 		 * @param array $steps The list of steps.
-		 * @param \WP_Ultimo\Migrator $this This class.
+		 * @param \WP_Ultimo\Installers\Migrator $this This class.
 		 */
 		$steps = apply_filters('wu_get_migration_steps', $steps, $this);
 
@@ -565,10 +568,10 @@ class Migrator extends Base_Installer {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param \Throwable|null    $e The exception thrown.
-	 * @param \WP_Ultimo\Session $session THe WP Multisite WaaS session object.
-	 * @param boolean            $dry_run If we are on a dry run or not.
-	 * @param string             $installer The name of the installer.
+	 * @param \Throwable|null              $e The exception thrown.
+	 * @param \WP_Ultimo\Contracts\Session $session THe WP Multisite WaaS session object.
+	 * @param boolean                      $dry_run If we are on a dry run or not.
+	 * @param string                       $installer The name of the installer.
 	 * @return \WP_Error
 	 */
 	public function handle_error_messages($e, $session, $dry_run = true, $installer = 'none') {
@@ -1004,7 +1007,7 @@ class Migrator extends Base_Installer {
 					{$wpdb->base_prefix}posts
 				WHERE
 					post_type = 'wpultimo_plan'
-				ORDER BY ID ASC
+				ORDER BY ID
 			"
 		);
 
@@ -1136,7 +1139,7 @@ class Migrator extends Base_Installer {
 			$product = wu_create_product($product_data);
 
 			if (is_wp_error($product)) {
-				throw new \Exception($product->get_error_message());
+				throw new \Exception(esc_html($product->get_error_message()));
 			}
 
 			/*
@@ -1444,7 +1447,6 @@ class Migrator extends Base_Installer {
 		 */
 		require_once wu_path('inc/functions/customer.php');
 
-		 // phpcs:disable
 		$users = $wpdb->get_results(
 			"
 				SELECT
@@ -1455,7 +1457,6 @@ class Migrator extends Base_Installer {
 				{$limit_clause}
 			"
 		);
-		// phpcs:enable
 
 		foreach ($users as $user) {
 			if (wu_get_customer_by_user_id($user->user_id)) {
@@ -1521,7 +1522,6 @@ class Migrator extends Base_Installer {
 
 		$today = gmdate('Y-m-d H:i:s');
 
-		 // phpcs:disable
 		$subscriptions = $wpdb->get_results(
 			"
 				SELECT
@@ -1543,7 +1543,6 @@ class Migrator extends Base_Installer {
 				{$limit_clause}
 			"
 		);
-		// phpcs:enable
 
 		foreach ($subscriptions as $subscription) {
 			/*
@@ -1803,7 +1802,6 @@ class Migrator extends Base_Installer {
 		require_once wu_path('inc/functions/tax.php');
 		require_once wu_path('inc/functions/payment.php');
 
-		// phpcs:disable
 		$transactions = $wpdb->get_results(
 			"
 				SELECT
@@ -1813,7 +1811,6 @@ class Migrator extends Base_Installer {
 				{$limit_clause}
 			"
 		);
-		// phpcs:enable
 
 		/**
 		 * Types to skip when migrating.
@@ -2057,7 +2054,6 @@ class Migrator extends Base_Installer {
 		require_once wu_path('inc/functions/membership.php');
 		require_once wu_path('inc/functions/site.php');
 
-		 // phpcs:disable
 		$site_owners = $wpdb->get_results(
 			"
 				SELECT
@@ -2068,7 +2064,6 @@ class Migrator extends Base_Installer {
 				{$limit_clause}
 			"
 		);
-		// phpcs:enable
 
 		foreach ($site_owners as $site_owner) {
 			$site     = wu_get_site($site_owner->site_id);
@@ -2093,7 +2088,7 @@ class Migrator extends Base_Installer {
 			$saved = $site->save();
 
 			if (is_wp_error($saved)) {
-				throw new \Exception($saved->get_error_message());
+				throw new \Exception(esc_html($saved->get_error_message()));
 			}
 		}
 	}
@@ -2198,7 +2193,7 @@ class Migrator extends Base_Installer {
 				$saved = $site_template->save();
 
 				if (is_wp_error($saved)) {
-					throw new \Exception($saved->get_error_message());
+					throw new \Exception(esc_html($saved->get_error_message()));
 				}
 			}
 		}
@@ -2281,7 +2276,7 @@ class Migrator extends Base_Installer {
 			);
 
 			if (is_wp_error($domain)) {
-				throw new \Exception($domain->get_error_message());
+				throw new \Exception(esc_html($domain->get_error_message()));
 			}
 		}
 	}
@@ -2319,7 +2314,7 @@ class Migrator extends Base_Installer {
 		$status = wu_create_checkout_form($checkout_form);
 
 		if (is_wp_error($status)) {
-			throw new \Exception($status->get_error_message());
+			throw new \Exception(esc_html($status->get_error_message()));
 		} else {
 			$steps = Legacy_Checkout::get_instance()->get_steps();
 
@@ -2357,7 +2352,7 @@ class Migrator extends Base_Installer {
 		$page_id = wp_insert_post($post_details);
 
 		if (is_wp_error($page_id)) {
-			throw new \Exception($page_id->get_error_message());
+			throw new \Exception(esc_html($page_id->get_error_message()));
 		}
 
 		/*
@@ -2397,7 +2392,7 @@ class Migrator extends Base_Installer {
 		$login_page_id = wp_insert_post($login_post_details);
 
 		if (is_wp_error($login_page_id)) {
-			throw new \Exception($login_page_id->get_error_message());
+			throw new \Exception(esc_html($login_page_id->get_error_message()));
 		}
 
 		/*
@@ -2507,7 +2502,7 @@ class Migrator extends Base_Installer {
 			);
 
 			if (is_wp_error($broadcast)) {
-				throw new \Exception($broadcast->get_error_message());
+				throw new \Exception(esc_html($broadcast->get_error_message()));
 			}
 		}
 	}
@@ -2553,7 +2548,7 @@ class Migrator extends Base_Installer {
 			);
 
 			if (is_wp_error($webhook)) {
-				throw new \Exception($webhook->get_error_message());
+				throw new \Exception(esc_html($webhook->get_error_message()));
 			}
 		}
 	}
@@ -2602,3 +2597,4 @@ class Migrator extends Base_Installer {
 		}
 	}
 }
+// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery
