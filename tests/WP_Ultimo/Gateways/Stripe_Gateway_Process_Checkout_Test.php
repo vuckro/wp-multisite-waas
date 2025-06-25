@@ -37,23 +37,23 @@ class Stripe_Gateway_Process_Checkout_Test extends \WP_UnitTestCase {
 
 		// Create Stripe client mock
 		$this->stripe_client_mock = $this->getMockBuilder(StripeClient::class)
-		->disableOriginalConstructor()
-		->getMock();
+			->disableOriginalConstructor()
+			->getMock();
 
 		// Create payment intents mock
 		$payment_intents_mock = $this->getMockBuilder(\Stripe\Service\PaymentIntentService::class)
-		->disableOriginalConstructor()
-		->getMock();
+			->disableOriginalConstructor()
+			->getMock();
 
 		// Create setup intents mock
 		$setup_intents_mock = $this->getMockBuilder(\Stripe\Service\SetupIntentService::class)
-		->disableOriginalConstructor()
-		->getMock();
+			->disableOriginalConstructor()
+			->getMock();
 
 		// Create customers mock
 		$customers_mock = $this->getMockBuilder(\Stripe\Service\CustomerService::class)
-		->disableOriginalConstructor()
-		->getMock();
+			->disableOriginalConstructor()
+			->getMock();
 
 		$payment_methods_mock = $this->getMockBuilder(\Stripe\Service\PaymentMethodService::class)
 								->disableOriginalConstructor()
@@ -68,10 +68,11 @@ class Stripe_Gateway_Process_Checkout_Test extends \WP_UnitTestCase {
 		// Configure the mocks
 		$payment_intent = \Stripe\PaymentIntent::constructFrom(
 			[
-				'id'       => 'pi_123',
-				'status'   => 'succeeded',
-				'customer' => 'cus_123',
-				'charges'  => [
+				'id'             => 'pi_123',
+				'status'         => 'succeeded',
+				'customer'       => 'cus_123',
+				'payment_method' => 'pm_123',
+				'charges'        => [
 					'object' => 'list',
 					'data'   => [
 						[
@@ -156,12 +157,34 @@ class Stripe_Gateway_Process_Checkout_Test extends \WP_UnitTestCase {
 			);
 
 		// Configure stripe client mock to return our service mocks
-		$this->stripe_client_mock->paymentIntents = $payment_intents_mock;
-		$this->stripe_client_mock->setupIntents   = $setup_intents_mock;
-		$this->stripe_client_mock->customers      = $customers_mock;
-		$this->stripe_client_mock->paymentMethods = $payment_methods_mock;
-		$this->stripe_client_mock->plans          = $plans_mock;
-		$this->stripe_client_mock->subscriptions  = $subscriptions_mock;
+		$this->stripe_client_mock->method('__get')
+			->willReturnCallback(
+				function ($property) use (
+					$payment_intents_mock,
+					$setup_intents_mock,
+					$customers_mock,
+					$payment_methods_mock,
+					$plans_mock,
+					$subscriptions_mock
+				) {
+					switch ($property) {
+						case 'paymentIntents':
+							return $payment_intents_mock;
+						case 'setupIntents':
+							return $setup_intents_mock;
+						case 'customers':
+							return $customers_mock;
+						case 'paymentMethods':
+							return $payment_methods_mock;
+						case 'plans':
+							return $plans_mock;
+						case 'subscriptions':
+							return $subscriptions_mock;
+						default:
+							return null;
+					}
+				}
+			);
 
 		// Create gateway instance
 		$this->gateway = new \WP_Ultimo\Gateways\Stripe_Gateway();
