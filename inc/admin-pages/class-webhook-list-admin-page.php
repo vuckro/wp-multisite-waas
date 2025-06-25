@@ -64,13 +64,14 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 
 		parent::register_scripts();
 
-		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), ['jquery', 'wu-sweet-alert']);
+		wp_register_script('wu-webhook-page', wu_get_asset('webhook-page.js', 'js'), ['jquery', 'wu-sweet-alert'], \WP_Ultimo::VERSION, true);
 
 		wp_localize_script(
 			'wu-webhook-page',
 			'wu_webhook_page',
 			[
-				'i18n' => [
+				'nonce' => wp_create_nonce('wu_webhook_send_test'),
+				'i18n'  => [
 					'error_title'   => __('Webhook Test', 'wp-multisite-waas'),
 					'error_message' => __('An error occurred when sending the test webhook, please try again.', 'wp-multisite-waas'),
 					'copied'        => __('Copied!', 'wp-multisite-waas'),
@@ -177,7 +178,8 @@ class Webhook_List_Admin_Page extends List_Admin_Page {
 	 */
 	public function handle_add_new_webhook_modal(): void {
 
-		$status = wu_create_webhook($_POST);
+		// Nonce check handled in calling method.
+		$status = wu_create_webhook($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if (is_wp_error($status)) {
 			wp_send_json_error($status);

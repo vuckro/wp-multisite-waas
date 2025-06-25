@@ -333,7 +333,7 @@ class Debug {
 
 		$faker = new Faker();
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		try {
 			if (wu_request('customers')) {
@@ -364,7 +364,7 @@ class Debug {
 				$faker->generate_fake_payment(wu_request('payments_number', 0));
 			}
 		} catch (\Throwable $e) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
@@ -385,7 +385,7 @@ class Debug {
 
 		wu_save_option('debug_faker', $fake_ids_generated);
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		wp_send_json_success(
 			[
@@ -452,7 +452,7 @@ class Debug {
 
 		global $wpdb;
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		try {
 			if (wu_request('reset_only')) {
@@ -461,14 +461,14 @@ class Debug {
 				$this->reset_all_data();
 			}
 		} catch (Exception $e) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
 
 			wp_send_json_error($error);
 		}
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		wu_delete_option('debug_faker');
 
@@ -709,12 +709,12 @@ class Debug {
 
 				$id_placeholders = implode(', ', array_fill(0, count($ids), '%d'));
 
-				$result = $wpdb->query(
-					$wpdb->prepare("DELETE FROM $table WHERE $field IN ($id_placeholders)", $ids) // phpcs:ignore
+				$result = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->prepare("DELETE FROM %i WHERE %i IN ($id_placeholders)", [$table, $field, ...$ids]) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
 				);
 			} else {
-				$result = $wpdb->query(
-					"DELETE FROM $table" // phpcs:ignore
+				$result = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->prepare('DELETE FROM %i', $table)
 				);
 			}
 

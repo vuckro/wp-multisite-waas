@@ -154,8 +154,8 @@ class Migrator extends Base_Installer {
 	 * @since 2.0.7
 	 *
 	 * @param Session $session The session handler object.
-	 * @param bool                         $dry_run If we are in dry run mode or not.
-	 * @param string                       $installer The name of the current installer.
+	 * @param bool    $dry_run If we are in dry run mode or not.
+	 * @param string  $installer The name of the current installer.
 	 * @return void
 	 */
 	public function on_shutdown($session, $dry_run, $installer): void {
@@ -456,12 +456,10 @@ class Migrator extends Base_Installer {
 	 * dry runs.
 	 *
 	 * @param bool|WP_Error $status Status of the installer.
-	 * @param string         $installer The installer name.
-	 * @param object         $wizard Wizard class.
+	 * @param string        $installer The installer name.
+	 * @param object        $wizard Wizard class.
 	 *
 	 * @return bool|WP_Error
-	 *@since 2.0.0
-	 *
 	 */
 	public function handle($status, $installer, $wizard) {
 
@@ -570,10 +568,10 @@ class Migrator extends Base_Installer {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param \Throwable|null              $e The exception thrown.
-	 * @param Session $session THe WP Multisite WaaS session object.
-	 * @param boolean                      $dry_run If we are on a dry run or not.
-	 * @param string                       $installer The name of the installer.
+	 * @param \Throwable|null $e The exception thrown.
+	 * @param Session         $session THe WP Multisite WaaS session object.
+	 * @param boolean         $dry_run If we are on a dry run or not.
+	 * @param string          $installer The name of the installer.
 	 * @return WP_Error
 	 */
 	public function handle_error_messages($e, $session, $dry_run = true, $installer = 'none') {

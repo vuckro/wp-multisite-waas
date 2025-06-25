@@ -1033,7 +1033,7 @@ class Product_Edit_Admin_Page extends Edit_Admin_Page {
 		if (isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$query = new \WP_Ultimo\Database\Products\Product_Query();
 
-			$item = $query->get_item_by('id',(int) $_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$item = $query->get_item_by('id', (int) $_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			if ( ! $item) {
 				wp_safe_redirect(wu_network_admin_url('wp-ultimo-products'));

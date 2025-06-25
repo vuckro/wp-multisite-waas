@@ -6,6 +6,7 @@
  */
 ?>
 <h1>
+	<?php // translators: %s is the integration name ?>
 	<?php printf(esc_html__('Activate %s Integration', 'wp-multisite-waas'), esc_html($integration->get_title())); ?>
 </h1>
 

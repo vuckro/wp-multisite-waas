@@ -189,7 +189,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 		$fields[ $attributes['id'] . '_errors' ] = [
 			'type'              => 'html',
 			'wrapper_classes'   => 'wu_submit_button_errors wu-clear-both',
-			'content'           => '<span v-cloak class="wu-block wu-bg-red-100 wu-p-2 wu-mb-4" v-html="get_errors().join(' . esc_js(json_encode('<br>')) . ')"></span>',
+			'content'           => '<span v-cloak class="wu-block wu-bg-red-100 wu-p-2 wu-mb-4" v-html="get_errors().join(' . esc_js(wp_json_encode('<br>')) . ')"></span>',
 			'wrapper_html_attr' => [
 				'v-if' => 'get_errors()',
 			],
@@ -215,7 +215,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 					'type'            => 'html',
 					'wrapper_classes' => 'md:wu-w-1/2 wu-box-border wu-float-left wu--mt-4',
 					'id'              => $attributes['id'] . '_go_back',
-					'content'         => sprintf('<a href="#" class="button wu-go-back" v-on:click.prevent="go_back()">%s</a>', $attributes['back_button_label']),
+					'content'         => sprintf('<a href="#" class="button wu-go-back" v-on:click.prevent="go_back()">%s</a>', esc_html($attributes['back_button_label'])),
 				];
 
 				$button_wrapper_classes .= ' md:wu-w-1/2 wu-box-border wu-float-left wu-text-right';
@@ -225,7 +225,7 @@ class Signup_Field_Submit_Button extends Base_Signup_Field {
 		$fields[ $attributes['id'] . '_group' ]['fields'][ $attributes['id'] ] = [
 			'type'            => 'submit',
 			'wrapper_classes' => trim($button_wrapper_classes . ' ' . wu_get_isset($attributes, 'wrapper_element_classes', '')),
-			'classes'         => trim('button button-primary btn-primary' . ' ' . wu_get_isset($attributes, 'element_classes', '')),
+			'classes'         => trim('button button-primary btn-primary ' . wu_get_isset($attributes, 'element_classes', '')),
 			'id'              => $attributes['id'],
 			'name'            => $attributes['name'],
 		];

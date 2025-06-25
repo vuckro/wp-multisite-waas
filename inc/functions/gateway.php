@@ -72,7 +72,7 @@ function wu_get_active_gateways() {
  *
  * @param string $id Gateway ID.
  * @param string $subscription Subscription object to load into the gateway.
- * @return mixed Gateway class.
+ * @return \WP_Ultimo\Gateways\Base_Gateway|false Gateway class.
  */
 function wu_get_gateway($id, $subscription = null) {
 

@@ -58,18 +58,18 @@ function wu_is_must_use() {
  *
  * @since 2.0.0
  *
- * @param array|object $array Array or object to check key.
+ * @param array|object $array_or_obj Array or object to check key.
  * @param string       $key Key to check.
- * @param mixed        $default Default value, if the key is not set.
+ * @param mixed        $default_value Default value, if the key is not set.
  * @return mixed
  */
-function wu_get_isset($array, $key, $default = false) {
+function wu_get_isset($array_or_obj, $key, $default_value = false) {
 
-	if ( ! is_array($array)) {
-		$array = (array) $array;
+	if ( ! is_array($array_or_obj)) {
+		$array_or_obj = (array) $array_or_obj;
 	}
 
-	return $array[ $key ] ?? $default;
+	return $array_or_obj[ $key ] ?? $default_value;
 }
 
 /**
@@ -128,14 +128,14 @@ function wu_url($dir) {
  * @since 2.0.0
  *
  * @param string $key Key to retrieve.
- * @param mixed  $default Default value, when the variable is not available.
+ * @param mixed  $default_value Default value, when the variable is not available.
  * @return mixed
  */
-function wu_request($key, $default = false) {
+function wu_request($key, $default_value = false) {
 
-	$value = isset($_REQUEST[ $key ]) ? stripslashes_deep($_REQUEST[ $key ]) : $default;
+	$value = isset($_REQUEST[ $key ]) ? wu_clean(stripslashes_deep($_REQUEST[ $key ])) : $default_value; // phpcs:ignore WordPress.Security.NonceVerification
 
-	return apply_filters('wu_request', $value, $key, $default);
+	return apply_filters('wu_request', $value, $key, $default_value);
 }
 
 /**
@@ -152,7 +152,7 @@ function _wu_require_hook($hook = 'ms_loaded') { // phpcs:ignore
 	if ( ! did_action($hook)) {
 		$message = "This function can not yet be run as it relies on processing that happens on hook {$hook}.";
 
-		throw new Runtime_Exception($message);
+		throw new Runtime_Exception(esc_html($message));
 	}
 }
 
@@ -236,7 +236,7 @@ function wu_log_clear($handle) {
 function wu_maybe_log_error($e) {
 
 	if (defined('WP_DEBUG') && WP_DEBUG) {
-		error_log($e);
+		error_log($e); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	}
 }
 
@@ -287,17 +287,34 @@ function wu_cli_is_plugin_skipped($plugin = null): bool {
  * @since 2.1.0
  *
  * @todo Implement the logging portion of the feature.
- * @param \Callable $fn A callable to be run inside the capture block.
+ * @param \Callable $func A callable to be run inside the capture block.
  * @param bool      $log Wether or not captured errors should be logged to a file.
  *
  * @return void
  */
-function wu_ignore_errors($fn, $log = false) {
+function wu_ignore_errors($func, $log = false) {
 
 	try {
-		call_user_func($fn);
+		call_user_func($func);
 	} catch (\Throwable $exception) {
 
 		// Ignore it or log it.
+	}
+}
+
+
+/**
+ * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
+ * Non-scalar values are ignored. Based of wc_clean from WooCommerce.
+ *
+ * @since 2.4.0
+ * @param string|array $variable Data to sanitize.
+ * @return string|array
+ */
+function wu_clean($variable) {
+	if ( is_array($variable) ) {
+		return array_map('wu_clean', $variable);
+	} else {
+		return is_scalar($variable) ? sanitize_text_field($variable) : $variable;
 	}
 }

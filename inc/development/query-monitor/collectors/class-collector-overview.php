@@ -59,6 +59,6 @@ class Collector_Overview extends \QM_Collector {
 	 */
 	public function process(): void {
 
-		$this->data = $_REQUEST;
+		$this->data = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 }

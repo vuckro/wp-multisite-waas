@@ -382,7 +382,7 @@ class Billing_Info_Element extends Base_Element {
 
 		$billing_address = $membership->get_billing_address();
 
-		$billing_address->attributes($_POST);
+		$billing_address->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerification
 
 		$valid_address = $billing_address->validate();
 

@@ -195,8 +195,8 @@ abstract class Base_Customer_Facing_Admin_Page extends Base_Admin_Page {
 	 * @return void
 	 */
 	public function handle_edit_page(): void {
-
-		$settings_to_save = 'restore' !== wu_request('submit') ? $_POST : []; // don't worry, this gets cleaned later on. phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		// don't worry, this gets cleaned later on.
+		$settings_to_save = 'restore' !== wu_request('submit') ? $_POST : []; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$this->save_page_settings($settings_to_save);
 

@@ -79,7 +79,7 @@ if ( ! defined('ABSPATH')) {
 							<tr style="">
 								<td style=" text-align: center;">
 									<p style="font-family: <?php echo esc_attr($template_settings['footer_font']); ?>; font-size: 12px; line-height: 1.6em; color: <?php echo esc_attr($template_settings['footer_color']); ?>; font-weight: normal; margin: 0 0 10px; padding: 0; text-align: <?php echo esc_attr($template_settings['footer_align']); ?>">
-							            <?php echo wp_kses_post($template_settings['footer_text']); ?>
+										<?php echo wp_kses_post($template_settings['footer_text']); ?>
 									</p>
 								</td>
 							</tr>
@@ -89,9 +89,9 @@ if ( ! defined('ABSPATH')) {
 						<?php if ($template_settings['display_company_address']) : ?>
 							<tr style="">
 								<td style=" text-align: center;">
-									<p style="font-family: <?php echo esc_attr($template_settings['footer_font']); ?>; font-size: 12px; line-height: 1.6em; color: <?php echo $template_settings['footer_color']; ?>; font-weight: normal; margin: 0 0 10px; padding: 0; text-align: <?php echo $template_settings['footer_align']; ?>">
+									<p style="font-family: <?php echo esc_attr($template_settings['footer_font']); ?>; font-size: 12px; line-height: 1.6em; color: <?php echo esc_attr($template_settings['footer_color']); ?>; font-weight: normal; margin: 0 0 10px; padding: 0; text-align: <?php echo esc_attr($template_settings['footer_align']); ?>">
 										<strong><?php echo esc_html(wu_get_setting('company_name')); ?></strong><br>
-							            <?php echo nl2br(wu_get_setting('company_address', [])); ?>
+										<?php echo nl2br(esc_html(wu_get_setting('company_address', []))); ?>
 									</p>
 								</td>
 							</tr>

@@ -54,17 +54,17 @@ class Documentation {
 		$links['wp-ultimo-settings'] = 'https://github.com/superdav42/wp-multisite-waas/wiki';
 
 		// Checkout Pages
-		$links['wp-ultimo-checkout-forms']         = 'https://github.com/superdav42/wp-multisite-waas/wiki/Checkout-Forms';
-		$links['wp-ultimo-edit-checkout-form']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/Checkout-Forms';
+		$links['wp-ultimo-checkout-forms']         = 'https://github.com/superdav42/wp-multisite-waas/wiki/checkout-forms';
+		$links['wp-ultimo-edit-checkout-form']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/checkout-forms';
 		$links['wp-ultimo-populate-site-template'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/Pre-populate-Site-Template';
 
 		// Products
-		$links['wp-ultimo-products']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/Managing-Products';
-		$links['wp-ultimo-edit-product'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/Managing-Products';
+		$links['wp-ultimo-products']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/creating-your-first-subscription-product-v2';
+		$links['wp-ultimo-edit-product'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/creating-your-first-subscription-product-v2';
 
 		// Memberships
-		$links['wp-ultimo-memberships']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/Managing-Memberships';
-		$links['wp-ultimo-edit-membership'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/Managing-Memberships';
+		$links['wp-ultimo-memberships']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/managing-memberships-v2';
+		$links['wp-ultimo-edit-membership'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/managing-memberships-v2';
 
 		// Payments
 		$links['wp-ultimo-payments']     = 'https://github.com/superdav42/wp-multisite-waas/wiki/managing-payments-and-invoices';
@@ -77,8 +77,8 @@ class Documentation {
 		$links['wp-ultimo-requirements'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/wp-ultimo-requirements';
 
 		// Installer - Migrator
-		$links['installation-errors'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/Installation-Errors';
-		$links['migration-errors']    = 'https://github.com/superdav42/wp-multisite-waas/wiki/Migration-Errors';
+		$links['installation-errors'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/error-installing-the-sunrise-file';
+		$links['migration-errors']    = 'https://github.com/superdav42/wp-multisite-waas/wiki/migrating-from-v1';
 
 		// Multiple Accounts
 		$links['multiple-accounts'] = 'https://github.com/superdav42/wp-multisite-waas/wiki/Multiple-Accounts';

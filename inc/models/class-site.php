@@ -1400,7 +1400,7 @@ class Site extends Base_Model implements Limitable {
 			return get_blog_option($this->get_id(), $option, false);
 		}
 
-		throw new \BadMethodCallException(self::class . "::$name()");
+		throw new \BadMethodCallException(esc_html(self::class . "::$name()"));
 	}
 
 	/**
@@ -1782,7 +1782,7 @@ class Site extends Base_Model implements Limitable {
 			$results = array_map(
 				function ($item) {
 
-					$pending_site = unserialize($item);
+					$pending_site = maybe_unserialize($item);
 
 					$pending_site->set_type('pending');
 
@@ -1796,7 +1796,7 @@ class Site extends Base_Model implements Limitable {
 
 		$query = $query_args;
 
-		$query['meta_query'] = [
+		$query['meta_query'] = [ // phpcs:ignore WordPress
 			[
 				'key'   => 'wu_type',
 				'value' => $type,
@@ -1821,7 +1821,7 @@ class Site extends Base_Model implements Limitable {
 
 		$query = $query_args;
 
-		$query['meta_query'] = [
+		$query['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			[
 				'key'     => 'wu_categories',
 				'value'   => maybe_serialize($categories),

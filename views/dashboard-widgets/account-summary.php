@@ -75,7 +75,8 @@
 		<div>
 
 		<strong class="wu-text-gray-800 wu-text-base">
-				<?php printf(esc_html(_n('%s day', '%s days', $site_trial, 'wp-multisite-waas')), esc_html($site_trial)); ?>
+			<?php // translators: %s: Number of days. ?>
+			<?php printf(esc_html(_n('%s day', '%s days', $site_trial, 'wp-multisite-waas')), esc_html($site_trial)); ?>
 		</strong>
 
 		</div>

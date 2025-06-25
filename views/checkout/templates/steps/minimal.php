@@ -47,8 +47,9 @@ if ( ! defined('ABSPATH')) {
 
 		<li class="<?php echo esc_attr($class); ?>">
 		<span class="wu-minimal-steps-bar">&nbsp;</span>
-		<span class="wu-minimal-steps-step-count"><?php printf(__('Step %d', 'wp-multisite-waas'), $index + 1); ?></span>
-		<span class="wu-minimal-steps-step-label"><?php echo $step['name']; ?></span>
+		<?php // translators: %d is a placeholder for the current step number. ?>
+		<span class="wu-minimal-steps-step-count"><?php printf(esc_html__('Step %d', 'wp-multisite-waas'), esc_html($index + 1)); ?></span>
+		<span class="wu-minimal-steps-step-label"><?php echo esc_html($step['name']); ?></span>
 		</li>
 
 <?php endforeach; ?>

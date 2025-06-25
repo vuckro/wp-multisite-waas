@@ -122,7 +122,7 @@ class Template_Previewer {
 		$button_bg_color  = wu_color($settings['button_bg_color']);
 		$button_bg_darker = wu_color($button_bg_color->darken(4));
 
-		wp_register_script('wu-template-previewer', wu_get_asset('template-previewer.js', 'js'), [], wu_get_version());
+		wp_register_script('wu-template-previewer', wu_get_asset('template-previewer.js', 'js'), [], wu_get_version(), true);
 
 		wp_localize_script(
 			'wu-template-previewer',
@@ -240,7 +240,7 @@ class Template_Previewer {
 		 * Check if this is a site template
 		 */
 		if ( ! $selected_template || ($selected_template->get_type() !== Site_Type::SITE_TEMPLATE && ! wu_request('customizer'))) {
-			wp_die(__('This template is not available', 'wp-multisite-waas'));
+			wp_die(esc_html__('This template is not available', 'wp-multisite-waas'));
 		}
 
 		$categories = [];
@@ -254,7 +254,7 @@ class Template_Previewer {
 			'tp'                => $this,
 		];
 
-		$products_ids = isset($_COOKIE['wu_selected_products']) ? explode(',', (string) $_COOKIE['wu_selected_products']) : [];
+		$products_ids = isset($_COOKIE['wu_selected_products']) ? explode(',', sanitize_text_field(wp_unslash($_COOKIE['wu_selected_products']))) : [];
 
 		$products = array_map('wu_get_product', $products_ids);
 
@@ -372,7 +372,7 @@ class Template_Previewer {
 
 		$default_settings = array_merge($default_settings, $saved_settings);
 
-		$server_request = $_REQUEST;
+		$server_request = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Ensure that templates key does not change with request
 		if (isset($server_request['templates'])) {

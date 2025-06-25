@@ -637,12 +637,12 @@ class Email_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	}
 
 	/**
-	 * Returns a specitic email template setting.
+	 * Returns a specific email template setting.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $setting The setting name.
-	 * @param string $default In case there's no option.
+	 * @param string $default_value In case there's no option.
 	 * @return string With the requested setting.
 	 */
 	public function get_setting($setting, $default_value = false) {

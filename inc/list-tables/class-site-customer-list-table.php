@@ -56,13 +56,14 @@ class Site_Customer_List_Table extends Customer_List_Table {
 	 */
 	public function column_responsive($item): void {
 
+		// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 		$last_login = sprintf(__('Last login %s', 'wp-multisite-waas'), wu_human_time_diff(strtotime((string) $item->get_last_login())));
 
 		if ($item->is_online()) {
 			$last_login = '<span class="wu-inline-block wu-mr-1 wu-rounded-full wu-h-2 wu-w-2 wu-bg-green-500"></span>' . __('Online', 'wp-multisite-waas');
 		}
 
-		echo wu_responsive_table_row(
+		echo wu_responsive_table_row( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			[
 				'id'     => $item->get_id(),
 				'title'  => $item->get_display_name(),
@@ -100,6 +101,7 @@ class Site_Customer_List_Table extends Customer_List_Table {
 				'date_created'    => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
+					// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 					'value' => sprintf(__('Registered %s', 'wp-multisite-waas'), wu_human_time_diff(strtotime((string) $item->get_date_registered()))),
 				],
 			]

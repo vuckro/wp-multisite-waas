@@ -16,7 +16,7 @@
 
 	<ul class="wu-inline-block wu-m-0 wu-p-0 wu-align-middle wu-mx-1">
 		<li class="wu-inline-block wu-m-0 wu-p-0">
-		<span id="wu-toolbox-toggle" class="dashicons-before dashicons-wu-wp-ultimo" <?php echo wu_tooltip_text(__('Toggle Toolbox', 'wp-multisite-waas')); ?>></span>
+		<span id="wu-toolbox-toggle" class="dashicons-before dashicons-wu-wp-ultimo" <?php echo wu_tooltip_text(__('Toggle Toolbox', 'wp-multisite-waas')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></span>
 		</li>
 	</ul>
 
@@ -63,7 +63,7 @@
 			<span class="">
 				<?php printf(__('Membership <Strong>%s</strong>', 'wp-multisite-waas'), $membership->get_hash()); ?>
 			</span>
-			<span id="wu-toolbox-membership-status" class="wu-inline-block wu-w-3 wu-h-3 wu-rounded-full wu-align-text-top <?php echo esc_attr($membership->get_status_class()); ?>" <?php echo wu_tooltip_text($membership->get_status_label()); ?>>
+			<span id="wu-toolbox-membership-status" class="wu-inline-block wu-w-3 wu-h-3 wu-rounded-full wu-align-text-top <?php echo esc_attr($membership->get_status_class()); ?>" <?php echo wu_tooltip_text($membership->get_status_label()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 				&nbsp;
 			</span>
 			</a>

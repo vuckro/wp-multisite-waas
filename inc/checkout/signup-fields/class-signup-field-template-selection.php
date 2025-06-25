@@ -177,9 +177,9 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 			'desc'      => __('How do you want to choose available which templates will be available.', 'wp-multisite-waas'),
 			'order'     => 20,
 			'options'   => [
-				'name'       => __('Select by names'),
-				'categories' => __('Select by categories'),
-				'all'        => __('All templates'),
+				'name'       => __('Select by names', 'wp-multisite-waas'),
+				'categories' => __('Select by categories', 'wp-multisite-waas'),
+				'all'        => __('All templates', 'wp-multisite-waas'),
 			],
 			'html_attr' => [
 				'v-model' => 'template_selection_type',
@@ -315,7 +315,7 @@ class Signup_Field_Template_Selection extends Base_Signup_Field {
 		}
 
 		if (wu_get_isset($attributes, 'template_selection_template') === 'legacy') {
-			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], wu_get_version());
+			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], wu_get_version(), true);
 
 			wp_enqueue_script('wu-legacy-signup');
 

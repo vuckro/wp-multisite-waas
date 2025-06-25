@@ -42,7 +42,7 @@ if ( ! defined('ABSPATH')) {
 
 		?>
 
-	<li class="<?php echo $class; ?> wu-flex-1">
+	<li class="<?php echo esc_attr($class); ?> wu-flex-1">
 
 		<?php echo esc_html($step['name']); ?>
 

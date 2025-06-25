@@ -411,6 +411,7 @@
 			<?php foreach ($payment->get_tax_breakthrough() as $rate => $total) : ?>
 
 				<tr>
+				<?php // translators: %s: Tax rate. ?>
 				<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Tax (%s%%)', 'wp-multisite-waas'), esc_html($rate)); ?></th>
 				<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($total, $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 				</tr>
@@ -419,7 +420,8 @@
 
 			<?php if ($payment->get_discount_total()) : ?>
 				<tr>
-					<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Discount (%s)', 'wp-ultimo'), esc_html($payment->get_discount_code())); ?></th>
+					<?php // translators: %s: Discount code. ?>
+					<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Discount (%s)', 'wp-multisite-waas'), esc_html($payment->get_discount_code())); ?></th>
 					<th class="wu-text-left wu-py-2 wu-px-4"><?php echo wu_format_currency($payment->get_discount_total(), $payment->get_currency()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 				</tr>
 			<?php endif; ?>

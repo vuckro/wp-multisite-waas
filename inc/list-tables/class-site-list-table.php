@@ -80,7 +80,7 @@ class Site_List_Table extends Base_List_Table {
 		];
 
 		if ($type && 'all' !== $type) {
-			$query['meta_query'] = [
+			$query['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				'type' => [
 					'key'   => 'wu_type',
 					'value' => $type,

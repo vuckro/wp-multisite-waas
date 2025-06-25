@@ -118,7 +118,7 @@ class Template_Switching_Element extends Base_Element {
 	 */
 	public function register_scripts(): void {
 
-		wp_register_script('wu-template-switching', wu_get_asset('template-switching.js', 'js'), ['jquery', 'wu-vue-apps', 'wu-selectizer', 'wp-hooks', 'wu-cookie-helpers']);
+		wp_register_script('wu-template-switching', wu_get_asset('template-switching.js', 'js'), ['jquery', 'wu-vue-apps', 'wu-selectizer', 'wp-hooks', 'wu-cookie-helpers'], \WP_Ultimo::VERSION, true);
 
 		wp_localize_script(
 			'wu-template-switching',

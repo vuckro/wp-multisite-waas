@@ -1037,7 +1037,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function sites_query_filter($args) {
 
-		$args['meta_query'] = [ // phpcs: WordPress.DB.SlowDBQuery
+		$args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery
 			'customer_id' => [
 				'key'   => 'wu_customer_id',
 				'value' => $this->get_object()->get_id(),
@@ -1110,7 +1110,8 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_save(): void {
 
-        // Nonce handled in calling method. phpcs:disable WordPress.Security.NonceVerification.Missing
+		// Nonce handled in calling method.
+        // phpcs:disable WordPress.Security.NonceVerification
 		if (isset($_POST['submit_button']) && 'send_verification' === $_POST['submit_button']) {
 			$customer = $this->get_object();
 
@@ -1188,7 +1189,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		unset($_POST['new_meta_fields']);
-        // phpcs:enable
+		// phpcs:enable
 
 		parent::handle_save();
 	}
@@ -1223,7 +1224,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_send_verification_notice(): void {
 
-		if (isset($_GET['notice_verification_sent'])) : // phpcs:ignore WordPress.Security.NonceVerification.Missing ?>
+		if (isset($_GET['notice_verification_sent'])) : // phpcs:ignore WordPress.Security.NonceVerification ?>
 
 			<div id="message" class="updated notice wu-admin-notice notice-success is-dismissible below-h2">
 				<p><?php esc_html_e('Verification email sent!', 'wp-multisite-waas'); ?></p>

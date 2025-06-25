@@ -43,7 +43,7 @@ body:not(.has-wu-container) .wu-use-container {
 
 		wu_block_ui('#wpcontent');
 
-		$.ajax(ajaxurl + '?action=wu_toggle_container&nonce=<?php echo wp_create_nonce('wu_toggle_container'); ?>').done(function() {
+		$.ajax(ajaxurl + '?action=wu_toggle_container&nonce=<?php echo esc_js(wp_create_nonce('wu_toggle_container')); ?>').done(function() {
 
 		$('.wrap').toggleClass('admin-lg:wu-container admin-lg:wu-mx-auto');
 

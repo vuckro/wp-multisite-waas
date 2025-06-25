@@ -76,9 +76,9 @@ class Dashboard_Taxes_Tab {
 	 */
 	public function disabled_message(): void {
 
-		echo wu_render_empty_state(
+		echo wu_render_empty_state( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			[
-				'message'     => __('You do not have tax support enabled yet...'),
+				'message'     => __('You do not have tax support enabled yet...', 'wp-multisite-waas'),
 				'sub_message' => __('If you need to collect taxes, you\'ll be glad to hear that WP Multisite WaaS offers tax support!'),
 				'link_label'  => __('Enable Tax Support', 'wp-multisite-waas'),
 				'link_url'    => wu_network_admin_url(

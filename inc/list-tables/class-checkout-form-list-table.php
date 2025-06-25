@@ -107,7 +107,7 @@ class Checkout_Form_List_Table extends Base_List_Table {
 	 * @param WP_Ultimo\Models\Checkout_Form $item Checkout Form object.
 	 */
 	public function column_steps($item): string {
-
+		// translators: %1$d: number of steps, %2$d: number of fields
 		return sprintf(__('%1$d Step(s) and %2$d Field(s)', 'wp-multisite-waas'), $item->get_step_count(), $item->get_field_count());
 	}
 

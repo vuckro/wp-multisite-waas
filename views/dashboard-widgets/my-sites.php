@@ -42,7 +42,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 					<?php if ($site->get_id()) : ?>
 
 					<span
-						class="wu-shadow-sm wu-inline-flex wu-items-center wu-px-2 wu-py-1 wu-rounded wu-text-sm wu-font-medium <?php echo $site->get_membership()->get_status_class(); ?>"
+						class="wu-shadow-sm wu-inline-flex wu-items-center wu-px-2 wu-py-1 wu-rounded wu-text-sm wu-font-medium <?php echo esc_attr($site->get_membership()->get_status_class()); ?>"
 					>
 						<?php echo esc_html($site->get_membership()->get_status_label()); ?>
 					</span>
@@ -52,7 +52,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 					<span
 						class="wu-shadow-sm wu-inline-flex wu-items-center wu-px-2 wu-py-1 wu-rounded wu-text-sm wu-font-medium wu-bg-purple-200 wu-text-purple-700"
 					>
-						<?php echo __('Pending', 'wp-multisite-waas'); ?>
+						<?php esc_html_e('Pending', 'wp-multisite-waas'); ?>
 					</span>
 
 					<?php endif; ?>
@@ -87,6 +87,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 				<img
 					class="wu-h-48 wu-w-full wu-object-cover wu-block"
 					src="<?php echo esc_attr($site->get_featured_image()); ?>"
+					<?php // translators: %s: Site Title ?>
 					alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), esc_attr($site->get_title())); ?>"
 					style="background-color: rgba(255, 255, 255, 0.5)"
 				>
@@ -111,7 +112,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 					</span>
 
 					<span class="wu-text-xs wu-text-gray-600 wu-block wu-mt-2">
-						<?php echo str_replace(['http://', 'https://'], '', $site->get_active_site_url()); ?>
+						<?php echo esc_html(str_replace(['http://', 'https://'], '', $site->get_active_site_url())); ?>
 					</span>
 
 					</a>
@@ -119,7 +120,7 @@ $show_add_new = apply_filters('wp_ultimo_my_sites_show_add_new', $show_add_new);
 					<div class="wu-block wu-no-underline">
 
 					<span class="wu-text-base wu-font-semibold wu-text-gray-800 wu-block">
-						<?php echo $site->get_title(); ?>
+						<?php echo esc_html($site->get_title()); ?>
 					</span>
 
 					</div>

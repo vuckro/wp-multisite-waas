@@ -273,7 +273,7 @@ class Signup_Field_Email extends Base_Signup_Field {
 		<?php
 
 		// translators: 1$s is the display name of the user currently logged in.
-		printf(__('Not %1$s? <a href="%2$s">Log in</a> using your account.', 'wp-multisite-waas'), wp_get_current_user()->display_name, $login_url);
+		printf(wp_kses_post(__('Not %1$s? <a href="%2$s">Log in</a> using your account.', 'wp-multisite-waas')), esc_html(wp_get_current_user()->display_name), esc_attr($login_url));
 
 		?>
 		</p>

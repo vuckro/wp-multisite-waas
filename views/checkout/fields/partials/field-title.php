@@ -18,7 +18,7 @@
 
 	<?php endif; ?>
 
-	<?php echo wu_tooltip($field->tooltip); ?>
+	<?php echo wu_tooltip($field->tooltip); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 	</label>
 

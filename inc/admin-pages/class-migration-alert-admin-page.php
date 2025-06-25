@@ -71,21 +71,6 @@ class Migration_Alert_Admin_Page extends Wizard_Admin_Page {
 	];
 
 	/**
-	 * Overrides original construct method.
-	 *
-	 * We need to override the construct method to make sure
-	 * we make the necessary changes to the Wizard page when it's
-	 * being run for the first time.
-	 *
-	 * @since 2.0.24
-	 * @return void
-	 */
-	public function __construct() {
-
-		parent::__construct();
-	}
-
-	/**
 	 * Returns the logo for the wizard.
 	 *
 	 * @since 2.0.24

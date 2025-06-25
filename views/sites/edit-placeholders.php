@@ -45,7 +45,7 @@
 					<th id="cb" class="manage-column column-cb" style="width: 50px;">
 
 						<label class="screen-reader-text" for="wu-select-2">
-							<?php esc_attr_e('Select All'); ?>
+							<?php esc_attr_e('Select All', 'wp-multisite-waas'); ?>
 						</label>
 
 						<input v-bind:disabled="!data.placeholders" v-model="toggle" v-on:click="select_all" id="wu-select-2"
@@ -101,7 +101,7 @@
 
 						<label class="screen-reader-text" for="wu-select-1">
 
-							<?php echo esc_html_e('Select', 'your-textdomain'); ?> {{item.title}}
+							<?php esc_html_e('Select', 'wp-multisite-waas'); ?> {{item.title}}
 
 						</label>
 
@@ -149,7 +149,7 @@
 
 								<input
 										class="wu-bg-transparent wu-p-4 wu-border-none wu-w-full hover:wu-bg-gray-200 hover:wu-border hover:wu-border-solid hover:wu-border-gray-400 hover:wu-cursor-pointer"
-										name="" placeholder="*" v-model="item.<?php esc_attr_e($key); ?>">
+										name="" placeholder="*" v-model="item.<?php echo esc_attr($key); ?>">
 
 								<?php
 								break;
@@ -173,7 +173,7 @@
 						<label class="screen-reader-text" for="wu-select">
 
 
-							<?php esc_html_e('Select All'); ?>
+							<?php esc_html_e('Select All', 'wp-multisite-waas'); ?>
 
 						</label>
 
@@ -250,7 +250,7 @@
 		</span>
 
 			<button v-on:click.prevent="save" v-bind:disabled="saving" class="button button-primary">
-				<?php esc_html_e('Save Template Placeholders'); ?>
+				<?php esc_html_e('Save Template Placeholders', 'wp-multisite-waas'); ?>
 			</button>
 		</div>
 

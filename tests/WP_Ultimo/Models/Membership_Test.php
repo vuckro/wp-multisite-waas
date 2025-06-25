@@ -43,17 +43,17 @@ class Membership_Test extends \WP_UnitTestCase {
 
 		// Get the fake customer and product
 		$this->customer = $faker->get_fake_data_generated('customers')[0];
-		$this->product = $faker->get_fake_data_generated('products')[0];
+		$this->product  = $faker->get_fake_data_generated('products')[0];
 
 		$faker->generate_fake_memberships();
 
 		$this->membership = current($faker->get_fake_data_generated('memberships'));
 		// Create a new Membership instance for each test.
-//		$this->membership = new Membership();
+		// $this->membership = new Membership();
 
 		// Set a default customer ID and plan ID.
-//		$this->membership->set_customer_id($this->customer->get_id());
-//		$this->membership->set_plan_id($this->product->get_id());
+		// $this->membership->set_customer_id($this->customer->get_id());
+		// $this->membership->set_plan_id($this->product->get_id());
 	}
 
 	/**
@@ -204,7 +204,7 @@ class Membership_Test extends \WP_UnitTestCase {
 	public function test_save_basic_functionality(): void {
 		// Skip this test if the manual gateway is not available
 		$gateway = wu_get_gateway('manual');
-		if (!$gateway) {
+		if (! $gateway) {
 			$this->markTestSkipped('Manual gateway not available');
 		}
 
@@ -227,7 +227,6 @@ class Membership_Test extends \WP_UnitTestCase {
 
 		$this->assertTrue($result, 'Save operation was successful.');
 		$this->assertNotEmpty($this->membership->get_id(), 'Membership has an ID after saving.');
-
 	}
 
 	/**
@@ -236,7 +235,7 @@ class Membership_Test extends \WP_UnitTestCase {
 	public function test_save_with_gateway_changes(): void {
 		// Skip this test if the manual gateway is not available
 		$gateway = wu_get_gateway('manual');
-		if (!$gateway) {
+		if (! $gateway) {
 			$this->markTestSkipped('Manual gateway not available');
 		}
 
@@ -254,7 +253,7 @@ class Membership_Test extends \WP_UnitTestCase {
 
 		// Use reflection to check if gateway changes are detected
 		$reflection = new \ReflectionClass($this->membership);
-		$method = $reflection->getMethod('has_gateway_changes');
+		$method     = $reflection->getMethod('has_gateway_changes');
 		$method->setAccessible(true);
 		$this->assertTrue($method->invoke($this->membership), 'Failed asserting that gateway changes are detected.');
 
@@ -277,7 +276,7 @@ class Membership_Test extends \WP_UnitTestCase {
 
 		// Skip this test if the manual gateway is not available
 		$gateway = wu_get_gateway('manual');
-		if (!$gateway) {
+		if (! $gateway) {
 			$this->markTestSkipped('Manual gateway not available');
 		}
 

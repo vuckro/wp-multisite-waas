@@ -209,7 +209,7 @@ class Event_List_Admin_Page extends List_Admin_Page {
 		return [
 			[
 				'url'   => wu_network_admin_url('wp-ultimo-view-logs'),
-				'label' => __('View Logs'),
+				'label' => __('View Logs', 'wp-multisite-waas'),
 				'icon'  => 'dashicons dashicons-editor-ol',
 			],
 		];

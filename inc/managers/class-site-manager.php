@@ -314,6 +314,7 @@ class Site_Manager extends Base_Manager {
 			wp_die(
 				new \WP_Error( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					'not-available',
+					// translators: %s: link to the login page
 					sprintf(__('This site is not available at the moment.<br><small>If you are the site admin, click <a href="%s">here</a> to login.</small>', 'wp-multisite-waas'), wp_login_url()), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					[
 						'title' => esc_html__('Site not available', 'wp-multisite-waas'),
@@ -436,6 +437,7 @@ class Site_Manager extends Base_Manager {
 
 				<p><?php echo wp_kses_post(__('Your WP Multisite WaaS settings are configured to <strong>prevent search engines such as Google from indexing your template sites</strong>.', 'wp-multisite-waas')); ?></p>
 
+				<?php // translators: %s: link to the settings page ?>
 				<p><?php echo wp_kses_post(sprintf(__('If you are experiencing negative SEO impacts on other sites in your network, consider disabling this setting <a href="%s">here</a>.', 'wp-multisite-waas'), wu_network_admin_url('wp-ultimo-settings', ['tab' => 'sites']))); ?></p>
 
 			</div>

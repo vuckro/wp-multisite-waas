@@ -201,7 +201,6 @@ class Signup_Field_Billing_Address extends Base_Signup_Field {
 		$field['required']                  = true;
 		$field['wrapper_html_attr']['v-if'] = "{$data_key_name}.length";
 		$field['html_attr']['required']     = 'required';
-		$field['html_attr']['required']     = 'required';
 		$field['html_attr']['v-bind:name']  = "'billing_" . str_replace('_list', '', $data_key_name) . "'";
 		$field['title']                     = sprintf('<span v-html="%s">%s</span>', "labels.$label_key_field", $field['title']);
 

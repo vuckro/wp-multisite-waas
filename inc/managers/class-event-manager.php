@@ -469,7 +469,9 @@ class Event_Manager extends Base_Manager {
 				wu_register_event_type(
 					$model . '_' . $type,
 					[
+						// translators: %1$s is the model name, %2$s is the event type.
 						'name'            => sprintf(__('%1$s %2$s', 'wp-multisite-waas'), $params['label'], ucfirst($type)),
+						// translators: %1$s is the model name, %2$s is the event type.
 						'desc'            => sprintf(__('This event is fired every time a %1$s is %2$s by WP Multisite WaaS.', 'wp-multisite-waas'), $params['label'], $type),
 						'deprecated_args' => [],
 						'payload'         => fn() => $this->get_model_payload($model),

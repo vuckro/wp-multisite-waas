@@ -58,7 +58,7 @@ class Screenshot {
 	public static function save_image_from_url($url) {
 
 		// translators: %s is the API URL.
-		$log_prefix = sprintf(__('Downloading image from "%s":'), $url) . ' ';
+		$log_prefix = sprintf(__('Downloading image from "%s":', 'wp-multisite-waas'), $url) . ' ';
 
 		$response = wp_remote_get(
 			$url,

@@ -43,8 +43,8 @@ if ( ! defined('ABSPATH')) {
 		?>
 
 	<li>
-	<a class="<?php echo $first ? 'active first' : ''; ?>" data-frequency-selector="<?php echo $type; ?>" href="#">
-		<?php echo $name; ?>
+	<a class="<?php echo $first ? 'active first' : ''; ?>" data-frequency-selector="<?php echo esc_attr($type); ?>" href="#">
+		<?php echo esc_html($name); ?>
 	</a>
 	</li>
 

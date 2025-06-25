@@ -120,7 +120,7 @@ class Discount_Code_List_Admin_Page extends List_Admin_Page {
 		return [
 			[
 				'url'   => wu_network_admin_url('wp-ultimo-edit-discount-code'),
-				'label' => __('Add Discount Code'),
+				'label' => __('Add Discount Code', 'wp-multisite-waas'),
 				'icon'  => 'wu-circle-with-plus',
 			],
 		];

@@ -315,7 +315,7 @@ class Legacy_Shortcodes {
 		 * In the case of the legacy layout, we need to load extra styles.
 		 */
 		if ('legacy' === $atts['layout']) {
-			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'));
+			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), [], \WP_Ultimo::VERSION);
 
 			wp_add_inline_style('legacy-signup', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
 		}
@@ -423,7 +423,7 @@ class Legacy_Shortcodes {
 			window.wu_auto_submittable_field = %s;
 
 		',
-				json_encode($auto_submittable_field)
+				wp_json_encode($auto_submittable_field)
 			),
 			'after'
 		);
@@ -505,7 +505,7 @@ class Legacy_Shortcodes {
 		 * In the case of the legacy layout, we need to load extra styles.
 		 */
 		if ('legacy' === $atts['layout']) {
-			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'));
+			wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), [], \WP_Ultimo::VERSION);
 
 			wp_add_inline_style('legacy-signup', \WP_Ultimo\Checkout\Legacy_Checkout::get_instance()->get_legacy_dynamic_styles());
 		}
@@ -565,7 +565,7 @@ class Legacy_Shortcodes {
 			window.wu_auto_submittable_field = %s;
 
 		',
-				json_encode($auto_submittable_field)
+				wp_json_encode($auto_submittable_field)
 			),
 			'after'
 		);

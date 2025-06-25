@@ -588,7 +588,9 @@ class Limitation_Manager {
 
 			$sections['users']['fields'][ "control_{$user_role_slug}" ] = [
 				'type'              => 'group',
+				// translators: %s is the user role name.
 				'title'             => sprintf(__('Limit %s Role', 'wp-multisite-waas'), $user_role['name']),
+				// translators: %s is the user role name.
 				'desc'              => sprintf(__('The customer will be able to create %s users(s) of this user role.', 'wp-multisite-waas'), "{{ roles['{$user_role_slug}'].enabled ? ( parseInt(roles['{$user_role_slug}'].number, 10) ? roles['{$user_role_slug}'].number : '" . __('unlimited', 'wp-multisite-waas') . "' ) : '" . __('no', 'wp-multisite-waas') . "' }}"),
 				'tooltip'           => '',
 				'wrapper_html_attr' => [
@@ -599,6 +601,7 @@ class Limitation_Manager {
 				'fields'            => [
 					"modules[users][limit][{$user_role_slug}][number]" => [
 						'type'            => 'number',
+						// translators: %s is the user role name.
 						'placeholder'     => sprintf(__('%s Role Quota. e.g. 10', 'wp-multisite-waas'), $user_role['name']),
 						'min'             => 0,
 						'wrapper_classes' => 'wu-w-full',
@@ -646,7 +649,9 @@ class Limitation_Manager {
 
 			$sections['post_types']['fields'][ "control_{$post_type_slug}" ] = [
 				'type'              => 'group',
+				// translators: %s is the post type name.
 				'title'             => sprintf(__('Limit %s', 'wp-multisite-waas'), $post_type->label),
+				// translators: %s is the post type name.
 				'desc'              => sprintf(__('The customer will be able to create %s post(s) of this post type.', 'wp-multisite-waas'), "{{ types['{$post_type_slug}'].enabled ? ( parseInt(types['{$post_type_slug}'].number, 10) ? types['{$post_type_slug}'].number : '" . __('unlimited', 'wp-multisite-waas') . "' ) : '" . __('no', 'wp-multisite-waas') . "' }}"),
 				'tooltip'           => '',
 				'wrapper_html_attr' => [
@@ -657,6 +662,7 @@ class Limitation_Manager {
 				'fields'            => [
 					"modules[post_types][limit][{$post_type_slug}][number]" => [
 						'type'            => 'number',
+						// translators: %s is the post type name.
 						'placeholder'     => sprintf(__('%s Quota. e.g. 200', 'wp-multisite-waas'), $post_type->label),
 						'min'             => 0,
 						'wrapper_classes' => 'wu-w-full',

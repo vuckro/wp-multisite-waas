@@ -44,7 +44,7 @@ class Sites_Domain_List_Table extends Domain_List_Table {
 	 */
 	public function column_responsive($item): void {
 
-		echo wu_responsive_table_row(
+		echo wu_responsive_table_row( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			[
 				'id'     => $item->get_id(),
 				'title'  => strtolower((string) $item->get_domain()),
@@ -73,6 +73,7 @@ class Sites_Domain_List_Table extends Domain_List_Table {
 				'date_created' => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
+					// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 					'value' => sprintf(__('Created %s', 'wp-multisite-waas'), wu_human_time_diff(strtotime((string) $item->get_date_created()))),
 				],
 			]

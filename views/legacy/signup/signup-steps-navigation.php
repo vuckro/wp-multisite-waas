@@ -50,13 +50,13 @@ $percent     = 100 / $count;
 
 		if ($signup->step === $step_key) {
 			$class = 'active';
-		} elseif (array_search($signup->step, array_keys($signup->steps)) > array_search($step_key, array_keys($signup->steps))) {
+		} elseif (array_search($signup->step, array_keys($signup->steps), true) > array_search($step_key, array_keys($signup->steps), true)) {
 			$class = 'done';
 		}
 
 		?>
 
-	<li style="width: <?php echo $percent; ?>%;" class="<?php echo $class; ?>">
+	<li style="width: <?php echo esc_attr($percent); ?>%;" class="<?php echo esc_attr($class); ?>">
 
 		<?php echo esc_html($step['name']); ?>
 
@@ -65,12 +65,12 @@ $percent     = 100 / $count;
 <?php endforeach; ?>
 
 </ol>
-
-<?php if ($prev_link = $signup->get_prev_step_link()) : ?>
+<?php $prev_link = $signup->get_prev_step_link(); ?>
+<?php if ($prev_link) : ?>
 
 	<div class="wu-signup-back">
 
-	<a class="wu-signup-back-link" href="<?php echo $prev_link; ?>">
+	<a class="wu-signup-back-link" href="<?php echo esc_attr($prev_link); ?>">
 
 		<?php esc_html_e('&larr; Go Back to Previous Step', 'wp-multisite-waas'); ?>
 

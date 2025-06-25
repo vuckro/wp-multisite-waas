@@ -221,13 +221,13 @@ class Default_Content_Installer extends Base_Installer {
 		$status = wu_create_site($template_site);
 
 		if (is_wp_error($status)) {
-			throw new \Exception($status->get_error_message());
+			throw new \Exception(esc_html($status->get_error_message()));
 		}
 
 		if ( ! $status) {
 			$error_message = __('Template Site was not created. Maybe a site with the /template path already exists?', 'wp-multisite-waas');
 
-			throw new \Exception($error_message);
+			throw new \Exception(esc_html($error_message));
 		}
 	}
 
@@ -316,7 +316,7 @@ class Default_Content_Installer extends Base_Installer {
 			$status = wu_create_product($product_data);
 
 			if (is_wp_error($status)) {
-				throw new \Exception($status->get_error_message());
+				throw new \Exception(esc_html($status->get_error_message()));
 			}
 
 			$status->set_featured_image_id($images[ $product_data['slug'] ]);
@@ -343,7 +343,7 @@ class Default_Content_Installer extends Base_Installer {
 		$status = wu_create_checkout_form($checkout_form);
 
 		if (is_wp_error($status)) {
-			throw new \Exception($status->get_error_message());
+			throw new \Exception(esc_html($status->get_error_message()));
 		} else {
 			$status->use_template('single-step');
 
@@ -371,7 +371,7 @@ class Default_Content_Installer extends Base_Installer {
 		$page_id = wp_insert_post($post_details);
 
 		if (is_wp_error($page_id)) {
-			throw new \Exception($page_id->get_error_message());
+			throw new \Exception(esc_html($page_id->get_error_message()));
 		}
 
 		/*
@@ -418,7 +418,7 @@ class Default_Content_Installer extends Base_Installer {
 		$page_id = wp_insert_post($page_args);
 
 		if (is_wp_error($page_id)) {
-			throw new \Exception($page_id->get_error_message());
+			throw new \Exception(esc_html($page_id->get_error_message()));
 		}
 
 		/*

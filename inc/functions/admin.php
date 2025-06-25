@@ -22,8 +22,8 @@ function wu_render_empty_state($args = []) {
 	$args = wp_parse_args(
 		$args,
 		[
-			'message'                  => __('This is not yet available...'),
-			'sub_message'              => __('We\'re still working on this part of the product.'),
+			'message'                  => __('This is not yet available...', 'wp-multisite-waas'),
+			'sub_message'              => __('We\'re still working on this part of the product.', 'wp-multisite-waas'),
 			'link_label'               => __('&larr; Go Back', 'wp-multisite-waas'),
 			'link_url'                 => 'javascript:history.go(-1)',
 			'link_classes'             => '',

@@ -35,17 +35,17 @@ $accent_color_2 = wu_color($accent_color->darken(4));
 <style>
 
 	.wu-content-plan .plan-tier h4 {
-	background-color: #<?php echo $primary_color->getHex(); ?>;
+	background-color: #<?php echo esc_html($primary_color->getHex()); ?>;
 	color: <?php echo $primary_color->isDark() ? 'white' : '#333'; ?> !important;
 	}
 
 	.wu-content-plan .plan-tier.callout h6 {
-	background-color: #<?php echo $accent_color->getHex(); ?>;
+	background-color: #<?php echo esc_html($accent_color->getHex()); ?>;
 	color: <?php echo $accent_color->isDark() ? '#f9f9f9' : 'rgba(39,65,90,.5)'; ?> !important;
 	}
 
 	.wu-content-plan .plan-tier.callout h4 {
-	background-color: #<?php echo $accent_color_2->getHex(); ?>;
+	background-color: #<?php echo esc_html($accent_color_2->getHex()); ?>;
 	color: <?php echo $accent_color->isDark() ? 'white' : '#333'; ?> !important;
 	}
 
@@ -91,7 +91,7 @@ if (empty($plans)) {
 		 */
 
 		$count   = count($plans);
-		$columns = 5 == $count ? '2-4' : 12 / $count;
+		$columns = 5 === $count ? '2-4' : 12 / $count;
 
 		foreach ($plans as $plan) {
 			wu_get_template(
@@ -127,7 +127,7 @@ if (empty($plans)) {
 		* Select the default pricing option
 		*/
 		setTimeout(function() {
-		$('[data-frequency-selector="<?php echo wu_get_setting('default_pricing_option', 1); ?>"]').click();
+		$('[data-frequency-selector="<?php echo esc_attr(wu_get_setting('default_pricing_option', 1)); ?>"]').click();
 		}, 100);
 
 	});

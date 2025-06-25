@@ -80,7 +80,7 @@ trait WP_Ultimo_Plan_Deprecated {
 		 *
 		 * @since 2.0.0
 		 */
-		_doing_it_wrong($key, __('Product keys should not be accessed directly', 'wp-multisite-waas'), '2.0.0');
+		_doing_it_wrong(esc_html($key), esc_html__('Product keys should not be accessed directly', 'wp-multisite-waas'), '2.0.0');
 
 		return $value;
 	}
@@ -145,6 +145,7 @@ trait WP_Ultimo_Plan_Deprecated {
 				$pricing_table_lines['wu_product_contact_us'] = __('Contact Us to know more', 'wp-multisite-waas');
 			} else {
 				$pricing_table_lines['wu_product_setup_fee'] = $this->has_setup_fee()
+				// translators: %s is the setup fee wrapped in strong tag.
 				? sprintf(__('Setup Fee: %s', 'wp-multisite-waas'), "<strong class='pricing-table-setupfee' data-value='" . $this->get_setup_fee() . "'>" . wu_format_currency($this->get_setup_fee()) . '</strong>')
 				: __('No Setup Fee', 'wp-multisite-waas');
 			}
@@ -179,11 +180,11 @@ trait WP_Ultimo_Plan_Deprecated {
 				*
 				 * @var integer|string
 				 */
-				$is_unlimited = (int) $this->get_limitations()->post_types->{$pt_slug}->number === 0 || ! $this->get_limitations()->post_types->is_enabled();
+				$is_unlimited = 0 === (int) $this->get_limitations()->post_types->{$pt_slug}->number || ! $this->get_limitations()->post_types->is_enabled();
 				$value        = $is_unlimited ? __('Unlimited', 'wp-multisite-waas') : $this->get_limitations()->post_types->{$pt_slug}->number;
 
 				// Add Line
-				$label = 1 == $value ? $post_type->labels->singular_name : $post_type->labels->name;
+				$label = 1 === (int) $value ? $post_type->labels->singular_name : $post_type->labels->name;
 
 				$pricing_table_lines[ 'wu_product_limit_post_type_' . $pt_slug ] = sprintf('%s %s', $value, $label);
 			}
@@ -209,7 +210,7 @@ trait WP_Ultimo_Plan_Deprecated {
 			$is_unlimited = (int) $this->get_limitations()->disk_space->get_limit() === 0 || ! $this->get_limitations()->disk_space->is_enabled();
 			$disk_space   = $is_unlimited ? __('Unlimited', 'wp-multisite-waas') : size_format(absint($this->get_limitations()->disk_space->get_limit()) * 1024 * 1024);
 
-			// Add Line
+			// Add Line, translators: %s is the disk space with appropriate suffix, MB, GB KB etc.
 			$pricing_table_lines['wu_product_limit_disk_space'] = ! empty($disk_space) ? sprintf(__('%s <strong>Disk Space</strong>', 'wp-multisite-waas'), $disk_space) : false;
 		}
 
@@ -234,7 +235,7 @@ trait WP_Ultimo_Plan_Deprecated {
 
 		if ($trial_days > 0 || $trial_days_plan) {
 			$trial_days = $trial_days_plan ?: $trial_days;
-
+			// translators: %s is the number of days for the trial
 			$pricing_table_lines['wu_product_trial'] = ! $this->is_free() ? sprintf(__('%s day <strong>Free Trial</strong>', 'wp-multisite-waas'), $trial_days) : '-';
 		}
 
@@ -248,7 +249,7 @@ trait WP_Ultimo_Plan_Deprecated {
 		$custom_features = explode('<br />', nl2br($this->get_feature_list()));
 
 		foreach ($custom_features as $key => $custom_feature) {
-			if (trim($custom_feature) == '') {
+			if (trim($custom_feature) === '') {
 				continue;
 			}
 

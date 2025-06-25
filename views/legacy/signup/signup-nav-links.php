@@ -32,7 +32,7 @@ $nav_links = apply_filters(
 	'wu_signup_form_nav_links',
 	[
 		home_url()     => __('Return to Home', 'wp-multisite-waas'),
-		wp_login_url() => sprintf('<strong>%s</strong>', __('Log In', 'wp-multisite-waas')),
+		wp_login_url() => sprintf('<strong>%s</strong>', esc_html__('Log In', 'wp-multisite-waas')),
 	]
 );
 
@@ -42,15 +42,15 @@ if ( ! isset($signup->step)) {
 
 ?>
 
-<?php if ('plan' != $signup->step && 'template' != $signup->step) : ?>
+<?php if ('plan' !== $signup->step && 'template' !== $signup->step) : ?>
 
 	<p id="nav">
 
 	<?php $i = 1; foreach ($nav_links as $link => $label) : ?>
 
-		<a href="<?php echo $link; ?>">
+		<a href="<?php echo esc_attr($link); ?>">
 
-		<?php echo $label; ?>
+		<?php echo $label; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 		</a>
 

@@ -50,6 +50,7 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 			'quantity'   => [
 				'icon'  => 'dashicons-wu-package wu-align-middle wu-mr-1',
 				'label' => __('Quantity', 'wp-multisite-waas'),
+				// translators: %d is a quantity number
 				'value' => sprintf(__('x%d', 'wp-multisite-waas'), $item->get_quantity()),
 			],
 			'unit_price' => [
@@ -97,6 +98,7 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 			$first_row['discounts_total'] = [
 				'icon'  => 'dashicons-wu-percent wu-align-middle wu-mr-1',
 				'label' => $tooltip,
+				// translators: %s is a currency amount
 				'value' => sprintf(__('Discounts: %s', 'wp-multisite-waas'), wu_format_currency($item->get_discount_total())),
 			];
 		}
@@ -123,6 +125,7 @@ class Payment_Line_Item_List_Table extends Line_Item_List_Table {
 			$first_row['tax_total'] = [
 				'icon'  => 'dashicons-wu-percent wu-align-middle wu-mr-1',
 				'label' => $tooltip,
+				// translators: %s is a currency amount
 				'value' => sprintf(__('Taxes: %s', 'wp-multisite-waas'), wu_format_currency($item->get_tax_total())),
 			];
 		}

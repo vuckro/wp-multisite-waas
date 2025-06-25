@@ -73,7 +73,7 @@ abstract class Base_Signup_Field {
 	 * @since 2.0.0
 	 * @return string
 	 */
-	abstract function get_tooltip();
+	abstract public function get_tooltip();
 
 	/**
 	 * Returns the icon to be used on the selector.

@@ -388,7 +388,7 @@ class Cart implements \JsonSerializable {
 		do_action('wu_cart_after_setup', $this); // @phpstan-ignore-line
 	}
 
-	/**
+	/**Null
 	 * Get additional parameters set by integrations and add-ons.
 	 *
 	 * @param string  $key The parameter key.
@@ -569,10 +569,10 @@ class Cart implements \JsonSerializable {
 		/*
 		 * Adds the country to calculate taxes.
 		 */
-		$this->country = ($this->country ?: $this->customer) ? $this->customer->get_country() : '';
+		$this->country = $this->country ?: ($this->customer ? $this->customer->get_country() : '');
 
 		/*
-		 * Set the currency in cart
+		 * Set the currency in the cart
 		 */
 		$this->set_currency($payment->get_currency());
 
@@ -1168,6 +1168,12 @@ class Cart implements \JsonSerializable {
 			$days_in_old_cycle = wu_get_days_in_cycle($this->membership->get_duration_unit(), $this->membership->get_duration());
 
 			$old_price_per_day = $days_in_old_cycle > 0 ? $this->membership->get_amount() / $days_in_old_cycle : $this->membership->get_amount();
+
+			if (($this->membership->get_date_created() && wu_date($this->membership->get_date_created())->format('Y-m-d') === wu_date()->format('Y-m-d')) ||
+				($this->membership->get_date_renewed() && wu_date($this->membership->get_date_renewed())->format('Y-m-d') === wu_date()->format('Y-m-d'))) {
+				// If the membership was created today, We'll use the average days in the cycle to prevent some odd numbers.
+				$days_unused = $days_in_old_cycle;
+			}
 
 			$credit = $days_unused * $old_price_per_day;
 

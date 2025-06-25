@@ -54,7 +54,7 @@ class Checkout {
 	 * Current step of the signup flow.
 	 *
 	 * @since 2.0.0
-	 * @var string
+	 * @var array
 	 */
 	public $step;
 
@@ -357,7 +357,7 @@ class Checkout {
 		if (wu_request('pre-flight')) {
 			$checkout_form_slug = false;
 
-			$_REQUEST['pre_selected'] = $_REQUEST;
+			$_REQUEST['pre_selected'] = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
 		if ( ! $checkout_form_slug && is_a($element, \WP_Ultimo\UI\Checkout_Element::class)) {
@@ -476,6 +476,7 @@ class Checkout {
 
 		$this->setup_checkout();
 
+		check_ajax_referer('wu_checkout');
 		if ($this->is_last_step()) {
 			$this->handle_order_submission();
 		} else {
@@ -503,7 +504,7 @@ class Checkout {
 
 		global $wpdb;
 
-		$wpdb->query('START TRANSACTION');
+		$wpdb->query('START TRANSACTION'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		try {
 			/*
@@ -533,18 +534,18 @@ class Checkout {
 		} catch (\Throwable $e) {
 			wu_maybe_log_error($e);
 
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			$this->errors = new \WP_Error('exception-order-submission', $e->getMessage(), $e->getTrace());
 		}
 
 		if (is_wp_error($this->errors)) {
-			$wpdb->query('ROLLBACK');
+			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			wp_send_json_error($this->errors);
 		}
 
-		$wpdb->query('COMMIT');
+		$wpdb->query('COMMIT'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		$this->session->set('signup', []);
 		$this->session->commit();
@@ -1004,7 +1005,7 @@ class Checkout {
 		 * the entire post array in here.
 		 */
 		$session = $this->session->get('signup') ?? [];
-		$billing_address->attributes(array_merge($session, $_POST));
+		$billing_address->attributes(array_merge($session, $_POST)); // phpcs:ignore WordPress.Security.NonceVerification
 
 		/*
 		 * Validates the address.
@@ -1832,10 +1833,11 @@ class Checkout {
 
 		$session = $this->session->get('signup');
 
-		$stack = $_REQUEST;
+		// Nonce check handled in calling method.
+		$stack = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification
 
 		if (is_array($session)) {
-			$stack = array_merge($session, $_REQUEST);
+			$stack = array_merge($session, $_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		if (null === $rules) {
@@ -1987,10 +1989,10 @@ class Checkout {
 			 * Cleans data and add it to the session.
 			 *
 			 * Here we remove the items that either
-			 * have checkout_ on their name, or start
-			 * with a underscore.
+			 * have checkout_ on their name or start
+			 * with an underscore.
 			 */
-			$to_save = array_filter($_POST, fn($item) => ! str_starts_with((string) $item, 'checkout_') && ! str_starts_with((string) $item, '_'), ARRAY_FILTER_USE_KEY);
+			$to_save = array_filter($_POST, fn($item) => ! str_starts_with((string) $item, 'checkout_') && ! str_starts_with((string) $item, '_'), ARRAY_FILTER_USE_KEY); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if (isset($to_save['pre-flight'])) {
 				unset($to_save['pre-flight']);
@@ -2166,7 +2168,7 @@ class Checkout {
 				 *
 				 * @since 1.1.3 Let developers filter the redirect URL.
 				 */
-				$redirect_url = apply_filters('wp_ultimo_redirect_url_after_signup', $redirect_url, 0, get_current_user_id(), $_POST);
+				$redirect_url = apply_filters('wp_ultimo_redirect_url_after_signup', $redirect_url, 0, get_current_user_id(), $_POST); // phpcs:ignore WordPress.Security.NonceVerification
 
 				$redirect_url = add_query_arg(
 					[
@@ -2183,6 +2185,7 @@ class Checkout {
 		} catch (\Throwable $e) {
 			$membership_id = $this->order->get_membership() ? $this->order->get_membership()->get_id() : 'unknown';
 
+			// translators: %s is the membership ID
 			$log_message  = sprintf(__('Checkout failed for customer %s: ', 'wp-multisite-waas'), $membership_id);
 			$log_message .= $e->getMessage();
 

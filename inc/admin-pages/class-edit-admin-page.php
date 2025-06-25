@@ -829,11 +829,10 @@ abstract class Edit_Admin_Page extends Base_Admin_Page {
 		$_POST['active'] = (bool) wu_request('active', false);
 
 		// Nonce handled in calling method.
-		$object->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$object->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerification
 
 		if (method_exists($object, 'handle_limitations')) {
-			$object->handle_limitations($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
+			$object->handle_limitations($_POST); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		$save = $object->save();

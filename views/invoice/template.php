@@ -139,13 +139,9 @@ $has_tax_included = false;
 					<tr>
 						<td class="title">
 							<?php if ($use_custom_logo && $custom_logo) : ?>
-
 								<?php echo wp_get_attachment_image($custom_logo, 'full', false, array('style' => 'width: 100px; height: auto;')); ?>
-
 							<?php else : ?>
-
 								<img width="100" src="<?php echo esc_attr($logo_url); ?>" alt="<?php echo esc_attr(get_network_option(null, 'site_name')); ?>">
-								
 							<?php endif; ?>
 						</td>
 
@@ -153,6 +149,7 @@ $has_tax_included = false;
 							<strong><?php esc_html_e('Invoice #', 'wp-multisite-waas'); ?></strong><br>
 							<?php echo esc_html($payment->get_invoice_number()); ?>
 							<br>
+							<?php // translators: %s is the payment creation date ?>
 							<?php echo esc_html(sprintf(esc_html__('Created: %s', 'wp-multisite-waas'), date_i18n(get_option('date_format'), strtotime($payment->get_date_created())))); ?><br>
 
 							<?php esc_html_e('Due on Receipt', 'wp-multisite-waas'); ?><br>
@@ -201,7 +198,6 @@ $has_tax_included = false;
 							echo nl2br(esc_html(implode(PHP_EOL, (array) $billing_address)));
 
 							?>
-						   
 						</td>
 					</tr>
 				</table>
@@ -275,6 +271,8 @@ $has_tax_included = false;
 				</td>
 			<?php endif; ?>
 			<td colspan='5'>
+
+				<?php // translators: %s is the total amount in currency format. ?>
 				<?php printf(esc_html__('Total: %s', 'wp-multisite-waas'), esc_html(wu_format_currency($payment->get_total(), $payment->get_currency()))); ?>
 			</td>
 		</tr>

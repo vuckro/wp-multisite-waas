@@ -1525,8 +1525,8 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in parent::handle_save()
 		if (isset($_POST['_settings'])) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- We're using json_decode which handles sanitization
-			$_POST['settings'] = json_decode(wp_unslash((string) $_POST['_settings']), true); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			// We're using json_decode which handles sanitization
+			$_POST['settings'] = json_decode(wp_unslash((string) $_POST['_settings']), true); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
 		/**

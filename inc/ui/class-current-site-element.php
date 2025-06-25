@@ -493,7 +493,7 @@ class Current_Site_Element extends Base_Element {
 		$status = update_blog_option($site->get_id(), 'blogname', $new_title);
 
 		$status_desc = update_blog_option($site->get_id(), 'blogdescription', wu_request('site_description'));
-		$referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
+		$referer     = isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 
 		wp_send_json_success(
 			[

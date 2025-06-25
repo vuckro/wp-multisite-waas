@@ -539,7 +539,7 @@ class Broadcast_List_Admin_Page extends List_Admin_Page {
 			],
 			[
 				'url'   => wu_network_admin_url('wp-ultimo-emails'),
-				'label' => __('System Emails'),
+				'label' => __('System Emails', 'wp-multisite-waas'),
 				'icon'  => 'wu-mail',
 			],
 		];

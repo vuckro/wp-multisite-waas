@@ -87,7 +87,7 @@
 	<?php if ($object->get_object()) : ?>
 
 		<li class="wu-p-4 wu-m-0 wu-border-t wu-border-l-0 wu-border-r-0 wu-border-b-0 wu-border-gray-300 wu-border-solid">
-
+		<?php // translators: %s is a placeholder for the object type name. ?>
 		<h3 class="wu-mt-1 wu-mb-2 wu-text-2xs wu-uppercase"><?php printf(esc_html__('Target %s', 'wp-multisite-waas'), esc_html(wu_slug_to_name($object->get_object_type()))); ?></h3>
 
 		<?php

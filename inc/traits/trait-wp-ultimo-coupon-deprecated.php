@@ -29,7 +29,7 @@ trait WP_Ultimo_Coupon_Deprecated {
 		 *
 		 * @since 2.0.0
 		 */
-		_doing_it_wrong($key, __('Discount Code keys should not be set directly.', 'wp-multisite-waas'), '2.0.0');
+		_doing_it_wrong(esc_html($key), esc_html__('Discount Code keys should not be set directly.', 'wp-multisite-waas'), '2.0.0');
 
 		$this->meta[ "wpu_{$key}" ] = $value;
 	}
@@ -67,7 +67,7 @@ trait WP_Ultimo_Coupon_Deprecated {
 		 *
 		 * @since 2.0.0
 		 */
-		_doing_it_wrong($key, __('Discount Code keys should not be accessed directly', 'wp-multisite-waas'), '2.0.0');
+		_doing_it_wrong(esc_html($key), esc_html__('Discount Code keys should not be accessed directly', 'wp-multisite-waas'), '2.0.0');
 
 		return $value;
 	}

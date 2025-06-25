@@ -227,7 +227,6 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 				'order'             => 30,
 				'type'              => 'textarea',
 				'title'             => __('Available Domains', 'wp-multisite-waas'),
-				'desc'              => '',
 				'desc'              => __('Enter one domain option per line.', 'wp-multisite-waas'),
 				'value'             => $current_site->domain . PHP_EOL,
 				'tab'               => 'content',
@@ -289,8 +288,6 @@ class Signup_Field_Site_Url extends Base_Signup_Field {
 		$checkout_fields['site_url'] = [
 			'type'            => 'text',
 			'id'              => 'site_url',
-			'wrapper_classes' => 'wu-flex-grow wu-my-0',
-			'classes'         => 'disabled sm:wu-my-0',
 			'name'            => $attributes['name'],
 			'placeholder'     => $attributes['placeholder'],
 			'tooltip'         => $attributes['tooltip'],

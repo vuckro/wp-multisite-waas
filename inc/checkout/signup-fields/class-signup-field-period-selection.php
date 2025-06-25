@@ -288,7 +288,7 @@ class Signup_Field_Period_Selection extends Base_Signup_Field {
 	public function to_fields_array($attributes) {
 
 		if ('legacy' === wu_get_isset($attributes, 'period_selection_template')) {
-			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], wu_get_version());
+			wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], wu_get_version(), true);
 
 			wp_enqueue_script('wu-legacy-signup');
 

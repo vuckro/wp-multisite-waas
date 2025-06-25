@@ -192,8 +192,8 @@ class Base_List_Table extends \WP_List_Table {
 
 		$list_table_name = $this->id;
 
-		if ( ! empty($_REQUEST['mode']) && in_array($_REQUEST['mode'], array_keys($this->modes), true)) {
-			$mode = $_REQUEST['mode'];
+		if ( ! empty($_REQUEST['mode']) && in_array($_REQUEST['mode'], array_keys($this->modes), true)) { // phpcs:ignore WordPress.Security.NonceVerification
+			$mode = sanitize_text_field(wp_unslash($_REQUEST['mode'])); // phpcs:ignore WordPress.Security.NonceVerification
 			set_user_setting("{$list_table_name}_list_mode", $mode);
 		} else {
 			$mode = get_user_setting("{$list_table_name}_list_mode", current(array_keys($this->modes)));
@@ -1174,36 +1174,6 @@ class Base_List_Table extends \WP_List_Table {
 	}
 
 	/**
-	 * Fills the filter array with values returned from the current request.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $name Filter name.
-	 * @return mixed
-	 */
-	public function fill_normal_type($name) {
-
-		return isset($_REQUEST[ $name ]) ? ((array) $_REQUEST[ $name ]) : [];
-	}
-
-	/**
-	 * Fills the data filter array with values returned from the current request.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $name Filter name.
-	 * @return mixed
-	 */
-	public function fill_date_type($name) {
-
-		return (object) [
-			'after'  => $_REQUEST[ $name ]['after'] ?? 'all',
-			'before' => $_REQUEST[ $name ]['before'] ?? 'all',
-			'type'   => $_REQUEST[ 'filter_' . $name ] ?? 'all',
-		];
-	}
-
-	/**
 	 * Get the default date filter options.
 	 *
 	 * @since 2.0.0
@@ -1344,11 +1314,11 @@ class Base_List_Table extends \WP_List_Table {
 
 		if (isset($filters['date_filters'])) {
 			foreach ($filters['date_filters'] as $field_name => $field) {
-				if ( ! isset($_REQUEST[ $field_name ])) {
+				if ( ! isset($_REQUEST[ $field_name ])) { // phpcs:ignore WordPress.Security.NonceVerification
 					continue;
 				}
 
-				if (isset($_REQUEST[ $field_name ]['before']) && isset($_REQUEST[ $field_name ]['after']) && '' === $_REQUEST[ $field_name ]['before'] && '' === $_REQUEST[ $field_name ]['after']) {
+				if (isset($_REQUEST[ $field_name ]['before']) && isset($_REQUEST[ $field_name ]['after']) && '' === $_REQUEST[ $field_name ]['before'] && '' === $_REQUEST[ $field_name ]['after']) { // phpcs:ignore WordPress.Security.NonceVerification
 					continue;
 				}
 

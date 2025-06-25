@@ -307,7 +307,7 @@ class General_Compat {
 	 */
 	public function fix_divi_editor_screen(bool $should_redirect): bool {
 
-		if (isset($_GET['et_fb']) && (bool) $_GET['et_fb']) {
+		if (isset($_GET['et_fb']) && (bool) $_GET['et_fb']) { // phpcs:ignore WordPress.Security.NonceVerification
 			return false;
 		}
 

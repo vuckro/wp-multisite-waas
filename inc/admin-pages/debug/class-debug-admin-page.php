@@ -110,8 +110,8 @@ class Debug_Admin_Page extends Base_Admin_Page {
 					<a class="wu-mx-1 wu-block wu-p-2 wu-box-border wu-border wu-border-gray-400 wu-border-solid wu-rounded" href="%s">%s</a>
 				</li>
 			',
-				$url,
-				$page_id
+				esc_attr($url),
+				esc_html($page_id)
 			);
 		}
 

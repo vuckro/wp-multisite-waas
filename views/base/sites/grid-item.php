@@ -1,6 +1,6 @@
 <?php
 /**
- * grid item view.
+ * Grid item view.
  *
  * @since 2.0.0
  */

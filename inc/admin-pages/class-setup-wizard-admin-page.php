@@ -815,7 +815,7 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			/*
 			* Adds tipTip
 			*/
-			wp_enqueue_script('wu-tiptip', wu_get_asset('lib/tiptip.js', 'js'), \WP_Ultimo::VERSION, true);
+			wp_enqueue_script('wu-tiptip', wu_get_asset('lib/tiptip.js', 'js'), [], \WP_Ultimo::VERSION, true);
 
 			/*
 			* Adds jQueryBlockUI
@@ -859,11 +859,11 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 			wp_add_inline_script('wu-setup-wizard-polyfill', 'document.addEventListener("DOMContentLoaded", () => wu_initialize_imagepicker());', 'after');
 		}
 
-		wp_enqueue_script('wu-setup-wizard-polyfill', wu_get_asset('setup-wizard-polyfill.js', 'js'), ['jquery', 'wu-fields', 'wu-functions', 'wubox'], wu_get_version());
+		wp_enqueue_script('wu-setup-wizard-polyfill', wu_get_asset('setup-wizard-polyfill.js', 'js'), ['jquery', 'wu-fields', 'wu-functions', 'wubox'], wu_get_version(), true);
 
 		wp_enqueue_media();
 
-		wp_register_script('wu-setup-wizard', wu_get_asset('setup-wizard.js', 'js'), ['jquery'], wu_get_version());
+		wp_register_script('wu-setup-wizard', wu_get_asset('setup-wizard.js', 'js'), ['jquery'], wu_get_version(), true);
 
 		wp_add_inline_style(
 			'wu-admin',

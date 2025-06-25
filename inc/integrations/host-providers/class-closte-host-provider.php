@@ -157,7 +157,7 @@ class Closte_Host_Provider extends Base_Host_Provider {
 		if (wu_get_isset($response, 'error') === 'Invalid or empty domain: ') {
 			wp_send_json_success(
 				[
-					'message' => __('Access Authorized'),
+					'message' => __('Access Authorized', 'wp-multisite-waas'),
 				]
 			);
 		}

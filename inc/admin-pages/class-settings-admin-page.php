@@ -520,7 +520,7 @@ class Settings_Admin_Page extends Wizard_Admin_Page {
 		if ( ! current_user_can('wu_edit_settings')) {
 			wp_die(esc_html__('You do not have the permissions required to change settings.', 'wp-multisite-waas'));
 		}
-        // Nonce processed in the calling method.
+		// Nonce processed in the calling method.
 		if ( ! isset($_POST['active_gateways']) && 'payment-gateways' === wu_request('tab')) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$_POST['active_gateways'] = [];
 		}

@@ -78,7 +78,7 @@ class Inside_Events_List_Table extends Event_List_Table {
 			$value = sprintf('<span class="wu-text-gray-600">%s%s</span>', $avatar, $display_name);
 		}
 
-		echo wu_responsive_table_row(
+		echo wu_responsive_table_row( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			[
 				'id'     => '',
 				'title'  => sprintf('<span class="wu-font-normal">%s</span>', wp_trim_words($item->get_message(), 15)),
@@ -95,6 +95,7 @@ class Inside_Events_List_Table extends Event_List_Table {
 				'date_created' => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
+					// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 					'value' => sprintf(__('Processed %s', 'wp-multisite-waas'), wu_human_time_diff($item->get_date_created(), '-1 day')),
 				],
 			]

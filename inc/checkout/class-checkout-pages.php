@@ -413,13 +413,20 @@ class Checkout_Pages {
 	public function add_verify_email_notice($payment, $membership, $customer): void {
 
 		if ($payment->get_total() === 0.0 && $customer->get_email_verification() === 'pending') {
-			$html = '<div class="wu-p-4 wu-bg-yellow-200 wu-mb-2 wu-text-yellow-700 wu-rounded">%s</div>';
-
-			$message = __('Your email address is not yet verified. Your site <strong>will only be activated</strong> after your email address is verified. Check your inbox and verify your email address.', 'wp-multisite-waas');
-
-			$message .= sprintf('<br><a href="#" class="wu-resend-verification-email wu-text-gray-700">%s</a>', __('Resend verification email &rarr;', 'wp-multisite-waas'));
-
-			printf($html, $message);
+			printf(
+				'<div class="wu-p-4 wu-bg-yellow-200 wu-mb-2 wu-text-yellow-700 wu-rounded">
+                    %s
+                    <br>
+                    <a href="#" class="wu-resend-verification-email wu-text-gray-700">%s</a>
+                </div>',
+				sprintf(
+					// translators: %1$s and %2$s are <strong></strong> HTML tags
+					esc_html__('Your email address is not yet verified. Your site %1$s will only be activated %2$s after your email address is verified. Check your inbox and verify your email address.', 'wp-multisite-waas'),
+					'<strong>',
+					'</strong>'
+				),
+				esc_html__('Resend verification email →', 'wp-multisite-waas')
+			);
 		}
 	}
 
@@ -437,7 +444,7 @@ class Checkout_Pages {
 			return;
 		}
 
-		if ('POST' === $_SERVER['REQUEST_METHOD']) {
+		if (isset($_SERVER['REQUEST_METHOD']) && 'POST' === $_SERVER['REQUEST_METHOD']) {
 			return;
 		}
 
@@ -537,7 +544,7 @@ class Checkout_Pages {
 		}
 
 		if ($redirect) {
-			$new_login_url = add_query_arg('redirect_to', urlencode($redirect), $new_login_url);
+			$new_login_url = add_query_arg('redirect_to', rawurlencode($redirect), $new_login_url);
 		}
 
 		if ($force_reauth) {

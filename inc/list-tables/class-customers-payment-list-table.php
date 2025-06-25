@@ -72,6 +72,7 @@ class Customers_Payment_List_Table extends Payment_List_Table {
 				'date_created' => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => '',
+					// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 					'value' => sprintf(__('Created %s', 'wp-multisite-waas'), wu_human_time_diff(strtotime((string) $item->get_date_created()))),
 				],
 			]

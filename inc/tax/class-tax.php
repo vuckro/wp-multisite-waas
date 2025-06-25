@@ -361,7 +361,7 @@ class Tax {
 				</span>
 
 				<div class="wu-py-2">
-					<img class="wu-w-full" alt="<?php esc_attr_e('Manage Tax Rates', 'wp-multisite-waas'); ?>" src="<?php echo wu_get_asset('sidebar/invoices.webp'); ?>">
+					<img class="wu-w-full" alt="<?php esc_attr_e('Manage Tax Rates', 'wp-multisite-waas'); ?>" src="<?php echo esc_attr(wu_get_asset('sidebar/invoices.webp')); ?>">
 				</div>
 
 				<p class="wu-text-gray-600 wu-p-0 wu-m-0">
@@ -384,7 +384,7 @@ class Tax {
 
 					<div v-cloak>
 
-						<a v-if="enabled" class="button wu-w-full wu-text-center" target="_blank" href="<?php echo wu_network_admin_url('wp-ultimo-tax-rates'); ?>">
+						<a v-if="enabled" class="button wu-w-full wu-text-center" target="_blank" href="<?php echo esc_attr(wu_network_admin_url('wp-ultimo-tax-rates')); ?>">
 							<?php esc_html_e('Manage Tax Rates &rarr;', 'wp-multisite-waas'); ?>
 						</a>
 

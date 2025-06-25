@@ -98,7 +98,7 @@ class Site_List_Table extends Parent_Site_List_Table {
 		$fields = parent::get_extra_fields();
 
 		$fields = [
-			'meta_query' => [
+			'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				'customer_id' => [
 					'key'   => 'wu_customer_id',
 					'value' => $customer->get_id(),

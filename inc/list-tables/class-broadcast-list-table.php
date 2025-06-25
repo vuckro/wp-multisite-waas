@@ -156,8 +156,6 @@ class Broadcast_List_Table extends Base_List_Table {
 														<span class='wu-block wu-py-3 wu-text-gray-600 wu-text-2xs wu-font-bold wu-uppercase'>{$not_found}</span>
 												</div>
 										</div>";
-
-			break;
 			case 1:
 				$customer = array_pop($targets);
 
@@ -193,7 +191,6 @@ class Broadcast_List_Table extends Base_List_Table {
 								</a>";
 
 				return $html;
-			break;
 			default:
 				foreach ($targets as $key => $target) {
 					$customer = $target;
@@ -266,8 +263,6 @@ class Broadcast_List_Table extends Base_List_Table {
 				$html .= '</div>';
 
 				return $html;
-
-			break;
 		}
 	}
 
@@ -324,7 +319,7 @@ class Broadcast_List_Table extends Base_List_Table {
 				if ($plan_customers) {
 					$customer_count = count($plan_customers);
 				}
-
+				// translators: %s: number of customers
 				$description = sprintf(__('%s customer(s) targeted.', 'wp-multisite-waas'), $customer_count);
 
 				$url_atts = [
@@ -463,17 +458,6 @@ class Broadcast_List_Table extends Base_List_Table {
 				],
 			],
 		];
-	}
-
-	/**
-	 * Registers the necessary scripts and styles for this admin page.
-	 *
-	 * @since 2.0.0
-	 * @return void
-	 */
-	public function register_scripts(): void {
-
-		parent::register_scripts();
 	}
 
 	/**

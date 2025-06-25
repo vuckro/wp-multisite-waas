@@ -329,7 +329,7 @@ class Domain_List_Admin_Page extends List_Admin_Page {
 
 		return [
 			[
-				'label'   => __('Add Domain'),
+				'label'   => __('Add Domain', 'wp-multisite-waas'),
 				'icon'    => 'wu-circle-with-plus',
 				'classes' => 'wubox',
 				'url'     => wu_get_form_url('add_new_domain'),

@@ -249,7 +249,7 @@ if (null !== $first_recurring_product) {
 
 <?php endforeach; ?>
 
-				<sub v-if="1 == <?php echo esc_attr($product->get_duration()); ?> && 'month' == '<?php echo $product->get_duration_unit(); ?>'">
+				<sub v-if="1 == <?php echo esc_attr($product->get_duration()); ?> && 'month' == '<?php echo esc_attr($product->get_duration_unit()); ?>'">
 
 					<?php
 
@@ -258,7 +258,7 @@ if (null !== $first_recurring_product) {
 					 */
 					$symbol = $product->is_recurring() ? __('/mo', 'wp-multisite-waas') : '';
 
-					echo (! $symbol_left ? wu_get_currency_symbol() : '') . ' ' . $symbol;
+					echo esc_html((! $symbol_left ? wu_get_currency_symbol() : '') . ' ' . $symbol);
 
 					?>
 
@@ -273,7 +273,7 @@ if (null !== $first_recurring_product) {
 					 */
 					$symbol = $product->is_recurring() ? $product->get_recurring_description() : '';
 
-					echo (! $symbol_left ? wu_get_currency_symbol() : '') . ' ' . $symbol;
+					echo esc_html((! $symbol_left ? wu_get_currency_symbol() : '') . ' ' . $symbol);
 
 					?>
 
@@ -286,7 +286,7 @@ if (null !== $first_recurring_product) {
 
 			<p class="early-adopter-price">
 
-				<?php echo $product->get_description(); ?>
+				<?php echo esc_html($product->get_description()); ?>
 
 			</p>
 
@@ -311,9 +311,10 @@ if (null !== $first_recurring_product) {
 				foreach ($prices_total as $freq => $string) {
 					$price_variation = $product->get_price_variation($freq, 'month');
 
-					if ( ! $price_variation || $product->get_pricing_type() == 'free' || $product->get_pricing_type() == 'contact_us') {
-						echo "<li v-cloak v-show='duration == " . esc_attr($freq) . "' class='total-price total-price-($freq)'>-</li>";
+					if ( ! $price_variation || $product->get_pricing_type() === 'free' || $product->get_pricing_type() === 'contact_us') {
+						echo "<li v-cloak v-show='duration == " . esc_attr($freq) . "' class='total-price total-price-(" . esc_attr($freq) . ")'>-</li>";
 					} else {
+						// translators: %1$s: the price, %2$s: the period.
 						$text = sprintf(__('%1$s, billed %2$s', 'wp-multisite-waas'), wu_format_currency($price_variation['amount']), $string);
 
 						$extra_check_for_annual = '';
@@ -322,7 +323,7 @@ if (null !== $first_recurring_product) {
 							$extra_check_for_annual = ' || (duration == "1" && duration_unit == "year")';
 						}
 
-						echo "<li v-cloak v-show='duration == " . $freq . $extra_check_for_annual . "' class='total-price total-price-$freq'>$text</li>";
+						echo "<li v-cloak v-show='duration == " . esc_attr($freq . $extra_check_for_annual) . "' class='total-price total-price-" . esc_attr($freq) . "'>" . esc_html($text) . '</li>';
 					}
 				}
 
@@ -330,7 +331,7 @@ if (null !== $first_recurring_product) {
 
 			<?php foreach ($product->get_pricing_table_lines() as $key => $line) : ?>
 
-				<li class="<?php echo str_replace('_', '-', $key); ?>"><?php echo $line; ?></li>
+				<li class="<?php echo esc_attr(str_replace('_', '-', $key)); ?>"><?php echo esc_html($line); ?></li>
 
 			<?php endforeach; ?>
 
@@ -338,10 +339,10 @@ if (null !== $first_recurring_product) {
 
 				<button
 				v-if="<?php echo wp_json_encode($product->get_pricing_type() !== 'contact_us'); ?>"
-				v-on:click="add_plan(<?php echo $product->get_id(); ?>)"
+				v-on:click="add_plan(<?php echo esc_attr($product->get_id()); ?>)"
 				type="button"
 				name="products[]"
-				value="<?php echo $product->get_id(); ?>"
+				value="<?php echo esc_attr($product->get_id()); ?>"
 				class="button button-primary button-next"
 				>
 				<?php esc_html_e('Select Plan', 'wp-multisite-waas'); ?>
@@ -351,7 +352,7 @@ if (null !== $first_recurring_product) {
 				v-else
 				v-on:click="open_url('<?php echo esc_url($product->get_contact_us_link()); ?>', '_blank');" type="button"
 				name="products[]"
-				value="<?php echo $product->get_id(); ?>"
+				value="<?php echo esc_attr($product->get_id()); ?>"
 				class="button button-primary button-next"
 				>
 				<?php esc_html_e('Select Plan', 'wp-multisite-waas'); ?>

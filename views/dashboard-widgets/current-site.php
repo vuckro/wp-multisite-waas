@@ -30,7 +30,7 @@
 					<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
 					</svg>
 
-					<span class="screen-reader-text"><?php esc_html_e('Home'); ?></span>
+					<span class="screen-reader-text"><?php esc_html_e('Home', 'wp-multisite-waas'); ?></span>
 
 				</div>
 
@@ -52,7 +52,7 @@
 					<path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
 					</svg>
 					<span class="wu-mx-4 wu-text-sm wu-font-medium wu-text-gray-700 hover:wu-text-gray-700">
-						<?php echo $current_site->get_title(); ?>
+						<?php echo esc_html($current_site->get_title()); ?>
 					</span>
 				</div>
 				</li>
@@ -78,6 +78,7 @@
 				style="max-width: <?php echo esc_attr($screenshot_size); ?>px;"
 				class="wu-w-full wu-rounded wu-border wu-border-solid <?php echo esc_attr(wu_env_picker('wu-border-gray-300', 'wu-border-gray-400')); ?>" 
 				src="<?php echo esc_attr($current_site->get_featured_image()); ?>"
+				<?php // translators: %s: Site title. ?>
 				alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), esc_attr($current_site->get_title())); ?>"
 			>
 
@@ -91,13 +92,13 @@
 
 			<span class="wu-text-3xl wu-font-bold wu-text-gray-900 sm:wu-text-4xl wu-block wu-leading-none">
 
-				<?php echo $current_site->get_title(); ?>
+				<?php echo esc_html($current_site->get_title()); ?>
 
 			</span>
 
 			<span class="wu-text-sm wu-text-gray-600 wu-block wu-my-3 wu-leading-none">
 
-				<?php echo $current_site->get_active_site_url(); ?>
+				<?php echo esc_html($current_site->get_active_site_url()); ?>
 
 			</span>
 
@@ -105,7 +106,7 @@
 
 				<span class="wu-text-sm wu-text-gray-700 wu-my-5 wu-block wu-leading-none">
 
-				<?php echo $current_site->get_description(); ?>
+				<?php echo esc_html($current_site->get_description()); ?>
 
 				</span>
 
@@ -126,7 +127,7 @@
 
 					<span class="<?php echo esc_attr($action['icon_classes']); ?>"></span>
 
-					<?php echo $action['label']; ?>
+					<?php echo esc_html($action['label']); ?>
 
 					</a>
 

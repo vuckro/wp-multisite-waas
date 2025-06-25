@@ -73,7 +73,7 @@
 			<div class="wu-toggle wu-mt-1">
 
 				<input 
-				<?php checked((int)$site_template->get_id() === (int)$product->get_limitations()->site_templates->get_pre_selected_site_template()); ?>
+				<?php checked((int) $site_template->get_id() === (int) $product->get_limitations()->site_templates->get_pre_selected_site_template()); ?>
 				class="wu-tgl wu-tgl-ios" 
 				value="pre_selected" 
 				id="wu-tg-<?php echo esc_attr($site_template->get_id()); ?>" 

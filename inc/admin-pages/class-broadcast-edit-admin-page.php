@@ -187,12 +187,13 @@ class Broadcast_Edit_Admin_Page extends Edit_Admin_Page {
 
 		switch ($targets) {
 			case $targets_count < 0:
-				$not_found = __('No customer found', 'wp-multisite-waas');
-
-				echo "<span class='dashicons dashicons-wu-block wu-text-gray-600 wu-px-1 wu-pr-3'>&nbsp;</span>
-									<div class=''>
-										<span class='wu-block wu-py-3 wu-text-gray-600 wu-text-2xs wu-font-bold wu-uppercase'>{$not_found}</span>
-									</div>";
+				printf(
+					"<span class='dashicons dashicons-wu-block wu-text-gray-600 wu-px-1 wu-pr-3'>&nbsp;</span>
+						<div class=''>
+							<span class='wu-block wu-py-3 wu-text-gray-600 wu-text-2xs wu-font-bold wu-uppercase'>%s</span>
+						</div>",
+					esc_html__('No customer found', 'wp-multisite-waas')
+				);
 
 				break;
 			case 1 === $targets_count:

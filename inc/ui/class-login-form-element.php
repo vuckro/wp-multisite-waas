@@ -396,8 +396,8 @@ class Login_Form_Element extends Base_Element {
 
 			$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
 
-			if (isset($_GET['key']) && isset($_GET['login'])) {
-				$value = sprintf('%s:%s', sanitize_text_field(wp_unslash($_GET['login'])), sanitize_text_field(wp_unslash($_GET['key'])));
+			if (isset($_GET['key']) && isset($_GET['login'])) { // phpcs:ignore WordPress.Security.NonceVerification
+				$value = sprintf('%s:%s', sanitize_text_field(wp_unslash($_GET['login'])), sanitize_text_field(wp_unslash($_GET['key']))); // phpcs:ignore WordPress.Security.NonceVerification
 
 				setcookie(
 					$rp_cookie,
@@ -605,7 +605,7 @@ class Login_Form_Element extends Base_Element {
 
 				$user = check_password_reset_key($rp_key, $rp_login);
 
-				if (isset($_POST['pass1']) && isset($_POST['rp_key']) && ! hash_equals(wp_unslash($_POST['rp_key']), wp_unslash($_POST['rp_key']))) {
+				if (isset($_POST['pass1']) && isset($_POST['rp_key']) && ! hash_equals(wp_unslash($_POST['rp_key']), wp_unslash($_POST['rp_key']))) { // phpcs:ignore WordPress.Security.NonceVerification
 					$user = false;
 				}
 			} else {
@@ -743,7 +743,7 @@ class Login_Form_Element extends Base_Element {
 				'value' => $atts['redirect'],
 			];
 
-			if (isset($_GET['redirect_to'])) {
+			if (isset($_GET['redirect_to'])) { // phpcs:ignore WordPress.Security.NonceVerification
 				$atts['redirect_type'] = 'query_redirect';
 			} elseif ('customer_site' === $atts['redirect_type']) {
 				$fields['redirect_to']['value'] = $atts['customer_redirect_path'];

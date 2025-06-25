@@ -39,15 +39,15 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 
 ?>
 
-<div id="plan-<?php echo $plan->get_id(); ?>" data-plan="<?php echo $plan->get_id(); ?>" <?php echo $plan_attrs; ?> class="<?php echo "wu-product-{$plan->get_id()}"; ?> lift wu-plan plan-tier <?php echo $plan->is_featured_plan() ? 'callout' : ''; ?> wu-col-sm-<?php echo $columns; ?> wu-col-xs-12">
+<div id="plan-<?php echo esc_attr($plan->get_id()); ?>" data-plan="<?php echo esc_attr($plan->get_id()); ?>" <?php echo $plan_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="<?php echo esc_attr("wu-product-{$plan->get_id()}"); ?> lift wu-plan plan-tier <?php echo $plan->is_featured_plan() ? 'callout' : ''; ?> wu-col-sm-<?php echo esc_attr($columns); ?> wu-col-xs-12">
 
 	<?php if ($plan->is_featured_plan()) : ?>
 
-	<h6><?php echo apply_filters('wu_featured_plan_label', __('Featured Plan', 'wp-multisite-waas'), $plan); ?></h6>
+	<h6><?php echo esc_html(apply_filters('wu_featured_plan_label', __('Featured Plan', 'wp-multisite-waas'), $plan)); ?></h6>
 
 	<?php endif; ?>
 
-	<h4 class="wp-ui-primary"><?php echo $plan->get_name(); ?></h4>
+	<h4 class="wp-ui-primary"><?php echo esc_html($plan->get_name()); ?></h4>
 
 	<!-- Price -->
 	<?php if ($plan->is_free()) : ?>
@@ -59,25 +59,25 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	<?php elseif ($plan->is_contact_us()) : ?>
 
 	<h5>
-		<span class="plan-price-contact-us"><?php echo apply_filters('wu_plan_contact_us_price_line', __('--', 'wp-multisite-waas')); ?></span>
+		<span class="plan-price-contact-us"><?php echo esc_html(apply_filters('wu_plan_contact_us_price_line', __('--', 'wp-multisite-waas'))); ?></span>
 	</h5>
 
 	<?php else : ?>
 
 	<h5>
-		<?php $symbol_left = in_array(wu_get_setting('currency_position', '%s%v'), ['%s%v', '%s %v']); ?>
+		<?php $symbol_left = in_array(wu_get_setting('currency_position', '%s%v'), ['%s%v', '%s %v'], true); ?>
 		<?php
 		if ($symbol_left) :
 			?>
-			<sup class="superscript"><?php echo wu_get_currency_symbol(); ?></sup><?php endif; ?>
-		<span class="plan-price"><?php echo str_replace(wu_get_currency_symbol(), '', wu_format_currency($plan->price_1)); ?></span>
-		<sub> <?php echo (! $symbol_left ? wu_get_currency_symbol() : '') . ' ' . __('/mo', 'wp-multisite-waas'); ?></sub>
+			<sup class="superscript"><?php echo esc_html(wu_get_currency_symbol()); ?></sup><?php endif; ?>
+		<span class="plan-price"><?php echo esc_html(str_replace(wu_get_currency_symbol(), '', wu_format_currency($plan->price_1))); ?></span>
+		<sub> <?php echo esc_html((! $symbol_left ? wu_get_currency_symbol() : '') . ' ' . __('/mo', 'wp-multisite-waas')); ?></sub>
 	</h5>
 
 	<?php endif; ?>
 	<!-- end Price -->
 
-	<p class="early-adopter-price"><?php echo $plan->get_description(); ?>&nbsp;</p><br>
+	<p class="early-adopter-price"><?php echo esc_html($plan->get_description()); ?>&nbsp;</p><br>
 
 
 	<!-- Feature List Begins -->
@@ -94,12 +94,13 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	];
 
 	foreach ($prices_total as $freq => $string) {
+		// translators: %1$s: Plan name, %2$s: Plan price
 		$text = sprintf(__('%1$s, billed %2$s', 'wp-multisite-waas'), wu_format_currency($plan->{"price_$freq"}), $string);
 
 		if ($plan->free || $plan->is_contact_us()) {
-			echo "<li class='total-price total-price-$freq'>-</li>";
+			echo "<li class='total-price total-price-" . esc_attr($freq) . "'>-</li>";
 		} else {
-			echo "<li class='total-price total-price-$freq'>$text</li>";
+			echo "<li class='total-price total-price-" . esc_attr($freq) . "'>" . esc_html($text) . '</li>';
 		}
 	}
 
@@ -109,7 +110,7 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	foreach ($plan->get_pricing_table_lines() as $key => $line) :
 		?>
 
-		<li class="<?php echo str_replace('_', '-', $key); ?>"><?php echo $line; ?></li>
+		<li class="<?php echo esc_attr(str_replace('_', '-', $key)); ?>"><?php echo esc_html($line); ?></li>
 
 	<?php endforeach; ?>
 
@@ -122,16 +123,16 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	<?php if ($plan->is_contact_us()) : ?>
 
 		<li class="wu-cta">
-		<a href="<?php echo $plan->contact_us_link; ?>" class="button button-primary">
-			<?php echo $plan->get_contact_us_label(); ?>
+		<a href="<?php echo esc_attr($plan->contact_us_link); ?>" class="button button-primary">
+			<?php echo esc_html($plan->get_contact_us_label()); ?>
 		</a>
 		</li>
 
 	<?php else : ?>
 
 		<li class="wu-cta">
-		<button type="submit" name="plan_id" class="button button-primary button-next" value="<?php echo $plan->get_id(); ?>" <?php echo $button_attrubutes; ?>>
-			<?php echo $button_label; ?>
+		<button type="submit" name="plan_id" class="button button-primary button-next" value="<?php echo esc_attr($plan->get_id()); ?>" <?php echo $button_attrubutes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+			<?php echo esc_html($button_label); ?>
 		</button>
 		</li>
 

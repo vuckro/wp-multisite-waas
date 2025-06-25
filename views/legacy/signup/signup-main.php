@@ -96,8 +96,9 @@ do_action('wu_checkout_scripts');
 		<div id="login">
 
 			<h1 id="wu-setup-logo">
-			<a href="<?php echo get_site_url(get_current_site()->blog_id); ?>">
-				<?php printf(__('%s - Signup', 'wp-multisite-waas'), get_bloginfo('Name')); ?>
+			<a href="<?php echo esc_attr(get_site_url(get_current_site()->blog_id)); ?>">
+				<?php // translators: %s: Site Name ?>
+				<?php printf(esc_html__('%s - Signup', 'wp-multisite-waas'), esc_html(get_bloginfo('Name'))); ?>
 			</a>
 			</h1>
 
@@ -109,7 +110,7 @@ do_action('wu_checkout_scripts');
 
 			?>
 
-			<div class="wu-setup-content wu-content-<?php echo wu_request('step', $signup->step ?? 'default'); ?>">
+			<div class="wu-setup-content wu-content-<?php echo esc_attr(wu_request('step', $signup->step ?? 'default')); ?>">
 
 			<div name="loginform" id="loginform">
 
@@ -161,7 +162,7 @@ do_action('wu_checkout_scripts');
 
 		global $wp_scripts;
 
-		$wp_scripts->print_inline_script('wu-checkout', 'after', true);
+		echo $wp_scripts->get_inline_script_tag('wu-checkout'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	?>
 

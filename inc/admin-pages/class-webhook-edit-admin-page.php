@@ -96,7 +96,8 @@ class Webhook_Edit_Admin_Page extends Edit_Admin_Page {
 			'wu-webhook-page',
 			'wu_webhook_page',
 			[
-				'i18n' => [
+				'nonce' => wp_create_nonce('wu_webhook_send_test'),
+				'i18n'  => [
 					'error_title'   => __('Webhook Test', 'wp-multisite-waas'),
 					'error_message' => __('An error occurred when sending the test webhook, please try again.', 'wp-multisite-waas'),
 					'copied'        => __('Copied!', 'wp-multisite-waas'),

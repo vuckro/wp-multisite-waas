@@ -74,7 +74,7 @@ class Email_List_Table extends Base_List_Table {
 		$target = wu_request('target');
 
 		if ($target && 'all' !== $target) {
-			$query['meta_query'] = [
+			$query['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				'type' => [
 					'key'   => 'wu_target',
 					'value' => $target,
@@ -171,9 +171,10 @@ class Email_List_Table extends Base_List_Table {
 		if ($item->has_schedule()) {
 			if ($item->get_schedule_type() === 'hours') {
 				$time = explode(':', (string) $item->get_send_hours());
-
+				// translators: %1$s is the number of hours, %2$s is the number of minutes.
 				$text = sprintf(__('%1$s hour(s) and %2$s minute(s) after the event.', 'wp-multisite-waas'), $time[0], $time[1]);
 			} elseif ($item->get_schedule_type() === 'days') {
+				// translators: %s is the number of days.
 				$text = sprintf(__('%s day(s) after the event.', 'wp-multisite-waas'), $item->get_send_days());
 			}
 		} else {

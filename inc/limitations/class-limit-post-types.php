@@ -61,6 +61,9 @@ class Limit_Post_Types extends Limit_Subtype {
 	 */
 	public function check_all_post_types() {
 		$overlimits = [];
+		if ( empty($this->limit)) {
+			return $overlimits;
+		}
 		foreach ($this->limit as $post_type => $limit) {
 
 			// We don't reuse is_post_above_limit because we want to see it checks with >= and we only want to use >.

@@ -120,7 +120,7 @@ class Product_List_Admin_Page extends List_Admin_Page {
 		return [
 			[
 				'url'   => wu_network_admin_url('wp-ultimo-edit-product'),
-				'label' => __('Add Product'),
+				'label' => __('Add Product', 'wp-multisite-waas'),
 				'icon'  => 'wu-circle-with-plus',
 			],
 		];

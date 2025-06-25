@@ -201,10 +201,13 @@ class Webhook_Manager extends Base_Manager {
 			);
 		}
 
-		$event = wu_get_event_type($_POST['webhook_event']);
+		check_ajax_referer('wu_webhook_send_test', 'nonce');
+		$event = wu_get_event_type(sanitize_text_field(wp_unslash($_POST['webhook_event'] ?? '')));
 
 		$webhook_data = [
-			'active' => true,
+			'active'      => true,
+			'id'          => wu_request('webhook_id'),
+			'webhook_url' => wu_request('webhook_url'),
 		];
 
 		$webhook = new Webhook($webhook_data);
@@ -250,7 +253,7 @@ class Webhook_Manager extends Base_Manager {
 			exit;
 		}
 
-		$id = absint($_REQUEST['id']);
+		$id = absint($_REQUEST['id'] ?? 0); // phpcs:ignore WordPress.Security.NonceVerification
 
 		$logs = array_map(
 			function ($line): string {

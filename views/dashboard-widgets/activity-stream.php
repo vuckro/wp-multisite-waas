@@ -58,6 +58,7 @@
 					<div class="wu-flex wu-font-medium wu-text-gray-700 wu-truncate">
 					<p class="wu-m-0 wu-p-0 wu-capitalize">{{ event.object_type }}</p>
 					<p class="wu-p-0 wu-m-0 wu-ml-1 wu-font-normal wu-text-gray-600">
+						<?php // translators: %s: the event name ?>
 						<?php printf(esc_html__('with %s', 'wp-multisite-waas'), '{{ event.slug }}'); ?>
 					</p>
 					</div>
@@ -67,6 +68,7 @@
 						<p class="wu-p-0 wu-m-0">
 						<span v-html="event.message"></span>
 						<span class="wu-text-gray-700 wu-ml-2"><span class="dashicons-wu-clock wu-mr-1 wu-align-middle"></span>{{ $moment(event.date_created, "YYYYMMDD").fromNow() }}</span>
+						<?php // translators: %s: the event author's name ?>
 						<span v-if="event.author.display_name" class="wu-text-gray-700"><?php printf(esc_html__('by %s', 'wp-multisite-waas'), '{{ event.author.display_name }}'); ?></span>
 						</p>
 					</div>

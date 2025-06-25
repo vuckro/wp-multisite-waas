@@ -49,6 +49,7 @@
 
 			<div class="wu-p-4 wu-bg-gray-100 wu-rounded">
 
+			<?php // translators: %s: Billing address link. ?>
 			<?php printf(wp_kses_post(__('No billing address found. Click <a title="%1$s" href="%2$s" class="wubox wu-no-underline">here</a> to add one.', 'wp-multisite-waas')), esc_html__('Update Billing Address', 'wp-multisite-waas'), esc_url($update_billing_address_link)); ?>
 
 			</div>
@@ -99,7 +100,7 @@
 
 			<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-				<?php echo __('Payment Method', 'wp-multisite-waas'); ?>
+				<?php esc_html_e('Payment Method', 'wp-multisite-waas'); ?>
 
 			</h3>
 

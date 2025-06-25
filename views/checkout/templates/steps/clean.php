@@ -49,8 +49,9 @@ if ( ! defined('ABSPATH')) {
 
 		<li class="wu-py-0 md:wu-flex-1 wu-px-2 <?php echo esc_attr($container_class); ?>">
 		<span class="wu-h-2 wu-block wu-mb-2 wu-bg-<?php echo esc_attr($color); ?>-500">&nbsp;</span>
-		<span class="wu-block wu-text-2xs wu-font-medium wu-tracking-wide wu-uppercase wu-text-<?php echo esc_attr($color); ?>-500"><?php printf(__('Step %d', 'wp-multisite-waas'), $index + 1); ?></span>
-		<span class="wu-block wu-text-sm wu-font-medium wu-text-<?php echo esc_attr($color); ?>-600"><?php echo $step['name']; ?></span>
+		<?php // translators: %d is a placeholder for the current step number. ?>
+		<span class="wu-block wu-text-2xs wu-font-medium wu-tracking-wide wu-uppercase wu-text-<?php echo esc_attr($color); ?>-500"><?php printf(esc_html__('Step %d', 'wp-multisite-waas'), esc_html($index + 1)); ?></span>
+		<span class="wu-block wu-text-sm wu-font-medium wu-text-<?php echo esc_attr($color); ?>-600"><?php echo esc_html($step['name']); ?></span>
 		</li>
 
 <?php endforeach; ?>

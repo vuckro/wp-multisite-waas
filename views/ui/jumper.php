@@ -22,7 +22,7 @@
 
 		<optgroup label="<?php esc_attr_e('Error', 'wp-multisite-waas'); ?>">
 
-			<option value="<?php echo network_admin_url('?wu-rebuild-jumper=1'); ?>">
+			<option value="<?php echo esc_attr(network_admin_url('?wu-rebuild-jumper=1')); ?>">
 
 			<?php esc_html_e('Click to rebuild menu list', 'wp-multisite-waas'); ?>
 

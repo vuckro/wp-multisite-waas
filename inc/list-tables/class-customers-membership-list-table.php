@@ -52,7 +52,7 @@ class Customers_Membership_List_Table extends Membership_List_Table {
 
 		$products_list = $p ? sprintf(_n('Contains %s', 'Contains %1$s and %2$s other product(s)', $product_count, 'wp-multisite-waas'), $p->get_name(), count($item->get_addon_ids())) : ''; // phpcs:ignore
 
-		echo wu_responsive_table_row(
+		echo wu_responsive_table_row( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			[
 				'id'     => $item->get_id(),
 				'title'  => $item->get_hash(),
@@ -85,11 +85,13 @@ class Customers_Membership_List_Table extends Membership_List_Table {
 				'date_expiration' => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => __('Expires', 'wp-multisite-waas'),
+					// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 					'value' => sprintf($expired ? __('Expired %s', 'wp-multisite-waas') : __('Expiring %s', 'wp-multisite-waas'), wu_human_time_diff(strtotime((string) $item->get_date_expiration()))),
 				],
 				'date_created'    => [
 					'icon'  => 'dashicons-wu-calendar1 wu-align-middle wu-mr-1',
 					'label' => __('Created at', 'wp-multisite-waas'),
+					// translators: %s is a placeholder for the human-readable time difference, e.g., "2 hours ago"
 					'value' => sprintf(__('Created %s', 'wp-multisite-waas'), wu_human_time_diff(strtotime((string) $item->get_date_created()))),
 				],
 			]

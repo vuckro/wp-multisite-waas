@@ -12,6 +12,7 @@
 namespace WP_Ultimo\Managers;
 
 use Psr\Log\LogLevel;
+use WP_Ultimo\Gateways\Base_Gateway;
 use WP_Ultimo\Gateways\Ignorable_Exception;
 
 use WP_Ultimo\Gateways\Free_Gateway;
@@ -105,12 +106,12 @@ class Gateway_Manager extends Base_Manager {
 		/*
 		 * Waits for webhook signals and deal with them.
 		 */
-		add_action('init', [$this, 'maybe_process_webhooks'], 1);
+		add_action('init', [$this, 'maybe_process_webhooks'], 21);
 
 		/*
 		 * Waits for webhook signals and deal with them.
 		 */
-		add_action('admin_init', [$this, 'maybe_process_v1_webhooks'], 1);
+		add_action('admin_init', [$this, 'maybe_process_v1_webhooks'], 21);
 	}
 
 	/**
@@ -510,6 +511,7 @@ class Gateway_Manager extends Base_Manager {
 	 */
 	public function install_hooks($class_name): void {
 
+        /** @var Base_Gateway $gateway */
 		$gateway = new $class_name();
 
 		$gateway_id = $gateway->get_id();

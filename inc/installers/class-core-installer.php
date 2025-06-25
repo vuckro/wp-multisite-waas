@@ -40,10 +40,8 @@ class Core_Installer extends Base_Installer {
 				if ($is_closte) {
 					if ( ! (defined('SUNRISE') && SUNRISE)) {
 
-						// translators: %s is a URL to a documentation link.
-						$closte_message = sprintf(__('You are using Closte and they prevent the wp-config.php file from being written to. <a href="%s" target="_blank">Follow these instructions to do it manually</a>.', 'wp-multisite-waas'), wu_get_documentation_url('wp-ultimo-closte-config'));
-
-						throw new \Exception($closte_message);
+						// translators: %1$s opening a tag, %2$s closing a tag.
+						throw new \Exception(sprintf(esc_html__('You are using Closte and they prevent the wp-config.php file from being written to. %1$s Follow these instructions to do it manually %2$s.', 'wp-multisite-waas'), sprintf('<a href="%s" target="_blank">', esc_attr(wu_get_documentation_url('wp-ultimo-closte-config'))), '</a>'));
 					}
 
 					return true;
@@ -119,7 +117,7 @@ class Core_Installer extends Base_Installer {
 				// translators: %s is the name of a database table, e.g. wu_memberships.
 				$error_message = sprintf(__('Installation of the table %s failed', 'wp-multisite-waas'), $table->get_name());
 
-				throw new \Exception($error_message);
+				throw new \Exception(esc_html($error_message));
 			}
 		}
 	}
@@ -136,7 +134,7 @@ class Core_Installer extends Base_Installer {
 		$copy = \WP_Ultimo\Sunrise::try_upgrade();
 
 		if (is_wp_error($copy)) {
-			throw new \Exception($copy->get_error_message());
+			throw new \Exception(esc_html($copy->get_error_message()));
 		}
 
 		/**
@@ -156,7 +154,7 @@ class Core_Installer extends Base_Installer {
 		$success = \WP_Ultimo\Helpers\WP_Config::get_instance()->inject_wp_config_constant('SUNRISE', true);
 
 		if (is_wp_error($success)) {
-			throw new \Exception($success->get_error_message());
+			throw new \Exception(esc_html($success->get_error_message()));
 		}
 	}
 }

@@ -15,6 +15,8 @@ namespace WP_Ultimo\Checkout;
 defined('ABSPATH') || exit;
 
 use \WP_Ultimo\Checkout\Cart;
+use WU_Gateway;
+use WU_Site_Template;
 
 /**
  * Handles the processing of new membership purchases.
@@ -388,7 +390,7 @@ class Legacy_Checkout {
 
 		if (isset($location['country']) && $location['country'] && $allowed_countries) {
 			if ( ! in_array($location['country'], $allowed_countries, true)) {
-				wp_die(apply_filters('wu_geolocation_error_message', __('Sorry. Our service is not allowed in your country.', 'wp-multisite-waas')));
+				wp_die(apply_filters('wu_geolocation_error_message', esc_html__('Sorry. Our service is not allowed in your country.', 'wp-multisite-waas'))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 	}
@@ -436,7 +438,7 @@ class Legacy_Checkout {
 	}
 
 	/**
-	 * The first invisible step, handles the creation of the transient saver
+	 * The first invisible step handles the creation of the transient saver
 	 *
 	 * @since 1.4.0
 	 * @return void
@@ -457,21 +459,12 @@ class Legacy_Checkout {
 		];
 
 		/**
-		 * Saves the coupon code in the request, only if that option is available
+		 * Saves the coupon code in the request only if that option is available
 		 */
-		if (isset($_REQUEST['coupon']) && $_REQUEST['coupon'] && wu_get_setting('enable_coupon_codes', 'url_and_field') != 'disabled') {
+		if (! empty($_REQUEST['coupon']) && wu_get_setting('enable_coupon_codes', 'url_and_field') !== 'disabled') { // phpcs:ignore WordPress.Security.NonceVerification
 
 			// Adds to the payload
-			$content['coupon'] = $_REQUEST['coupon'];
-		}
-
-		/**
-		 * Check if user came from a pricing select table
-		 */
-		if (isset($_REQUEST['plan_id']) && isset($_REQUEST['plan_freq']) && WU_Gateway::check_frequency($_REQUEST['plan_freq'])) {
-			$content['plan_id']   = $_REQUEST['plan_id'];
-			$content['plan_freq'] = $_REQUEST['plan_freq'];
-			$content['skip_plan'] = true;
+			$content['coupon'] = sanitize_text_field(wp_unslash($_REQUEST['coupon'])); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		/**
@@ -498,13 +491,13 @@ class Legacy_Checkout {
 		*
 		 * @since 1.7.3
 		 */
-		if (isset($_REQUEST['template_id']) && wu_get_setting('allow_template')) {
+		if (isset($_REQUEST['template_id']) && wu_get_setting('allow_template')) { // phpcs:ignore WordPress.Security.NonceVerification
 
 			// Check if the template is valid
-			$site = new WU_Site_Template($_REQUEST['template_id']);
+			$site = new WU_Site_Template($_REQUEST['template_id']); // phpcs:ignore
 
 			if ($site->is_template) {
-				$content['template']                = $_REQUEST['template_id'];
+				$content['template']                = $_REQUEST['template_id']; // phpcs:ignore
 				$content['skip_template_selection'] = true;
 			}
 		}
@@ -522,7 +515,7 @@ class Legacy_Checkout {
 		$exclude_list = apply_filters('wu_replace_signup_urls_exclude', ['wu-signup-customizer-preview']);
 
 		foreach ($exclude_list as $replace_word) {
-			if (isset($_GET[ $replace_word ])) {
+			if (isset($_GET[ $replace_word ])) { // phpcs:ignore WordPress.Security.NonceVerification
 				return true;
 			}
 		}
@@ -581,7 +574,7 @@ class Legacy_Checkout {
 			$this->results = ['errors' => new \WP_Error()];
 		}
 
-		if (empty($_POST)) {
+		if (empty($_POST)) {  // phpcs:ignore WordPress.Security.NonceVerification
 			$this->results = array_merge($this->results, $transient);
 		}
 
@@ -971,29 +964,29 @@ class Legacy_Checkout {
 	public function get_next_step_link($params = []) {
 
 		// Add CS
-		if (isset($_GET['cs'])) {
-			$params['cs'] = $_GET['cs'];
+		if (isset($_GET['cs'])) { // phpcs:ignore WordPress.Security.NonceVerification
+			$params['cs'] = sanitize_text_field(wp_unslash($_GET['cs'])); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		if (isset($_REQUEST['customized'])) {
-			$params['customized'] = $_REQUEST['customized'];
+		if (isset($_REQUEST['customized'])) { // phpcs:ignore WordPress.Security.NonceVerification
+			$params['customized'] = sanitize_text_field(wp_unslash($_REQUEST['customized'])); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		if (isset($_REQUEST['skip_plan']) && 1 == $_REQUEST['skip_plan']) {
+		if (isset($_REQUEST['skip_plan']) && 1 === (int) $_REQUEST['skip_plan']) { // phpcs:ignore WordPress.Security.NonceVerification
 			unset($this->steps['plan']);
 			unset($params['skip_plan']);
 		}
 
-		if (isset($_REQUEST['template_id'])) {
+		if (isset($_REQUEST['template_id'])) { // phpcs:ignore WordPress.Security.NonceVerification
 			$plan = false;
 
-			if (isset($_REQUEST['plan_id'])) {
-				$plan = wu_get_plan($_REQUEST['plan_id']);
+			if (isset($_REQUEST['plan_id'])) { // phpcs:ignore WordPress.Security.NonceVerification
+				$plan = wu_get_plan((int) $_REQUEST['plan_id']); // phpcs:ignore WordPress.Security.NonceVerification
 			}
 
 			$templates = array_keys((array) wu_get_setting('templates'));
 
-			if ( ($plan && $plan->is_template_available($_REQUEST['template_id'])) || in_array($_REQUEST['template_id'], $templates)) {
+			if ( ($plan && $plan->is_template_available($_REQUEST['template_id'])) || in_array($_REQUEST['template_id'], $templates)) { // phpcs:ignore WordPress.Security.NonceVerification
 				unset($this->steps['template']);
 				unset($params['skip_template_selection']);
 			}
@@ -1033,12 +1026,12 @@ class Legacy_Checkout {
 	public function get_prev_step_link($params = []) {
 
 		// Add CS
-		if (isset($_GET['cs'])) {
-			$params['cs'] = $_GET['cs'];
+		if (isset($_GET['cs'])) { // phpcs:ignore WordPress.Security.NonceVerification
+			$params['cs'] = sanitize_text_field(wp_unslash($_GET['cs'])); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		if (isset($_REQUEST['customized'])) {
-			$params['customized'] = $_REQUEST['customized'];
+		if (isset($_REQUEST['customized'])) { // phpcs:ignore WordPress.Security.NonceVerification
+			$params['customized'] = sanitize_text_field(wp_unslash($_REQUEST['customized'])); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		$keys       = array_keys($this->steps);
@@ -1094,7 +1087,7 @@ class Legacy_Checkout {
 		<?php if ('plan' == $step) { ?>
 
 		<input type="hidden" name="wu_action" value="wu_new_user">
-		<input type="hidden" id="wu_plan_freq" name="plan_freq" value="<?php echo $freq; ?>">
+		<input type="hidden" id="wu_plan_freq" name="plan_freq" value="<?php echo esc_attr($freq); ?>">
 
 			<?php
 		}
@@ -1164,7 +1157,7 @@ class Legacy_Checkout {
 			$this->results['errors']->add('plan_id', __('You don\'t have any plan selected.', 'wp-multisite-waas'));
 		} else {
 			// We need now to check if the plan exists
-			$plan = wu_get_product($_POST['plan_id']);
+			$plan = wu_get_product((int) $_POST['plan_id']); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( ! $plan->exists()) {
 				$this->results['errors']->add('plan_id', __('The plan you\'ve selected doesn\'t exist.', 'wp-multisite-waas'));
@@ -1182,8 +1175,8 @@ class Legacy_Checkout {
 		}
 
 		/** Update Transient Content */
-		$transient['plan_freq'] = $_POST['plan_freq'];
-		$transient['plan_id']   = $_POST['plan_id'];
+		$transient['plan_freq'] = sanitize_text_field(wp_unslash($_POST['plan_freq'])); // phpcs:ignore WordPress.Security.NonceVerification
+		$transient['plan_id']   = (int) $_POST['plan_id']; // phpcs:ignore WordPress.Security.NonceVerification
 
 		/** Update Data */
 		$this->update_transient($transient);
@@ -1328,7 +1321,7 @@ class Legacy_Checkout {
 
 				// Checks for honey-trap id
 				if ('site_url' === $id) {
-					wp_die(__('Please, do not use the "site_url" as one of your custom fields\' ids. We use it as a honeytrap field to prevent spam registration. Consider alternatives such as "url" or "website".', 'wp-multisite-waas'));
+					wp_die(esc_html__('Please, do not use the "site_url" as one of your custom fields\' ids. We use it as a honeytrap field to prevent spam registration. Consider alternatives such as "url" or "website".', 'wp-multisite-waas'));
 				}
 
 				// Saves the order

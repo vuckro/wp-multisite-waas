@@ -356,7 +356,7 @@ class Invoice_Template_Customize_Admin_Page extends Customizer_Admin_Page {
 	public function handle_save(): void {
 
 		// Nonce in handeled in the calling method.
-		Invoice::save_settings($_POST); // phpcs:ignore phpcs: WordPress.Security.NonceVerification
+		Invoice::save_settings($_POST); // phpcs:ignore WordPress.Security.NonceVerification
 
 		$url = add_query_arg('updated', '1');
 

@@ -65,7 +65,7 @@ trait WP_Ultimo_Settings_Deprecated {
 		];
 
 		foreach ($filters as $filter) {
-			$message = __('Adding setting sections directly via filters is no longer supported.');
+			$message = __('Adding setting sections directly via filters is no longer supported.', 'wp-multisite-waas');
 
 			$legacy_settings = apply_filters_deprecated($filter, [$legacy_settings], '2.0.0', 'wu_register_settings_field()', $message);
 		}

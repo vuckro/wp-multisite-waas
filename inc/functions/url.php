@@ -24,7 +24,7 @@ function wu_get_current_url() {
 		return sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER']));
 	}
 
-	return (is_ssl() ? 'https://' : 'http://') . strtolower(sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST']??''))) . sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']??''));
+	return (is_ssl() ? 'https://' : 'http://') . strtolower(sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST']?? ''))) . sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']?? ''));
 }
 
 /**

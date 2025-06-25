@@ -18,7 +18,7 @@ return;
  * Give an option to disable whoops automatically via a get query string (whoops-disable)
  * or by setting the constant we used to have on previous versions.
  */
-if (isset($_GET['whoops-disable']) || (defined('WP_ULTIMO_DISABLE_WHOOPS') && WP_ULTIMO_DISABLE_WHOOPS)) {
+if (isset($_GET['whoops-disable']) || (defined('WP_ULTIMO_DISABLE_WHOOPS') && WP_ULTIMO_DISABLE_WHOOPS)) { // phpcs:ignore WordPress.Security.NonceVerification
 	return;
 }
 

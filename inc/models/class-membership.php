@@ -478,7 +478,7 @@ class Membership extends Base_Model {
 
 		$plan = wu_get_product($this->get_plan_id());
 
-		// Get the correct ariation if exists
+		// Get the correct variation if exists
 		if ($plan && ($plan->get_duration() !== $this->get_duration() || $plan->get_duration_unit() !== $this->get_duration_unit())) {
 			$variation = $plan->get_as_variation($this->get_duration(), $this->get_duration_unit());
 
@@ -1793,7 +1793,7 @@ class Membership extends Base_Model {
 
 		$sites = Site::query(
 			[
-				'meta_query' => [
+				'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'customer_id' => [
 						'key'   => 'wu_membership_id',
 						'value' => $this->get_id(),
@@ -1915,7 +1915,7 @@ class Membership extends Base_Model {
 		);
 
 		if ( function_exists('fastcgi_finish_request') && version_compare(phpversion(), '7.0.16', '>=') ) {
-			// The server supports fastcgi, so we use this to guaranty that the function started before abort connection
+			// The server supports fastcgi, so we use this to guarantee that the function started before abort connection
 
 			wp_remote_request(
 				$rest_path,
@@ -2064,7 +2064,7 @@ class Membership extends Base_Model {
 		static $sum;
 
 		if (null === $sum) {
-			$sum = $wpdb->get_var(
+			$sum = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->prepare(
 					"SELECT SUM(total) FROM {$wpdb->base_prefix}wu_payments WHERE parent_id = 0 AND membership_id = %d",
 					$this->get_id()

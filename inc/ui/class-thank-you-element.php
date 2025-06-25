@@ -79,17 +79,6 @@ class Thank_You_Element extends Base_Element {
 	}
 
 	/**
-	 * Overload the init to add site-related forms.
-	 *
-	 * @since 2.0.0
-	 * @return void
-	 */
-	public function init(): void {
-
-		parent::init();
-	}
-
-	/**
 	 * Replace the register page title with the Thank you title.
 	 *
 	 * @since 2.0.0
@@ -135,7 +124,7 @@ class Thank_You_Element extends Base_Element {
 		$has_pending_site = $this->membership ? (bool) $this->membership->get_pending_site() : false;
 		$is_publishing    = $has_pending_site ? $this->membership->get_pending_site()->is_publishing() : false;
 
-		wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), [], wu_get_version());
+		wp_register_script('wu-thank-you', wu_get_asset('thank-you.js', 'js'), [], wu_get_version(), true);
 
 		wp_localize_script(
 			'wu-thank-you',
@@ -426,7 +415,7 @@ class Thank_You_Element extends Base_Element {
 				'wp_print_footer_scripts',
 				function () use ($conversion_snippets) {
 
-					echo $conversion_snippets;
+					echo $conversion_snippets; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 			);
 		}

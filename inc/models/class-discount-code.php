@@ -488,8 +488,6 @@ class Discount_Code extends Base_Model {
 
 			if ($now < $start_date_instance) {
 				return new \WP_Error('discount_code', __('This coupon code is not valid.', 'wp-multisite-waas'));
-
-				return new \WP_Error('discount_code', __('The coupon code is not valid yet.', 'wp-multisite-waas'));
 			}
 		}
 

@@ -1023,7 +1023,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function sites_query_filter($args) {
 
-		$args['meta_query'] = [ // phpcs: WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		$args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'membership_id' => [
 				'key'   => 'wu_membership_id',
 				'value' => $this->get_object()->get_id(),
@@ -1197,7 +1197,7 @@ class Membership_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$billing_address = $object->get_billing_address();
 
-		$billing_address->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerificationphpcs:ignore WordPress.Security.NonceVerification
+		$billing_address->attributes($_POST); // phpcs:ignore WordPress.Security.NonceVerification
 
 		$valid_address = $billing_address->validate();
 
