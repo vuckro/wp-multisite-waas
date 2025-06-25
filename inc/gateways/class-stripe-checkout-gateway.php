@@ -11,7 +11,7 @@
 
 namespace WP_Ultimo\Gateways;
 
-use WP_Ultimo\Gateways\Base_Stripe_Gateway;
+use Stripe\PaymentMethod;
 use Stripe;
 use WP_Ultimo\Checkout\Cart;
 
@@ -347,7 +347,7 @@ class Stripe_Checkout_Gateway extends Base_Stripe_Gateway {
 			$subscription_data['subscription_data']['trial_end'] = $this->order->get_billing_start_date();
 		}
 
-		$session = Stripe\Checkout\Session::create($subscription_data);
+		$session = $this->get_stripe_client()->checkout->sessions->create($subscription_data);
 
 		// Add the client secret to the JSON success data.
 		return [
@@ -475,7 +475,7 @@ class Stripe_Checkout_Gateway extends Base_Stripe_Gateway {
 			 */
 			$this->setup_api_keys();
 
-			$payment_methods = Stripe\PaymentMethod::all(
+			$payment_methods = $this->get_stripe_client()->paymentMethods->all(
 				[
 					'customer' => $stripe_customer_id,
 					'type'     => 'card',

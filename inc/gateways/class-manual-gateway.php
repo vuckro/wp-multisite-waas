@@ -288,8 +288,11 @@ class Manual_Gateway extends Base_Gateway {
 		// In case of trials with payment method
 		if ($payment->get_total() === 0.00) {
 			$payment->set_status(Payment_Status::COMPLETED);
-
 			$payment->save();
+			if ($cart->has_trial()) {
+				$membership->set_status(Membership_Status::TRIALING);
+				$membership->save();
+			}
 		}
 
 		/*

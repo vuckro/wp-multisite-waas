@@ -503,7 +503,7 @@ class PayPal_Gateway extends Base_Gateway {
 			$desc = $membership->get_recurring_description();
 
 			$date = wp_date(get_option('date_format'), strtotime($membership->get_date_trial_end(), wu_get_current_time('timestamp', true)));
-
+			// translators: Your trial period will end on %1$s.
 			$notes[] = sprintf(__('Your trial period will end on %1$s.', 'wp-multisite-waas'), $date);
 		}
 
@@ -522,20 +522,25 @@ class PayPal_Gateway extends Base_Gateway {
 			if ($recurring_total !== $cart_total) {
 				if ('downgrade' === $type) {
 					if ($is_trial_setup) {
+						// translators: $1$s the date membership will start, $2$s amount to be billed.
 						$notes[] = sprintf(__('Your updated membership will start on $1$s, from that date you will be billed %2$s every month.', 'wp-multisite-waas'), $date, $recurring_total_format);
 					} else {
 						$date_renew = wp_date(get_option('date_format'), strtotime($membership->get_date_expiration(), wu_get_current_time('timestamp', true)));
-
+						// translators: $1$s the date membership will start, $2$s amount to be billed, %3$s the description of how often.
 						$notes[] = sprintf(__('Your updated membership will start on %1$s, from that date you will be billed %2$s %3$s.', 'wp-multisite-waas'), $date_renew, $recurring_total_format, $desc);
 					}
 				} elseif ($is_trial_setup) {
+					// translators: $1$s amount to be billed, $2$s how often
 					$notes[] = sprintf(__('After the first payment you will be billed %1$s %2$s.', 'wp-multisite-waas'), $recurring_total_format, $desc);
 				} else {
+					// translators: $1$s amount to be billed, $2$s how often
 					$notes[] = sprintf(__('After this payment you will be billed %1$s %2$s.', 'wp-multisite-waas'), $recurring_total_format, $desc);
 				}
 			} elseif ($is_trial_setup) {
+					// translators: $1$s amount to be billed, $2$s how often
 					$notes[] = sprintf(__('From that date, you will be billed %1$s %2$s.', 'wp-multisite-waas'), $recurring_total_format, $desc);
 			} else {
+				// translators: $1$s how often
 				$notes[] = sprintf(__('After this payment you will be billed %1$s.', 'wp-multisite-waas'), $desc);
 			}
 		}
@@ -857,7 +862,7 @@ class PayPal_Gateway extends Base_Gateway {
 			if (empty($original_cart)) {
 				$error = new \WP_Error('no-cart', esc_html__('Original cart does not exist.', 'wp-multisite-waas'));
 
-				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			/*
@@ -871,7 +876,7 @@ class PayPal_Gateway extends Base_Gateway {
 			if (empty($membership) || empty($customer)) {
 				$error = new \WP_Error('no-membership', esc_html__('Missing membership or customer data.', 'wp-multisite-waas'));
 
-				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput;
+				wp_die($error); // phpcs:ignore WordPress.Security.EscapeOutput
 			}
 
 			if ($should_auto_renew && $is_recurring) {
@@ -1041,7 +1046,7 @@ class PayPal_Gateway extends Base_Gateway {
 
 				if ('failed' === strtolower((string) $posted['payment_status'])) {
 
-					// Recurring payment failed.
+					// Recurring payment failed. translators: %s: Transaction ID
 					$membership->add_note(['text' => sprintf(__('Transaction ID %s failed in PayPal.', 'wp-multisite-waas'), $posted['txn_id'])]);
 
 					die('Subscription payment failed');
@@ -1049,7 +1054,7 @@ class PayPal_Gateway extends Base_Gateway {
 
 					// Recurring payment pending (such as echeck).
 					$pending_reason = ! empty($posted['pending_reason']) ? $posted['pending_reason'] : __('unknown', 'wp-multisite-waas');
-
+					// translators: %1$s: Transaction ID, %2$s: Pending reason
 					$membership->add_note(['text' => sprintf(__('Transaction ID %1$s is pending in PayPal for reason: %2$s', 'wp-multisite-waas'), $posted['txn_id'], $pending_reason)]);
 
 					die('Subscription payment pending');

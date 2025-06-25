@@ -765,7 +765,7 @@ abstract class Base_Gateway {
 	 * Set the customer.
 	 *
 	 * @since 2.0.0
-	 * @param \WP_Ultimo\Models\Payment $customer The customer.
+	 * @param \WP_Ultimo\Models\Customer $customer The customer.
 	 * @return void
 	 */
 	public function set_customer($customer): void {

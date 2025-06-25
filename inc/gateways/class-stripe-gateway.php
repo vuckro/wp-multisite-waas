@@ -11,6 +11,7 @@
 
 namespace WP_Ultimo\Gateways;
 
+use Stripe\PaymentMethod;
 use WP_Ultimo\Database\Payments\Payment_Status;
 use WP_Ultimo\Database\Memberships\Membership_Status;
 use WP_Ultimo\Gateways\Base_Stripe_Gateway;
@@ -233,7 +234,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 	 * streamlined.
 	 *
 	 * @since 2.0.0
-	 * @return void|array
+	 * @return array|\WP_Error
 	 */
 	public function run_preflight() {
 		/*
@@ -266,9 +267,9 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		$type = $this->order->get_cart_type();
 
 		/*
-		 * Lets deal with upgrades, downgrades and addons
+		 * Let's deal with upgrades, downgrades and addons.
 		 *
-		 * Here, we just need to make sure we process
+		 * Here we just need to make sure we process
 		 * a membership swap.
 		 */
 		if ('upgrade' === $type || 'addon' === $type) {
@@ -296,7 +297,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 * Let's start with the intent options.
 		 *
 		 * We'll append the extra options as we go.
-		 * This should also be filterable, to allow support
+		 * This should also be filterable to allow support
 		 * for Stripe Connect in the future.
 		 */
 		$intent_options = [];
@@ -316,17 +317,17 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		/*
 		 * Tries to retrieve an intent on Stripe.
 		 *
-		 * If we success, we update it, if we fail,
+		 * If we succeed, we update it, if we fail,
 		 * we try to create a new one.
 		 */
 		try {
 			/*
 			 * Payment intents are used when we have an initial
-			 * payment attached to the membership. Those start with a pi_
+			 * payment attached to the membership. These start with a pi_
 			 * id.
 			 */
 			if ( ! empty($payment_intent_id) && str_starts_with((string) $payment_intent_id, 'pi_')) {
-				$existing_intent = Stripe\PaymentIntent::retrieve($payment_intent_id);
+				$existing_intent = $this->get_stripe_client()->paymentIntents->retrieve($payment_intent_id);
 
 				/*
 				* Setup intents are created with the intent
@@ -335,11 +336,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 				* initial amount.
 				*/
 			} elseif ( ! empty($payment_intent_id) && str_starts_with((string) $payment_intent_id, 'seti_')) {
-				$existing_intent = Stripe\SetupIntent::retrieve($payment_intent_id);
+				$existing_intent = $this->get_stripe_client()->setupIntents->retrieve($payment_intent_id);
 			}
 
 			/*
-			 * We can't use cancelled intents
+			 * We can't use canceled intents
 			 * for obvious reasons...
 			 */
 			if ( ! empty($existing_intent) && 'canceled' === $existing_intent->status) {
@@ -401,11 +402,11 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 					/*
 					 * Tries to update the payment intent.
 					 */
-					$intent = Stripe\PaymentIntent::update($existing_intent->id, $intent_args, $intent_options);
+					$intent = $this->get_stripe_client()->paymentIntents->update($existing_intent->id, $intent_args, $intent_options);
 				} else {
 					$intent_options['idempotency_key'] = wu_stripe_generate_idempotency_key($intent_args);
 
-					$intent = Stripe\PaymentIntent::create($intent_args, $intent_options);
+					$intent = $this->get_stripe_client()->paymentIntents->create($intent_args, $intent_options);
 				}
 			} else {
 				/*
@@ -424,7 +425,9 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 					/*
 					 * Tries to create in Stripe.
 					 */
-					$intent = Stripe\SetupIntent::create($intent_args, $intent_options);
+					$intent = $this->get_stripe_client()->setupIntents->create($intent_args, $intent_options);
+				} else {
+					$intent = $existing_intent;
 				}
 			}
 		} catch (\Stripe\Exception\ExceptionInterface $e) {
@@ -502,14 +505,14 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 *
 		 * For sanity reasons, stripe variants of data type
 		 * such as a Stripe\Customer instance, will be
-		 * hold by variables stating with s_ (e.g. s_customer)
+		 * held by variables stating with s_ (e.g. s_customer)
 		 *
 		 * First, we need to check for a valid payment intent.
 		 */
 		$payment_intent_id = $payment->get_meta('stripe_payment_intent_id');
 
 		if (empty($payment_intent_id)) {
-			throw new \Exception(esc_html__('Missing Stripe payment intent, please try again or contact support if the issue persists.', 'wp-multisite-waas'), 'missing_stripe_payment_intent');
+			throw new \Exception(esc_html__('Missing Stripe payment intent, please try again or contact support if the issue persists.', 'wp-multisite-waas'));
 		}
 
 		/**
@@ -532,9 +535,9 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		if (str_starts_with((string) $payment_intent_id, 'seti_')) {
 			$is_setup_intent = true;
 
-			$payment_intent = Stripe\SetupIntent::retrieve($payment_intent_id);
+			$payment_intent = $this->get_stripe_client()->setupIntents->retrieve($payment_intent_id);
 		} else {
-			$payment_intent = Stripe\PaymentIntent::retrieve($payment_intent_id);
+			$payment_intent = $this->get_stripe_client()->paymentIntents->retrieve($payment_intent_id);
 		}
 
 		/*
@@ -555,7 +558,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 		 * to make sure it always has the most
 		 * up-to-date info.
 		 */
-		Stripe\Customer::update(
+		$this->get_stripe_client()->customers->update(
 			$s_customer->id,
 			[
 				'address'     => $this->convert_to_stripe_address($customer->get_billing_address()),
@@ -609,7 +612,6 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			$membership->set_gateway_customer_id($s_customer->id);
 			$membership->set_gateway_subscription_id($subscription->id);
 			$membership->add_to_times_billed(1);
-			$membership->should_auto_renew();
 
 			if ('downgrade' !== $type) {
 				$membership_status = $cart->has_trial() ? Membership_Status::TRIALING : Membership_Status::ACTIVE;
@@ -777,7 +779,7 @@ class Stripe_Gateway extends Base_Stripe_Gateway {
 			 */
 			$this->setup_api_keys();
 
-			$payment_methods = Stripe\PaymentMethod::all(
+			$payment_methods = $this->get_stripe_client()->paymentMethods->all(
 				[
 					'customer' => $stripe_customer_id,
 					'type'     => 'card',
