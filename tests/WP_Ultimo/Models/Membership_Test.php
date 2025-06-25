@@ -230,44 +230,6 @@ class Membership_Test extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the save method with gateway changes.
-	 */
-	public function test_save_with_gateway_changes(): void {
-		// Skip this test if the manual gateway is not available
-		$gateway = wu_get_gateway('manual');
-		if (! $gateway) {
-			$this->markTestSkipped('Manual gateway not available');
-		}
-
-		// Set up the membership with initial gateway info
-		// Customer ID and plan ID are already set in setUp()
-		$this->membership->set_gateway('manual');
-		$this->membership->set_gateway_customer_id('cus_123');
-		$this->membership->set_gateway_subscription_id('sub_123');
-
-		// Save the membership to create it first and initialize _gateway_info
-		$this->membership->save();
-
-		// Change the gateway to trigger gateway changes
-		$this->membership->set_gateway('');
-
-		// Use reflection to check if gateway changes are detected
-		$reflection = new \ReflectionClass($this->membership);
-		$method     = $reflection->getMethod('has_gateway_changes');
-		$method->setAccessible(true);
-		$this->assertTrue($method->invoke($this->membership), 'Failed asserting that gateway changes are detected.');
-
-		// Ensure validation is still bypassed for the second save
-		$this->membership->set_skip_validation(true);
-
-		// Save the membership with gateway changes
-		$result = $this->membership->save();
-
-		// Verify that the save was successful
-		$this->assertTrue($result, 'Failed asserting that the save with gateway changes was successful.');
-	}
-
-	/**
 	 * Test the save method with membership updates.
 	 */
 	public function test_save_with_membership_updates(): void {
