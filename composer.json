@@ -65,9 +65,7 @@
         "woocommerce/woocommerce-sniffs": "^1.0.0",
         "symplify/vendor-patches": "^11.3",
         "fakerphp/faker": "^1.24",
-        "rector/rector": "^2.0.8",
-        "szepeviktor/phpstan-wordpress": "^2.0.1",
-        "phpstan/extension-installer": "^1.1"
+        "rector/rector": "^2.0.8"
     },
     "config": {
         "platform": {
@@ -78,7 +76,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "automattic/jetpack-autoloader": true,
             "cweagans/composer-patches": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
         }
     },
     "archive": {
@@ -102,7 +101,8 @@
             "utils",
             "update.sh",
             "phpstan.neon.dist",
-            "rector.php"
+            "rector.php",
+            "inc/development"
         ]
     },
     "extra": {
