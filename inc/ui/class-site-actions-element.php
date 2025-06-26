@@ -1142,8 +1142,16 @@ class Site_Actions_Element extends Base_Element {
 		];
 
 		$reason = wu_get_isset($cancellation_options, wu_request('cancellation_reason'), '');
-
-		$membership->cancel($reason);
+		try {
+			$membership->cancel($reason);
+		} catch (\Exception $e) {
+			wp_send_json_error(
+				array(
+					'code'    => 'error',
+					'message' => $e->getMessage(),
+				)
+			);
+		}
 
 		$redirect_url = wu_request('redirect_url');
 

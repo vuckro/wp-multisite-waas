@@ -99,7 +99,7 @@ class Membership_Line_Item_List_Table extends Product_List_Table {
 			'quantity' => [
 				'icon'  => 'dashicons-wu-package wu-align-middle wu-mr-1',
 				'label' => __('Quantity', 'wp-multisite-waas'),
-				// translators: %d = quantity
+				// translators: %d is a quantity number
 				'value' => sprintf(__('x%d', 'wp-multisite-waas'), $quantity),
 			],
 			'total'    => [

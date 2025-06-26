@@ -92,8 +92,8 @@
 			<div class="wu-mt-4"> 
 
 				<div class="wu-bg-yellow-200 wu-text-yellow-700 wu-rounded wu-p-2">
-
-				<?php printf(__("There's a pending change for this membership, scheduled to take place on <strong>%1\$s</strong>. Changing to <strong>%2\$s</strong>.", 'wp-multisite-waas'), esc_html($pending_change_date), esc_html($pending_change)); ?>
+				<?php // translators: %1$s: date, %2$s: amount. ?>
+				<?php printf(esc_html__('There\'s a pending change for this membership, scheduled to take place on %1$s. Changing to %2$s.', 'wp-multisite-waas'), '<strong>' . esc_html($pending_change_date) . '</strong>', '<strong>' . esc_html($pending_change) . '</strong>'); ?>
 
 				</div>
 

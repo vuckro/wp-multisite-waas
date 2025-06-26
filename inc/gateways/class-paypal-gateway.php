@@ -503,7 +503,7 @@ class PayPal_Gateway extends Base_Gateway {
 			$desc = $membership->get_recurring_description();
 
 			$date = wp_date(get_option('date_format'), strtotime($membership->get_date_trial_end(), wu_get_current_time('timestamp', true)));
-			// translators: Your trial period will end on %1$s.
+			// translators: %1$s is the date it will end
 			$notes[] = sprintf(__('Your trial period will end on %1$s.', 'wp-multisite-waas'), $date);
 		}
 
@@ -1046,7 +1046,8 @@ class PayPal_Gateway extends Base_Gateway {
 
 				if ('failed' === strtolower((string) $posted['payment_status'])) {
 
-					// Recurring payment failed. translators: %s: Transaction ID
+					// Recurring payment failed.
+					// translators: %s: Transaction ID
 					$membership->add_note(['text' => sprintf(__('Transaction ID %s failed in PayPal.', 'wp-multisite-waas'), $posted['txn_id'])]);
 
 					die('Subscription payment failed');

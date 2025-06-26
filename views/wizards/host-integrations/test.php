@@ -8,6 +8,7 @@
 <h1><?php esc_html_e('Testing the Integration', 'wp-multisite-waas'); ?></h1>
 
 <p class="wu-text-lg wu-text-gray-600 wu-my-4 wu-mb-6">
+	<?php // translators: %s: name of integration. ?>
 	<?php printf(esc_html__('We will send a test API call to %s to make sure we are able to connect. This will confirm if everything we did so far have worked.', 'wp-multisite-waas'), esc_html($integration->get_title())); ?>
 </p>
 

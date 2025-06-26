@@ -91,6 +91,7 @@
 		<div class="postbox-header">
 			<h2 class="hndle ui-sortable-handle">
 			<span class="wu-text-gray-700 ">
+				<?php // translators: % name of the step ?>
 				<span class="wu-text-2xs wu-font-mono wu-uppercase wu-mr-4"><?php printf(esc_html__('Step %s', 'wp-multisite-waas'), '{{ idx + 1 }}'); ?></span> {{ step.name }}
 			</span>
 			</h2>

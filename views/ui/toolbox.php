@@ -61,6 +61,7 @@
 			<span title="<?php esc_attr_e('Current Site', 'wp-multisite-waas'); ?>"
 				class="dashicons-wu-circular-graph wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>
 			<span class="">
+				<?php // translators: %s hash of membership. ?>
 				<?php printf(__('Membership <Strong>%s</strong>', 'wp-multisite-waas'), $membership->get_hash()); ?>
 			</span>
 			<span id="wu-toolbox-membership-status" class="wu-inline-block wu-w-3 wu-h-3 wu-rounded-full wu-align-text-top <?php echo esc_attr($membership->get_status_class()); ?>" <?php echo wu_tooltip_text($membership->get_status_label()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>

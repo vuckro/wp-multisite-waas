@@ -78,7 +78,7 @@
 				style="max-width: <?php echo esc_attr($screenshot_size); ?>px;"
 				class="wu-w-full wu-rounded wu-border wu-border-solid <?php echo esc_attr(wu_env_picker('wu-border-gray-300', 'wu-border-gray-400')); ?>" 
 				src="<?php echo esc_attr($current_site->get_featured_image()); ?>"
-				<?php // translators: %s: Site title. ?>
+				<?php // translators: %s: Site Title ?>
 				alt="<?php printf(esc_attr__('Site Image: %s', 'wp-multisite-waas'), esc_attr($current_site->get_title())); ?>"
 			>
 

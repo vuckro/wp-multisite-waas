@@ -94,7 +94,7 @@ $plan_attrs = apply_filters('wu_pricing_table_plan', $plan_attrs, $plan);
 	];
 
 	foreach ($prices_total as $freq => $string) {
-		// translators: %1$s: Plan name, %2$s: Plan price
+		// translators: %1$s: the price, %2$s: the period.
 		$text = sprintf(__('%1$s, billed %2$s', 'wp-multisite-waas'), wu_format_currency($plan->{"price_$freq"}), $string);
 
 		if ($plan->free || $plan->is_contact_us()) {

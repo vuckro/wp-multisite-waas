@@ -70,7 +70,7 @@
 		<tr v-for="line_item in order.line_items">
 
 			<td class="wu-py-2 col-description" v-show="line_item.recurring">
-
+			<?php // translators: %s: name of the subscription ?>
 			<?php printf(esc_html__('Subscription - %s', 'wp-multisite-waas'), '{{ line_item.title }}'); ?>
 
 			<small v-if="line_item.type == 'product'" class="wu-ml-3 wu-text-xs">
@@ -224,6 +224,7 @@
 			<td class="" colspan="<?php echo esc_attr('simple' === $table_columns) ? 1 : 4; ?>">
 
 			<small>
+				<?php // translators: %1$s relative date string ?>
 				<?php printf(esc_html__('Total in %1$s - end of trial period.', 'wp-multisite-waas'), '{{ $moment.unix(order.dates.date_trial_end).format(`LL`) }}'); ?>
 			</small>
 
@@ -244,7 +245,7 @@
 	<ul class="wu-p-0 wu-m-0 wu-mt-2 wu-list-none wu-order-summary-additional-info wu-text-sm">
 
 		<li v-if="!order.has_trial && order.has_recurring">
-
+		<?php // translators: %1$s order total, %2$s relative date string. ?>
 		<?php printf(esc_html__('Next fee of %1$s will be billed in %2$s.', 'wp-multisite-waas'), '{{ wu_format_money(order.totals.recurring.total) }}', '{{ $moment.unix(order.dates.date_next_charge).format(`LL`) }}'); ?>
 
 		</li>

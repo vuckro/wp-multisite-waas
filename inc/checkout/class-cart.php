@@ -944,26 +944,54 @@ class Cart implements \JsonSerializable {
 		} else {
 			$new_plan        = $this->get_plan();
 			$new_limitations = $new_plan->get_limitations();
-			$overlimits      = $new_limitations->post_types->check_all_post_types();
-			if ($overlimits) {
-				foreach ($overlimits as $post_type_slug => $limit) {
-					$post_type = get_post_type_object($post_type_slug);
+			$sites           = $this->get_membership()->get_sites(false);
+			foreach ($sites as $site) {
+				switch_to_blog($site->get_id());
 
-					$this->errors->add(
-						'overlimits',
-						sprintf(
-						// translators: %1$d: current number of posts, %2$s: post type name, %3$d: posts quota, %4$s: post type name, %5$d: number of posts to be deleted, %6$s: post type name.
-							esc_html__('You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'wp-ultimo'),
-							$limit['current'],
-							$limit['current'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
-							$limit['limit'],
-							$limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
-							$limit['current'] - $limit['limit'],
-							$limit['current'] - $limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name
-						)
-					);
+				if ( class_exists('\TUTOR\Tutor') ) {
+					// TODO: move code to later in WordPress init timing.
+					// This code in needed because the post type check happens before Tutor can register it's post types.
+					\Closure::bind(
+						function () {
+							$tutor                 = \TUTOR\Tutor::instance();
+							$GLOBALS['wp_rewrite'] = new \WP_Rewrite();
+
+							$tutor->post_types->register_course_post_types();
+							$tutor->post_types->register_lesson_post_types();
+							$tutor->post_types->register_quiz_post_types();
+							$tutor->post_types->register_topic_post_types();
+							$tutor->post_types->register_assignments_post_types();
+						},
+						null,
+						\TUTOR\Tutor::class
+					)();
 				}
-				return true;
+
+				$overlimits = $new_limitations->post_types->check_all_post_types();
+
+				if ( $overlimits ) {
+					foreach ( $overlimits as $post_type_slug => $limit ) {
+						$post_type = get_post_type_object($post_type_slug);
+
+						$this->errors->add(
+							'overlimits',
+							sprintf(
+							// translators: %1$d: current number of posts, %2$s: post type name, %3$d: posts quota, %4$s: post type name, %5$d: number of posts to be deleted, %6$s: post type name.
+								esc_html__('You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'wp-ultimo'),
+								$limit['current'],
+								$limit['current'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
+								$limit['limit'],
+								$limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
+								$limit['current'] - $limit['limit'],
+								$limit['current'] - $limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name
+							)
+						);
+					}
+					restore_current_blog();
+
+					return true;
+				}
+				restore_current_blog();
 			}
 		}
 
@@ -1023,8 +1051,7 @@ class Cart implements \JsonSerializable {
 			$this->line_items = [];
 
 			$description = sprintf(
-				// translators: %1$s the duration, and %2$s the duration unit (day, week, month, etc)
-				_n('%2$s', '%1$s %2$s', $membership->get_duration(), 'wp-multisite-waas'), // phpcs:ignore
+				1 === $membership->get_duration() ? '%2$s' : '%1$s %2$s',
 				$membership->get_duration(),
 				wu_get_translatable_string(($membership->get_duration() <= 1 ? $membership->get_duration_unit() : $membership->get_duration_unit() . 's'))
 			);

@@ -172,7 +172,7 @@ class Membership_List_Table_Widget extends Base_List_Table {
 			$duration = $item->get_duration();
 
 			$message = sprintf(
-				// translators: %1$s is the formatted price, %2$s the duration, and %3$s the duration unit (day, week, month, etc)
+				// translators: %1$s the duration, and %2$s the duration unit (day, week, month, etc)
                 _n('every %2$s', 'every %1$s %2$s', $duration, 'wp-multisite-waas'), // phpcs:ignore
 				$duration,
 				$item->get_duration_unit()

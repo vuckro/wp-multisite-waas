@@ -210,7 +210,8 @@ trait WP_Ultimo_Plan_Deprecated {
 			$is_unlimited = (int) $this->get_limitations()->disk_space->get_limit() === 0 || ! $this->get_limitations()->disk_space->is_enabled();
 			$disk_space   = $is_unlimited ? __('Unlimited', 'wp-multisite-waas') : size_format(absint($this->get_limitations()->disk_space->get_limit()) * 1024 * 1024);
 
-			// Add Line, translators: %s is the disk space with appropriate suffix, MB, GB KB etc.
+			// Add Line
+			// translators: %s is the disk space with appropriate suffix, MB, GB KB etc.
 			$pricing_table_lines['wu_product_limit_disk_space'] = ! empty($disk_space) ? sprintf(__('%s <strong>Disk Space</strong>', 'wp-multisite-waas'), $disk_space) : false;
 		}
 

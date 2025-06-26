@@ -34,11 +34,11 @@ if ($membership->is_recurring() && $should_auto_renew) {
 		if ($original_cart->get_cart_type() === 'downgrade') {
 			$subtotal = wu_format_currency($payment->get_subtotal(), $payment->get_currency());
 			if ($is_trial_setup) {
-				// translators: %1$s is the start date, %2$s is the subtotal amount, and %3$s is the currency description
+				// translators: %1$s is the start date, %2$s is the subtotal amount, and %3$s is the description of how often.
 				$notes[] = sprintf(__('Your updated membership will start on $1$s, from that date you will be billed %2$s %3$s.', 'wp-multisite-waas'), $date, $subtotal, $desc);
 			} else {
 				$date_renew = wp_date(get_option('date_format'), strtotime($membership->get_date_expiration(), wu_get_current_time('timestamp', true)));
-				// translators: %1$s is the start date, %2$s is the subtotal amount, and %3$s is the currency description
+				// translators: $1$s the date membership will start, $2$s amount to be billed, %3$s the description of how often.
 				$notes[] = sprintf(__('Your updated membership will start on %1$s, from that date you will be billed %2$s %3$s.', 'wp-multisite-waas'), $date_renew, $subtotal, $desc);
 			}
 		} elseif ($is_trial_setup) {
@@ -46,17 +46,17 @@ if ($membership->is_recurring() && $should_auto_renew) {
 			// translators: %1$s is the membership level, %2$s is the initial amount, and %3$s is the currency description
 			$notes[] = sprintf(__('After the first payment of %1$s you will be billed %2$s %3$s.', 'wp-multisite-waas'), $initial_amount_format, $recurring_total_format, $desc);
 		} else {
-			// translators: %1$s is the recurring total formatted, %2$s is a description
+			// translators: $1$s amount to be billed, $2$s how often
 			$notes[] = sprintf(__('After this payment you will be billed %1$s %2$s.', 'wp-multisite-waas'), $recurring_total_format, $desc);
 		}
 	} else {
 		$recurring_total_format = wu_format_currency($recurring_total, $payment->get_currency());
 
 		if ($is_trial_setup) {
-			// translators: %1$s is the recurring total formatted, %2$s is a description
+			// translators: $1$s amount to be billed, $2$s how often
 			$notes[] = sprintf(__('From that date, you will be billed %1$s %2$s.', 'wp-multisite-waas'), $recurring_total_format, $desc);
 		} else {
-			// translators: %1$s is a placeholder for the billing amount.
+			// translators: $1$s how often
 			$notes[] = sprintf(__('After this payment you will be billed %1$s.', 'wp-multisite-waas'), $desc);
 		}
 	}
@@ -123,7 +123,7 @@ $subtotal = 0;
 			<?php foreach ($payment->get_tax_breakthrough() as $rate => $total) : ?>
 
 				<tr>
-					<?php // translators: %s is the tax rate. ?>
+					<?php // translators: %s: Tax rate. ?>
 					<th class="wu-text-left wu-py-2 wu-px-4"><?php printf(esc_html__('Tax (%s%%)', 'wp-multisite-waas'), esc_html($rate)); ?></th>
 					<th class="wu-text-left wu-py-2 wu-px-4"><?php echo esc_html(wu_format_currency($total, $payment->get_currency())); ?></th>
 				</tr>

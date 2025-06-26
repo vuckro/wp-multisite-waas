@@ -65,7 +65,9 @@
         "woocommerce/woocommerce-sniffs": "^1.0.0",
         "symplify/vendor-patches": "^11.3",
         "fakerphp/faker": "^1.24",
-        "rector/rector": "^2.0.8"
+        "rector/rector": "^2.0.8",
+        "szepeviktor/phpstan-wordpress": "^2.0.1",
+        "phpstan/extension-installer": "^1.1"
     },
     "config": {
         "platform": {
@@ -102,7 +104,9 @@
             "update.sh",
             "phpstan.neon.dist",
             "rector.php",
-            "inc/development"
+            "inc/development",
+            ".github",
+            ".wiki"
         ]
     },
     "extra": {

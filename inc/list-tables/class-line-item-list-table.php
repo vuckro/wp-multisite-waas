@@ -122,7 +122,8 @@ class Line_Item_List_Table extends Payment_List_Table {
 
 		$html = wu_format_currency($item->get_unit_price());
 
-		$quantity = sprintf(__('Quantity: %s', 'wp-multisite-waas'), $item->get_quantity()); // phpcs:ignore
+		// translators: %s is the quantity of items in the cart
+		$quantity = sprintf(__('Quantity: %s', 'wp-multisite-waas'), $item->get_quantity());
 
 		return $html . sprintf('<small class="wu-block">%s</small>', $quantity);
 	}

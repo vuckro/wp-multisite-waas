@@ -319,7 +319,7 @@ class Broadcast_List_Table extends Base_List_Table {
 				if ($plan_customers) {
 					$customer_count = count($plan_customers);
 				}
-				// translators: %s: number of customers
+				// translators: %s is the number of customers.
 				$description = sprintf(__('%s customer(s) targeted.', 'wp-multisite-waas'), $customer_count);
 
 				$url_atts = [

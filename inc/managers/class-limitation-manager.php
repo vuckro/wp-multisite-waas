@@ -591,7 +591,11 @@ class Limitation_Manager {
 				// translators: %s is the user role name.
 				'title'             => sprintf(__('Limit %s Role', 'wp-multisite-waas'), $user_role['name']),
 				// translators: %s is the user role name.
-				'desc'              => sprintf(__('The customer will be able to create %s users(s) of this user role.', 'wp-multisite-waas'), "{{ roles['{$user_role_slug}'].enabled ? ( parseInt(roles['{$user_role_slug}'].number, 10) ? roles['{$user_role_slug}'].number : '" . __('unlimited', 'wp-multisite-waas') . "' ) : '" . __('no', 'wp-multisite-waas') . "' }}"),
+				'desc'              => sprintf(
+					// translators: %s is the user role name.
+					__('The customer will be able to create %s users(s) of this user role.', 'wp-multisite-waas'),
+					"{{ roles['{$user_role_slug}'].enabled ? ( parseInt(roles['{$user_role_slug}'].number, 10) ? roles['{$user_role_slug}'].number : '" . __('unlimited', 'wp-multisite-waas') . "' ) : '" . __('no', 'wp-multisite-waas') . "' }}"
+				),
 				'tooltip'           => '',
 				'wrapper_html_attr' => [
 					'v-bind:class' => "!roles['{$user_role_slug}'].enabled ? 'wu-opacity-75' : ''",
@@ -651,8 +655,11 @@ class Limitation_Manager {
 				'type'              => 'group',
 				// translators: %s is the post type name.
 				'title'             => sprintf(__('Limit %s', 'wp-multisite-waas'), $post_type->label),
-				// translators: %s is the post type name.
-				'desc'              => sprintf(__('The customer will be able to create %s post(s) of this post type.', 'wp-multisite-waas'), "{{ types['{$post_type_slug}'].enabled ? ( parseInt(types['{$post_type_slug}'].number, 10) ? types['{$post_type_slug}'].number : '" . __('unlimited', 'wp-multisite-waas') . "' ) : '" . __('no', 'wp-multisite-waas') . "' }}"),
+				'desc'              => sprintf(
+					// translators: %s is the post type name.
+					__('The customer will be able to create %s post(s) of this post type.', 'wp-multisite-waas'),
+					"{{ types['{$post_type_slug}'].enabled ? ( parseInt(types['{$post_type_slug}'].number, 10) ? types['{$post_type_slug}'].number : '" . __('unlimited', 'wp-multisite-waas') . "' ) : '" . __('no', 'wp-multisite-waas') . "' }}"
+				),
 				'tooltip'           => '',
 				'wrapper_html_attr' => [
 					'v-bind:class' => "!types['{$post_type_slug}'].enabled ? 'wu-opacity-75' : ''",

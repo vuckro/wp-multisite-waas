@@ -511,7 +511,7 @@ class Gateway_Manager extends Base_Manager {
 	 */
 	public function install_hooks($class_name): void {
 
-        /** @var Base_Gateway $gateway */
+		/** @var Base_Gateway $gateway */
 		$gateway = new $class_name();
 
 		$gateway_id = $gateway->get_id();

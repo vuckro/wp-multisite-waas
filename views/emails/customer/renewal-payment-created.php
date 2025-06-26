@@ -5,8 +5,9 @@
  * @since 2.0.19
  */
 ?>
+<?php // translators: %s: Customer Name ?>
 <p><?php printf(esc_html__('Hey %s,', 'wp-multisite-waas'), '{{customer_name}}'); ?></p>
-
+<?php // translators: %1$s: total payment ammount. ?>
 <p><?php printf(esc_html__('You have a new pending payment of %1$s for your membership.', 'wp-multisite-waas'), '{{payment_total}}'); ?></p>
 
 <p><a href="{{default_payment_url}}" style="text-decoration: none;" rel="nofollow"><?php esc_html_e('Pay Now', 'wp-multisite-waas'); ?></a></p>

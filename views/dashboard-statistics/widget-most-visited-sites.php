@@ -86,7 +86,8 @@ $page->render_csv_button(
 				</div>
 			</td>
 			<td class="wu-align-middle wu-text-right">
-				<?php printf(_n('%d visit', '%d visits', $site_visits->count, 'wp-multisite-waas'), $site_visits->count); ?>
+				<?php // translators: %s number of visitors. ?>
+				<?php printf(esc_html(_n('%d visit', '%d visits', $site_visits->count, 'wp-multisite-waas')), esc_html($site_visits->count)); ?>
 			</td>
 			</tr>
 

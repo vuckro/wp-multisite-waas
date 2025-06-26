@@ -499,6 +499,7 @@ class Base_List_Table extends \WP_List_Table {
 		if ( ! $this->has_items() && 'page' === $this->context) {
 			echo wu_render_empty_state( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				[
+					// translators: %s name of items in list.
 					'message'      => sprintf(__("You don't have any %s yet.", 'wp-multisite-waas'), $this->labels['plural']),
 					'sub_message'  => $this->_args['add_new'] ? __('How about we create a new one?', 'wp-multisite-waas') : __('...but you will see them here once they get created.', 'wp-multisite-waas'),
 					// translators: %s is the singular value of the model, such as Product, or Payment.
@@ -914,7 +915,7 @@ class Base_List_Table extends \WP_List_Table {
 		$id = $payment->get_id();
 
 		$reference = $payment->get_hash();
-
+		// translators: %s the payment total.
 		$description = sprintf(__('Total %s', 'wp-multisite-waas'), wu_format_currency($payment->get_total(), $payment->get_currency()));
 
 		$payment_link = wu_network_admin_url('wp-ultimo-edit-payment', $url_atts);

@@ -10,7 +10,8 @@
 
 	<ul id="wu-footer-nav" class="wu-text-xs wu-pb-0">
 	<li class="wu-inline-block wu-mx-1 wu-font-medium">
-		<?php printf(__('Version %s', 'wp-multisite-waas'), wu_get_version()); ?>
+		<?php // translators: %s: version number of plugin. ?>
+		<?php printf(esc_html__('Version %s', 'wp-multisite-waas'), wu_get_version()); ?>
 	</li>
 
 	<?php if (WP_Ultimo()->is_loaded()) : ?>
