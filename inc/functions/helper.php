@@ -318,3 +318,156 @@ function wu_clean($variable) {
 		return is_scalar($variable) ? sanitize_text_field($variable) : $variable;
 	}
 }
+
+/**
+ * Get allowed HTML tags and attributes for wp_kses including SVG support and all style attributes.
+ *
+ * @since 2.4.0
+ * @return array Allowed HTML tags and attributes.
+ */
+function wu_kses_allowed_html() {
+	$svg_attributes = [
+		'class' => true,
+		'id' => true,
+		'style' => true,
+		'xmlns' => true,
+		'fill' => true,
+		'stroke' => true,
+		'stroke-width' => true,
+		'stroke-linecap' => true,
+		'stroke-linejoin' => true,
+		'stroke-dasharray' => true,
+		'stroke-dashoffset' => true,
+		'stroke-miterlimit' => true,
+		'fill-opacity' => true,
+		'stroke-opacity' => true,
+		'opacity' => true,
+		'transform' => true,
+		'clip-path' => true,
+		'mask' => true,
+		'filter' => true,
+		'aria-hidden' => true,
+		'aria-labelledby' => true,
+		'aria-describedby' => true,
+		'role' => true,
+		'focusable' => true
+	];
+	
+	return wp_kses_allowed_html('post') + [
+		'svg' => $svg_attributes + [
+			'width' => true,
+			'height' => true,
+			'viewbox' => true,
+			'preserveaspectratio' => true,
+			'version' => true,
+			'baseprofile' => true
+		],
+		'g' => $svg_attributes,
+		'defs' => $svg_attributes,
+		'title' => $svg_attributes,
+		'desc' => $svg_attributes,
+		'path' => $svg_attributes + [
+			'd' => true,
+			'pathLength' => true
+		],
+		'circle' => $svg_attributes + [
+			'cx' => true,
+			'cy' => true,
+			'r' => true
+		],
+		'ellipse' => $svg_attributes + [
+			'cx' => true,
+			'cy' => true,
+			'rx' => true,
+			'ry' => true
+		],
+		'rect' => $svg_attributes + [
+			'x' => true,
+			'y' => true,
+			'width' => true,
+			'height' => true,
+			'rx' => true,
+			'ry' => true
+		],
+		'line' => $svg_attributes + [
+			'x1' => true,
+			'y1' => true,
+			'x2' => true,
+			'y2' => true
+		],
+		'polyline' => $svg_attributes + [
+			'points' => true
+		],
+		'polygon' => $svg_attributes + [
+			'points' => true
+		],
+		'text' => $svg_attributes + [
+			'x' => true,
+			'y' => true,
+			'dx' => true,
+			'dy' => true,
+			'rotate' => true,
+			'textLength' => true,
+			'lengthAdjust' => true
+		],
+		'tspan' => $svg_attributes + [
+			'x' => true,
+			'y' => true,
+			'dx' => true,
+			'dy' => true,
+			'rotate' => true,
+			'textLength' => true,
+			'lengthAdjust' => true
+		],
+		'use' => $svg_attributes + [
+			'href' => true,
+			'xlink:href' => true,
+			'x' => true,
+			'y' => true,
+			'width' => true,
+			'height' => true
+		],
+		'image' => $svg_attributes + [
+			'href' => true,
+			'xlink:href' => true,
+			'x' => true,
+			'y' => true,
+			'width' => true,
+			'height' => true,
+			'preserveaspectratio' => true
+		],
+		'linearGradient' => $svg_attributes + [
+			'x1' => true,
+			'y1' => true,
+			'x2' => true,
+			'y2' => true,
+			'gradientUnits' => true,
+			'gradientTransform' => true
+		],
+		'radialGradient' => $svg_attributes + [
+			'cx' => true,
+			'cy' => true,
+			'r' => true,
+			'fx' => true,
+			'fy' => true,
+			'gradientUnits' => true,
+			'gradientTransform' => true
+		],
+		'stop' => $svg_attributes + [
+			'offset' => true,
+			'stop-color' => true,
+			'stop-opacity' => true
+		],
+		'clipPath' => $svg_attributes + [
+			'clipPathUnits' => true
+		],
+		'mask' => $svg_attributes + [
+			'maskUnits' => true,
+			'maskContentUnits' => true,
+			'x' => true,
+			'y' => true,
+			'width' => true,
+			'height' => true
+		]
+	] + array_fill_keys(['div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'b', 'i', 'ul', 'ol', 'li', 'a', 'img'], ['style' => true]);
+}

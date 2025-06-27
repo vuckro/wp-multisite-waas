@@ -30,7 +30,7 @@ if (false !== $product_variation) {
 			<span class="wu-font-semibold wu-block wu-text-gray-900"><?php echo empty($name) ? esc_html($product->get_name()) : esc_html($name); ?></span>
 			<?php if ($display_product_description && $product->get_description()) : ?>
 				<div class="wu-text-gray-600">
-					<p class="sm:wu-inline-block wu-my-1"><?php echo esc_html($product->get_description()); ?></p>
+					<p class="sm:wu-inline-block wu-my-1"><?php echo wp_kses($product->get_description(), wu_kses_allowed_html()); ?></p>
 				</div>
 			<?php endif; ?>
 			<div class="wu-text-gray-600">

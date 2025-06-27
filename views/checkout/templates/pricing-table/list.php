@@ -26,6 +26,7 @@ foreach ($products as $index => &$_product) {
 	<div class="wu-grid wu-grid-flow-row wu-gap-4 <?php echo esc_attr($classes); ?>">
 
 	<?php foreach ($products as $product) : ?>
+    <?php /** @var \WP_Ultimo\Models\Product $product */ ?>
 
 		<label
 		id="wu-product-<?php echo esc_attr($product->get_id()); ?>"
@@ -42,7 +43,7 @@ foreach ($products as $index => &$_product) {
 			</span>
 			<div id="server-size-0-description-0" class="wu-text-gray-600">
 				<p class="sm:wu-inline">
-				<?php echo esc_html($product->get_description()); ?>
+				<?php echo wp_kses($product->get_description(), wu_kses_allowed_html()); ?>
 				</p>
 			</div>
 			</div>

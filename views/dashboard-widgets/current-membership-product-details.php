@@ -42,7 +42,7 @@
 
 	</span>
 
-	<p class="wu-mb-6"><?php echo wp_kses_post($product->get_description()); ?></p>
+	<p class="wu-mb-6"><?php echo wp_kses($product->get_description(), wu_kses_allowed_html()); ?></p>
 
 	<?php endif; ?>
 

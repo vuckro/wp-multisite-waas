@@ -286,7 +286,7 @@ if (null !== $first_recurring_product) {
 
 			<p class="early-adopter-price">
 
-				<?php echo esc_html($product->get_description()); ?>
+				<?php echo wp_kses($product->get_description(), wu_kses_allowed_html()); ?>
 
 			</p>
 
