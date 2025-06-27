@@ -30,7 +30,7 @@ $sites = array_map('wu_get_site', $sites ?? []);
 
 $categories ??= [];
 
-$customer_sites_category = __('Your Sites', 'wp_ultimo');
+$customer_sites_category = __('Your Sites', 'wp-multisite-waas');
 
 $customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) : [];
 
