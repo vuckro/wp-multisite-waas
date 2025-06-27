@@ -201,7 +201,7 @@ class Customer extends Base_Model {
 		$user = $this->get_user();
 
 		if (empty($user)) {
-			return __('User Deleted', 'wp-multisite-waas');
+			return __('User Deleted', 'multisite-ultimate');
 		}
 
 		return $user->display_name;
@@ -257,7 +257,7 @@ class Customer extends Base_Model {
 		$user = $this->get_user();
 
 		if (empty($user)) {
-			return __('none', 'wp-multisite-waas');
+			return __('none', 'multisite-ultimate');
 		}
 
 		return $user->user_login;
@@ -274,7 +274,7 @@ class Customer extends Base_Model {
 		$user = $this->get_user();
 
 		if (empty($user)) {
-			return __('none', 'wp-multisite-waas');
+			return __('none', 'multisite-ultimate');
 		}
 
 		return $user->user_email;

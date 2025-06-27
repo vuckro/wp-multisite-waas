@@ -26,7 +26,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-WP Multisite WaaS is a WordPress Multisite plugin that transforms a network into a Website as a Service (WaaS) platform. The plugin follows a modular architecture:
+Multisite Ultimate is a WordPress Multisite plugin that transforms a network into a Website as a Service (WaaS) platform. The plugin follows a modular architecture:
 
 ### Core Structure
 - **Main Plugin File**: `wp-multisite-waas.php` - Plugin bootstrap and metadata
