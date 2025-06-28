@@ -91,7 +91,8 @@ $customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) 
 
 			<?php
 			if ($site_template->get_type() !== 'site_template' && ! in_array($site_template->get_id(), $customer_sites, true)) {
-				continue; }
+				continue;
+			}
 			?>
 
 			<?php $is_template = $site_template->get_type() === 'site_template'; ?>
@@ -99,11 +100,10 @@ $customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) 
 			<?php $categories = array_merge($site_template->get_categories(), ! $is_template ? [$customer_sites_category] : []); ?>
 
 			<div
-					id="wu-site-template-<?php echo esc_attr($site_template->get_id()); ?>"
-					class="wu-bg-white wu-border-solid wu-border wu-border-gray-300 wu-shadow-sm wu-p-4 wu-rounded wu-relative"
-
-					v-show="!$parent.template_category || <?php echo esc_attr(wp_json_encode($categories)); ?>.join(',').indexOf($parent.template_category) > -1"
-					v-cloak
+				id="wu-site-template-<?php echo esc_attr($site_template->get_id()); ?>"
+				class="wu-bg-white wu-border-solid wu-border wu-border-gray-300 wu-shadow-sm wu-p-4 wu-rounded wu-relative"
+				v-show="!$parent.template_category || <?php echo esc_attr(wp_json_encode($categories)); ?>.join(',').indexOf($parent.template_category) > -1"
+				v-cloak
 			>
 
 				<div class="wu-site-template-image-container wu-relative">
