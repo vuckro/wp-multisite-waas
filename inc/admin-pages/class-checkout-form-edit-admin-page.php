@@ -1135,9 +1135,7 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 
 		wp_enqueue_script('htmlhint');
 
-		WP_Ultimo()->scripts->register_script('wu-checkout-form-editor', wu_get_asset('checkout-forms-editor.js', 'js'), ['jquery']);
-
-		$index = 0;
+		WP_Ultimo()->scripts->register_script('wu-checkout-form-editor', wu_get_asset('checkout-forms-editor.js', 'js'), ['jquery', 'wu-vue', 'underscore', 'wu-vue-sortable', 'wu-vue-draggable']);
 
 		$steps = $this->get_object()->get_settings();
 
@@ -1160,9 +1158,6 @@ class Checkout_Form_Edit_Admin_Page extends Edit_Admin_Page {
 		);
 
 		wp_enqueue_script('wu-checkout-form-editor');
-
-		wp_enqueue_script('wu-vue-sortable', '//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js', [], wu_get_version(), true);
-		wp_enqueue_script('wu-vue-draggable', '//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js', [], wu_get_version(), true);
 
 		wp_enqueue_style('wu-checkout-form-editor', wu_get_asset('checkout-editor.css', 'css'), [], wu_get_version());
 	}

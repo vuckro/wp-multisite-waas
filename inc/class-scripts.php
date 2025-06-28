@@ -60,11 +60,10 @@ class Scripts {
 	 * @return void
 	 */
 	public function register_script($handle, $src, $deps = [], $args = [
-		'async'     => true,
 		'in_footer' => true,
 	]): void {
 
-		wp_register_script($handle, $src, $deps, wu_get_version(), $args);
+		wp_register_script($handle, $src, $deps, \WP_Ultimo::VERSION, $args);
 	}
 
 	/**
@@ -79,7 +78,7 @@ class Scripts {
 	 */
 	public function register_style($handle, $src, $deps = []): void {
 
-		wp_register_style($handle, $src, $deps, wu_get_version());
+		wp_register_style($handle, $src, $deps, \WP_Ultimo::VERSION);
 	}
 
 	/**
@@ -192,6 +191,8 @@ class Scripts {
 		 * Adds Vue Apps
 		 */
 		$this->register_script('wu-vue-apps', wu_get_asset('vue-apps.js', 'js'), ['wu-functions', 'wu-vue', 'wu-money-mask', 'wu-input-mask', 'wp-hooks']);
+		$this->register_script('wu-vue-sortable', wu_get_asset('lib/sortablejs.js', 'js'), []);
+		$this->register_script('wu-vue-draggable', wu_get_asset('lib/vue-draggable.js', 'js'), ['wu-vue-sortable']);
 
 		/*
 		 * Adds Selectizer

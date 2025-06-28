@@ -95,7 +95,6 @@ abstract class Customizer_Admin_Page extends Edit_Admin_Page {
 			['jquery', 'wu-vue', 'wu-block-ui'],
 			\WP_Ultimo::VERSION,
 			[
-				'async'     => true,
 				'in_footer' => true,
 			]
 		);

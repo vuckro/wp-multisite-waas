@@ -139,7 +139,7 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 
 		parent::register_scripts();
 
-		wp_register_script('wu-tax-rates', wu_get_asset('tax-rates.js', 'js'), ['wu-admin', 'wu-vue', 'underscore', 'wu-selectizer'], wu_get_version(), false);
+		wp_register_script('wu-tax-rates', wu_get_asset('tax-rates.js', 'js'), ['wu-admin', 'wu-vue', 'underscore', 'wu-selectizer', 'wu-vue-sortable', 'wu-vue-draggable'], wu_get_version(), false);
 
 		wp_localize_script(
 			'wu-tax-rates',
@@ -150,10 +150,6 @@ class Tax_Rates_Admin_Page extends Base_Admin_Page {
 				'confirm_delete_tax_category_message' => __('Are you sure you want to delete this tax category?', 'multisite-ultimate'),
 			]
 		);
-
-		wp_enqueue_script('wu-vue-sortable', '//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js', [], wu_get_version(), true);
-
-		wp_enqueue_script('wu-vue-draggable', '//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js', [], wu_get_version(), true);
 
 		wp_enqueue_script('wu-tax-rates');
 	}

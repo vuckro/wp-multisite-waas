@@ -109,7 +109,6 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 			['jquery', 'wu-vue'],
 			\WP_Ultimo::VERSION,
 			[
-				'async'     => true,
 				'in_footer' => true,
 			]
 		);
