@@ -103,7 +103,7 @@ class Customer extends Base_Model {
 	 * @since 2.0.0
 	 * @var string
 	 */
-	protected $signup_form;
+	protected $signup_form = 'by-admin';
 
 	/**
 	 * Extra information about this customer.
