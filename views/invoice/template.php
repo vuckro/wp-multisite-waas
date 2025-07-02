@@ -235,7 +235,7 @@ $has_tax_included = false;
 				<td>
 					<span class="font-weight: medium;"><?php echo esc_html($line_item->get_title()); ?></span>
 					<br>
-					<small><?php echo esc_html($line_item->get_description()); ?></small>
+					<small><?php echo wp_kses($line_item->get_description(), wu_kses_allowed_html()); ?></small>
 				</td>
 
 				<td style="text-align: right;">
