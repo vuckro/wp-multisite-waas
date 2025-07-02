@@ -88,7 +88,7 @@ $customer_sites = isset($customer_sites) ? array_map('intval', $customer_sites) 
 	<div id="wu-site-template-container-grid" class="wu-grid wu-grid-cols-1 sm:wu-grid-cols-2 md:wu-grid-cols-<?php echo esc_attr($cols ?? '3'); ?> wu-gap-4">
 
 		<?php foreach ($sites as $site_template) : ?>
-
+            <?php /** @var WP_Ultimo\Models\Site $site_template */ ?>
 			<?php
 			if ($site_template->get_type() !== 'site_template' && ! in_array($site_template->get_id(), $customer_sites, true)) {
 				continue;

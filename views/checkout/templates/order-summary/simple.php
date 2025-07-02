@@ -225,7 +225,7 @@
 
 			<small>
 				<?php // translators: %1$s relative date string ?>
-				<?php printf(esc_html__('Total in %1$s - end of trial period.', 'multisite-ultimate'), '{{ $moment.unix(order.dates.date_trial_end).format(`LL`) }}'); ?>
+				<?php printf(wp_kses_post(__('Total in %1$s - end of trial period.', 'multisite-ultimate')), '{{ $moment.unix(order.dates.date_trial_end).format(`LL`) }}'); ?>
 			</small>
 
 			</td>
