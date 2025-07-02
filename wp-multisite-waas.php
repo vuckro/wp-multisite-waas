@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Multisite WaaS
+ * Plugin Name: Multisite Ultimate
  * Description: The WordPress Multisite Website as a Service (WaaS) plugin.
- * Plugin URI: https://wpmultisitewaas.org
- * Text Domain: wp-multisite-waas
+ * Plugin URI: https://multisiteultimate.com
+ * Text Domain: multisite-ultimate
  * Version: 2.4.0
- * Author: WP Multisite Community
+ * Author: Multisite Ultimate Community
  * Author URI: https://github.com/superdav42/wp-multisite-waas
  * GitHub Plugin URI: https://github.com/superdav42/wp-multisite-waas
  * Network: true
@@ -27,7 +27,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Multisite Ultimate. If not, see <http://www.gnu.org/licenses/>.
  *
- * @author   Arindo Duque and NextPress and WP Multisite Community
+ * @author   Arindo Duque and NextPress and the Multisite Ultimate Community
  * @category Core
  * @package  WP_Ultimo
  * @version  2.4.0
@@ -63,8 +63,8 @@ if (defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING) {
 if ( ! defined('WP_ULTIMO_PLUGIN_FILE')) {
 	define('WP_ULTIMO_PLUGIN_FILE', __FILE__);
 }
-if ( ! defined('WP_MULTISITE_WAAS_UPDATE_URL')) {
-	define('WP_MULTISITE_WAAS_UPDATE_URL', 'https://wpmultisitewaas.org/');
+if ( ! defined('MULTISITE_ULTIMATE_UPDATE_URL')) {
+	define('MULTISITE_ULTIMATE_UPDATE_URL', 'https://multisiteultimate.com/');
 }
 /**
  * Require core file dependencies
