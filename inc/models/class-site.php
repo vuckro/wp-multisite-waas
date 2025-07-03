@@ -339,7 +339,7 @@ class Site extends Base_Model implements Limitable {
 	 * Get the list of categories.
 	 *
 	 * @since 2.0.0
-	 * @return string
+	 * @return array
 	 */
 	public function get_categories() {
 
@@ -429,7 +429,7 @@ class Site extends Base_Model implements Limitable {
 	 */
 	public function get_preview_url_attrs(): string {
 
-		$is_enabled = Template_Previewer::get_instance()->get_setting('enabled');
+		$is_enabled = Template_Previewer::get_instance()->get_setting('enabled', true);
 
 		$href = 'href="%s" target="_blank"';
 
@@ -990,7 +990,7 @@ class Site extends Base_Model implements Limitable {
 	 */
 	public function has_product() {
 
-		return $this->has_membership() && $this->get_membership()->has_product();
+		return $this->has_membership() && $this->get_membership()->has_plan();
 	}
 
 	/**
@@ -1437,7 +1437,7 @@ class Site extends Base_Model implements Limitable {
 	public function delete() {
 
 		if ( ! $this->get_id()) {
-			return new \WP_Error("wu_{$this->model}_delete_unsaved_item", __('Item not found.', 'wp-multisite-waas'));
+			return new \WP_Error("wu_{$this->model}_delete_unsaved_item", __('Item not found.', 'multisite-ultimate'));
 		}
 
 		/**
