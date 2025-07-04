@@ -9,8 +9,6 @@
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
-// phpcs:disable
-
 /**
  * Return the instance of the function
  */
@@ -52,7 +50,7 @@ if (!function_exists('validate_user_form')) {
  * Builds HTML attributes from a PHP array
  *
  * @param array $attributes
- * @return void
+ * @return string
  */
 function wu_create_html_attributes_from_array($attributes = []) {
 
@@ -102,9 +100,9 @@ function wu_print_signup_field_options($options, $field = []) {
 
 			echo sprintf('<optgroup label="%s">', $option_value);
 
-			foreach ($option_label as $option_value => $option_label) {
+			foreach ($option_label as $inner_option_value => $inner_option_label) {
 
-				wu_print_signup_field_option($option_value, $option_label, $field);
+				wu_print_signup_field_option($inner_option_value, $inner_option_label, $field);
 
 			}
 
@@ -184,7 +182,7 @@ function wu_print_signup_field($field_slug, $field, $results) {
 
           });
 
-          if (conditions_met == conditions_count) {
+          if (conditions_met === conditions_count) {
 
             target_field.slideDown(velocity);
 
