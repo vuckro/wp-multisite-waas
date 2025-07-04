@@ -310,7 +310,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 		return apply_filters(
 			'wu_system_info_data',
 			[
-				'WordPress and System Settings'     => [
+				'WordPress and System Settings'      => [
 					'wp-ultimo-version'      => [
 						'tooltip' => 'Multisite Ultimate current version installed locally',
 						'title'   => 'Multisite Ultimate Version',
@@ -523,7 +523,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 					],
 				],
 
-				'Active Theme'                      => [
+				'Active Theme'                       => [
 					'active-theme' => [
 						'tooltip' => '',
 						'title'   => 'Active Theme',
@@ -531,8 +531,8 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 					],
 				],
 
-				'Active Plugins'                    => $array_active_plugins,
-				'Active Plugins on Main Site'       => $array_active_plugins_main_site,
+				'Active Plugins'                     => $array_active_plugins,
+				'Active Plugins on Main Site'        => $array_active_plugins_main_site,
 
 				'Multisite Ultimate Database Status' => $array_wu_tables,
 
@@ -546,7 +546,7 @@ class System_Info_Admin_Page extends Base_Admin_Page {
 					],
 					$wpultimo_settings
 				),
-				'Defined Constants'                 => $array_constants,
+				'Defined Constants'                  => $array_constants,
 			]
 		);
 	}
