@@ -39,11 +39,13 @@ defined('ABSPATH') || exit;
 if (defined('WP_SANDBOX_SCRAPING') && WP_SANDBOX_SCRAPING) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	$wu_possible_conflicts = false;
-	if (is_plugin_active('wp-ultimo/wp-ultimo.php')) {
-		// old plugin still installed and active with the old name and path
-		// and the user is trying to activate this plugin. So deactivate and return.
-		deactivate_plugins('wp-ultimo/wp-ultimo.php', true, true);
-		$wu_possible_conflicts = true;
+	foreach ( ['wp-ultimo/wp-ultimo.php', 'wp-multisite-waas/wp-multisite-waas.php'] as $plugin_file ) {
+		if ( is_plugin_active($plugin_file) ) {
+			// old plugin still installed and active with the old name and path
+			// and the user is trying to activate this plugin. So deactivate and return.
+			deactivate_plugins($plugin_file, true, true);
+			$wu_possible_conflicts = true;
+		}
 	}
 	if (file_exists(WP_CONTENT_DIR . '/sunrise.php')) {
 		// We must override the old sunrise file or more name conflicts will occur.
