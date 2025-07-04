@@ -64,7 +64,7 @@ class Theme_Limits {
 		 *
 		 * @since 2.1.0
 		 */
-		if (wu_cli_is_plugin_skipped('wp-ultimo')) {
+		if (wu_cli_is_plugin_skipped('multisite-ultimate')) {
 			return;
 		}
 
