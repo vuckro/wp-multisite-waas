@@ -9,7 +9,6 @@
 
 namespace WP_Ultimo\Checkout;
 
-use WP_Ultimo\Checkout\Line_Item;
 use WP_Ultimo\Database\Memberships\Membership_Status;
 use Arrch\Arrch as Array_Search;
 
@@ -977,7 +976,7 @@ class Cart implements \JsonSerializable {
 							'overlimits',
 							sprintf(
 							// translators: %1$d: current number of posts, %2$s: post type name, %3$d: posts quota, %4$s: post type name, %5$d: number of posts to be deleted, %6$s: post type name.
-								esc_html__('You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'wp-ultimo'),
+								esc_html__('You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'multisite-ultimate'),
 								$limit['current'],
 								$limit['current'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
 								$limit['limit'],

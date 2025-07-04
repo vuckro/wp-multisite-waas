@@ -108,7 +108,8 @@
             ".github",
             ".wiki",
             "codeception.yml",
-            "CLAUDE.md"
+            "CLAUDE.md",
+            "patches"
         ]
     },
     "extra": {

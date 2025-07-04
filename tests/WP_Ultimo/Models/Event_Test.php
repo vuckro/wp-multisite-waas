@@ -31,7 +31,10 @@ class Event_Test extends \WP_UnitTestCase {
 
 		$this->test_data = [
 			'severity'    => Event::SEVERITY_INFO,
-			'payload'     => ['action' => 'test_action', 'result' => 'success'],
+			'payload'     => [
+				'action' => 'test_action',
+				'result' => 'success',
+			],
 			'object_type' => 'site',
 			'object_id'   => 1,
 			'author_id'   => 1,
@@ -143,7 +146,10 @@ class Event_Test extends \WP_UnitTestCase {
 	 * Test payload getter and setter.
 	 */
 	public function test_payload_getter_setter() {
-		$payload = ['test' => 'data', 'number' => 123];
+		$payload = [
+			'test'   => 'data',
+			'number' => 123,
+		];
 		$this->event->set_payload($payload);
 
 		$retrieved_payload = $this->event->get_payload();
@@ -228,7 +234,10 @@ class Event_Test extends \WP_UnitTestCase {
 	public function test_message_interpolation_with_arrays() {
 		$message = 'Status: {{status}}';
 		$payload = [
-			'status' => ['old' => 'pending', 'new' => 'active'],
+			'status' => [
+				'old' => 'pending',
+				'new' => 'active',
+			],
 		];
 
 		$interpolated = $this->event->interpolate_message($message, $payload);
