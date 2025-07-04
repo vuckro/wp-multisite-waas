@@ -5,7 +5,7 @@ Tags: multisite, waas, membership, domain-mapping, recurring payments, subscript
 Requires at least: 5.3
 
 Requires PHP: 7.4.30
-Tested up to: 6.8.1
+Tested up to: 6.8
 Stable tag: 2.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
