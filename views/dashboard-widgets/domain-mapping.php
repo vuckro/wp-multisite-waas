@@ -16,7 +16,7 @@
 
 		<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-			<?php echo $title; ?>
+			<?php echo esc_html($title); ?>
 
 		</h3>
 

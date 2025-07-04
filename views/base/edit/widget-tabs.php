@@ -132,6 +132,6 @@
 
 	</div>
 
-	<?php echo $after; ?>
+	<?php echo $after; // phpcs:ignore WordPress.Security.NonceVerification ?>
 
 </div>
