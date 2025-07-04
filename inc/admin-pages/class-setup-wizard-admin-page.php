@@ -856,10 +856,10 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				]
 			);
 
-			wp_add_inline_script('wu-setup-wizard-polyfill', 'document.addEventListener("DOMContentLoaded", () => wu_initialize_imagepicker());', 'after');
+			wp_add_inline_script('wu-setup-wizard-extra', 'document.addEventListener("DOMContentLoaded", () => wu_initialize_imagepicker());', 'after');
 		}
 
-		wp_enqueue_script('wu-setup-wizard-polyfill', wu_get_asset('setup-wizard-polyfill.js', 'js'), ['jquery', 'wu-fields', 'wu-functions', 'wubox'], wu_get_version(), true);
+		wp_enqueue_script('wu-setup-wizard-extra', wu_get_asset('setup-wizard-extra.js', 'js'), ['jquery', 'wu-fields', 'wu-functions', 'wubox'], wu_get_version(), true);
 
 		wp_enqueue_media();
 
