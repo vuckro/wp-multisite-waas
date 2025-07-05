@@ -24,7 +24,7 @@ trait Singleton {
 	/**
 	 * Returns the instance of WP_Ultimo
 	 *
-	 * @return object
+	 * @return static
 	 */
 	public static function get_instance(): object {
 

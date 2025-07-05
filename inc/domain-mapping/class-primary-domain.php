@@ -72,7 +72,7 @@ class Primary_Domain {
 		 * from happening.
 		 *
 		 * @since 2.0.0
-		 * @param $should_redirect If we should redirect or not.
+		 * @param bool $should_redirect If we should redirect or not.
 		 *
 		 * @return bool
 		 */

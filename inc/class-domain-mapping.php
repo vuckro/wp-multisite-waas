@@ -179,7 +179,7 @@ class Domain_Mapping {
 	public function add_mapped_domains_as_allowed_origins($origin) {
 
 		if ( ! function_exists('wu_get_domain_by_domain')) {
-			return;
+			return '';
 		}
 
 		if (empty($origin) && wp_doing_ajax()) {
@@ -285,7 +285,7 @@ class Domain_Mapping {
 		 * be mapped too, simply filter here.
 		 *
 		 * @param boolean $is_active Should the mapping be treated as active?
-		 * @param WP_Ultimo\Models\Domain $mapping Mapping that we're inspecting
+		 * @param \WP_Ultimo\Models\Domain $mapping Mapping that we're inspecting
 		 * @param string $domain
 		 */
 		$is_active = apply_filters('wu_use_domain_mapping', $mapping->is_active(), $mapping, $domain);
