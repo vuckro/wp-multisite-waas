@@ -59,7 +59,7 @@
 
 				<span class="<?php echo esc_attr($item['icon']); ?>"></span>
 
-								<?php echo esc_html($item['value']); ?>
+								<?php echo wp_kses($item['value'], wu_kses_allowed_html()); ?>
 
 				</a>
 
@@ -69,7 +69,7 @@
 
 				<span class="<?php echo esc_attr($item['icon']); ?>"></span>
 
-				<?php echo esc_html($item['value']); ?>
+				<?php echo wp_kses($item['value'], wu_kses_allowed_html()); ?>
 
 				</span>
 
@@ -96,7 +96,7 @@ endforeach;
 
 				<span class="<?php echo esc_attr($item['icon']); ?>"></span>
 
-								<?php echo esc_html($item['value']); ?>
+								<?php echo wp_kses($item['value'], wu_kses_allowed_html()); ?>
 
 				</a>
 
@@ -106,7 +106,7 @@ endforeach;
 
 				<span class="<?php echo esc_attr($item['icon']); ?>"></span>
 
-				<?php echo esc_html($item['value']); ?>
+				<?php echo wp_kses($item['value'], wu_kses_allowed_html()); ?>
 
 				</span>
 
