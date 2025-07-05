@@ -9,13 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-02T05:32:40+00:00\n"
+"POT-Creation-Date: 2025-07-04T08:31:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: multisite-ultimate\n"
 
 #. Plugin Name of the plugin
-#: wp-multisite-waas.php
+#: multisite-ultimo.php
 #: inc/admin-pages/class-migration-alert-admin-page.php:103
 #: inc/admin-pages/class-setup-wizard-admin-page.php:305
 #: inc/admin-pages/class-setup-wizard-admin-page.php:650
@@ -25,22 +25,22 @@ msgid "Multisite Ultimate"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: wp-multisite-waas.php
+#: multisite-ultimo.php
 msgid "https://multisiteultimate.com"
 msgstr ""
 
 #. Description of the plugin
-#: wp-multisite-waas.php
+#: multisite-ultimo.php
 msgid "The WordPress Multisite Website as a Service (WaaS) plugin."
 msgstr ""
 
 #. Author of the plugin
-#: wp-multisite-waas.php
+#: multisite-ultimo.php
 msgid "Multisite Ultimate Community"
 msgstr ""
 
 #. Author URI of the plugin
-#: wp-multisite-waas.php
+#: multisite-ultimo.php
 msgid "https://github.com/superdav42/wp-multisite-waas"
 msgstr ""
 
@@ -3441,7 +3441,7 @@ msgid "Fee"
 msgstr ""
 
 #: inc/admin-pages/class-payment-edit-admin-page.php:669
-#: inc/checkout/class-cart.php:1282
+#: inc/checkout/class-cart.php:1281
 msgid "Credit"
 msgstr ""
 
@@ -6434,90 +6434,96 @@ msgstr ""
 msgid "Limit response to specific fields. Defaults to id, name"
 msgstr ""
 
-#: inc/checkout/class-cart.php:559
+#: inc/checkout/class-cart.php:558
 msgid "The payment in question was not found."
 msgstr ""
 
-#: inc/checkout/class-cart.php:586
+#: inc/checkout/class-cart.php:585
 msgid "You are not allowed to modify this payment."
 msgstr ""
 
-#: inc/checkout/class-cart.php:597
-#: inc/checkout/class-cart.php:745
+#: inc/checkout/class-cart.php:596
+#: inc/checkout/class-cart.php:744
 msgid "The membership in question was not found."
 msgstr ""
 
-#: inc/checkout/class-cart.php:686
+#: inc/checkout/class-cart.php:685
 msgid "The payment in question has an invalid status."
 msgstr ""
 
-#: inc/checkout/class-cart.php:765
+#: inc/checkout/class-cart.php:764
 #: inc/gateways/class-base-stripe-gateway.php:269
 msgid "You are not allowed to modify this membership."
 msgstr ""
 
-#: inc/checkout/class-cart.php:797
-#: inc/checkout/class-cart.php:819
-#: inc/checkout/class-cart.php:941
+#: inc/checkout/class-cart.php:796
+#: inc/checkout/class-cart.php:818
+#: inc/checkout/class-cart.php:940
 msgid "This cart proposes no changes to the current membership."
 msgstr ""
 
+#. translators: %1$d: current number of posts, %2$s: post type name, %3$d: posts quota, %4$s: post type name, %5$d: number of posts to be deleted, %6$s: post type name.
+#: inc/checkout/class-cart.php:979
+#, php-format
+msgid "You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan."
+msgstr ""
+
 #. Translators: Placeholder receives the recurring period description
-#: inc/checkout/class-cart.php:1060
+#: inc/checkout/class-cart.php:1059
 #, php-format
 msgid "You already have an active %s agreement."
 msgstr ""
 
-#: inc/checkout/class-cart.php:1081
+#: inc/checkout/class-cart.php:1080
 msgid "Scheduled Swap Credit"
 msgstr ""
 
-#: inc/checkout/class-cart.php:1082
+#: inc/checkout/class-cart.php:1081
 msgid "Swap scheduled to next billing cycle."
 msgstr ""
 
-#: inc/checkout/class-cart.php:1283
+#: inc/checkout/class-cart.php:1282
 msgid "Prorated amount based on the previous membership."
 msgstr ""
 
 #. translators: %s is the coupon code being used, all-caps. e.g. PROMO10OFF
-#: inc/checkout/class-cart.php:1319
+#: inc/checkout/class-cart.php:1318
 #, php-format
 msgid "The code %s do not exist or is no longer valid."
 msgstr ""
 
 #. translators: two intervals
-#: inc/checkout/class-cart.php:1400
+#: inc/checkout/class-cart.php:1399
 #, php-format
 msgid "Interval %1$s and %2$s do not match."
 msgstr ""
 
-#: inc/checkout/class-cart.php:1563
+#: inc/checkout/class-cart.php:1562
 msgid "The product you are trying to add does not exist."
 msgstr ""
 
-#: inc/checkout/class-cart.php:1575
+#: inc/checkout/class-cart.php:1574
 msgid "The product you are trying to add does not exist for the selected duration."
 msgstr ""
 
-#: inc/checkout/class-cart.php:1589
+#: inc/checkout/class-cart.php:1588
 msgid "Theres already a plan in this membership."
 msgstr ""
 
 #. translators: respectively, product name, duration, and duration unit.
-#: inc/checkout/class-cart.php:1651
+#: inc/checkout/class-cart.php:1650
 #, php-format
 msgid "%1$s does not have a valid price variation for that billing period (every %2$s %3$s(s)) and was not added to the cart."
 msgstr ""
 
 #. translators: placeholder is the product name.
-#: inc/checkout/class-cart.php:1715
+#: inc/checkout/class-cart.php:1714
 #, php-format
 msgid "Signup Fee for %s"
 msgstr ""
 
 #. translators: placeholder is the product name.
-#: inc/checkout/class-cart.php:1715
+#: inc/checkout/class-cart.php:1714
 #, php-format
 msgid "Signup Credit for %s"
 msgstr ""
@@ -8591,18 +8597,6 @@ msgstr ""
 
 #: inc/class-whitelabel.php:271
 msgid "Replace all occurrences of the word \"Sites\" with a different word."
-msgstr ""
-
-#: inc/class-wp-multisite-waas-updater.php:187
-msgid "Failed to connect to the update server. Please try again later."
-msgstr ""
-
-#: inc/class-wp-multisite-waas-updater.php:253
-msgid "Successfully connected your site to WPMultisiteWaaS.org."
-msgstr ""
-
-#: inc/class-wp-multisite-waas-updater.php:261
-msgid "Failed to authenticate with WPMultisiteWaaS.org."
 msgstr ""
 
 #: inc/compat/class-general-compat.php:255
