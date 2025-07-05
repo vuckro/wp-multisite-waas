@@ -112,6 +112,15 @@ class Domain_Edit_Admin_Page extends Edit_Admin_Page {
 				'in_footer' => true,
 			]
 		);
+
+
+		wp_localize_script(
+			'wu-dns-table',
+			'wu_dns_table_config',
+			[
+				'domain'       => $this->get_object()->get_domain(),
+			]
+		);
 	}
 
 	/**
