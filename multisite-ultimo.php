@@ -73,7 +73,37 @@ if ( ! defined('MULTISITE_ULTIMATE_UPDATE_URL')) {
  */
 require_once __DIR__ . '/constants.php';
 
-require_once __DIR__ . '/vendor/autoload_packages.php';
+try {
+	require_once __DIR__ . '/vendor/autoload_packages.php';
+} catch ( \Error $exception ) {
+
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		// This message is not translated as at this point it's too early to load translations.
+		error_log(  // phpcs:ignore
+			esc_html( 'Your installation of Multisite Ultimate is incomplete. If you installed Multisite Ultimate from GitHub, please refer to this document to set up your development environment: https://github.com/superdav42/wp-multisite-waas?tab=readme-ov-file#method-2-using-git-and-composer-for-developers' )
+		);
+	}
+	add_action(
+		'network_admin_notices',
+		function() {
+			?>
+            <div class="notice notice-error">
+                <p>
+					<?php
+					printf(
+					/* translators: 1: is a link to a support document. 2: closing link */
+						esc_html__( 'Your installation of Multisite Ultimate is incomplete. If you installed from GitHub, %1$splease refer to this document%2$s to set up your development environment or download a pre-packaged ZIP release.', 'multisite-ultimate' ),
+						'<a href="' . esc_url( 'https://github.com/superdav42/wp-multisite-waas?tab=readme-ov-file#method-2-using-git-and-composer-for-developers' ) . '" target="_blank" rel="noopener noreferrer">',
+						'</a>'
+					);
+					?>
+                </p>
+            </div>
+			<?php
+		}
+	);
+    return;
+}
 
 require_once __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
 
