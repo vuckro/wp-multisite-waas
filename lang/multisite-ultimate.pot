@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-04T08:31:54+00:00\n"
+"POT-Creation-Date: 2025-07-05T20:02:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: multisite-ultimate\n"
@@ -134,7 +134,7 @@ msgstr ""
 #: inc/admin-pages/class-checkout-form-edit-admin-page.php:1320
 #: inc/admin-pages/class-customer-edit-admin-page.php:757
 #: inc/admin-pages/class-discount-code-edit-admin-page.php:244
-#: inc/admin-pages/class-domain-edit-admin-page.php:289
+#: inc/admin-pages/class-domain-edit-admin-page.php:298
 #: inc/admin-pages/class-event-list-admin-page.php:176
 #: inc/admin-pages/class-event-list-admin-page.php:187
 #: inc/admin-pages/class-event-list-admin-page.php:198
@@ -322,7 +322,7 @@ msgstr ""
 #: inc/admin-pages/class-checkout-form-edit-admin-page.php:1459
 #: inc/admin-pages/class-customer-edit-admin-page.php:1011
 #: inc/admin-pages/class-discount-code-edit-admin-page.php:590
-#: inc/admin-pages/class-domain-edit-admin-page.php:471
+#: inc/admin-pages/class-domain-edit-admin-page.php:480
 #: inc/admin-pages/class-edit-admin-page.php:275
 #: inc/admin-pages/class-email-edit-admin-page.php:452
 #: inc/admin-pages/class-email-template-customize-admin-page.php:556
@@ -766,8 +766,8 @@ msgstr ""
 #: inc/admin-pages/class-checkout-form-edit-admin-page.php:1374
 #: inc/admin-pages/class-discount-code-edit-admin-page.php:378
 #: inc/admin-pages/class-discount-code-edit-admin-page.php:382
-#: inc/admin-pages/class-domain-edit-admin-page.php:350
-#: inc/admin-pages/class-domain-edit-admin-page.php:362
+#: inc/admin-pages/class-domain-edit-admin-page.php:359
+#: inc/admin-pages/class-domain-edit-admin-page.php:371
 #: inc/admin-pages/class-email-edit-admin-page.php:279
 #: inc/admin-pages/class-email-edit-admin-page.php:283
 #: inc/admin-pages/class-product-edit-admin-page.php:513
@@ -1115,7 +1115,7 @@ msgstr ""
 
 #: inc/admin-pages/class-customer-edit-admin-page.php:686
 #: inc/admin-pages/class-dashboard-admin-page.php:183
-#: inc/admin-pages/class-domain-edit-admin-page.php:239
+#: inc/admin-pages/class-domain-edit-admin-page.php:248
 #: inc/admin-pages/class-email-edit-admin-page.php:298
 #: inc/admin-pages/class-invoice-template-customize-admin-page.php:172
 #: inc/admin-pages/class-membership-edit-admin-page.php:431
@@ -1791,18 +1791,18 @@ msgstr ""
 msgid "Add Discount Code"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:141
+#: inc/admin-pages/class-domain-edit-admin-page.php:150
 msgid "Set another domain as primary"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:157
+#: inc/admin-pages/class-domain-edit-admin-page.php:166
 #: inc/admin-pages/class-payment-edit-admin-page.php:170
 #: inc/managers/class-form-manager.php:365
 #: inc/ui/class-domain-mapping-element.php:473
 msgid "Confirm Deletion"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:158
+#: inc/admin-pages/class-domain-edit-admin-page.php:167
 #: inc/admin-pages/class-email-list-admin-page.php:547
 #: inc/admin-pages/class-payment-edit-admin-page.php:171
 #: inc/admin-pages/class-payment-edit-admin-page.php:309
@@ -1818,8 +1818,8 @@ msgstr ""
 msgid "This action can not be undone."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:165
-#: inc/admin-pages/class-domain-edit-admin-page.php:166
+#: inc/admin-pages/class-domain-edit-admin-page.php:174
+#: inc/admin-pages/class-domain-edit-admin-page.php:175
 #: inc/admin-pages/class-edit-admin-page.php:274
 #: inc/admin-pages/class-edit-admin-page.php:719
 #: inc/admin-pages/class-payment-edit-admin-page.php:178
@@ -1864,11 +1864,11 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:218
+#: inc/admin-pages/class-domain-edit-admin-page.php:227
 msgid "Domain URL"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:224
+#: inc/admin-pages/class-domain-edit-admin-page.php:233
 #: inc/admin-pages/class-domain-list-admin-page.php:111
 #: inc/admin-pages/class-site-list-admin-page.php:329
 #: inc/checkout/signup-fields/class-signup-field-site-url.php:331
@@ -1880,68 +1880,68 @@ msgstr ""
 msgid "Domain"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:225
+#: inc/admin-pages/class-domain-edit-admin-page.php:234
 msgid "Editing an existing domain is not possible. If you want to make changes to this domain, first delete it, and then re-add the right domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:235
+#: inc/admin-pages/class-domain-edit-admin-page.php:244
 msgid "Domain Options"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:240
+#: inc/admin-pages/class-domain-edit-admin-page.php:249
 msgid "General options for the domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:248
+#: inc/admin-pages/class-domain-edit-admin-page.php:257
 msgid "Is Primary Domain?"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:249
+#: inc/admin-pages/class-domain-edit-admin-page.php:258
 msgid "Set as the primary domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:250
+#: inc/admin-pages/class-domain-edit-admin-page.php:259
 msgid "Setting this as the primary domain will remove any other domain mapping marked as the primary domain for this site."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:258
+#: inc/admin-pages/class-domain-edit-admin-page.php:267
 #: inc/admin-pages/class-domain-list-admin-page.php:152
 #: inc/ui/class-domain-mapping-element.php:352
 msgid "By making this the primary domain, we will convert the previous primary domain for this site, if one exists, into an alias domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:265
+#: inc/admin-pages/class-domain-edit-admin-page.php:274
 msgid "Is Secure?"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:266
+#: inc/admin-pages/class-domain-edit-admin-page.php:275
 msgid "Force the load using HTTPS."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:278
+#: inc/admin-pages/class-domain-edit-admin-page.php:287
 msgid "Linked Site"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:284
+#: inc/admin-pages/class-domain-edit-admin-page.php:293
 msgid "Domain Test Log"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:309
+#: inc/admin-pages/class-domain-edit-admin-page.php:318
 #: inc/admin-pages/class-domain-list-admin-page.php:136
 #: inc/list-tables/class-domain-list-table.php:163
 msgid "Stage"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:310
+#: inc/admin-pages/class-domain-edit-admin-page.php:319
 #: inc/admin-pages/class-domain-list-admin-page.php:137
 msgid "Select Stage"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:311
+#: inc/admin-pages/class-domain-edit-admin-page.php:320
 msgid "The stage in the checking lifecycle of this domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:324
+#: inc/admin-pages/class-domain-edit-admin-page.php:333
 #: inc/list-tables/class-domain-list-table.php:164
 #: inc/list-tables/class-site-list-table.php:44
 #: inc/traits/trait-wp-ultimo-plan-deprecated.php:203
@@ -1956,46 +1956,46 @@ msgid_plural "Sites"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:325
+#: inc/admin-pages/class-domain-edit-admin-page.php:334
 msgid "Search Site..."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:326
+#: inc/admin-pages/class-domain-edit-admin-page.php:335
 msgid "The target site of this domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:363
+#: inc/admin-pages/class-domain-edit-admin-page.php:372
 msgid "Use this option to manually enable or disable this domain."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:376
+#: inc/admin-pages/class-domain-edit-admin-page.php:385
 msgid "This domain has a domain stage that forces it to be inactive. Change the status to Ready or Ready (without SSL) to be able to control the active status directly."
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:429
-#: inc/admin-pages/class-domain-edit-admin-page.php:440
-#: inc/admin-pages/class-domain-edit-admin-page.php:463
+#: inc/admin-pages/class-domain-edit-admin-page.php:438
+#: inc/admin-pages/class-domain-edit-admin-page.php:449
+#: inc/admin-pages/class-domain-edit-admin-page.php:472
 msgid "Edit Domain"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:429
-#: inc/admin-pages/class-domain-edit-admin-page.php:464
+#: inc/admin-pages/class-domain-edit-admin-page.php:438
+#: inc/admin-pages/class-domain-edit-admin-page.php:473
 msgid "Add new Domain"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:465
+#: inc/admin-pages/class-domain-edit-admin-page.php:474
 msgid "Domain updated with success!"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:466
+#: inc/admin-pages/class-domain-edit-admin-page.php:475
 msgid "Enter Domain"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:468
+#: inc/admin-pages/class-domain-edit-admin-page.php:477
 msgid "Save Domain"
 msgstr ""
 
-#: inc/admin-pages/class-domain-edit-admin-page.php:470
+#: inc/admin-pages/class-domain-edit-admin-page.php:479
 msgid "Delete Domain"
 msgstr ""
 
@@ -16062,167 +16062,167 @@ msgstr ""
 msgid "Invalid verification key."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:257
+#: inc/managers/class-domain-manager.php:309
 msgid "Domain Mapping Settings"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:258
+#: inc/managers/class-domain-manager.php:310
 msgid "Define the domain mapping settings for your network."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:267
+#: inc/managers/class-domain-manager.php:319
 msgid "Enable Domain Mapping?"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:268
+#: inc/managers/class-domain-manager.php:320
 msgid "Do you want to enable domain mapping?"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:278
+#: inc/managers/class-domain-manager.php:330
 msgid "Force Admin Redirect"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:279
+#: inc/managers/class-domain-manager.php:331
 msgid "Select how you want your users to access the admin panel if they have mapped domains."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:279
+#: inc/managers/class-domain-manager.php:331
 msgid "Force Redirect to Mapped Domain: your users with mapped domains will be redirected to theirdomain.com/wp-admin, even if they access using yournetworkdomain.com/wp-admin."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:279
+#: inc/managers/class-domain-manager.php:331
 msgid "Force Redirect to Network Domain: your users with mapped domains will be redirect to yournetworkdomain.com/wp-admin, even if they access using theirdomain.com/wp-admin."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:285
+#: inc/managers/class-domain-manager.php:337
 msgid "Allow access to the admin by both mapped domain and network domain"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:286
+#: inc/managers/class-domain-manager.php:338
 msgid "Force Redirect to Mapped Domain"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:287
+#: inc/managers/class-domain-manager.php:339
 msgid "Force Redirect to Network Domain"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:296
+#: inc/managers/class-domain-manager.php:348
 msgid "Enable Custom Domains?"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:297
+#: inc/managers/class-domain-manager.php:349
 msgid "Toggle this option if you wish to allow end-customers to add their own domains. This can be controlled on a plan per plan basis."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:310
+#: inc/managers/class-domain-manager.php:362
 msgid "Add New Domain Instructions"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:311
+#: inc/managers/class-domain-manager.php:363
 msgid "Display a customized message with instructions for the mapping and alerting the end-user of the risks of mapping a misconfigured domain."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:312
+#: inc/managers/class-domain-manager.php:364
 msgid "You can use the placeholder <code>%NETWORK_DOMAIN%</code> and <code>%NETWORK_IP%</code>."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:338
+#: inc/managers/class-domain-manager.php:410
 msgid "Single Sign-On Settings"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:339
+#: inc/managers/class-domain-manager.php:411
 msgid "Settings to configure the Single Sign-On functionality of Multisite Ultimate, responsible for keeping customers and admins logged in across all network domains."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:348
+#: inc/managers/class-domain-manager.php:420
 msgid "Enable Single Sign-On"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:349
+#: inc/managers/class-domain-manager.php:421
 msgid "Enables the Single Sign-on functionality."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:359
+#: inc/managers/class-domain-manager.php:431
 msgid "Restrict SSO Checks to Login Pages"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:360
+#: inc/managers/class-domain-manager.php:432
 msgid "The Single Sign-on feature adds one extra ajax calls to every page load on sites with custom domains active to check if it should perform an auth loopback. You can restrict these extra calls to the login pages of sub-sites using this option. If enabled, SSO will only work on login pages."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:373
+#: inc/managers/class-domain-manager.php:445
 msgid "Enable SSO Loading Overlay"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:374
+#: inc/managers/class-domain-manager.php:446
 msgid "When active, a loading overlay will be added on-top of the site currently being viewed while the SSO auth loopback is performed on the background."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:393
+#: inc/managers/class-domain-manager.php:465
 msgid "Cool! You're about to make this site accessible using your own domain name!"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:395
+#: inc/managers/class-domain-manager.php:467
 msgid "For that to work, you'll need to create a new CNAME record pointing to <code>%NETWORK_DOMAIN%</code> on your DNS manager."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:397
+#: inc/managers/class-domain-manager.php:469
 msgid "After you finish that step, come back to this screen and click the button below."
 msgstr ""
 
 #. translators: %s is the domain name
-#: inc/managers/class-domain-manager.php:482
+#: inc/managers/class-domain-manager.php:566
 #, php-format
 msgid "Starting Check for %s"
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:492
+#: inc/managers/class-domain-manager.php:576
 msgid "- DNS propagation finished, advancing domain to next step..."
 msgstr ""
 
 #. translators: %d is the number of minutes to try again.
-#: inc/managers/class-domain-manager.php:519
+#: inc/managers/class-domain-manager.php:603
 #, php-format
 msgid "- DNS propagation checks tried for the max amount of times (5 times, one every %d minutes). Marking as failed."
 msgstr ""
 
 #. translators: %d is the number of minutes before trying again.
-#: inc/managers/class-domain-manager.php:528
+#: inc/managers/class-domain-manager.php:612
 #, php-format
 msgid "- DNS propagation not finished, retrying in %d minutes..."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:553
+#: inc/managers/class-domain-manager.php:637
 msgid "- Valid SSL cert found. Marking domain as done."
 msgstr ""
 
 #. translators: %d is the number of minutes to try again.
-#: inc/managers/class-domain-manager.php:569
+#: inc/managers/class-domain-manager.php:653
 #, php-format
 msgid "- SSL checks tried for the max amount of times (5 times, one every %d minutes). Marking as ready without SSL."
 msgstr ""
 
 #. translators: %d is the number of minutes before trying again.
-#: inc/managers/class-domain-manager.php:578
+#: inc/managers/class-domain-manager.php:662
 #, php-format
 msgid "- SSL Cert not found, retrying in %d minute(s)..."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:667
+#: inc/managers/class-domain-manager.php:751
 msgid "A valid domain was not passed."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:680
-#: inc/managers/class-domain-manager.php:689
+#: inc/managers/class-domain-manager.php:764
+#: inc/managers/class-domain-manager.php:773
 msgid "Not able to fetch DNS entries."
 msgstr ""
 
-#: inc/managers/class-domain-manager.php:740
+#: inc/managers/class-domain-manager.php:824
 msgid "Invalid Integration ID"
 msgstr ""
 
 #. translators: %s is the name of the missing constant
-#: inc/managers/class-domain-manager.php:753
+#: inc/managers/class-domain-manager.php:837
 #, php-format
 msgid "The necessary constants were not found on your wp-config.php file: %s"
 msgstr ""
