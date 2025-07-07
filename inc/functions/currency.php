@@ -246,6 +246,7 @@ function wu_get_currency_symbol($currency = '') {
 		case 'NPR':
 		case 'LKR':
 		case 'SCR':
+		case 'PKR':
 			$currency_symbol = 'Rs.';
 			break;
 		case 'ISK':
