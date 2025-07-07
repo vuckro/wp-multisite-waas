@@ -175,7 +175,7 @@ We recommend running this in a staging environment before updating your producti
 
 == Changelog ==
 
-Version [2.4.0] - Released on 2025-XX-XX
+Version [2.4.0] - Released on 2025-07-07
 - Improved: Prep Plugin for release on WordPress.org
 - Improved: Update translation text domain
 - Fixed: Escape everything that should be escaped.
@@ -212,7 +212,7 @@ Version [2.3.2] - Released on 2023-12-05
 Version [2.3.1] - Released on 2023-11-21
 
 - Improved: Remove Freemius SDK from the plugin and add our own license validation
-- Fixed: Remove double slash from Cloudways API calls, avoiding request rejection
+- Fixed: Remove double slash from Cloud=ways API calls, avoiding request rejection
 
 Version [2.3.0] - Released on 2023-11-07
 
