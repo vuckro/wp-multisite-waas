@@ -167,7 +167,7 @@ We recommend running this in a staging environment before updating your producti
 
 ## 📝 Recent Changes
 
-### Version [2.4.0] - Released on 2025-XX-XX
+### Version [2.4.0] - Released on 2025-07-07
 - Improved: Prep Plugin for release on WordPress.org
 - Improved: Update translation text domain
 - Fixed: Escape everything that should be escaped.
