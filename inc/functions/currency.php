@@ -19,55 +19,142 @@ function wu_get_currencies(): array {
 	$currencies = apply_filters(
 		'wu_currencies',
 		[
+
 			'AED' => __('United Arab Emirates Dirham', 'multisite-ultimate'),
+			'AFN' => __('Afghan Afghani', 'multisite-ultimate'),
+			'ALL' => __('Albanian Lek', 'multisite-ultimate'),
+			'AMD' => __('Armenian Dram', 'multisite-ultimate'),
+			'ANG' => __('Netherlands Antillean Gulden', 'multisite-ultimate'),
+			'AOA' => __('Angolan Kwanza', 'multisite-ultimate'),
 			'ARS' => __('Argentine Peso', 'multisite-ultimate'),
-			'AUD' => __('Australian Dollars', 'multisite-ultimate'),
+			'AUD' => __('Australian Dollar', 'multisite-ultimate'),
+			'AWG' => __('Aruban Florin', 'multisite-ultimate'),
+			'AZN' => __('Azerbaijani Manat', 'multisite-ultimate'),
+			'BAM' => __('Bosnia & Herzegovina Convertible Mark', 'multisite-ultimate'),
+			'BBD' => __('Barbadian Dollar', 'multisite-ultimate'),
 			'BDT' => __('Bangladeshi Taka', 'multisite-ultimate'),
-			'BRL' => __('Brazilian Real', 'multisite-ultimate'),
 			'BGN' => __('Bulgarian Lev', 'multisite-ultimate'),
-			'CAD' => __('Canadian Dollars', 'multisite-ultimate'),
+			'BIF' => __('Burundian Franc', 'multisite-ultimate'),
+			'BMD' => __('Bermudian Dollar', 'multisite-ultimate'),
+			'BND' => __('Brunei Dollar', 'multisite-ultimate'),
+			'BOB' => __('Bolivian Boliviano', 'multisite-ultimate'),
+			'BRL' => __('Brazilian Real', 'multisite-ultimate'),
+			'BSD' => __('Bahamian Dollar', 'multisite-ultimate'),
+			'BWP' => __('Botswana Pula', 'multisite-ultimate'),
+			'BZD' => __('Belize Dollar', 'multisite-ultimate'),
+			'CAD' => __('Canadian Dollar', 'multisite-ultimate'),
+			'CDF' => __('Congolese Franc', 'multisite-ultimate'),
+			'CHF' => __('Swiss Franc', 'multisite-ultimate'),
 			'CLP' => __('Chilean Peso', 'multisite-ultimate'),
-			'CNY' => __('Chinese Yuan', 'multisite-ultimate'),
+			'CNY' => __('Chinese Renminbi Yuan', 'multisite-ultimate'),
 			'COP' => __('Colombian Peso', 'multisite-ultimate'),
+			'CRC' => __('Costa Rican Colón', 'multisite-ultimate'),
+			'CVE' => __('Cape Verdean Escudo', 'multisite-ultimate'),
 			'CZK' => __('Czech Koruna', 'multisite-ultimate'),
+			'DJF' => __('Djiboutian Franc', 'multisite-ultimate'),
 			'DKK' => __('Danish Krone', 'multisite-ultimate'),
 			'DOP' => __('Dominican Peso', 'multisite-ultimate'),
-			'EUR' => __('Euros', 'multisite-ultimate'),
+			'DZD' => __('Algerian Dinar', 'multisite-ultimate'),
+			'EGP' => __('Egyptian Pound', 'multisite-ultimate'),
+			'ETB' => __('Ethiopian Birr', 'multisite-ultimate'),
+			'EUR' => __('Euro', 'multisite-ultimate'),
+			'FJD' => __('Fijian Dollar', 'multisite-ultimate'),
+			'FKP' => __('Falkland Islands Pound', 'multisite-ultimate'),
+			'GBP' => __('British Pound', 'multisite-ultimate'),
+			'GEL' => __('Georgian Lari', 'multisite-ultimate'),
+			'GIP' => __('Gibraltar Pound', 'multisite-ultimate'),
+			'GMD' => __('Gambian Dalasi', 'multisite-ultimate'),
+			'GNF' => __('Guinean Franc', 'multisite-ultimate'),
+			'GTQ' => __('Guatemalan Quetzal', 'multisite-ultimate'),
+			'GYD' => __('Guyanese Dollar', 'multisite-ultimate'),
 			'HKD' => __('Hong Kong Dollar', 'multisite-ultimate'),
-			'HRK' => __('Croatia kuna', 'multisite-ultimate'),
+			'HNL' => __('Honduran Lempira', 'multisite-ultimate'),
+			'HRK' => __('Croatian Kuna', 'multisite-ultimate'),
+			'HTG' => __('Haitian Gourde', 'multisite-ultimate'),
 			'HUF' => __('Hungarian Forint', 'multisite-ultimate'),
-			'ISK' => __('Icelandic krona', 'multisite-ultimate'),
-			'IDR' => __('Indonesia Rupiah', 'multisite-ultimate'),
+			'IDR' => __('Indonesian Rupiah', 'multisite-ultimate'),
+			'ILS' => __('Israeli New Sheqel', 'multisite-ultimate'),
 			'INR' => __('Indian Rupee', 'multisite-ultimate'),
-			'NPR' => __('Nepali Rupee', 'multisite-ultimate'),
-			'ILS' => __('Israeli Shekel', 'multisite-ultimate'),
+			'ISK' => __('Icelandic Króna', 'multisite-ultimate'),
+			'JMD' => __('Jamaican Dollar', 'multisite-ultimate'),
 			'JPY' => __('Japanese Yen', 'multisite-ultimate'),
 			'KES' => __('Kenyan Shilling', 'multisite-ultimate'),
-			'KIP' => __('Lao Kip', 'multisite-ultimate'),
+			'KGS' => __('Kyrgyzstani Som', 'multisite-ultimate'),
+			'KHR' => __('Cambodian Riel', 'multisite-ultimate'),
+			'KMF' => __('Comorian Franc', 'multisite-ultimate'),
 			'KRW' => __('South Korean Won', 'multisite-ultimate'),
-			'MYR' => __('Malaysian Ringgits', 'multisite-ultimate'),
+			'KYD' => __('Cayman Islands Dollar', 'multisite-ultimate'),
+			'KZT' => __('Kazakhstani Tenge', 'multisite-ultimate'),
+			'LAK' => __('Lao Kip', 'multisite-ultimate'),
+			'LBP' => __('Lebanese Pound', 'multisite-ultimate'),
+			'LKR' => __('Sri Lankan Rupee', 'multisite-ultimate'),
+			'LRD' => __('Liberian Dollar', 'multisite-ultimate'),
+			'LSL' => __('Lesotho Loti', 'multisite-ultimate'),
+			'MAD' => __('Moroccan Dirham', 'multisite-ultimate'),
+			'MDL' => __('Moldovan Leu', 'multisite-ultimate'),
+			'MGA' => __('Malagasy Ariary', 'multisite-ultimate'),
+			'MKD' => __('Macedonian Denar', 'multisite-ultimate'),
+			'MNT' => __('Mongolian Tögrög', 'multisite-ultimate'),
+			'MOP' => __('Macanese Pataca', 'multisite-ultimate'),
+			'MRO' => __('Mauritanian Ouguiya', 'multisite-ultimate'),
+			'MUR' => __('Mauritian Rupee', 'multisite-ultimate'),
+			'MVR' => __('Maldivian Rufiyaa', 'multisite-ultimate'),
+			'MWK' => __('Malawian Kwacha', 'multisite-ultimate'),
 			'MXN' => __('Mexican Peso', 'multisite-ultimate'),
+			'MYR' => __('Malaysian Ringgit', 'multisite-ultimate'),
+			'MZN' => __('Mozambican Metical', 'multisite-ultimate'),
+			'NAD' => __('Namibian Dollar', 'multisite-ultimate'),
 			'NGN' => __('Nigerian Naira', 'multisite-ultimate'),
+			'NIO' => __('Nicaraguan Córdoba', 'multisite-ultimate'),
 			'NOK' => __('Norwegian Krone', 'multisite-ultimate'),
+			'NPR' => __('Nepalese Rupee', 'multisite-ultimate'),
 			'NZD' => __('New Zealand Dollar', 'multisite-ultimate'),
+			'PAB' => __('Panamanian Balboa', 'multisite-ultimate'),
+			'PEN' => __('Peruvian Nuevo Sol', 'multisite-ultimate'),
+			'PGK' => __('Papua New Guinean Kina', 'multisite-ultimate'),
+			'PHP' => __('Philippine Peso', 'multisite-ultimate'),
+			'PKR' => __('Pakistani Rupee', 'multisite-ultimate'),
+			'PLN' => __('Polish Złoty', 'multisite-ultimate'),
 			'PYG' => __('Paraguayan Guaraní', 'multisite-ultimate'),
-			'PHP' => __('Philippine Pesos', 'multisite-ultimate'),
-			'PLN' => __('Polish Zloty', 'multisite-ultimate'),
-			'GBP' => __('Pounds Sterling', 'multisite-ultimate'),
+			'QAR' => __('Qatari Riyal', 'multisite-ultimate'),
 			'RON' => __('Romanian Leu', 'multisite-ultimate'),
+			'RSD' => __('Serbian Dinar', 'multisite-ultimate'),
 			'RUB' => __('Russian Ruble', 'multisite-ultimate'),
-			'SGD' => __('Singapore Dollar', 'multisite-ultimate'),
-			'ZAR' => __('South African rand', 'multisite-ultimate'),
+			'RWF' => __('Rwandan Franc', 'multisite-ultimate'),
 			'SAR' => __('Saudi Riyal', 'multisite-ultimate'),
+			'SBD' => __('Solomon Islands Dollar', 'multisite-ultimate'),
+			'SCR' => __('Seychellois Rupee', 'multisite-ultimate'),
 			'SEK' => __('Swedish Krona', 'multisite-ultimate'),
-			'CHF' => __('Swiss Franc', 'multisite-ultimate'),
-			'TWD' => __('Taiwan New Dollars', 'multisite-ultimate'),
+			'SGD' => __('Singapore Dollar', 'multisite-ultimate'),
+			'SHP' => __('Saint Helenian Pound', 'multisite-ultimate'),
+			'SLL' => __('Sierra Leonean Leone', 'multisite-ultimate'),
+			'SOS' => __('Somali Shilling', 'multisite-ultimate'),
+			'SRD' => __('Surinamese Dollar', 'multisite-ultimate'),
+			'STD' => __('São Tomé and Príncipe Dobra', 'multisite-ultimate'),
+			'SVC' => __('Salvadoran Colón', 'multisite-ultimate'),
+			'SZL' => __('Swazi Lilangeni', 'multisite-ultimate'),
 			'THB' => __('Thai Baht', 'multisite-ultimate'),
+			'TJS' => __('Tajikistani Somoni', 'multisite-ultimate'),
+			'TOP' => __('Tongan Paʻanga', 'multisite-ultimate'),
 			'TRY' => __('Turkish Lira', 'multisite-ultimate'),
+			'TTD' => __('Trinidad and Tobago Dollar', 'multisite-ultimate'),
+			'TWD' => __('New Taiwan Dollar', 'multisite-ultimate'),
+			'TZS' => __('Tanzanian Shilling', 'multisite-ultimate'),
 			'UAH' => __('Ukrainian Hryvnia', 'multisite-ultimate'),
-			'USD' => __('US Dollars', 'multisite-ultimate'),
-			'VND' => __('Vietnamese Dong', 'multisite-ultimate'),
-			'EGP' => __('Egyptian Pound', 'multisite-ultimate'),
+			'UGX' => __('Ugandan Shilling', 'multisite-ultimate'),
+			'USD' => __('United States Dollar', 'multisite-ultimate'),
+			'UYU' => __('Uruguayan Peso', 'multisite-ultimate'),
+			'UZS' => __('Uzbekistani Som', 'multisite-ultimate'),
+			'VND' => __('Vietnamese Đồng', 'multisite-ultimate'),
+			'VUV' => __('Vanuatu Vatu', 'multisite-ultimate'),
+			'WST' => __('Samoan Tala', 'multisite-ultimate'),
+			'XAF' => __('Central African Cfa Franc', 'multisite-ultimate'),
+			'XCD' => __('East Caribbean Dollar', 'multisite-ultimate'),
+			'XOF' => __('West African Cfa Franc', 'multisite-ultimate'),
+			'XPF' => __('Cfp Franc', 'multisite-ultimate'),
+			'YER' => __('Yemeni Rial', 'multisite-ultimate'),
+			'ZAR' => __('South African Rand', 'multisite-ultimate'),
+			'ZMW' => __('Zambian Kwacha', 'multisite-ultimate'),
 		]
 	);
 
@@ -100,7 +187,11 @@ function wu_get_currency_symbol($currency = '') {
 		case 'NZD':
 		case 'SGD':
 		case 'USD':
+		case 'BBD':
 			$currency_symbol = '$';
+			break;
+		case 'AFN':
+			$currency_symbol = '؋';
 			break;
 		case 'BDT':
 			$currency_symbol = '৳&nbsp;';
@@ -129,12 +220,14 @@ function wu_get_currency_symbol($currency = '') {
 			$currency_symbol = 'RD$';
 			break;
 		case 'EGP':
-			$currency_symbol = 'EGP';
+			$currency_symbol = 'E£';
 			break;
 		case 'EUR':
 			$currency_symbol = '&euro;';
 			break;
 		case 'GBP':
+		case 'LBP':
+		case 'GIP':
 			$currency_symbol = '&pound;';
 			break;
 		case 'HRK':
@@ -150,6 +243,9 @@ function wu_get_currency_symbol($currency = '') {
 			$currency_symbol = '₪';
 			break;
 		case 'INR':
+		case 'NPR':
+		case 'LKR':
+		case 'SCR':
 			$currency_symbol = 'Rs.';
 			break;
 		case 'ISK':
@@ -171,10 +267,8 @@ function wu_get_currency_symbol($currency = '') {
 			$currency_symbol = '₦';
 			break;
 		case 'NOK':
+		case 'SEK':
 			$currency_symbol = 'kr';
-			break;
-		case 'NPR':
-			$currency_symbol = 'Rs.';
 			break;
 		case 'PHP':
 			$currency_symbol = '₱';
@@ -189,10 +283,7 @@ function wu_get_currency_symbol($currency = '') {
 			$currency_symbol = 'lei';
 			break;
 		case 'RUB':
-			$currency_symbol = 'руб.';
-			break;
-		case 'SEK':
-			$currency_symbol = 'kr';
+			$currency_symbol = '₽';
 			break;
 		case 'THB':
 			$currency_symbol = '฿';
@@ -214,6 +305,31 @@ function wu_get_currency_symbol($currency = '') {
 			break;
 		case 'SAR':
 			$currency_symbol = 'ر.س';
+			break;
+		case 'RSD':
+			$currency_symbol = 'Дин';
+			break;
+		case 'TZS':
+			$currency_symbol = 'TSh';
+			break;
+		case 'ALL':
+			$currency_symbol = 'Lek';
+			break;
+		case 'ANG':
+		case 'AWG':
+			$currency_symbol = 'ƒ';
+			break;
+		case 'AZN':
+			$currency_symbol = '₼';
+			break;
+		case 'BAM':
+			$currency_symbol = 'KM';
+			break;
+		case 'MKD':
+			$currency_symbol = 'ден';
+			break;
+		case 'UZS':
+			$currency_symbol = 'лв';
 			break;
 		default:
 			$currency_symbol = $currency;
