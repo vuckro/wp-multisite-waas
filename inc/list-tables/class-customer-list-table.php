@@ -108,7 +108,7 @@ class Customer_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Customer $item Customer object.
+	 * @param \WP_Ultimo\Models\Customer $item Customer object.
 	 */
 	public function column_name($item): string {
 
@@ -178,7 +178,7 @@ class Customer_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Customer $item Customer object.
+	 * @param \WP_Ultimo\Models\Customer $item Customer object.
 	 * @return string
 	 */
 	public function column_customer_status($item) {
@@ -210,7 +210,7 @@ class Customer_List_Table extends Base_List_Table {
 	 * @since 2.0.0
 	 *
 	 * @todo: Make this works.
-	 * @param WP_Ultimo\Models\Customer $item Customer object.
+	 * @param \WP_Ultimo\Models\Customer $item Customer object.
 	 */
 	public function column_memberships($item): string {
 
@@ -253,7 +253,7 @@ class Customer_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Customer $item The line item being displayed.
+	 * @param \WP_Ultimo\Models\Customer $item The line item being displayed.
 	 * @return void
 	 */
 	public function single_row_grid($item): void {
@@ -354,7 +354,7 @@ class Customer_List_Table extends Base_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Customer $item Customer object.
+	 * @param \WP_Ultimo\Models\Customer $item Customer object.
 	 * @return string The last login information.
 	 */
 	public function column_last_login($item) {
