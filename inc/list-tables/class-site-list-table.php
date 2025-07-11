@@ -411,8 +411,6 @@ class Site_List_Table extends Base_List_Table {
 
 			$new_site->set_blog_id(0);
 
-			$new_site->get_title($new_name);
-
 			$new_site->set_path($new_path);
 
 			$new_site->site_date_registered(wu_get_current_time('mysql', true));
