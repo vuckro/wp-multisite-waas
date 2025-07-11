@@ -8,15 +8,15 @@ if ( ! class_exists('MUCD_Files') ) {
 		 * Copy files from one site to another
 		 *
 		 * @since 0.2.0
-		 * @param  int $from_site_id duplicated site id
-		 * @param  int $to_site_id   new site id
+		 * @param  int $from_site_id duplicated site id.
+		 * @param  int $to_site_id   new site id.
 		 */
 		public static function copy_files($from_site_id, $to_site_id) {
 			// Switch to Source site and get uploads info
 			switch_to_blog($from_site_id);
 			$wp_upload_info   = wp_upload_dir();
 			$from_dir['path'] = $wp_upload_info['basedir'];
-			MUCD_PRIMARY_SITE_ID == $from_site_id ? $from_dir['exclude'] = MUCD_Option::get_primary_dir_exclude() : $from_dir['exclude'] = [];
+			MUCD_PRIMARY_SITE_ID === (int) $from_site_id ? $from_dir['exclude'] = MUCD_Option::get_primary_dir_exclude() : $from_dir['exclude'] = [];
 
 			// Switch to Destination site and get uploads info
 			switch_to_blog($to_site_id);
@@ -36,7 +36,7 @@ if ( ! class_exists('MUCD_Files') ) {
 
 			foreach ($dirs as $dir) {
 				if (isset($dir['to_dir_path']) && ! self::init_dir($dir['to_dir_path'])) {
-					self::mkdir_error($dir['to_dir_path']);
+					self::mkdir_error($dir['to_dir_path'], $to_site_id);
 				}
 
 				MUCD_Duplicate::write_log('Copy files from ' . $dir['from_dir_path'] . ' to ' . $dir['to_dir_path']);
@@ -50,9 +50,9 @@ if ( ! class_exists('MUCD_Files') ) {
 		 * Copy files from one directory to another
 		 *
 		 * @since 0.2.0
-		 * @param  string $src source directory path
-		 * @param  string $dst destination directory path
-		 * @param  array  $exclude_dirs directories to ignore
+		 * @param  string $src source directory path.
+		 * @param  string $dst destination directory path.
+		 * @param  array  $exclude_dirs directories to ignore.
 		 */
 		public static function recurse_copy($src, $dst, $exclude_dirs = []): void {
 			$src = rtrim($src, '/');
@@ -62,7 +62,7 @@ if ( ! class_exists('MUCD_Files') ) {
 			while (false !== ($file = readdir($dir)) ) {
 				if (('.' != $file) && ('..' != $file)) {
 					if ( is_dir($src . '/' . $file) ) {
-						if ( ! in_array($file, $exclude_dirs)) {
+						if ( ! in_array($file, $exclude_dirs, true)) {
 							self::recurse_copy($src . '/' . $file, $dst . '/' . $file);
 						}
 					} else {
@@ -78,56 +78,38 @@ if ( ! class_exists('MUCD_Files') ) {
 		 * Set a directory writable, creates it if not exists, or return false
 		 *
 		 * @since 0.2.0
-		 * @param  string $path the path
+		 * @param  string $path the path.
 		 * @return boolean True on success, False on failure
 		 */
 		public static function init_dir($path) {
-			$e = error_reporting(0);
-
-			if ( ! file_exists($path)) {
-				return @mkdir($path, 0777);
-			} elseif (is_dir($path)) {
-				if ( ! is_writable($path)) {
-					return chmod($path, 0777);
-				}
-
-				return true;
+			/** @var $wp_filesystem WP_Filesystem_Base */
+			global $wp_filesystem;
+			WP_Filesystem();
+			if ( ! $wp_filesystem->exists($path)) {
+				return $wp_filesystem->mkdir($path, 0777);
+			} elseif (! $wp_filesystem->is_writable($path)) {
+				return $wp_filesystem->chmod($path, 0777, true);
 			}
-
-			error_reporting($e);
-
-			return false;
 		}
 
 		/**
 		 * Removes a directory and all its content
 		 *
 		 * @since 0.2.0
-		 * @param  string $dir the path
+		 * @param string $dir the path.
 		 */
 		public static function rrmdir($dir): void {
-			if (is_dir($dir)) {
-				$objects = scandir($dir);
-				foreach ($objects as $object) {
-					if ('.' != $object && '..' != $object) {
-						if (filetype($dir . '/' . $object) == 'dir') {
-							self::rrmdir($dir . '/' . $object);
-						} else {
-							unlink($dir . '/' . $object);
-						}
-					}
-				}
-
-				reset($objects);
-				rmdir($dir);
-			}
+			/** @var $wp_filesystem WP_Filesystem_Base */
+			global $wp_filesystem;
+			WP_Filesystem();
+			$wp_filesystem->rmdir($dir, true);
 		}
 
 		/**
 		 * Stop process on Creating dir Error, print and log error, removes the new blog
 		 *
 		 * @since 0.2.0
-		 * @param  string $dir_path the path
+		 * @param  string $dir_path the path.
 		 */
 		public static function mkdir_error($dir_path): void {
 			$error_1 = 'ERROR DURING FILE COPY : CANNOT CREATE ' . $dir_path;
@@ -135,9 +117,10 @@ if ( ! class_exists('MUCD_Files') ) {
 			$error_2 = sprintf(MUCD_NETWORK_PAGE_DUPLICATE_COPY_FILE_ERROR, MUCD_Functions::get_primary_upload_dir());
 			MUCD_Duplicate::write_log($error_2);
 			MUCD_Duplicate::write_log('Duplication interrupted on FILE COPY ERROR');
-			echo '<br />Duplication failed :<br /><br />' . $error_1 . '<br /><br />' . $error_2 . '<br /><br />';
-			if ( $log_url = MUCD_Duplicate::log_url() ) {
-				echo '<a href="' . $log_url . '">' . MUCD_NETWORK_PAGE_DUPLICATE_VIEW_LOG . '</a>';
+			echo '<br />Duplication failed :<br /><br />' . esc_html($error_1) . '<br /><br />' . esc_html($error_2) . '<br /><br />';
+			$log_url = MUCD_Duplicate::log_url();
+			if ( $log_url ) {
+				echo '<a href="' . esc_attr($log_url) . '">' . esc_html(MUCD_NETWORK_PAGE_DUPLICATE_VIEW_LOG) . '</a>';
 			}
 
 			MUCD_Functions::remove_blog(self::$to_site_id);

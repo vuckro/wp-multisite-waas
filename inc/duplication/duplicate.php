@@ -24,8 +24,8 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * Main function of the plugin : duplicates a site
 		 *
 		 * @since 0.2.0
-		 * @param  array $data parameters from form
-		 * @return $form_message result messages of the process
+		 * @param  array $data parameters from form.
+		 * @return array $form_message result messages of the process
 		 */
 		public static function duplicate_site($data) {
 
@@ -77,7 +77,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 			self::bypass_server_limit();
 
 			// Copy Site - File
-			if ('yes' == $copy_file) {
+			if ('yes' === $copy_file) {
 				do_action('mucd_before_copy_files', $from_site_id, $to_site_id);
 				$result = MUCD_Files::copy_files($from_site_id, $to_site_id);
 				do_action('mucd_after_copy_files', $from_site_id, $to_site_id);
@@ -110,8 +110,8 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * Creates an admin user if no user exists with this email
 		 *
 		 * @since 0.2.0
-		 * @param  string $email the email
-		 * @param  string $domain the domain
+		 * @param  string $email the email.
+		 * @param  string $domain the domain.
 		 * @return int id of the user
 		 */
 		public static function create_admin($email, $domain) {
@@ -137,8 +137,8 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * Copy users and roles from one site to another
 		 *
 		 * @since 0.2.0
-		 * @param  int $from_site_id duplicated site id
-		 * @param  int $to_site_id   new site id
+		 * @param  int $from_site_id duplicated site id.
+		 * @param  int $to_site_id   new site id.
 		 */
 		public static function copy_users($from_site_id, $to_site_id): void {
 
@@ -175,14 +175,14 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 			switch_to_blog($to_site_id);
 
 			foreach ($users as $user) {
-				if ($user->user_email != $admin_email) {
+				if ($user->user_email !== $admin_email) {
 					add_user_to_blog($to_site_id, $user->ID, 'subscriber');
 
 					$all_meta = array_map('user_array_map', get_user_meta($user->ID));
 
 					foreach ($all_meta as $metakey => $metavalue) {
 						$prefix = substr($metakey, 0, $from_site_prefix_length);
-						if ($prefix == $from_site_prefix) {
+						if ($prefix === $from_site_prefix) {
 							$raw_meta_name = substr($metakey, $from_site_prefix_length);
 							if ($is_from_main_site) {
 								$parts = explode('_', $raw_meta_name, 2);
@@ -204,7 +204,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * Init log object
 		 *
 		 * @since 0.2.0
-		 * @param  array $data data from FORM
+		 * @param  array $data data from FORM.
 		 */
 		public static function init_log($data): void {
 			// INIT LOG AND SAVE OPTION
@@ -246,7 +246,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 * Writes a message in log file
 		 *
 		 * @since 0.2.0
-		 * @param  string $msg the message
+		 * @param  string $msg the message.
 		 */
 		public static function write_log($msg): void {
 			if (self::log() !== false) {
@@ -296,7 +296,7 @@ if ( ! class_exists('MUCD_Duplicate') ) {
 		 */
 		public static function bypass_server_limit(): void {
 			@ini_set('memory_limit', '1024M');
-			@ini_set('max_execution_time', '0');
+			set_time_limit(0);
 		}
 	}
 
