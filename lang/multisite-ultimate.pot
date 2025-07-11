@@ -9,13 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-05T20:02:32+00:00\n"
+"POT-Creation-Date: 2025-07-11T06:30:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: multisite-ultimate\n"
 
 #. Plugin Name of the plugin
-#: multisite-ultimo.php
+#: multisite-ultimate.php
 #: inc/admin-pages/class-migration-alert-admin-page.php:103
 #: inc/admin-pages/class-setup-wizard-admin-page.php:305
 #: inc/admin-pages/class-setup-wizard-admin-page.php:650
@@ -25,22 +25,22 @@ msgid "Multisite Ultimate"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: multisite-ultimo.php
+#: multisite-ultimate.php
 msgid "https://multisiteultimate.com"
 msgstr ""
 
 #. Description of the plugin
-#: multisite-ultimo.php
+#: multisite-ultimate.php
 msgid "The WordPress Multisite Website as a Service (WaaS) plugin."
 msgstr ""
 
 #. Author of the plugin
-#: multisite-ultimo.php
+#: multisite-ultimate.php
 msgid "Multisite Ultimate Community"
 msgstr ""
 
 #. Author URI of the plugin
-#: multisite-ultimo.php
+#: multisite-ultimate.php
 msgid "https://github.com/superdav42/wp-multisite-waas"
 msgstr ""
 
@@ -280,6 +280,7 @@ msgstr ""
 #: inc/admin-pages/class-tax-rates-admin-page.php:193
 #: inc/checkout/class-checkout.php:1561
 #: views/base/edit/widget-tabs.php:104
+#: views/dashboard-statistics/filter.php:26
 #: views/dashboard-statistics/widget-mrr-growth.php:14
 #: views/dashboard-statistics/widget-tax-graph.php:14
 #: views/dashboard-statistics/widget-taxes.php:14
@@ -579,8 +580,8 @@ msgid "The checkout form could not be found."
 msgstr ""
 
 #: inc/admin-pages/class-checkout-form-edit-admin-page.php:859
-#: views/limitations/plugin-selector.php:61
-#: views/limitations/theme-selector.php:62
+#: views/limitations/plugin-selector.php:63
+#: views/limitations/theme-selector.php:64
 msgid "Visibility"
 msgstr ""
 
@@ -4086,7 +4087,7 @@ msgstr ""
 #: inc/admin-pages/class-product-edit-admin-page.php:886
 #: inc/tax/class-tax.php:232
 #: inc/ui/class-site-actions-element.php:184
-#: views/limitations/plugin-selector.php:77
+#: views/limitations/plugin-selector.php:79
 msgid "Default"
 msgstr ""
 
@@ -6540,38 +6541,38 @@ msgstr ""
 msgid "<strong>Error:</strong> The password you entered is incorrect."
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:220
+#: inc/checkout/class-checkout-pages.php:223
 #: inc/integrations/host-providers/class-closte-host-provider.php:165
 msgid "Something went wrong"
 msgstr ""
 
 #. translators: %1$s and %2$s are <strong></strong> HTML tags
-#: inc/checkout/class-checkout-pages.php:424
+#: inc/checkout/class-checkout-pages.php:427
 #, php-format
 msgid "Your email address is not yet verified. Your site %1$s will only be activated %2$s after your email address is verified. Check your inbox and verify your email address."
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:428
+#: inc/checkout/class-checkout-pages.php:431
 msgid "Resend verification email →"
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:628
+#: inc/checkout/class-checkout-pages.php:631
 msgid "Multisite Ultimate - Register Page"
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:629
+#: inc/checkout/class-checkout-pages.php:632
 msgid "Multisite Ultimate - Login Page"
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:630
+#: inc/checkout/class-checkout-pages.php:633
 msgid "Multisite Ultimate - Site Blocked Page"
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:631
+#: inc/checkout/class-checkout-pages.php:634
 msgid "Multisite Ultimate - Membership Update Page"
 msgstr ""
 
-#: inc/checkout/class-checkout-pages.php:632
+#: inc/checkout/class-checkout-pages.php:635
 msgid "Multisite Ultimate - New Site Page"
 msgstr ""
 
@@ -7199,6 +7200,7 @@ msgstr ""
 #: views/checkout/templates/template-selection/clean.php:141
 #: views/checkout/templates/template-selection/legacy.php:234
 #: views/sites/edit-placeholders.php:104
+#: views/taxes/list.php:169
 msgid "Select"
 msgstr ""
 
@@ -13505,200 +13507,544 @@ msgstr ""
 msgid "Not found"
 msgstr ""
 
-#: inc/functions/currency.php:22
+#: inc/functions/currency.php:23
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: inc/functions/currency.php:23
-msgid "Argentine Peso"
-msgstr ""
-
 #: inc/functions/currency.php:24
-msgid "Australian Dollars"
+msgid "Afghan Afghani"
 msgstr ""
 
 #: inc/functions/currency.php:25
-msgid "Bangladeshi Taka"
+msgid "Albanian Lek"
 msgstr ""
 
 #: inc/functions/currency.php:26
-msgid "Brazilian Real"
+msgid "Armenian Dram"
 msgstr ""
 
 #: inc/functions/currency.php:27
-msgid "Bulgarian Lev"
+msgid "Netherlands Antillean Gulden"
 msgstr ""
 
 #: inc/functions/currency.php:28
-msgid "Canadian Dollars"
+msgid "Angolan Kwanza"
 msgstr ""
 
 #: inc/functions/currency.php:29
-msgid "Chilean Peso"
+msgid "Argentine Peso"
 msgstr ""
 
 #: inc/functions/currency.php:30
-msgid "Chinese Yuan"
+msgid "Australian Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:31
-msgid "Colombian Peso"
+msgid "Aruban Florin"
 msgstr ""
 
 #: inc/functions/currency.php:32
-msgid "Czech Koruna"
+msgid "Azerbaijani Manat"
 msgstr ""
 
 #: inc/functions/currency.php:33
-msgid "Danish Krone"
+msgid "Bosnia & Herzegovina Convertible Mark"
 msgstr ""
 
 #: inc/functions/currency.php:34
-msgid "Dominican Peso"
+msgid "Barbadian Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:35
-msgid "Euros"
+msgid "Bangladeshi Taka"
 msgstr ""
 
 #: inc/functions/currency.php:36
-msgid "Hong Kong Dollar"
+msgid "Bulgarian Lev"
 msgstr ""
 
 #: inc/functions/currency.php:37
-msgid "Croatia kuna"
+msgid "Burundian Franc"
 msgstr ""
 
 #: inc/functions/currency.php:38
-msgid "Hungarian Forint"
+msgid "Bermudian Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:39
-msgid "Icelandic krona"
+msgid "Brunei Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:40
-msgid "Indonesia Rupiah"
+msgid "Bolivian Boliviano"
 msgstr ""
 
 #: inc/functions/currency.php:41
-msgid "Indian Rupee"
+msgid "Brazilian Real"
 msgstr ""
 
 #: inc/functions/currency.php:42
-msgid "Nepali Rupee"
+msgid "Bahamian Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:43
-msgid "Israeli Shekel"
+msgid "Botswana Pula"
 msgstr ""
 
 #: inc/functions/currency.php:44
-msgid "Japanese Yen"
+msgid "Belize Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:45
-msgid "Kenyan Shilling"
+msgid "Canadian Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:46
-msgid "Lao Kip"
+msgid "Congolese Franc"
 msgstr ""
 
 #: inc/functions/currency.php:47
-msgid "South Korean Won"
-msgstr ""
-
-#: inc/functions/currency.php:48
-msgid "Malaysian Ringgits"
-msgstr ""
-
-#: inc/functions/currency.php:49
-msgid "Mexican Peso"
-msgstr ""
-
-#: inc/functions/currency.php:50
-msgid "Nigerian Naira"
-msgstr ""
-
-#: inc/functions/currency.php:51
-msgid "Norwegian Krone"
-msgstr ""
-
-#: inc/functions/currency.php:52
-msgid "New Zealand Dollar"
-msgstr ""
-
-#: inc/functions/currency.php:53
-msgid "Paraguayan Guaraní"
-msgstr ""
-
-#: inc/functions/currency.php:54
-msgid "Philippine Pesos"
-msgstr ""
-
-#: inc/functions/currency.php:55
-msgid "Polish Zloty"
-msgstr ""
-
-#: inc/functions/currency.php:56
-msgid "Pounds Sterling"
-msgstr ""
-
-#: inc/functions/currency.php:57
-msgid "Romanian Leu"
-msgstr ""
-
-#: inc/functions/currency.php:58
-msgid "Russian Ruble"
-msgstr ""
-
-#: inc/functions/currency.php:59
-msgid "Singapore Dollar"
-msgstr ""
-
-#: inc/functions/currency.php:60
-msgid "South African rand"
-msgstr ""
-
-#: inc/functions/currency.php:61
-msgid "Saudi Riyal"
-msgstr ""
-
-#: inc/functions/currency.php:62
-msgid "Swedish Krona"
-msgstr ""
-
-#: inc/functions/currency.php:63
 msgid "Swiss Franc"
 msgstr ""
 
+#: inc/functions/currency.php:48
+msgid "Chilean Peso"
+msgstr ""
+
+#: inc/functions/currency.php:49
+msgid "Chinese Renminbi Yuan"
+msgstr ""
+
+#: inc/functions/currency.php:50
+msgid "Colombian Peso"
+msgstr ""
+
+#: inc/functions/currency.php:51
+msgid "Costa Rican Colón"
+msgstr ""
+
+#: inc/functions/currency.php:52
+msgid "Cape Verdean Escudo"
+msgstr ""
+
+#: inc/functions/currency.php:53
+msgid "Czech Koruna"
+msgstr ""
+
+#: inc/functions/currency.php:54
+msgid "Djiboutian Franc"
+msgstr ""
+
+#: inc/functions/currency.php:55
+msgid "Danish Krone"
+msgstr ""
+
+#: inc/functions/currency.php:56
+msgid "Dominican Peso"
+msgstr ""
+
+#: inc/functions/currency.php:57
+msgid "Algerian Dinar"
+msgstr ""
+
+#: inc/functions/currency.php:58
+msgid "Egyptian Pound"
+msgstr ""
+
+#: inc/functions/currency.php:59
+msgid "Ethiopian Birr"
+msgstr ""
+
+#: inc/functions/currency.php:60
+msgid "Euro"
+msgstr ""
+
+#: inc/functions/currency.php:61
+msgid "Fijian Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:62
+msgid "Falkland Islands Pound"
+msgstr ""
+
+#: inc/functions/currency.php:63
+msgid "British Pound"
+msgstr ""
+
 #: inc/functions/currency.php:64
-msgid "Taiwan New Dollars"
+msgid "Georgian Lari"
 msgstr ""
 
 #: inc/functions/currency.php:65
-msgid "Thai Baht"
+msgid "Gibraltar Pound"
 msgstr ""
 
 #: inc/functions/currency.php:66
-msgid "Turkish Lira"
+msgid "Gambian Dalasi"
 msgstr ""
 
 #: inc/functions/currency.php:67
-msgid "Ukrainian Hryvnia"
+msgid "Guinean Franc"
 msgstr ""
 
 #: inc/functions/currency.php:68
-msgid "US Dollars"
+msgid "Guatemalan Quetzal"
 msgstr ""
 
 #: inc/functions/currency.php:69
-msgid "Vietnamese Dong"
+msgid "Guyanese Dollar"
 msgstr ""
 
 #: inc/functions/currency.php:70
-msgid "Egyptian Pound"
+msgid "Hong Kong Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:71
+msgid "Honduran Lempira"
+msgstr ""
+
+#: inc/functions/currency.php:72
+msgid "Croatian Kuna"
+msgstr ""
+
+#: inc/functions/currency.php:73
+msgid "Haitian Gourde"
+msgstr ""
+
+#: inc/functions/currency.php:74
+msgid "Hungarian Forint"
+msgstr ""
+
+#: inc/functions/currency.php:75
+msgid "Indonesian Rupiah"
+msgstr ""
+
+#: inc/functions/currency.php:76
+msgid "Israeli New Sheqel"
+msgstr ""
+
+#: inc/functions/currency.php:77
+msgid "Indian Rupee"
+msgstr ""
+
+#: inc/functions/currency.php:78
+msgid "Icelandic Króna"
+msgstr ""
+
+#: inc/functions/currency.php:79
+msgid "Jamaican Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:80
+msgid "Japanese Yen"
+msgstr ""
+
+#: inc/functions/currency.php:81
+msgid "Kenyan Shilling"
+msgstr ""
+
+#: inc/functions/currency.php:82
+msgid "Kyrgyzstani Som"
+msgstr ""
+
+#: inc/functions/currency.php:83
+msgid "Cambodian Riel"
+msgstr ""
+
+#: inc/functions/currency.php:84
+msgid "Comorian Franc"
+msgstr ""
+
+#: inc/functions/currency.php:85
+msgid "South Korean Won"
+msgstr ""
+
+#: inc/functions/currency.php:86
+msgid "Cayman Islands Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:87
+msgid "Kazakhstani Tenge"
+msgstr ""
+
+#: inc/functions/currency.php:88
+msgid "Lao Kip"
+msgstr ""
+
+#: inc/functions/currency.php:89
+msgid "Lebanese Pound"
+msgstr ""
+
+#: inc/functions/currency.php:90
+msgid "Sri Lankan Rupee"
+msgstr ""
+
+#: inc/functions/currency.php:91
+msgid "Liberian Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:92
+msgid "Lesotho Loti"
+msgstr ""
+
+#: inc/functions/currency.php:93
+msgid "Moroccan Dirham"
+msgstr ""
+
+#: inc/functions/currency.php:94
+msgid "Moldovan Leu"
+msgstr ""
+
+#: inc/functions/currency.php:95
+msgid "Malagasy Ariary"
+msgstr ""
+
+#: inc/functions/currency.php:96
+msgid "Macedonian Denar"
+msgstr ""
+
+#: inc/functions/currency.php:97
+msgid "Mongolian Tögrög"
+msgstr ""
+
+#: inc/functions/currency.php:98
+msgid "Macanese Pataca"
+msgstr ""
+
+#: inc/functions/currency.php:99
+msgid "Mauritanian Ouguiya"
+msgstr ""
+
+#: inc/functions/currency.php:100
+msgid "Mauritian Rupee"
+msgstr ""
+
+#: inc/functions/currency.php:101
+msgid "Maldivian Rufiyaa"
+msgstr ""
+
+#: inc/functions/currency.php:102
+msgid "Malawian Kwacha"
+msgstr ""
+
+#: inc/functions/currency.php:103
+msgid "Mexican Peso"
+msgstr ""
+
+#: inc/functions/currency.php:104
+msgid "Malaysian Ringgit"
+msgstr ""
+
+#: inc/functions/currency.php:105
+msgid "Mozambican Metical"
+msgstr ""
+
+#: inc/functions/currency.php:106
+msgid "Namibian Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:107
+msgid "Nigerian Naira"
+msgstr ""
+
+#: inc/functions/currency.php:108
+msgid "Nicaraguan Córdoba"
+msgstr ""
+
+#: inc/functions/currency.php:109
+msgid "Norwegian Krone"
+msgstr ""
+
+#: inc/functions/currency.php:110
+msgid "Nepalese Rupee"
+msgstr ""
+
+#: inc/functions/currency.php:111
+msgid "New Zealand Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:112
+msgid "Panamanian Balboa"
+msgstr ""
+
+#: inc/functions/currency.php:113
+msgid "Peruvian Nuevo Sol"
+msgstr ""
+
+#: inc/functions/currency.php:114
+msgid "Papua New Guinean Kina"
+msgstr ""
+
+#: inc/functions/currency.php:115
+msgid "Philippine Peso"
+msgstr ""
+
+#: inc/functions/currency.php:116
+msgid "Pakistani Rupee"
+msgstr ""
+
+#: inc/functions/currency.php:117
+msgid "Polish Złoty"
+msgstr ""
+
+#: inc/functions/currency.php:118
+msgid "Paraguayan Guaraní"
+msgstr ""
+
+#: inc/functions/currency.php:119
+msgid "Qatari Riyal"
+msgstr ""
+
+#: inc/functions/currency.php:120
+msgid "Romanian Leu"
+msgstr ""
+
+#: inc/functions/currency.php:121
+msgid "Serbian Dinar"
+msgstr ""
+
+#: inc/functions/currency.php:122
+msgid "Russian Ruble"
+msgstr ""
+
+#: inc/functions/currency.php:123
+msgid "Rwandan Franc"
+msgstr ""
+
+#: inc/functions/currency.php:124
+msgid "Saudi Riyal"
+msgstr ""
+
+#: inc/functions/currency.php:125
+msgid "Solomon Islands Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:126
+msgid "Seychellois Rupee"
+msgstr ""
+
+#: inc/functions/currency.php:127
+msgid "Swedish Krona"
+msgstr ""
+
+#: inc/functions/currency.php:128
+msgid "Singapore Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:129
+msgid "Saint Helenian Pound"
+msgstr ""
+
+#: inc/functions/currency.php:130
+msgid "Sierra Leonean Leone"
+msgstr ""
+
+#: inc/functions/currency.php:131
+msgid "Somali Shilling"
+msgstr ""
+
+#: inc/functions/currency.php:132
+msgid "Surinamese Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:133
+msgid "São Tomé and Príncipe Dobra"
+msgstr ""
+
+#: inc/functions/currency.php:134
+msgid "Salvadoran Colón"
+msgstr ""
+
+#: inc/functions/currency.php:135
+msgid "Swazi Lilangeni"
+msgstr ""
+
+#: inc/functions/currency.php:136
+msgid "Thai Baht"
+msgstr ""
+
+#: inc/functions/currency.php:137
+msgid "Tajikistani Somoni"
+msgstr ""
+
+#: inc/functions/currency.php:138
+msgid "Tongan Paʻanga"
+msgstr ""
+
+#: inc/functions/currency.php:139
+msgid "Turkish Lira"
+msgstr ""
+
+#: inc/functions/currency.php:140
+msgid "Trinidad and Tobago Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:141
+msgid "New Taiwan Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:142
+msgid "Tanzanian Shilling"
+msgstr ""
+
+#: inc/functions/currency.php:143
+msgid "Ukrainian Hryvnia"
+msgstr ""
+
+#: inc/functions/currency.php:144
+msgid "Ugandan Shilling"
+msgstr ""
+
+#: inc/functions/currency.php:145
+msgid "United States Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:146
+msgid "Uruguayan Peso"
+msgstr ""
+
+#: inc/functions/currency.php:147
+msgid "Uzbekistani Som"
+msgstr ""
+
+#: inc/functions/currency.php:148
+msgid "Vietnamese Đồng"
+msgstr ""
+
+#: inc/functions/currency.php:149
+msgid "Vanuatu Vatu"
+msgstr ""
+
+#: inc/functions/currency.php:150
+msgid "Samoan Tala"
+msgstr ""
+
+#: inc/functions/currency.php:151
+msgid "Central African Cfa Franc"
+msgstr ""
+
+#: inc/functions/currency.php:152
+msgid "East Caribbean Dollar"
+msgstr ""
+
+#: inc/functions/currency.php:153
+msgid "West African Cfa Franc"
+msgstr ""
+
+#: inc/functions/currency.php:154
+msgid "Cfp Franc"
+msgstr ""
+
+#: inc/functions/currency.php:155
+msgid "Yemeni Rial"
+msgstr ""
+
+#: inc/functions/currency.php:156
+msgid "South African Rand"
+msgstr ""
+
+#: inc/functions/currency.php:157
+msgid "Zambian Kwacha"
 msgstr ""
 
 #: inc/functions/customer.php:163
@@ -14365,39 +14711,49 @@ msgstr ""
 msgid "Success!"
 msgstr ""
 
+#. translators: %s the file path that failed.
+#: inc/helpers/class-site-duplicator.php:24
+#, php-format
+msgid "Failed to copy files : check permissions on <strong>%s</strong>"
+msgstr ""
+
+#: inc/helpers/class-site-duplicator.php:27
+msgid "View log"
+msgstr ""
+
 #. translators: %s id the template site id and %s is the error message returned.
-#: inc/helpers/class-site-duplicator.php:59
+#: inc/helpers/class-site-duplicator.php:66
 #, php-format
 msgid "Attempt to duplicate site %1$d failed: %2$s"
 msgstr ""
 
 #. translators: %1$d is the ID of the site template used, and %2$d is the id of the new site.
-#: inc/helpers/class-site-duplicator.php:67
+#: inc/helpers/class-site-duplicator.php:74
 #, php-format
 msgid "Attempt to duplicate site %1$d successful - New site id: %2$d"
 msgstr ""
 
 #. translators: %s id the template site id and %s is the error message returned.
-#: inc/helpers/class-site-duplicator.php:111
+#: inc/helpers/class-site-duplicator.php:118
 #, php-format
 msgid "Attempt to override site %1$d with data from site %2$d failed: %3$s"
 msgstr ""
 
 #. translators: %1$d is the ID of the site template used, and %2$d is the ID of the overriden site.
-#: inc/helpers/class-site-duplicator.php:135
+#: inc/helpers/class-site-duplicator.php:142
 #, php-format
 msgid "Attempt to override site %1$d with data from site %2$d successful."
 msgstr ""
 
-#: inc/helpers/class-site-duplicator.php:191
+#: inc/helpers/class-site-duplicator.php:198
 msgid "You need to provide a valid site to duplicate."
 msgstr ""
 
-#: inc/helpers/class-site-duplicator.php:213
+#: inc/helpers/class-site-duplicator.php:220
 msgid "An attempt to create a new site failed."
 msgstr ""
 
-#: inc/helpers/class-site-duplicator.php:277
+#: inc/helpers/class-site-duplicator.php:284
 msgid "We were not able to create a new admin user for the site being duplicated."
 msgstr ""
 
@@ -15196,7 +15552,21 @@ msgstr ""
 #: inc/list-tables/class-base-list-table.php:174
 #: views/sites/edit-placeholders.php:48
 #: views/sites/edit-placeholders.php:176
+#: views/taxes/list.php:101
+#: views/taxes/list.php:308
 msgid "Select All"
+msgstr ""
+
+#. translators: %s will be replaced by the data type plural name. e.g. Books.
+#: inc/list-tables/class-base-list-table.php:337
+#, php-format
+msgid "%s per page"
+msgstr ""
+
+#. translators: %s will be replaced with the data type plural name. e.g. Books.
+#: inc/list-tables/class-base-list-table.php:359
+#, php-format
+msgid "Search %s"
 msgstr ""
 
 #: inc/list-tables/class-base-list-table.php:403
@@ -15334,6 +15704,8 @@ msgstr ""
 #: inc/list-tables/class-product-list-table.php:71
 #: inc/list-tables/class-site-list-table.php:132
 #: inc/list-tables/class-webhook-list-table.php:74
+#: views/admin-pages/fields/field-text-edit.php:68
+#: views/base/checkout-forms/js-templates.php:97
 msgid "Edit"
 msgstr ""
 
@@ -15435,6 +15807,18 @@ msgstr ""
 
 #: inc/list-tables/class-checkout-form-list-table.php:199
 msgid "Form Slug"
+msgstr ""
+
+#: inc/list-tables/class-customer-list-table.php:39
+#: inc/list-tables/class-site-list-table.php:38
+#: inc/list-tables/customer-panel/class-product-list-table.php:34
+#: inc/list-tables/customer-panel/class-site-list-table.php:34
+msgid "Grid View"
+msgstr ""
+
+#: inc/list-tables/class-customer-list-table.php:40
+#: inc/list-tables/class-site-list-table.php:39
+msgid "List View"
 msgstr ""
 
 #: inc/list-tables/class-customer-list-table.php:128
@@ -15543,7 +15927,7 @@ msgstr ""
 #: inc/list-tables/class-customers-site-list-table.php:106
 #: inc/list-tables/class-memberships-site-list-table.php:81
 #: views/limitations/site-template-selector.php:65
-#: views/limitations/theme-selector.php:78
+#: views/limitations/theme-selector.php:80
 msgid "Not Available"
 msgstr ""
 
@@ -16126,6 +16510,18 @@ msgstr ""
 msgid "You can use the placeholder <code>%NETWORK_DOMAIN%</code> and <code>%NETWORK_IP%</code>."
 msgstr ""
 
+#: inc/managers/class-domain-manager.php:381
+msgid "DNS Check Interval"
+msgstr ""
+
+#: inc/managers/class-domain-manager.php:382
+msgid "Set the interval in seconds between DNS and SSL certificate checks for domains."
+msgstr ""
+
+#: inc/managers/class-domain-manager.php:383
+msgid "Minimum: 10 seconds, Maximum: 300 seconds (5 minutes). Default: 300 seconds."
+msgstr ""
+
 #: inc/managers/class-domain-manager.php:410
 msgid "Single Sign-On Settings"
 msgstr ""
@@ -16604,8 +17000,8 @@ msgid "Use this option to reset the custom limitations applied to this object."
 msgstr ""
 
 #: inc/managers/class-limitation-manager.php:557
-#: views/limitations/plugin-selector.php:93
-#: views/limitations/theme-selector.php:89
+#: views/limitations/plugin-selector.php:95
+#: views/limitations/theme-selector.php:91
 msgid "This value is being applied only to this entity. Changes made to the membership or product permissions will not affect this particular value."
 msgstr ""
 
@@ -16770,6 +17166,10 @@ msgstr ""
 
 #: inc/managers/class-payment-manager.php:299
 msgid "This invoice does not exist."
+msgstr ""
+
+#: inc/managers/class-site-manager.php:117
+msgid "Site names can only contain lowercase letters (a-z) and numbers."
 msgstr ""
 
 #: inc/managers/class-site-manager.php:134
@@ -17108,6 +17508,10 @@ msgstr ""
 msgid "You do not have tax support enabled yet..."
 msgstr ""
 
+#: inc/tax/class-dashboard-taxes-tab.php:82
+msgid "If you need to collect taxes, you'll be glad to hear that Multisite Ultimate offers tax support!"
+msgstr ""
+
 #: inc/tax/class-dashboard-taxes-tab.php:83
 msgid "Enable Tax Support"
 msgstr ""
@@ -17294,6 +17698,10 @@ msgstr ""
 
 #: inc/ui/class-base-element.php:1212
 msgid "Customize this element"
+msgstr ""
+
+#: inc/ui/class-base-element.php:1214
+msgid ", or"
 msgstr ""
 
 #: inc/ui/class-base-element.php:1216
@@ -17618,6 +18026,12 @@ msgstr ""
 msgid "Domain secured with HTTPS"
 msgstr ""
 
+#. translators: The %1$s placeholder is the old type name, the second, the new type name.
+#: inc/ui/class-field.php:175
+#, php-format
+msgid "The field type \"%1$s\" is no longer supported, use \"%2$s\" instead."
+msgstr ""
+
 #: inc/ui/class-invoices-element.php:142
 msgid "Limit"
 msgstr ""
@@ -17833,6 +18247,7 @@ msgstr ""
 
 #: inc/ui/class-login-form-element.php:244
 #: inc/ui/class-login-form-element.php:245
+#: inc/ui/class-login-form-element.php:260
 msgid "Remember Me"
 msgstr ""
 
@@ -18239,6 +18654,12 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#. translators: 1: is a link to a support document. 2: closing link
+#: multisite-ultimate.php:94
+#, php-format
+msgid "Your installation of Multisite Ultimate is incomplete. If you installed from GitHub, %1$splease refer to this document%2$s to set up your development environment or download a pre-packaged ZIP release."
+msgstr ""
+
 #: views/about.php:25
 msgid "← Back to the Dashboard"
 msgstr ""
@@ -18265,6 +18686,7 @@ msgid "Add new Line"
 msgstr ""
 
 #: views/admin-pages/fields/field-text-display.php:56
+#: views/admin-pages/fields/field-text-edit.php:116
 #: views/email/widget-placeholders.php:48
 msgid "Copy"
 msgstr ""
@@ -18292,6 +18714,7 @@ msgid "Move"
 msgstr ""
 
 #. translators: %1$s: number of steps, %2$s: number of fields
+#. translators: %1$s number of steps, %2$s number of fields
 #: views/base/checkout-forms/steps.php:19
 #: views/base/checkout-forms/steps.php:277
 #, php-format
@@ -18861,9 +19284,11 @@ msgid "with %s"
 msgstr ""
 
 #. translators: %s: the event author's name
+#. translators: %s author of the plugin
+#. translators: %s name of the theme author
 #: views/dashboard-widgets/activity-stream.php:72
-#: views/limitations/plugin-selector.php:50
-#: views/limitations/theme-selector.php:50
+#: views/limitations/plugin-selector.php:52
+#: views/limitations/theme-selector.php:52
 #, php-format
 msgid "by %s"
 msgstr ""
@@ -19303,9 +19728,10 @@ msgstr ""
 msgid "This is your current plan"
 msgstr ""
 
+#. translators: %s title of the current site
 #. translators: %s: Site Name
-#: views/legacy/signup/signup-main.php:63
-#: views/legacy/signup/signup-main.php:101
+#: views/legacy/signup/signup-main.php:64
+#: views/legacy/signup/signup-main.php:102
 #, php-format
 msgid "%s - Signup"
 msgstr ""
@@ -19330,44 +19756,46 @@ msgstr ""
 msgid "Network Active"
 msgstr ""
 
+#. translators: %s current version of the plugin
+#. translators: %s current version of the theme.
 #. translators: %s: version number of plugin.
-#: views/limitations/plugin-selector.php:46
-#: views/limitations/theme-selector.php:46
+#: views/limitations/plugin-selector.php:47
+#: views/limitations/theme-selector.php:47
 #: views/ui/branding/footer.php:14
 #, php-format
 msgid "Version %s"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:66
-#: views/limitations/theme-selector.php:66
+#: views/limitations/plugin-selector.php:68
+#: views/limitations/theme-selector.php:68
 msgid "Visible"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:67
-#: views/limitations/theme-selector.php:67
+#: views/limitations/plugin-selector.php:69
+#: views/limitations/theme-selector.php:69
 msgid "Hidden"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:72
+#: views/limitations/plugin-selector.php:74
 #: views/limitations/site-template-selector.php:55
-#: views/limitations/theme-selector.php:72
+#: views/limitations/theme-selector.php:74
 msgid "Behavior"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:78
-#: views/limitations/theme-selector.php:79
+#: views/limitations/plugin-selector.php:80
+#: views/limitations/theme-selector.php:81
 msgid "Force Activate"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:79
+#: views/limitations/plugin-selector.php:81
 msgid "Force Inactivate"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:80
+#: views/limitations/plugin-selector.php:82
 msgid "Force Activate & Lock"
 msgstr ""
 
-#: views/limitations/plugin-selector.php:81
+#: views/limitations/plugin-selector.php:83
 msgid "Force Inactivate & Lock"
 msgstr ""
 
@@ -19376,7 +19804,7 @@ msgid "No categories"
 msgstr ""
 
 #: views/limitations/site-template-selector.php:64
-#: views/limitations/theme-selector.php:77
+#: views/limitations/theme-selector.php:79
 msgid "Available"
 msgstr ""
 
@@ -19496,6 +19924,10 @@ msgstr ""
 msgid "Leave blank to apply to all"
 msgstr ""
 
+#: views/taxes/list.php:387
+msgid "Save Tax Rates"
+msgstr ""
+
 #: views/ui/branding/footer.php:46
 msgid "Job Queue"
 msgstr ""
@@ -19532,6 +19964,11 @@ msgstr ""
 
 #: views/ui/jumper.php:100
 msgid "Searching Results..."
+msgstr ""
+
+#: views/ui/selectize-templates.php:23
+#: views/ui/selectize-templates.php:47
+msgid "Undefined"
 msgstr ""
 
 #: views/ui/selectize-templates.php:183
