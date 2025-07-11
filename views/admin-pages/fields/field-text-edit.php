@@ -65,7 +65,7 @@
 
 	<div class="wu-block" v-show="!edit">
 		<a href="#" class="wu-p-2 wu--m-2 wp-ui-text-highlight" v-on:click="open($event)" data-field="<?php echo esc_attr($field_slug); ?>">
-		<?php echo wu_tooltip(__('Edit'), 'dashicons-edit'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo wu_tooltip(__('Edit', 'multisite-ultimate'), 'dashicons-edit'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</a>
 	</div>
 
@@ -113,7 +113,7 @@
 
 	<div class="wu-block" v-show="!edit">
 		<a href="#" class="wu-p-2 wu--m-2" v-on:click="edit($event, '<?php echo esc_js($field_slug); ?>')" data-field="<?php echo esc_attr($field_slug); ?>">
-		<?php echo wu_tooltip(__('Copy'), 'dashicons-admin-page'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo wu_tooltip(__('Copy', 'multisite-ultimate'), 'dashicons-admin-page'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</a>
 	</div>
 

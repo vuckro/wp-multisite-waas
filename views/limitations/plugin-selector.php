@@ -34,7 +34,7 @@
 
 				<span class="wu-my-2 wu-block">
 
-					<?php echo wp_strip_all_tags($plugin_data['Description']); ?>
+					<?php echo esc_html(wp_strip_all_tags($plugin_data['Description'])); ?>
 
 				</span>
 
@@ -43,11 +43,13 @@
 				<div class="wu-block wu-mt-4">
 
 				<span class="wu-text-xs wu-text-gray-700 wu-my-1 wu-mr-4 wu-block">
+					<?php // translators: %s current version of the plugin ?>
 					<?php printf(esc_html__('Version %s', 'multisite-ultimate'), esc_html($plugin_data['Version'])); ?>
 				</span>
 
 				<span class="wu-text-xs wu-text-gray-700 wu-my-1 wu-mr-4 wu-block">
-					<?php printf(esc_html__('by %s', 'multisite-ultimate'), wp_strip_all_tags($plugin_data['Author'])); ?>
+					<?php // translators: %s author of the plugin ?>
+					<?php printf(esc_html__('by %s', 'multisite-ultimate'), esc_html(wp_strip_all_tags($plugin_data['Author']))); ?>
 				</span>
 
 				</div>

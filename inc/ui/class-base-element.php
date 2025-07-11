@@ -1211,7 +1211,7 @@ abstract class Base_Element {
 								<a class="wubox wu-no-underline" title="Customize" href="<?php echo esc_attr(wu_get_form_url("shortcode_{$this->id}")); ?>">
 									<?php esc_html_e('Customize this element', 'multisite-ultimate'); ?>
 								</a>
-								<?php esc_html_e(', or'); ?>
+								<?php esc_html_e(', or', 'multisite-ultimate'); ?>
 								<a class="wubox wu-no-underline" title="Shortcode" href="<?php echo esc_attr(wu_get_form_url("customize_{$this->id}")); ?>">
 									<?php esc_html_e('generate a shortcode', 'multisite-ultimate'); ?>
 								</a>

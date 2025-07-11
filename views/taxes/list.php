@@ -98,7 +98,7 @@
 			<th id="cb" class="manage-column column-cb" style="width: 50px;">
 
 			<label class="screen-reader-text" for="wu-select-2">
-				<?php esc_html_e('Select All'); ?>
+				<?php esc_html_e('Select All', 'multisite-ultimate'); ?>
 			</label>
 
 			<input v-bind:disabled="!data[tax_category].rates" v-model="toggle" v-on:click="select_all" id="wu-select-2"
@@ -166,7 +166,7 @@
 
 			<label class="screen-reader-text" for="wu-select-1">
 
-				<?php esc_html_e('Select'); ?> {{item.title}}
+				<?php esc_html_e('Select', 'multisite-ultimate'); ?> {{item.title}}
 
 			</label>
 
@@ -305,7 +305,7 @@
 
 			<label class="screen-reader-text" for="wu-select">
 
-				<?php esc_html_e('Select All'); ?>
+				<?php esc_html_e('Select All', 'multisite-ultimate'); ?>
 
 			</label>
 
@@ -384,7 +384,7 @@
 
 		<button v-on:click.prevent="save" v-bind:disabled="saving" class="button button-primary">
 
-		<?php esc_html_e('Save Tax Rates'); ?>
+		<?php esc_html_e('Save Tax Rates', 'multisite-ultimate'); ?>
 
 		</button>
 
@@ -401,5 +401,5 @@
 	</form>
 
 	<br class="clear">
-
+filter.
 </div>

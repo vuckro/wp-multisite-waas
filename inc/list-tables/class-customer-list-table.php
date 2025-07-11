@@ -36,8 +36,8 @@ class Customer_List_Table extends Base_List_Table {
 	public function __construct($args = []) {
 
 		$this->modes = [
-			'grid' => __('Grid View'),
-			'list' => __('List View'),
+			'grid' => __('Grid View', 'multisite-ultimate'),
+			'list' => __('List View', 'multisite-ultimate'),
 		];
 
 		$args = wp_parse_args(

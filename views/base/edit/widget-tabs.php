@@ -132,6 +132,6 @@
 
 	</div>
 
-	<?php echo $after; // phpcs:ignore WordPress.Security.NonceVerification ?>
+	<?php echo $after; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 </div>

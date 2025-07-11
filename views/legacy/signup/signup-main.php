@@ -60,7 +60,8 @@ do_action('wu_checkout_scripts');
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	<title>
-		<?php echo apply_filters('wu_signup_page_title', sprintf(__('%s - Signup', 'multisite-ultimate'), get_bloginfo('Name'), get_bloginfo('Name'))); ?>
+		<?php // translators: %s title of the current site ?>
+		<?php echo esc_html(apply_filters('wu_signup_page_title', sprintf(__('%s - Signup', 'multisite-ultimate'), get_bloginfo('Name'), get_bloginfo('Name')))); ?>
 	</title>
 
 	<?php // Signup do action, like the default ?>

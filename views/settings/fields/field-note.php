@@ -15,7 +15,7 @@
 
 		<label for="<?php echo esc_attr($field->id); ?>">
 
-		<?php echo $field->title; ?>
+		<?php echo esc_html($field->title); ?>
 
 		</label>
 
@@ -29,7 +29,7 @@
 
 		<p class="description" id="<?php echo esc_attr($field->id); ?>-desc">
 
-			<?php echo $field->desc; ?>
+			<?php echo esc_html($field->desc); ?>
 
 		</p>
 

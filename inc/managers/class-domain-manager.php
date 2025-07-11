@@ -378,9 +378,9 @@ class Domain_Manager extends Base_Manager {
 			'domain-mapping',
 			'dns_check_interval',
 			[
-				'title'     => __('DNS Check Interval', 'wp-multisite-waas'),
-				'tooltip'   => __('Set the interval in seconds between DNS and SSL certificate checks for domains.', 'wp-multisite-waas'),
-				'desc'      => __('Minimum: 10 seconds, Maximum: 300 seconds (5 minutes). Default: 300 seconds.', 'wp-multisite-waas'),
+				'title'     => __('DNS Check Interval', 'multisite-ultimate'),
+				'tooltip'   => __('Set the interval in seconds between DNS and SSL certificate checks for domains.', 'multisite-ultimate'),
+				'desc'      => __('Minimum: 10 seconds, Maximum: 300 seconds (5 minutes). Default: 300 seconds.', 'multisite-ultimate'),
 				'type'      => 'number',
 				'default'   => 300,
 				'min'       => 10,

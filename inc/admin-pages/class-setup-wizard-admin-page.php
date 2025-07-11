@@ -846,12 +846,12 @@ class Setup_Wizard_Admin_Page extends Wizard_Admin_Page {
 				'wubox',
 				'wuboxL10n',
 				[
-					'next'             => __('Next &gt;'),
-					'prev'             => __('&lt; Prev'),
-					'image'            => __('Image'),
-					'of'               => __('of'),
-					'close'            => __('Close'),
-					'noiframes'        => __('This feature requires inline frames. You have iframes disabled or your browser does not support them.'),
+					'next'             => __('Next &gt;'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'prev'             => __('&lt; Prev'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'image'            => __('Image'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'of'               => __('of'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'close'            => __('Close'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'noiframes'        => __('This feature requires inline frames. You have iframes disabled or your browser does not support them.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'loadingAnimation' => includes_url('js/thickbox/loadingAnimation.gif'),
 				]
 			);

@@ -94,7 +94,7 @@
 							);
 							?>=' + step_name + '&amp;field=' + field.id" <?php // phpcs:ignore Squiz.PHP.EmbeddedPhp ?>
 							>
-								<?php esc_html_e('Edit'); ?>
+								<?php esc_html_e('Edit', 'multisite-ultimate'); ?>
 						</a>
 						|
 					</span>

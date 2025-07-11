@@ -35,8 +35,8 @@ class Site_List_Table extends Base_List_Table {
 	public function __construct() {
 
 		$this->modes = [
-			'grid' => __('Grid View'),
-			'list' => __('List View'),
+			'grid' => __('Grid View', 'multisite-ultimate'),
+			'list' => __('List View', 'multisite-ultimate'),
 		];
 
 		parent::__construct(

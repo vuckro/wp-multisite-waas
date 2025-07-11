@@ -31,7 +31,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 		parent::__construct();
 
 		$this->modes = [
-			'grid' => __('Grid View'),
+			'grid' => __('Grid View', 'multisite-ultimate'),
 		];
 
 		$this->current_mode = 'grid';

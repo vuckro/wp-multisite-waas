@@ -257,7 +257,7 @@ class Login_Form_Element extends Base_Element {
 		$fields['label_remember'] = [
 			'type'     => 'text',
 			'title'    => __('Remember Me Label', 'multisite-ultimate'),
-			'value'    => __('Remember Me'),
+			'value'    => __('Remember Me', 'multisite-ultimate'),
 			'desc'     => '',
 			'tooltip'  => '',
 			'required' => [
@@ -360,16 +360,16 @@ class Login_Form_Element extends Base_Element {
 			'redirect'               => $redirect_to,
 			'form_id'                => 'loginform',
 
-			'label_username'         => __('Username or Email Address'),
+			'label_username'         => __('Username or Email Address'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 			'placeholder_username'   => '',
 
-			'label_password'         => __('Password'),
+			'label_password'         => __('Password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 			'placeholder_password'   => '',
 
-			'label_remember'         => __('Remember Me'),
+			'label_remember'         => __('Remember Me'),  // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 			'desc_remember'          => __('Keep me logged in for two weeks.', 'multisite-ultimate'),
 
-			'label_log_in'           => __('Log In'),
+			'label_log_in'           => __('Log In'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 
 			'id_username'            => 'user_login',
 			'id_password'            => 'user_pass',
@@ -570,7 +570,7 @@ class Login_Form_Element extends Base_Element {
 			$fields = [
 				'email-activation-instructions' => [
 					'type' => 'note',
-					'desc' => __('Your password has been reset.') . ' <a href="' . esc_url(wp_login_url()) . '">' . __('Log in') . '</a>',
+					'desc' => __('Your password has been reset.') . ' <a href="' . esc_url(wp_login_url()) . '">' . __('Log in') . '</a>', // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 				],
 			];
 
@@ -585,7 +585,7 @@ class Login_Form_Element extends Base_Element {
 					'type' => 'note',
 					'desc' => sprintf(
 						/* translators: %s: Link to the login page. */
-						__('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'),
+						__('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 						wp_login_url()
 					),
 				],
@@ -617,7 +617,7 @@ class Login_Form_Element extends Base_Element {
 			$fields = [
 				'pass1'                      => [
 					'type'        => 'password',
-					'title'       => __('New password'),
+					'title'       => __('New password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'placeholder' => '',
 					'value'       => '',
 					'html_attr'   => [
@@ -627,7 +627,7 @@ class Login_Form_Element extends Base_Element {
 				],
 				'pass2'                      => [
 					'type'        => 'password',
-					'title'       => __('Confirm new password'),
+					'title'       => __('Confirm new password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'placeholder' => '',
 					'value'       => '',
 					'html_attr'   => [
@@ -658,8 +658,8 @@ class Login_Form_Element extends Base_Element {
 				],
 				'wp-submit'                  => [
 					'type'            => 'submit',
-					'title'           => __('Save Password'),
-					'value'           => __('Save Password'),
+					'title'           => __('Save Password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'value'           => __('Save Password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'classes'         => 'button button-primary wu-w-full',
 					'wrapper_classes' => 'wu-items-end wu-bg-none',
 				],
@@ -683,12 +683,12 @@ class Login_Form_Element extends Base_Element {
 			$fields = [
 				'lost-password-instructions' => [
 					'type'    => 'note',
-					'desc'    => __('Please enter your username or email address. You will receive an email message with instructions on how to reset your password.'),
+					'desc'    => __('Please enter your username or email address. You will receive an email message with instructions on how to reset your password.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'tooltip' => '',
 				],
 				'user_login'                 => [
 					'type'        => 'text',
-					'title'       => __('Username or Email Address'),
+					'title'       => __('Username or Email Address'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'placeholder' => '',
 					'value'       => $user_login,
 					'html_attr'   => [
@@ -706,8 +706,8 @@ class Login_Form_Element extends Base_Element {
 				],
 				'wp-submit'                  => [
 					'type'            => 'submit',
-					'title'           => __('Get New Password'),
-					'value'           => __('Get New Password'),
+					'title'           => __('Get New Password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'value'           => __('Get New Password'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'classes'         => 'button button-primary wu-w-full',
 					'wrapper_classes' => 'wu-items-end wu-bg-none',
 				],
@@ -766,7 +766,7 @@ class Login_Form_Element extends Base_Element {
 
 			$fields['lost-password'] = [
 				'type'            => 'html',
-				'content'         => sprintf('<a class="wu-text-xs wu-block wu-text-center wu--mt-4" href="%s">%s</a>', esc_url(add_query_arg('action', 'lostpassword')), __('Lost your password?')),
+				'content'         => sprintf('<a class="wu-text-xs wu-block wu-text-center wu--mt-4" href="%s">%s</a>', esc_url(add_query_arg('action', 'lostpassword')), __('Lost your password?')), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 				'classes'         => '',
 				'wrapper_classes' => 'wu-items-end wu-bg-none',
 			];

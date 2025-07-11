@@ -29,7 +29,7 @@
 			<span title="<?php esc_attr_e('Current Site', 'multisite-ultimate'); ?>"
 			class="dashicons-wu-browser wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>
 			<span class="">
-			<?php echo $current_site->get_title(); ?>
+			<?php echo esc_html($current_site->get_title()); ?>
 			</span>
 		</a>
 
@@ -44,7 +44,7 @@
 			<span title="<?php esc_attr_e('Current Site', 'multisite-ultimate'); ?>"
 				class="dashicons-wu-user wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>
 			<span class="">
-				<?php echo $customer->get_display_name(); ?>
+				<?php echo esc_html($customer->get_display_name()); ?>
 			</span>
 			</a>
 
@@ -62,7 +62,7 @@
 				class="dashicons-wu-circular-graph wu-text-sm wu-w-auto wu-h-auto wu-align-text-bottom wu-relative"></span>
 			<span class="">
 				<?php // translators: %s hash of membership. ?>
-				<?php printf(__('Membership <Strong>%s</strong>', 'multisite-ultimate'), $membership->get_hash()); ?>
+				<?php printf(esc_html__('Membership <Strong>%s</strong>', 'multisite-ultimate'), esc_html($membership->get_hash())); ?>
 			</span>
 			<span id="wu-toolbox-membership-status" class="wu-inline-block wu-w-3 wu-h-3 wu-rounded-full wu-align-text-top <?php echo esc_attr($membership->get_status_class()); ?>" <?php echo wu_tooltip_text($membership->get_status_label()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 				&nbsp;

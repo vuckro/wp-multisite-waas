@@ -43,10 +43,12 @@
 			<div class="wu-block wu-mt-4">
 
 				<span class="wu-text-xs wu-text-gray-700 wu-my-1 wu-mr-4 wu-block">
+                <?php // translators: %s current version of the theme. ?>
 				<?php printf(esc_html__('Version %s', 'multisite-ultimate'), esc_html($theme_data['Version'])); ?>
 				</span>
 
 				<span class="wu-text-xs wu-text-gray-700 wu-my-1 wu-mr-4 wu-block">
+                <?php // translators: %s name of the theme author ?>
 				<?php printf(esc_html__('by %s', 'multisite-ultimate'), $theme_data['Author']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</span>
 

@@ -40,7 +40,7 @@
 
 			<option value="<?php echo esc_attr($url); ?>">
 
-				<?php echo $menu; ?>
+				<?php echo esc_html($menu); ?>
 
 			</option>
 
