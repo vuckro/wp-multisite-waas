@@ -313,7 +313,7 @@ class Field implements \JsonSerializable {
 	 * @since 2.0.0
 	 *
 	 * @param mixed $value Value of the settings being represented by this field.
-	 * @return WP_Ultimo\UI\Field
+	 * @return \WP_Ultimo\UI\Field
 	 */
 	public function set_value($value) {
 
