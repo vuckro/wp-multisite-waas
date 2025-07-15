@@ -22,7 +22,7 @@
 	<p class="intercom-align-left">If there are domains you want to keep on the list, use the <b>WU_CLOUDWAYS_EXTRA_DOMAINS</b> as demonstrated below, with a comma-separated list of the domains you wanna keep (this is useful if you need a wildcard setting, for example, that needs to be on that list at all times).</p>
 	<pre class="wu-overflow-auto wu-p-4 wu-m-0 wu-mt-2 wu-rounded wu-content-center wu-bg-gray-800 wu-text-white wu-font-mono wu-border wu-border-solid wu-border-gray-300 wu-max-h-screen wu-overflow-y-auto">define('WU_CLOUDWAYS_EXTRA_DOMAINS', '*.yourdomain.com,extradomain1.com,extradomain2.com');</pre>
 	<p class="intercom-align-left">Here’s how it should look on your wp-config.php (fake values used below):</p>
-	
+
 	<p class="intercom-align-center"><i>You’re all set!</i></p>
 	<p class="intercom-align-left">Now, every time a new domain is mapped in the network (via the Aliases tab by the network admin or via the custom domain meta-box on the user’s Account page) will be added to the Cloudways platform automatically.</p>
 	<p class="intercom-align-left">The same is true for domain removals. Every time a domain is deleted from the network, that change will be communicated to your Cloudways account instantly!</p>
