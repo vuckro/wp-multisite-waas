@@ -415,7 +415,7 @@ class Toolkit {
 
 					die();
 				} else {
-					return $this->dump_and_die($this->should_die);
+					$this->dump_and_die($this->should_die);
 				}
 			},
 			110
@@ -466,28 +466,23 @@ class Toolkit {
 			return;
 		}
 
-		// phpcs:disable
 		echo '
 			<div class="wu-styling">
 				<strong class="wu-block wu-mb-2 wu-mt-10">Listeners</strong>
 					<ul id="listeners">';
 
-						foreach (array_keys($this->listeners) as $listener) {
-
-			echo sprintf(
-'<li><a href="%s">→ Listener "%s"</a></li>',
-add_query_arg(self::LISTENER_PARAM, $listener),
-$listener
-);
-
-						}
+		foreach (array_keys($this->listeners) as $listener) {
+			printf(
+				'<li><a href="%s">→ Listener "%s"</a></li>',
+				esc_attr(add_query_arg(self::LISTENER_PARAM, $listener)),
+				esc_html($listener)
+			);
+		}
 
 				echo '
 			</ul>
-		</div>'; // phpcs: enable
+		</div>';
 
 		$this->displayed_footer = true;
-
 	}
-
 }

@@ -59,15 +59,14 @@ class Debug {
 		add_action('wu_header_left', [$this, 'add_debug_links']);
 	}
 
-	// phpcs:disable
-
 	/**
 	 * Adds the debug links
 	 *
 	 * @since 2.0.0
 	 * @return void
 	 */
-	public function add_debug_links(): void { ?>
+	public function add_debug_links(): void {
+		?>
 
 			<a  
 				href="<?php wu_network_admin_url('wp-ultimo-debug-pages'); ?>" 
@@ -79,7 +78,7 @@ class Debug {
 			</a>
 
 			<a  
-				href="<?php echo wu_get_form_url('add_debug_generator_form'); ?>" 
+				href="<?php echo esc_attr(wu_get_form_url('add_debug_generator_form')); ?>"
 				class="wubox wu-ml-2 wu-no-underline wu-relative wu-text-gray-600"
 				title="<?php esc_html_e('Generator', 'multisite-ultimate'); ?>"
 			>
@@ -88,7 +87,7 @@ class Debug {
 			</a>
 
 			<a  
-				href="<?php echo wu_get_form_url('add_debug_reset_database_form'); ?>" 
+				href="<?php echo esc_attr(wu_get_form_url('add_debug_reset_database_form')); ?>"
 				class="wubox wu-ml-2 wu-no-underline wu-text-gray-600"
 				title="<?php esc_html_e('Reset Database', 'multisite-ultimate'); ?>"
 			>
@@ -97,7 +96,7 @@ class Debug {
 			</a>
 
 			<a  
-				href="<?php echo wu_get_form_url('add_debug_drop_database_form'); ?>" 
+				href="<?php echo esc_attr(wu_get_form_url('add_debug_drop_database_form')); ?>"
 				class="wubox wu-ml-2 wu-no-underline wu-text-gray-600"
 				title="<?php esc_html_e('Drop Database', 'multisite-ultimate'); ?>"
 			>
@@ -106,10 +105,7 @@ class Debug {
 			</a>
 
 		<?php
-
 	}
-
-	// phpcs:enable
 
 	/**
 	 * Register the forms for the fakers.
@@ -460,7 +456,7 @@ class Debug {
 			} else {
 				$this->reset_all_data();
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$wpdb->query('ROLLBACK'); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			$error = new \WP_Error($e->getCode(), $e->getMessage());
@@ -718,16 +714,14 @@ class Debug {
 						$wpdb->prepare("DELETE FROM `{$table}` WHERE `{$field}` IN ($id_placeholders)", ...$ids) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 					);
 				}
-			} else {
-				if (version_compare(get_bloginfo('version'), '6.2', '>=')) {
+			} elseif (version_compare(get_bloginfo('version'), '6.2', '>=')) {
 					$result = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 						$wpdb->prepare('DELETE FROM %i', $table) // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedIdentifierPlaceholder
 					);
-				} else {
-					$result = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-						$wpdb->prepare("DELETE FROM `{$table}`") // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					);
-				}
+			} else {
+				$result = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->prepare("DELETE FROM `{$table}`") // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				);
 			}
 
 			if (false === $result) {

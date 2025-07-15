@@ -282,29 +282,36 @@ class Scripts {
 			]
 		);
 
-		// phpcs:disable
 		$strings = [
-			'relativeTime' => [
+			'relativeTime'   => [
+				// translators: %s is a relative future date.
 				'future' => __('in %s', 'multisite-ultimate'),
+				// translators: %s is a relative past date.
 				'past'   => __('%s ago', 'multisite-ultimate'),
 				's'      => __('a few seconds', 'multisite-ultimate'),
+				// translators: %s is the number of seconds.
 				'ss'     => __('%d seconds', 'multisite-ultimate'),
 				'm'      => __('a minute', 'multisite-ultimate'),
+				// translators: %s is the number of minutes.
 				'mm'     => __('%d minutes', 'multisite-ultimate'),
 				'h'      => __('an hour', 'multisite-ultimate'),
+				// translators: %s is the number of hours.
 				'hh'     => __('%d hours', 'multisite-ultimate'),
 				'd'      => __('a day', 'multisite-ultimate'),
+				// translators: %s is the number of days.
 				'dd'     => __('%d days', 'multisite-ultimate'),
 				'w'      => __('a week', 'multisite-ultimate'),
+				// translators: %s is the number of weeks.
 				'ww'     => __('%d weeks', 'multisite-ultimate'),
 				'M'      => __('a month', 'multisite-ultimate'),
+				// translators: %s is the number of months.
 				'MM'     => __('%d months', 'multisite-ultimate'),
 				'y'      => __('a year', 'multisite-ultimate'),
+				// translators: %s is the number of years.
 				'yy'     => __('%d years', 'multisite-ultimate'),
 			],
 			'longDateFormat' => $long_date_formats,
 		];
-		// phpcs:enable
 
 		$inline_script = sprintf("moment.updateLocale( '%s', %s );", get_user_locale(), wp_json_encode($strings));
 

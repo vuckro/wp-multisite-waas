@@ -241,17 +241,15 @@ class Signup_Field_Email extends Base_Signup_Field {
 
 		<div class="wu-p-4 wu-bg-yellow-200">
 
-			<?php // phpcs:disable
-
+			<?php
 			// translators: %s is the login URL.
-			printf(__('<a href="%s">Log in</a> to renew or change an existing membership.', 'multisite-ultimate'), $login_url);
+			printf(wp_kses_post(__('<a href="%s">Log in</a> to renew or change an existing membership.', 'multisite-ultimate')), esc_attr($login_url));
 
 			?>
 
 		</div>
 
-		<?php // phpcs:enable
-
+		<?php
 		return ob_get_clean();
 	}
 

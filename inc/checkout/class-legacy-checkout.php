@@ -7,7 +7,6 @@
  * @since 2.0.0
  */
 
-// phpcs:disable
 
 namespace WP_Ultimo\Checkout;
 
@@ -276,8 +275,6 @@ class Legacy_Checkout {
 
 		ob_start();
 
-		// phpcs:disable
-
 		?>
 
 			.wu-content-plan .plan-tier h4 {
@@ -296,8 +293,6 @@ class Legacy_Checkout {
 			}
 
 		<?php
-
-		// phpcs:enable
 
 		return ob_get_clean();
 	}

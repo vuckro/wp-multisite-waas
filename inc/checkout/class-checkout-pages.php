@@ -103,22 +103,19 @@ class Checkout_Pages {
 
 		wp_nonce_field('_wu_force_compat_' . $post_id, '_wu_force_compat');
 
-		// phpcs:disable
 		?>
 
-    <div class="misc-pub-section misc-pub-section-last" style="margin-top: 12px; margin-bottom: 6px; display: flex; align-items: center;">
-				<label for="wu-compat-mode">
-						<span style="display: block; font-weight: 600; margin-bottom: 3px;"><?php esc_html_e('Multisite Ultimate Compatibility Mode', 'multisite-ultimate'); ?></span>
-						<small style="display: block; line-height: 1.8em;"><?php esc_html_e('Toggle this option on if Multisite Ultimate elements are not loading correctly or at all.', 'multisite-ultimate'); ?></small>
-				</label>
-				<div style="margin-left: 6px;">
-					<input id="wu-compat-mode" type="checkbox" value="1" <?php checked($value, true, true); ?> name="_wu_force_elements_loading" />
-				</div>
-    </div>
+	<div class="misc-pub-section misc-pub-section-last" style="margin-top: 12px; margin-bottom: 6px; display: flex; align-items: center;">
+		<label for="wu-compat-mode">
+				<span style="display: block; font-weight: 600; margin-bottom: 3px;"><?php esc_html_e('Multisite Ultimate Compatibility Mode', 'multisite-ultimate'); ?></span>
+				<small style="display: block; line-height: 1.8em;"><?php esc_html_e('Toggle this option on if Multisite Ultimate elements are not loading correctly or at all.', 'multisite-ultimate'); ?></small>
+		</label>
+		<div style="margin-left: 6px;">
+			<input id="wu-compat-mode" type="checkbox" value="1" <?php checked($value, true, true); ?> name="_wu_force_elements_loading" />
+		</div>
+	</div>
 
 		<?php
-
-		// phpcs:enable
 	}
 
 	/**
