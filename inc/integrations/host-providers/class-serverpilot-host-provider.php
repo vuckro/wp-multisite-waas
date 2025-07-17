@@ -11,6 +11,8 @@ namespace WP_Ultimo\Integrations\Host_Providers;
 
 use Psr\Log\LogLevel;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * This base class should be extended to implement new host integrations for SSL and domains.
  */

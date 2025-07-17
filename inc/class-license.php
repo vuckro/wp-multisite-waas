@@ -2,6 +2,8 @@
 
 namespace WP_Ultimo;
 
+defined( 'ABSPATH' ) || exit;
+
 class License {
 	use \WP_Ultimo\Traits\Singleton;
 

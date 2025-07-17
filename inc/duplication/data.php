@@ -2,6 +2,8 @@
 
 use Psr\Log\LogLevel;
 
+defined( 'ABSPATH' ) || exit;
+
 if ( ! class_exists('MUCD_Data') ) {
 
 	class MUCD_Data {

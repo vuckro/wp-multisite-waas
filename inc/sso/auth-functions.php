@@ -18,6 +18,8 @@
 
 use Delight\Cookie\Cookie;
 
+defined( 'ABSPATH' ) || exit;
+
 
 if ( ! function_exists('wp_set_auth_cookie') ) :
 	/**

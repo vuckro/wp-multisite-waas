@@ -11,6 +11,8 @@ namespace WP_Ultimo\Integrations\Host_Providers\CPanel_API;
 
 use WP_Ultimo\Logger;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * CPanel API wrapper to send the calls.
  */

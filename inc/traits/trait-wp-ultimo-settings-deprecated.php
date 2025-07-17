@@ -9,6 +9,8 @@
 
 namespace WP_Ultimo\Traits;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * WP_Ultimo_Settings_Deprecated trait.
  */

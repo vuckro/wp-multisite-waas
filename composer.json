@@ -45,7 +45,7 @@
         "berlindb/core": "^2.0.1",
         "mexitek/phpcolors": "^1.0.4",
         "phpdocumentor/reflection-docblock": "^5.3.0",
-        "stripe/stripe-php": "^10.21.0",
+        "stripe/stripe-php": "^17.4.0",
         "hashids/hashids": "^4.1.0",
         "rakit/validation": "dev-master#ff003a35cdf5030a5f2482299f4c93f344a35b29",
         "ifsnop/mysqldump-php": "^2.12",
@@ -117,7 +117,8 @@
             ".wiki",
             "codeception.yml",
             "CLAUDE.md",
-            "patches"
+            "patches",
+            "composer-plugins"
         ]
     },
     "extra": {

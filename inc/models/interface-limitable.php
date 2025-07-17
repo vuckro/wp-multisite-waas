@@ -8,6 +8,8 @@
 
 namespace WP_Ultimo\Models;
 
+defined( 'ABSPATH' ) || exit;
+
 interface Limitable {
 	/**
 	 * List of limitations that need to be merged.

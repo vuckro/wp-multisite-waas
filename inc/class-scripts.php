@@ -67,6 +67,23 @@ class Scripts {
 	}
 
 	/**
+	 * Wrapper for the register scripts module function.
+	 *
+	 * @since 2.4.1
+	 *
+	 * @param string $id The script handle. Used to enqueue the script.
+	 * @param string $src URL to the file.
+	 * @param array  $deps List of dependency scripts.
+	 * @return void
+	 */
+	public function register_script_module($id, $src, $deps = []): void {
+		// This method was added in WP 6.5. We're only using modules as a progressive enhancement so we don't need to add a workaround.
+		if (function_exists('wp_register_script_module')) {
+			wp_register_script_module($id, $src, $deps, \WP_Ultimo::VERSION);
+		}
+	}
+
+	/**
 	 * Wrapper for the register styles function.
 	 *
 	 * @since 2.0.0
