@@ -1,1 +1,3 @@
-<?php // phpcs:ignore Internal.NoCodeFound ?>
+<?php
+defined( 'ABSPATH' ) || exit;
+?>

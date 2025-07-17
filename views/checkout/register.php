@@ -1,3 +1,6 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
 <form id="wu_form" method="post" class="wu-styling wu-relative">
 
 	<?php

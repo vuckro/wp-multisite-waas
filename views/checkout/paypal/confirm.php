@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 
 $is_trial_setup = $membership->is_trialing() && empty($payment->get_total());
 

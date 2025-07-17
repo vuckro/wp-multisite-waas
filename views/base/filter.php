@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div 
 	id="<?php echo esc_attr($filters_el_id); ?>" 

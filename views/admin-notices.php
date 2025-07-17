@@ -6,6 +6,7 @@
  * @subpackage Admin_Notices
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 
 foreach ($notices as $key => $notice) : ?>
 

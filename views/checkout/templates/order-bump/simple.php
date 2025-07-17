@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 //phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
 $duration      = $duration ?: 1;
 $duration_unit = $duration_unit ?: 'month';

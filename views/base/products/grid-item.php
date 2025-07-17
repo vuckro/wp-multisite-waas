@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div class="wu-border-transparent wu-flex wu-flex-col wu-justify-end" tabindex="0">
 

@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <div class="<?php echo esc_attr("wu-product-{$product->get_id()}-head"); ?> wu-bg-gray-100 wu-p-4 wu-flex wu-items-center">

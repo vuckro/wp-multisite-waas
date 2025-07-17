@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <li class="<?php echo esc_attr(trim($field->wrapper_classes)); ?>" data-wu-app="<?php echo esc_attr($field->id); ?>" data-state='{"edit":false}'>
 

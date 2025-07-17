@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <ul class="wu-widget-list wu-striped wu-m-0 wu--my-2 wu--mx-3">
 

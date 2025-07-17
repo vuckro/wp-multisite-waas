@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <div class="wu-bg-gray-100 wu--mt-3 wu--mb-6 wu--mx-3">
 

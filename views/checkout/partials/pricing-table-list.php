@@ -10,6 +10,8 @@
  * @since 2.0.0
  * @param array $products List of product objects.
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <?php if (empty($products)) : ?>

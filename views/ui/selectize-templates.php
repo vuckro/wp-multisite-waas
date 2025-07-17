@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <!-- WP User Template -->
 <script type="text/html" id="wu-template-user">
