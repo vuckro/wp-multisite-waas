@@ -22,10 +22,17 @@
             "inc"
         ]
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "composer-plugins/wp-ultimo-autoloader-plugin"
+        }
+    ],
     "type": "wordpress-plugin",
     "require": {
         "php": ">=7.4.1",
         "automattic/jetpack-autoloader": "^5.0.0",
+        "wp-ultimo/autoloader-plugin": "dev-main",
         "rpnzl/arrch": "dev-master#994258bbefb7722243211654c4f78813312cd5ed",
         "amphp/amp": "^2.6.2",
         "amphp/byte-stream": "^1.8.1",
@@ -79,7 +86,8 @@
             "automattic/jetpack-autoloader": true,
             "cweagans/composer-patches": true,
             "phpstan/extension-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wp-ultimo/autoloader-plugin": true
         }
     },
     "archive": {

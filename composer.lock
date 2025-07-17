@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "535e77746a0f1c27492eeeefe54281b6",
+    "content-hash": "7c3910d93d1f3ce54bfaf6825c4289d3",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4764,6 +4764,34 @@
                 "source": "https://github.com/woocommerce/action-scheduler/tree/3.9.2"
             },
             "time": "2025-02-03T09:09:30+00:00"
+        },
+        {
+            "name": "wp-ultimo/autoloader-plugin",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "composer-plugins/wp-ultimo-autoloader-plugin",
+                "reference": "4177b50593d4ec40b193a6cd3760ec9a26cb7778"
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "WP_Ultimo\\Composer\\WP_Ultimo_Autoloader_Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "WP_Ultimo\\Composer\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "description": "Composer plugin to modify Jetpack autoloader for WP Ultimo",
+            "transport-options": {
+                "relative": true
+            }
         }
     ],
     "packages-dev": [
@@ -7729,7 +7757,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "rakit/validation": 20,
-        "rpnzl/arrch": 20
+        "rpnzl/arrch": 20,
+        "wp-ultimo/autoloader-plugin": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
