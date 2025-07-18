@@ -84,17 +84,17 @@ class Limit_Domain_Mapping extends Limit {
 	 */
 	public function check($value_to_check, $limit, $type = '') {
 
-		if ( ! $this->is_enabled() ) {
+		if ( ! $this->is_enabled()) {
 			return false;
 		}
 
 		// For simple boolean limits (enabled/disabled)
-		if ( is_bool($limit) ) {
+		if (is_bool($limit)) {
 			return $limit;
 		}
 
 		// For numeric limits (number of allowed domains)
-		if ( is_numeric($limit) ) {
+		if (is_numeric($limit)) {
 			$current_count = $this->get_current_domain_count($value_to_check);
 			return $current_count <= $limit;
 		}
@@ -113,12 +113,8 @@ class Limit_Domain_Mapping extends Limit {
 	 */
 	public function check_all_domains($site_id = null) {
 
-		if ( ! $this->is_enabled() ) {
-			return false;
-		}
-
 		$current_count = $this->get_current_domain_count($site_id);
-		$limit         = $this->get_limit();
+		$limit         = $this->is_enabled() ? $this->get_limit() : 0;
 
 		// If limit is boolean true, unlimited domains allowed
 		if (is_bool($limit) && $limit) {
