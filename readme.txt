@@ -175,6 +175,12 @@ We recommend running this in a staging environment before updating your producti
 
 == Changelog ==
 
+Version [2.4.1] - Released on 2025-07-17
+- Improved: Update Stripe PHP Library to latest version
+- Improved: Update JS libs
+- Fixed: Fatal error that may occur when upgrading from old name.
+- Improved: Added check for custom domain count when downgrading.
+
 Version [2.4.0] - Released on 2025-07-07
 - Improved: Prep Plugin for release on WordPress.org
 - Improved: Update translation text domain
