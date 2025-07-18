@@ -67,7 +67,7 @@ class Template_Previewer {
 
 			add_filter('home_url', [$this, 'append_preview_parameter'], 9999, 4);
 
-			add_action('send_headers', [$this, 'send_cross_origin_headers'], 1000);
+			add_action('template_redirect', [$this, 'send_cross_origin_headers'], 1000);
 
 			return;
 		}
