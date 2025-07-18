@@ -20,6 +20,7 @@ defined('ABSPATH') || exit;
 function wu_get_input($raw = false) {
 
 	// Init filesystem if not yet initiated.
+	require_once ABSPATH . 'wp-admin/includes/file.php';
 	WP_Filesystem();
 
 	// Get POST body HTML data.
