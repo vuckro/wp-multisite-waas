@@ -6,7 +6,7 @@
     "author": "superdav42",
     "categories": ["Multisite", "Site"]
   },
-  "landingPage": "\/wp-admin\/network\/plugins.php",
+  "landingPage": "\/wp-admin\/network\/admin.php?page=wp-ultimo-setup",
   "preferredVersions": {
     "php": "8.2",
     "wp": "latest"
@@ -19,6 +19,9 @@
   },
   "steps": [
     {
+      "step": "enableMultisite"
+    },
+    {
       "step": "installPlugin",
       "pluginZipFile": {
         "resource": "url",
@@ -27,9 +30,6 @@
       "options": {
         "activate": true
       }
-    },
-    {
-      "step": "enableMultisite"
     },
     {
       "step": "login",
