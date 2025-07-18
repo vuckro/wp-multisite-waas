@@ -117,8 +117,10 @@
             ".wiki",
             "codeception.yml",
             "CLAUDE.md",
+            ".claude",
             "patches",
-            "composer-plugins"
+            "composer-plugins",
+            "blueprint.json"
         ]
     },
     "extra": {
