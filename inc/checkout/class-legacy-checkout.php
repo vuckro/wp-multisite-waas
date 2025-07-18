@@ -233,7 +233,7 @@ class Legacy_Checkout {
 
 		wp_enqueue_script('wu-block-ui');
 
-		wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions']);
+		wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], \WP_Ultimo::VERSION, true);
 
 		wp_localize_script('wu-legacy-signup', 'wpu', [
 			'default_pricing_option' => 1,
@@ -241,9 +241,9 @@ class Legacy_Checkout {
 
 		wp_enqueue_script('wu-legacy-signup');
 
-		wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), ['dashicons', 'install', 'admin-bar']);
+		wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), ['dashicons', 'install', 'admin-bar'], \WP_Ultimo::VERSION);
 
-		wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons', 'install']);
+		wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons', 'install'], \WP_Ultimo::VERSION);
 
 		wp_add_inline_style('legacy-signup', $this->get_legacy_dynamic_styles());
 
@@ -278,17 +278,17 @@ class Legacy_Checkout {
 		?>
 
 			.wu-content-plan .plan-tier h4 {
-				background-color: #<?php echo $primary_color->getHex(); ?>;
+				background-color: #<?php echo esc_html($primary_color->getHex()); ?>;
 				color: <?php echo $primary_color->isDark() ? "white" : "#333"; ?> !important;
 			}
 
 			.wu-content-plan .plan-tier.callout h6 {
-				background-color: #<?php echo $accent_color->getHex(); ?>;
+				background-color: #<?php echo esc_html($accent_color->getHex()); ?>;
 				color: <?php echo $accent_color->isDark() ? "#f9f9f9" : "rgba(39,65,90,.5)"; ?> !important;
 			}
 
 			.wu-content-plan .plan-tier.callout h4 {
-				background-color: #<?php echo $accent_color_2->getHex(); ?>;
+				background-color: #<?php echo esc_html($accent_color_2->getHex()); ?>;
 				color: <?php echo $accent_color->isDark() ? "white" : "#333"; ?> !important;
 			}
 
