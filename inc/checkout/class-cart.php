@@ -947,25 +947,6 @@ class Cart implements \JsonSerializable {
 			foreach ($sites as $site) {
 				switch_to_blog($site->get_id());
 
-				if ( class_exists('\TUTOR\Tutor') ) {
-					// TODO: move code to later in WordPress init timing.
-					// This code in needed because the post type check happens before Tutor can register it's post types.
-					\Closure::bind(
-						function () {
-							$tutor                 = \TUTOR\Tutor::instance();
-							$GLOBALS['wp_rewrite'] = new \WP_Rewrite();
-
-							$tutor->post_types->register_course_post_types();
-							$tutor->post_types->register_lesson_post_types();
-							$tutor->post_types->register_quiz_post_types();
-							$tutor->post_types->register_topic_post_types();
-							$tutor->post_types->register_assignments_post_types();
-						},
-						null,
-						\TUTOR\Tutor::class
-					)();
-				}
-
 				$overlimits = $new_limitations->post_types->check_all_post_types();
 
 				if ( $overlimits ) {
