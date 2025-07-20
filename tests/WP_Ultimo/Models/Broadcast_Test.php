@@ -90,7 +90,7 @@ class Broadcast_Test extends WP_UnitTestCase {
 
 		// Test setting valid notice types
 		$notice_types = ['info', 'success', 'warning', 'error'];
-		
+
 		foreach ($notice_types as $type) {
 			$broadcast->set_notice_type($type);
 			$this->assertEquals($type, $broadcast->get_notice_type());
@@ -102,7 +102,7 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_default_notice_type(): void {
 		$broadcast = new Broadcast();
-		
+
 		// Default should be 'success' according to the model
 		$this->assertEquals('success', $broadcast->get_notice_type());
 	}
@@ -112,16 +112,16 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_message_targets_functionality(): void {
 		$broadcast = new Broadcast();
-		$targets = 'customers,products:1,2,3';
+		$targets   = 'customers,products:1,2,3';
 
 		$broadcast->set_message_targets($targets);
 		// Message targets are stored in meta array before saving
 		// Check that the meta value is set correctly
-		$reflection = new \ReflectionClass($broadcast);
+		$reflection    = new \ReflectionClass($broadcast);
 		$meta_property = $reflection->getProperty('meta');
 		$meta_property->setAccessible(true);
 		$meta = $meta_property->getValue($broadcast);
-		
+
 		$this->assertEquals($targets, $meta['message_targets']);
 	}
 
@@ -129,7 +129,7 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 * Test migrated_from_id functionality.
 	 */
 	public function test_migrated_from_id_functionality(): void {
-		$broadcast = new Broadcast();
+		$broadcast   = new Broadcast();
 		$migrated_id = 12345;
 
 		$broadcast->set_migrated_from_id($migrated_id);
@@ -141,7 +141,7 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_validation_rules(): void {
 		$broadcast = new Broadcast();
-		$rules = $broadcast->validation_rules();
+		$rules     = $broadcast->validation_rules();
 
 		// Check that required validation rules exist
 		$this->assertArrayHasKey('notice_type', $rules);
@@ -195,10 +195,10 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_constructor_with_object_model(): void {
 		$data = [
-			'title' => 'Constructor Test',
+			'title'   => 'Constructor Test',
 			'content' => 'Test content from constructor',
-			'type' => 'broadcast_email',
-			'status' => 'draft'
+			'type'    => 'broadcast_email',
+			'status'  => 'draft',
 		];
 
 		$broadcast = new Broadcast($data);
@@ -215,8 +215,8 @@ class Broadcast_Test extends WP_UnitTestCase {
 	public function test_constructor_handles_migrated_from_id(): void {
 		// Test with migrated_from_id set
 		$data_with_migration = [
-			'title' => 'Migrated Broadcast',
-			'migrated_from_id' => 123
+			'title'            => 'Migrated Broadcast',
+			'migrated_from_id' => 123,
 		];
 
 		$broadcast1 = new Broadcast($data_with_migration);
@@ -224,7 +224,7 @@ class Broadcast_Test extends WP_UnitTestCase {
 
 		// Test without migrated_from_id (should be unset)
 		$data_without_migration = [
-			'title' => 'New Broadcast'
+			'title' => 'New Broadcast',
 		];
 
 		$broadcast2 = new Broadcast($data_without_migration);
@@ -236,9 +236,9 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_allowed_types(): void {
 		$broadcast = new Broadcast();
-		
+
 		// Use reflection to access protected property
-		$reflection = new \ReflectionClass($broadcast);
+		$reflection             = new \ReflectionClass($broadcast);
 		$allowed_types_property = $reflection->getProperty('allowed_types');
 		$allowed_types_property->setAccessible(true);
 		$allowed_types = $allowed_types_property->getValue($broadcast);
@@ -251,9 +251,9 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_allowed_status(): void {
 		$broadcast = new Broadcast();
-		
+
 		// Use reflection to access protected property
-		$reflection = new \ReflectionClass($broadcast);
+		$reflection              = new \ReflectionClass($broadcast);
 		$allowed_status_property = $reflection->getProperty('allowed_status');
 		$allowed_status_property->setAccessible(true);
 		$allowed_status = $allowed_status_property->getValue($broadcast);
@@ -266,9 +266,9 @@ class Broadcast_Test extends WP_UnitTestCase {
 	 */
 	public function test_query_class(): void {
 		$broadcast = new Broadcast();
-		
+
 		// Use reflection to access protected property
-		$reflection = new \ReflectionClass($broadcast);
+		$reflection           = new \ReflectionClass($broadcast);
 		$query_class_property = $reflection->getProperty('query_class');
 		$query_class_property->setAccessible(true);
 		$query_class = $query_class_property->getValue($broadcast);

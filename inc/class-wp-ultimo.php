@@ -29,7 +29,7 @@ final class WP_Ultimo {
 	 * @since 2.1.0
 	 * @var string
 	 */
-	const VERSION = '2.4.0';
+	const VERSION = '2.4.1';
 
 	/**
 	 * Version of the Plugin.
@@ -125,11 +125,6 @@ final class WP_Ultimo {
 		require_once wu_path('inc/functions/fs.php');
 		require_once wu_path('inc/functions/sort.php');
 		require_once wu_path('inc/functions/settings.php');
-
-		/*
-		 * Set up the text-domain for translations
-		 */
-		$this->setup_textdomain();
 
 		/*
 		 * Loads files containing public functions.
@@ -230,19 +225,6 @@ final class WP_Ultimo {
 	public function is_loaded() {
 
 		return $this->loaded;
-	}
-
-	/**
-	 * Setup the plugin text domain to be used in translations.
-	 *
-	 * @since 0.0.1
-	 * @return void
-	 */
-	public function setup_textdomain(): void {
-		/*
-		 * Loads the translation files.
-		 */
-		load_plugin_textdomain('multisite-ultimate', false, dirname((string) WP_ULTIMO_PLUGIN_BASENAME) . '/lang');
 	}
 
 	/**

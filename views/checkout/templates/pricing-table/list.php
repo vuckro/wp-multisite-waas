@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 
 /**
  * Deal with different pricing options
@@ -26,7 +28,7 @@ foreach ($products as $index => &$_product) {
 	<div class="wu-grid wu-grid-flow-row wu-gap-4 <?php echo esc_attr($classes); ?>">
 
 	<?php foreach ($products as $product) : ?>
-    <?php /** @var \WP_Ultimo\Models\Product $product */ ?>
+		<?php /** @var \WP_Ultimo\Models\Product $product */ ?>
 
 		<label
 		id="wu-product-<?php echo esc_attr($product->get_id()); ?>"

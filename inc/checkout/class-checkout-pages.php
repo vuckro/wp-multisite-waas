@@ -103,22 +103,19 @@ class Checkout_Pages {
 
 		wp_nonce_field('_wu_force_compat_' . $post_id, '_wu_force_compat');
 
-		// phpcs:disable
 		?>
 
-    <div class="misc-pub-section misc-pub-section-last" style="margin-top: 12px; margin-bottom: 6px; display: flex; align-items: center;">
-				<label for="wu-compat-mode">
-						<span style="display: block; font-weight: 600; margin-bottom: 3px;"><?php esc_html_e('Multisite Ultimate Compatibility Mode', 'multisite-ultimate'); ?></span>
-						<small style="display: block; line-height: 1.8em;"><?php esc_html_e('Toggle this option on if Multisite Ultimate elements are not loading correctly or at all.', 'multisite-ultimate'); ?></small>
-				</label>
-				<div style="margin-left: 6px;">
-					<input id="wu-compat-mode" type="checkbox" value="1" <?php checked($value, true, true); ?> name="_wu_force_elements_loading" />
-				</div>
-    </div>
+	<div class="misc-pub-section misc-pub-section-last" style="margin-top: 12px; margin-bottom: 6px; display: flex; align-items: center;">
+		<label for="wu-compat-mode">
+				<span style="display: block; font-weight: 600; margin-bottom: 3px;"><?php esc_html_e('Multisite Ultimate Compatibility Mode', 'multisite-ultimate'); ?></span>
+				<small style="display: block; line-height: 1.8em;"><?php esc_html_e('Toggle this option on if Multisite Ultimate elements are not loading correctly or at all.', 'multisite-ultimate'); ?></small>
+		</label>
+		<div style="margin-left: 6px;">
+			<input id="wu-compat-mode" type="checkbox" value="1" <?php checked($value, true, true); ?> name="_wu_force_elements_loading" />
+		</div>
+	</div>
 
 		<?php
-
-		// phpcs:enable
 	}
 
 	/**
@@ -192,20 +189,23 @@ class Checkout_Pages {
 		$messages = [
 			'incorrect_password'         => sprintf(__('<strong>Error:</strong> The password you entered is incorrect.', 'multisite-ultimate')),
 			// From here we are using the same messages as WordPress core.
-			'expired'                    => __('Your session has expired. Please log in to continue where you left off.'),
-			'confirm'                    => sprintf(__('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'), wp_login_url()),
-			'registered'                 => sprintf(__('Registration complete. Please check your email, then visit the <a href="%s">login page</a>.'), wp_login_url()),
-			'loggedout'                  => __('You are now logged out.'),
-			'registerdisabled'           => __('<strong>Error:</strong> User registration is currently not allowed.'),
-			'empty_username'             => __('<strong>Error:</strong> The username field is empty.'),
-			'empty_password'             => __('<strong>Error:</strong> The password field is empty.'),
-			'invalid_email'              => __('Unknown email address. Check again or try your username.'),
-			'invalid_username'           => sprintf(__('<strong>Error:</strong> The username <strong>%s</strong> is not registered on this site. If you are unsure of your username, try your email address instead.'), $username),
-			'invalidcombo'               => __('<strong>Error:</strong> There is no account with that username or email address.'),
-			'password_reset_empty_space' => __('The password cannot be a space or all spaces.'),
-			'password_reset_mismatch'    => __('<strong>Error:</strong> The passwords do not match.'),
-			'invalidkey'                 => __('<strong>Error:</strong> Your password reset link appears to be invalid. Please request a new link below.'),
-			'expiredkey'                 => __('<strong>Error:</strong> Your password reset link has expired. Please request a new link below.'),
+			'expired'                    => __('Your session has expired. Please log in to continue where you left off.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			/* translators: %s: Link to the login page. */
+			'confirm'                    => sprintf(__('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'), wp_login_url()), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			/* translators: %s: Link to the login page. */
+			'registered'                 => sprintf(__('Registration complete. Please check your email, then visit the <a href="%s">login page</a>.'), wp_login_url()), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'loggedout'                  => __('You are now logged out.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'registerdisabled'           => __('<strong>Error:</strong> User registration is currently not allowed.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'empty_username'             => __('<strong>Error:</strong> The username field is empty.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'empty_password'             => __('<strong>Error:</strong> The password field is empty.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'invalid_email'              => __('Unknown email address. Check again or try your username.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			/* translators: %s: User name. */
+			'invalid_username'           => sprintf(__('<strong>Error:</strong> The username <strong>%s</strong> is not registered on this site. If you are unsure of your username, try your email address instead.'), $username), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'invalidcombo'               => __('<strong>Error:</strong> There is no account with that username or email address.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'password_reset_empty_space' => __('The password cannot be a space or all spaces.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'password_reset_mismatch'    => __('<strong>Error:</strong> The passwords do not match.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'invalidkey'                 => __('<strong>Error:</strong> Your password reset link appears to be invalid. Please request a new link below.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+			'expiredkey'                 => __('<strong>Error:</strong> Your password reset link has expired. Please request a new link below.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 		];
 
 		/**

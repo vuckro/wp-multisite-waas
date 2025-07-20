@@ -7,7 +7,6 @@
  * @since 2.0.0
  */
 
-// phpcs:disable
 
 namespace WP_Ultimo\Checkout;
 
@@ -234,7 +233,7 @@ class Legacy_Checkout {
 
 		wp_enqueue_script('wu-block-ui');
 
-		wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions']);
+		wp_register_script('wu-legacy-signup', wu_get_asset('legacy-signup.js', 'js'), ['wu-functions'], \WP_Ultimo::VERSION, true);
 
 		wp_localize_script('wu-legacy-signup', 'wpu', [
 			'default_pricing_option' => 1,
@@ -242,9 +241,9 @@ class Legacy_Checkout {
 
 		wp_enqueue_script('wu-legacy-signup');
 
-		wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), ['dashicons', 'install', 'admin-bar']);
+		wp_enqueue_style('legacy-signup', wu_get_asset('legacy-signup.css', 'css'), ['dashicons', 'install', 'admin-bar'], \WP_Ultimo::VERSION);
 
-		wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons', 'install']);
+		wp_enqueue_style('legacy-shortcodes', wu_get_asset('legacy-shortcodes.css', 'css'), ['dashicons', 'install'], \WP_Ultimo::VERSION);
 
 		wp_add_inline_style('legacy-signup', $this->get_legacy_dynamic_styles());
 
@@ -276,28 +275,24 @@ class Legacy_Checkout {
 
 		ob_start();
 
-		// phpcs:disable
-
 		?>
 
 			.wu-content-plan .plan-tier h4 {
-				background-color: #<?php echo $primary_color->getHex(); ?>;
+				background-color: #<?php echo esc_html($primary_color->getHex()); ?>;
 				color: <?php echo $primary_color->isDark() ? "white" : "#333"; ?> !important;
 			}
 
 			.wu-content-plan .plan-tier.callout h6 {
-				background-color: #<?php echo $accent_color->getHex(); ?>;
+				background-color: #<?php echo esc_html($accent_color->getHex()); ?>;
 				color: <?php echo $accent_color->isDark() ? "#f9f9f9" : "rgba(39,65,90,.5)"; ?> !important;
 			}
 
 			.wu-content-plan .plan-tier.callout h4 {
-				background-color: #<?php echo $accent_color_2->getHex(); ?>;
+				background-color: #<?php echo esc_html($accent_color_2->getHex()); ?>;
 				color: <?php echo $accent_color->isDark() ? "white" : "#333"; ?> !important;
 			}
 
 		<?php
-
-		// phpcs:enable
 
 		return ob_get_clean();
 	}
@@ -986,7 +981,7 @@ class Legacy_Checkout {
 
 			$templates = array_keys((array) wu_get_setting('templates'));
 
-			if ( ($plan && $plan->is_template_available($_REQUEST['template_id'])) || in_array($_REQUEST['template_id'], $templates)) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( ($plan && $plan->is_template_available($_REQUEST['template_id'])) || in_array($_REQUEST['template_id'], $templates)) { // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				unset($this->steps['template']);
 				unset($params['skip_template_selection']);
 			}
@@ -1175,7 +1170,7 @@ class Legacy_Checkout {
 		}
 
 		/** Update Transient Content */
-		$transient['plan_freq'] = sanitize_text_field(wp_unslash($_POST['plan_freq'])); // phpcs:ignore WordPress.Security.NonceVerification
+		$transient['plan_freq'] = isset($_POST['plan_freq']) ? sanitize_text_field(wp_unslash($_POST['plan_freq'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 		$transient['plan_id']   = (int) $_POST['plan_id']; // phpcs:ignore WordPress.Security.NonceVerification
 
 		/** Update Data */

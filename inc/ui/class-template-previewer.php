@@ -67,7 +67,7 @@ class Template_Previewer {
 
 			add_filter('home_url', [$this, 'append_preview_parameter'], 9999, 4);
 
-			add_action('send_headers', [$this, 'send_cross_origin_headers'], 1000);
+			add_action('template_redirect', [$this, 'send_cross_origin_headers'], 1000);
 
 			return;
 		}
@@ -103,7 +103,44 @@ class Template_Previewer {
 
 		send_origin_headers();
 
-		header_remove('X-Frame-Options');
+		// Get the main site domain for frame-ancestors (where the template previewer iframe is embedded)
+		$main_site_url    = get_site_url(get_main_site_id());
+		$main_site_domain = wp_parse_url($main_site_url, PHP_URL_HOST);
+		$allowed_domain   = set_url_scheme("https://{$main_site_domain}");
+
+		// Check if CSP header already exists
+		$existing_csp = '';
+		foreach (headers_list() as $header) {
+			if (stripos($header, 'Content-Security-Policy:') === 0) {
+				$existing_csp = trim(substr($header, strlen('Content-Security-Policy:')));
+				break;
+			}
+		}
+
+		if ($existing_csp) {
+			// Parse existing CSP and add/modify frame-ancestors
+			$directives            = array_map('trim', explode(';', $existing_csp));
+			$frame_ancestors_found = false;
+
+			foreach ($directives as $key => $directive) {
+				if (stripos($directive, 'frame-ancestors') === 0) {
+					// Modify existing frame-ancestors directive
+					$directives[ $key ]    = "frame-ancestors 'self' {$allowed_domain}";
+					$frame_ancestors_found = true;
+					break;
+				}
+			}
+			if ( ! $frame_ancestors_found) {
+				// Add frame-ancestors directive
+				$directives[] = "frame-ancestors 'self' {$allowed_domain}";
+			}
+			$new_csp = implode('; ', array_filter($directives));
+		} else {
+			// Create new CSP with frame-ancestors only
+			$new_csp = "frame-ancestors 'self' $allowed_domain";
+		}
+
+		header("Content-Security-Policy: {$new_csp}");
 	}
 
 	/**
@@ -340,7 +377,7 @@ class Template_Previewer {
 	 */
 	public function is_preview() {
 
-		return ! empty(wu_request('wu-preview'));
+		return ! empty(wu_request('wu-preview')) || (isset($_SERVER['HTTP_SEC_FETCH_DEST']) && 'iframe' === $_SERVER['HTTP_SEC_FETCH_DEST']);
 	}
 
 	/**

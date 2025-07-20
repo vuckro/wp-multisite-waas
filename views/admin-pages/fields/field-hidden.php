@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <li class="wu-hidden wu-m-0">
 

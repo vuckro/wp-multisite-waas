@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <?php // translators: %s: Customer Name ?>
 <p><?php printf(esc_html__('Hey %s,', 'multisite-ultimate'), '{{customer_name}}'); ?></p>

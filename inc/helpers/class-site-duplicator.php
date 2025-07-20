@@ -19,6 +19,13 @@ require_once WP_ULTIMO_PLUGIN_DIR . '/inc/duplication/duplicate.php';
 if ( ! defined('MUCD_PRIMARY_SITE_ID')) {
 	define('MUCD_PRIMARY_SITE_ID', get_current_network_id()); // phpcs:ignore
 }
+if ( ! defined('MUCD_NETWORK_PAGE_DUPLICATE_COPY_FILE_ERROR')) {
+	// translators: %s the file path that failed.
+	define('MUCD_NETWORK_PAGE_DUPLICATE_COPY_FILE_ERROR', __('Failed to copy files : check permissions on <strong>%s</strong>', 'multisite-ultimate')); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+}
+if ( ! defined('MUCD_NETWORK_PAGE_DUPLICATE_VIEW_LOG')) {
+	define('MUCD_NETWORK_PAGE_DUPLICATE_VIEW_LOG', __('View log', 'multisite-ultimate')); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+}
 
 /**
  * Exposes the public API to handle site duplication.
@@ -220,7 +227,7 @@ class Site_Duplicator {
 		\MUCD_Duplicate::bypass_server_limit();
 
 		if ($args->copy_files) {
-			$result = \MUCD_Files::copy_files($args->from_site_id, $args->to_site_id);
+			\MUCD_Files::copy_files($args->from_site_id, $args->to_site_id);
 		}
 
 		/**
@@ -228,10 +235,10 @@ class Site_Duplicator {
 		 */
 		add_filter('send_site_admin_email_change_email', '__return_false');
 
-		$result = \MUCD_Data::copy_data($args->from_site_id, $args->to_site_id);
+		\MUCD_Data::copy_data($args->from_site_id, $args->to_site_id);
 
 		if ($args->keep_users) {
-			$result = \MUCD_Duplicate::copy_users($args->from_site_id, $args->to_site_id);
+			\MUCD_Duplicate::copy_users($args->from_site_id, $args->to_site_id);
 		}
 
 		wp_cache_flush();
@@ -258,7 +265,7 @@ class Site_Duplicator {
 	 * @since 2.0.0
 	 * @param  string $email The email.
 	 * @param  string $domain The domain.
-	 * @return int Id of the user created.
+	 * @return int|\WP_Error Id of the user created.
 	 */
 	public static function create_admin($email, $domain) {
 

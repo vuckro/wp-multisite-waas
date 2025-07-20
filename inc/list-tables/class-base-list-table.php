@@ -334,7 +334,7 @@ class Base_List_Table extends \WP_List_Table {
 	public function get_per_page_option_label(): string {
 
 		// translators: %s will be replaced by the data type plural name. e.g. Books.
-		return sprintf(__('%s per page'), $this->get_label('plural'));
+		return sprintf(__('%s per page', 'multisite-ultimate'), $this->get_label('plural'));
 	}
 
 	/**
@@ -356,7 +356,7 @@ class Base_List_Table extends \WP_List_Table {
 	public function get_search_input_label(): string {
 
 		// translators: %s will be replaced with the data type plural name. e.g. Books.
-		return sprintf(__('Search %s'), $this->get_label('plural'));
+		return sprintf(__('Search %s', 'multisite-ultimate'), $this->get_label('plural'));
 	}
 
 	/**

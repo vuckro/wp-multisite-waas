@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists('MUCD_Functions') ) {
 
@@ -8,7 +9,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 * Check if a path is valid MS-windows path
 		 *
 		 * @since 0.2.0
-		 * @param  string $path the path
+		 * @param  string $path the path.
 		 * @return boolean true | false
 		 */
 		public static function valid_windows_dir_path($path) {
@@ -49,7 +50,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 * Removes completely a blog from the network
 		 *
 		 * @since 0.2.0
-		 * @param  int $blog_id the blog id
+		 * @param  int $blog_id the blog id.
 		 */
 		public static function remove_blog($blog_id): void {
 			switch_to_blog($blog_id);
@@ -67,15 +68,15 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 * Check if site is duplicable
 		 *
 		 * @since 0.2.0
-		 * @param  int $blog_id the blog id
+		 * @param  int $blog_id the blog id.
 		 * @return boolean true | false
 		 */
 		public static function is_duplicable($blog_id): bool {
-			if ( get_site_option('mucd_duplicables', 'all', 'selected') == 'all') {
+			if ( get_site_option('mucd_duplicables', 'all') === 'all') {
 				return true;
 			}
 
-			return get_blog_option($blog_id, 'mucd_duplicable', 'no') == 'yes';
+			return get_blog_option($blog_id, 'mucd_duplicable', 'no') === 'yes';
 		}
 
 		/**
@@ -100,9 +101,9 @@ if ( ! class_exists('MUCD_Functions') ) {
 		 * Check if a value is in an array for a specific key
 		 *
 		 * @since 0.2.0
-		 * @param  mixte  $value the value
-		 * @param  array  $array the array
-		 * @param  string $key  the key
+		 * @param  mixed  $value the value.
+		 * @param  array  $array the array.
+		 * @param  string $key  the key.
 		 * @return boolean true | false
 		 */
 		public static function value_in_array($value, $array, $key): bool {
@@ -169,7 +170,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 			global $wpdb;
 
 			// Load network data
-			$networks = $wpdb->get_results(
+			$networks = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->prepare(
 					"SELECT * FROM $wpdb->site WHERE id = %d",
 					$network_id
@@ -199,7 +200,7 @@ if ( ! class_exists('MUCD_Functions') ) {
 				$defaults = ['limit' => MUCD_MAX_NUMBER_OF_SITE];
 				$args     = apply_filters('mucd_get_sites_args', $args);
 				$args     = wp_parse_args($args, $defaults);
-				return wp_get_sites($args);
+				return get_sites($args);
 			}
 		}
 

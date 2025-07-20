@@ -26,6 +26,8 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use WP_Ultimo\SSO\Exception\SSO_Exception;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Handles Sign-sign on.
  *

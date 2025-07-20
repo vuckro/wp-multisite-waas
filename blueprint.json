@@ -1,0 +1,40 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "meta": {
+    "title": "Multisite Ultimate Demo",
+    "description": "A demo of Multisite Ultimate running in your browser.",
+    "author": "superdav42",
+    "categories": ["Multisite", "Site"]
+  },
+  "landingPage": "\/wp-admin\/network\/admin.php?page=wp-ultimo-setup",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "latest"
+  },
+  "phpExtensionBundles": [
+    "kitchen-sink"
+  ],
+  "features": {
+    "networking": true
+  },
+  "steps": [
+    {
+      "step": "enableMultisite"
+    },
+    {
+      "step": "installPlugin",
+      "pluginZipFile": {
+        "resource": "url",
+        "url": "https:\/\/github.com\/superdav42\/wp-multisite-waas\/releases\/download\/v2.4.1\/multisite-ultimate.zip"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    }
+  ]
+}

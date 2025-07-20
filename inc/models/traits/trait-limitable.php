@@ -12,6 +12,8 @@ namespace WP_Ultimo\Models\Traits;
 use WP_Ultimo\Database\Sites\Site_Type;
 use WP_Ultimo\Objects\Limitations;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Singleton trait.
  */

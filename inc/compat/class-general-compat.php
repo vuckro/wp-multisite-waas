@@ -415,10 +415,8 @@ class General_Compat {
 	public function run_wp_on_template_previewer(): void {
 
 		if (class_exists('Avada')) {
-			do_action('wp'); //phpcs:disable
-
+			do_action('wp'); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 		}
-
 	}
 
 	/**
@@ -432,27 +430,20 @@ class General_Compat {
 		switch_to_blog($data['blog_id']);
 
 		if (function_exists('fusion_reset_all_caches')) {
-
 			fusion_reset_all_caches();
-
 		} else {
-
 			$theme = strtolower(wp_get_theme()) === 'avada' ? 'avada' : strtolower(wp_get_theme()->parent());
 
 			$file_path = get_parent_theme_file_path('includes/lib/inc/functions.php');
 
 			if ('avada' === $theme && file_exists($file_path)) {
-
 				require_once get_parent_theme_file_path('includes/lib/inc/functions.php');
 
 				fusion_reset_all_caches();
-
 			}
-
 		}
 
 		restore_current_blog();
-
 	}
 
 	/**
@@ -470,9 +461,7 @@ class General_Compat {
 
 			// Here we use this function due FluentCrm($class_name) returns an instance not working with remove_action
 			$this->hard_remove_action('set_user_role', [$class_name, 'maybeAutoAlterTags'], 11);
-
 		}
-
 	}
 
 	/**
@@ -490,17 +479,13 @@ class General_Compat {
 		];
 
 		foreach ($class_names as $class_name) {
-
 			if (class_exists($class_name)) {
 
 				// HankMath does not provide a instance of the activation class
 				$this->hard_remove_action('wpmu_new_blog', [$class_name, 'activate_blog'], 10);
 				$this->hard_remove_action('wp_initialize_site', [$class_name, 'initialize_site'], 10);
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -519,16 +504,12 @@ class General_Compat {
 		];
 
 		foreach ($class_names as $class_name) {
-
 			if (class_exists($class_name)) {
 
 				// WP E-Signature does not provide a instance of the activation class
 				$this->hard_remove_action('wpmu_new_blog', [$class_name, 'activate_new_site'], 10);
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -536,41 +517,32 @@ class General_Compat {
 	 *
 	 * @since 2.0.11
 	 *
-	 * @param string   $tag      The class name.
-	 * @param array    $handler  The action handler.
-	 * @param int      $priority The The action priority.
+	 * @param string $tag      The class name.
+	 * @param array  $handler  The action handler.
+	 * @param int    $priority The The action priority.
 	 * @return void
 	 */
 	public function hard_remove_action($tag, $handler, $priority): void {
 
 		global $wp_filter;
 
-		if (!isset($wp_filter[$tag][$priority])) {
-
+		if (! isset($wp_filter[ $tag ][ $priority ])) {
 			return;
-
 		}
 
 		$handler_id = '';
 
-		foreach($wp_filter[$tag][$priority] as $handler_key => $filter_handler) {
-
-			if(str_contains((string) $handler_key, (string) $handler[1]) && is_array($filter_handler['function']) && is_a($filter_handler['function'][0], $handler[0]) && $filter_handler['function'][1] === $handler[1]) {
-
+		foreach ($wp_filter[ $tag ][ $priority ] as $handler_key => $filter_handler) {
+			if (str_contains((string) $handler_key, (string) $handler[1]) && is_array($filter_handler['function']) && is_a($filter_handler['function'][0], $handler[0]) && $filter_handler['function'][1] === $handler[1]) {
 				$handler_id = $handler_key;
-
 			}
-
 		}
 
-		if (!empty($handler_id)) {
-
-			remove_filter( $tag, $handler_id, $priority );
-
+		if (! empty($handler_id)) {
+			remove_filter($tag, $handler_id, $priority);
 		}
 
 		return;
-
 	}
 
 	/**
@@ -582,11 +554,7 @@ class General_Compat {
 	public function remove_perfmatters_checkout_dep(): void {
 
 		if (is_main_site() || is_admin()) {
-
 			remove_action('wp_print_scripts', 'perfmatters_disable_password_strength_meter', 100);
-
 		}
-
 	}
-
 }

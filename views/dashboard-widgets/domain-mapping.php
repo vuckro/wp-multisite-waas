@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
 
@@ -16,7 +18,7 @@
 
 		<h3 class="wu-m-0 <?php echo esc_attr(wu_env_picker('', 'wu-widget-title')); ?>">
 
-			<?php echo $title; ?>
+			<?php echo esc_html($title); ?>
 
 		</h3>
 

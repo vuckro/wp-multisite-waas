@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div class="wu-styling odd:wu-styling" style="margin: -12px -12px;">
 

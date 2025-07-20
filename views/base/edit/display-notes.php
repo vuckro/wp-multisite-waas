@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <?php if (empty($notes)) : ?>
@@ -27,7 +29,7 @@
 
 			<div class="wu-m-0 wu-p-3 wu-rounded wu-bg-gray-200 wu-text-right" id="wu-text-note">
 
-				<?php echo wu_remove_empty_p($note->text); ?>
+				<?php echo wp_kses(wu_remove_empty_p($note->text), wu_kses_allowed_html()); ?>
 
 			</div>
 

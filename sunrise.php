@@ -16,24 +16,25 @@
  *
  * @since 2.0.0.5 Adds a network admin notice warning that sunrise is still active when Ultimo is deactivated.
  * @since 2.0.0.5 Change return statement to a continue statement to prevent an early exit from the file.
+ * @since 2.0.0.9 Rename plugin file.
  *
  * @author      Arindo Duque
  * @category    WP_Ultimo
  * @package     WP_Ultimo/Sunrise
- * @version     2.0.0.5
+ * @version     2.0.0.9
  */
 
 defined('ABSPATH') || exit;
 
-const WP_ULTIMO_SUNRISE_VERSION = '2.0.0.8';
+const WP_ULTIMO_SUNRISE_VERSION = '2.0.0.9';
 
 $wu_sunrise = defined('WP_PLUGIN_DIR')
-	? WP_PLUGIN_DIR . '/wp-multisite-waas/inc/class-sunrise.php'
-	: WP_CONTENT_DIR . '/plugins/wp-multisite-waas/inc/class-sunrise.php';
+	? WP_PLUGIN_DIR . '/multisite-ultimate/inc/class-sunrise.php'
+	: WP_CONTENT_DIR . '/plugins/multisite-ultimate/inc/class-sunrise.php';
 
 $wu_mu_sunrise = defined('WPMU_PLUGIN_DIR')
-	? WPMU_PLUGIN_DIR . '/wp-multisite-waas/inc/class-sunrise.php'
-	: WP_CONTENT_DIR . '/mu-plugins/wp-multisite-waas/inc/class-sunrise.php';
+	? WPMU_PLUGIN_DIR . '/multisite-ultimate/inc/class-sunrise.php'
+	: WP_CONTENT_DIR . '/mu-plugins/multisite-ultimate/inc/class-sunrise.php';
 
 /**
  * We search for the sunrise class file
@@ -68,22 +69,6 @@ foreach ([$wu_sunrise, $wu_mu_sunrise] as $wu_sunrise_file) {
 unset($wu_sunrise_file);
 unset($wu_mu_sunrise);
 unset($wu_sunrise);
-/**
- * Include Mercator.
- *
- * This is here purely for backwards compatibility reasons.
- * The file included here is a dumb file in version 2.0.7+.
- *
- * @since 2.0.7
- */
-$wu_mercator = defined('WP_PLUGIN_DIR')
-	? WP_PLUGIN_DIR . '/wp-multisite-waas/inc/mercator/mercator.php'
-	: WP_CONTENT_DIR . '/plugins/wp-multisite-waas/inc/mercator/mercator.php';
-
-if (file_exists($wu_mercator)) {
-	require $wu_mercator;
-}
-unset($wu_mercator);
 
 /**
  * Adds a warning when Multisite Ultimate is not present but the sunrise file is.

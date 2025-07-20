@@ -114,7 +114,7 @@ class Site_Manager extends Base_Manager {
 
 		$blogname_errors = $errors->get_error_messages('blogname');
 
-		$message_to_ignore = __('Site names can only contain lowercase letters (a-z) and numbers.');
+		$message_to_ignore = __('Site names can only contain lowercase letters (a-z) and numbers.', 'multisite-ultimate');
 
 		$error_key = array_search($message_to_ignore, $blogname_errors, true);
 

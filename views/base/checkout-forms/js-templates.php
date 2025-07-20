@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <script type="text/x-template" id="wu-table">
 
@@ -94,7 +96,7 @@
 							);
 							?>=' + step_name + '&amp;field=' + field.id" <?php // phpcs:ignore Squiz.PHP.EmbeddedPhp ?>
 							>
-								<?php esc_html_e('Edit'); ?>
+								<?php esc_html_e('Edit', 'multisite-ultimate'); ?>
 						</a>
 						|
 					</span>

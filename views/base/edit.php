@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div id="wp-ultimo-wrap" class="<?php wu_wrap_use_container(); ?> wrap">
 
@@ -22,13 +24,13 @@
 		<?php do_action('wu_page_edit_after_title', $object, $page); ?>
 	</h1>
 
-	<?php if (isset($_GET['updated'])) : ?>
+	<?php if (isset($_GET['updated'])) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 		<div id="message" class="updated notice wu-admin-notice notice-success is-dismissible below-h2">
 			<p><?php echo esc_html($labels['updated_message']); ?></p>
 		</div>
 	<?php endif; ?>
 
-	<?php if (isset($_GET['notice'])) : ?>
+	<?php if (isset($_GET['notice'])) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 		<div id="message" class="updated notice wu-admin-notice notice-success is-dismissible below-h2">
 			<p><?php echo esc_html($labels['updated_message']); ?></p>
 		</div>

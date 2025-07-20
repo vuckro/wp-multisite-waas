@@ -33,7 +33,7 @@ class Form implements \JsonSerializable {
 	 * Holds the fields we want to display using this form.
 	 *
 	 * @since 2.0.0
-	 * @var array
+	 * @var Field[]
 	 */
 	protected $fields = [];
 
@@ -119,7 +119,7 @@ class Form implements \JsonSerializable {
 	 * Returns the list of fields used by the form.
 	 *
 	 * @since 2.0.0
-	 * @return array
+	 * @return Field[]
 	 */
 	public function get_fields() {
 

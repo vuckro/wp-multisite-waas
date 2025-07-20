@@ -4,11 +4,12 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <div class="wu-block">
 
 	<div class="wu-block wu-text-gray-700 wu-font-bold wu-uppercase wu-text-xs wu-py-2">
-	<?php echo __('Multisite Ultimate Requires:', 'multisite-ultimate'); ?>
+	<?php esc_html_e('Multisite Ultimate Requires:', 'multisite-ultimate'); ?>
 	</div>
 
 	<div class="wu-advanced-filters">

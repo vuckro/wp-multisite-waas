@@ -167,6 +167,30 @@ We recommend running this in a staging environment before updating your producti
 
 ## 📝 Recent Changes
 
+### Version [2.4.1] - Released on 2025-07-17
+- Improved: Update Stripe PHP Library to latest version.
+- Improved: Update JS libs.
+- Fixed: Added a few more security checks. 
+- Fixed: Fatal error that may occur when upgrading from old name.
+- Improved: Added check for custom domain count when downgrading.
+
+### Version [2.4.0] - Released on 2025-07-07
+- Improved: Prep Plugin for release on WordPress.org
+- Improved: Update translation text domain
+- Fixed: Escape everything that should be escaped.
+- Fixed: Add nonce checks where needed.
+- Fixed: Sanitize all inputs.
+- Improved: Apply Code style changes across the codebase.
+- Fixed: Many deprecation notices.
+- Improved: Load order of many filters.
+- Improved: Add Proper Build script
+- Improved: Use emojii flags
+- Fixed: i18n deprecation notice for translating too early
+- Improved: Put all scripts in footer and load async
+- Improved: Add discounts to thank you page
+- Improved: Prevent downgrading a plan if it the post type could would be over the limit
+- Fixed: Styles on thank you page of legacy checkout
+
 ### Version [2.3.4] - Released on 2024-01-31
 - Fixed: Unable to checkout with any payment gateway
 - Fixed: Warning Undefined global variable $pagenow

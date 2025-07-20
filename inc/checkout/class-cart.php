@@ -9,7 +9,6 @@
 
 namespace WP_Ultimo\Checkout;
 
-use WP_Ultimo\Checkout\Line_Item;
 use WP_Ultimo\Database\Memberships\Membership_Status;
 use Arrch\Arrch as Array_Search;
 
@@ -948,25 +947,6 @@ class Cart implements \JsonSerializable {
 			foreach ($sites as $site) {
 				switch_to_blog($site->get_id());
 
-				if ( class_exists('\TUTOR\Tutor') ) {
-					// TODO: move code to later in WordPress init timing.
-					// This code in needed because the post type check happens before Tutor can register it's post types.
-					\Closure::bind(
-						function () {
-							$tutor                 = \TUTOR\Tutor::instance();
-							$GLOBALS['wp_rewrite'] = new \WP_Rewrite();
-
-							$tutor->post_types->register_course_post_types();
-							$tutor->post_types->register_lesson_post_types();
-							$tutor->post_types->register_quiz_post_types();
-							$tutor->post_types->register_topic_post_types();
-							$tutor->post_types->register_assignments_post_types();
-						},
-						null,
-						\TUTOR\Tutor::class
-					)();
-				}
-
 				$overlimits = $new_limitations->post_types->check_all_post_types();
 
 				if ( $overlimits ) {
@@ -977,13 +957,47 @@ class Cart implements \JsonSerializable {
 							'overlimits',
 							sprintf(
 							// translators: %1$d: current number of posts, %2$s: post type name, %3$d: posts quota, %4$s: post type name, %5$d: number of posts to be deleted, %6$s: post type name.
-								esc_html__('You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'wp-ultimo'),
+								esc_html__('You site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must trash %5$d %6$s before you can downgrade your plan.', 'multisite-ultimate'),
 								$limit['current'],
 								$limit['current'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
 								$limit['limit'],
 								$limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name,
 								$limit['current'] - $limit['limit'],
 								$limit['current'] - $limit['limit'] > 1 ? $post_type->labels->name : $post_type->labels->singular_name
+							)
+						);
+					}
+					restore_current_blog();
+
+					return true;
+				}
+
+				// Check domain mapping limits for downgrade
+				$domain_overlimits = $new_limitations->domain_mapping->check_all_domains($site->get_id());
+
+				if ( $domain_overlimits ) {
+					$domain_count = $domain_overlimits['current'];
+					$domain_limit = $domain_overlimits['limit'];
+
+					if (0 === $domain_limit) {
+						$this->errors->add(
+							'overlimits',
+							sprintf(
+								esc_html__('This new plan does NOT support custom domains. You must remove all custom domains before you can downgrade your plan.', 'multisite-ultimate'),
+							)
+						);
+					} else {
+						$this->errors->add(
+							'overlimits',
+							sprintf(
+							// translators: %1$d: current number of custom domains, %2$s: 'custom domain' or 'custom domains', %3$d: domain limit, %4$s: 'custom domain' or 'custom domains', %5$d: number of domains to be removed, %6$s: 'custom domain' or 'custom domains'.
+								esc_html__('Your site currently has %1$d %2$s but the new plan is limited to %3$d %4$s. You must remove %5$d %6$s before you can downgrade your plan.', 'multisite-ultimate'),
+								$domain_count,
+								$domain_count > 1 ? __('custom domains', 'multisite-ultimate') : __('custom domain', 'multisite-ultimate'),
+								$domain_limit,
+								$domain_limit > 1 ? __('custom domains', 'multisite-ultimate') : __('custom domain', 'multisite-ultimate'),
+								$domain_count - $domain_limit,
+								($domain_count - $domain_limit) > 1 ? __('custom domains', 'multisite-ultimate') : __('custom domain', 'multisite-ultimate')
 							)
 						);
 					}

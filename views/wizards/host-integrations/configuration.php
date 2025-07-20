@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <h1>
 	<?php esc_html_e('We are almost there!', 'multisite-ultimate'); ?>

@@ -31,7 +31,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 		parent::__construct();
 
 		$this->modes = [
-			'grid' => __('Grid View'),
+			'grid' => __('Grid View', 'multisite-ultimate'),
 		];
 
 		$this->current_mode = 'grid';
@@ -79,7 +79,7 @@ class Product_List_Table extends Parent_Product_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_Ultimo\Models\Customer $item The customer being shown.
+	 * @param \WP_Ultimo\Models\Customer $item The customer being shown.
 	 * @return void
 	 */
 	public function single_row_grid($item): void {

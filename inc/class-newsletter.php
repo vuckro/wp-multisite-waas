@@ -2,6 +2,8 @@
 
 namespace WP_Ultimo;
 
+defined( 'ABSPATH' ) || exit;
+
 class Newsletter {
 	use \WP_Ultimo\Traits\Singleton;
 

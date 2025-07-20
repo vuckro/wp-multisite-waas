@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <div id="wu-thank-you-element" class="wu-styling <?php echo esc_attr($className); ?>">
 

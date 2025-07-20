@@ -22,10 +22,17 @@
             "inc"
         ]
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "composer-plugins/wp-ultimo-autoloader-plugin"
+        }
+    ],
     "type": "wordpress-plugin",
     "require": {
         "php": ">=7.4.1",
         "automattic/jetpack-autoloader": "^5.0.0",
+        "wp-ultimo/autoloader-plugin": "dev-main",
         "rpnzl/arrch": "dev-master#994258bbefb7722243211654c4f78813312cd5ed",
         "amphp/amp": "^2.6.2",
         "amphp/byte-stream": "^1.8.1",
@@ -38,7 +45,7 @@
         "berlindb/core": "^2.0.1",
         "mexitek/phpcolors": "^1.0.4",
         "phpdocumentor/reflection-docblock": "^5.3.0",
-        "stripe/stripe-php": "^10.21.0",
+        "stripe/stripe-php": "^17.4.0",
         "hashids/hashids": "^4.1.0",
         "rakit/validation": "dev-master#ff003a35cdf5030a5f2482299f4c93f344a35b29",
         "ifsnop/mysqldump-php": "^2.12",
@@ -79,7 +86,8 @@
             "automattic/jetpack-autoloader": true,
             "cweagans/composer-patches": true,
             "phpstan/extension-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wp-ultimo/autoloader-plugin": true
         }
     },
     "archive": {
@@ -108,7 +116,11 @@
             ".github",
             ".wiki",
             "codeception.yml",
-            "CLAUDE.md"
+            "CLAUDE.md",
+            ".claude",
+            "patches",
+            "composer-plugins",
+            "blueprint.json"
         ]
     },
     "extra": {

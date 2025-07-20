@@ -179,7 +179,7 @@ class Domain_Mapping {
 	public function add_mapped_domains_as_allowed_origins($origin) {
 
 		if ( ! function_exists('wu_get_domain_by_domain')) {
-			return;
+			return '';
 		}
 
 		if (empty($origin) && wp_doing_ajax()) {
@@ -285,7 +285,7 @@ class Domain_Mapping {
 		 * be mapped too, simply filter here.
 		 *
 		 * @param boolean $is_active Should the mapping be treated as active?
-		 * @param WP_Ultimo\Models\Domain $mapping Mapping that we're inspecting
+		 * @param \WP_Ultimo\Models\Domain $mapping Mapping that we're inspecting
 		 * @param string $domain
 		 */
 		$is_active = apply_filters('wu_use_domain_mapping', $mapping->is_active(), $mapping, $domain);
@@ -306,7 +306,7 @@ class Domain_Mapping {
 		 * Note: This is only for backwards compatibility with WPMU Domain Mapping,
 		 * do not rely on this constant in new code.
 		 */
-		defined('DOMAIN_MAPPING') or define('DOMAIN_MAPPING', 1); // phpcs:ignore
+		defined('DOMAIN_MAPPING') || define('DOMAIN_MAPPING', 1); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		/*
 		 * Decide if we use SSL
@@ -374,7 +374,7 @@ class Domain_Mapping {
 		}
 
 		$real_domain = $current_site->domain;
-		$domain      = $_SERVER['HTTP_HOST']; // phpcs:ignore
+		$domain      = sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST']?? ''));
 
 		if ($domain === $real_domain) {
 
@@ -471,9 +471,22 @@ class Domain_Mapping {
 			$current_mapping = $this->current_mapping;
 		}
 
+		// If we don't have a valid mapping, return the original URL
+		if (! $current_mapping) {
+			return $url;
+		}
+
+		// Get the site associated with the mapping
+		$site = $current_mapping->get_site();
+
+		// If we don't have a valid site, return the original URL
+		if (! $site) {
+			return $url;
+		}
+
 		// Replace the domain
 		$domain_base = wp_parse_url($url, PHP_URL_HOST);
-		$domain      = rtrim($domain_base . '/' . $current_mapping->get_site()->get_path(), '/');
+		$domain      = rtrim($domain_base . '/' . $site->get_path(), '/');
 		$regex       = '#^(\w+://)' . preg_quote($domain, '#') . '#i';
 		$mangled     = preg_replace($regex, '${1}' . $current_mapping->get_domain(), $url);
 
@@ -508,7 +521,13 @@ class Domain_Mapping {
 
 		$current_mapping = $this->current_mapping;
 
+		// Check if we have a valid mapping for this site
 		if (empty($current_mapping) || $current_mapping->get_site_id() !== $site_id) {
+			return $url;
+		}
+
+		// Check if the site exists
+		if (! $current_mapping->get_site()) {
 			return $url;
 		}
 
@@ -523,6 +542,11 @@ class Domain_Mapping {
 	 * @return array
 	 */
 	public function fix_srcset($sources) {
+
+		// Check if we have a valid mapping
+		if (empty($this->current_mapping) || ! $this->current_mapping->get_site()) {
+			return $sources;
+		}
 
 		foreach ($sources as &$source) {
 			$sources[ $source['value'] ]['url'] = $this->replace_url($sources[ $source['value'] ]['url']);

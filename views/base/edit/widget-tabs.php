@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div
 	class="wu-m-0"
@@ -132,6 +134,6 @@
 
 	</div>
 
-	<?php echo $after; ?>
+	<?php echo $after; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 </div>

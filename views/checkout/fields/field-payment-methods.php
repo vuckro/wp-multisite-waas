@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 
 $active_gateways = wu_get_active_gateway_as_options();
 

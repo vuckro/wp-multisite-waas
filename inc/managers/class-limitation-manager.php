@@ -561,7 +561,7 @@ class Limitation_Manager {
 			'type'              => 'note',
 			'wrapper_classes'   => 'wu-pt-0',
 			'wrapper_html_attr' => [
-				'v-show'  => ($additional_checks ? (implode(' && ', $additional_checks) . ' && ') : '') . var_export((bool) $show, true),
+				'v-show'  => ($additional_checks ? (implode(' && ', $additional_checks) . ' && ') : '') . var_export((bool) $show, true), // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 				'v-cloak' => '1',
 				'style'   => 'border-top-width: 0 !important',
 			],
@@ -649,6 +649,10 @@ class Limitation_Manager {
 		$sections['post_types']['state']['types'] = [];
 
 		foreach ($post_types as $post_type_slug => $post_type) {
+			if ( ! $post_type->show_ui && ! $post_type->show_in_menu && ! $post_type->show_in_nav_menus && ! $post_type->show_in_admin_bar) {
+				// If customer can't see it then limiting it makes no sense.
+				continue;
+			}
 			$sections['post_types']['state']['types'][ $post_type_slug ] = $object_model->get_limitations()->post_types->{$post_type_slug};
 
 			$sections['post_types']['fields'][ "control_{$post_type_slug}" ] = [

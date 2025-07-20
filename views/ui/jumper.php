@@ -6,6 +6,7 @@
  * @subpackage Jumper
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 
 ?>
 <div id="wu-jumper" style="display: none;" class="wu-styling">
@@ -40,7 +41,7 @@
 
 			<option value="<?php echo esc_attr($url); ?>">
 
-				<?php echo $menu; ?>
+				<?php echo esc_html($menu); ?>
 
 			</option>
 

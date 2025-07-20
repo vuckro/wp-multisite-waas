@@ -64,10 +64,10 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 		// Test setting settings as array
 		$settings = [
 			[
-				'id' => 'checkout',
-				'name' => 'Checkout Step',
-				'fields' => []
-			]
+				'id'     => 'checkout',
+				'name'   => 'Checkout Step',
+				'fields' => [],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
@@ -150,7 +150,7 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_validation_rules(): void {
 		$checkout_form = new Checkout_Form();
-		$rules = $checkout_form->validation_rules();
+		$rules         = $checkout_form->validation_rules();
 
 		// Check that required validation rules exist
 		$this->assertArrayHasKey('name', $rules);
@@ -186,9 +186,21 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 
 		// Test with steps
 		$settings = [
-			['id' => 'step1', 'name' => 'Step 1', 'fields' => []],
-			['id' => 'step2', 'name' => 'Step 2', 'fields' => []],
-			['id' => 'step3', 'name' => 'Step 3', 'fields' => []]
+			[
+				'id'     => 'step1',
+				'name'   => 'Step 1',
+				'fields' => [],
+			],
+			[
+				'id'     => 'step2',
+				'name'   => 'Step 2',
+				'fields' => [],
+			],
+			[
+				'id'     => 'step3',
+				'name'   => 'Step 3',
+				'fields' => [],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
@@ -207,14 +219,23 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 		// Test with fields
 		$settings = [
 			[
-				'id' => 'checkout',
-				'name' => 'Checkout',
+				'id'     => 'checkout',
+				'name'   => 'Checkout',
 				'fields' => [
-					['id' => 'email', 'type' => 'email'],
-					['id' => 'password', 'type' => 'password'],
-					['id' => 'submit', 'type' => 'submit_button']
-				]
-			]
+					[
+						'id'   => 'email',
+						'type' => 'email',
+					],
+					[
+						'id'   => 'password',
+						'type' => 'password',
+					],
+					[
+						'id'   => 'submit',
+						'type' => 'submit_button',
+					],
+				],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
@@ -229,12 +250,15 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 
 		$settings = [
 			[
-				'id' => 'checkout',
-				'name' => 'Checkout Step',
+				'id'     => 'checkout',
+				'name'   => 'Checkout Step',
 				'fields' => [
-					['id' => 'email', 'type' => 'email']
-				]
-			]
+					[
+						'id'   => 'email',
+						'type' => 'email',
+					],
+				],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
@@ -260,13 +284,21 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 
 		$settings = [
 			[
-				'id' => 'checkout',
-				'name' => 'Checkout Step',
+				'id'     => 'checkout',
+				'name'   => 'Checkout Step',
 				'fields' => [
-					['id' => 'email', 'type' => 'email', 'name' => 'Email Address'],
-					['id' => 'password', 'type' => 'password', 'name' => 'Password']
-				]
-			]
+					[
+						'id'   => 'email',
+						'type' => 'email',
+						'name' => 'Email Address',
+					],
+					[
+						'id'   => 'password',
+						'type' => 'password',
+						'name' => 'Password',
+					],
+				],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
@@ -297,25 +329,34 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 
 		$settings = [
 			[
-				'id' => 'step1',
+				'id'     => 'step1',
 				'fields' => [
-					['id' => 'email', 'type' => 'email'],
-					['id' => 'password', 'type' => 'password']
-				]
+					[
+						'id'   => 'email',
+						'type' => 'email',
+					],
+					[
+						'id'   => 'password',
+						'type' => 'password',
+					],
+				],
 			],
 			[
-				'id' => 'step2',
+				'id'     => 'step2',
 				'fields' => [
-					['id' => 'site_title', 'type' => 'site_title']
-				]
-			]
+					[
+						'id'   => 'site_title',
+						'type' => 'site_title',
+					],
+				],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
 
 		$all_fields = $checkout_form->get_all_fields();
 		$this->assertCount(3, $all_fields);
-		
+
 		$field_ids = array_column($all_fields, 'id');
 		$this->assertContains('email', $field_ids);
 		$this->assertContains('password', $field_ids);
@@ -330,14 +371,26 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 
 		$settings = [
 			[
-				'id' => 'checkout',
+				'id'     => 'checkout',
 				'fields' => [
-					['id' => 'email', 'type' => 'email'],
-					['id' => 'username', 'type' => 'text'],
-					['id' => 'password', 'type' => 'password'],
-					['id' => 'bio', 'type' => 'text']
-				]
-			]
+					[
+						'id'   => 'email',
+						'type' => 'email',
+					],
+					[
+						'id'   => 'username',
+						'type' => 'text',
+					],
+					[
+						'id'   => 'password',
+						'type' => 'password',
+					],
+					[
+						'id'   => 'bio',
+						'type' => 'text',
+					],
+				],
+			],
 		];
 
 		$checkout_form->set_settings($settings);
@@ -401,7 +454,7 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 		$checkout_form = new Checkout_Form();
 
 		// Use reflection to access protected property
-		$reflection = new \ReflectionClass($checkout_form);
+		$reflection           = new \ReflectionClass($checkout_form);
 		$query_class_property = $reflection->getProperty('query_class');
 		$query_class_property->setAccessible(true);
 		$query_class = $query_class_property->getValue($checkout_form);
@@ -444,19 +497,25 @@ class Checkout_Form_Test extends WP_UnitTestCase {
 
 		$settings = [
 			[
-				'id' => 'checkout',
+				'id'     => 'checkout',
 				'logged' => 'always',
 				'fields' => [
-					['id' => 'email', 'type' => 'email']
-				]
+					[
+						'id'   => 'email',
+						'type' => 'email',
+					],
+				],
 			],
 			[
-				'id' => 'guest_only',
+				'id'     => 'guest_only',
 				'logged' => 'guests_only',
 				'fields' => [
-					['id' => 'signup', 'type' => 'text']
-				]
-			]
+					[
+						'id'   => 'signup',
+						'type' => 'text',
+					],
+				],
+			],
 		];
 
 		$checkout_form->set_settings($settings);

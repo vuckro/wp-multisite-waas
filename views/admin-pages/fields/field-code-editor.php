@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <li class="<?php echo esc_attr(trim($field->wrapper_classes)); ?>" <?php echo($field->get_wrapper_html_attributes()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 

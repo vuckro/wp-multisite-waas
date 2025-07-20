@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <div class="wu-styling">
 
@@ -14,7 +15,7 @@
 		<div>
 
 		<strong class="wu-text-gray-800 wu-text-base">
-			<?php echo $signups; ?>
+			<?php echo esc_html($signups); ?>
 		</strong>
 
 		</div>
@@ -46,7 +47,7 @@
 		<div>
 
 		<strong class="wu-text-gray-800 wu-text-base">
-			<?php echo wu_format_currency($gross_revenue); ?>
+			<?php echo esc_html(wu_format_currency($gross_revenue)); ?>
 		</strong>
 
 		</div>

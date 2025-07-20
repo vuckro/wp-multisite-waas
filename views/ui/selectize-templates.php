@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <!-- WP User Template -->
 <script type="text/html" id="wu-template-user">
@@ -20,7 +21,7 @@
 
 		<span class="wu-block">{{ display_name }} (#{{ ID }})</span>
 
-		<small>{{ typeof user_email !== 'undefined' ? user_email : '<?php esc_html_e('Undefined'); ?>' }}</small>
+		<small>{{ typeof user_email !== 'undefined' ? user_email : '<?php esc_html_e('Undefined', 'multisite-ultimate'); ?>' }}</small>
 
 	</div>
 
@@ -44,7 +45,7 @@
 
 		<span class="wu-block">{{ display_name }} (#{{ id }})</span>
 
-		<small>{{ typeof user_email !== 'undefined' ? user_email : '<?php esc_html_e('Undefined'); ?>' }}</small>
+		<small>{{ typeof user_email !== 'undefined' ? user_email : '<?php esc_html_e('Undefined', 'multisite-ultimate'); ?>' }}</small>
 
 	</div>
 

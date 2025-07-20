@@ -4,6 +4,8 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <div class="wu-border-transparent" tabindex="0">
 
@@ -59,7 +61,7 @@
 		</div>
 		<div class="wu-text-xs">
 		<span class="<?php echo $item->is_vip() ? esc_attr('wu-font-semibold') : ''; ?>">
-			<?php echo $item->is_vip() ? __('VIP Customer', 'multisite-ultimate') : __('Regular Customer', 'multisite-ultimate'); ?>
+			<?php echo $item->is_vip() ? esc_html__('VIP Customer', 'multisite-ultimate') : esc_html__('Regular Customer', 'multisite-ultimate'); ?>
 		</span>
 		</div>
 	</div>
@@ -87,7 +89,7 @@
 			<?php esc_html_e('Customer Since:', 'multisite-ultimate'); ?>
 			</span>
 			<span class="wu-font-semibold">
-			<?php echo human_time_diff(strtotime($item->get_date_registered()), time()) . ' ' . __('ago', 'multisite-ultimate'); ?>
+			<?php echo esc_html(human_time_diff(strtotime($item->get_date_registered()), time()) . ' ' . __('ago', 'multisite-ultimate')); ?>
 			</span>
 		</div>
 

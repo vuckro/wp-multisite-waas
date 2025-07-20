@@ -67,6 +67,23 @@ class Scripts {
 	}
 
 	/**
+	 * Wrapper for the register scripts module function.
+	 *
+	 * @since 2.4.1
+	 *
+	 * @param string $id The script handle. Used to enqueue the script.
+	 * @param string $src URL to the file.
+	 * @param array  $deps List of dependency scripts.
+	 * @return void
+	 */
+	public function register_script_module($id, $src, $deps = []): void {
+		// This method was added in WP 6.5. We're only using modules as a progressive enhancement so we don't need to add a workaround.
+		if (function_exists('wp_register_script_module')) {
+			wp_register_script_module($id, $src, $deps, \WP_Ultimo::VERSION);
+		}
+	}
+
+	/**
 	 * Wrapper for the register styles function.
 	 *
 	 * @since 2.0.0
@@ -233,12 +250,12 @@ class Scripts {
 			'wubox',
 			'wuboxL10n',
 			[
-				'next'             => __('Next &gt;'),
-				'prev'             => __('&lt; Prev'),
-				'image'            => __('Image'),
-				'of'               => __('of'),
-				'close'            => __('Close'),
-				'noiframes'        => __('This feature requires inline frames. You have iframes disabled or your browser does not support them.'),
+				'next'             => __('Next &gt;'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+				'prev'             => __('&lt; Prev'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+				'image'            => __('Image'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+				'of'               => __('of'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+				'close'            => __('Close'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+				'noiframes'        => __('This feature requires inline frames. You have iframes disabled or your browser does not support them.'), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 				'loadingAnimation' => includes_url('js/thickbox/loadingAnimation.gif'),
 			]
 		);
@@ -266,8 +283,8 @@ class Scripts {
 	 */
 	public function localize_moment() {
 
-		$time_format = get_option('time_format', __('g:i a'));
-		$date_format = get_option('date_format', __('F j, Y'));
+		$time_format = get_option('time_format', __('g:i a')); // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+		$date_format = get_option('date_format', __('F j, Y')); // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 
 		$long_date_formats = array_map(
 			'wu_convert_php_date_format_to_moment_js_format',
@@ -282,29 +299,36 @@ class Scripts {
 			]
 		);
 
-		// phpcs:disable
 		$strings = [
-			'relativeTime' => [
+			'relativeTime'   => [
+				// translators: %s is a relative future date.
 				'future' => __('in %s', 'multisite-ultimate'),
+				// translators: %s is a relative past date.
 				'past'   => __('%s ago', 'multisite-ultimate'),
 				's'      => __('a few seconds', 'multisite-ultimate'),
+				// translators: %s is the number of seconds.
 				'ss'     => __('%d seconds', 'multisite-ultimate'),
 				'm'      => __('a minute', 'multisite-ultimate'),
+				// translators: %s is the number of minutes.
 				'mm'     => __('%d minutes', 'multisite-ultimate'),
 				'h'      => __('an hour', 'multisite-ultimate'),
+				// translators: %s is the number of hours.
 				'hh'     => __('%d hours', 'multisite-ultimate'),
 				'd'      => __('a day', 'multisite-ultimate'),
+				// translators: %s is the number of days.
 				'dd'     => __('%d days', 'multisite-ultimate'),
 				'w'      => __('a week', 'multisite-ultimate'),
+				// translators: %s is the number of weeks.
 				'ww'     => __('%d weeks', 'multisite-ultimate'),
 				'M'      => __('a month', 'multisite-ultimate'),
+				// translators: %s is the number of months.
 				'MM'     => __('%d months', 'multisite-ultimate'),
 				'y'      => __('a year', 'multisite-ultimate'),
+				// translators: %s is the number of years.
 				'yy'     => __('%d years', 'multisite-ultimate'),
 			],
 			'longDateFormat' => $long_date_formats,
 		];
-		// phpcs:enable
 
 		$inline_script = sprintf("moment.updateLocale( '%s', %s );", get_user_locale(), wp_json_encode($strings));
 

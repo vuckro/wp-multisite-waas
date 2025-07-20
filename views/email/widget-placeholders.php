@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+defined( 'ABSPATH' ) || exit;
 ?>
 <div id="wu_event_payload_placeholders" class="wu-styling">
 
