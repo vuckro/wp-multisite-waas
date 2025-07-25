@@ -122,7 +122,7 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		parent::init();
 
 		add_action('wp_ajax_serve_addons_list', array($this, 'serve_addons_list'));
-	} // end init;
+	}
 
 	/**
 	 * Register forms
@@ -139,7 +139,7 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 				'handler' => array($this, 'install_addon'),
 			)
 		);
-	} // end register_forms;
+	}
 
 	/**
 	 * Displays the more info tab.
@@ -171,12 +171,11 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 				'upgrade_url' => $upgrade_url,
 				'addon'       => (object) $addon,
 				'addon_slug'  => $addon_slug,
-				'license'     => \WP_Ultimo\License::get_instance(),
 			)
 		);
 
 		do_action('wu_form_scripts', false);
-	} // end display_more_info;
+	}
 
 	/**
 	 * Installs a given add-on.
@@ -196,31 +195,50 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 
 		$addon = wu_get_isset($this->get_addons_list(), $addon_slug);
 
-		$download_url = add_query_arg(
-			array(
-				'action'       => 'download',
-				'slug'         => $addon_slug,
-				'beta_program' => 2,
-				'license_key'  => rawurlencode((string) \WP_Ultimo\License::get_instance()->get_license_key()),
-			),
-			'https://versions.nextpress.co/updates/'
+		if (! $addon) {
+			$error = new \WP_Error('addon-not-found', __('Add-on not found.', 'wp-ultimo'));
+			wp_send_json_error($error);
+		}
+
+		// Check if user has access to this addon (skip for free addons)
+		if (! $addon['free'] && ! \WP_Ultimo\License::get_instance()->allowed('wpultimo')) {
+			$error = new \WP_Error('license-required', __('A valid license is required to install premium add-ons.', 'wp-ultimo'));
+			wp_send_json_error($error);
+		}
+
+		// Get access token for authenticated downloads (only needed for premium addons)
+		$access_token = '';
+		if (! $addon['free']) {
+			$access_token = get_transient('wu-access-token');
+			$refresh_token = wu_get_option('wu-refresh-token');
+
+			if (! $access_token && $refresh_token) {
+				// Try to refresh the token
+				$access_token = $this->refresh_access_token($refresh_token);
+			}
+		}
+
+		// Use WooCommerce API to get download URL
+		$api_client = new \WP_Ultimo\Helpers\WooCommerce_API_Client(
+			'https://multisiteultimate.com/',
 		);
 
+		$download_url = $api_client->get_download_url($addon_slug, $access_token);
+
+		if (is_wp_error($download_url)) {
+			wp_send_json_error($download_url);
+		}
+
 		/**
-		 * We check if the URL is one of our websites
+		 * Security check: Ensure URL is from our domain
 		 */
 		$allowed_sites = array(
-			'http://nextpress.co',
-			'https://nextpress.co',  // New Domain
-			'http://versions.nextpress.co',
-			'https://versions.nextpress.co',  // New Domain
-			'http://weare732.com',
-			'https://weare732.com',   // Old Updates Domain
+			'https://multisiteultimate.com',
 		);
 
 		if (defined('WP_DEBUG') && WP_DEBUG) {
 			$allowed_sites[] = 'http://localhost';
-			$allowed_sites[] = 'http://wp-ultimo.local';
+			$allowed_sites[] = 'https://wp-multisite-waas.test';
 		}
 
 		$allowed = false;
@@ -228,56 +246,52 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		foreach ($allowed_sites as $allowed_site) {
 			if (strncmp($download_url, $allowed_site, strlen($allowed_site)) === 0) {
 				$allowed = true;
-
 				break;
 			}
 		}
 
-		if ($allowed) {
-
-			// includes necessary for Plugin_Upgrader and Plugin_Installer_Skin
-			include_once ABSPATH . 'wp-admin/includes/file.php';
-			include_once ABSPATH . 'wp-admin/includes/misc.php';
-			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-
-			$skin = new \Automatic_Upgrader_Skin(array());
-
-			$upgrader = new \Plugin_Upgrader($skin);
-
-			add_filter('https_ssl_verify', '__return_false', 2000);
-
-			$results = $upgrader->install($download_url);
-
-			remove_filter('https_ssl_verify', '__return_false', 2000);
-
-			if (is_wp_error($results)) {
-				wp_send_json_error($results);
-			}
-
-			$messages = $upgrader->skin->get_upgrade_messages();
-
-			if (! in_array($upgrader->strings['process_success'], $messages, true)) {
-				$error = new \WP_Error('error', array_pop($messages));
-
-				wp_send_json_error($error);
-			}
-
-			wp_send_json_success(
-				array(
-					'redirect_url' => add_query_arg(
-						array(
-							's' => rawurlencode((string) $addon['name']),
-						),
-						network_admin_url('plugins.php')
-					),
-				)
-			);
-		} else {
+		if (! $allowed) {
 			$error = new \WP_Error('insecure-url', __('You are trying to download an add-on from an insecure URL', 'wp-ultimo'));
-
 			wp_send_json_error($error);
 		}
-	} // end install_addon;
+
+		// Install the plugin
+		include_once ABSPATH . 'wp-admin/includes/file.php';
+		include_once ABSPATH . 'wp-admin/includes/misc.php';
+		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+		$skin = new \Automatic_Upgrader_Skin(array());
+		$upgrader = new \Plugin_Upgrader($skin);
+
+		// Add authentication headers for download
+		add_filter('http_request_args', array($this, 'add_auth_headers_to_download'), 10, 2);
+
+		$results = $upgrader->install($download_url);
+
+		remove_filter('http_request_args', array($this, 'add_auth_headers_to_download'), 10);
+
+		if (is_wp_error($results)) {
+			wp_send_json_error($results);
+		}
+
+		$messages = $upgrader->skin->get_upgrade_messages();
+
+		if (! in_array($upgrader->strings['process_success'], $messages, true)) {
+			$error = new \WP_Error('installation-failed', array_pop($messages));
+			wp_send_json_error($error);
+		}
+
+		wp_send_json_success(
+			array(
+				'redirect_url' => add_query_arg(
+					array(
+						's' => rawurlencode((string) $addon['name']),
+					),
+					network_admin_url('plugins.php')
+				),
+			)
+		);
+	}
 
 	/**
 	 * Enqueue the necessary scripts.
@@ -304,7 +318,7 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		);
 
 		wp_enqueue_script('wu-addons');
-	} // end register_scripts;
+	}
 
 	/**
 	 * Fetches the list of add-ons available.
@@ -333,49 +347,27 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 			}
 		}
 
-		$base_url = 'https://versions.nextpress.co/updates/';
-
-		$remote_url = add_query_arg(
-			array(
-				'slug'              => 'wp-ultimo',
-				'action'            => 'addons',
-				'installed_version' => wu_get_version(),
-			),
-			$base_url
+		// Use WooCommerce API to fetch addons (credentials are optional for public data)
+		$api_client = new \WP_Ultimo\Helpers\WooCommerce_API_Client(
+			MULTISITE_ULTIMATE_UPDATE_URL,
 		);
 
-		if (defined('WP_ULTIMO_DEVELOPER_KEY') && WP_ULTIMO_DEVELOPER_KEY) {
-			$remote_url = add_query_arg('developer_key', WP_ULTIMO_DEVELOPER_KEY, $remote_url);
-		}
+		$data = $api_client->get_addons();
 
-		$response = wp_remote_get(
-			$remote_url,
-			array(
-				'sslverify' => false,
-			)
-		);
-
-		if (is_wp_error($response)) {
+		if (is_wp_error($data)) {
+			// Fallback to empty array if API fails
+			error_log('WP Ultimo: Failed to fetch addons from WooCommerce API: ' . $data->get_error_message());
 			return array();
 		}
-
-		$data = wp_remote_retrieve_body($response);
-
-		$data = json_decode($data, true);
 
 		if (! is_array($data)) {
 			return array();
 		}
 
 		/*
-		 * Adds missing keys
+		 * Process addon data and check installation status
 		 */
 		foreach ($data as $slug => $item) {
-			/*
-			 * Checks if this is a free add-on.
-			 */
-			$item['free'] = wu_get_isset($item, 'free', false);
-
 			/*
 			 * Checks if the plugin is installed.
 			 */
@@ -403,7 +395,7 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		$installed_plugins = implode(' - ', $plugin_keys);
 
 		return stristr($installed_plugins, $plugin_slug) !== false;
-	} // end is_plugin_installed;
+	}
 
 	/**
 	 * Gets the list of addons from the remote server.
@@ -416,7 +408,7 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		$addons_list = $this->get_addons_list();
 
 		wp_send_json_success($addons_list);
-	} // end serve_addons_list;
+	}
 
 	/**
 	 * Returns the title of the page.
@@ -451,13 +443,13 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 	 * @throws \Exception When the API request fails.
 	 */
 	private function save_access_token($code, $redirect_url) {
-		$url     = 'https://wp-multisite-waas.test/oauth/token';
+		$url     = 'https://multisiteultimate.com/oauth/token';
 		$data    = array(
 			'code'          => $code,
 			'redirect_uri'  => $redirect_url,
 			'grant_type'    => 'authorization_code',
-			'client_id'     => '4xYlZXujMatEwrZ6t2dz6O15vyKT7X28xb39ZUQW',
-			'client_secret' => 'b1k4yI4TG00IUDNXXNrTg1ycu2kOvM1kJS3saKFh',
+			'client_id'     => wu_get_option('oauth_client_id', ''),
+			'client_secret' => wu_get_option('oauth_client_secret', ''),
 		);
 		$request = \wp_remote_post(
 			$url,
@@ -475,20 +467,32 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 			throw new \Exception(esc_html($request->get_error_message()), esc_html($request->get_error_code()));
 		}
 
-		/*
-		 * If we get here, we got a 200.
-		 * This means we got a valid response from
-		 * PayPal.
-		 *
-		 * Now we need to check for a valid token to
-		 * redirect the customer to the checkout page.
-		 */
 		if (200 === absint($code) && 'OK' === $message) {
 			$response = json_decode($body, true);
 
 			set_transient('wu-access-token', $response['access_token'], $response['expires_in']);
 			wu_save_option('wu-refresh-token', $response['refresh_token']);
 		}
+	}
+
+	/**
+	 * Adds authentication headers to download requests.
+	 *
+	 * @param array  $args HTTP request arguments.
+	 * @param string $url  The request URL.
+	 * @return array Modified arguments.
+	 */
+	public function add_auth_headers_to_download($args, $url) {
+		if (strpos($url, 'multisiteultimate.com') !== false) {
+			$access_token = get_transient('wu-access-token');
+			if ($access_token) {
+				if (! isset($args['headers'])) {
+					$args['headers'] = array();
+				}
+				$args['headers']['Authorization'] = 'Bearer ' . $access_token;
+			}
+		}
+		return $args;
 	}
 	/**
 	 * Every child class should implement the output method to display the contents of the page.
@@ -501,71 +505,16 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		$redirect_url = wu_network_admin_url('wp-ultimo-addons');
 		$code         = wu_request('code');
 
+		$addon_repo = \WP_Ultimo::get_instance()->get_addon_repository();
+
 		if ( $code) {
-			$this->save_access_token($code, $redirect_url);
+			$addon_repo->save_access_token($code, $redirect_url);
 		}
 
 		if ( wu_request('logout') && wp_verify_nonce(wu_request('_wpnonce'), 'logout')) {
-			wu_delete_option('wu-refresh-token');
-			delete_transient('wu-access-token');
+			$addon_repo->delete_tokens();
 		}
 
-		$refresh_token = wu_get_option('wu-refresh-token');
-
-		if ($refresh_token) {
-			$access_token = get_transient('wu-access-token');
-
-			if ( ! $access_token) {
-				$url     = 'https://wp-multisite-waas.test/oauth/token';
-				$data    = array(
-					'grant_type'    => 'refresh_token',
-					'client_id'     => '4xYlZXujMatEwrZ6t2dz6O15vyKT7X28xb39ZUQW',
-					'client_secret' => 'b1k4yI4TG00IUDNXXNrTg1ycu2kOvM1kJS3saKFh',
-					'refresh_token' => $refresh_token,
-				);
-				$request = \wp_remote_post(
-					$url,
-					[
-						'body'      => $data,
-						'sslverify' => defined('WP_DEBUG') && WP_DEBUG ? false : true,
-					]
-				);
-				$body    = wp_remote_retrieve_body($request);
-				$code    = wp_remote_retrieve_response_code($request);
-				$message = wp_remote_retrieve_response_message($request);
-
-				if (is_wp_error($request)) {
-					throw new \Exception(esc_html($request->get_error_message()), esc_html($request->get_error_code()));
-				}
-				if (200 === absint($code) && 'OK' === $message) {
-					$response     = json_decode($body, true);
-					$access_token = $response['access_token'];
-					set_transient('wu-access-token', $response['access_token'], $response['expires_in']);
-				}
-			}
-
-			if ($access_token) {
-				$url     = 'https://wp-multisite-waas.test/oauth/me';
-				$request = \wp_remote_get(
-					$url,
-					[
-						'headers'   => [
-							'Authorization' => 'Bearer ' . $access_token,
-						],
-						'sslverify' => defined('WP_DEBUG') && WP_DEBUG ? false : true,
-					]
-				);
-				$body    = wp_remote_retrieve_body($request);
-				$code    = wp_remote_retrieve_response_code($request);
-				$message = wp_remote_retrieve_response_message($request);
-				if (is_wp_error($request)) {
-					throw new \Exception(esc_html($request->get_error_message()), esc_html($request->get_error_code()));
-				}
-				if (200 === absint($code) && 'OK' === $message) {
-					$user = json_decode($body, true);
-				}
-			}
-		}
 
 		$more_info_url = wu_get_form_url(
 			'addon_more_info',
@@ -574,7 +523,14 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 				'addon' => 'ADDON_SLUG',
 			)
 		);
-		$oauth_url     = 'https://wp-multisite-waas.test/oauth/authorize?response_type=code&client_id=4xYlZXujMatEwrZ6t2dz6O15vyKT7X28xb39ZUQW&redirect_uri=' . $redirect_url;
+		$oauth_url = add_query_arg(
+			[
+				'response_type' => 'code',
+				'client_id'     => wu_get_option('oauth_client_id', ''),
+				'redirect_uri'  => $redirect_url,
+			],
+			'https://multisiteultimate.com/oauth/authorize'
+		);
 
 		wu_get_template(
 			'base/addons',
@@ -672,5 +628,26 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		wp_safe_redirect(add_query_arg('updated', 1, wu_get_current_url()));
 
 		exit;
+	}
+
+
+	private function get_client_id() {
+		if (isset($this->client_id)) {
+			return $this->client_id;
+		}
+		$stuff               = include __DIR__ . '/stuff.php';
+		$this->client_id     = $this->decrypt_value($stuff[0]);
+		$this->client_secret = $this->decrypt_value($stuff[1]);
+		return $this->client_id;
+	}
+
+	private function get_client_secret() {
+		if (isset($this->client_secret)) {
+			return $this->client_secret;
+		}
+		$stuff               = include __DIR__ . '/stuff.php';
+		$this->client_id     = $this->decrypt_value($stuff[0]);
+		$this->client_secret = $this->decrypt_value($stuff[1]);
+		return $this->client_secret;
 	}
 }

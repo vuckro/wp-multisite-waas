@@ -101,8 +101,8 @@
 					<?php endif; ?>
 
 					<li>
-						<a class="wu-no-underline" target="_blank" href="https://wpultimo.com/addons?addon=<?php echo $addon_slug; ?>">
-						<?php _e('See on the Oficial Site »', 'wp-ultimo'); ?>
+						<a class="wu-no-underline" target="_blank" href="https://multisiteultimate.com/product/<?php echo $addon_slug; ?>">
+						<?php _e('See on the Official Site »', 'wp-ultimo'); ?>
 						</a>
 					</li>
 
