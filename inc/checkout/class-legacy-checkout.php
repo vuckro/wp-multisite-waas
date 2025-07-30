@@ -513,7 +513,7 @@ class Legacy_Checkout {
 		if (isset($_REQUEST['template_id']) && wu_get_setting('allow_template')) { // phpcs:ignore WordPress.Security.NonceVerification
 
 			// Check if the template is valid
-			$template_id = sanitize_text_field(wp_unslash($_REQUEST['template_id'] ?? ''));
+			$template_id = sanitize_text_field(wp_unslash($_REQUEST['template_id'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification
 			$site = new WU_Site_Template($template_id);
 
 			if ($site->is_template) {

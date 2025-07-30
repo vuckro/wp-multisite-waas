@@ -127,7 +127,8 @@
             "vendor/amphp/hpack/src/Internal/amp-hpack.h",
             "vendor/amphp/socket/docs/Gemfile",
             "vendor/delight-im/cookie/.travis-ci-apache",
-            "vendor/doctrine"
+            "vendor/doctrine",
+            ".distignore"
         ]
     },
     "extra": {
