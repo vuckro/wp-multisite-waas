@@ -7,7 +7,9 @@
     "url": "git://github.com/superdav/wp-multisite-waas.git"
   },
   "devDependencies": {
+    "@wordpress/env": "^10.27.0",
     "clean-css-cli": "^5.6.3",
+    "cypress": "^14.5.3",
     "uglify-js": "^3.19.3"
   },
   "config": {
@@ -25,7 +27,12 @@
     "uglify": "node scripts/uglify.js",
     "precleancss": "node scripts/clean-css.js",
     "cleancss": "node scripts/cleancss.js",
-    "makepot": "node scripts/makepot.js"
+    "makepot": "node scripts/makepot.js",
+    "env:start": "wp-env start",
+    "env:clean:tests": "wp-env clean tests",
+    "env:stop": "wp-env stop",
+    "cy:open": "npm run env:start && npm run env:clean:tests && npx cypress open",
+    "cy:run": "npm run env:start && npm run env:clean:tests && npx cypress run"
   },
   "dependencies": {
     "apexcharts": "^5.2.0",
