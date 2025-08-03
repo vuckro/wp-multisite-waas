@@ -15,6 +15,10 @@
   <a href="https://php.net/"><img src="https://img.shields.io/badge/Up%20To%20PHP-8.4.6-purple.svg" alt="Up To PHP: 8.4.6"></a>
   <a href="https://github.com/superdav42/wp-multisite-waas/releases"><img src="https://img.shields.io/github/v/release/superdav42/wp-multisite-waas" alt="Latest Release"></a>
 </p>
+<p align="center">
+  <a href="https://github.com/superdav42/wp-multisite-waas/actions/workflows/tests.yml"><img src="https://github.com/superdav42/wp-multisite-waas/actions/workflows/tests.yml/badge.svg" alt="Unit & Integration Tests"></a>
+  <a href="https://github.com/superdav42/wp-multisite-waas/actions/workflows/e2e.yml"><img src="https://github.com/superdav42/wp-multisite-waas/actions/workflows/e2e.yml/badge.svg" alt="E2E Tests"></a>
+</p>
 
 ## 🌟 Overview
 
@@ -58,6 +62,7 @@ There are two recommended ways to install Multisite Ultimate:
 This method requires command-line access to your server and familiarity with Git and Composer.
 
 1. Clone the repository to your plugins directory:
+
    ```bash
    cd wp-content/plugins/
    git clone https://github.com/superdav42/wp-multisite-waas.git
@@ -65,6 +70,7 @@ This method requires command-line access to your server and familiarity with Git
    ```
 
 2. Install the required dependencies using Composer:
+
    ```bash
    composer install
    ```
@@ -144,18 +150,24 @@ git tag v2.3.5  # For example, for version 2.3.5
 git push origin v2.3.5
 ```
 
-The tag must begin with "v" followed by the version number (v*.*.*)
+The tag must begin with "v" followed by the version number (v*.*.\*)
 
 This will automatically:
+
 1. Build the plugin (run `npm run build`)
 2. Create a properly packaged ZIP file
 3. Create a GitHub release with the ZIP attached
 
 When preparing for a release:
+
 1. Update the version number in the main plugin file and readme.txt
 2. Update the changelog in readme.txt
 3. Ensure README.md and readme.txt are synchronized with the latest information
 4. Create and push the appropriate version tag
+
+## ✅ Testing
+
+See [readme](tests/e2e/README.md) for e2e testing.
 
 ## 🆘 Support
 
@@ -168,13 +180,15 @@ We recommend running this in a staging environment before updating your producti
 ## 📝 Recent Changes
 
 ### Version [2.4.1] - Released on 2025-07-17
+
 - Improved: Update Stripe PHP Library to latest version.
 - Improved: Update JS libs.
-- Fixed: Added a few more security checks. 
+- Fixed: Added a few more security checks.
 - Fixed: Fatal error that may occur when upgrading from old name.
 - Improved: Added check for custom domain count when downgrading.
 
 ### Version [2.4.0] - Released on 2025-07-07
+
 - Improved: Prep Plugin for release on WordPress.org
 - Improved: Update translation text domain
 - Fixed: Escape everything that should be escaped.
@@ -192,10 +206,12 @@ We recommend running this in a staging environment before updating your producti
 - Fixed: Styles on thank you page of legacy checkout
 
 ### Version [2.3.4] - Released on 2024-01-31
+
 - Fixed: Unable to checkout with any payment gateway
 - Fixed: Warning Undefined global variable $pagenow
 
 ### Version [2.3.3] - Released on 2024-01-29
+
 - Improved: Plugin renamed to Multisite Ultimate
 - Removed: Enforcement of paid license
 - Fixed: Incompatibilities with WordPress 6.7 and i18n timing
@@ -206,6 +222,7 @@ For the complete changelog, please see [readme.txt](readme.txt).
 ## 👥 Contributors
 
 Multisite Ultimate is an open-source project with contributions from:
+
 - [aanduque](https://github.com/aanduque)
 - [superdav42](https://github.com/superdav42)
 - [And the community](https://github.com/superdav42/wp-multisite-waas/graphs/contributors)
@@ -227,4 +244,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA 
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
