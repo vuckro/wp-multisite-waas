@@ -149,7 +149,7 @@ class WooCommerce_API_Client {
 //			'category'     => 'addon', // Assuming addons are in a specific category
 		];
 
-		$products = $this->get_products($params);
+		return $this->get_products($params);
 
 		if (is_wp_error($products)) {
 			return $products;
@@ -175,18 +175,15 @@ class WooCommerce_API_Client {
 	 * @return array|false Addon data or false if not a valid addon.
 	 */
 	private function transform_product_to_addon($product) {
-		if (empty($product['downloadable']) || ! $product['downloadable']) {
-			return false;
-		}
 
 		// Extract addon-specific metadata
 		$addon_data = [
 			'name'        => $product['name'],
 			'slug'        => $product['slug'],
 			'description' => $product['description'],
-			'price'       => $product['price'],
-			'free'        => '0' === $product['price'] || 0.0 === (float) $product['price'],
-			'available'   => 'publish' === $product['status'],
+			'price'       => $product['prices']['price'],
+			'free'        => '0' === $product['prices']['price'] || 0.0 === (float) $product['prices']['price'],
+			'available'   => $product['is_purchasable'],
 			'author'      => 'Multisite Ultimate',
 			'author_url'  => 'https://multisiteultimate.com',
 			'image_url'   => '',

@@ -355,12 +355,8 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 		$data = $api_client->get_addons();
 
 		if (is_wp_error($data)) {
-			// Fallback to empty array if API fails
-			error_log('WP Ultimo: Failed to fetch addons from WooCommerce API: ' . $data->get_error_message());
-			return array();
-		}
-
-		if (! is_array($data)) {
+			// translators: %s error message.
+			wu_log_add('api-calls', sprintf(__('Failed to fetch addons from API: %s'), $data->get_error_message()));
 			return array();
 		}
 
