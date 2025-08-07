@@ -240,6 +240,16 @@ class Limits_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
+		// Ensure setup is called if site is not set
+		if ( ! $this->site) {
+			$this->setup();
+		}
+
+		// Early return if site is still not available after setup
+		if ( ! $this->site) {
+			return '';
+		}
+
 		$post_types = get_post_types(
 			[
 				'public' => true,
