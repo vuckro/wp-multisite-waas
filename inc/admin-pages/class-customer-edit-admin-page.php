@@ -113,6 +113,107 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		wp_enqueue_editor();
 
 		wp_enqueue_media();
+
+		// Add JavaScript for orphan field deletion
+		$this->add_orphan_field_deletion_script();
+
+		// Register AJAX handler for orphan field deletion
+		add_action('wp_ajax_wu_delete_orphan_customer_meta', [$this, 'handle_delete_orphan_meta']);
+	}
+
+	/**
+	 * Add JavaScript for orphan field deletion functionality.
+	 *
+	 * @since 2.0.0
+	 * @return void
+	 */
+	private function add_orphan_field_deletion_script(): void {
+		<script type="text/javascript">
+		function deleteOrphanField(metaKey, buttonElement) {
+			if (!confirm('<?php echo esc_js(__('Are you sure you want to delete this orphan field? This action cannot be undone.', 'multisite-ultimate')); ?>')) {
+				return;
+			}
+
+			// Show loading state
+			buttonElement.innerHTML = '<span class="dashicons dashicons-update wu-animate-spin"></span>';
+			buttonElement.style.pointerEvents = 'none';
+
+			// Make AJAX request
+			fetch(ajaxurl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams({
+					action: 'wu_delete_orphan_customer_meta',
+					customer_id: '<?php echo esc_js($this->get_object()->get_id()); ?>',
+					meta_key: metaKey,
+					nonce: '<?php echo esc_js(wp_create_nonce('wu_delete_orphan_meta')); ?>'
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					// Find and hide the field wrapper
+					const fieldWrapper = buttonElement.closest('.wu-block, .wu-field, [data-meta-key="' + metaKey + '"]');
+					if (fieldWrapper) {
+						fieldWrapper.style.display = 'none';
+					}
+				} else {
+					alert('<?php echo esc_js(__('Error deleting field:', 'multisite-ultimate')); ?> ' + (data.data || '<?php echo esc_js(__('Unknown error', 'multisite-ultimate')); ?>'));
+					// Restore button
+					buttonElement.innerHTML = '<span class="dashicons-wu-squared-cross"></span>';
+					buttonElement.style.pointerEvents = 'auto';
+				}
+			})
+			.catch(error => {
+				alert('<?php echo esc_js(__('Error deleting field:', 'multisite-ultimate')); ?> ' + error.message);
+				// Restore button
+				buttonElement.innerHTML = '<span class="dashicons-wu-squared-cross"></span>';
+				buttonElement.style.pointerEvents = 'auto';
+			});
+		}
+		</script>
+		<?php
+	}
+
+	/**
+	 * Handle AJAX request to delete orphan customer meta field.
+	 *
+	 * @since 2.0.0
+	 * @return void
+	 */
+	public function handle_delete_orphan_meta(): void {
+		// Verify nonce
+		if ( ! wp_verify_nonce(wu_request('nonce'), 'wu_delete_orphan_meta')) {
+			wp_send_json_error(__('Security check failed.', 'multisite-ultimate'));
+		}
+
+		// Verify user capabilities
+		if ( ! current_user_can('manage_network') && ! current_user_can('wu_edit_customers')) {
+			wp_send_json_error(__('You do not have permission to perform this action.', 'multisite-ultimate'));
+		}
+
+		$customer_id = absint(wu_request('customer_id'));
+		$meta_key = sanitize_key(wu_request('meta_key'));
+
+		if ( ! $customer_id || ! $meta_key) {
+			wp_send_json_error(__('Missing required parameters.', 'multisite-ultimate'));
+		}
+
+		$customer = wu_get_customer($customer_id);
+		if ( ! $customer) {
+			wp_send_json_error(__('Customer not found.', 'multisite-ultimate'));
+		}
+
+		// Use the existing function to delete customer meta
+		$result = wu_delete_customer_meta($customer_id, $meta_key);
+
+		if ($result) {
+			wp_send_json_success(__('Orphan field deleted successfully.', 'multisite-ultimate'));
+		} else {
+			wp_send_json_error(__('Failed to delete orphan field.', 'multisite-ultimate'));
+		}
 	}
 
 	/**
@@ -452,6 +553,21 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				'tooltip' => wu_get_isset($value, 'tooltip', ''),
 				'value'   => wu_get_customer_meta($this->get_object()->get_id(), $key),
 			];
+
+			// Add delete button for orphan fields (when form doesn't exist)
+			if ( ! $form) {
+				$field_data['html_attr'] = [
+					'data-meta-key' => $key,
+				];
+				
+				$delete_button = sprintf(
+					'<a title="%s" class="wu-no-underline wu-inline-block wu-text-red-500 wu-ml-2" href="#" onclick="deleteOrphanField(\'%s\', this); return false;"><span class="dashicons-wu-squared-cross"></span></a>',
+					__('Delete orphan field', 'multisite-ultimate'),
+					esc_js($key)
+				);
+				
+				$field_data['title'] .= $delete_button;
+			}
 
 			if ('hidden' === $field_data['type']) {
 				$field_data['type'] = 'text';
