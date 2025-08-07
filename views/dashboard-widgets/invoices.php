@@ -33,6 +33,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<tbody class="wu-align-baseline">
 
+		<?php if ($membership) : ?>
 		<?php foreach ($membership->get_payments(['number' => ! empty($limit) ? $limit : null]) as $payment) : ?>
 
 			<!-- Invoice Item -->
@@ -95,6 +96,7 @@ defined( 'ABSPATH' ) || exit;
 			<!-- Invoice Item - End -->
 
 		<?php endforeach; ?>    
+		<?php endif; ?>
 
 		</tbody>
 

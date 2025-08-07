@@ -274,6 +274,11 @@ class Invoices_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
+		// Early return if membership is not available (handled by base class)
+		if ( ! $this->membership) {
+			return '';
+		}
+
 		$atts['membership'] = $this->membership;
 
 		return wu_get_template_contents('dashboard-widgets/invoices', $atts);
