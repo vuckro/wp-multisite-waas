@@ -292,12 +292,12 @@ class Base_Stripe_Gateway extends Base_Gateway {
 			 *
 			 * @since 2.4.2
 			 *
-    			 * @param array $subscription_data An array of parameters to pass to Stripe.
+			 * @param array $subscription_data An array of parameters to pass to Stripe.
 			 * @param Base_Stripe_Gateway $gateway The current Stripe Gateway object.
 			 */
 			$subscription_data = apply_filters(
-				'wu_stripe_checkout_subscription_data'
-			 	[
+				'wu_stripe_checkout_subscription_data',
+				[
 					'payment_method_types'       => $allowed_payment_method_types,
 					'mode'                       => 'setup',
 					'success_url'                => $return_url,
@@ -306,7 +306,6 @@ class Base_Stripe_Gateway extends Base_Gateway {
 					'client_reference_id'        => $customer_id,
 					'customer'                   => $s_customer_id,
 				],
-				$subscription_data,
 				$gateway
 			);
 

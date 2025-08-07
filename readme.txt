@@ -230,6 +230,7 @@ We recommend running this in a staging environment before updating your producti
 == Changelog ==
 
 Version [2.4.1] - Released on 2025-08-XX
+- Fixed: Authentication of the API
 - Fixed: Saving checkout fields
 - Fixed: Creating Products and Sites
 - Fixed: Duplicating sites
