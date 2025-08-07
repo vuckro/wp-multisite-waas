@@ -294,7 +294,7 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		$atts = array_merge($atts, $this->atts);
+		$atts = array_merge((array) $atts, (array) $this->atts);
 
 		$atts['site'] = $this->site;
 
