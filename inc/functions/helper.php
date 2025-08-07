@@ -82,9 +82,7 @@ function wu_get_main_site_id() {
 
 	_wu_require_hook('ms_loaded');
 
-	global $current_site;
-
-	return $current_site->blog_id;
+	return get_main_site_id();
 }
 
 /**
