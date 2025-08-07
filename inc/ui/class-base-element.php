@@ -975,7 +975,7 @@ abstract class Base_Element {
 		}
 
 		// Defensive setup call for Slim SEO compatibility
-		if (isset($this->site) && ! $this->site) {
+		if ((isset($this->site) && ! $this->site) || (isset($this->membership) && ! $this->membership)) {
 			$this->setup();
 		}
 
