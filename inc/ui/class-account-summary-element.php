@@ -294,6 +294,16 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
+		// Ensure setup is called if site is not set
+		if ( ! $this->site) {
+			$this->setup();
+		}
+
+		// Early return if site is still not available after setup
+		if ( ! $this->site) {
+			return '';
+		}
+
 		$atts = array_merge((array) $atts, (array) $this->atts);
 
 		$atts['site'] = $this->site;
