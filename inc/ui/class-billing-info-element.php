@@ -272,11 +272,6 @@ class Billing_Info_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Early return if membership is not available (handled by base class)
-		if ( ! $this->membership) {
-			return '';
-		}
-
 		$atts['membership'] = $this->membership;
 
 		$atts['billing_address'] = $this->membership->get_billing_address();

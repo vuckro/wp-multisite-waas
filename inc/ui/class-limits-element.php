@@ -240,11 +240,6 @@ class Limits_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Early return if site is not available (handled by base class)
-		if ( ! $this->site) {
-			return '';
-		}
-
 		$post_types = get_post_types(
 			[
 				'public' => true,

@@ -294,11 +294,6 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Early return if site is not available (handled by base class)
-		if ( ! $this->site) {
-			return '';
-		}
-
 		$atts = array_merge((array) $atts, (array) $this->atts);
 
 		$atts['site'] = $this->site;
