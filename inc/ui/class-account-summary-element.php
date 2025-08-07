@@ -294,12 +294,7 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Ensure setup is called if site is not set
-		if ( ! $this->site) {
-			$this->setup();
-		}
-
-		// Early return if site is still not available after setup
+		// Early return if site is not available (handled by base class)
 		if ( ! $this->site) {
 			return '';
 		}
