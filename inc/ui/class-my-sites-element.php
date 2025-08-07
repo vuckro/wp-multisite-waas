@@ -349,6 +349,9 @@ class My_Sites_Element extends Base_Element {
 			return $this->sites;
 		}
 
+		// Initialize customer_sites to avoid undefined variable warning
+		$customer_sites = [];
+
 		if ( ! empty($this->customer)) {
 			$pending_sites = \WP_Ultimo\Models\Site::get_all_by_type('pending', ['customer_id' => $this->customer->get_id()]);
 
@@ -357,7 +360,8 @@ class My_Sites_Element extends Base_Element {
 				function ($customer_sites, $site) {
 					$customer_sites[ $site->get_id() ] = $site;
 					return $customer_sites;
-				}
+				},
+				[]
 			);
 		}
 
@@ -367,7 +371,7 @@ class My_Sites_Element extends Base_Element {
 			$user_sites = array_reduce(
 				$wp_user_sites,
 				function ($user_sites, $wp_site) use ($customer_sites) {
-					if ( ! array_key_exists($wp_site->userblog_id, $customer_sites ?? []) && get_main_site_id() !== $wp_site->userblog_id) {
+					if ( ! array_key_exists($wp_site->userblog_id, $customer_sites) && get_main_site_id() !== $wp_site->userblog_id) {
 						$wu_site = wu_get_site($wp_site->userblog_id);
 						$wu_site->set_membership_id(0);
 						$user_sites[ $wp_site->userblog_id ] = $wu_site;
