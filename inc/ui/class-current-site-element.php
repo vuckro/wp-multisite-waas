@@ -352,7 +352,12 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Early return if site is not available
+		// Ensure setup is called if site is not set
+		if ( ! $this->site) {
+			$this->setup();
+		}
+
+		// Early return if site is still not available after setup
 		if ( ! $this->site) {
 			return '';
 		}
