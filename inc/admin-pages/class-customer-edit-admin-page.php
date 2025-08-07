@@ -128,6 +128,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @return void
 	 */
 	private function add_orphan_field_deletion_script(): void {
+		?>
 		<script type="text/javascript">
 		function deleteOrphanField(metaKey, buttonElement) {
 			if (!confirm('<?php echo esc_js(__('Are you sure you want to delete this orphan field? This action cannot be undone.', 'multisite-ultimate')); ?>')) {
