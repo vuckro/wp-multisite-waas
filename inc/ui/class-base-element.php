@@ -974,6 +974,16 @@ abstract class Base_Element {
 			return; // bail if the display was set to false.
 		}
 
+		// Defensive setup call for Slim SEO compatibility
+		if ((isset($this->site) && ! $this->site) || (isset($this->membership) && ! $this->membership)) {
+			$this->setup();
+		}
+
+		// Early return if setup determines element shouldn't display
+		if ( ! $this->should_display()) {
+			return; // bail if the display was set to false after setup.
+		}
+
 		$this->dependencies();
 
 		$atts = wp_parse_args($atts, $this->defaults());

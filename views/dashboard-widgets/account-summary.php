@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<?php endif; ?>
 
-		<?php if (wu_request('page') !== 'account') : ?>
+		<?php if (wu_request('page') !== 'account' && $site) : ?>
 
 		<div class="wu-ml-auto">
 
