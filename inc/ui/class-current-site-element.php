@@ -352,6 +352,11 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
+		// Early return if site is not available
+		if ( ! $this->site) {
+			return '';
+		}
+
 		$actions = [
 			'visit_site' => [
 				'label'        => __('Visit Site', 'multisite-ultimate'),
