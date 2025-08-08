@@ -1286,31 +1286,18 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
 			$meta_key = sanitize_key($_GET['delete_meta_key']);
 			
-			// Debug: log the attempt
-			error_log('WU Debug: Attempting to delete meta key: ' . $meta_key);
-			
 			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
 				$customer_id = (int) wu_request('id');
-				
-				// Debug: log the customer ID
-				error_log('WU Debug: Customer ID: ' . $customer_id);
-				
 				$result = wu_delete_customer_meta($customer_id, $meta_key);
-				
-				// Debug: log the result
-				error_log('WU Debug: Delete result: ' . ($result ? 'success' : 'failed'));
 				
 				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
 					'id' => $customer_id,
-					'meta_deleted' => $result ? 1 : 0,
-					'debug_deleted_key' => $meta_key
+					'options' => 'custom_meta',
+					'meta_deleted' => $result ? 1 : 0
 				]);
 				
 				wp_safe_redirect($redirect_url);
 				exit;
-			} else {
-				// Debug: log nonce failure
-				error_log('WU Debug: Nonce verification failed for meta key: ' . $meta_key);
 			}
 		}
 	}
@@ -1330,7 +1317,6 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$removable_query_args[] = 'notice_verification_sent';
 		$removable_query_args[] = 'meta_deleted';
-		$removable_query_args[] = 'debug_deleted_key';
 
 		return $removable_query_args;
 	}
