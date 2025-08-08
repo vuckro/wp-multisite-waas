@@ -99,6 +99,34 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	}
 
 	/**
+	 * Executes when the page is loaded - handles custom meta field deletion
+	 *
+	 * @return void
+	 * @since 2.0.11
+	 */
+	public function page_loaded(): void {
+
+		// Handle custom meta field deletion via GET parameters
+		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
+			$meta_key = sanitize_key($_GET['delete_meta_key']);
+			
+			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
+				$customer_id = (int) wu_request('id');
+				$result = wu_delete_customer_meta($customer_id, $meta_key);
+				
+				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
+					'id' => $customer_id,
+					'options' => 'custom_meta',
+					'meta_deleted' => $result ? 1 : 0
+				]);
+				
+				wp_safe_redirect($redirect_url);
+				exit;
+			}
+		}
+	}
+
+	/**
 	 * Allow child classes to register scripts and styles that can be loaded on the output function, for example.
 	 *
 	 * @return void
@@ -1126,25 +1154,6 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 * @since 2.0.0
 	 */
 	public function handle_save(): void {
-
-		// Handle custom meta field deletion FIRST (via GET)
-		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
-			$meta_key = sanitize_key($_GET['delete_meta_key']);
-			
-			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
-				$customer_id = (int) wu_request('id');
-				$result = wu_delete_customer_meta($customer_id, $meta_key);
-				
-				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
-					'id' => $customer_id,
-					'options' => 'custom_meta',
-					'meta_deleted' => $result ? 1 : 0
-				]);
-				
-				wp_safe_redirect($redirect_url);
-				exit;
-			}
-		}
 
 		// Nonce handled in calling method.
         // phpcs:disable WordPress.Security.NonceVerification
