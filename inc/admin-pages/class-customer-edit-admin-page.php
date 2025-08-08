@@ -442,34 +442,33 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 			$options = array_merge(['' => '--'], $options);
 
+			// Prepare delete button for custom fields (fields without a form)
+			$delete_button = '';
+			if (!$form) {
+				$delete_button = sprintf(
+					'<span style="float: right;"> <a href="#" onclick="if(confirm(\'%s\')) { document.getElementById(\'delete-meta-%s\').submit(); } return false;" class="wu-text-red-600 wu-no-underline" title="%s">%s</a></span>
+					<form id="delete-meta-%s" method="post" style="display: none;">
+						<input type="hidden" name="delete_meta_key" value="%s">
+						<input type="hidden" name="_wpnonce" value="%s">
+					</form>',
+					esc_attr(__('Are you sure you want to delete this custom field?', 'multisite-ultimate')),
+					esc_attr($key),
+					esc_attr(__('Delete Field', 'multisite-ultimate')),
+					__('Delete', 'multisite-ultimate'),
+					esc_attr($key),
+					esc_attr($key),
+					wp_create_nonce('delete_meta_' . $key)
+				);
+			}
+
 			$field_data = [
 				'title'             => wu_get_isset($value, 'title', wu_slug_to_name($key)),
 				'type'              => wu_get_isset($value, 'type', 'text'),
-				'desc'              => wu_get_isset($value, 'description', '') . $location,
+				'desc'              => wu_get_isset($value, 'description', '') . $location . $delete_button,
 				'options'           => $options,
 				'tooltip'           => wu_get_isset($value, 'tooltip', ''),
 				'value'             => wu_get_customer_meta($this->get_object()->get_id(), $key),
-				'wrapper_classes'   => 'wu-relative',
 			];
-
-			// Only add delete button for fields without a form (custom/orphan fields)
-			if (!$form) {
-				$field_data['after'] = sprintf(
-					'<form method="post" style="display: inline;" class="wu-absolute wu-top-0 wu-right-0">
-						<input type="hidden" name="delete_meta_key" value="%s">
-						<input type="hidden" name="_wpnonce" value="%s">
-						<button type="submit" class="wu-no-underline wu-inline-block wu-text-gray-600 wu-bg-transparent wu-border-0 wu-cursor-pointer" 
-								title="%s" 
-								onclick="return confirm(\'%s\')">
-							<span class="dashicons-wu-squared-cross"></span>
-						</button>
-					</form>',
-					esc_attr($key),
-					wp_create_nonce('delete_meta_' . $key),
-					esc_attr(__('Delete Field', 'multisite-ultimate')),
-					esc_attr(__('Are you sure you want to delete this custom field?', 'multisite-ultimate'))
-				);
-			}
 
 			if ('hidden' === $field_data['type']) {
 				$field_data['type'] = 'text';
