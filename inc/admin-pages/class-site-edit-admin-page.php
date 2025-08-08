@@ -101,6 +101,37 @@ class Site_Edit_Admin_Page extends Edit_Admin_Page {
 	}
 
 	/**
+	 * Executes when the page is loaded - handles custom meta field deletion
+	 *
+	 * @return void
+	 * @since 2.0.11
+	 */
+	public function page_loaded(): void {
+
+		// Handle custom meta field deletion via GET parameters
+		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
+			$meta_key = sanitize_key($_GET['delete_meta_key']);
+			
+			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
+				$site_id = (int) wu_request('id');
+				$result = wu_delete_site_meta($site_id, $meta_key);
+				
+				$redirect_url = wu_network_admin_url('wp-ultimo-edit-site', [
+					'id' => $site_id,
+					'options' => 'site_meta',
+					'meta_deleted' => $result ? 1 : 0
+				]);
+				
+				wp_safe_redirect($redirect_url);
+				exit;
+			}
+		}
+
+		// Call parent method to ensure normal form processing (including adding new fields)
+		parent::page_loaded();
+	}
+
+	/**
 	 * Register ajax forms that we use for site.
 	 *
 	 * @since 2.0.0
@@ -768,6 +799,44 @@ class Site_Edit_Admin_Page extends Edit_Admin_Page {
 			$_POST['membership_id'] = false;
 			$_POST['customer_id']   = false;
 		}
+
+		$object = $this->get_object();
+
+		/**
+		 * Deal with custom site metadata
+		 */
+		$custom_meta_keys = wu_get_all_site_meta($object->get_id(), true);
+
+		foreach ($custom_meta_keys as $key => $value) {
+			wu_update_site_meta(
+				$object->get_id(),
+				$key,
+				wu_request("meta_key_$key"),
+				$value['type'],
+				$value['title'],
+				wu_get_isset($value, 'form', null),
+				wu_get_isset($value, 'step', null),
+				wu_get_isset($value, 'description', null),
+				wu_get_isset($value, 'tooltip', null),
+				wu_get_isset($value, 'options', [])
+			);
+		}
+
+		foreach (wu_get_isset($_POST, 'new_meta_fields', []) as $meta_field) {
+			$slug = sanitize_key(wu_get_isset($meta_field, 'slug', ''));
+
+			if (empty($slug)) {
+				continue;
+			}
+
+			$title = ! empty($meta_field['title']) ? $meta_field['title'] : wu_slug_to_name($slug);
+			$type  = ! empty($meta_field['type']) ? $meta_field['type'] : 'text';
+			$value = wu_get_isset($meta_field, 'value', '');
+
+			wu_update_site_meta($object->get_id(), $slug, $value, $type, $title);
+		}
+
+		unset($_POST['new_meta_fields']);
 
 		return parent::handle_save();
 	}
