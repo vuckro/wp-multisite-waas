@@ -95,7 +95,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		add_filter('removable_query_args', [$this, 'remove_query_args']);
 
-		add_action('admin_init', [$this, 'handle_delete_meta_field']);
+		add_action('wu_page_edit_redirect_handlers', [$this, 'handle_delete_meta_field']);
 
 	}
 
@@ -447,19 +447,18 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 			// Prepare delete button for custom fields (fields without a form)
 			$delete_button = '';
 			if (!$form) {
+				$delete_url = wu_network_admin_url('wp-ultimo-edit-customer', [
+					'id' => $this->get_object()->get_id(),
+					'delete_meta_key' => $key,
+					'_wpnonce' => wp_create_nonce('delete_meta_' . $key)
+				]);
+				
 				$delete_button = sprintf(
-					'<span style="float: right;"> <a href="#" onclick="if(confirm(\'%s\')) { document.getElementById(\'delete-meta-%s\').submit(); } return false;" class="wu-text-red-600 wu-no-underline" title="%s">%s</a></span>
-					<form id="delete-meta-%s" method="post" style="display: none;">
-						<input type="hidden" name="delete_meta_key" value="%s">
-						<input type="hidden" name="_wpnonce" value="%s">
-					</form>',
+					'<span style="float: right;"> <a href="%s" class="wu-text-red-600 wu-no-underline" onclick="return confirm(\'%s\')" title="%s">%s</a></span>',
+					esc_url($delete_url),
 					esc_attr(__('Are you sure you want to delete this custom field?', 'multisite-ultimate')),
-					esc_attr($key),
 					esc_attr(__('Delete Field', 'multisite-ultimate')),
-					__('Delete', 'multisite-ultimate'),
-					esc_attr($key),
-					esc_attr($key),
-					wp_create_nonce('delete_meta_' . $key)
+					__('Delete', 'multisite-ultimate')
 				);
 			}
 
@@ -1287,17 +1286,31 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		if (isset($_POST['delete_meta_key'], $_POST['_wpnonce'])) {
 			$meta_key = sanitize_key($_POST['delete_meta_key']);
 			
+			// Debug: log the attempt
+			error_log('WU Debug: Attempting to delete meta key: ' . $meta_key);
+			
 			if (wp_verify_nonce($_POST['_wpnonce'], 'delete_meta_' . $meta_key)) {
 				$customer_id = (int) wu_request('id');
+				
+				// Debug: log the customer ID
+				error_log('WU Debug: Customer ID: ' . $customer_id);
+				
 				$result = wu_delete_customer_meta($customer_id, $meta_key);
+				
+				// Debug: log the result
+				error_log('WU Debug: Delete result: ' . ($result ? 'success' : 'failed'));
 				
 				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
 					'id' => $customer_id,
-					'meta_deleted' => $result ? 1 : 0
+					'meta_deleted' => $result ? 1 : 0,
+					'debug_deleted_key' => $meta_key
 				]);
 				
 				wp_safe_redirect($redirect_url);
 				exit;
+			} else {
+				// Debug: log nonce failure
+				error_log('WU Debug: Nonce verification failed for meta key: ' . $meta_key);
 			}
 		}
 	}
@@ -1317,6 +1330,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		$removable_query_args[] = 'notice_verification_sent';
 		$removable_query_args[] = 'meta_deleted';
+		$removable_query_args[] = 'debug_deleted_key';
 
 		return $removable_query_args;
 	}
