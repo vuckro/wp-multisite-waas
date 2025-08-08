@@ -375,19 +375,23 @@ function wu_add_site_meta_options_section($sections, $site) {
 	foreach ($custom_meta_keys as $key => $value) {
 		$form = wu_get_isset($value, 'form');
 
-		$location = '';
 		if ($form) {
 			$field_location_breadcrumbs = [
 				$form,
 				wu_get_isset($value, 'step'),
 				wu_get_isset($value, 'id'),
 			];
-			$location = sprintf(
-				'<small><strong>%s</strong> %s</small>',
-				__('Location:', 'multisite-ultimate'),
-				implode(' &rarr; ', array_filter($field_location_breadcrumbs))
-			);
+		} else {
+			$field_location_breadcrumbs = [
+				__('Custom field', 'multisite-ultimate'),
+			];
 		}
+
+		$location = sprintf(
+			'<small><strong>%s</strong> %s</small>',
+			__('Location:', 'multisite-ultimate'),
+			implode(' &rarr; ', array_filter($field_location_breadcrumbs))
+		);
 
 		// Prepare delete button for custom fields (fields without a form)
 		$delete_button = '';
@@ -564,5 +568,5 @@ function wu_add_site_meta_options_section($sections, $site) {
 	return $sections;
 }
 
-// Hook into site options sections
-add_filter('wu_site_options_sections', 'wu_add_site_meta_options_section', 10, 2);
+// Hook into site options sections - Priority 15 to place between Reset Limitations and Notes
+add_filter('wu_site_options_sections', 'wu_add_site_meta_options_section', 15, 2);
