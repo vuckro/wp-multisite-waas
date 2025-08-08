@@ -335,7 +335,7 @@ function wu_get_customer_meta($customer_id, $meta_key, $default = false, $single
  *                   or on failure or if the value passed to the function
  *                   is the same as the one that is already in the database.
  */
-function wu_update_customer_meta($customer_id, $key, $value, $type = null, $title = null) {
+function wu_update_customer_meta($customer_id, $key, $value, $type = null, $title = null, $form_slug = null, $step_slug = null, $description = null, $tooltip = null, $options = []) {
 
 	$customer = wu_get_customer($customer_id);
 
@@ -346,13 +346,37 @@ function wu_update_customer_meta($customer_id, $key, $value, $type = null, $titl
 	if ($type) {
 		$custom_keys = $customer->get_meta('wu_custom_meta_keys', []);
 
+		$meta_info = [
+			'type'  => $type,
+			'title' => $title,
+		];
+
+		// Store form reference if provided
+		if ($form_slug) {
+			$meta_info['form'] = $form_slug;
+		}
+
+		// Store additional info if provided
+		if ($step_slug) {
+			$meta_info['step'] = $step_slug;
+		}
+
+		if ($description) {
+			$meta_info['description'] = $description;
+		}
+
+		if ($tooltip) {
+			$meta_info['tooltip'] = $tooltip;
+		}
+
+		if (!empty($options)) {
+			$meta_info['options'] = $options;
+		}
+
 		$custom_keys = array_merge(
 			$custom_keys,
 			[
-				$key => [
-					'type'  => $type,
-					'title' => $title,
-				],
+				$key => $meta_info,
 			]
 		);
 

@@ -94,6 +94,39 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		add_action('wu_page_edit_redirect_handlers', [$this, 'handle_send_verification_notice']);
 
 		add_filter('removable_query_args', [$this, 'remove_query_args']);
+
+
+	}
+
+	/**
+	 * Executes when the page is loaded - handles custom meta field deletion
+	 *
+	 * @return void
+	 * @since 2.0.11
+	 */
+	public function page_loaded(): void {
+
+		// Handle custom meta field deletion via GET parameters
+		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
+			$meta_key = sanitize_key($_GET['delete_meta_key']);
+			
+			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
+				$customer_id = (int) wu_request('id');
+				$result = wu_delete_customer_meta($customer_id, $meta_key);
+				
+				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
+					'id' => $customer_id,
+					'options' => 'custom_meta',
+					'meta_deleted' => $result ? 1 : 0
+				]);
+				
+				wp_safe_redirect($redirect_url);
+				exit;
+			}
+		}
+
+		// Call parent method to ensure normal form processing (including adding new fields)
+		parent::page_loaded();
 	}
 
 	/**
@@ -410,13 +443,6 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		$meta_fields_unset = [];
 
 		foreach ($custom_meta_keys as $key => $value) {
-			$field_location_breadcrumbs = [
-				__(
-					'orphan field - the original form no longer exists',
-					'multisite-ultimate'
-				),
-			];
-
 			$form = wu_get_isset($value, 'form');
 
 			if ($form) {
@@ -424,6 +450,10 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 					$form,
 					wu_get_isset($value, 'step'),
 					wu_get_isset($value, 'id'),
+				];
+			} else {
+				$field_location_breadcrumbs = [
+					__('Custom field', 'multisite-ultimate'),
 				];
 			}
 
@@ -444,13 +474,31 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 			$options = array_merge(['' => '--'], $options);
 
+			// Prepare delete button for custom fields (fields without a form)
+			$delete_button = '';
+			if (!$form) {
+				$delete_url = wu_network_admin_url('wp-ultimo-edit-customer', [
+					'id' => $this->get_object()->get_id(),
+					'delete_meta_key' => $key,
+					'_wpnonce' => wp_create_nonce('delete_meta_' . $key)
+				]);
+				
+				$delete_button = sprintf(
+					'<span style="float: right;"> <a href="%s" class="wu-text-red-600 wu-no-underline" onclick="return confirm(\'%s\')" title="%s">%s</a></span>',
+					esc_url($delete_url),
+					esc_attr(__('Are you sure you want to delete this custom field?', 'multisite-ultimate')),
+					esc_attr(__('Delete Field', 'multisite-ultimate')),
+					__('Delete', 'multisite-ultimate')
+				);
+			}
+
 			$field_data = [
-				'title'   => wu_get_isset($value, 'title', wu_slug_to_name($key)),
-				'type'    => wu_get_isset($value, 'type', 'text'),
-				'desc'    => wu_get_isset($value, 'description', '') . $location,
-				'options' => $options,
-				'tooltip' => wu_get_isset($value, 'tooltip', ''),
-				'value'   => wu_get_customer_meta($this->get_object()->get_id(), $key),
+				'title'             => wu_get_isset($value, 'title', wu_slug_to_name($key)),
+				'type'              => wu_get_isset($value, 'type', 'text'),
+				'desc'              => wu_get_isset($value, 'description', '') . $location . $delete_button,
+				'options'           => $options,
+				'tooltip'           => wu_get_isset($value, 'tooltip', ''),
+				'value'             => wu_get_customer_meta($this->get_object()->get_id(), $key),
 			];
 
 			if ('hidden' === $field_data['type']) {
@@ -1170,7 +1218,12 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				$key,
 				wu_request("meta_key_$key"),
 				$value['type'],
-				$value['title']
+				$value['title'],
+				wu_get_isset($value, 'form', null),
+				wu_get_isset($value, 'step', null),
+				wu_get_isset($value, 'description', null),
+				wu_get_isset($value, 'tooltip', null),
+				wu_get_isset($value, 'options', [])
 			);
 		}
 
@@ -1230,9 +1283,22 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				<p><?php esc_html_e('Verification email sent!', 'multisite-ultimate'); ?></p>
 			</div>
 
-			<?php
-		endif;
+		<?php endif;
+
+		if (isset($_GET['meta_deleted'])) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+			<?php $success = (bool) $_GET['meta_deleted']; // phpcs:ignore WordPress.Security.NonceVerification ?>
+			<div id="message" class="<?php echo $success ? 'updated notice-success' : 'notice-error'; ?> notice wu-admin-notice is-dismissible below-h2">
+				<p><?php 
+					if ($success) {
+						esc_html_e('Custom field deleted successfully!', 'multisite-ultimate');
+					} else {
+						esc_html_e('Failed to delete custom field.', 'multisite-ultimate');
+					}
+				?></p>
+			</div>
+		<?php endif;
 	}
+
 
 	/**
 	 * Adds removable query args to the WP database.
@@ -1248,6 +1314,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		$removable_query_args[] = 'notice_verification_sent';
+		$removable_query_args[] = 'meta_deleted';
 
 		return $removable_query_args;
 	}
