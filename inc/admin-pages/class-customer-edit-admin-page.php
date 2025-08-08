@@ -410,13 +410,6 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		$meta_fields_unset = [];
 
 		foreach ($custom_meta_keys as $key => $value) {
-			$field_location_breadcrumbs = [
-				__(
-					'orphan field - the original form no longer exists',
-					'multisite-ultimate'
-				),
-			];
-
 			$form = wu_get_isset($value, 'form');
 
 			if ($form) {
@@ -424,6 +417,13 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 					$form,
 					wu_get_isset($value, 'step'),
 					wu_get_isset($value, 'id'),
+				];
+			} else {
+				$field_location_breadcrumbs = [
+					sprintf(
+						'<span class="wu-text-gray-500">%s</span>',
+						__('Legacy field - original form unavailable', 'multisite-ultimate')
+					),
 				];
 			}
 
@@ -1170,7 +1170,12 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				$key,
 				wu_request("meta_key_$key"),
 				$value['type'],
-				$value['title']
+				$value['title'],
+				wu_get_isset($value, 'form', null),
+				wu_get_isset($value, 'step', null),
+				wu_get_isset($value, 'description', null),
+				wu_get_isset($value, 'tooltip', null),
+				wu_get_isset($value, 'options', [])
 			);
 		}
 

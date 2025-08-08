@@ -1091,7 +1091,12 @@ class Checkout {
 					$customer_meta_field['id'],
 					$this->request_or_session($customer_meta_field['id']),
 					$customer_meta_field['type'],
-					$customer_meta_field['name']
+					$customer_meta_field['name'],
+					$checkout_form->get_slug(),
+					wu_get_isset($customer_meta_field, 'step', ''),
+					wu_get_isset($customer_meta_field, 'description', ''),
+					wu_get_isset($customer_meta_field, 'tooltip', ''),
+					wu_get_isset($customer_meta_field, 'options', [])
 				);
 			}
 
