@@ -443,13 +443,33 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 			$options = array_merge(['' => '--'], $options);
 
 			$field_data = [
-				'title'   => wu_get_isset($value, 'title', wu_slug_to_name($key)),
-				'type'    => wu_get_isset($value, 'type', 'text'),
-				'desc'    => wu_get_isset($value, 'description', '') . $location,
-				'options' => $options,
-				'tooltip' => wu_get_isset($value, 'tooltip', ''),
-				'value'   => wu_get_customer_meta($this->get_object()->get_id(), $key),
+				'title'             => wu_get_isset($value, 'title', wu_slug_to_name($key)),
+				'type'              => wu_get_isset($value, 'type', 'text'),
+				'desc'              => wu_get_isset($value, 'description', '') . $location,
+				'options'           => $options,
+				'tooltip'           => wu_get_isset($value, 'tooltip', ''),
+				'value'             => wu_get_customer_meta($this->get_object()->get_id(), $key),
+				'wrapper_classes'   => 'wu-relative',
 			];
+
+			// Only add delete button for fields without a form (custom/orphan fields)
+			if (!$form) {
+				$field_data['after'] = sprintf(
+					'<form method="post" style="display: inline;" class="wu-absolute wu-top-0 wu-right-0">
+						<input type="hidden" name="delete_meta_key" value="%s">
+						<input type="hidden" name="_wpnonce" value="%s">
+						<button type="submit" class="wu-no-underline wu-inline-block wu-text-gray-600 wu-bg-transparent wu-border-0 wu-cursor-pointer" 
+								title="%s" 
+								onclick="return confirm(\'%s\')">
+							<span class="dashicons-wu-squared-cross"></span>
+						</button>
+					</form>',
+					esc_attr($key),
+					wp_create_nonce('delete_meta_' . $key),
+					esc_attr(__('Delete Field', 'multisite-ultimate')),
+					esc_attr(__('Are you sure you want to delete this custom field?', 'multisite-ultimate'))
+				);
+			}
 
 			if ('hidden' === $field_data['type']) {
 				$field_data['type'] = 'text';
@@ -1108,6 +1128,23 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_save(): void {
 
+		// Handle custom meta field deletion
+		if (isset($_POST['delete_meta_key'], $_POST['_wpnonce'])) {
+			$meta_key = sanitize_key($_POST['delete_meta_key']);
+			
+			if (wp_verify_nonce($_POST['_wpnonce'], 'delete_meta_' . $meta_key)) {
+				$result = wu_delete_customer_meta($this->get_object()->get_id(), $meta_key);
+				
+				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
+					'id' => $this->get_object()->get_id(),
+					'meta_deleted' => $result ? 1 : 0
+				]);
+				
+				wp_safe_redirect($redirect_url);
+				exit;
+			}
+		}
+
 		// Nonce handled in calling method.
         // phpcs:disable WordPress.Security.NonceVerification
 		if (isset($_POST['submit_button']) && 'send_verification' === $_POST['submit_button']) {
@@ -1233,8 +1270,20 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				<p><?php esc_html_e('Verification email sent!', 'multisite-ultimate'); ?></p>
 			</div>
 
-			<?php
-		endif;
+		<?php endif;
+
+		if (isset($_GET['meta_deleted'])) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+			<?php $success = (bool) $_GET['meta_deleted']; // phpcs:ignore WordPress.Security.NonceVerification ?>
+			<div id="message" class="<?php echo $success ? 'updated notice-success' : 'notice-error'; ?> notice wu-admin-notice is-dismissible below-h2">
+				<p><?php 
+					if ($success) {
+						esc_html_e('Custom field deleted successfully!', 'multisite-ultimate');
+					} else {
+						esc_html_e('Failed to delete custom field.', 'multisite-ultimate');
+					}
+				?></p>
+			</div>
+		<?php endif;
 	}
 
 
@@ -1252,6 +1301,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		$removable_query_args[] = 'notice_verification_sent';
+		$removable_query_args[] = 'meta_deleted';
 
 		return $removable_query_args;
 	}
