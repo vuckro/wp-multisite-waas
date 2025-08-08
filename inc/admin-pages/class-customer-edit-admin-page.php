@@ -124,6 +124,9 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 				exit;
 			}
 		}
+
+		// Call parent method to ensure normal form processing (including adding new fields)
+		parent::page_loaded();
 	}
 
 	/**
