@@ -95,7 +95,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		add_filter('removable_query_args', [$this, 'remove_query_args']);
 
-		add_action('admin_init', [$this, 'handle_delete_meta_field']);
+		add_action('wp_loaded', [$this, 'handle_delete_meta_field']);
 
 	}
 
@@ -1277,10 +1277,13 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_delete_meta_field(): void {
 
-		// Only handle deletion on this specific page
-		if (!isset($_GET['page']) || $_GET['page'] !== 'wp-ultimo-edit-customer') {
+		// Only handle deletion on this specific page and in admin context
+		if (!is_admin() || !isset($_GET['page']) || $_GET['page'] !== 'wp-ultimo-edit-customer') {
+			error_log('WU Debug: Not on correct page or not in admin');
 			return;
 		}
+		
+		error_log('WU Debug: In correct page context');
 
 		// Handle custom meta field deletion
 		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
