@@ -568,5 +568,5 @@ function wu_add_site_meta_options_section($sections, $site) {
 	return $sections;
 }
 
-// Hook into site options sections - Priority 15 to place between Reset Limitations and Notes
-add_filter('wu_site_options_sections', 'wu_add_site_meta_options_section', 15, 2);
+// Hook into site options sections - Priority 5 to place before Notes
+add_filter('wu_site_options_sections', 'wu_add_site_meta_options_section', 5, 2);
