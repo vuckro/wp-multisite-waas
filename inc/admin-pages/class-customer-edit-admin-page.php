@@ -95,7 +95,7 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		add_filter('removable_query_args', [$this, 'remove_query_args']);
 
-		add_action('wu_page_edit_redirect_handlers', [$this, 'handle_delete_meta_field']);
+		add_action('admin_init', [$this, 'handle_delete_meta_field']);
 
 	}
 
@@ -1286,9 +1286,14 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
 			$meta_key = sanitize_key($_GET['delete_meta_key']);
 			
+			// Debug: Log that we're in the handler
+			error_log('WU Debug: Delete handler called for key: ' . $meta_key);
+			
 			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
 				$customer_id = (int) wu_request('id');
 				$result = wu_delete_customer_meta($customer_id, $meta_key);
+				
+				error_log('WU Debug: Delete result: ' . ($result ? 'success' : 'failed'));
 				
 				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
 					'id' => $customer_id,
@@ -1296,9 +1301,16 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 					'meta_deleted' => $result ? 1 : 0
 				]);
 				
+				error_log('WU Debug: Redirecting to: ' . $redirect_url);
+				
 				wp_safe_redirect($redirect_url);
+				error_log('WU Debug: After wp_safe_redirect call');
 				exit;
+			} else {
+				error_log('WU Debug: Nonce verification failed');
 			}
+		} else {
+			error_log('WU Debug: No delete parameters found in GET');
 		}
 	}
 
