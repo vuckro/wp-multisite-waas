@@ -95,7 +95,6 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 		add_filter('removable_query_args', [$this, 'remove_query_args']);
 
-		add_action('wp_loaded', [$this, 'handle_delete_meta_field']);
 
 	}
 
@@ -1128,6 +1127,25 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 	 */
 	public function handle_save(): void {
 
+		// Handle custom meta field deletion FIRST (via GET)
+		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
+			$meta_key = sanitize_key($_GET['delete_meta_key']);
+			
+			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
+				$customer_id = (int) wu_request('id');
+				$result = wu_delete_customer_meta($customer_id, $meta_key);
+				
+				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
+					'id' => $customer_id,
+					'options' => 'custom_meta',
+					'meta_deleted' => $result ? 1 : 0
+				]);
+				
+				wp_safe_redirect($redirect_url);
+				exit;
+			}
+		}
+
 		// Nonce handled in calling method.
         // phpcs:disable WordPress.Security.NonceVerification
 		if (isset($_POST['submit_button']) && 'send_verification' === $_POST['submit_button']) {
@@ -1269,53 +1287,6 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		<?php endif;
 	}
 
-	/**
-	 * Handles the deletion of custom meta fields
-	 *
-	 * @return void
-	 * @since 2.0.11
-	 */
-	public function handle_delete_meta_field(): void {
-
-		// Only handle deletion on this specific page and in admin context
-		if (!is_admin() || !isset($_GET['page']) || $_GET['page'] !== 'wp-ultimo-edit-customer') {
-			error_log('WU Debug: Not on correct page or not in admin');
-			return;
-		}
-		
-		error_log('WU Debug: In correct page context');
-
-		// Handle custom meta field deletion
-		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
-			$meta_key = sanitize_key($_GET['delete_meta_key']);
-			
-			// Debug: Log that we're in the handler
-			error_log('WU Debug: Delete handler called for key: ' . $meta_key);
-			
-			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
-				$customer_id = (int) wu_request('id');
-				$result = wu_delete_customer_meta($customer_id, $meta_key);
-				
-				error_log('WU Debug: Delete result: ' . ($result ? 'success' : 'failed'));
-				
-				$redirect_url = wu_network_admin_url('wp-ultimo-edit-customer', [
-					'id' => $customer_id,
-					'options' => 'custom_meta',
-					'meta_deleted' => $result ? 1 : 0
-				]);
-				
-				error_log('WU Debug: Redirecting to: ' . $redirect_url);
-				
-				wp_safe_redirect($redirect_url);
-				error_log('WU Debug: After wp_safe_redirect call');
-				exit;
-			} else {
-				error_log('WU Debug: Nonce verification failed');
-			}
-		} else {
-			error_log('WU Debug: No delete parameters found in GET');
-		}
-	}
 
 	/**
 	 * Adds removable query args to the WP database.
