@@ -1283,13 +1283,13 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 		}
 
 		// Handle custom meta field deletion
-		if (isset($_POST['delete_meta_key'], $_POST['_wpnonce'])) {
-			$meta_key = sanitize_key($_POST['delete_meta_key']);
+		if (isset($_GET['delete_meta_key'], $_GET['_wpnonce'])) {
+			$meta_key = sanitize_key($_GET['delete_meta_key']);
 			
 			// Debug: log the attempt
 			error_log('WU Debug: Attempting to delete meta key: ' . $meta_key);
 			
-			if (wp_verify_nonce($_POST['_wpnonce'], 'delete_meta_' . $meta_key)) {
+			if (wp_verify_nonce($_GET['_wpnonce'], 'delete_meta_' . $meta_key)) {
 				$customer_id = (int) wu_request('id');
 				
 				// Debug: log the customer ID
