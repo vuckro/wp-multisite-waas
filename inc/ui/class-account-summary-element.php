@@ -294,9 +294,9 @@ class Account_Summary_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Defensive check - setup() may have been called but site can still be null
+		// Defensive check for Slim SEO plugin compatibility
 		if ( ! $this->site) {
-			return '';
+			return '<div class="wu-text-center wu-text-gray-500">' . __('Site information not available', 'multisite-ultimate') . '</div>';
 		}
 
 		$atts = array_merge($atts, $this->atts);
