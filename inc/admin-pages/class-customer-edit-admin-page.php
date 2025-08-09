@@ -496,6 +496,21 @@ class Customer_Edit_Admin_Page extends Edit_Admin_Page {
 
 			$options = array_merge(['' => '--'], $options);
 
+			// Add simple delete link for orphaned fields (those without form reference)
+			$delete_link = '';
+			if ( ! $form) {
+				$delete_url = add_query_arg([
+					'delete_meta_key' => $key,
+					'_wpnonce' => wp_create_nonce('delete_customer_meta_' . $key),
+				]);
+
+				$delete_link = sprintf(
+					'<small style="float: right;"><a href="%s" style="color: red; text-decoration: none;">%s</a></small>',
+					esc_url($delete_url),
+					__('Delete', 'multisite-ultimate')
+				);
+			}
+
 			$field_data = [
 				'title'   => wu_get_isset($value, 'title', wu_slug_to_name($key)),
 				'type'    => wu_get_isset($value, 'type', 'text'),
