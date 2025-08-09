@@ -272,9 +272,9 @@ class Billing_Info_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Defensive check - setup() may have been called but membership can still be null
+		// Defensive check for Slim SEO plugin compatibility
 		if ( ! $this->membership) {
-			return '';
+			return '<div class="wu-text-center wu-text-gray-500">' . __('Membership information not available', 'multisite-ultimate') . '</div>';
 		}
 
 		$atts['membership'] = $this->membership;
