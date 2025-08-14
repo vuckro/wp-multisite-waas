@@ -89,9 +89,10 @@
 			<?php foreach ($sections as $section_name => $section) : ?>
 				<a 
 					href="<?php echo esc_url($page->get_section_link($section_name)); ?>"
-					class="wu-px-3 wu-py-1 wu-text-sm wu-rounded-md wu-border wu-transition-colors"
-					:class="category === '<?php echo esc_attr($section_name); ?>' ? 'wu-bg-blue-600 wu-text-white wu-border-blue-600' : 'wu-bg-white wu-text-gray-700 wu-border-gray-300 hover:wu-bg-gray-50'"
+					class="wu-px-4 wu-py-2 wu-text-sm wu-mx-4 wu-border wu-transition-colors wu-no-underline"
+					:class="category === '<?php echo esc_attr($section_name); ?>' ? 'wu-bg-gray-100 wu-text-gray-900 wu-border-blue-600 wu-border-solid' : 'wu-bg-white wu-text-gray-700 wu-border-gray-300 hover:wu-bg-gray-50'"
 					@click.prevent="set_category('<?php echo esc_attr($section_name); ?>')"
+					v-show="'<?php echo esc_attr($section_name); ?>' === 'all' || available_categories.some(cat => cat.slug === '<?php echo esc_attr($section_name); ?>')"
 				>
 					<span class="<?php echo esc_attr($section['icon']); ?> wu-mr-1"></span>
 					<?php echo esc_html($section['title']); ?>
