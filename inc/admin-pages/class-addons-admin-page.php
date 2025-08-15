@@ -309,9 +309,9 @@ class Addons_Admin_Page extends Wizard_Admin_Page {
 
 		$data = $api_client->get_addons();
 
-		if (is_wp_error($data)) {
+		if (is_wp_error($data) || empty($data)) {
 			// translators: %s error message.
-			wu_log_add('api-calls', sprintf(__('Failed to fetch addons from API: %s'), $data->get_error_message()));
+			wu_log_add('api-calls', sprintf(__('Failed to fetch addons from API: %s', 'multisite-ultimate'), $data ? $data->get_error_message() : __('no addons returned', 'multisite-ultimate')));
 			return array();
 		}
 
