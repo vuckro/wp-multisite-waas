@@ -156,7 +156,7 @@
 			<?php else : ?>
 
 				<a
-				href="<?php echo esc_attr($addon->permalink . $addon->add_to_cart['url']); ?>"
+				href="<?php echo esc_attr($addon->permalink . '?add-to-cart=' . $addon->id); ?>"
 				class="button button-primary right"
 				>
 				<?php esc_html_e('Purchase', 'multisite-ultimate'); ?>

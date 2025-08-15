@@ -225,8 +225,8 @@
 						</a>
 						<a 
 							v-else-if="addon.is_purchasable && addon.prices.price > 0"
-							:href="addon.permalink + addon.add_to_cart.url"
-							class="wu-flex-1 wu-inline-flex wu-items-center wu-justify-center wu-px-4 wu-py-2 wu-text-sm wu-font-medium wu-text-white wu-bg-green-600 wu-border wu-border-green-600 wu-rounded-md hover:wu-bg-green-700 wu-transition-colors wu-no-underline"
+							:href="addon.permalink + '?add-to-cart=' + addon.id"
+							class="wu-inline-flex wu-items-center wu-justify-center wu-px-4 wu-py-2 wu-text-sm wu-font-medium wu-bg-gray-300 wu-border wu-border-green-600 wu-rounded-md hover:wu-bg-green-700 wu-transition-colors wu-no-underline"
 							target="_blank"
 						>
 							<?php esc_html_e('Buy Now', 'multisite-ultimate'); ?>
