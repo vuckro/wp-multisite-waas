@@ -4,7 +4,7 @@
  *
  * @since 2.0.0
  */
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 ?>
 <div class="wu-styling <?php echo esc_attr($className); ?>">
@@ -139,6 +139,16 @@ endforeach;
 
 		<?php endif; ?>
 
+		<?php
+		/**
+		 * Allow addons to add their own limit widgets.
+		 *
+		 * @since 2.4.4
+		 * @param \WP_Ultimo\Models\Site $site Current site object.
+		 * @param array|false            $items_to_display Items to display or false to show all.
+		 */
+		do_action('wu_dashboard_widget_limits_content', $site, $items_to_display);
+		?>
 	</ul>
 
 	</div>

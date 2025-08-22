@@ -115,7 +115,9 @@ class Sunrise {
 		require_once __DIR__ . '/functions/array-helpers.php';
 		require_once __DIR__ . '/traits/trait-singleton.php';
 		require_once __DIR__ . '/objects/class-limitations.php';
-		require_once __DIR__ . '/models/interface-limitable.php';
+		require_once __DIR__ . '/models/interfaces/interface-limitable.php';
+		require_once __DIR__ . '/models/interfaces/interface-notable.php';
+		require_once __DIR__ . '/models/interfaces/interface-billable.php';
 		require_once __DIR__ . '/models/traits/trait-limitable.php';
 		require_once __DIR__ . '/models/traits/trait-notable.php';
 		require_once __DIR__ . '/models/traits/trait-billable.php';
@@ -306,17 +308,19 @@ class Sunrise {
 			return self::$sunrise_meta;
 		}
 
-		$sunrise_meta = get_network_option(null, 'wu_sunrise_meta', null);
+		self::$sunrise_meta = get_network_option(
+			null,
+			'wu_sunrise_meta',
+			[
+				'active'           => false,
+				'created'          => 'unknown',
+				'last_activated'   => 'unknown',
+				'last_deactivated' => 'unknown',
+				'last_modified'    => 'unknown',
+			]
+		);
 
-		$existing = [];
-
-		if ($sunrise_meta) {
-			$existing = $sunrise_meta;
-
-			self::$sunrise_meta = $existing;
-		}
-
-		return $existing;
+		return self::$sunrise_meta;
 	}
 
 	/**
@@ -347,22 +351,22 @@ class Sunrise {
 					'sunrise-created'          => [
 						'tooltip' => '',
 						'title'   => 'Created',
-						'value'   => gmdate('Y-m-d @ H:i:s', $data['created']),
+						'value'   => is_int($data['created']) ? gmdate('Y-m-d @ H:i:s', $data['created']) : $data['created'],
 					],
 					'sunrise-last-activated'   => [
 						'tooltip' => '',
 						'title'   => 'Last Activated',
-						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_activated']),
+						'value'   => is_int($data['last_activated']) ? gmdate('Y-m-d @ H:i:s', $data['last_activated']) : $data['last_activated'],
 					],
 					'sunrise-last-deactivated' => [
 						'tooltip' => '',
 						'title'   => 'Last Deactivated',
-						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_deactivated']),
+						'value'   => is_int($data['last_deactivated']) ? gmdate('Y-m-d @ H:i:s', $data['last_deactivated']) : $data['last_deactivated'],
 					],
 					'sunrise-last-modified'    => [
 						'tooltip' => '',
 						'title'   => 'Last Modified',
-						'value'   => gmdate('Y-m-d @ H:i:s', $data['last_modified']),
+						'value'   => is_int($data['last_modified']) ? gmdate('Y-m-d @ H:i:s', $data['last_modified']) : $data['last_modified'],
 					],
 				],
 			]
@@ -442,6 +446,10 @@ class Sunrise {
 				'last_deactivated' => 'unknown',
 			]
 		);
+
+		if ('unknown' === $to_save['created']) {
+			$to_save['created'] = $now;
+		}
 
 		if ('activating' === $mode) {
 			$to_save['active']         = true;
