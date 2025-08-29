@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-15T19:04:39+00:00\n"
+"POT-Creation-Date: 2025-08-22T02:48:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: multisite-ultimate\n"
@@ -1339,8 +1339,8 @@ msgstr ""
 #: inc/admin-pages/class-customer-edit-admin-page.php:827
 #: inc/list-tables/class-product-list-table.php:132
 #: inc/list-tables/class-product-list-table.php:178
-#: inc/models/class-payment.php:551
-#: inc/models/class-payment.php:557
+#: inc/models/class-payment.php:552
+#: inc/models/class-payment.php:558
 #: views/admin-pages/fields/field-text-display.php:46
 #: views/admin-pages/fields/field-text-edit.php:49
 #: views/base/customers/grid-item.php:129
@@ -1772,7 +1772,7 @@ msgstr ""
 #: inc/admin-pages/class-discount-code-edit-admin-page.php:284
 #: inc/list-tables/class-line-item-list-table.php:172
 #: inc/list-tables/class-payment-line-item-list-table.php:94
-#: views/invoice/template.php:225
+#: views/invoice/template.php:230
 msgid "Discount"
 msgstr ""
 
@@ -1903,8 +1903,8 @@ msgstr ""
 #: inc/admin-pages/class-site-list-admin-page.php:134
 #: inc/managers/class-form-manager.php:366
 #: inc/managers/class-limitation-manager.php:159
-#: inc/managers/class-notes-manager.php:310
-#: inc/managers/class-notes-manager.php:405
+#: inc/managers/class-notes-manager.php:312
+#: inc/managers/class-notes-manager.php:407
 #: inc/ui/class-current-membership-element.php:459
 #: inc/ui/class-domain-mapping-element.php:474
 #: inc/ui/class-site-actions-element.php:534
@@ -2866,7 +2866,7 @@ msgstr ""
 #: inc/admin-pages/class-invoice-template-customize-admin-page.php:203
 #: inc/admin-pages/class-invoice-template-customize-admin-page.php:287
 #: inc/admin-pages/class-product-edit-admin-page.php:296
-#: inc/invoices/class-invoice.php:252
+#: inc/invoices/class-invoice.php:253
 msgid "Paid"
 msgstr ""
 
@@ -3658,7 +3658,7 @@ msgstr ""
 #: views/emails/admin/payment-received.php:38
 #: views/emails/customer/payment-received.php:39
 #: views/emails/customer/renewal-payment-created.php:39
-#: views/invoice/template.php:233
+#: views/invoice/template.php:238
 #: views/payments/tax-details.php:25
 msgid "Total"
 msgstr ""
@@ -3829,7 +3829,7 @@ msgstr ""
 #: views/emails/admin/payment-received.php:32
 #: views/emails/customer/payment-received.php:33
 #: views/emails/customer/renewal-payment-created.php:33
-#: views/invoice/template.php:229
+#: views/invoice/template.php:234
 msgid "Tax"
 msgstr ""
 
@@ -3943,7 +3943,7 @@ msgstr ""
 #: inc/list-tables/class-membership-list-table-widget.php:265
 #: inc/list-tables/class-membership-list-table.php:176
 #: inc/list-tables/class-product-list-table.php:256
-#: views/invoice/template.php:221
+#: views/invoice/template.php:226
 msgid "Price"
 msgstr ""
 
@@ -7806,7 +7806,7 @@ msgstr ""
 #: inc/models/class-checkout-form.php:1223
 #: inc/models/class-checkout-form.php:1417
 #: views/dashboard-widgets/billing-info.php:105
-#: views/invoice/template.php:291
+#: views/invoice/template.php:296
 msgid "Payment Method"
 msgstr ""
 
@@ -8730,12 +8730,12 @@ msgid "Remove all saved data for Multisite Ultimate when the plugin is uninstall
 msgstr ""
 
 #. translators: the placeholder is an error message
-#: inc/class-sunrise.php:288
+#: inc/class-sunrise.php:290
 #, php-format
 msgid "Sunrise copy failed: %s"
 msgstr ""
 
-#: inc/class-sunrise.php:291
+#: inc/class-sunrise.php:293
 msgid "Sunrise upgrade attempt succeeded."
 msgstr ""
 
@@ -8811,6 +8811,18 @@ msgstr ""
 
 #: inc/class-whitelabel.php:271
 msgid "Replace all occurrences of the word \"Sites\" with a different word."
+msgstr ""
+
+#: inc/compat/class-edit-users-compat.php:114
+msgid "Enable Edit User Capability"
+msgstr ""
+
+#: inc/compat/class-edit-users-compat.php:115
+msgid "Allow site owners to edit the user accounts of users on their own site. Also lets site owners create user accounts without requiring email confirmation."
+msgstr ""
+
+#: inc/compat/class-edit-users-compat.php:146
+msgid "Add the user without sending an email that requires their confirmation"
 msgstr ""
 
 #: inc/compat/class-general-compat.php:251
@@ -14954,7 +14966,7 @@ msgstr ""
 #. translators: %s is the email field identifier
 #: inc/helpers/class-validator.php:76
 #, php-format
-msgid "The %s is not valid email"
+msgid "The %s is not a valid email"
 msgstr ""
 
 #. translators: 1st %s is the field name; 2nd is the allowed value
@@ -15691,7 +15703,7 @@ msgstr ""
 msgid "Your server's PHP and WordPress memory limits are too low to perform this check. You might need to contact your host provider and ask the PHP memory limit in particular to be raised."
 msgstr ""
 
-#: inc/invoices/class-invoice.php:105
+#: inc/invoices/class-invoice.php:106
 #: views/emails/admin/payment-received.php:64
 #: views/emails/customer/payment-received.php:49
 msgid "Invoice"
@@ -15707,43 +15719,20 @@ msgstr ""
 msgid "Limit Reached"
 msgstr ""
 
-#: inc/limits/class-fluent-forms-limits.php:83
-msgid "Your plan does not support this form type."
+#: inc/limits/class-fluent-forms-limits.php:79
+msgid "Your plan does not support creating Conversational Fluent Forms."
 msgstr ""
 
-#: inc/limits/class-fluent-forms-limits.php:88
-#: inc/limits/class-fluent-forms-limits.php:117
-msgid "You have reached your form creation limit for this plan."
+#: inc/limits/class-fluent-forms-limits.php:81
+msgid "Your plan does not support creating Fluent Forms."
 msgstr ""
 
-#: inc/limits/class-fluent-forms-limits.php:141
-msgid "You cannot duplicate this form as it would exceed your plan's form limit."
+#: inc/limits/class-fluent-forms-limits.php:89
+msgid "You have reached the limit of Conversational Fluent Forms. Please upgrade your plan."
 msgstr ""
 
-#. translators: %1$s: form type label, %2$d: current count, %3$d: limit
-#: inc/limits/class-fluent-forms-limits.php:174
-#, php-format
-msgid "Warning: You have %2$d %1$s, which exceeds your plan limit of %3$d. Some functionality may be restricted."
-msgstr ""
-
-#: inc/limits/class-fluent-forms-limits.php:210
-msgid "Upgrade your plan"
-msgstr ""
-
-#: inc/limits/class-fluent-forms-limits.php:216
-msgid "Form Creation Limit Reached"
-msgstr ""
-
-#: inc/limits/class-fluent-forms-limits.php:281
-#: inc/limits/class-fluent-forms-limits.php:285
-#: views/dashboard-widgets/limits-and-quotas.php:148
-msgid "Forms"
-msgstr ""
-
-#: inc/limits/class-fluent-forms-limits.php:282
-#: inc/managers/class-limitation-manager.php:787
-#: views/dashboard-widgets/limits-and-quotas.php:152
-msgid "Conversational Forms"
+#: inc/limits/class-fluent-forms-limits.php:91
+msgid "You have reached the limit of Fluent Forms. Please upgrade your plan."
 msgstr ""
 
 #: inc/limits/class-plugin-limits.php:148
@@ -17313,13 +17302,18 @@ msgstr ""
 msgid "Standard contact forms, registration forms, etc."
 msgstr ""
 
+#: inc/managers/class-limitation-manager.php:787
+#: views/dashboard-widgets/limits-and-quotas.php:152
+msgid "Conversational Forms"
+msgstr ""
+
 #: inc/managers/class-limitation-manager.php:788
 msgid "Interactive, step-by-step conversational forms."
 msgstr ""
 
 #: inc/managers/class-limitation-manager.php:801
 #, php-format
-msgid "The customer will be able to create %s form(s) of this type. %s"
+msgid "The customer will be able to create %1$s form(s) of this type. %2$s"
 msgstr ""
 
 #: inc/managers/class-limitation-manager.php:814
@@ -17373,54 +17367,54 @@ msgstr ""
 msgid "An unexpected error happened."
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:143
-#: inc/managers/class-notes-manager.php:154
-#: inc/managers/class-notes-manager.php:317
-#: inc/managers/class-notes-manager.php:318
+#: inc/managers/class-notes-manager.php:145
+#: inc/managers/class-notes-manager.php:156
+#: inc/managers/class-notes-manager.php:319
+#: inc/managers/class-notes-manager.php:320
 msgid "Clear Notes"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:162
-#: inc/managers/class-notes-manager.php:174
+#: inc/managers/class-notes-manager.php:164
+#: inc/managers/class-notes-manager.php:176
 msgid "Add new Note"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:186
+#: inc/managers/class-notes-manager.php:188
 msgid "Notes"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:187
+#: inc/managers/class-notes-manager.php:189
 msgid "Add notes to this model."
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:208
+#: inc/managers/class-notes-manager.php:210
 msgid "Note Content"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:209
+#: inc/managers/class-notes-manager.php:211
 msgid "Basic formatting is supported."
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:221
-#: inc/managers/class-notes-manager.php:222
+#: inc/managers/class-notes-manager.php:223
+#: inc/managers/class-notes-manager.php:224
 msgid "Add Note"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:309
+#: inc/managers/class-notes-manager.php:311
 msgid "Confirm clear all notes?"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:404
+#: inc/managers/class-notes-manager.php:406
 msgid "Confirm clear the note?"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:412
-#: inc/managers/class-notes-manager.php:413
+#: inc/managers/class-notes-manager.php:414
+#: inc/managers/class-notes-manager.php:415
 #: views/base/edit/display-notes.php:82
 msgid "Clear Note"
 msgstr ""
 
-#: inc/managers/class-notes-manager.php:476
+#: inc/managers/class-notes-manager.php:478
 msgid "Note not found"
 msgstr ""
 
@@ -17582,12 +17576,12 @@ msgstr ""
 msgid "Create Site"
 msgstr ""
 
-#: inc/models/class-customer.php:204
+#: inc/models/class-customer.php:206
 msgid "User Deleted"
 msgstr ""
 
-#: inc/models/class-customer.php:260
-#: inc/models/class-customer.php:277
+#: inc/models/class-customer.php:262
+#: inc/models/class-customer.php:279
 msgid "none"
 msgstr ""
 
@@ -17671,20 +17665,20 @@ msgstr[1] ""
 msgid "%1$s one time payment"
 msgstr ""
 
-#: inc/models/class-payment.php:940
+#: inc/models/class-payment.php:941
 msgid "(provisional)"
 msgstr ""
 
-#: inc/models/class-payment.php:1060
+#: inc/models/class-payment.php:1061
 msgid "Full Refund"
 msgstr ""
 
-#: inc/models/class-payment.php:1064
+#: inc/models/class-payment.php:1065
 msgid "Partial Refund"
 msgstr ""
 
 #. translators: %s is the date of processing.
-#: inc/models/class-payment.php:1074
+#: inc/models/class-payment.php:1075
 #, php-format
 msgid "Processed on %s"
 msgstr ""
@@ -19854,6 +19848,10 @@ msgstr ""
 msgid "Next Reset: %s"
 msgstr ""
 
+#: views/dashboard-widgets/limits-and-quotas.php:148
+msgid "Forms"
+msgstr ""
+
 #. translators: 1$s is the display name of the user currently logged in.
 #: views/dashboard-widgets/login-form.php:21
 #, php-format
@@ -20099,37 +20097,37 @@ msgstr ""
 msgid "Target %s"
 msgstr ""
 
-#: views/invoice/template.php:156
+#: views/invoice/template.php:161
 msgid "Invoice #"
 msgstr ""
 
 #. translators: %s is the payment creation date
-#: views/invoice/template.php:160
+#: views/invoice/template.php:165
 #, php-format
 msgid "Created: %s"
 msgstr ""
 
-#: views/invoice/template.php:162
+#: views/invoice/template.php:167
 msgid "Due on Receipt"
 msgstr ""
 
-#: views/invoice/template.php:198
+#: views/invoice/template.php:203
 msgid "Bill to"
 msgstr ""
 
-#: views/invoice/template.php:217
+#: views/invoice/template.php:222
 #: views/wizards/setup/installation_steps.php:16
 #: views/wizards/setup/requirements_table.php:19
 #: views/wizards/setup/requirements_table.php:60
 msgid "Item"
 msgstr ""
 
-#: views/invoice/template.php:277
+#: views/invoice/template.php:282
 msgid "Tax included in price."
 msgstr ""
 
 #. translators: %s is the total amount in currency format.
-#: views/invoice/template.php:283
+#: views/invoice/template.php:288
 #, php-format
 msgid "Total: %s"
 msgstr ""

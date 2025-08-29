@@ -56,6 +56,8 @@ class Limitations {
 	 */
 	protected $current_merge_id = '';
 
+	protected array $raw_module_data;
+
 	/**
 	 * Constructs the limitation class with module data.
 	 *
@@ -86,7 +88,7 @@ class Limitations {
 			$class_name = wu_get_isset($repo, $name, false);
 
 			if (class_exists($class_name)) {
-				$module = new $class_name([]);
+				$module = new $class_name($this->raw_module_data[ $name ] ?? []);
 
 				$this->modules[ $name ] = $module;
 
@@ -104,7 +106,7 @@ class Limitations {
 	 * @since 2.0.0
 	 * @return array
 	 */
-	public function __serialize() { // phpcs:ignore
+	public function __serialize() {
 
 		return $this->to_array();
 	}
@@ -118,8 +120,7 @@ class Limitations {
 	 * @param array $modules_data Array of modules data.
 	 * @return void
 	 */
-	public function __unserialize($modules_data) { // phpcs:ignore
-
+	public function __unserialize($modules_data) {
 		$this->build_modules($modules_data);
 	}
 
@@ -132,6 +133,8 @@ class Limitations {
 	 * @return self
 	 */
 	public function build_modules($modules_data) {
+
+		$this->raw_module_data = $modules_data;
 
 		foreach ($modules_data as $type => $data) {
 			$module = self::build($data, $type);
@@ -313,7 +316,7 @@ class Limitations {
 			} else {
 				$original_value = wu_get_isset($array1, $key);
 
-				// If the value is 0 or '' it can be a unlimited value
+				// If the value is 0 or '' it can be an unlimited value
 				$is_unlimited = (is_numeric($value) || '' === $value) && (int) $value === 0;
 
 				if ($should_sum && ('' === $original_value || 0 === $original_value)) {

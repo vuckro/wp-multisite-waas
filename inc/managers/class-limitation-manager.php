@@ -15,8 +15,8 @@ namespace WP_Ultimo\Managers;
 defined('ABSPATH') || exit;
 
 use Psr\Log\LogLevel;
-use WP_Ultimo\Objects\Limitations;
 use WP_Ultimo\Database\Sites\Site_Type;
+use WP_Ultimo\Objects\Limitations;
 
 /**
  * Handles processes related to limitations.
@@ -226,10 +226,10 @@ class Limitation_Manager {
 	/**
 	 * Returns the type of the object that has limitations.
 	 *
-	 * @since 2.0.0
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $object_model Model to test.
 	 *
-	 * @param \WP_Ultimo\Models\Limitable $object_model Model to test.
 	 * @return string
+	 * @since 2.0.0
 	 */
 	public function get_object_type($object_model) {
 
@@ -249,11 +249,11 @@ class Limitation_Manager {
 	/**
 	 * Injects the limitations panels when necessary.
 	 *
-	 * @since 2.0.0
+	 * @param array                                  $sections List of tabbed widget sections.
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $object_model The model being edited.
 	 *
-	 * @param array                       $sections List of tabbed widget sections.
-	 * @param \WP_Ultimo\Models\Limitable $object_model The model being edited.
 	 * @return array
+	 * @since 2.0.0
 	 */
 	public function add_limitation_sections($sections, $object_model) {
 
@@ -571,11 +571,11 @@ class Limitation_Manager {
 	/**
 	 * Register the user roles fields
 	 *
-	 * @since 2.0.0
+	 * @param array                                  $sections Sections and fields.
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $object_model The object being edit.
 	 *
-	 * @param array                       $sections Sections and fields.
-	 * @param \WP_Ultimo\Models\Limitable $object_model The object being edit.
 	 * @return void
+	 * @since 2.0.0
 	 */
 	public function register_user_fields(&$sections, $object_model): void {
 
@@ -636,11 +636,11 @@ class Limitation_Manager {
 	/**
 	 * Register the post type fields
 	 *
-	 * @since 2.0.0
+	 * @param array                                  $sections Sections and fields.
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $object_model The object being edit.
 	 *
-	 * @param array                       $sections Sections and fields.
-	 * @param \WP_Ultimo\Models\Limitable $object_model The object being edit.
 	 * @return void
+	 * @since 2.0.0
 	 */
 	public function register_post_type_fields(&$sections, $object_model): void {
 
@@ -706,13 +706,14 @@ class Limitation_Manager {
 		}
 	}
 
+
 	/**
 	 * Returns the list of fields for the site tab.
 	 *
-	 * @since 2.0.0
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $object_model The model being edited.
 	 *
-	 * @param \WP_Ultimo\Models\Limitable $object_model The model being edited.
 	 * @return array
+	 * @since 2.0.0
 	 */
 	protected function get_sites_fields($object_model) {
 
@@ -768,10 +769,10 @@ class Limitation_Manager {
 	/**
 	 * Returns the HTML markup for the plugin selector list.
 	 *
-	 * @since 2.0.0
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $object_model The model being edited.
 	 *
-	 * @param \WP_Ultimo\Models\Limitable $object_model The model being edited.
 	 * @return string
+	 * @since 2.0.0
 	 */
 	public function get_plugin_selection_list($object_model) {
 
@@ -789,11 +790,11 @@ class Limitation_Manager {
 	/**
 	 * Returns the HTML markup for the plugin selector list.
 	 *
-	 * @since 2.0.0
+	 * @param \WP_Ultimo\Models\Interfaces\Limitable $obj The model being edited.
+	 * @param array                                  $section The section array.
 	 *
-	 * @param \WP_Ultimo\Models\Limitable $obj The model being edited.
-	 * @param array                       $section The section array.
 	 * @return string
+	 * @since 2.0.0
 	 */
 	public function get_theme_selection_list($obj, &$section) {
 
