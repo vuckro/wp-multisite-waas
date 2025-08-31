@@ -352,9 +352,10 @@ class Current_Site_Element extends Base_Element {
 	 */
 	public function output($atts, $content = null) {
 
-		// Defensive check - setup() may have been called but site can still be null
+		$this->ensure_setup();
+
+		// Return empty if no site available (e.g., during SEO processing)
 		if ( ! $this->site) {
-			_doing_it_wrong(__METHOD__, esc_html__('setup() or setup_preview() must be called before output().', 'multisite-ultimate'), wu_get_version());
 			return '';
 		}
 
